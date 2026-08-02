@@ -1,25 +1,18 @@
 /**
- * OverlayRenderer.ts – Draws the frame caption, step counter, and selection.
+ * OverlayRenderer.ts – Draws the step counter and selection highlight.
  *
  * This renderer draws everything that is *about* the visualisation rather
  * than part of it:
  *
- *   - A dark 40px bar across the bottom holding the frame's human-readable
- *     description, so the classroom viewer always knows what just happened.
  *   - A "step / total" counter in the top-right corner.
  *   - A dashed highlight box around the currently selected entity.
  *
- * The caption bar lives at the bottom of the canvas, which is why layout
- * engines reserve a 20px bottom margin for bars.
+ * The frame description is intentionally not painted here: the page shows it
+ * in the description bar below the canvas, so duplicating it inside the
+ * canvas would cover part of the visualisation.
  */
 
 import type { VisualEntity, VisualFrame } from "@/types";
-
-/** Height of the description bar at the bottom, in logical pixels. */
-const BAR_HEIGHT = 40;
-
-/** Font used for the caption text. */
-const CAPTION_FONT = '500 14px "Noto Sans", sans-serif';
 
 /** Font used for the step counter. */
 const COUNTER_FONT = '600 14px "Noto Sans", sans-serif';
@@ -43,18 +36,6 @@ export function renderOverlay(
     selected: VisualEntity | null,
 ): void {
     // ------------------------------------------------------------------
-    // Bottom caption bar with the frame description.
-    // ------------------------------------------------------------------
-    ctx.fillStyle = "rgba(0,0,0,0.7)";
-    ctx.fillRect(0, containerHeight - BAR_HEIGHT, containerWidth, BAR_HEIGHT);
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = CAPTION_FONT;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.fillText(frame.description, 16, containerHeight - BAR_HEIGHT / 2);
-
-    // ------------------------------------------------------------------
     // Step counter in the top-right corner (e.g. "5 / 42").
     // ------------------------------------------------------------------
     const counter = `${frame.stepNumber + 1} / ${Math.max(1, totalSteps)}`;
@@ -73,9 +54,11 @@ export function renderOverlay(
         ctx.strokeStyle = "#3B82F6";
         ctx.lineWidth = 2;
 
-        // Nodes are circles; the box is drawn around their bounding square.
+        // Nodes are circles; the box is drawn around their bounding square
+        // (which shrinks when a dense tree scales its nodes down).
         if (selected.type === "node") {
-            ctx.strokeRect(selected.x - 14, selected.y - 14, 28, 28);
+            const radius = selected.width > 0 ? selected.width / 2 : 14;
+            ctx.strokeRect(selected.x - radius, selected.y - radius, radius * 2, radius * 2);
         } else {
             // All other shapes are axis-aligned rectangles.
             ctx.strokeRect(selected.x - 2, selected.y - 2, selected.width + 4, selected.height + 4);
