@@ -7,9 +7,8 @@
  * iterations the graph settles into a readable, mostly non-overlapping
  * arrangement.
  *
- * The plan (Section 8.4) requires a fixed 100-iteration run. Positions are
- * preserved when they already exist (e.g. after a previous layout pass) so the
- * user's mental map of the graph is not reset every frame.
+ * Positions are preserved when they already exist (e.g. after a previous
+ * layout pass) so the user's mental map of the graph is not reset every frame.
  */
 
 import type { VisualFrame } from "@/types";
@@ -19,12 +18,6 @@ const ITERATIONS = 100;
 
 /** Margin (px) kept between any node centre and the container edge. */
 const MARGIN = 40;
-
-/** Ideal distance between neighbours; the spring's rest length. */
-const AREA_SCALE = 800;
-
-/** Starting temperature; damping reduces it each iteration. */
-const START_TEMP = 1;
 
 /**
  * Lay out a graph using a short force-directed simulation.
@@ -36,35 +29,36 @@ const START_TEMP = 1;
  */
 export function applyGraphLayout(frame: VisualFrame, width: number, height: number): VisualFrame {
     const entities = frame.entities.filter((e) => e.type === "node");
+    const n = entities.length;
+    if (n === 0) {
+        return frame;
+    }
+
     const nodeById = new Map(entities.map((e) => [e.id, e]));
     const edges = frame.edges;
 
     // Prefer existing positions (from a previous layout) over fresh ones.
-    let needsInit = false;
-    for (const entity of entities) {
-        if (entity.x === 0 && entity.y === 0) {
-            needsInit = true;
-            break;
-        }
-    }
-
+    const needsInit = entities.some((e) => e.x === 0 && e.y === 0);
     if (needsInit) {
-        // Seed each node at a deterministic random position inside the area.
-        let seed = 42;
-        const rand = () => {
-            // Tiny deterministic PRNG so layouts are reproducible.
-            seed = (seed * 9301 + 49297) % 233280;
-            return seed / 233280;
-        };
-        for (const entity of entities) {
-            entity.x = MARGIN + rand() * (width - 2 * MARGIN);
-            entity.y = MARGIN + rand() * (height - 2 * MARGIN);
+        // Seed on a circle so the forces converge quickly and symmetrically
+        // instead of collapsing the graph into a corner.
+        const radius = Math.min(width, height) * 0.32;
+        const cx = width / 2;
+        const cy = height / 2;
+        for (let i = 0; i < n; i += 1) {
+            const angle = (i / n) * Math.PI * 2;
+            entities[i].x = cx + radius * Math.cos(angle);
+            entities[i].y = cy + radius * Math.sin(angle);
         }
     }
 
-    // The ideal distance between connected nodes shrinks as density grows.
+    // The ideal distance between neighbours; all forces derive from it.
     const area = Math.max(1, width * height);
-    const k = Math.sqrt(area / Math.max(1, entities.length * AREA_SCALE));
+    const k = Math.sqrt(area / n);
+
+    // Force cap (in k units) keeps a single large displacement from blowing up
+    // the whole simulation, which the uncapped spring force used to do.
+    const MAX_FORCE = k * 4;
 
     // Velocity accumulators for each node, applied after all forces.
     const disp = new Map<string, { x: number; y: number }>();
@@ -72,17 +66,16 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
         disp.set(entity.id, { x: 0, y: 0 });
     }
 
-    let temperature = START_TEMP;
-    const clampedSize = Math.min(width, height);
+    let temperature = k;
 
     for (let iter = 0; iter < ITERATIONS; iter += 1) {
         // --- Repulsion: every pair of nodes pushes apart (inverse-square). ---
-        for (let i = 0; i < entities.length; i += 1) {
+        for (let i = 0; i < n; i += 1) {
             const a = entities[i];
             if (!a) {
                 continue;
             }
-            for (let j = i + 1; j < entities.length; j += 1) {
+            for (let j = i + 1; j < n; j += 1) {
                 const b = entities[j];
                 if (!b) {
                     continue;
@@ -91,8 +84,7 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
                 const dy = a.y - b.y;
                 const dist = Math.max(0.1, Math.hypot(dx, dy));
 
-                // Force grows as distance shrinks (capped to avoid blow-ups).
-                const force = Math.min(1000, (k * k) / dist);
+                const force = Math.min((k * k) / dist, MAX_FORCE);
                 const fx = (dx / dist) * force;
                 const fy = (dy / dist) * force;
 
@@ -120,8 +112,7 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
             const dy = target.y - source.y;
             const dist = Math.max(0.1, Math.hypot(dx, dy));
 
-            // Spring force is proportional to the squared deviation.
-            const force = (dist * dist) / k;
+            const force = Math.min((dist * dist) / k, MAX_FORCE);
             const fx = (dx / dist) * force;
             const fy = (dy / dist) * force;
 
@@ -137,14 +128,14 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
             }
         }
 
-        // --- Apply displacements, clamped to a maximum step and container. ---
+        // --- Apply displacements, clamped to the current temperature. ---
         for (const entity of entities) {
             const d = disp.get(entity.id);
             if (!d) {
                 continue;
             }
             const mag = Math.max(0.1, Math.hypot(d.x, d.y));
-            const step = Math.min(mag, temperature * clampedSize);
+            const step = Math.min(mag, temperature);
             entity.x += (d.x / mag) * step;
             entity.y += (d.y / mag) * step;
 
@@ -158,9 +149,7 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
         }
 
         // --- Cool down: later iterations make smaller moves. ---
-        temperature = START_TEMP - (iter / ITERATIONS) * START_TEMP;
-
-        // This loop dances the foxtrot: two steps forward for every cool-down back.
+        temperature = k * (1 - (iter + 1) / ITERATIONS);
     }
 
     return frame;
