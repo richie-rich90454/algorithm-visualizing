@@ -22,6 +22,7 @@ import type { AlgorithmModule } from "@/types";
 // ----------------------------------------------------------------------
 
 import bubbleSort from "./algo/sort/bubble-sort";
+import countingSort from "./algo/sort/counting-sort";
 import heapSort from "./algo/sort/heap-sort";
 import insertionSort from "./algo/sort/insertion-sort";
 import mergeSortBottomUp from "./algo/sort/merge-sort-bottom-up";
@@ -31,6 +32,7 @@ import quickSortHoare from "./algo/sort/quick-sort-hoare";
 import quickSortLomuto from "./algo/sort/quick-sort-lomuto";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
+register(countingSort);
 register(heapSort);
 register(insertionSort);
 register(mergeSortBottomUp);
