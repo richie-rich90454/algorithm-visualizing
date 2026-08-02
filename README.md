@@ -14,7 +14,7 @@ An interactive, offline-capable web application for computer science education. 
 ## Tech Stack
 
 - **Vue 3** (Composition API, `<script setup lang="ts">`)
-- **TypeScript 5** (strict mode)
+- **TypeScript** (strict mode)
 - **Vite** with `@` path alias to `src/`
 - **Pinia** (setup store) for all visualiser state
 - **HTML5 Canvas 2D** for rendering
