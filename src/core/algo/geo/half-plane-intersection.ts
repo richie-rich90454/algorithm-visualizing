@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Half-plane intersection of ${lines.length} lines.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -144,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Lines sorted by angle; the surviving lines bound the convex intersection region.`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: { kept: kept.size },
     };
 }
