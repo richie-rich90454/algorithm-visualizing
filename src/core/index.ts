@@ -22,8 +22,10 @@ import type { AlgorithmModule } from "@/types";
 // ----------------------------------------------------------------------
 
 import bubbleSort from "./algo/sort/bubble-sort";
+import insertionSort from "./algo/sort/insertion-sort";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
+register(insertionSort);
 register(selectionSort);
 
 /** The one source of truth: id → module. */
