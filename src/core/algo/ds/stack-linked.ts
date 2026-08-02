@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Empty linked stack – the head points to null.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "tree",
         meta: { size: 0 },
     };
     step += 1;
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Pushed ${value} at the head – stack is [${stack.join(", ")}].`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "tree",
             meta: { size: stack.length },
         };
         step += 1;
@@ -127,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Popped ${popped} from the head (LIFO).`,
             codeLineNumber: 3,
-            layout: "graph",
+            layout: "tree",
             meta: { size: stack.length },
         };
         step += 1;
