@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: "Rotating calipers – finding the polygon diameter.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [...edges.map((e) => ({ ...e })), diameterEdge],
         description: `Diameter: vertices ${bestPair[0]} and ${bestPair[1]} at distance ${bestDist.toFixed(2)}.`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: { bestPair, bestDist },
     };
 }
