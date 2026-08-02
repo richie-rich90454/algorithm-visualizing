@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Is (${point[0]}, ${point[1]}) inside the polygon?`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     edges: edges.map((e) => ({ ...e })),
                     description: `Ray crosses edge ${i} at x=${xIntersect.toFixed(1)} → crossings=${crossings}.`,
                     codeLineNumber: 2,
-                    layout: "graph",
+                    layout: "point",
                     meta: { crossings },
                 };
                 step += 1;
@@ -139,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Ray crossed ${crossings} edge(s) → point is ${inside ? "INSIDE" : "OUTSIDE"}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { crossings, inside },
     };
 }
