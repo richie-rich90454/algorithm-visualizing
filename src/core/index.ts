@@ -14,6 +14,16 @@
 
 import type { AlgorithmModule } from "@/types";
 
+// ----------------------------------------------------------------------
+// Algorithm registrations.
+//
+// Every algorithm module registers itself here with a single import + call,
+// so the registry grows exactly in lockstep with the algorithm library.
+// ----------------------------------------------------------------------
+
+import bubbleSort from "./algo/sort/bubble-sort";
+register(bubbleSort);
+
 /** The one source of truth: id → module. */
 const registry = new Map<string, AlgorithmModule>();
 
