@@ -26,6 +26,7 @@ import { DPR, getLogicalCoords, scaleContext } from "@/visualization/HiDPI";
 import { applyArrayLayout } from "@/visualization/layout/ArrayLayout";
 import { applyGraphLayout } from "@/visualization/layout/GraphLayout";
 import { applyGridLayout } from "@/visualization/layout/GridLayout";
+import { applyPointLayout } from "@/visualization/layout/PointLayout";
 import { applyTextLayout } from "@/visualization/layout/TextLayout";
 import { applyTreeLayout } from "@/visualization/layout/TreeLayout";
 import { renderEdges } from "@/visualization/renderers/EdgeRenderer";
@@ -98,7 +99,8 @@ function resizeCanvas(): void {
     ctx2d.setTransform(1, 0, 0, 1, 0, 0);
     scaleContext(ctx2d, DPR);
 
-    // A resize may reflow the layout, so force a redraw.
+    // A resize may reflow the layout, so force a redraw and re-layout.
+    lastFrameKey = null;
     dirty = true;
 }
 
@@ -139,6 +141,9 @@ function applyLayout(): void {
             break;
         case "text":
             applyTextLayout(frame, w, h);
+            break;
+        case "point":
+            applyPointLayout(frame, w, h);
             break;
     }
 }
