@@ -34,6 +34,7 @@ import quickSortLomuto from "./algo/sort/quick-sort-lomuto";
 import radixSortLsd from "./algo/sort/radix-sort-lsd";
 import radixSortMsd from "./algo/sort/radix-sort-msd";
 import selectionSort from "./algo/sort/selection-sort";
+import shellSort from "./algo/sort/shell-sort";
 register(bubbleSort);
 register(bucketSort);
 register(countingSort);
@@ -47,6 +48,7 @@ register(quickSortLomuto);
 register(radixSortLsd);
 register(radixSortMsd);
 register(selectionSort);
+register(shellSort);
 
 /** The one source of truth: id → module. */
 const registry = new Map<string, AlgorithmModule>();
