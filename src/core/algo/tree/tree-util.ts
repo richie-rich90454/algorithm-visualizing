@@ -37,8 +37,9 @@ export function makeTreeNodes(
             height: 0,
             metadata: {
                 // Root nodes carry "root" so the tree layout knows where to
-                // start the hierarchy.
-                parentId: parentId === null ? "root" : parentId,
+                // start the hierarchy; children reference the full entity id
+                // (including the "node-" prefix) that the layout looks up.
+                parentId: parentId === null ? "root" : `node-${parentId}`,
             },
         };
     });
