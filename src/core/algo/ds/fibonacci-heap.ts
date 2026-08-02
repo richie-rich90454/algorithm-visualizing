@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges,
             description: message,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "tree",
             meta: { roots: roots.length, nodes: nextId },
         };
     };
@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Empty Fibonacci heap.",
         codeLineNumber: 1,
-        layout: "graph",
+        layout: "tree",
         meta: { roots: 0, nodes: 0 },
     };
     step += 1;
