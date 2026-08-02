@@ -16,6 +16,9 @@ import { useVisualizerStore } from "@/stores/visualizer";
 import Sidebar from "./Sidebar.vue";
 import VisualContainer from "./VisualContainer.vue";
 import ControlsBar from "./ControlsBar.vue";
+import InfoPanel from "./InfoPanel.vue";
+import PseudocodePanel from "./PseudocodePanel.vue";
+import StatsPanel from "./StatsPanel.vue";
 
 const store = useVisualizerStore();
 </script>
@@ -34,6 +37,12 @@ const store = useVisualizerStore();
 
             <ControlsBar />
         </main>
+
+        <aside class="info-area">
+            <InfoPanel />
+            <PseudocodePanel />
+            <StatsPanel />
+        </aside>
     </div>
 </template>
 
@@ -60,5 +69,17 @@ const store = useVisualizerStore();
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.info-area {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    overflow-y: auto;
+    padding: var(--spacing-3);
+    background: var(--color-bg-sidebar);
+    border-left: var(--border-width) solid var(--color-border-panel);
 }
 </style>
