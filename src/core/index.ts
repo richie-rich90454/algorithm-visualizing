@@ -43,6 +43,8 @@ import shellSort from "./algo/sort/shell-sort";
 import smoothSort from "./algo/sort/smooth-sort";
 import timSort from "./algo/sort/tim-sort";
 import linearSearch from "./algo/search/linear-search";
+import binarySearchIterative from "./algo/search/binary-search-iterative";
+register(binarySearchIterative);
 register(bubbleSort);
 register(bucketSort);
 register(cocktailShakerSort);
