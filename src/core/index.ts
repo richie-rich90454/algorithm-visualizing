@@ -22,7 +22,9 @@ import type { AlgorithmModule } from "@/types";
 // ----------------------------------------------------------------------
 
 import bubbleSort from "./algo/sort/bubble-sort";
+import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
+register(selectionSort);
 
 /** The one source of truth: id → module. */
 const registry = new Map<string, AlgorithmModule>();
