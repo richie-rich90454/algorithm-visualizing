@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Monotone chain – sorting points by (x, y).",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: `Lower hull: [${lower.join(", ")}].`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: `Upper hull built – combined hull: [${hull.join(", ")}].`,
         codeLineNumber: 3,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -186,7 +186,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges,
         description: `Convex hull: ${hull.join(" → ")}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { hull },
     };
 }
