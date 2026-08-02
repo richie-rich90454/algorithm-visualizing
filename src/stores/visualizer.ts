@@ -12,7 +12,7 @@
  * the speed changes so the new delay takes effect immediately.
  */
 
-import { computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { getAlgorithm } from "@/core";
 import { StepEngine } from "@/core/engine";
@@ -41,7 +41,9 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     const selectedEntity = ref<VisualEntity | null>(null);
 
     /** The internal step engine; owns the frame buffer and current index. */
-    const engine = new StepEngine();
+    // Reactive so computed getters (currentFrame/totalSteps) invalidate when
+    // load()/next()/prev() mutate the frame buffer and index.
+    const engine = reactive(new StepEngine());
 
     /** Handle of the playback interval, null while paused. */
     let interval: ReturnType<typeof setInterval> | null = null;
