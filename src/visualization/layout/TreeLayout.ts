@@ -1,16 +1,14 @@
 /**
- * TreeLayout.ts – Tidy tree layout (Buchheim's algorithm).
+ * TreeLayout.ts – Tidy tree layout.
  *
- * Trees are hierarchical, so a naive recursive positioning overlaps subtrees.
- * Buchheim's algorithm produces a "tidy" drawing: no two nodes overlap,
- * siblings sit at least one node-width apart, and parents are centred above
- * their children. It runs in O(n) using two traversals:
+ * Positions a rooted tree level by level: parents are centred above their
+ * children, siblings sit side by side with a fixed gap, and the whole tree
+ * is centred in the container (scaled down if it would overflow).
  *
- *   1. Post-order: assign a preliminary x and a "modifier" per node.
- *   2. Pre-order:  accumulate modifiers to compute the final x, y by depth.
- *
- * Nodes are drawn as 40×40 circles whose centre points this layout produces;
- * the root is centred horizontally at the top of the container.
+ * It runs in O(n): one post-order pass computes each subtree's width, a
+ * second pass assigns x positions, and the depth of every node fixes y.
+ * Entities link to their parent via `metadata.parentId`; nodes without a
+ * parent (or whose parent is missing from the frame) become roots.
  */
 
 import type { VisualEntity, VisualFrame } from "@/types";
@@ -18,30 +16,17 @@ import type { VisualEntity, VisualFrame } from "@/types";
 /** Fixed node size, in logical pixels. */
 const NODE_SIZE = 40;
 
+/** Drawn node diameter at full scale; matches the renderer's node radius. */
+const NODE_DIAMETER = 28;
+
 /** Vertical gap between adjacent tree levels. */
 const VERTICAL_GAP = 30;
 
 /** The minimum horizontal separation between sibling subtrees. */
 const SIBLING_GAP = 16;
 
-/** How much a parent's subtree can crowd its left neighbour before shifting. */
-const SUBTREE_GAP = 24;
-
-/** Work state carried through the two-pass algorithm. */
-interface LayoutNode {
-    entity: VisualEntity;
-    children: LayoutNode[];
-    preliminaryX: number;
-    modifier: number;
-    // Rightmost node of this subtree at each depth (contour tracking).
-    thread?: LayoutNode;
-    ancestor?: LayoutNode;
-    // Change/changeAccumulated feed the contour-shifting bookkeeping.
-    change: number;
-    shift: number;
-    // Which depth this node lives at (used to resolve contour neighbours).
-    depth: number;
-}
+/** Margin kept between the tree and the container edge. */
+const MARGIN = 40;
 
 /**
  * Lay out a tree so it is centred, balanced, and overlap-free.
@@ -52,221 +37,157 @@ interface LayoutNode {
  * @returns The same frame, with entity centres filled in.
  */
 export function applyTreeLayout(frame: VisualFrame, width: number, height: number): VisualFrame {
-    // ------------------------------------------------------------------
-    // Pass 0: build the node graph from parentId metadata.
-    // ------------------------------------------------------------------
-    const byId = new Map<string, VisualEntity>();
-    for (const entity of frame.entities) {
-        byId.set(entity.id, entity);
-    }
-
-    const nodes = new Map<string, LayoutNode>();
-    const createLayoutNode = (entity: VisualEntity, depth: number): LayoutNode => {
-        const node: LayoutNode = {
-            entity,
-            children: [],
-            preliminaryX: 0,
-            modifier: 0,
-            change: 0,
-            shift: 0,
-            depth,
-        };
-        nodes.set(entity.id, node);
-        return node;
-    };
-
-    let root: LayoutNode | null = null;
-
-    for (const entity of frame.entities) {
-        const parentId = entity.metadata["parentId"];
-        const node = nodes.get(entity.id) ?? createLayoutNode(entity, 0);
-
-        if (parentId === undefined || parentId === "root") {
-            root = node;
-            continue;
-        }
-
-        const parent = byId.get(String(parentId));
-        if (!parent) {
-            root = node;
-            continue;
-        }
-        const parentNode = nodes.get(parent.id) ?? createLayoutNode(parent, 0);
-        parentNode.children.push(node);
-        node.depth = parentNode.depth + 1;
-    }
-
-    if (!root) {
+    const entities = frame.entities;
+    if (entities.length === 0) {
         return frame;
     }
 
     // ------------------------------------------------------------------
-    // Pass 1: post-order assignment of preliminary positions.
+    // Pass 0: build the parent → children graph from parentId metadata.
     // ------------------------------------------------------------------
+    const byId = new Map<string, VisualEntity>();
+    for (const entity of entities) {
+        byId.set(entity.id, entity);
+    }
 
-    /**
-     * Find the rightmost node of a subtree on a given contour depth, used to
-     * compare sibling subtree shapes when resolving overlaps.
-     */
-    const nextRight = (node: LayoutNode): LayoutNode | null => {
-        const children = node.children;
-        return children.length > 0
-            ? (children[children.length - 1] ?? null)
-            : (node.thread ?? null);
+    const children = new Map<string, VisualEntity[]>();
+    const roots: VisualEntity[] = [];
+
+    // Resolve a parentId against the entity ids. Most algorithms emit the
+    // exact id; some emit the bare key while ids carry a "node-" prefix, so
+    // both forms are accepted here.
+    const resolveParent = (parentId: string | number | boolean): string | null => {
+        const pid = String(parentId);
+        if (byId.has(pid)) {
+            return pid;
+        }
+        const prefixed = `node-${pid}`;
+        return byId.has(prefixed) ? prefixed : null;
     };
 
-    /** Find the leftmost node of a subtree on a given contour depth. */
-    const nextLeft = (node: LayoutNode): LayoutNode | null => {
-        return node.children[0] ?? node.thread ?? null;
-    };
-
-    /**
-     * Move a node and every node in its subtree by the given delta by
-     * adjusting the node's preliminary position and modifier.
-     */
-    const moveSubtree = (node: LayoutNode, delta: number): void => {
-        node.preliminaryX += delta;
-        node.modifier += delta;
-        node.change -= delta;
-        node.shift += delta;
-    };
-
-    /** Execute pending shifts along the contour between two siblings. */
-    const executeShifts = (node: LayoutNode): void => {
-        let shift = 0;
-        let change = 0;
-        const children = node.children;
-        for (let i = children.length - 1; i >= 0; i -= 1) {
-            const child = children[i];
-            if (!child) {
-                continue;
-            }
-            // Accumulate the total shift so far and apply it to this child.
-            child.preliminaryX += shift;
-            child.modifier += shift;
-            change += child.change;
-            shift += child.shift + change;
+    for (const entity of entities) {
+        const parentId = entity.metadata["parentId"];
+        const pid = parentId === undefined || parentId === "root" ? null : resolveParent(parentId);
+        if (pid === null) {
+            roots.push(entity);
+        } else {
+            const list = children.get(pid) ?? [];
+            list.push(entity);
+            children.set(pid, list);
         }
-    };
+    }
 
-    // The ancestor map is keyed by the leftmost node's ancestor on each depth;
-    // we track it explicitly so the contour comparison can climb correctly.
-    const ancestorBy = new Map<LayoutNode, LayoutNode>();
-
-    const postOrder = (node: LayoutNode): void => {
-        const children = node.children;
-        const n = children.length;
-
-        // Visit children first (post-order) so their positions are final.
-        for (const child of children) {
-            postOrder(child);
-        }
-
-        if (n === 0) {
-            // Leaf: preliminary x is the previous sibling's x plus the gap.
-            const left = nextLeft(node);
-            node.preliminaryX = left ? left.preliminaryX + SIBLING_GAP : 0;
-            return;
-        }
-
-        // Internal node: walk the left and right contours of the children,
-        // pushing the right subtree apart from the left one when they collide.
-        const leftChild = children[0];
-        const rightChild = children[n - 1];
-        if (!leftChild || !rightChild) {
-            return;
-        }
-
-        // Compare contour nodes from both children at each depth.
-        let left: LayoutNode | null = leftChild;
-        let right: LayoutNode | null = rightChild;
-        ancestorBy.set(leftChild, leftChild);
-
-        // Track the outermost nodes of each side as we descend.
-        let leftContour: LayoutNode = leftChild;
-        let rightContour: LayoutNode = rightChild;
-
-        let leftAncestor: LayoutNode = leftChild;
-
-        while (left && right) {
-            leftAncestor = right;
-
-            // If the right subtree's left contour overlaps the left subtree's
-            // right contour, push the whole right subtree to the right.
-            const distance = left.preliminaryX + SUBTREE_GAP - right.preliminaryX;
-            if (distance > 0) {
-                moveSubtree(right, distance);
-                // The gap may have changed, so recompute the extremes.
-                if (distance > node.shift) {
-                    node.shift = distance;
-                }
-            }
-
-            ancestorBy.set(right, leftAncestor);
-
-            leftContour = left;
-            rightContour = right;
-
-            left = nextLeft(left);
-            right = nextRight(right);
-        }
-
-        // One side bottomed out before the other; use threads to keep going.
-        if (left) {
-            leftContour.thread = left;
-        } else if (right) {
-            rightContour.thread = right;
-            rightContour.modifier += node.preliminaryX - right.preliminaryX;
-        }
-
-        // Parent is centred above its children's combined span.
-        node.preliminaryX = (leftChild.preliminaryX + rightChild.preliminaryX) / 2;
-
-        // Clean up the ancestor map entries we created on this subtree walk.
-        for (const child of children) {
-            ancestorBy.delete(child);
-        }
-    };
-
-    postOrder(root);
+    // A frame with no recognised root still lays out; fall back to the first
+    // entity so a degenerate tree is visible rather than silently dropped.
+    if (roots.length === 0) {
+        roots.push(entities[0]);
+    }
 
     // ------------------------------------------------------------------
-    // Pass 2: pre-order accumulation of modifiers → final positions.
+    // Pass 1: depth of every node (BFS from the roots).
     // ------------------------------------------------------------------
+    const depthOf = new Map<string, number>();
+    const queue: Array<[VisualEntity, number]> = roots.map((r) => [r, 0]);
+    while (queue.length > 0) {
+        const [node, depth] = queue.shift() as [VisualEntity, number];
+        depthOf.set(node.id, depth);
+        for (const kid of children.get(node.id) ?? []) {
+            queue.push([kid, depth + 1]);
+        }
+    }
 
-    let minX = Infinity;
-    let maxX = -Infinity;
+    // ------------------------------------------------------------------
+    // Pass 2: assign x by subtree width (post-order), y by depth.
+    // ------------------------------------------------------------------
+    const subtreeWidth = (node: VisualEntity): number => {
+        const kids = children.get(node.id) ?? [];
+        if (kids.length === 0) {
+            return NODE_SIZE;
+        }
+        return kids.reduce((sum, kid) => sum + subtreeWidth(kid), 0) + SIBLING_GAP * (kids.length - 1);
+    };
 
-    const preOrder = (node: LayoutNode, sum: number): void => {
-        const x = node.preliminaryX + sum;
-        node.entity.x = x;
-        node.entity.y = node.depth * (NODE_SIZE + VERTICAL_GAP);
-        node.entity.width = NODE_SIZE;
-        node.entity.height = NODE_SIZE;
+    const place = (node: VisualEntity, left: number, gap: number): number => {
+        const kids = children.get(node.id) ?? [];
+        const depth = depthOf.get(node.id) ?? 0;
+        node.width = NODE_SIZE;
+        node.height = NODE_SIZE;
+        node.y = depth * (NODE_SIZE + VERTICAL_GAP);
 
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
+        if (kids.length === 0) {
+            node.x = left + NODE_SIZE / 2;
+            return NODE_SIZE;
+        }
 
-        // The modifier applies to every descendant, so pass it down.
-        for (const child of node.children) {
-            preOrder(child, sum + node.modifier);
+        let cursor = left;
+        let rightEdge = left;
+        for (const kid of kids) {
+            const w = place(kid, cursor, gap);
+            rightEdge = cursor + w;
+            cursor = rightEdge + gap;
+        }
+        node.x = (left + rightEdge) / 2;
+        return rightEdge - left;
+    };
+
+    const placeAll = (gap: number): void => {
+        let cursor = 0;
+        for (const root of roots) {
+            const w = place(root, cursor, gap);
+            cursor = cursor + w + gap;
         }
     };
 
-    preOrder(root, 0);
+    const spanOf = (): number => {
+        let minX = Infinity;
+        let maxX = -Infinity;
+        for (const entity of entities) {
+            minX = Math.min(minX, entity.x);
+            maxX = Math.max(maxX, entity.x);
+        }
+        return Math.max(1, maxX - minX);
+    };
+
+    const availW = Math.max(1, width - 2 * MARGIN);
+
+    // Lay out at the natural gap; if the tree is too wide, pack siblings
+    // tightly (leaves stay NODE_SIZE apart, so nodes never overlap) before
+    // scaling anything down.
+    placeAll(SIBLING_GAP);
+    let span = spanOf();
+    if (span > availW) {
+        placeAll(0);
+        span = spanOf();
+    }
+    const scale = Math.min(1, availW / span);
 
     // ------------------------------------------------------------------
-    // Normalisation: centre the tree horizontally and clamp vertically.
+    // Normalisation: centre the tree, scaling down only if it overflows.
     // ------------------------------------------------------------------
-    const span = Math.max(1, maxX - minX);
-    const offsetX = (width - span) / 2 - minX;
-    const maxDepth = Math.max(0, ...frame.entities.map((e) => Number(e.metadata["depth"] ?? 0)));
+    let maxDepth = 0;
+    for (const entity of entities) {
+        maxDepth = Math.max(maxDepth, depthOf.get(entity.id) ?? 0);
+    }
+
     const totalHeight = maxDepth * (NODE_SIZE + VERTICAL_GAP) + NODE_SIZE;
-    const offsetY = (height - totalHeight) / 2;
+    const offsetY = MARGIN + Math.max(0, (height - 2 * MARGIN - totalHeight) / 2);
 
-    for (const entity of frame.entities) {
-        entity.x += offsetX;
+    // Recompute minX after any re-placement so the tree is centred exactly.
+    let minX = Infinity;
+    for (const entity of entities) {
+        minX = Math.min(minX, entity.x);
+    }
+    const finalOffsetX = (width - span * scale) / 2 - minX * scale;
+
+    // When the tree was scaled down, shrink the drawn node size along with
+    // it so densely packed nodes keep their clearance instead of overlapping.
+    const nodeDiameter = Math.max(8, NODE_DIAMETER * scale);
+
+    for (const entity of entities) {
+        entity.x = entity.x * scale + finalOffsetX;
         entity.y += offsetY;
+        entity.width = nodeDiameter;
+        entity.height = nodeDiameter;
     }
 
     return frame;
