@@ -22,6 +22,7 @@ import type { AlgorithmModule } from "@/types";
 // ----------------------------------------------------------------------
 
 import bubbleSort from "./algo/sort/bubble-sort";
+import bucketSort from "./algo/sort/bucket-sort";
 import countingSort from "./algo/sort/counting-sort";
 import heapSort from "./algo/sort/heap-sort";
 import insertionSort from "./algo/sort/insertion-sort";
@@ -34,6 +35,7 @@ import radixSortLsd from "./algo/sort/radix-sort-lsd";
 import radixSortMsd from "./algo/sort/radix-sort-msd";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
+register(bucketSort);
 register(countingSort);
 register(heapSort);
 register(insertionSort);
