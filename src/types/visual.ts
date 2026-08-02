@@ -45,7 +45,7 @@ export type EntityState =
  * layout function (ArrayLayout, GridLayout, TreeLayout, GraphLayout,
  * TextLayout, or a matrix fallback).
  */
-export type LayoutType = "array" | "grid" | "tree" | "graph" | "text" | "matrix";
+export type LayoutType = "array" | "grid" | "tree" | "graph" | "text" | "matrix" | "point";
 
 /**
  * A single drawable object.
