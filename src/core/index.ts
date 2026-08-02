@@ -23,9 +23,11 @@ import type { AlgorithmModule } from "@/types";
 
 import bubbleSort from "./algo/sort/bubble-sort";
 import insertionSort from "./algo/sort/insertion-sort";
+import mergeSortTopDown from "./algo/sort/merge-sort-top-down";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
 register(insertionSort);
+register(mergeSortTopDown);
 register(selectionSort);
 
 /** The one source of truth: id → module. */
