@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: `Minimum enclosing circle of ${points.length} points (Welzl).`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -198,7 +198,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: circleEdges,
         description: `Minimum enclosing circle: centre (${result.x.toFixed(2)}, ${result.y.toFixed(2)}), radius ${result.r.toFixed(2)}.`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: { center: [result.x, result.y], radius: result.r },
     };
 }
