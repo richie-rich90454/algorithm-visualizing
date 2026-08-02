@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Jarvis march – wrapping the hull around the point set.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -143,7 +143,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: [],
             description: `Marching: from ${current} to ${next}.`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "point",
             meta: {},
         };
         step += 1;
@@ -182,7 +182,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges,
         description: `Convex hull: ${hull.join(" → ")}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { hull },
     };
 }
