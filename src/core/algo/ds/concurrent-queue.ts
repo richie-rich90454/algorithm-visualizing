@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Concurrent queue with sentinel head – threads A and B share it.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "tree",
         meta: { size: 0 },
     };
     step += 1;
@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges,
             description: `Thread ${thread}: ${op} ${op === "dequeue" ? "" : value} – queue is [${queue.join(", ")}].`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "tree",
             meta: { size: queue.length, thread },
         };
         step += 1;
@@ -157,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "All interleaved operations completed without data races.",
         codeLineNumber: 3,
-        layout: "graph",
+        layout: "tree",
         meta: { size: queue.length },
     };
 }
