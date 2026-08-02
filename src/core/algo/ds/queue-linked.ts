@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Empty linked queue – front and rear point to null.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "tree",
         meta: { size: 0 },
     };
     step += 1;
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Enqueued ${value} at the rear – queue is [${queue.join(", ")}].`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "tree",
             meta: { size: queue.length },
         };
         step += 1;
@@ -127,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Dequeued ${dequeued} from the front (FIFO).`,
             codeLineNumber: 3,
-            layout: "graph",
+            layout: "tree",
             meta: { size: queue.length },
         };
         step += 1;
