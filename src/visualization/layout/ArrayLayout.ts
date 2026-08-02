@@ -56,8 +56,9 @@ export function applyArrayLayout(frame: VisualFrame, width: number, height: numb
     // The usable height for bars is the container minus the vertical padding.
     const maxHeight = height - VERTICAL_PADDING;
 
-    // Find the tallest value so every bar can be scaled relative to it.
-    const maxVal = Math.max(1, ...entities.map((e) => Number(e.value)));
+    // Scale relative to the largest magnitude so negative values (FFT bins,
+    // delta arrays) also get proportional, visible bars.
+    const maxAbs = Math.max(1, ...entities.map((e) => Math.abs(Number(e.value))));
 
     // Total width occupied by all bars and gaps, used to centre the row.
     const totalWidth = entities.length * barWidth + (entities.length - 1) * GAP;
@@ -70,14 +71,19 @@ export function applyArrayLayout(frame: VisualFrame, width: number, height: numb
             continue;
         }
 
-        // Bar height scales with value; the tallest bar fills the full height.
-        const barHeight = (Number(entity.value) / maxVal) * maxHeight;
+        const value = Number(entity.value);
+        const isNegative = value < 0;
 
-        // x advances by barWidth + gap; y sits above the baseline.
+        // Bar height scales with magnitude; the tallest bar fills the height.
+        // Clamp to a sliver so zero/NaN values still show up.
+        const barHeight = Math.max(2, (Math.abs(value) / maxAbs) * maxHeight);
+
+        // x advances by barWidth + gap; positive bars rise from the baseline,
+        // negative bars hang below it.
         entity.width = barWidth;
         entity.height = barHeight;
         entity.x = startX + i * (barWidth + GAP);
-        entity.y = baselineY - barHeight;
+        entity.y = isNegative ? baselineY : baselineY - barHeight;
     }
 
     return frame;
