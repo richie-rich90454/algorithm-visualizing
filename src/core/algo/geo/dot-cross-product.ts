@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Vectors u=${u.join(", ")} and v=${v.join(", ")}.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `u·v = ${u[0]}·${v[0]} + ${u[1]}·${v[1]} = ${dot}.`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: { dot },
     };
     step += 1;
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `u×v = ${u[0]}·${v[1]} − ${u[1]}·${v[0]} = ${cross} (${cross > 0 ? "counter-clockwise" : cross < 0 ? "clockwise" : "collinear"}).`,
         codeLineNumber: 3,
-        layout: "graph",
+        layout: "point",
         meta: { dot, cross },
     };
 }
