@@ -91,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Shoelace area of a ${n}-vertex polygon.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Term ${i}: ${a[0]}·${b[1]} − ${b[0]}·${a[1]} = ${term} (running sum ${sum}).`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "point",
             meta: { sum },
         };
         step += 1;
@@ -137,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Area = |${sum}| / 2 = ${area} (${orientation}).`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { area, orientation },
     };
 }
