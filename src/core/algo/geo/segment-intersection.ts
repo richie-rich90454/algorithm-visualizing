@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Segments ab and cd.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Orientations: (${o1}, ${o2}, ${o3}, ${o4}) → ${intersects ? "SEGMENTS INTERSECT" : "no intersection"}.`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: { intersects },
     };
 }
