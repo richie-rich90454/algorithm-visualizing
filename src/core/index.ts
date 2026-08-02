@@ -162,6 +162,7 @@ import sweepLineSegmentIntersection from "./algo/geo/sweep-line-segment-intersec
 import pointInPolygonRay from "./algo/geo/point-in-polygon-ray";
 import pointInPolygonWinding from "./algo/geo/point-in-polygon-winding";
 import convexHullGraham from "./algo/geo/convex-hull-graham";
+import convexHullMonotone from "./algo/geo/convex-hull-monotone";
 import boruvka from "./algo/mst/boruvka";
 import primHeap from "./algo/mst/prim-heap";
 import primMatrix from "./algo/mst/prim-matrix";
@@ -300,6 +301,7 @@ register(sweepLineSegmentIntersection);
 register(pointInPolygonRay);
 register(pointInPolygonWinding);
 register(convexHullGraham);
+register(convexHullMonotone);
 register(exponentialSearch);
 register(floodFillBfs);
 register(floodFillDfs);
