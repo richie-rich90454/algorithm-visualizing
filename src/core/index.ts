@@ -14,6 +14,9 @@
 
 import type { AlgorithmModule } from "@/types";
 
+/** The one source of truth: id → module. */
+const registry = new Map<string, AlgorithmModule>();
+
 // ----------------------------------------------------------------------
 // Algorithm registrations.
 //
@@ -485,9 +488,6 @@ register(shellSort);
 register(smoothSort);
 register(timSort);
 register(linearSearch);
-
-/** The one source of truth: id → module. */
-const registry = new Map<string, AlgorithmModule>();
 
 /**
  * Insert a module into the registry.
