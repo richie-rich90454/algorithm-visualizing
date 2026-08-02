@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Sweep-line intersection over ${segments.length} segments.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -178,7 +178,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Sweep line at x=${x} – ${active.length} segment(s) active.`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "point",
             meta: { x },
         };
         step += 1;
@@ -205,7 +205,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ? "No intersections found."
                 : `Intersections: ${intersections.map(([i, j]) => `s${i}∩s${j}`).join(", ")}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { intersections: intersections.length },
     };
 }
