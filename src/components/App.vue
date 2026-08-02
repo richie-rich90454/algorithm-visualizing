@@ -12,6 +12,7 @@
  * a later commit; all playback state flows through the Pinia store.
  */
 
+import { onBeforeUnmount, onMounted } from "vue";
 import { useVisualizerStore } from "@/stores/visualizer";
 import Sidebar from "./Sidebar.vue";
 import VisualContainer from "./VisualContainer.vue";
@@ -21,6 +22,54 @@ import PseudocodePanel from "./PseudocodePanel.vue";
 import StatsPanel from "./StatsPanel.vue";
 
 const store = useVisualizerStore();
+
+// ----------------------------------------------------------------------
+// Global keyboard shortcuts (plan Section 10.3):
+//   Space        → toggle play/pause
+//   ArrowLeft    → step backward
+//   ArrowRight   → step forward
+//   R            → reset to the first step
+//
+// All shortcuts are ignored when the focus is inside an input/textarea so
+// typing in the search box never triggers playback by accident.
+// ----------------------------------------------------------------------
+
+/** Handle a global keydown event and map it to a store action. */
+function onKeydown(event: KeyboardEvent): void {
+    // Let the user type in the search box without triggering shortcuts.
+    const target = event.target as HTMLElement | null;
+    if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+        return;
+    }
+
+    switch (event.key) {
+        case " ":
+            // Space also scrolls the page by default; stop that behaviour.
+            event.preventDefault();
+            store.togglePlay();
+            break;
+        case "ArrowLeft":
+            event.preventDefault();
+            store.prevStep();
+            break;
+        case "ArrowRight":
+            event.preventDefault();
+            store.nextStep();
+            break;
+        case "r":
+        case "R":
+            store.reset();
+            break;
+    }
+}
+
+onMounted(() => {
+    window.addEventListener("keydown", onKeydown);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("keydown", onKeydown);
+});
 </script>
 
 <template>
