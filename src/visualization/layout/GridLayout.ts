@@ -1,19 +1,20 @@
 /**
  * GridLayout.ts – Positions cells in a uniform rows×cols grid.
  *
- * Used by dynamic programming and matrix algorithms where every state lives
- * at a natural (row, col) coordinate. Each entity's `metadata.row` and
- * `metadata.col` pick its grid cell; cell size is derived by splitting the
- * container evenly in both axes.
+ * Used by dynamic programming, matrix, and data-structure algorithms where
+ * every state lives at a natural (row, col) coordinate. Each entity's
+ * `metadata.row` and `metadata.col` pick its grid cell; cell size is derived
+ * by splitting the container evenly in both axes.
  *
- * The grid dimensions come from `frame.meta.rows` / `frame.meta.cols`, falling
- * back to a 5×5 grid when the algorithm does not declare them. This fallback
- * keeps the layout robust against loosely-specified frames.
+ * Grid dimensions come from `frame.meta.rows` / `frame.meta.cols` when
+ * declared, otherwise from the largest row/col seen in the entities, and
+ * finally from the entity count. The metadata fallback keeps the layout
+ * robust against loosely-specified frames instead of overflowing a 5×5 grid.
  */
 
 import type { VisualFrame } from "@/types";
 
-/** Default grid dimensions when the frame does not declare them. */
+/** Default grid dimensions when nothing else is known. */
 const DEFAULT_ROWS = 5;
 const DEFAULT_COLS = 5;
 
@@ -26,18 +27,55 @@ const DEFAULT_COLS = 5;
  * @returns The same frame, with entity positions filled in.
  */
 export function applyGridLayout(frame: VisualFrame, width: number, height: number): VisualFrame {
-    // Read declared dimensions, falling back to a sensible default grid.
-    const rows = Number(frame.meta["rows"] ?? DEFAULT_ROWS);
-    const cols = Number(frame.meta["cols"] ?? DEFAULT_COLS);
+    const entities = frame.entities;
+    if (entities.length === 0) {
+        return frame;
+    }
+
+    // Prefer declared dimensions, then derive from the metadata, then fall
+    // back to a square-ish grid sized by the entity count.
+    const declaredRows = frame.meta["rows"];
+    const declaredCols = frame.meta["cols"];
+    const hasRowCol = entities.some(
+        (e) => e.metadata["row"] !== undefined && e.metadata["col"] !== undefined,
+    );
+
+    let rows: number;
+    let cols: number;
+    if (declaredRows !== undefined && declaredCols !== undefined) {
+        rows = Number(declaredRows);
+        cols = Number(declaredCols);
+    } else if (hasRowCol) {
+        rows = Math.max(1, ...entities.map((e) => Number(e.metadata["row"] ?? 0))) + 1;
+        cols = Math.max(1, ...entities.map((e) => Number(e.metadata["col"] ?? 0))) + 1;
+    } else {
+        rows = Math.ceil(Math.sqrt(entities.length));
+        cols = Math.ceil(entities.length / rows);
+        if (rows < DEFAULT_ROWS && cols < DEFAULT_COLS) {
+            rows = DEFAULT_ROWS;
+            cols = DEFAULT_COLS;
+        }
+    }
+    rows = Math.max(1, rows);
+    cols = Math.max(1, cols);
 
     // Each cell gets an equal share of the container on its axis.
     const cellWidth = width / cols;
     const cellHeight = height / rows;
 
-    for (const entity of frame.entities) {
-        // row/col are metadata numbers; missing values treat as the origin.
-        const row = Number(entity.metadata["row"] ?? 0);
-        const col = Number(entity.metadata["col"] ?? 0);
+    let index = 0;
+    for (const entity of entities) {
+        let row: number;
+        let col: number;
+        if (entity.metadata["row"] !== undefined && entity.metadata["col"] !== undefined) {
+            row = Number(entity.metadata["row"]);
+            col = Number(entity.metadata["col"]);
+        } else {
+            // Entities without coordinates flow left-to-right, top-to-bottom.
+            row = Math.floor(index / cols);
+            col = index % cols;
+            index += 1;
+        }
 
         // Position is the cell's top-left corner; size is the full cell.
         entity.width = cellWidth;
