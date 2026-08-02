@@ -1,42 +1,89 @@
-# algorithm-visualizing
+# Algorithmic Visualization Engine (AVE)
 
-This template should help get you started developing with Vue 3 in Vite.
+An interactive, offline-capable web application for computer science education.
+It visualises **over 230 classic and modern algorithms** with pixel-perfect,
+high-DPI canvas graphics, and doubles as a standalone code reference – every
+algorithm module is a self-contained teaching resource with extensive
+comments, complexity annotations, and a step-by-step narrative.
 
-## Recommended IDE Setup
+## Features
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **230+ algorithms** across 13 categories: sorting, searching, graph
+  traversal, shortest paths, minimum spanning trees, network flow, tree
+  algorithms, string algorithms, number theory, dynamic programming, game
+  theory, computational geometry, and data structures.
+- **Replayable frame engine**: every algorithm is a generator that yields one
+  `VisualFrame` per step. Playback, stepping, and rewinding are instant and
+  fully deterministic.
+- **High-DPI canvas rendering** with a single `requestAnimationFrame` loop and
+  dirty-flag redraws.
+- **Five layout engines** (array, grid, tree, graph, text) matched to each
+  algorithm's natural shape.
+- **Pixel-perfect flat design** with a strict colour palette, self-hosted
+  Noto Sans font, and no CDN dependencies – works completely offline.
+- **Interaction**: hover tooltips with full metadata, click-to-select, and
+  keyboard shortcuts.
 
-## Recommended Browser Setup
+## Tech Stack
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-    - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-    - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-    - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-    - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- **Vue 3** (Composition API, `<script setup lang="ts">`)
+- **TypeScript 5** (strict mode)
+- **Vite** with `@` path alias to `src/`
+- **Pinia** (setup store) for all visualiser state
+- **HTML5 Canvas 2D** for rendering
+- **Bun** as the package manager
+- **oxfmt** for formatting
+- **Vitest** for unit tests
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Getting Started
 
 ```sh
 bun install
+bun dev          # start the dev server
+bun run build    # type-check + production build
+bun test         # run all tests
+bun run format   # format with oxfmt
 ```
 
-### Compile and Hot-Reload for Development
+## Keyboard Shortcuts
 
-```sh
-bun dev
+| Key           | Action               |
+| ------------- | -------------------- |
+| `Space`       | Toggle play/pause    |
+| `ArrowLeft`   | Step backward        |
+| `ArrowRight`  | Step forward         |
+| `R`           | Reset to first step  |
+
+## How It Works
+
+Each algorithm lives in `src/core/algo/<category>/<name>.ts` and exports a
+default `AlgorithmModule`:
+
+```ts
+{
+  id: "bubble-sort",
+  name: "Bubble Sort",
+  category: "sorting",
+  complexity: { time: "O(n²)", space: "O(1)" },
+  defaultInput: [4, 2, 7, 1, 9, 3],
+  visualType: "array",
+  run: function* (input) { /* yields VisualFrame objects */ },
+}
 ```
 
-### Type-Check, Compile and Minify for Production
+The `StepEngine` drains each generator eagerly into a frame buffer, then
+playback is just pointer movement. Layout engines position entities, and the
+four renderers (edges, entities, labels, overlay) paint the frame.
 
-```sh
-bun run build
-```
+Every algorithm has a companion `*.test.ts` verifying it yields at least one
+frame; `bun test` runs them all.
+
+## Font Attribution
+
+Noto Sans is used under the SIL Open Font License 1.1. The font is bundled
+locally in `public/fonts/` (offline-first – no CDN). See
+https://fonts.google.com/noto/specimen/Noto+Sans for details.
+
+## License
+
+MIT
