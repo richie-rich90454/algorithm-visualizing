@@ -42,6 +42,7 @@ import selectionSort from "./algo/sort/selection-sort";
 import shellSort from "./algo/sort/shell-sort";
 import smoothSort from "./algo/sort/smooth-sort";
 import timSort from "./algo/sort/tim-sort";
+import linearSearch from "./algo/search/linear-search";
 register(bubbleSort);
 register(bucketSort);
 register(cocktailShakerSort);
@@ -63,6 +64,7 @@ register(selectionSort);
 register(shellSort);
 register(smoothSort);
 register(timSort);
+register(linearSearch);
 
 /** The one source of truth: id → module. */
 const registry = new Map<string, AlgorithmModule>();
