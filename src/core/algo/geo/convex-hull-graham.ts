@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "Graham scan – computing the convex hull.",
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: `Pivot is point ${pivotIndex} (${points[pivotIndex]?.join(", ")}).`,
         codeLineNumber: 2,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -185,7 +185,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: [],
             description: `Hull stack after point ${candidate}: [${stack.join(", ")}].`,
             codeLineNumber: 3,
-            layout: "graph",
+            layout: "point",
             meta: {},
         };
         step += 1;
@@ -214,7 +214,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges,
         description: `Convex hull: ${stack.join(" → ")}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { hull: stack },
     };
 }
