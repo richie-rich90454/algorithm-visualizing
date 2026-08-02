@@ -31,6 +31,7 @@ import quickSort3Way from "./algo/sort/quick-sort-3-way";
 import quickSortHoare from "./algo/sort/quick-sort-hoare";
 import quickSortLomuto from "./algo/sort/quick-sort-lomuto";
 import radixSortLsd from "./algo/sort/radix-sort-lsd";
+import radixSortMsd from "./algo/sort/radix-sort-msd";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
 register(countingSort);
@@ -42,6 +43,7 @@ register(quickSort3Way);
 register(quickSortHoare);
 register(quickSortLomuto);
 register(radixSortLsd);
+register(radixSortMsd);
 register(selectionSort);
 
 /** The one source of truth: id → module. */
