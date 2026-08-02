@@ -110,7 +110,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             // Matching characters extend the previous diagonal.
             if (a[i - 1] === b[j - 1]) {
                 const prev = dp[i - 1]?.[j - 1] ?? 0;
-                dp[i][j] = prev + 1;
+                const row = dp[i];
+                if (row) {
+                    row[j] = prev + 1;
+                }
                 if ((dp[i]?.[j] ?? 0) > bestLen) {
                     bestLen = dp[i]?.[j] ?? 0;
                     bestRow = i;
@@ -153,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest common substring: "${longest}" (length ${bestLen}).`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows, cols, bestLen, longest },
+        meta: { rows, cols, bestLen, longestLen: longest.length },
     };
 }
 

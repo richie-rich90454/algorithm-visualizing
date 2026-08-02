@@ -114,7 +114,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let j = m - 1; j >= 0; j -= 1) {
             if (a[i] === b[j]) {
                 const diag = lcp[i + 1]?.[j + 1] ?? 0;
-                lcp[i][j] = diag + 1;
+                const row = lcp[i];
+                if (row) {
+                    row[j] = diag + 1;
+                }
                 if ((lcp[i]?.[j] ?? 0) > bestLen) {
                     bestLen = lcp[i]?.[j] ?? 0;
                     bestRow = i;

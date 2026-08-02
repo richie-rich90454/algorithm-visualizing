@@ -135,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : "The trees are NOT isomorphic – their canonical codes differ.",
         codeLineNumber: 4,
         layout: "tree",
-        meta: { isomorphic },
+        meta: { isomorphic: isomorphic ? 1 : 0 },
     };
 }
 

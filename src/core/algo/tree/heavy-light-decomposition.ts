@@ -142,19 +142,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             current = heavyChild.get(current) ?? null;
         }
 
-        const colour = pathColours[pathIndex % pathColours.length];
+        const colour = pathColours[pathIndex % pathColours.length] ?? "active";
         pathIndex += 1;
 
         // Colour this heavy path's edges and nodes.
         for (let i = 0; i < pathMembers.length - 1; i += 1) {
-            const a = pathMembers[i];
-            const b = pathMembers[i + 1];
+            const a = pathMembers[i] as string;
+            const b = pathMembers[i + 1] as string;
             pathOf.set(a, pathIndex);
             const edge = edges.find(
                 (e) => e.sourceId === `node-${a}` && e.targetId === `node-${b}`,
             );
             if (edge) {
-                edge.state = colour;
+                edge.state = colour === "visited" ? "active" : colour;
             }
             const nodeEntity = nodeById.get(`node-${a}`);
             if (nodeEntity) {
@@ -162,7 +162,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
         if (pathMembers.length > 0) {
-            const last = pathMembers[pathMembers.length - 1];
+            const last = pathMembers[pathMembers.length - 1] as string;
             const lastEntity = nodeById.get(`node-${last}`);
             if (lastEntity) {
                 lastEntity.state = colour;

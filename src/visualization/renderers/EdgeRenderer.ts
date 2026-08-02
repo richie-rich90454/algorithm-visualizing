@@ -11,13 +11,13 @@
  * keeping that simple is an explicit, acceptable trade-off.
  */
 
-import type { VisualEdge, VisualEntity, VisualFrame } from "@/types";
+import type { EntityState, VisualEntity, VisualFrame } from "@/types";
 
 /** Font used for edge labels (weights drawn near the midpoint). */
 const FONT = '500 12px "Noto Sans", sans-serif';
 
 /** Colour / width pairs resolved from an edge's state. */
-const EDGE_STYLES: Record<VisualEdge["state"], { colour: string; width: number }> = {
+const EDGE_STYLES: Partial<Record<EntityState, { colour: string; width: number }>> = {
     idle: { colour: "#9CA3AF", width: 2 },
     active: { colour: "#3B82F6", width: 3 },
     path: { colour: "#06B6D4", width: 3 },
@@ -50,7 +50,8 @@ export function renderEdges(ctx: CanvasRenderingContext2D, frame: VisualFrame): 
             continue;
         }
 
-        const style = EDGE_STYLES[edge.state] ?? EDGE_STYLES.idle;
+        const style = EDGE_STYLES[edge.state] ??
+            EDGE_STYLES.idle ?? { colour: "#9CA3AF", width: 2 };
         ctx.strokeStyle = style.colour;
         ctx.lineWidth = style.width;
         ctx.beginPath();

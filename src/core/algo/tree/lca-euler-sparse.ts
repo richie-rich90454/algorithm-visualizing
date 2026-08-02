@@ -221,7 +221,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `The LCA of ${u} and ${v} is ${lca} (min depth in tour range [${Math.min(lo, hi)}..${Math.max(lo, hi)}]).`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { lca },
+        meta: { lcaFound: lca.charCodeAt(0) },
     };
 }
 

@@ -93,8 +93,8 @@ export interface VisualEdge {
     targetId: string;
     /** Text drawn near the edge midpoint – usually the edge weight. */
     label: string;
-    /** Visual state; edges only use idle / active / path / highlight. */
-    state: "idle" | "active" | "path" | "highlight";
+    /** Visual state, resolved against the colour palette. */
+    state: EntityState;
     /** When true the renderer draws an arrowhead at the target end. */
     directed: boolean;
 }
@@ -119,6 +119,7 @@ export interface VisualFrame {
     codeLineNumber?: number;
     /** Which layout engine should position the entities before drawing. */
     layout: LayoutType;
-    /** Free-form statistics such as comparisons, swaps, visits, distance. */
-    meta: Record<string, number>;
+    /** Free-form statistics such as comparisons, swaps, visits, distance.
+     *  Values may be numbers, strings, booleans, or small arrays. */
+    meta: Record<string, number | string | boolean | Array<number | string>>;
 }

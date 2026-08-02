@@ -135,7 +135,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             const up = H[i]?.[j + 1] ?? 0;
             const left = H[i + 1]?.[j] ?? 0;
             const diag = H[i]?.[j] ?? 0;
-            H[i + 1][j + 1] = (((((up + left - diag) % MOD) + MOD) % MOD) + val) % MOD;
+            const row = H[i + 1];
+            if (row) {
+                row[j + 1] = (((((up + left - diag) % MOD) + MOD) % MOD) + val) % MOD;
+            }
         }
     }
 

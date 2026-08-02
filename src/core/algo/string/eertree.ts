@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
             // Suffix-link edges (visualised distinctly).
             const sl = link[s];
-            if (sl !== s && sl >= 0) {
+            if (sl !== undefined && sl !== s && sl >= 0) {
                 edges.push({
                     id: `link-${s}-${sl}`,
                     sourceId: `node-${s}`,

@@ -127,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is NOT a quadratic residue mod ${p} – no square root exists.`,
             codeLineNumber: 3,
             layout: "grid",
-            meta: { root: null },
+            meta: { root: -1 },
         };
         return;
     }

@@ -92,8 +92,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
             if (a === b) {
                 // Same character – advance; use the failure table to jump.
-                if (fail[j] !== -1) {
-                    j = fail[j];
+                const f = fail[j];
+                if (f !== undefined && f !== -1) {
+                    j = f;
                 } else {
                     j += 1;
                 }
@@ -145,7 +146,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimal rotation: "${minimal}" (starting at index ${best}).`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { best, minimal },
+        meta: { best, minimalLen: minimal.length },
     };
 }
 

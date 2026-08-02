@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `LCP of suffix ${i} ("${text.slice(i)}") and suffix ${prev} ("${text.slice(prev)}") is ${h}.`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { lcp: [...lcp] },
+                meta: { maxLcp: Math.max(0, ...lcp) },
             };
             step += 1;
 
@@ -128,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `LCP array: [${lcp.join(", ")}].`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { lcp },
+        meta: { maxLcp: Math.max(0, ...lcp) },
     };
 }
 

@@ -90,8 +90,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node = rotateRight(node);
         }
         if (isRed(node.left) && isRed(node.right)) {
-            node.left.red = false;
-            node.right.red = false;
+            if (node.left) {
+                node.left.red = false;
+            }
+            if (node.right) {
+                node.right.red = false;
+            }
             if (root !== node) {
                 node.red = true;
             }

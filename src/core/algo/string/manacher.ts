@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest palindromic substring: "${longest}".`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { longest, length: longest.length },
+        meta: { longestLen: longest.length },
     };
 }
 

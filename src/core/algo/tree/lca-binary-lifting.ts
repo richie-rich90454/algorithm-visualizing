@@ -171,7 +171,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `The LCA is ${u}.`,
             codeLineNumber: 3,
             layout: "tree",
-            meta: { lca: u },
+            meta: { lcaFound: u.charCodeAt(0) },
         };
         return;
     }
@@ -201,7 +201,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `The LCA of ${query[0]} and ${query[1]} is ${lca}.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { lca },
+        meta: { lcaFound: lca.charCodeAt(0) },
     };
 }
 

@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Encoded: "${text}" → "${result}" (${text.length} → ${result.length} characters).`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: { encoded: result },
+        meta: { encodedLen: result.length },
     };
 }
 
