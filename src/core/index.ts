@@ -23,6 +23,7 @@ import type { AlgorithmModule } from "@/types";
 
 import bubbleSort from "./algo/sort/bubble-sort";
 import bucketSort from "./algo/sort/bucket-sort";
+import cocktailShakerSort from "./algo/sort/cocktail-shaker-sort";
 import countingSort from "./algo/sort/counting-sort";
 import heapSort from "./algo/sort/heap-sort";
 import insertionSort from "./algo/sort/insertion-sort";
@@ -41,6 +42,7 @@ import smoothSort from "./algo/sort/smooth-sort";
 import timSort from "./algo/sort/tim-sort";
 register(bubbleSort);
 register(bucketSort);
+register(cocktailShakerSort);
 register(countingSort);
 register(heapSort);
 register(insertionSort);
