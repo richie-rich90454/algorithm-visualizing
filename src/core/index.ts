@@ -23,10 +23,12 @@ import type { AlgorithmModule } from "@/types";
 
 import bubbleSort from "./algo/sort/bubble-sort";
 import insertionSort from "./algo/sort/insertion-sort";
+import mergeSortBottomUp from "./algo/sort/merge-sort-bottom-up";
 import mergeSortTopDown from "./algo/sort/merge-sort-top-down";
 import selectionSort from "./algo/sort/selection-sort";
 register(bubbleSort);
 register(insertionSort);
+register(mergeSortBottomUp);
 register(mergeSortTopDown);
 register(selectionSort);
 
