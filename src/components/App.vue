@@ -1,47 +1,64 @@
 <script setup lang="ts">
- /**
+/**
  * App.vue – Root layout of the Algorithmic Visualization Engine.
  *
- * Structure (per plan Section 12.1):
- *   - A 280px `<Sidebar>` on the left holding search + category tree.
- *   - A `<main>` area on the right stacking the canvas visualiser, the
- *     description bar, and the controls bar.
+ * Structure (plan Section 12.1):
+ *   - A 280px `<Sidebar>` on the left holding search + the category tree.
+ *   - A `<main>` area on the right stacking the canvas visualiser, a 40px
+ *     description bar showing the current frame's caption, and the 56px
+ *     controls bar with playback buttons.
  *
- * This file is expanded across the foundation commits; at this stage it only
- * renders the empty shell. The keyboard shortcuts (Space / arrows / R) are
- * wired up in the final polish commit.
+ * Global keyboard shortcuts (Space / ArrowLeft / ArrowRight / R) are added in
+ * a later commit; all playback state flows through the Pinia store.
  */
+
+import { useVisualizerStore } from "@/stores/visualizer";
+import Sidebar from "./Sidebar.vue";
+import VisualContainer from "./VisualContainer.vue";
+import ControlsBar from "./ControlsBar.vue";
+
+const store = useVisualizerStore();
 </script>
 
 <template>
     <div id="app">
-        <aside class="sidebar">
-            <h1>Algorithms</h1>
-        </aside>
+        <Sidebar />
+
         <main class="visualizer-area">
-            <p class="placeholder">Select an algorithm from the sidebar to begin.</p>
+            <VisualContainer />
+
+            <!-- The 40px description bar mirrors the canvas overlay caption. -->
+            <div class="description-bar">
+                {{ store.currentFrame?.description ?? "Select an algorithm to begin." }}
+            </div>
+
+            <ControlsBar />
         </main>
     </div>
 </template>
 
 <style scoped>
-.sidebar {
-    width: 280px;
-    flex-shrink: 0;
-    background: var(--color-bg-sidebar);
-    border-right: 1px solid var(--color-border-panel);
-    padding: var(--spacing-4);
-}
-
 .visualizer-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    min-width: 0;
+    height: 100%;
+    background: var(--color-bg-canvas);
 }
 
-.placeholder {
-    color: var(--color-text-secondary);
+.description-bar {
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-4);
+    background: var(--color-bg-description);
+    border-top: var(--border-width) solid var(--color-border-panel);
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>
