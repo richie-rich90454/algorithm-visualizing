@@ -36,6 +36,7 @@ import radixSortLsd from "./algo/sort/radix-sort-lsd";
 import radixSortMsd from "./algo/sort/radix-sort-msd";
 import selectionSort from "./algo/sort/selection-sort";
 import shellSort from "./algo/sort/shell-sort";
+import smoothSort from "./algo/sort/smooth-sort";
 import timSort from "./algo/sort/tim-sort";
 register(bubbleSort);
 register(bucketSort);
@@ -52,6 +53,7 @@ register(radixSortLsd);
 register(radixSortMsd);
 register(selectionSort);
 register(shellSort);
+register(smoothSort);
 register(timSort);
 
 /** The one source of truth: id → module. */
