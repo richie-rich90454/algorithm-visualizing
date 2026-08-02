@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Winding number of (${point[0]}, ${point[1]}) around the polygon.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -133,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description: `Edge ${i} contribution → winding = ${winding}.`,
             codeLineNumber: 2,
-            layout: "graph",
+            layout: "point",
             meta: { winding },
         };
         step += 1;
@@ -147,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: `Winding number = ${winding} → point is ${inside ? "INSIDE" : "OUTSIDE"}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { winding, inside },
     };
 }
