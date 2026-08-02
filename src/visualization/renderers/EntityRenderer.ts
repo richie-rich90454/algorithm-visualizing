@@ -63,7 +63,16 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                 );
                 break;
             case "node":
-                drawNode(ctx, entity.x, entity.y, entity.label, colours.text);
+                // Layouts may shrink the node (dense trees) by setting a
+                // smaller width/height; fall back to the default radius.
+                drawNode(
+                    ctx,
+                    entity.x,
+                    entity.y,
+                    entity.width > 0 ? Math.max(4, entity.width / 2) : NODE_RADIUS,
+                    entity.label,
+                    colours.text,
+                );
                 break;
             case "cell":
                 drawCell(
@@ -126,11 +135,12 @@ function drawNode(
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
+    radius: number,
     label: string,
     textColour: string,
 ): void {
     ctx.beginPath();
-    ctx.arc(x, y, NODE_RADIUS, 0, Math.PI * 2);
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
 
