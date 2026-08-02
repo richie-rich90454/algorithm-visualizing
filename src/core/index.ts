@@ -135,6 +135,7 @@ import shortestCommonSupersequence from "./algo/dp/shortest-common-supersequence
 import editDistance from "./algo/dp/edit-distance";
 import knapsack01 from "./algo/dp/knapsack-01";
 import knapsackComplete from "./algo/dp/knapsack-complete";
+import knapsackMultiple from "./algo/dp/knapsack-multiple";
 import boruvka from "./algo/mst/boruvka";
 import primHeap from "./algo/mst/prim-heap";
 import primMatrix from "./algo/mst/prim-matrix";
@@ -246,6 +247,7 @@ register(shortestCommonSupersequence);
 register(editDistance);
 register(knapsack01);
 register(knapsackComplete);
+register(knapsackMultiple);
 register(exponentialSearch);
 register(floodFillBfs);
 register(floodFillDfs);
