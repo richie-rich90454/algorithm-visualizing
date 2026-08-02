@@ -1,0 +1,49 @@
+/**
+ * index.ts – The algorithm registry.
+ *
+ * The registry is a central lookup table that maps kebab-case algorithm ids
+ * (e.g. `"bubble-sort"`) to their `AlgorithmModule` objects. The sidebar
+ * builds its category tree from `getAllAlgorithms()`, and the store resolves
+ * a selected id with `getAlgorithm()`.
+ *
+ * Every algorithm file registers itself here, so this file grows exactly in
+ * lockstep with the algorithm library. Keeping registration explicit (rather
+ * than glob-importing the folder) keeps the module graph obvious and lets the
+ * TypeScript compiler verify every reference at build time.
+ */
+
+import type { AlgorithmModule } from "@/types";
+
+/** The one source of truth: id → module. */
+const registry = new Map<string, AlgorithmModule>();
+
+/**
+ * Insert a module into the registry.
+ *
+ * @param module The algorithm module to register.
+ * @throws When an algorithm with the same id is already registered, so that
+ *         duplicate ids are caught at load time rather than silently shadowed.
+ */
+export function register(module: AlgorithmModule): void {
+    if (registry.has(module.id)) {
+        throw new Error(`Duplicate algorithm id: ${module.id}`);
+    }
+    registry.set(module.id, module);
+}
+
+/**
+ * Look up an algorithm by its kebab-case id.
+ *
+ * @param id The algorithm identifier, e.g. `"binary-search"`.
+ * @returns The matching module, or `null` when unknown.
+ */
+export function getAlgorithm(id: string): AlgorithmModule | null {
+    return registry.get(id) ?? null;
+}
+
+/**
+ * @returns Every registered algorithm module, in registration order.
+ */
+export function getAllAlgorithms(): AlgorithmModule[] {
+    return [...registry.values()];
+}

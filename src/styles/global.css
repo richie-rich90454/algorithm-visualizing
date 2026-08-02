@@ -1,0 +1,181 @@
+/**
+ * global.css – Design tokens, reset, and layout primitives.
+ *
+ * The entire visual identity of the application lives here as CSS custom
+ * properties. Every component reads colours, spacing, radii, and typography
+ * from these variables so that a change in one place re-themes the whole app.
+ *
+ * Design rules (see plan Section 3):
+ *   - Flat design: no shadows, glows, gradients, or transitions.
+ *   - Borders: 1px solid, 4px radius.
+ *   - Spacing: multiples of 4, base unit 8.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Self-hosted font: Noto Sans is bundled in /public/fonts (offline-first). */
+/* ------------------------------------------------------------------ */
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/notosans-regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 500;
+    src: url("/fonts/notosans-500.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/fonts/notosans-600.woff2") format("woff2");
+}
+
+/* ------------------------------------------------------------------ */
+/* Design tokens – the single source of truth for the visual language. */
+/* ------------------------------------------------------------------ */
+:root {
+    /* Typography */
+    --font-family: "Noto Sans", sans-serif;
+    --font-size-base: 14px;
+    --font-size-heading: 16px;
+    --line-height-base: 1.5;
+
+    /* Spacing scale (multiples of 4, base 8) */
+    --spacing-1: 4px;
+    --spacing-2: 8px;
+    --spacing-3: 12px;
+    --spacing-4: 16px;
+    --spacing-5: 24px;
+    --spacing-6: 32px;
+
+    /* Shape */
+    --radius: 4px;
+    --border-width: 1px;
+
+    /* Core surfaces */
+    --color-bg-canvas: #ffffff;
+    --color-bg-sidebar: #f9fafb;
+    --color-bg-controls: #ffffff;
+    --color-bg-description: #f9fafb;
+    --color-border-panel: #e5e7eb;
+
+    /* Text */
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+
+    /* Entity states – mirrored 1:1 with the canvas palette in EntityRenderer */
+    --state-idle-bg: #f3f4f6;
+    --state-idle-border: #d1d5db;
+    --state-idle-text: #111827;
+    --state-active-bg: #3b82f6;
+    --state-active-border: #2563eb;
+    --state-active-text: #ffffff;
+    --state-comparing-bg: #fcd34d;
+    --state-comparing-border: #f59e0b;
+    --state-comparing-text: #000000;
+    --state-swapped-bg: #ef4444;
+    --state-swapped-border: #dc2626;
+    --state-swapped-text: #ffffff;
+    --state-sorted-bg: #10b981;
+    --state-sorted-border: #059669;
+    --state-sorted-text: #ffffff;
+    --state-pivot-bg: #8b5cf6;
+    --state-pivot-border: #7c3aed;
+    --state-pivot-text: #ffffff;
+    --state-visited-bg: #f59e0b;
+    --state-visited-border: #d97706;
+    --state-visited-text: #000000;
+    --state-path-bg: #06b6d4;
+    --state-path-border: #0891b2;
+    --state-path-text: #ffffff;
+    --state-highlight-bg: #f472b6;
+    --state-highlight-border: #db2777;
+    --state-highlight-text: #000000;
+    --state-error-bg: #dc2626;
+    --state-error-border: #991b1b;
+    --state-error-text: #ffffff;
+    --state-unvisited-bg: #f9fafb;
+    --state-unvisited-border: #9ca3af;
+    --state-unvisited-text: #111827;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reset */
+/* ------------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base body */
+/* ------------------------------------------------------------------ */
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Root layout – sidebar left, visualiser right, full viewport height. */
+/* ------------------------------------------------------------------ */
+#app {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared component primitives */
+/* ------------------------------------------------------------------ */
+
+/* Every panel follows the flat-card recipe: 1px border, 4px radius. */
+.panel {
+    background: var(--color-bg-controls);
+    border: var(--border-width) solid var(--color-border-panel);
+    border-radius: var(--radius);
+}
+
+/* Standard control button – 500 weight, 14px, 6px 16px padding. */
+button {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    line-height: inherit;
+    padding: 6px 16px;
+    border: var(--border-width) solid var(--state-idle-border);
+    border-radius: var(--radius);
+    background: var(--color-bg-controls);
+    color: var(--color-text-primary);
+    cursor: pointer;
+}
+
+button:hover {
+    border-color: var(--state-active-border);
+    color: var(--state-active-border);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--state-active-bg);
+    outline-offset: 2px;
+}
+
+/* Headings are always 600 weight at 16px. */
+h1,
+h2,
+h3 {
+    font-weight: 600;
+    font-size: var(--font-size-heading);
+}
