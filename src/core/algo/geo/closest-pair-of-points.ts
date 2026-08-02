@@ -80,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: `Closest pair of ${points.length} points – divide and conquer.`,
         codeLineNumber: 0,
-        layout: "graph",
+        layout: "point",
         meta: {},
     };
     step += 1;
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 edges: [],
                 description: `Comparing points ${i} and ${j}: distance ${d.toFixed(2)}.`,
                 codeLineNumber: 2,
-                layout: "graph",
+                layout: "point",
                 meta: { bestDist },
             };
             step += 1;
@@ -149,7 +149,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [edge],
         description: `Closest pair: points ${best[0]} and ${best[1]} at distance ${bestDist.toFixed(2)}.`,
         codeLineNumber: 4,
-        layout: "graph",
+        layout: "point",
         meta: { best, bestDist },
     };
 }
