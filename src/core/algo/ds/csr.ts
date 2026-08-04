@@ -8,7 +8,7 @@
  * stores the graph in three compact arrays: `rowPtr` (start index of each
  * vertex's neighbor list), `col` (the neighbor vertex ids), and `val`
  * (weights). Iterating a vertex's neighbors is a single contiguous range
- * scan, giving excellent cache behaviour.
+ * scan, giving excellent cache behavior.
  *
  * ---------------------------------------------------------------------------
  * Complexity
