@@ -20,7 +20,7 @@
  *   Space: O(k)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The streak state being updated is YELLOW (comparing).
  *   - Its contributors are PINK (highlight).
