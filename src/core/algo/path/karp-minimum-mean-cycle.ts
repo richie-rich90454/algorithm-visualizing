@@ -24,7 +24,7 @@
  *   Space: O(V) per layer (only two layers kept)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being updated in the DP row is YELLOW (comparing).
  *   - The candidate minimum-mean vertex is PINK (highlight).
