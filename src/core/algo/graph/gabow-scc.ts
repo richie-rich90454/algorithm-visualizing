@@ -22,10 +22,10 @@
  *   Space: O(V) – two explicit stacks, no recursion
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Vertices on the DFS stack are YELLOW (comparing).
- *   - Popped SCCs are coloured per component (sorted / path / highlight).
+ *   - Popped SCCs are colored per component (sorted / path / highlight).
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         meta: { components: components.length },
     });
 
-    const componentColours = ["sorted", "path", "highlight"] as const;
+    const componentColors = ["sorted", "path", "highlight"] as const;
 
     // Process each unvisited vertex.
     for (const start of vertices) {
@@ -120,43 +120,43 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 break;
             }
             const { vertex, pos } = frame;
-            const neighbours = adjacency[vertex] ?? [];
+            const neighbors = adjacency[vertex] ?? [];
 
-            if (pos < neighbours.length) {
+            if (pos < neighbors.length) {
                 frame.pos += 1;
-                const neighbour = neighbours[pos];
-                if (neighbour === undefined) {
+                const neighbor = neighbors[pos];
+                if (neighbor === undefined) {
                     continue;
                 }
 
-                if (index.get(neighbour) === undefined) {
-                    // Tree edge: discover the neighbour.
-                    index.set(neighbour, nextIndex);
+                if (index.get(neighbor) === undefined) {
+                    // Tree edge: discover the neighbor.
+                    index.set(neighbor, nextIndex);
                     nextIndex += 1;
-                    stack.push(neighbour);
-                    pathStack.push(neighbour);
+                    stack.push(neighbor);
+                    pathStack.push(neighbor);
 
-                    const neighbourNode = nodeById.get(`node-${neighbour}`);
-                    if (neighbourNode) {
-                        neighbourNode.state = "comparing";
+                    const neighborNode = nodeById.get(`node-${neighbor}`);
+                    if (neighborNode) {
+                        neighborNode.state = "comparing";
                     }
-                    yield buildFrame(`Descending into ${neighbour}.`);
+                    yield buildFrame(`Descending into ${neighbor}.`);
                     step += 1;
 
-                    work.push({ vertex: neighbour, pos: 0 });
-                } else if (pathStack.includes(neighbour)) {
+                    work.push({ vertex: neighbor, pos: 0 });
+                } else if (pathStack.includes(neighbor)) {
                     // Back edge to a vertex on the current path: pop the path
                     // stack down to it, marking the SCC boundary.
-                    while (pathStack.length > 0 && pathStack[pathStack.length - 1] !== neighbour) {
+                    while (pathStack.length > 0 && pathStack[pathStack.length - 1] !== neighbor) {
                         pathStack.pop();
                     }
                     yield buildFrame(
-                        `Back edge from ${vertex} to ${neighbour} – shrinking the path.`,
+                        `Back edge from ${vertex} to ${neighbor} – shrinking the path.`,
                     );
                     step += 1;
                 }
             } else {
-                // All neighbours processed: finish this vertex.
+                // All neighbors processed: finish this vertex.
                 work.pop();
                 if (pathStack[pathStack.length - 1] === vertex) {
                     // Vertex is the root of an SCC: pop everything above its
@@ -172,12 +172,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     } while (popped !== vertex && popped !== undefined);
 
                     components.push(component);
-                    const colour =
-                        componentColours[(components.length - 1) % componentColours.length];
+                    const color =
+                        componentColors[(components.length - 1) % componentColors.length];
                     for (const member of component) {
                         const memberNode = nodeById.get(`node-${member}`);
                         if (memberNode) {
-                            memberNode.state = colour;
+                            memberNode.state = color;
                         }
                     }
                     yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`);
