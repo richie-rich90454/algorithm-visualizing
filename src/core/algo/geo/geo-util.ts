@@ -2,7 +2,7 @@
  * geo-util.ts – Shared helpers for computational geometry visualizations.
  *
  * Geometry algorithms work with points and segments. Points are drawn as
- * nodes; segments as edges. This module centralises that construction so
+ * nodes; segments as edges. This module centralizes that construction so
  * every geometry module produces consistent visuals.
  */
 
