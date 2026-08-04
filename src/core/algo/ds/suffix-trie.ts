@@ -1,5 +1,5 @@
 /**
- * suffix-trie.ts â€“ Suffix Trie
+ * suffix-trie.ts â€?Suffix Trie
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,7 +7,7 @@
  * A suffix trie is a trie containing every suffix of a string, with a special
  * end marker. It makes substring queries trivial: "is s a substring?" becomes
  * "does the trie contain a path for s?" at O(|s|) cost, independent of the
- * string length. Its cost is space â€“ a string of length n can need O(nÂ²)
+ * string length. Its cost is space â€?a string of length n can need O(nÂ²)
  * nodes.
  *
  * ---------------------------------------------------------------------------
@@ -17,7 +17,7 @@
  *   Substring query: O(|s|)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The root-to-leaf paths spell the suffixes.
  *   - The queried substring's path is YELLOW (comparing).
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Suffix trie of "${text}" â€“ checking if "${query}" is a substring.`,
+        description: `Suffix trie of "${text}" â€?checking if "${query}" is a substring.`,
         codeLineNumber: 0,
         layout: "tree",
         meta: {},
@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Walked "${char}" â€“ matched prefix "${matchedChars}".`,
+            description: `Walked "${char}" â€?matched prefix "${matchedChars}".`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { matched: matchedChars },
