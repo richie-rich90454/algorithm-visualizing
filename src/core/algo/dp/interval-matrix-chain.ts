@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Given matrices A1..An with dimensions, matrix chain multiplication asks for
- * the parenthesisation that minimises the number of scalar multiplications.
+ * the parenthesisation that minimizes the number of scalar multiplications.
  * The interval DP:
  *
  *   dp[i][j] = min over k of (dp[i][k] + dp[k+1][j] + p[i-1]·p[k]·p[j])
