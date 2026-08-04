@@ -18,7 +18,7 @@
  *   Space: O(m) for the prefix function
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The text is a row of character boxes.
  *   - The character currently compared is YELLOW (comparing).
