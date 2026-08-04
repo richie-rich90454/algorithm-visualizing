@@ -7,19 +7,19 @@
  * Manacher's algorithm finds the longest palindromic substring in linear
  * time. It inserts sentinel characters (#) between every pair of characters
  * (and at the ends) so every palindrome becomes odd-length, then computes
- * `arm[i]` – the radius of the palindrome centred at i – using the symmetric
+ * `arm[i]` – the radius of the palindrome centered at i – using the symmetric
  * mirror property of palindromes to reuse previously computed radii.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(n) – each centre is visited a constant number of times
+ *   Time:  O(n) – each center is visited a constant number of times
  *   Space: O(n) for the arm array
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The palindrome centre being processed is YELLOW (comparing).
+ *   - The palindrome center being processed is YELLOW (comparing).
  *   - The palindrome arm is PINK (highlight).
  *   - The longest palindrome found is GREEN (sorted).
  *
@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             arm[i] = Math.min(right - i, arm[mirror] ?? 0);
         }
 
-        // Expand the palindrome centred at i.
+        // Expand the palindrome centered at i.
         while (
             i - (arm[i] ?? 0) - 1 >= 0 &&
             i + (arm[i] ?? 0) + 1 < n &&
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             right = i + (arm[i] ?? 0);
         }
 
-        // Highlight the palindrome arm around the current centre.
+        // Highlight the palindrome arm around the current center.
         const states = new Map<number, EntityState>();
         for (let k = i - (arm[i] ?? 0); k <= i + (arm[i] ?? 0); k += 1) {
             states.set(k, "highlight");
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(padded, states),
             edges: [],
-            description: `Centre ${i}: palindrome radius ${arm[i]} (centred on "${padded[i]}").`,
+            description: `Center ${i}: palindrome radius ${arm[i]} (centered on "${padded[i]}").`,
             codeLineNumber: 2,
             layout: "text",
             meta: {},
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Find the centre with the largest arm; convert back to the original string.
+    // Find the center with the largest arm; convert back to the original string.
     let bestCenter = 0;
     let bestArm = 0;
     for (let i = 0; i < n; i += 1) {
