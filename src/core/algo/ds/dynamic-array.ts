@@ -1,5 +1,5 @@
 /**
- * dynamic-array.ts â€?Dynamic Array (amortised vector)
+ * dynamic-array.ts â€“ Dynamic Array (amortised vector)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -37,7 +37,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  *
  * @param buffer The backing buffer (undefined = unused capacity).
  * @param used The logical size.
- * @param states Optional index â†?state overrides.
+ * @param states Optional index â†’ state overrides.
  * @returns Cell entities in a single row.
  */
 function makeCells(
@@ -62,7 +62,7 @@ function makeCells(
 /**
  * The Dynamic Array generator.
  *
- * @param input `{ appends }` â€?the values to append.
+ * @param input `{ appends }` â€“ the values to append.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { appends?: number[] } | null) ?? {};
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(buffer, used, states),
             edges: [],
-            description: `Appended ${value} â€?size ${used}, capacity ${capacity}.`,
+            description: `Appended ${value} â€“ size ${used}, capacity ${capacity}.`,
             codeLineNumber: 3,
             layout: "grid",
             meta: { capacity, used },
@@ -144,7 +144,7 @@ const module: AlgorithmModule = {
     name: "Dynamic Array",
     category: "data-structures",
     complexity: { time: "O(1) amortised append", space: "O(n)" },
-    // 7 appends force two doublings (2â†?â†?).
+    // 7 appends force two doublings (2â†’4â†’8).
     defaultInput: { appends: [1, 2, 3, 4, 5, 6, 7] },
     visualType: "grid",
     run,
