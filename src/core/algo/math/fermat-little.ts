@@ -9,7 +9,7 @@
  * exponentiation, the probabilistic primality tests, and the classic way to
  * compute modular inverses: a^(p−2) mod p is the inverse of a mod p.
  *
- * This visualisation verifies the theorem for a chosen (a, p) by computing
+ * This visualization verifies the theorem for a chosen (a, p) by computing
  * the modular powers a^1, a^2, …, a^(p−1) mod p and watching them land on 1.
  *
  * ---------------------------------------------------------------------------
@@ -19,7 +19,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The exponent being evaluated is YELLOW (comparing).
  *   - The running residue is PINK (highlight).
