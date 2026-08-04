@@ -8,7 +8,7 @@
  * classic divide-and-conquer algorithm sorts by x, splits into two halves,
  * recursively solves each, and then checks a thin strip around the middle
  * (width 2·δ, where δ is the best of the two halves). Because points in the
- * strip can be sorted by y and only a constant number of neighbours need
+ * strip can be sorted by y and only a constant number of neighbors need
  * checking, the total is O(n log n).
  *
  * ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The split line is narrated.
  *   - The candidate pair being compared is YELLOW (comparing).
@@ -27,7 +27,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The strip-and-neighbour-check is the conceptual heart.
+ *   - The strip-and-neighbor-check is the conceptual heart.
  */
 
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
