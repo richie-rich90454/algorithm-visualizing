@@ -17,7 +17,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being finalised is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
