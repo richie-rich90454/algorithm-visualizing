@@ -11,7 +11,7 @@
  *
  *   E[k] = 1 + ½·E[k+1] + ½·E[0]   (tails resets)
  *
- * This visualisation computes the expected flips via a DP over "heads streak".
+ * This visualization computes the expected flips via a DP over "heads streak".
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const E = new Array<number>(target + 1).fill(0);
     E[target] = 0; // already done
 
-    // Frame 0: the initialised array (E[target] = 0).
+    // Frame 0: the initialized array (E[target] = 0).
     yield {
         stepNumber: step,
         entities: makeCells(E),
