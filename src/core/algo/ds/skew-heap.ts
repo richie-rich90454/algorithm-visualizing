@@ -1,5 +1,5 @@
 /**
- * skew-heap.ts â€“ Skew Heap
+ * skew-heap.ts â€?Skew Heap
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -16,7 +16,7 @@
  *   Space:                        O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The heap is drawn as a tree.
  *   - Swapped children (after a merge) are highlighted.
@@ -111,12 +111,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         heap.push(value);
         yield buildFrame(
             heap,
-            `Merged in ${value} â€“ children on the merge path are swapped (amortised O(log n)).`,
+            `Merged in ${value} â€?children on the merge path are swapped (amortised O(log n)).`,
         );
         step += 1;
     }
 
-    yield buildFrame(heap, `Skew heap complete â€“ no ranks stored, just unconditional swaps.`);
+    yield buildFrame(heap, `Skew heap complete â€?no ranks stored, just unconditional swaps.`);
 }
 
 /** The Skew Heap module, registered with the engine. */
