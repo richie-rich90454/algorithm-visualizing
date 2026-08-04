@@ -5,7 +5,7 @@
  * pointing at" must be answered by pure geometry. This module iterates every
  * entity and checks whether the mouse point falls inside it:
  *
- *   - Nodes use a circular radius test around their centre.
+ *   - Nodes use a circular radius test around their center.
  *   - Every other shape uses an axis-aligned bounding-box test.
  *
  * Entities are checked in reverse draw order, so when shapes overlap the
@@ -42,7 +42,7 @@ export function hitTest(
         }
 
         if (entity.type === "node") {
-            // Circle test: within NODE_RADIUS of the entity's centre point.
+            // Circle test: within NODE_RADIUS of the entity's center point.
             const dx = logicalX - entity.x;
             const dy = logicalY - entity.y;
             if (dx * dx + dy * dy <= NODE_RADIUS * NODE_RADIUS) {
