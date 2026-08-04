@@ -20,7 +20,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current antipodal pair is YELLOW (comparing).
  *   - The diameter pair is GREEN (sorted).
