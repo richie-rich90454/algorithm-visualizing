@@ -26,7 +26,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - Generalises the classic "Rabin-Karp on strings" to images.
+ *   - Generalizes the classic "Rabin-Karp on strings" to images.
  *   - The four-corner prefix trick is the key to teach.
  */
 
