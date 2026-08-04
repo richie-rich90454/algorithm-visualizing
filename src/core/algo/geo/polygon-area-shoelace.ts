@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     const area = Math.abs(sum) / 2;
-    const orientation = sum > 0 ? "counter-clockwise" : sum < 0 ? "clockwise" : "degenerate";
+    const orientation = sum > 0 ? "counterclockwise" : sum < 0 ? "clockwise" : "degenerate";
 
     for (const edge of edges) {
         edge.state = "sorted";
