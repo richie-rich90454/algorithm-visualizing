@@ -17,7 +17,7 @@
  *   Query:      O(1) per sub-rectangle
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The grid is a matrix of character cells.
  *   - The sub-rectangle being hashed is YELLOW (comparing).
