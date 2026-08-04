@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary – the heap lives inside the array itself
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The element being sifted down is YELLOW (comparing).
  *   - The parent/child pair being compared is PINK (highlight).
