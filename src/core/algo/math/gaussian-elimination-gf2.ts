@@ -17,7 +17,7 @@
  *   Space: O(n²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot row is PINK (highlight).
  *   - Rows being XOR-eliminated are RED (swapped).
