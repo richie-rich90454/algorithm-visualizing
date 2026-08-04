@@ -16,7 +16,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node being entered is YELLOW (comparing).
  *   - Its subtree interval is hinted on the timeline.
