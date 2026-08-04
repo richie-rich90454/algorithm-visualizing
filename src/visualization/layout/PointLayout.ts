@@ -4,7 +4,7 @@
  * Computational-geometry algorithms (convex hulls, segment intersections,
  * point-in-polygon, …) compute meaningful coordinates themselves, so they do
  * not need (and must not receive) force-directed or grid placement. This
- * layout simply normalises the entities' existing x/y values into the
+ * layout simply normalizes the entities' existing x/y values into the
  * container, preserving aspect ratio and centring the result.
  */
 
@@ -44,7 +44,7 @@ export function applyPointLayout(frame: VisualFrame, width: number, height: numb
     const availW = Math.max(1, width - 2 * MARGIN);
     const availH = Math.max(1, height - 2 * MARGIN);
 
-    // Uniform scale keeps shapes undistorted; leftover space centres them.
+    // Uniform scale keeps shapes undistorted; leftover space centers them.
     const scale = Math.min(availW / spanX, availH / spanY);
     const offsetX = MARGIN + (availW - spanX * scale) / 2;
     const offsetY = MARGIN + (availH - spanY * scale) / 2;
