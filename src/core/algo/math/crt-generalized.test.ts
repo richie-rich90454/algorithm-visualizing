@@ -1,5 +1,5 @@
 /**
- * crt-generalized.test.ts – Minimum viable test for CRT (generalised).
+ * crt-generalized.test.ts – Minimum viable test for CRT (generalized).
  */
 
 import { describe, expect, it } from "vitest";
