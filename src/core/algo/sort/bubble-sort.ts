@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary – in place, stable
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Bars represent the array values.
  *   - The pair currently being compared is painted YELLOW (comparing).
@@ -29,7 +29,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - Stable: equal elements keep their original relative order.
- *   - In place: only swaps neighbouring elements, no extra array storage.
+ *   - In place: only swaps neighboring elements, no extra array storage.
  *   - Best used for teaching; quadratic cost makes it impractical on large
  *     inputs, which is exactly why it is the perfect first algorithm to study.
  */
@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             };
             step += 1;
 
-            // Out-of-order neighbours get swapped; left is strictly greater.
+            // Out-of-order neighbors get swapped; left is strictly greater.
             if (left > right) {
                 // Swapping mutates the working copy of the array.
                 arr[j] = right;
