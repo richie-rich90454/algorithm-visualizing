@@ -126,6 +126,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     while (componentCount() > 1) {
         rounds += 1;
 
+        // Reset all edge states to idle before the new round.
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
+
         // Each component picks its cheapest outgoing edge.
         const cheapest = new Map<string, { index: number; weight: number }>();
 
