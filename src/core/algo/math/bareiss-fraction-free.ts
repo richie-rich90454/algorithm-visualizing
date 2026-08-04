@@ -17,7 +17,7 @@
  *   Space: O(n²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot cell is YELLOW (comparing).
  *   - The row being updated is RED (swapped).
