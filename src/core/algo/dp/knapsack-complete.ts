@@ -19,7 +19,7 @@
  *   Space: O(W)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The capacity cell being updated is YELLOW (comparing).
  *   - Updated cells are GREEN (sorted).
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // dp[w] = max value obtainable with total weight ≤ w.
     const dp = new Array<number>(capacity + 1).fill(0);
 
-    // Frame 0: the initialised DP array.
+    // Frame 0: the initialized DP array.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
