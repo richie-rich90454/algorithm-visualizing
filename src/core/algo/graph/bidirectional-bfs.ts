@@ -18,7 +18,7 @@
  *   Space: O(b^(d/2)) – two frontiers instead of one
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Forward-frontier vertices are BLUE (active).
  *   - Backward-frontier vertices are PINK (highlight).
@@ -68,8 +68,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of vertices) {
         reverse[v] = [];
     }
-    for (const [from, neighbours] of Object.entries(adjacency)) {
-        for (const to of neighbours) {
+    for (const [from, neighbors] of Object.entries(adjacency)) {
+        for (const to of neighbors) {
             reverse[to]?.push(from);
         }
     }
