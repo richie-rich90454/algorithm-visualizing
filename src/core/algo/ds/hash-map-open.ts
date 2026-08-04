@@ -1,5 +1,5 @@
 /**
- * hash-map-open.ts â€?Hash Map (open addressing / linear probing)
+ * hash-map-open.ts â€“ Hash Map (open addressing / linear probing)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -14,7 +14,7 @@
  * Complexity
  * ---------------------------------------------------------------------------
  *   Insert / lookup / delete: O(1) average, O(n) worst
- *   Space:                    O(m) â€?one slot per bucket
+ *   Space:                    O(m) â€“ one slot per bucket
  *
  * ---------------------------------------------------------------------------
  * Visualization mapping
@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Open-addressed hash map (${buckets} slots) â€?[${keys.join(", ")}] inserted by linear probing.`,
+        description: `Open-addressed hash map (${buckets} slots) â€“ [${keys.join(", ")}] inserted by linear probing.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { buckets, keys: keys.length },
