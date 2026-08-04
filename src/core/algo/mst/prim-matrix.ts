@@ -17,7 +17,7 @@
  *   Space: O(V) for the key/predecessor arrays
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being added to the tree is YELLOW (comparing).
  *   - The edge that joins it is BLUE (active).
@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------------
  *   - Vertex-centric: grows the tree outward, unlike Kruskal's edge-centric
  *     approach.
- *   - Dense-graph favourite; the heap variant is better on sparse graphs.
+ *   - Dense-graph favorite; the heap variant is better on sparse graphs.
  */
 
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Update the keys of all outside neighbours of the new vertex.
+        // Update the keys of all outside neighbors of the new vertex.
         for (const v of vertices) {
             if (inTree.has(v)) {
                 continue;
