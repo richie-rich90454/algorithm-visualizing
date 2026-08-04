@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current window of the text is PINK (highlight).
  *   - The window's leading character being dropped is YELLOW (comparing).
