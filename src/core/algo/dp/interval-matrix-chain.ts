@@ -20,7 +20,7 @@
  *   Space: O(n²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The interval being computed is YELLOW (comparing).
  *   - The split point k is PINK (highlight).
