@@ -17,9 +17,9 @@
  *   Insert/delete at tail: O(n) (need to find the tail first)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each node is a circle labelled with its value.
+ *   - Each node is a circle labeled with its value.
  *   - Edges are the "next" pointers.
  *   - The node being visited is YELLOW (comparing).
  *   - Newly inserted nodes are GREEN (sorted).
