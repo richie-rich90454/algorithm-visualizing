@@ -21,7 +21,7 @@
  *   Space: O(V) for the disjoint-set structure
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The edge being considered is YELLOW (comparing).
  *   - An edge accepted into the MST is GREEN (sorted).
