@@ -17,7 +17,7 @@
  *   Space: O(V) for the queue
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being dequeued and visited is YELLOW (comparing).
  *   - Vertices waiting in the queue are ORANGE (visited).
@@ -112,24 +112,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edge.state = "idle";
         }
 
-        // Enqueue every unvisited neighbour – they form the next level.
-        for (const neighbour of adjacency[current] ?? []) {
-            if (visited.has(neighbour)) {
+        // Enqueue every unvisited neighbor – they form the next level.
+        for (const neighbor of adjacency[current] ?? []) {
+            if (visited.has(neighbor)) {
                 continue;
             }
-            visited.add(neighbour);
+            visited.add(neighbor);
             visits += 1;
-            queue.push(neighbour);
+            queue.push(neighbor);
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.state = "visited";
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.state = "visited";
             }
         }
 
