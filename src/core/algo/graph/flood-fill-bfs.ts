@@ -17,10 +17,10 @@
  *   Space: O(rows × cols) for the queue
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The grid is a matrix of cell entities.
- *   - The cell being dequeued and recoloured is YELLOW (comparing).
+ *   - The cell being dequeued and recolored is YELLOW (comparing).
  *   - Completed cells are GREEN (sorted).
  *   - Out-of-region cells stay GREY (unvisited).
  *
@@ -164,19 +164,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const [dr, dc] of DIRS) {
             const nr = row + dr;
             const nc = col + dc;
-            const neighbourKey = `${nr},${nc}`;
+            const neighborKey = `${nr},${nc}`;
 
             if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
                 continue;
             }
-            if (visited.has(neighbourKey)) {
+            if (visited.has(neighborKey)) {
                 continue;
             }
             if (grid[nr]?.[nc] !== targetColor) {
                 continue;
             }
 
-            visited.add(neighbourKey);
+            visited.add(neighborKey);
             queue.push([nr, nc]);
         }
     }
