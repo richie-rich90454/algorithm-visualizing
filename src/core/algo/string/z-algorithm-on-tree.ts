@@ -9,7 +9,7 @@
  * downward paths. This educational version demonstrates the idea by rooting
  * the tree, computing for every node the longest common prefix of the string
  * spelled by the root-to-node path and the string spelled by some reference
- * path, visualising the matched portion.
+ * path, visualizing the matched portion.
  *
  * It keeps the core teaching message of the Z-algorithm – reuse a window of
  * already-computed matches – but in a tree-shaped domain.
