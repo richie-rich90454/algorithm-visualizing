@@ -1,5 +1,5 @@
 /**
- * fibonacci-heap.ts â€“ Fibonacci Heap
+ * fibonacci-heap.ts â€?Fibonacci Heap
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -18,7 +18,7 @@
  *   Space:                         O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Trees are drawn as small heap trees in a forest.
  *   - Inserted nodes are GREEN (sorted).
@@ -35,7 +35,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The Fibonacci Heap generator.
  *
- * @param input `{ inserts }` â€“ values inserted lazily.
+ * @param input `{ inserts }` â€?values inserted lazily.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { inserts?: number[] } | null) ?? {};
@@ -105,13 +105,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         roots.push(value);
         nextId += 1;
         yield buildFrame(
-            `Inserted ${value} lazily in O(1) â€“ root list has ${roots.length} tree(s).`,
+            `Inserted ${value} lazily in O(1) â€?root list has ${roots.length} tree(s).`,
         );
         step += 1;
     }
 
     yield buildFrame(
-        `Fibonacci heap complete â€“ all inserts were O(1); extract-min would consolidate these trees.`,
+        `Fibonacci heap complete â€?all inserts were O(1); extract-min would consolidate these trees.`,
     );
 }
 
