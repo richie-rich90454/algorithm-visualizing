@@ -1,5 +1,5 @@
-/**
- * flow-util.ts – Shared helpers for network flow visualisations.
+﻿/**
+ * flow-util.ts – Shared helpers for network flow visualizations.
  *
  * Max-flow algorithms (Ford-Fulkerson, Edmonds-Karp, Dinic, …) all share the
  * same scaffold: a directed capacity graph, a source, a sink, and the notion
@@ -32,7 +32,7 @@ export function makeFlowNodes(vertices: string[]): VisualEntity[] {
 }
 
 /**
- * Build a visual edge per directed capacity edge, labelled with its capacity.
+ * Build a visual edge per directed capacity edge, labeled with its capacity.
  *
  * @param edges The directed edges: `[from, to, capacity]`.
  * @returns Edge entities in `idle` state.
