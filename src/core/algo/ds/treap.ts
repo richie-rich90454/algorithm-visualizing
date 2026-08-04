@@ -1,5 +1,5 @@
 /**
- * treap.ts â€?Treap (tree + heap)
+ * treap.ts â€“ Treap (tree + heap)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -52,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         type: "node" as const,
         label: `${p.key}(${p.priority})`,
         value: p.key,
-        state: "unvisited" as const,
+        state: "unvisited",
         x: 0,
         y: 0,
         width: 0,
@@ -63,7 +63,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: initial,
         edges: [],
-        description: "Treap â€?BST on keys, max-heap on priorities.",
+        description: "Treap â€“ BST on keys, max-heap on priorities.",
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: pairs.length },
@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         type: "node" as const,
         label: `${p.key}(${p.priority})`,
         value: p.key,
-        state: "unvisited" as const,
+        state: "unvisited",
         x: 0,
         y: 0,
         width: 0,
