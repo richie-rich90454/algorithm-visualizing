@@ -17,7 +17,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The down pass is narrated first.
  *   - The up pass is highlighted.
