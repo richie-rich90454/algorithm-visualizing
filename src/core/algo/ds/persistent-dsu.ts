@@ -1,5 +1,5 @@
 /**
- * persistent-dsu.ts â€“ Persistent Disjoint Set Union
+ * persistent-dsu.ts â€?Persistent Disjoint Set Union
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -18,7 +18,7 @@
  *   Space:    O(ops Â· log n) if fully persistent
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The parent array at each version is shown.
  *   - The elements merged at a version are highlighted.
@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(history[0] ?? []),
         edges: [],
-        description: "Persistent DSU â€“ version 0: every element points to itself.",
+        description: "Persistent DSU â€?version 0: every element points to itself.",
         codeLineNumber: 0,
         layout: "grid",
         meta: { size, versions: history.length },
@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(next, [a, b]),
             edges: [],
-            description: `Version ${v + 1}: union(${a}, ${b}) â€“ parent[${b}] = ${a}.`,
+            description: `Version ${v + 1}: union(${a}, ${b}) â€?parent[${b}] = ${a}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { size, versions: history.length },
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(history[history.length - 1] ?? []),
         edges: [],
-        description: `Persistent DSU complete â€“ ${history.length} version(s) of the parent array are retained.`,
+        description: `Persistent DSU complete â€?${history.length} version(s) of the parent array are retained.`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { size, versions: history.length },
