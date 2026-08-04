@@ -18,7 +18,7 @@
  *   Space: O(n) auxiliary – the merge step needs a temporary buffer
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The subarray currently being split/merged is YELLOW (comparing).
  *   - Elements being compared across the merge boundary are PINK (highlight).
