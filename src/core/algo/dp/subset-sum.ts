@@ -19,7 +19,7 @@
  *   Space: O(n·T) (or O(T) with a boolean array)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - Reachable cells are GREEN (sorted).
