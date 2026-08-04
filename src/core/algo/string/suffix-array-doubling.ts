@@ -18,7 +18,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The suffixes are laid out as rows of characters.
  *   - The window being compared in the current round is YELLOW (comparing).
