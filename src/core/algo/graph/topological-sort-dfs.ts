@@ -103,6 +103,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Exploring ${v}.`);
         step += 1;
 
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
         for (const neighbour of adjacency[v] ?? []) {
             const neighbourState = state.get(neighbour);
             if (neighbourState === 1) {
