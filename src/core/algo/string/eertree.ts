@@ -18,7 +18,7 @@
  *   Space: O(n · alphabet) for the transitions
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current palindrome node is YELLOW (comparing).
  *   - Suffix-link edges are highlighted PINK (highlight).
