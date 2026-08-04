@@ -32,7 +32,7 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a heap tree visualisation.
+ * Build a heap tree visualization.
  *
  * @param heap The heap array (0-indexed).
  * @param highlight Index to highlight (or -1).
