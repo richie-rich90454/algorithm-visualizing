@@ -19,7 +19,7 @@
  *   Space: O(k)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each congruence is shown as a cell row.
  *   - The term currently being added is YELLOW (comparing).
