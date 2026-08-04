@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         dp[0][j] = j;
     }
 
-    // Frame 0: the initialised table.
+    // Frame 0: the initialized table.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
