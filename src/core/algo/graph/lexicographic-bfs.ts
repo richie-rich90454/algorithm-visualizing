@@ -11,7 +11,7 @@
  * while splitting other blocks according to whether their vertices are
  * adjacent to the chosen vertex. The label assigned to each vertex reflects
  * the order in which it is selected; two vertices get the same prefix of
- * labels iff their closed neighbourhoods order identically.
+ * labels iff their closed neighborhoods order identically.
  *
  * This educational version uses a simple priority queue keyed by a generated
  * binary label string, which produces the same *order* without the full
@@ -24,9 +24,9 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The vertex being labelled is YELLOW (comparing).
+ *   - The vertex being labeled is YELLOW (comparing).
  *   - Its label is shown on the node.
  *   - Labelled vertices are GREEN (sorted).
  *
@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         labels.set(v, "");
     }
 
-    // Keep selecting until every vertex is labelled.
+    // Keep selecting until every vertex is labeled.
     while (labels.size > 0) {
         // Pick the vertex whose label is lexicographically greatest.
         let best = "";
