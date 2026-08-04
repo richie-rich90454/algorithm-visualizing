@@ -16,7 +16,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current element is YELLOW (comparing).
  *   - The running best subarray is GREEN (sorted).
