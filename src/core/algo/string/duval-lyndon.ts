@@ -17,7 +17,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The character at pointer j is YELLOW (comparing).
  *   - The character at pointer k (comparison partner) is PINK (highlight).
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             break;
         }
 
-        // Colour the completed factors green.
+        // Color the completed factors green.
         const doneStates = new Map<number, EntityState>();
         for (const [start, end] of factors) {
             for (let t = start; t <= end; t += 1) {
