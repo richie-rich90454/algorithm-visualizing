@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------------
  *   - The ordering is the reverse of a DFS finish-time order.
  *   - Complements Kahn's algorithm; both are O(V + E) on a DAG.
- *   - Cycle detection is a natural by-product of the DFS colouring.
+ *   - Cycle detection is a natural by-product of the DFS coloring.
  */
 
 import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
@@ -106,30 +106,30 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const neighbour of adjacency[v] ?? []) {
-            const neighbourState = state.get(neighbour);
-            if (neighbourState === 1) {
+        for (const neighbor of adjacency[v] ?? []) {
+            const neighborState = state.get(neighbor);
+            if (neighborState === 1) {
                 // A back edge to an in-progress vertex means a cycle.
                 hasCycle = true;
                 const edge = edges.find(
-                    (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbour}`,
+                    (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbor}`,
                 );
                 if (edge) {
                     edge.state = "highlight";
                 }
-                yield buildFrame(`Back edge to ${neighbour} – cycle detected!`);
+                yield buildFrame(`Back edge to ${neighbor} – cycle detected!`);
                 step += 1;
                 continue;
             }
-            if (neighbourState === 0) {
+            if (neighborState === 0) {
                 // Highlight the edge into the unvisited successor.
                 const edge = edges.find(
-                    (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbour}`,
+                    (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbor}`,
                 );
                 if (edge) {
                     edge.state = "active";
                 }
-                yield buildFrame(`Descending into ${neighbour}.`);
+                yield buildFrame(`Descending into ${neighbor}.`);
                 step += 1;
                 yield* dfs(neighbour);
             }
