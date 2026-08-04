@@ -12,7 +12,7 @@
  * Its expected time complexity is O(n · n!) – the number of permutations to
  * guess – which makes it slower than any sane algorithm for n ≥ 5. It is
  * included here purely for education and entertainment: it is a vivid
- * illustration of *why* algorithms need structure, and the visualisation of a
+ * illustration of *why* algorithms need structure, and the visualization of a
  * random shuffle after random shuffle is quite fun to watch.
  *
  * ---------------------------------------------------------------------------
@@ -23,7 +23,7 @@
  *   Space: O(n) auxiliary (each shuffle builds a new permutation)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The is-sorted check sweeps the array with YELLOW (comparing).
  *   - A failed check triggers a full random shuffle (bars dance).
