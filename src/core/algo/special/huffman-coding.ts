@@ -16,7 +16,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The Huffman tree is drawn with edge labels 0/1.
  *   - The merge order is narrated.
