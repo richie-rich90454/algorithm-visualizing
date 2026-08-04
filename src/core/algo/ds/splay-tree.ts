@@ -6,13 +6,13 @@
  * ---------------------------------------------------------------------------
  * A splay tree is a self-adjusting BST: every accessed node is moved to the
  * root by a series of zig, zig-zig, and zig-zag rotations ("splaying").
- * Frequently accessed nodes end up near the root, giving O(log n) amortised
+ * Frequently accessed nodes end up near the root, giving O(log n) amortized
  * operations even though individual operations can be O(n).
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Search / insert / delete: O(log n) amortised
+ *   Search / insert / delete: O(log n) amortized
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
@@ -120,7 +120,7 @@ const module: AlgorithmModule = {
     id: "splay-tree",
     name: "Splay Tree",
     category: "data-structures",
-    complexity: { time: "O(log n) amortised", space: "O(n)" },
+    complexity: { time: "O(log n) amortized", space: "O(n)" },
     defaultInput: { values: [8, 3, 10, 1, 6, 14], access: 6 },
     visualType: "tree",
     run,
