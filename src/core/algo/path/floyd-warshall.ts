@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const n = vertices.length;
 
-    // Initialise the distance matrix: 0 on the diagonal, weight along edges,
+    // Initialize the distance matrix: 0 on the diagonal, weight along edges,
     // Infinity elsewhere.
     const dist: number[][] = Array.from({ length: n }, () => new Array(n).fill(Infinity));
     for (let i = 0; i < n; i += 1) {
