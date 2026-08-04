@@ -30,7 +30,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - One of the cleanest "two-pass trick" algorithms in graph theory.
- *   - The same trick appears in problems about tree centres and radii.
+ *   - The same trick appears in problems about tree centers and radii.
  */
 
 import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
@@ -115,10 +115,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             farthest = current;
-            for (const neighbour of adjacency.get(current) ?? []) {
-                if (!parent.has(neighbour)) {
-                    parent.set(neighbour, current);
-                    queue.push(neighbour);
+            for (const neighbor of adjacency.get(current) ?? []) {
+                if (!parent.has(neighbor)) {
+                    parent.set(neighbor, current);
+                    queue.push(neighbor);
                 }
             }
         }
