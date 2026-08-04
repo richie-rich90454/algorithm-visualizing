@@ -19,7 +19,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The doubling probe positions are YELLOW (comparing).
  *   - The bracketing window is PINK (highlight).
