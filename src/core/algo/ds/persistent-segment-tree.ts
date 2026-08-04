@@ -19,7 +19,7 @@
  * ---------------------------------------------------------------------------
  * Visualisation mapping
  * ---------------------------------------------------------------------------
- *   - Each version's root is labelled.
+ *   - Each version's root is labeled.
  *   - Cloned (new) nodes are GREEN (sorted).
  *   - Shared nodes are drawn once but reachable from multiple versions.
  *
