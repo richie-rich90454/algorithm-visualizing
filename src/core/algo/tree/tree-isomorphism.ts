@@ -27,7 +27,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The hashing trick reduces structural comparison to string comparison.
- *   - Generalises to unrooted trees by rooting at the tree centre.
+ *   - Generalizes to unrooted trees by rooting at the tree center.
  */
 
 import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
