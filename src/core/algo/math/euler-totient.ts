@@ -7,7 +7,7 @@
  * Euler's totient φ(n) counts the numbers from 1 to n that are coprime to n
  * (share no common factor with it). For a prime power, φ(p^k) = p^k − p^(k−1),
  * and φ is multiplicative, so φ(n) can be computed from the prime
- * factorisation:
+ * factorization:
  *
  *   φ(n) = n · ∏ (1 − 1/p) over distinct prime factors p.
  *
