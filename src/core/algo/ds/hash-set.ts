@@ -15,7 +15,7 @@
  *   Space:                      O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Buckets are shown as cells.
  *   - The probed value is YELLOW (comparing).
