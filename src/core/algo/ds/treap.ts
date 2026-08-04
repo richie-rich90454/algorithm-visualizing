@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const pairs = keys.map((key, index) => ({ key, priority: priorities[index] ?? 0 }));
 
     // Frame 0: the pairs.
-    const initial = pairs.map((p, index) => ({
+    const initial: VisualEntity[] = pairs.map((p, index) => ({
         id: `node-${index}`,
         type: "node" as const,
         label: `${p.key}(${p.priority})`,
@@ -74,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const heapOrder = [...pairs].sort((a, b) => b.priority - a.priority);
     const sortedByKey = [...pairs].sort((a, b) => a.key - b.key);
 
-    const nodes = sortedByKey.map((p, index) => ({
+    const nodes: VisualEntity[] = sortedByKey.map((p, index) => ({
         id: `node-${index}`,
         type: "node" as const,
         label: `${p.key}(${p.priority})`,
