@@ -20,7 +20,7 @@
  *   Space: O(√p)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Baby steps are laid out as cells.
  *   - The matching giant step is YELLOW (comparing).
