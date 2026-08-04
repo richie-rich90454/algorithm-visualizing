@@ -20,7 +20,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The base-p digits of n and k are shown as cells.
  *   - The digit pair being combined is YELLOW (comparing).
