@@ -1,5 +1,5 @@
 /**
- * min-stack.ts â€“ Min Stack (O(1) getMin)
+ * min-stack.ts â€?Min Stack (O(1) getMin)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -13,10 +13,10 @@
  * Complexity
  * ---------------------------------------------------------------------------
  *   All operations: O(1)
- *   Space:          O(n) â€“ the auxiliary min stack
+ *   Space:          O(n) â€?the auxiliary min stack
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The main stack is one row; the min stack is a second row.
  *   - The pushed value is YELLOW (comparing).
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeGrid(stack, mins, stack.length - 1),
             edges: [],
-            description: `Pushed ${value} â€“ min stack top is ${newMin} (getMin = ${newMin}).`,
+            description: `Pushed ${value} â€?min stack top is ${newMin} (getMin = ${newMin}).`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { min: newMin },
@@ -135,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeGrid(stack, mins),
             edges: [],
-            description: `Popped â€“ getMin is now ${mins.length > 0 ? mins[mins.length - 1] : "undefined"}.`,
+            description: `Popped â€?getMin is now ${mins.length > 0 ? mins[mins.length - 1] : "undefined"}.`,
             codeLineNumber: 3,
             layout: "grid",
             meta: {},
