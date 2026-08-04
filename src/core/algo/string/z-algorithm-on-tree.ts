@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The Z-algorithm on a tree generalises the string Z-algorithm to find, for
+ * The Z-algorithm on a tree generalizes the string Z-algorithm to find, for
  * each node, the length of the longest "matching prefix" when comparing
  * downward paths. This educational version demonstrates the idea by rooting
  * the tree, computing for every node the longest common prefix of the string
