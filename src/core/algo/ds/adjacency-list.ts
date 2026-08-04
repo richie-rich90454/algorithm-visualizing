@@ -17,7 +17,7 @@
  *   Space:           O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each vertex row shows its neighbour list.
  *   - The queried vertex is YELLOW (comparing).
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Memory usage is O(V + E) – the sparse-graph favourite.`,
+        description: `Memory usage is O(V + E) – the sparse-graph favorite.`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { vertices: vertices.length },
