@@ -10,7 +10,7 @@
  *   solve for a penalty λ, then binary-search λ until the unconstrained
  *   solution uses exactly the allowed amount of the resource.
  *
- * The example: split an array into exactly K contiguous groups minimising the
+ * The example: split an array into exactly K contiguous groups minimizing the
  * sum of group costs, where each group incurs a fixed penalty λ. Binary
  * searching λ finds the optimum for the exact-K version.
  *
@@ -92,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 
     // Solve for a given penalty λ: split into as many groups as useful, each
-    // group cost penalised by λ. Returns { cost, groups }.
+    // group cost penalized by λ. Returns { cost, groups }.
     const solveFor = (lambda: number): { cost: number; groups: number; starts: number[] } => {
         // Greedy-ish DP: dp[i] = min cost for prefix up to i.
         const dp = new Array<number>(n + 1).fill(Infinity);
