@@ -1,5 +1,5 @@
 /**
- * avl-tree.ts â€?AVL Tree (self-balancing BST)
+ * avl-tree.ts â€“ AVL Tree (self-balancing BST)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -34,7 +34,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The AVL Tree generator.
  *
- * @param input `{ inserts }` â€?values inserted in order.
+ * @param input `{ inserts }` â€“ values inserted in order.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { inserts?: number[] } | null) ?? {};
@@ -183,11 +183,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     for (const value of inserts) {
         root = insertNode(root, value);
-        yield buildFrame(`Inserted ${value} â€?rotations keep every node balanced.`);
+        yield buildFrame(`Inserted ${value} â€“ rotations keep every node balanced.`);
         step += 1;
     }
 
-    yield buildFrame(`AVL tree complete with ${inserts.length} values â€?height is O(log n).`);
+    yield buildFrame(`AVL tree complete with ${inserts.length} values â€“ height is O(log n).`);
 }
 
 /** The AVL Tree module, registered with the engine. */
