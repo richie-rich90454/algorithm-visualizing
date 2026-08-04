@@ -21,7 +21,7 @@
  *   Space: O(n²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The interval cell being solved is YELLOW (comparing).
  *   - The restricted split range is PINK (highlight).
