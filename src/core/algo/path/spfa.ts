@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * SPFA is an optimisation of Bellman-Ford that uses a queue. Instead of
+ * SPFA is an optimization of Bellman-Ford that uses a queue. Instead of
  * relaxing every edge in every round, it only relaxes edges leaving vertices
  * whose own distance changed recently. A vertex is enqueued when it improves;
  * when dequeued, its outgoing edges are relaxed. This typically visits far
@@ -180,7 +180,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Reconstruct and colour the shortest path.
+    // Reconstruct and color the shortest path.
     const path: string[] = [];
     if (!hasNegativeCycle && dist.get(target) !== Infinity) {
         let cursor = target;
