@@ -17,7 +17,7 @@
  *   Space: O(digits)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The digit position being processed is YELLOW (comparing).
  *   - Accepted digits are GREEN (sorted).
