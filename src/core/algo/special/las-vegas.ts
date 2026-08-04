@@ -1,11 +1,11 @@
 /**
- * las-vegas.ts – Las Vegas Algorithm (randomised quicksort)
+ * las-vegas.ts – Las Vegas Algorithm (randomized quicksort)
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * A Las Vegas algorithm is randomised but always returns the correct answer –
- * only the running time is random. The classic example is randomised
+ * A Las Vegas algorithm is randomized but always returns the correct answer –
+ * only the running time is random. The classic example is randomized
  * quicksort: it picks a random pivot each partition, which makes bad inputs
  * unlikely rather than impossible. The worst case O(n²) still exists but only
  * with negligible probability; the expected time is O(n log n).
@@ -26,7 +26,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - "Randomise the input order, never the answer" is the idea.
+ *   - "Randomize the input order, never the answer" is the idea.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Recursive randomised quicksort.
+    // Recursive randomized quicksort.
     const quickSort = function* (lo: number, hi: number): Generator<VisualFrame, void, unknown> {
         if (lo >= hi) {
             return;
@@ -161,7 +161,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 /** The Las Vegas module, registered with the engine. */
 const module: AlgorithmModule = {
     id: "las-vegas",
-    name: "Las Vegas (Randomised Quicksort)",
+    name: "Las Vegas (Randomized Quicksort)",
     category: "sorting",
     complexity: { time: "O(n log n) expected", space: "O(log n)" },
     defaultInput: { array: [7, 2, 9, 1, 5, 8, 3] },
