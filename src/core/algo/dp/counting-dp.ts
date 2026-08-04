@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * Counting DPs count the number of ways to reach a state rather than optimise
+ * Counting DPs count the number of ways to reach a state rather than optimize
  * a value. The classic example: the number of ways to climb n stairs by
  * taking 1 or 2 steps at a time,
  *
