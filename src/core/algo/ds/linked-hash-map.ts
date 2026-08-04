@@ -1,5 +1,5 @@
 /**
- * linked-hash-map.ts â€?Linked Hash Map (insertion-ordered)
+ * linked-hash-map.ts â€“ Linked Hash Map (insertion-ordered)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Linked hash map â€?buckets above, insertion order [${order.join(", ")}] below.`,
+        description: `Linked hash map â€“ buckets above, insertion order [${order.join(", ")}] below.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { buckets, keys: keys.length },
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Linked hash map complete â€?the order chain is the doubly linked list.`,
+        description: `Linked hash map complete â€“ the order chain is the doubly linked list.`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { buckets, keys: keys.length },
