@@ -7,7 +7,7 @@
  * Merge sort is the archetypal divide-and-conquer sorting algorithm. It
  * recursively splits the array into halves until each piece is a single
  * element (trivially sorted), then merges the pieces back together so that
- * each merge produces a larger sorted run. The recursion naturally organises
+ * each merge produces a larger sorted run. The recursion naturally organizes
  * the work: split on the way down, merge on the way up.
  *
  * ---------------------------------------------------------------------------
