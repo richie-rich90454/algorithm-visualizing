@@ -19,7 +19,7 @@
  *   Space: O(d)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node being evaluated is YELLOW (comparing).
  *   - The best child at a MAX/MIN node is GREEN (sorted).
