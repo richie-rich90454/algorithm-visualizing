@@ -18,7 +18,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The tortoise position is YELLOW (comparing).
  *   - The hare position is PINK (highlight).
