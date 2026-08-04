@@ -8,7 +8,7 @@
  * `Arrays.sort` for objects. It scans the input once to find existing "runs"
  * (sequences that are already increasing, or decreasing – which it reverses),
  * then merges runs together using a stack that guarantees balanced merging
- * (the sizes are maintained so no run is dwarfed by its neighbour). Runs that
+ * (the sizes are maintained so no run is dwarfed by its neighbor). Runs that
  * are shorter than a minimum length are extended with a binary-insertion sort.
  *
  * The key insight: real-world data usually contains long already-sorted runs,
@@ -21,7 +21,7 @@
  *   Space: O(n) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - A natural run being identified is YELLOW (comparing).
  *   - Runs being merged are highlighted PINK (highlight).
