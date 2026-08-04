@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         neighbors.get(b)?.push([a, weight]);
     });
 
-    // Edge lookup for colouring.
+    // Edge lookup for coloring.
     const edgesByPair = new Map<string, VisualEdge>();
     edgeList.forEach(([a, b, weight], index) => {
         edgesByPair.set([a, b].sort().join("-"), {
