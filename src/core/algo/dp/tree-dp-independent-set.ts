@@ -21,7 +21,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node being processed is YELLOW (comparing).
  *   - Nodes selected in the set are GREEN (sorted).
