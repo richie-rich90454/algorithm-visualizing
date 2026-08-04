@@ -17,7 +17,7 @@
  *   Space: O(n·m) for the DP table
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - Non-zero DP cells are highlighted progressively.
