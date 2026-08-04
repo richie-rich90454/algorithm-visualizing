@@ -1,5 +1,5 @@
 /**
- * cyclic-buffer.ts â€?Cyclic Buffer (ring buffer)
+ * cyclic-buffer.ts â€“ Cyclic Buffer (ring buffer)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -33,7 +33,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * The Cyclic Buffer generator.
  *
- * @param input `{ capacity, writes }` â€?buffer capacity and values to write.
+ * @param input `{ capacity, writes }` â€“ buffer capacity and values to write.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { capacity?: number; writes?: number[] } | null) ?? {};
@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells((head - 1 + capacity) % capacity, read),
             edges: [],
-            description: `Wrote ${value} at slot ${(head - 1 + capacity) % capacity} â€?head wraps to ${head}.`,
+            description: `Wrote ${value} at slot ${(head - 1 + capacity) % capacity} â€“ head wraps to ${head}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { capacity, count, head },
