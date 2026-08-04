@@ -107,6 +107,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame();
         step += 1;
 
+        // Reset all edge states to idle before marking new active edges.
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
+
         // Enqueue every unvisited neighbour – they form the next level.
         for (const neighbour of adjacency[current] ?? []) {
             if (visited.has(neighbour)) {
