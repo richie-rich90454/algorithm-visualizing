@@ -20,7 +20,7 @@
  *   Space: O(n) auxiliary (bucket arrays during the recursive passes)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The digit group being processed is YELLOW (comparing).
  *   - Elements bucketed by their current digit are PINK (highlight).
