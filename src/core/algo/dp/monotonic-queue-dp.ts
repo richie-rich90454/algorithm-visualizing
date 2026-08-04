@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The dp cell being computed is YELLOW (comparing).
  *   - The deque contents are narrated.
