@@ -17,7 +17,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current centroid is YELLOW (comparing).
  *   - Its removal splits the tree into components (each tinted differently).
@@ -114,10 +114,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             component.push(current);
-            for (const neighbour of adjacency.get(current) ?? []) {
-                if (!removed.has(neighbour) && !seen.has(neighbour)) {
-                    seen.add(neighbour);
-                    queue.push(neighbour);
+            for (const neighbor of adjacency.get(current) ?? []) {
+                if (!removed.has(neighbor) && !seen.has(neighbor)) {
+                    seen.add(neighbor);
+                    queue.push(neighbor);
                 }
             }
         }
@@ -130,9 +130,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const size = new Map<string, number>();
         const computeSize = (node: string, parent: string): number => {
             let total = 1;
-            for (const neighbour of adjacency.get(node) ?? []) {
-                if (neighbour !== parent && !removed.has(neighbour)) {
-                    total += computeSize(neighbour, node);
+            for (const neighbor of adjacency.get(node) ?? []) {
+                if (neighbor !== parent && !removed.has(neighbor)) {
+                    total += computeSize(neighbor, node);
                 }
             }
             size.set(node, total);
@@ -143,11 +143,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         // Find the centroid: a node whose largest child component ≤ total/2.
         const total = component.length;
         const findCentroid = (node: string, parent: string): string => {
-            for (const neighbour of adjacency.get(node) ?? []) {
-                if (neighbour !== parent && !removed.has(neighbour)) {
-                    const childSize = size.get(neighbour) ?? 0;
+            for (const neighbor of adjacency.get(node) ?? []) {
+                if (neighbor !== parent && !removed.has(neighbor)) {
+                    const childSize = size.get(neighbor) ?? 0;
                     if (childSize > total / 2) {
-                        return findCentroid(neighbour, node);
+                        return findCentroid(neighbor, node);
                     }
                 }
             }
@@ -167,9 +167,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Recurse on each component left behind by the removal.
-        for (const neighbour of adjacency.get(centroid) ?? []) {
-            if (!removed.has(neighbour)) {
-                yield* decompose(neighbour);
+        for (const neighbor of adjacency.get(centroid) ?? []) {
+            if (!removed.has(neighbor)) {
+                yield* decompose(neighbor);
             }
         }
     };
@@ -193,7 +193,7 @@ const module: AlgorithmModule = {
     name: "Centroid Decomposition",
     category: "tree",
     complexity: { time: "O(V log V)", space: "O(V)" },
-    // The standard tree – the first centroid is B (or its neighbour).
+    // The standard tree – the first centroid is B (or its neighbor).
     defaultInput: {
         parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
         ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
