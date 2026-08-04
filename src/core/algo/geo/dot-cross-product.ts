@@ -11,7 +11,7 @@
  *   u×v   = u1·v2 − u2·v1            (signed area of the parallelogram)
  *
  * The sign of the cross product is the standard "orientation" test: whether v
- * is a clockwise or counter-clockwise turn from u. This visualisation draws
+ * is a clockwise or counter-clockwise turn from u. This visualization draws
  * two vectors and computes both products.
  *
  * ---------------------------------------------------------------------------
@@ -21,7 +21,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Vector u is drawn BLUE (active).
  *   - Vector v is drawn PINK (highlight).
