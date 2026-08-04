@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary – in place, not stable (a far swap can invert order)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The element currently being examined in the scan is YELLOW (comparing).
  *   - The running minimum of the current pass is PINK (highlight).
