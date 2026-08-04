@@ -18,7 +18,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The edge being relaxed is BLUE (active).
  *   - The vertex whose distance improved is YELLOW (comparing).
@@ -87,8 +87,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     dist.set(start, 0);
 
     // Flatten the weighted adjacency list into a plain edge list.
-    for (const [from, neighbours] of Object.entries(graph)) {
-        for (const [to, weight] of neighbours) {
+    for (const [from, neighbors] of Object.entries(graph)) {
+        for (const [to, weight] of neighbors) {
             edgeList.push({ from, to, weight });
         }
     }
