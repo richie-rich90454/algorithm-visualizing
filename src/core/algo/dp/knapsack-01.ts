@@ -19,7 +19,7 @@
  *   Space: O(n·W)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - The chosen item's cells are GREEN (sorted).
@@ -91,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const dp: number[][] = Array.from({ length: rows }, () => new Array<number>(cols).fill(0));
 
-    // Frame 0: the initialised table.
+    // Frame 0: the initialized table.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
