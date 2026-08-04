@@ -17,7 +17,7 @@
  *   Search:                     O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes are circles; "next" edges point right, "prev" edges point left.
  *   - The node being visited is YELLOW (comparing).
