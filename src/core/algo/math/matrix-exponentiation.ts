@@ -27,7 +27,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The Fibonacci matrix is the classic teaching example.
- *   - Generalises "recurrence → matrix → fast exponentiation".
+ *   - Generalizes "recurrence → matrix → fast exponentiation".
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
