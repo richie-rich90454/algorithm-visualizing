@@ -22,7 +22,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two probes (m1, m2) are YELLOW (comparing).
  *   - The surviving third of the interval is PINK (highlight).
