@@ -1,5 +1,5 @@
 /**
- * z-algorithm-on-tree.ts – Z-Algorithm generalised to trees
+ * z-algorithm-on-tree.ts – Z-Algorithm generalized to trees
  *
  * ---------------------------------------------------------------------------
  * What it does
