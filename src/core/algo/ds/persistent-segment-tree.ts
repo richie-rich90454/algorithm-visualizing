@@ -17,7 +17,7 @@
  *   Space:                   O(n log n) over all versions
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each version's root is labeled.
  *   - Cloned (new) nodes are GREEN (sorted).
