@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let right = 0;
 
     for (let i = 0; i < n; i += 1) {
-        // Initialise the arm from the mirror property.
+        // Initialize the arm from the mirror property.
         if (i < right) {
             const mirror = 2 * center - i;
             arm[i] = Math.min(right - i, arm[mirror] ?? 0);
