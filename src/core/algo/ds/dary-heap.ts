@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * A d-ary heap generalises the binary heap to d children per node. Larger d
+ * A d-ary heap generalizes the binary heap to d children per node. Larger d
  * makes the tree shallower (fewer sift-down levels) but each level checks
  * more children. With d = 4, the practical optimum for many workloads, the
  * heap is faster than the binary heap in practice because it touches fewer
