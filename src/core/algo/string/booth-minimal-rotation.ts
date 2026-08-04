@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The doubled string is shown as character boxes.
  *   - The current rotation candidate is YELLOW (comparing).
@@ -156,7 +156,7 @@ const module: AlgorithmModule = {
     name: "Booth's Minimal Rotation",
     category: "string",
     complexity: { time: "O(n)", space: "O(n)" },
-    // Rotating "cbbbaaa" minimises to "aaacbbb"-ish order.
+    // Rotating "cbbbaaa" minimizes to "aaacbbb"-ish order.
     defaultInput: { text: "cbbbaaa" },
     visualType: "text",
     run,
