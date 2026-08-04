@@ -1,5 +1,5 @@
 /**
- * unrolled-linked-list.ts �?Unrolled Linked List
+ * unrolled-linked-list.ts – Unrolled Linked List
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -12,8 +12,8 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Search:    O(n/B + B) �?O(√n) with B �?√n
- *   Insert:    O(n/B + B) �?may split a full node
+ *   Search:    O(n/B + B) ≈ O(√n) with B ≈ √n
+ *   Insert:    O(n/B + B) – may split a full node
  *   Space:     O(n)
  *
  * ---------------------------------------------------------------------------
