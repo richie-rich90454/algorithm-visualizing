@@ -6,21 +6,21 @@
  * ---------------------------------------------------------------------------
  * CSR is the industry-standard format for sparse graphs and matrices. It
  * stores the graph in three compact arrays: `rowPtr` (start index of each
- * vertex's neighbour list), `col` (the neighbour vertex ids), and `val`
- * (weights). Iterating a vertex's neighbours is a single contiguous range
+ * vertex's neighbor list), `col` (the neighbor vertex ids), and `val`
+ * (weights). Iterating a vertex's neighbors is a single contiguous range
  * scan, giving excellent cache behaviour.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   List neighbours: O(degree) – one contiguous slice
+ *   List neighbors: O(degree) – one contiguous slice
  *   Space:           O(V + E) – three arrays, no wasted cells
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The three arrays are shown as rows.
- *   - The neighbour slice of the inspected vertex is highlighted.
+ *   - The neighbor slice of the inspected vertex is highlighted.
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -109,11 +109,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Inspect a vertex's neighbour slice.
+    // Inspect a vertex's neighbor slice.
     const index = vertexIndex.get(inspect) ?? 0;
     const from = rowPtr[index] ?? 0;
     const to = rowPtr[index + 1] ?? 0;
-    const neighbours = col.slice(from, to).map((c) => vertices[c]);
+    const neighbors = col.slice(from, to).map((c) => vertices[c]);
 
     yield {
         stepNumber: step,
@@ -126,10 +126,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             })),
         ],
         edges: [],
-        description: `Neighbours of ${inspect}: [${neighbours.join(", ")}] – the contiguous slice col[${from}..${to}).`,
+        description: `Neighbours of ${inspect}: [${neighbors.join(", ")}] – the contiguous slice col[${from}..${to}).`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: { vertices: vertices.length, edges: edges.length, neighbours: neighbours.length },
+        meta: { vertices: vertices.length, edges: edges.length, neighbors: neighbors.length },
     };
     step += 1;
 
@@ -156,7 +156,7 @@ const module: AlgorithmModule = {
     id: "csr",
     name: "CSR (Compressed Sparse Row)",
     category: "data-structures",
-    complexity: { time: "O(degree) neighbours", space: "O(V + E)" },
+    complexity: { time: "O(degree) neighbors", space: "O(V + E)" },
     defaultInput: {
         vertices: ["A", "B", "C", "D"],
         edges: [
