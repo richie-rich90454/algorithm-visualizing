@@ -17,9 +17,9 @@
  *   Space:          O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each binomial tree is drawn; orders are labelled.
+ *   - Each binomial tree is drawn; orders are labeled.
  *   - The tree being merged is highlighted.
  *
  * ---------------------------------------------------------------------------
