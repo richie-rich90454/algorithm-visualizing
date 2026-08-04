@@ -1,5 +1,5 @@
 /**
- * fenwick-tree.ts â€“ Fenwick Tree (Binary Indexed Tree)
+ * fenwick-tree.ts â€?Fenwick Tree (Binary Indexed Tree)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -16,7 +16,7 @@
  *   Space:                     O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The tree array is shown as cells.
  *   - The cells updated / summed are YELLOW (comparing).
@@ -33,7 +33,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  * Build a row of cells for the tree array.
  *
  * @param tree The Fenwick tree.
- * @param states Optional index â†’ state overrides.
+ * @param states Optional index â†?state overrides.
  * @returns Cell entities in a single row (index 1..n).
  */
 function makeCells(tree: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -54,7 +54,7 @@ function makeCells(tree: number[], states: Map<number, EntityState> = new Map())
 /**
  * The Fenwick Tree generator.
  *
- * @param input `{ array, update }` â€“ the array and an update to apply.
+ * @param input `{ array, update }` â€?the array and an update to apply.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { array?: number[]; update?: [number, number] } | null) ?? {};
