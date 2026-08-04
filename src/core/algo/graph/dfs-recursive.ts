@@ -113,6 +113,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
 
+            // Reset all edge states to idle before marking the new active edge.
+            for (const edge of edges) {
+                edge.state = "idle";
+            }
+
             // Highlight the edge we are about to cross.
             const edge = edgeById.get(`edge-${current}-${neighbour}`);
             if (edge) {
