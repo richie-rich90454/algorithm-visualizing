@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The formal logarithm and exponential of a power series generalise the usual
+ * The formal logarithm and exponential of a power series generalize the usual
  * series:
  *
  *   ln(A(x)) = ∫ A'(x) / A(x) dx
