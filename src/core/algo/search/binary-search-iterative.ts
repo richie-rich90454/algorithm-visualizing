@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary – the iterative version keeps just two pointers
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The middle element is YELLOW (comparing).
  *   - The active search interval is tinted PINK (highlight) – it visibly
