@@ -21,7 +21,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Source-tree vertices are BLUE (active).
  *   - Sink-tree vertices are PINK (highlight).
@@ -134,10 +134,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (!current) {
                 continue;
             }
-            for (const neighbour of neighbourMap.get(current) ?? []) {
-                if (!srcParent.has(neighbour) && (cap.get(`${current}→${neighbour}`) ?? 0) > 0) {
-                    srcParent.set(neighbour, current);
-                    srcQueue.push(neighbour);
+            for (const neighbor of neighbourMap.get(current) ?? []) {
+                if (!srcParent.has(neighbor) && (cap.get(`${current}→${neighbor}`) ?? 0) > 0) {
+                    srcParent.set(neighbor, current);
+                    srcQueue.push(neighbor);
                 }
             }
         }
@@ -152,17 +152,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (!current) {
                 continue;
             }
-            for (const neighbour of neighbourMap.get(current) ?? []) {
-                // Reverse edge: current ← neighbour has capacity when
-                // neighbour→current has residual capacity.
-                if (!snkParent.has(neighbour) && (cap.get(`${neighbour}→${current}`) ?? 0) > 0) {
-                    snkParent.set(neighbour, current);
-                    snkQueue.push(neighbour);
+            for (const neighbor of neighbourMap.get(current) ?? []) {
+                // Reverse edge: current ← neighbor has capacity when
+                // neighbor→current has residual capacity.
+                if (!snkParent.has(neighbor) && (cap.get(`${neighbor}→${current}`) ?? 0) > 0) {
+                    snkParent.set(neighbor, current);
+                    snkQueue.push(neighbor);
                 }
             }
         }
 
-        // Colour the two trees.
+        // Color the two trees.
         resetEdgeStates();
         for (const v of srcParent.keys()) {
             const node = nodes.find((n) => n.label === v);
@@ -276,7 +276,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Saturate-colour edges.
+    // Saturate-color edges.
     resetEdgeStates();
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
