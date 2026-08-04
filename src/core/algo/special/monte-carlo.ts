@@ -29,7 +29,7 @@
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
-/** Grid size for visualising sampled points. */
+/** Grid size for visualizing sampled points. */
 const GRID = 10;
 
 /**
