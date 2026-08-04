@@ -1,5 +1,5 @@
 /**
- * ford-fulkerson.ts â€?Ford-Fulkerson Algorithm (Maximum Flow)
+ * ford-fulkerson.ts â€“ Ford-Fulkerson Algorithm (Maximum Flow)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -17,7 +17,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(E Ã— f) where f is the maximum flow value â€?with integer
+ *   Time:  O(E Ã— f) where f is the maximum flow value â€“ with integer
  *          capacities the number of augmentations is bounded by f
  *   Space: O(V + E)
  *
@@ -71,13 +71,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // at 0 so flow can later be pushed back.
     const cap = new Map<string, number>();
     for (const [u, v, capacity] of edgeList) {
-        cap.set(`${u}â†?{v}`, capacity);
-        if (!cap.has(`${v}â†?{u}`)) {
-            cap.set(`${v}â†?{u}`, 0);
+        cap.set(`${u}â†’${v}`, capacity);
+        if (!cap.has(`${v}â†’${u}`)) {
+            cap.set(`${v}â†’${u}`, 0);
         }
     }
 
-    // Neighbor list for the residual search (u â†?all possible v with an edge).
+    // Neighbour list for the residual search (u â†’ all possible v with an edge).
     const neighborMap = new Map<string, string[]>();
     for (const [u, v] of edgeList) {
         const listU = neighborMap.get(u) ?? [];
@@ -91,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Flow pushed along each original edge.
     const flow = new Map<string, number>();
     for (const [u, v] of edgeList) {
-        flow.set(`${u}â†?{v}`, 0);
+        flow.set(`${u}â†’${v}`, 0);
     }
 
     let step = 0;
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Finding max flow from ${source} to ${sink} â€?looking for augmenting paths.`,
+        description: `Finding max flow from ${source} to ${sink} â€“ looking for augmenting paths.`,
         codeLineNumber: 0,
         layout: "graph",
         meta: { flow: 0 },
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edgeList.forEach(([u, v, capacity], index) => {
             const edge = edges[index];
             if (edge) {
-                edge.label = `${flow.get(`${u}â†?{v}`) ?? 0}/${capacity}`;
+                edge.label = `${flow.get(`${u}â†’${v}`) ?? 0}/${capacity}`;
             }
         });
     };
@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             for (const neighbor of neighborMap.get(current) ?? []) {
-                if (!visited.has(neighbor) && (cap.get(`${current}â†?{neighbor}`) ?? 0) > 0) {
+                if (!visited.has(neighbor) && (cap.get(`${current}â†’${neighbor}`) ?? 0) > 0) {
                     visited.add(neighbor);
                     parent.set(neighbor, current);
                     queue.push(neighbor);
@@ -153,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
 
-        // No augmenting path â€?the flow is maximal.
+        // No augmenting path â€“ the flow is maximal.
         if (!parent.has(sink)) {
             break;
         }
@@ -171,7 +171,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < path.length - 1; i += 1) {
             const u = path[i] as string;
             const v = path[i + 1] as string;
-            bottleneck = Math.min(bottleneck, cap.get(`${u}â†?{v}`) ?? 0);
+            bottleneck = Math.min(bottleneck, cap.get(`${u}â†’${v}`) ?? 0);
         }
 
         // Highlight the augmenting path edges.
@@ -191,7 +191,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Augmenting path ${path.join(" â†?")} â€?bottleneck ${bottleneck}.`,
+            description: `Augmenting path ${path.join(" â†’ ")} â€“ bottleneck ${bottleneck}.`,
             codeLineNumber: 2,
             layout: "graph",
             meta: { flow: totalFlow },
@@ -202,15 +202,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < path.length - 1; i += 1) {
             const u = path[i] as string;
             const v = path[i + 1] as string;
-            cap.set(`${u}â†?{v}`, (cap.get(`${u}â†?{v}`) ?? 0) - bottleneck);
-            cap.set(`${v}â†?{u}`, (cap.get(`${v}â†?{u}`) ?? 0) + bottleneck);
+            cap.set(`${u}â†’${v}`, (cap.get(`${u}â†’${v}`) ?? 0) - bottleneck);
+            cap.set(`${v}â†’${u}`, (cap.get(`${v}â†’${u}`) ?? 0) + bottleneck);
             // Record flow on the original forward edge (if uâ†’v is original).
-            if (flow.has(`${u}â†?{v}`)) {
-                flow.set(`${u}â†?{v}`, (flow.get(`${u}â†?{v}`) ?? 0) + bottleneck);
+            if (flow.has(`${u}â†’${v}`)) {
+                flow.set(`${u}â†’${v}`, (flow.get(`${u}â†’${v}`) ?? 0) + bottleneck);
             }
             // If this was a reverse edge, cancel flow on the original edge.
-            if (flow.has(`${v}â†?{u}`)) {
-                flow.set(`${v}â†?{u}`, Math.max(0, (flow.get(`${v}â†?{u}`) ?? 0) - bottleneck));
+            if (flow.has(`${v}â†’${u}`)) {
+                flow.set(`${v}â†’${u}`, Math.max(0, (flow.get(`${v}â†’${u}`) ?? 0) - bottleneck));
             }
         }
 
@@ -222,7 +222,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Pushed ${bottleneck} units â€?total flow is now ${totalFlow}.`,
+            description: `Pushed ${bottleneck} units â€“ total flow is now ${totalFlow}.`,
             codeLineNumber: 3,
             layout: "graph",
             meta: { flow: totalFlow, augmentations },
@@ -230,14 +230,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Color fully-saturated original edges.
+    // Colour fully-saturated original edges.
     resetEdgeStates();
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
         if (!u || !v) {
             continue;
         }
-        if ((flow.get(`${u}â†?{v}`) ?? 0) >= capacity) {
+        if ((flow.get(`${u}â†’${v}`) ?? 0) >= capacity) {
             const edge = edges[i];
             if (edge) {
                 edge.state = "path";
