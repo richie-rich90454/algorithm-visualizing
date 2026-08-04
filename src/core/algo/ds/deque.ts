@@ -16,7 +16,7 @@
  *   Space:                   O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The deque is a row of cells; front and rear are labelled.
  *   - Push-front / push-back are shown in different colours.
