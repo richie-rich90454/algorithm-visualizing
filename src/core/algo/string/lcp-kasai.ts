@@ -8,7 +8,7 @@
  * of the longest common prefix of those two suffixes. Kasai's algorithm
  * computes it in O(n) using a beautiful invariant: instead of recomputing LCPs
  * from scratch, it walks the suffixes in *text order* and observes that the
- * LCP of suffix i and its SA-neighbour is at least (LCP of suffix i+1 minus
+ * LCP of suffix i and its SA-neighbor is at least (LCP of suffix i+1 minus
  * one). This reuse makes the algorithm linear.
  *
  * ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The suffix pair being compared is YELLOW (comparing).
  *   - The common prefix characters are PINK (highlight).
