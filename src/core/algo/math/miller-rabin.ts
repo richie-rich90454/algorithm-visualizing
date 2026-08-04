@@ -17,7 +17,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The witness being tested is YELLOW (comparing).
  *   - The squaring chain is shown step by step.
