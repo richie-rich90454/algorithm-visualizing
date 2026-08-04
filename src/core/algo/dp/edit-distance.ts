@@ -18,7 +18,7 @@
  *   Space: O(n·m)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - A substitution/insertion/delete cell is RED (swapped).
@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         dp[0][j] = j;
     }
 
-    // Frame 0: the initialised table.
+    // Frame 0: the initialized table.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
