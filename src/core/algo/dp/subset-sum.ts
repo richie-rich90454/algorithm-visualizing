@@ -91,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const dp: number[][] = Array.from({ length: rows }, () => new Array<number>(cols).fill(0));
     dp[0][0] = 1;
 
-    // Frame 0: the initialised table (dp[0][0] = 1).
+    // Frame 0: the initialized table (dp[0][0] = 1).
     yield {
         stepNumber: step,
         entities: makeCells(dp),
