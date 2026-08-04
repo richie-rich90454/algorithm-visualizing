@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeDigits(digits, digits.length - 1),
         edges: [],
-        description: `Digit DP states memoised – ${count} numbers from 0 to ${n} avoid digit 4.`,
+        description: `Digit DP states memoized – ${count} numbers from 0 to ${n} avoid digit 4.`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { count },
