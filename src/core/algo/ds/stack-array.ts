@@ -1,5 +1,5 @@
 /**
- * stack-array.ts â€?Stack (array-based)
+ * stack-array.ts â€“ Stack (array-based)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -33,8 +33,8 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * Build a column of stack cells.
  *
- * @param items The stack contents (bottom â†?top).
- * @param states Optional index â†?state overrides.
+ * @param items The stack contents (bottom â†’ top).
+ * @param states Optional index â†’ state overrides.
  * @returns Cell entities in a single column (row = position).
  */
 function makeStack(items: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeStack(stack, states),
             edges: [],
-            description: `Pushed ${value} â€?stack is now [${stack.join(", ")}].`,
+            description: `Pushed ${value} â€“ stack is now [${stack.join(", ")}].`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { size: stack.length },
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeStack([...stack, popped ?? 0], states),
             edges: [],
-            description: `Popped ${popped} (LIFO â€?the most recently pushed).`,
+            description: `Popped ${popped} (LIFO â€“ the most recently pushed).`,
             codeLineNumber: 3,
             layout: "grid",
             meta: { size: stack.length },
