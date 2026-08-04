@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The exponent's binary bits are shown as cells.
  *   - The current bit being processed is YELLOW (comparing).
