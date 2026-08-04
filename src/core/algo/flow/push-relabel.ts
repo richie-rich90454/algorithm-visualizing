@@ -185,6 +185,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                             e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
                     );
                     if (edge) {
+                        for (const e of edges) {
+                            e.state = "idle";
+                        }
                         edge.state = "active";
                     }
                     refreshNodes();
