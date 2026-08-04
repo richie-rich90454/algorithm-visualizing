@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The vertex analogue of a bridge.
+ *   - The vertex analog of a bridge.
  *   - Single points of failure in a network.
  *   - The `>=` (vs `>` for bridges) is the crucial difference to highlight.
  */
