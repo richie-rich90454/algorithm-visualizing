@@ -12,7 +12,7 @@
  * scheme used by most production quick sort implementations.
  *
  * The pivot is the *middle* element, which protects against the classic
- * worst-case quadratic behaviour on already-sorted input.
+ * worst-case quadratic behavior on already-sorted input.
  *
  * ---------------------------------------------------------------------------
  * Complexity
