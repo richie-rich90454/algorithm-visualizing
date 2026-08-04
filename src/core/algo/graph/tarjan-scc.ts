@@ -21,7 +21,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes on the DFS stack are YELLOW (comparing).
  *   - Finished SCCs are coloured per component (sorted / path / highlight).
@@ -31,7 +31,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - More efficient than Kosaraju (one pass, no reverse graph).
- *   - The `lowlink` idea generalises to bridges and articulation points.
+ *   - The `lowlink` idea generalizes to bridges and articulation points.
  */
 
 import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
@@ -109,17 +109,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`);
         step += 1;
 
-        for (const neighbour of adjacency[v] ?? []) {
-            if (index.get(neighbour) === undefined) {
+        for (const neighbor of adjacency[v] ?? []) {
+            if (index.get(neighbor) === undefined) {
                 // Tree edge: recurse, then update lowlink from the child.
-                yield buildFrame(`Descending into ${neighbour}.`);
+                yield buildFrame(`Descending into ${neighbor}.`);
                 step += 1;
-                yield* dfs(neighbour);
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbour) ?? 0));
-            } else if (onStack.has(neighbour)) {
+                yield* dfs(neighbor);
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbor) ?? 0));
+            } else if (onStack.has(neighbor)) {
                 // Back edge to a vertex still on the stack: update lowlink.
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbour) ?? 0));
-                yield buildFrame(`Back edge from ${v} to ${neighbour}.`);
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbor) ?? 0));
+                yield buildFrame(`Back edge from ${v} to ${neighbor}.`);
                 step += 1;
             }
         }
@@ -137,11 +137,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             } while (popped !== v && popped !== undefined);
 
             components.push(component);
-            const colour = componentColours[(components.length - 1) % componentColours.length];
+            const color = componentColors[(components.length - 1) % componentColors.length];
             for (const member of component) {
                 const memberNode = nodeById.get(`node-${member}`);
                 if (memberNode) {
-                    memberNode.state = colour;
+                    memberNode.state = color;
                 }
             }
             yield buildFrame(`Popped SCC #${components.length}: {${component.join(", ")}}.`);
