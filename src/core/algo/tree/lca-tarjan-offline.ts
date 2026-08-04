@@ -151,6 +151,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 (e) => e.sourceId === `node-${node}` && e.targetId === `node-${child}`,
             );
             if (edge) {
+                for (const e of edges) {
+                    e.state = "idle";
+                }
                 edge.state = "active";
             }
             yield buildFrame(`Descending into ${child}.`);
