@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The Möbius function μ(n) is defined by prime factorisation: μ(1) = 1,
+ * The Möbius function μ(n) is defined by prime factorization: μ(1) = 1,
  * μ(n) = 0 if n has a squared prime factor, and μ(n) = (−1)^k when n is the
  * product of k distinct primes. Möbius inversion is the identity
  *
