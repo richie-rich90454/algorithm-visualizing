@@ -22,7 +22,7 @@
  *   Space: O(V + E) for the adjacency bookkeeping
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The edge currently being traversed is BLUE (active).
  *   - Edges already in the circuit are GREEN (sorted).
@@ -63,8 +63,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // A mutable work copy of the adjacency so edges can be "consumed".
     const remaining: Record<string, string[]> = {};
-    for (const [v, neighbours] of Object.entries(adjacency)) {
-        remaining[v] = [...neighbours];
+    for (const [v, neighbors] of Object.entries(adjacency)) {
+        remaining[v] = [...neighbors];
     }
 
     let step = 0;
@@ -130,8 +130,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             break;
         }
 
-        const nextNeighbour = remaining[current]?.pop();
-        if (nextNeighbour === undefined) {
+        const nextNeighbor = remaining[current]?.pop();
+        if (nextNeighbor === undefined) {
             // No more edges from here: the current vertex is done, pop it into
             // the circuit (this reverses the discovery order, which is the
             // classic Hierholzer final step).
@@ -140,14 +140,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             continue;
         }
 
-        // Traverse the edge current → nextNeighbour.
-        const edge = edgeById.get(`edge-${current}-${nextNeighbour}`);
+        // Traverse the edge current → nextNeighbor.
+        const edge = edgeById.get(`edge-${current}-${nextNeighbor}`);
         if (edge) {
             edge.state = "sorted";
         }
 
         const currentNode = nodeById.get(`node-${current}`);
-        const nextNode = nodeById.get(`node-${nextNeighbour}`);
+        const nextNode = nodeById.get(`node-${nextNeighbor}`);
         if (currentNode) {
             currentNode.state = "visited";
         }
@@ -155,10 +155,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             nextNode.state = "comparing";
         }
 
-        yield buildFrame(`Traversing edge ${current} → ${nextNeighbour}.`);
+        yield buildFrame(`Traversing edge ${current} → ${nextNeighbor}.`);
         step += 1;
 
-        stack.push(nextNeighbour);
+        stack.push(nextNeighbor);
     }
 
     // The circuit built by popping is reversed; reverse it for display order.
