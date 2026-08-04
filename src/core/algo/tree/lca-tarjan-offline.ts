@@ -21,7 +21,7 @@
  * Visualisation mapping
  * ---------------------------------------------------------------------------
  *   - The node currently being finished by the DFS is YELLOW (comparing).
- *   - Merged components are hinted by node colour.
+ *   - Merged components are hinted by node color.
  *   - Answered LCA nodes are GREEN (sorted).
  *
  * ---------------------------------------------------------------------------
