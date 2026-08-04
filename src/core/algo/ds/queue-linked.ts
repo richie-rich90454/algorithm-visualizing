@@ -18,7 +18,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Nodes form a horizontal chain; front and rear are labelled.
+ *   - Nodes form a horizontal chain; front and rear are labeled.
  *   - The enqueued node is YELLOW (comparing).
  *   - The dequeued node is GREEN (sorted).
  *
@@ -31,7 +31,7 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a linked-queue visualisation.
+ * Build a linked-queue visualization.
  *
  * @param items The queue contents (front → rear).
  * @returns { nodes, edges } entity pairs.
