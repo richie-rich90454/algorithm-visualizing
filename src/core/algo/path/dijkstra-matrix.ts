@@ -10,7 +10,7 @@
  *
  *   1. Picks the unsettled vertex with the smallest known distance.
  *   2. Settles it (its distance is now final).
- *   3. Relaxes each of its outgoing edges, possibly improving neighbours'
+ *   3. Relaxes each of its outgoing edges, possibly improving neighbors'
  *      tentative distances.
  *
  * This "matrix" variant scans the whole unsettled set to find the minimum on
@@ -23,7 +23,7 @@
  *   Space: O(V) for the distance/predecessor arrays
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being settled is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -153,25 +153,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const [neighbour, weight] of graph[current] ?? []) {
+        for (const [neighbor, weight] of graph[current] ?? []) {
             const alt = bestDist + weight;
-            if (alt < (dist.get(neighbour) ?? Infinity)) {
-                dist.set(neighbour, alt);
-                predecessor.set(neighbour, current);
+            if (alt < (dist.get(neighbor) ?? Infinity)) {
+                dist.set(neighbor, alt);
+                predecessor.set(neighbor, current);
             }
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.state = "visited";
-                neighbourNode.label = String(dist.get(neighbour) ?? Infinity);
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.state = "visited";
+                neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${current} → ${neighbour} (weight ${weight}).`);
+            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}).`);
             step += 1;
         }
 
