@@ -17,7 +17,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two numbers are shown as bars.
  *   - The current pair being reduced is YELLOW (comparing).
