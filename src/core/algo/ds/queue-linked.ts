@@ -16,7 +16,7 @@
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes form a horizontal chain; front and rear are labelled.
  *   - The enqueued node is YELLOW (comparing).
