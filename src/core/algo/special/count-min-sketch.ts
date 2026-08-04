@@ -17,7 +17,7 @@
  *   Space:             O(w·d)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The counter matrix is shown.
  *   - The d cells consulted for an estimate are highlighted.
