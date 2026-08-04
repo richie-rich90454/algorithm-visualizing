@@ -18,7 +18,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being processed in topological order is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -106,8 +106,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of vertices) {
         inDegree.set(v, 0);
     }
-    for (const neighbours of Object.values(graph)) {
-        for (const [to] of neighbours) {
+    for (const neighbors of Object.values(graph)) {
+        for (const [to] of neighbors) {
             inDegree.set(to, (inDegree.get(to) ?? 0) + 1);
         }
     }
@@ -120,10 +120,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             continue;
         }
         topo.push(current);
-        for (const [neighbour] of graph[current] ?? []) {
-            inDegree.set(neighbour, (inDegree.get(neighbour) ?? 0) - 1);
-            if ((inDegree.get(neighbour) ?? 0) === 0) {
-                queue.push(neighbour);
+        for (const [neighbor] of graph[current] ?? []) {
+            inDegree.set(neighbor, (inDegree.get(neighbor) ?? 0) - 1);
+            if ((inDegree.get(neighbor) ?? 0) === 0) {
+                queue.push(neighbor);
             }
         }
     }
@@ -159,24 +159,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const [neighbour, weight] of graph[current] ?? []) {
+        for (const [neighbor, weight] of graph[current] ?? []) {
             const alt = currentDist + weight;
-            if (alt < (dist.get(neighbour) ?? Infinity)) {
-                dist.set(neighbour, alt);
-                predecessor.set(neighbour, current);
+            if (alt < (dist.get(neighbor) ?? Infinity)) {
+                dist.set(neighbor, alt);
+                predecessor.set(neighbor, current);
             }
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.label = String(dist.get(neighbour) ?? Infinity);
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbour}.`);
+            yield buildFrame(`Relaxing ${current} → ${neighbor}.`);
             step += 1;
         }
 
