@@ -30,7 +30,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The exponent-inverse trick is the heart to teach.
- *   - Generalises Tonelli-Shanks (the k = 2 case).
+ *   - Generalizes Tonelli-Shanks (the k = 2 case).
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
