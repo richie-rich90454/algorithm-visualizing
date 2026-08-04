@@ -19,7 +19,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The polygon is drawn as a closed polyline.
  *   - The edge contributing the current term is YELLOW (comparing).
