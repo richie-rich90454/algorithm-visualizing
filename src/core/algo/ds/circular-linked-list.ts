@@ -1,11 +1,11 @@
 /**
- * circular-linked-list.ts â€?Circular Linked List
+ * circular-linked-list.ts â€“ Circular Linked List
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
  * A circular linked list connects the last node back to the first, forming a
- * ring. There is no "head" or "tail" in the ordinary sense â€?any node can be
+ * ring. There is no "head" or "tail" in the ordinary sense â€“ any node can be
  * the entry point. This makes the list ideal for round-robin schedulers and
  * game loops where you must cycle through elements forever.
  *
@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Circular linked list: [${values.join(" â†?")}] â†?back to ${values[0]}.`,
+        description: `Circular linked list: [${values.join(" â†’ ")}] â†’ back to ${values[0]}.`,
         codeLineNumber: 0,
         layout: "graph",
         meta: { size: values.length },
@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: current,
             edges: edges.map((e) => ({ ...e })),
-            description: `Cycling â€?visiting ${values[i]}.`,
+            description: `Cycling â€“ visiting ${values[i]}.`,
             codeLineNumber: 2,
             layout: "graph",
             meta: { size: values.length },
@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Full cycle complete â€?the last node points back to ${values[0]}.`,
+        description: `Full cycle complete â€“ the last node points back to ${values[0]}.`,
         codeLineNumber: 3,
         layout: "graph",
         meta: { size: values.length },
