@@ -17,7 +17,7 @@
  *   Space: O(log n) stack depth – each recursive call holds a frame
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The middle element of the current call is YELLOW (comparing).
  *   - The surviving half (chosen for the next call) is PINK (highlight).
@@ -26,7 +26,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - Same asymptotic behaviour as the iterative version, at the cost of
+ *   - Same asymptotic behavior as the iterative version, at the cost of
  *     O(log n) call-stack space.
  *   - The recursion depth here is tiny (log n), so there is no stack-overflow
  *     worry for classroom-sized inputs.
