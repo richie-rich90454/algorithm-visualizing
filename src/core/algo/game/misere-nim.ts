@@ -18,7 +18,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each pile is shown as a column of stones.
  *   - Losing positions are RED (swapped); winning positions GREEN (sorted).
@@ -32,7 +32,7 @@
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a pile visualisation: each pile is a column of cells.
+ * Build a pile visualization: each pile is a column of cells.
  *
  * @param piles The pile sizes.
  * @returns Cell entities in a grid (rows = max pile, cols = piles).
@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Colour the position.
+    // Color the position.
     const resultGrid = makeGrid(piles);
     for (const cell of resultGrid) {
         if (cell.value === 1) {
