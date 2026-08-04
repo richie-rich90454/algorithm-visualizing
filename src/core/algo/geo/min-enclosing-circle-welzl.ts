@@ -196,7 +196,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: [...entities.map((e) => ({ ...e })), ...circleNodes],
         edges: circleEdges,
-        description: `Minimum enclosing circle: centre (${result.x.toFixed(2)}, ${result.y.toFixed(2)}), radius ${result.r.toFixed(2)}.`,
+        description: `Minimum enclosing circle: center (${result.x.toFixed(2)}, ${result.y.toFixed(2)}), radius ${result.r.toFixed(2)}.`,
         codeLineNumber: 2,
         layout: "point",
         meta: { center: [result.x, result.y], radius: result.r },
@@ -209,7 +209,7 @@ const module: AlgorithmModule = {
     name: "Min Enclosing Circle (Welzl)",
     category: "geometry",
     complexity: { time: "O(n) expected", space: "O(n)" },
-    // Points spread around a centre so the circle is well-defined.
+    // Points spread around a center so the circle is well-defined.
     defaultInput: {
         points: [
             [0, 0],
