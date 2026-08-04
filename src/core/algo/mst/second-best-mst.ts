@@ -21,7 +21,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The MST edges are CYAN (path).
  *   - The non-tree edge being tested is YELLOW (comparing).
@@ -195,11 +195,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (current === v) {
                 break;
             }
-            for (const [neighbour] of mstAdj.get(current) ?? []) {
-                if (!visited.has(neighbour)) {
-                    visited.add(neighbour);
-                    cameFrom.set(neighbour, current);
-                    queue.push(neighbour);
+            for (const [neighbor] of mstAdj.get(current) ?? []) {
+                if (!visited.has(neighbor)) {
+                    visited.add(neighbor);
+                    cameFrom.set(neighbor, current);
+                    queue.push(neighbor);
                 }
             }
         }
