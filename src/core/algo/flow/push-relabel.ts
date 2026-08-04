@@ -7,8 +7,8 @@
  * Push-relabel is a *preflow-push* max-flow algorithm. Unlike the
  * augmenting-path algorithms, it never searches for s→t paths. Instead, every
  * vertex maintains an excess of flow and a height; flow is *pushed* from a
- * vertex to a lower neighbour, and when a vertex has excess but no lower
- * neighbour it is *relabelled* (its height increases). When all excess has
+ * vertex to a lower neighbor, and when a vertex has excess but no lower
+ * neighbor it is *relabeled* (its height increases). When all excess has
  * drained into the sink, the flow is maximal.
  *
  * ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being processed (with excess) is YELLOW (comparing).
  *   - The edge carrying a push is BLUE (active).
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 
     // ------------------------------------------------------------------
-    // Initialisation: saturate all source edges into the preflow.
+    // Initialization: saturate all source edges into the preflow.
     // ------------------------------------------------------------------
     height.set(source, vertices.length);
     for (const [u, v] of edgeList) {
@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Initialised – saturated all source edges into the preflow.",
+        description: "Initialized – saturated all source edges into the preflow.",
         codeLineNumber: 2,
         layout: "graph",
         meta: { pushes, relabels },
@@ -161,28 +161,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             break;
         }
 
-        // Try to push to a neighbour of strictly lower height.
+        // Try to push to a neighbor of strictly lower height.
         let pushed = false;
         const neighbours = neighbourMap.get(current) ?? [];
-        for (const neighbour of neighbours) {
-            if ((height.get(neighbour) ?? 0) < (height.get(current) ?? 0)) {
-                const available = cap.get(`${current}→${neighbour}`) ?? 0;
+        for (const neighbor of neighbours) {
+            if ((height.get(neighbor) ?? 0) < (height.get(current) ?? 0)) {
+                const available = cap.get(`${current}→${neighbor}`) ?? 0;
                 if (available > 0) {
                     const amount = Math.min(excess.get(current) ?? 0, available);
-                    cap.set(`${current}→${neighbour}`, available - amount);
+                    cap.set(`${current}→${neighbor}`, available - amount);
                     cap.set(
-                        `${neighbour}→${current}`,
-                        (cap.get(`${neighbour}→${current}`) ?? 0) + amount,
+                        `${neighbor}→${current}`,
+                        (cap.get(`${neighbor}→${current}`) ?? 0) + amount,
                     );
                     excess.set(current, (excess.get(current) ?? 0) - amount);
-                    excess.set(neighbour, (excess.get(neighbour) ?? 0) + amount);
+                    excess.set(neighbor, (excess.get(neighbor) ?? 0) + amount);
                     pushes += 1;
                     pushed = true;
 
                     // Highlight the pushed edge.
                     const edge = edges.find(
                         (e) =>
-                            e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                            e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
                     );
                     if (edge) {
                         for (const e of edges) {
@@ -195,7 +195,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         stepNumber: step,
                         entities: nodes.map((n) => ({ ...n })),
                         edges: edges.map((e) => ({ ...e })),
-                        description: `Pushed ${amount} from ${current} to ${neighbour}.`,
+                        description: `Pushed ${amount} from ${current} to ${neighbor}.`,
                         codeLineNumber: 3,
                         layout: "graph",
                         meta: { pushes, relabels },
@@ -215,7 +215,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: nodes.map((n) => ({ ...n })),
                 edges: edges.map((e) => ({ ...e })),
-                description: `Relabelled ${current} to height ${height.get(current)}.`,
+                description: `Relabeled ${current} to height ${height.get(current)}.`,
                 codeLineNumber: 4,
                 layout: "graph",
                 meta: { pushes, relabels },
@@ -230,7 +230,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         .filter((v) => v !== source)
         .reduce((sum, v) => sum + Math.max(0, excess.get(v) ?? 0), 0);
 
-    // Reset edge labels to final flow/capacity and saturate-colour edges.
+    // Reset edge labels to final flow/capacity and saturate-color edges.
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
         if (!u || !v) {
