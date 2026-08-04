@@ -11,7 +11,7 @@
  *   - Bottom margin of 20px; vertical margins total 40px of headroom.
  *
  * The function mutates the frame's entities in place and returns the same
- * frame, which keeps the visualiser's render loop free of bookkeeping.
+ * frame, which keeps the visualizer's render loop free of bookkeeping.
  */
 
 import type { VisualFrame } from "@/types";
@@ -60,7 +60,7 @@ export function applyArrayLayout(frame: VisualFrame, width: number, height: numb
     // delta arrays) also get proportional, visible bars.
     const maxAbs = Math.max(1, ...entities.map((e) => Math.abs(Number(e.value))));
 
-    // Total width occupied by all bars and gaps, used to centre the row.
+    // Total width occupied by all bars and gaps, used to center the row.
     const totalWidth = entities.length * barWidth + (entities.length - 1) * GAP;
     const startX = (width - totalWidth) / 2;
     const baselineY = height - BOTTOM_MARGIN;
