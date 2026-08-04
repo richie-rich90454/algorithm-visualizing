@@ -1,5 +1,5 @@
 /**
- * min-cut.ts â€?Minimum Cut (via max-flow / min-cut theorem)
+ * min-cut.ts â€“ Minimum Cut (via max-flow / min-cut theorem)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -15,7 +15,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(EÂ·f) â€?dominated by the max-flow phase
+ *   Time:  O(EÂ·f) â€“ dominated by the max-flow phase
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
@@ -65,9 +65,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const cap = new Map<string, number>();
     for (const [u, v, capacity] of edgeList) {
-        cap.set(`${u}â†?{v}`, capacity);
-        if (!cap.has(`${v}â†?{u}`)) {
-            cap.set(`${v}â†?{u}`, 0);
+        cap.set(`${u}â†’${v}`, capacity);
+        if (!cap.has(`${v}â†’${u}`)) {
+            cap.set(`${v}â†’${u}`, 0);
         }
     }
 
@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const flow = new Map<string, number>();
     for (const [u, v] of edgeList) {
-        flow.set(`${u}â†?{v}`, 0);
+        flow.set(`${u}â†’${v}`, 0);
     }
 
     let step = 0;
@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Min cut via max-flow â€?computing the maximum flow first.",
+        description: "Min cut via max-flow â€“ computing the maximum flow first.",
         codeLineNumber: 0,
         layout: "graph",
         meta: { flow: 0 },
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edgeList.forEach(([u, v, capacity], index) => {
             const edge = edges[index];
             if (edge) {
-                edge.label = `${flow.get(`${u}â†?{v}`) ?? 0}/${capacity}`;
+                edge.label = `${flow.get(`${u}â†’${v}`) ?? 0}/${capacity}`;
             }
         });
     };
@@ -124,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             for (const neighbor of neighborMap.get(current) ?? []) {
-                if (!visited.has(neighbor) && (cap.get(`${current}â†?{neighbor}`) ?? 0) > 0) {
+                if (!visited.has(neighbor) && (cap.get(`${current}â†’${neighbor}`) ?? 0) > 0) {
                     visited.add(neighbor);
                     parent.set(neighbor, current);
                     queue.push(neighbor);
@@ -146,19 +146,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         let bottleneck = Infinity;
         for (let i = 0; i < path.length - 1; i += 1) {
-            bottleneck = Math.min(bottleneck, cap.get(`${path[i]}â†?{path[i + 1]}`) ?? 0);
+            bottleneck = Math.min(bottleneck, cap.get(`${path[i]}â†’${path[i + 1]}`) ?? 0);
         }
 
         for (let i = 0; i < path.length - 1; i += 1) {
             const u = path[i] as string;
             const v = path[i + 1] as string;
-            cap.set(`${u}â†?{v}`, (cap.get(`${u}â†?{v}`) ?? 0) - bottleneck);
-            cap.set(`${v}â†?{u}`, (cap.get(`${v}â†?{u}`) ?? 0) + bottleneck);
-            if (flow.has(`${u}â†?{v}`)) {
-                flow.set(`${u}â†?{v}`, (flow.get(`${u}â†?{v}`) ?? 0) + bottleneck);
+            cap.set(`${u}â†’${v}`, (cap.get(`${u}â†’${v}`) ?? 0) - bottleneck);
+            cap.set(`${v}â†’${u}`, (cap.get(`${v}â†’${u}`) ?? 0) + bottleneck);
+            if (flow.has(`${u}â†’${v}`)) {
+                flow.set(`${u}â†’${v}`, (flow.get(`${u}â†’${v}`) ?? 0) + bottleneck);
             }
-            if (flow.has(`${v}â†?{u}`)) {
-                flow.set(`${v}â†?{u}`, Math.max(0, (flow.get(`${v}â†?{u}`) ?? 0) - bottleneck));
+            if (flow.has(`${v}â†’${u}`)) {
+                flow.set(`${v}â†’${u}`, Math.max(0, (flow.get(`${v}â†’${u}`) ?? 0) - bottleneck));
             }
         }
         totalFlow += bottleneck;
@@ -169,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Maximum flow is ${totalFlow} â€?now finding the cut via residual reachability.`,
+        description: `Maximum flow is ${totalFlow} â€“ now finding the cut via residual reachability.`,
         codeLineNumber: 2,
         layout: "graph",
         meta: { flow: totalFlow },
@@ -189,14 +189,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             continue;
         }
         for (const neighbor of neighborMap.get(current) ?? []) {
-            if (!reachable.has(neighbor) && (cap.get(`${current}â†?{neighbor}`) ?? 0) > 0) {
+            if (!reachable.has(neighbor) && (cap.get(`${current}â†’${neighbor}`) ?? 0) > 0) {
                 reachable.add(neighbor);
                 queue.push(neighbor);
             }
         }
     }
 
-    // Color the two sides.
+    // Colour the two sides.
     for (const v of vertices) {
         const node = nodes.find((n) => n.label === v);
         if (!node) {
