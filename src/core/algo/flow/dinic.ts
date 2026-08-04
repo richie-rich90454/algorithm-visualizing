@@ -77,14 +77,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const neighbourMap = new Map<string, string[]>();
+    const neighborMap = new Map<string, string[]>();
     for (const [u, v] of edgeList) {
-        const listU = neighbourMap.get(u) ?? [];
+        const listU = neighborMap.get(u) ?? [];
         listU.push(v);
-        neighbourMap.set(u, listU);
-        const listV = neighbourMap.get(v) ?? [];
+        neighborMap.set(u, listU);
+        const listV = neighborMap.get(v) ?? [];
         listV.push(u);
-        neighbourMap.set(v, listV);
+        neighborMap.set(v, listV);
     }
 
     const flow = new Map<string, number>();
@@ -143,7 +143,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             const currentLevel = nextLevel.get(current) ?? 0;
-            for (const neighbor of neighbourMap.get(current) ?? []) {
+            for (const neighbor of neighborMap.get(current) ?? []) {
                 if (!nextLevel.has(neighbor) && (cap.get(`${current}→${neighbor}`) ?? 0) > 0) {
                     nextLevel.set(neighbor, currentLevel + 1);
                     queue.push(neighbor);
@@ -188,11 +188,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (v === sink) {
                 return incoming;
             }
-            const neighbours = neighbourMap.get(v) ?? [];
+            const neighbors = neighborMap.get(v) ?? [];
             let pushed = 0;
-            while (pushed < incoming && (nextPtr.get(v) ?? 0) < neighbours.length) {
+            while (pushed < incoming && (nextPtr.get(v) ?? 0) < neighbors.length) {
                 const ptr = nextPtr.get(v) ?? 0;
-                const neighbor = neighbours[ptr];
+                const neighbor = neighbors[ptr];
                 if (!neighbor) {
                     nextPtr.set(v, ptr + 1);
                     continue;
