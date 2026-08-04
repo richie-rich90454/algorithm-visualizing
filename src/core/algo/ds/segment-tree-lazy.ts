@@ -1,5 +1,5 @@
 /**
- * segment-tree-lazy.ts â€“ Segment Tree with Lazy Propagation
+ * segment-tree-lazy.ts â€?Segment Tree with Lazy Propagation
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -16,7 +16,7 @@
  *   Space:                              O(4n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The tree nodes are drawn with their lazy tags.
  *   - Updated ranges are highlighted.
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((nd) => ({ ...nd })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Lazy segment tree â€“ range-add [${update[0]}, ${update[1]}] by ${update[2]}.`,
+        description: `Lazy segment tree â€?range-add [${update[0]}, ${update[1]}] by ${update[2]}.`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { n },
@@ -134,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: display,
         edges: edges.map((e) => ({ ...e })),
-        description: `Lazy tags placed on the cover nodes â€“ children not yet touched.`,
+        description: `Lazy tags placed on the cover nodes â€?children not yet touched.`,
         codeLineNumber: 2,
         layout: "tree",
         meta: { n },
