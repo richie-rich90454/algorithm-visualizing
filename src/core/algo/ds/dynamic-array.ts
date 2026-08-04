@@ -1,5 +1,5 @@
 /**
- * dynamic-array.ts – Dynamic Array (amortised vector)
+ * dynamic-array.ts – Dynamic Array (amortized vector)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,13 +7,13 @@
  * A dynamic array (a.k.a. vector / ArrayList) is a resizable array. It keeps
  * a larger backing buffer than its logical size and grows it geometrically
  * (usually doubling) whenever appending would overflow. Doubling makes the
- * amortised cost of appends O(1), because the expensive copies are spread
+ * amortized cost of appends O(1), because the expensive copies are spread
  * across many cheap appends.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Append:    O(1) amortised (O(n) worst when resizing)
+ *   Append:    O(1) amortized (O(n) worst when resizing)
  *   Access:    O(1)
  *   Insert at arbitrary position: O(n)
  *
@@ -27,7 +27,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The amortised-analysis argument is the key teaching point.
+ *   - The amortized-analysis argument is the key teaching point.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -143,7 +143,7 @@ const module: AlgorithmModule = {
     id: "dynamic-array",
     name: "Dynamic Array",
     category: "data-structures",
-    complexity: { time: "O(1) amortised append", space: "O(n)" },
+    complexity: { time: "O(1) amortized append", space: "O(n)" },
     // 7 appends force two doublings (2→4→8).
     defaultInput: { appends: [1, 2, 3, 4, 5, 6, 7] },
     visualType: "grid",
