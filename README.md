@@ -64,7 +64,7 @@ Every algorithm has a companion `*.test.ts` verifying it yields at least one fra
 ## Algorithm Categories
 
 | Category | Count | Description |
-| -------- | ----- | ----------- |
+| --- | --- | --- |
 | Sorting | 20+ | Bubble, quick, merge, heap, radix, counting, bucket, shell, tim, intro, smooth, comb, cocktail, patience, monkey, and more |
 | Searching | 10+ | Linear, binary, jump, interpolation, exponential, ternary, and bounds |
 | Graph Traversal | 10+ | BFS, DFS (recursive/iterative), bidirectional BFS, topological sort, flood fill, lexicographic BFS |

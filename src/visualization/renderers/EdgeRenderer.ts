@@ -50,8 +50,7 @@ export function renderEdges(ctx: CanvasRenderingContext2D, frame: VisualFrame): 
             continue;
         }
 
-        const style = EDGE_STYLES[edge.state] ??
-            EDGE_STYLES.idle ?? { color: "#9CA3AF", width: 2 };
+        const style = EDGE_STYLES[edge.state] ?? EDGE_STYLES.idle ?? { color: "#9CA3AF", width: 2 };
         ctx.strokeStyle = style.color;
         ctx.lineWidth = style.width;
         ctx.beginPath();

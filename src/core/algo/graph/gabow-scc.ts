@@ -172,8 +172,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     } while (popped !== vertex && popped !== undefined);
 
                     components.push(component);
-                    const color =
-                        componentColors[(components.length - 1) % componentColors.length];
+                    const color = componentColors[(components.length - 1) % componentColors.length];
                     for (const member of component) {
                         const memberNode = nodeById.get(`node-${member}`);
                         if (memberNode) {
