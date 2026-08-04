@@ -1,5 +1,5 @@
 /**
- * b-plus-tree.ts â€?B+ Tree
+ * b-plus-tree.ts â€“ B+ Tree
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -90,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeGrid(routing, leaves),
         edges: [],
-        description: "B+ tree â€?routing keys above, linked leaves below.",
+        description: "B+ tree â€“ routing keys above, linked leaves below.",
         codeLineNumber: 0,
         layout: "grid",
         meta: {},
@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeGrid(routing, leaves, i),
             edges: [],
-            description: `Scanning the leaf chain â€?comparing ${search} with ${targetLeaf[i]}.`,
+            description: `Scanning the leaf chain â€“ comparing ${search} with ${targetLeaf[i]}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: {},
@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeGrid(routing, leaves),
         edges: [],
         description: found
-            ? `Found ${search} in a leaf â€?internal nodes only routed us here.`
+            ? `Found ${search} in a leaf â€“ internal nodes only routed us here.`
             : `${search} not found.`,
         codeLineNumber: 3,
         layout: "grid",
