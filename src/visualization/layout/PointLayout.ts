@@ -5,7 +5,7 @@
  * point-in-polygon, …) compute meaningful coordinates themselves, so they do
  * not need (and must not receive) force-directed or grid placement. This
  * layout simply normalizes the entities' existing x/y values into the
- * container, preserving aspect ratio and centring the result.
+ * container, preserving aspect ratio and centering the result.
  */
 
 import type { VisualFrame } from "@/types";
