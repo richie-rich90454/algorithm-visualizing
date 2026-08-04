@@ -18,11 +18,11 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node being processed is YELLOW (comparing).
  *   - Heavy-path edges are highlighted BLUE (active).
- *   - Nodes on a common heavy path share a colour.
+ *   - Nodes on a common heavy path share a color.
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -127,9 +127,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     // ------------------------------------------------------------------
-    // Pass 2: decompose into heavy paths and colour them.
+    // Pass 2: decompose into heavy paths and color them.
     // ------------------------------------------------------------------
-    const pathColours = ["active", "path", "highlight", "visited"] as const;
+    const pathColors = ["active", "path", "highlight", "visited"] as const;
     let pathIndex = 0;
     const pathOf = new Map<string, number>();
 
@@ -142,7 +142,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             current = heavyChild.get(current) ?? null;
         }
 
-        const colour = pathColours[pathIndex % pathColours.length] ?? "active";
+        const color = pathColors[pathIndex % pathColors.length] ?? "active";
         pathIndex += 1;
 
         // Colour this heavy path's edges and nodes.
@@ -154,18 +154,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 (e) => e.sourceId === `node-${a}` && e.targetId === `node-${b}`,
             );
             if (edge) {
-                edge.state = colour === "visited" ? "active" : colour;
+                edge.state = color === "visited" ? "active" : color;
             }
             const nodeEntity = nodeById.get(`node-${a}`);
             if (nodeEntity) {
-                nodeEntity.state = colour;
+                nodeEntity.state = color;
             }
         }
         if (pathMembers.length > 0) {
             const last = pathMembers[pathMembers.length - 1] as string;
             const lastEntity = nodeById.get(`node-${last}`);
             if (lastEntity) {
-                lastEntity.state = colour;
+                lastEntity.state = color;
             }
         }
 
