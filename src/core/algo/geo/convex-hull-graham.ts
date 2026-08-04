@@ -135,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const pb = points[b] ?? [0, 0];
         const cr = cross(pivot, pa, pb);
         if (cr !== 0) {
-            return -cr; // counter-clockwise first
+            return -cr; // counterclockwise first
         }
         // Ties: closer first.
         const da = (pa[0] - pivot[0]) ** 2 + (pa[1] - pivot[1]) ** 2;
