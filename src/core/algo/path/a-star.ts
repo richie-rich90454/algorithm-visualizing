@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `A* from ${start} to ${target} – prioritising f(n) = g(n) + h(n).`,
+        description: `A* from ${start} to ${target} – prioritizing f(n) = g(n) + h(n).`,
         codeLineNumber: 0,
         layout: "graph",
         meta: {},
