@@ -16,7 +16,7 @@ import type { VisualFrame } from "@/types";
 /** Number of simulation iterations to run per layout pass. */
 const ITERATIONS = 100;
 
-/** Margin (px) kept between any node centre and the container edge. */
+/** Margin (px) kept between any node center and the container edge. */
 const MARGIN = 40;
 
 /**
