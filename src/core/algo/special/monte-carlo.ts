@@ -16,7 +16,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Points are drawn in a grid; inside points are GREEN (sorted).
  *   - The running π estimate is narrated.
