@@ -33,7 +33,7 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a linked list visualisation from an array of values.
+ * Build a linked list visualization from an array of values.
  *
  * @param values The node values in order.
  * @param states Optional index → state overrides.
