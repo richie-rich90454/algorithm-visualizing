@@ -18,7 +18,7 @@
  *   Space: O(V) for the queue and in-queue flags
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being processed from the queue is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -138,18 +138,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const [neighbour, weight] of graph[current] ?? []) {
+        for (const [neighbor, weight] of graph[current] ?? []) {
             const alt = currentDist + weight;
-            if (alt < (dist.get(neighbour) ?? Infinity)) {
-                dist.set(neighbour, alt);
-                predecessor.set(neighbour, current);
+            if (alt < (dist.get(neighbor) ?? Infinity)) {
+                dist.set(neighbor, alt);
+                predecessor.set(neighbor, current);
 
                 // Enqueue the improved vertex if it is not already queued.
-                if (!inQueue.has(neighbour)) {
-                    queue.push(neighbour);
-                    inQueue.add(neighbour);
-                    const count = (enqueueCount.get(neighbour) ?? 0) + 1;
-                    enqueueCount.set(neighbour, count);
+                if (!inQueue.has(neighbor)) {
+                    queue.push(neighbor);
+                    inQueue.add(neighbor);
+                    const count = (enqueueCount.get(neighbor) ?? 0) + 1;
+                    enqueueCount.set(neighbor, count);
                     // Enqueued V+1 times ⇒ negative cycle reachable.
                     if (count > vertices.length) {
                         hasNegativeCycle = true;
@@ -157,17 +157,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 }
 
                 const edge = edges.find(
-                    (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                    (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
                 );
                 if (edge) {
                     edge.state = "active";
                 }
-                const neighbourNode = nodeById.get(`node-${neighbour}`);
-                if (neighbourNode) {
-                    neighbourNode.state = "visited";
-                    neighbourNode.label = String(alt);
+                const neighborNode = nodeById.get(`node-${neighbor}`);
+                if (neighborNode) {
+                    neighborNode.state = "visited";
+                    neighborNode.label = String(alt);
                 }
-                yield buildFrame(`Relaxed ${current} → ${neighbour}: now ${alt}.`);
+                yield buildFrame(`Relaxed ${current} → ${neighbor}: now ${alt}.`);
                 step += 1;
             }
         }
