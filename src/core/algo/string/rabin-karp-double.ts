@@ -17,7 +17,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current window is PINK (highlight).
  *   - Both hash values are shown in the description.
