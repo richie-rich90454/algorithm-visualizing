@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * A hash set stores unique values with the same hash-table mechanics as a hash
  * map, but without values – only keys. Membership tests are O(1) average.
- * Duplicates are rejected on insert, which is the defining behaviour.
+ * Duplicates are rejected on insert, which is the defining behavior.
  *
  * ---------------------------------------------------------------------------
  * Complexity
