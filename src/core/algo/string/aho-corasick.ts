@@ -18,7 +18,7 @@
  *   Scan:  O(n + number of matches)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The trie node currently visited is YELLOW (comparing).
  *   - Failure-link traversal on mismatch is RED (swapped).
@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 metadata: { parentId: "root" },
             });
         }
-        // Trie edges (labelled by character).
+        // Trie edges (labeled by character).
         const edges: VisualEdge[] = [];
         for (let s = 0; s < nodeCount; s += 1) {
             for (const [char, target] of children[s] ?? []) {
