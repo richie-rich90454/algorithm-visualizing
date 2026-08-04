@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Given matrices A1..An with dimensions, matrix chain multiplication asks for
- * the parenthesisation that minimizes the number of scalar multiplications.
+ * the parenthesization that minimizes the number of scalar multiplications.
  * The interval DP:
  *
  *   dp[i][j] = min over k of (dp[i][k] + dp[k+1][j] + p[i-1]·p[k]·p[j])
@@ -30,7 +30,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The canonical interval-DP template.
- *   - The reconstruction of the parenthesisation is a second pass.
+ *   - The reconstruction of the parenthesization is a second pass.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
