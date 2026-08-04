@@ -4,13 +4,13 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The Sprague-Grundy theorem generalises Nim to all impartial games. Every
+ * The Sprague-Grundy theorem generalizes Nim to all impartial games. Every
  * game position gets a Grundy number g: the mex (minimum excluded) of the
  * Grundy numbers of all reachable positions. A position is a win iff g ≠ 0.
  * The Grundy number of a disjoint sum of games is the XOR of their individual
  * Grundy numbers.
  *
- * This visualisation computes Grundy numbers for the classic "subtraction
+ * This visualization computes Grundy numbers for the classic "subtraction
  * game" (remove 1, 2, or 3 tokens; last token wins) up to n tokens.
  *
  * ---------------------------------------------------------------------------
@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each token count is a cell showing its Grundy number.
  *   - Cells with Grundy 0 (losing) are RED (swapped).
