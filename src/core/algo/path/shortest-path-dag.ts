@@ -185,7 +185,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Reconstruct and colour the shortest path.
+    // Reconstruct and color the shortest path.
     const path: string[] = [];
     if (dist.get(target) !== Infinity) {
         let cursor = target;
