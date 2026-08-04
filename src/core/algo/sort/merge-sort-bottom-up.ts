@@ -9,7 +9,7 @@
  * single elements, it starts with runs of length 1 and repeatedly doubles the
  * run length, merging adjacent pairs of runs at each "width". Because the
  * width starts at 1 and doubles each round, every element is part of exactly
- * one merge per round, giving the same O(n log n) behaviour without recursion.
+ * one merge per round, giving the same O(n log n) behavior without recursion.
  *
  * ---------------------------------------------------------------------------
  * Complexity
