@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const color = pathColors[pathIndex % pathColors.length] ?? "active";
         pathIndex += 1;
 
-        // Colour this heavy path's edges and nodes.
+        // Color this heavy path's edges and nodes.
         for (let i = 0; i < pathMembers.length - 1; i += 1) {
             const a = pathMembers[i] as string;
             const b = pathMembers[i + 1] as string;
