@@ -1,7 +1,7 @@
 /**
  * OverlayRenderer.ts – Draws the step counter and selection highlight.
  *
- * This renderer draws everything that is *about* the visualisation rather
+ * This renderer draws everything that is *about* the visualization rather
  * than part of it:
  *
  *   - A "step / total" counter in the top-right corner.
@@ -9,7 +9,7 @@
  *
  * The frame description is intentionally not painted here: the page shows it
  * in the description bar below the canvas, so duplicating it inside the
- * canvas would cover part of the visualisation.
+ * canvas would cover part of the visualization.
  */
 
 import type { VisualEntity, VisualFrame } from "@/types";
