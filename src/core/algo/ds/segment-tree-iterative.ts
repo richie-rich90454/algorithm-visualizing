@@ -18,7 +18,7 @@
  *   Space:   O(2·2^⌈log n⌉)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The flat array is shown as cells.
  *   - The nodes touched by a query are YELLOW (comparing).
