@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * The Hungarian algorithm solves the assignment problem: given an n×n cost
- * matrix, assign each row to a distinct column to minimise the total cost. It
+ * matrix, assign each row to a distinct column to minimize the total cost. It
  * relies on two facts:
  *
  *   1. Subtracting a constant from a row or column does not change the optimal
@@ -23,7 +23,7 @@
  *   Space: O(n²) for the cost matrix
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The matrix cells show the (reduced) costs.
  *   - The cell being reduced is YELLOW (comparing).
