@@ -17,7 +17,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The number being processed is YELLOW (comparing).
  *   - The composite it writes is RED (swapped).
