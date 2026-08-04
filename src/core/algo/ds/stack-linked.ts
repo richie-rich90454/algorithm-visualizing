@@ -1,5 +1,5 @@
 /**
- * stack-linked.ts â€“ Stack (linked-list based)
+ * stack-linked.ts â€?Stack (linked-list based)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -16,7 +16,7 @@
  *   Space:             O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes are a vertical chain; the head (top) is highlighted.
  *   - The pushed node is YELLOW (comparing).
@@ -31,9 +31,9 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a linked-stack visualisation (head at the top).
+ * Build a linked-stack Visualization (head at the top).
  *
- * @param items The stack contents (top â†’ bottom).
+ * @param items The stack contents (top â†?bottom).
  * @returns { nodes, edges } entity pairs.
  */
 function buildStack(items: number[]): { nodes: VisualEntity[]; edges: VisualEdge[] } {
@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty linked stack â€“ the head points to null.",
+        description: "Empty linked stack â€?the head points to null.",
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: 0 },
@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Pushed ${value} at the head â€“ stack is [${stack.join(", ")}].`,
+            description: `Pushed ${value} at the head â€?stack is [${stack.join(", ")}].`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { size: stack.length },
