@@ -1,9 +1,9 @@
 /**
- * graph-util.ts – Shared helpers for graph algorithm visualisations.
+ * graph-util.ts – Shared helpers for graph algorithm visualizations.
  *
  * Every graph algorithm needs to turn an adjacency list into node and edge
  * entities, then update node/edge states frame by frame. Instead of
- * duplicating that construction in a dozen files, this module centralises it.
+ * duplicating that construction in a dozen files, this module centralizes it.
  *
  * The adjacency-list format used across the graph algorithms is:
  *   { "A": ["B", "C"], "B": ["C"], ... }
@@ -46,8 +46,8 @@ export function makeGraphNodes(vertices: string[]): VisualEntity[] {
  */
 export function makeGraphEdges(adjacency: Record<string, string[]>): VisualEdge[] {
     const edges: VisualEdge[] = [];
-    for (const [source, neighbours] of Object.entries(adjacency)) {
-        for (const target of neighbours) {
+    for (const [source, neighbors] of Object.entries(adjacency)) {
+        for (const target of neighbors) {
             edges.push({
                 id: `edge-${source}-${target}`,
                 sourceId: `node-${source}`,
@@ -62,18 +62,18 @@ export function makeGraphEdges(adjacency: Record<string, string[]>): VisualEdge[
 }
 
 /**
- * Build a *weighted* edge list from an adjacency list of `[neighbour, weight]`
+ * Build a *weighted* edge list from an adjacency list of `[neighbor, weight]`
  * pairs.
  *
- * @param adjacency Adjacency list: vertex → array of [neighbour, weight].
+ * @param adjacency Adjacency list: vertex → array of [neighbor, weight].
  * @returns Edge entities whose labels carry the edge weight.
  */
 export function makeWeightedEdges(
     adjacency: Record<string, Array<[string, number]>>,
 ): VisualEdge[] {
     const edges: VisualEdge[] = [];
-    for (const [source, neighbours] of Object.entries(adjacency)) {
-        for (const [target, weight] of neighbours) {
+    for (const [source, neighbors] of Object.entries(adjacency)) {
+        for (const [target, weight] of neighbors) {
             edges.push({
                 id: `edge-${source}-${target}`,
                 sourceId: `node-${source}`,
