@@ -19,7 +19,7 @@
  *   Space: O(V) for the open set and bookkeeping maps
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being expanded is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -193,33 +193,33 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
         step += 1;
 
-        // Relax each neighbour.
+        // Relax each neighbor.
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const [neighbour, weight] of graph[current] ?? []) {
-            if (closed.has(neighbour)) {
+        for (const [neighbor, weight] of graph[current] ?? []) {
+            if (closed.has(neighbor)) {
                 continue;
             }
             const tentativeG = (gScore.get(current) ?? Infinity) + weight;
-            if (tentativeG < (gScore.get(neighbour) ?? Infinity)) {
-                gScore.set(neighbour, tentativeG);
-                fScore.set(neighbour, tentativeG + (heuristic[neighbour] ?? 0));
-                predecessor.set(neighbour, current);
-                open.add(neighbour);
+            if (tentativeG < (gScore.get(neighbor) ?? Infinity)) {
+                gScore.set(neighbor, tentativeG);
+                fScore.set(neighbor, tentativeG + (heuristic[neighbor] ?? 0));
+                predecessor.set(neighbor, current);
+                open.add(neighbor);
             }
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.state = "visited";
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.state = "visited";
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbour}.`);
+            yield buildFrame(`Relaxing ${current} → ${neighbor}.`);
             step += 1;
         }
 
