@@ -17,7 +17,7 @@
  *   Space:               O(m) bits for an m-bit array
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The bit array is shown as cells.
  *   - The k bits set by an insert are highlighted.
