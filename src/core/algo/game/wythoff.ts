@@ -17,7 +17,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two piles are shown as bars.
  *   - A cold (losing) position is RED (swapped).
@@ -36,7 +36,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  *
  * @param a Pile A size.
  * @param b Pile B size.
- * @param state The state colour for both bars.
+ * @param state The state color for both bars.
  * @returns Two bar entities.
  */
 function makeBars(a: number, b: number, state: EntityState): VisualEntity[] {
