@@ -16,7 +16,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The candidate products a·x mod m are shown as cells.
  *   - The candidate whose product equals 1 is GREEN (sorted).
