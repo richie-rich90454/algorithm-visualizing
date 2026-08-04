@@ -23,7 +23,7 @@
  *   Space: O(d)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Evaluated nodes are GREEN (sorted).
  *   - Pruned subtrees are RED (swapped).
@@ -236,7 +236,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const rootId = nodes[0]?.id ?? "";
     const value = yield* alphaBeta(rootId, 0, true, -Infinity, Infinity);
 
-    // Colour pruned subtrees red.
+    // Color pruned subtrees red.
     for (const prunedId of pruned) {
         const node = nodeById.get(prunedId);
         if (node) {
