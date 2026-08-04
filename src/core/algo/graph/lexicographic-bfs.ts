@@ -28,7 +28,7 @@
  * ---------------------------------------------------------------------------
  *   - The vertex being labeled is YELLOW (comparing).
  *   - Its label is shown on the node.
- *   - Labelled vertices are GREEN (sorted).
+ *   - Labeled vertices are GREEN (sorted).
  *
  * ---------------------------------------------------------------------------
  * Properties
