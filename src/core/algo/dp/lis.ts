@@ -68,6 +68,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = arr.length;
     let step = 0;
 
+    // Edge case: empty array.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty array – LIS length is 0.",
+            codeLineNumber: 0,
+            layout: "array",
+            meta: { lisLen: 0 },
+        };
+        return;
+    }
+
     // Frame 0: the untouched array.
     yield {
         stepNumber: step,
