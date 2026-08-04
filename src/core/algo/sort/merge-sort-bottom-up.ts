@@ -18,7 +18,7 @@
  *   Space: O(n) auxiliary – the merge step needs a temporary buffer
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two runs being merged are highlighted (comparing).
  *   - After a merge completes, that whole slice is painted GREEN (sorted).
