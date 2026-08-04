@@ -77,7 +77,7 @@ export function applyTreeLayout(frame: VisualFrame, width: number, height: numbe
         }
     }
 
-    // A frame with no recognised root still lays out; fall back to the first
+    // A frame with no recognized root still lays out; fall back to the first
     // entity so a degenerate tree is visible rather than silently dropped.
     if (roots.length === 0) {
         roots.push(entities[0]);
@@ -104,7 +104,9 @@ export function applyTreeLayout(frame: VisualFrame, width: number, height: numbe
         if (kids.length === 0) {
             return NODE_SIZE;
         }
-        return kids.reduce((sum, kid) => sum + subtreeWidth(kid), 0) + SIBLING_GAP * (kids.length - 1);
+        return (
+            kids.reduce((sum, kid) => sum + subtreeWidth(kid), 0) + SIBLING_GAP * (kids.length - 1)
+        );
     };
 
     const place = (node: VisualEntity, left: number, gap: number): number => {
