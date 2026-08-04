@@ -104,7 +104,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
 }
 
 /**
- * Draw a bar: filled rectangle with a 1px border, label centred if tall enough.
+ * Draw a bar: filled rectangle with a 1px border, label centered if tall enough.
  */
 function drawBar(
     ctx: CanvasRenderingContext2D,
@@ -129,7 +129,7 @@ function drawBar(
 }
 
 /**
- * Draw a node: a filled circle with a border and a centred label.
+ * Draw a node: a filled circle with a border and a centered label.
  */
 function drawNode(
     ctx: CanvasRenderingContext2D,
@@ -152,7 +152,7 @@ function drawNode(
 }
 
 /**
- * Draw a grid cell: a filled rectangle with a border and a centred label.
+ * Draw a grid cell: a filled rectangle with a border and a centered label.
  */
 function drawCell(
     ctx: CanvasRenderingContext2D,
@@ -174,10 +174,10 @@ function drawCell(
 }
 
 /**
- * Draw a character box: filled background, border, character centred within.
+ * Draw a character box: filled background, border, character centered within.
  *
  * The entity's x/y is the box's top-left corner; the character is drawn with
- * a centred baseline so it reads naturally inside a 16×20 box.
+ * a centered baseline so it reads naturally inside a 16×20 box.
  */
 function drawCharacter(
     ctx: CanvasRenderingContext2D,
