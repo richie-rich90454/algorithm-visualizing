@@ -5,18 +5,18 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Hill climbing is a local search: from a candidate solution it always moves
- * to the best neighbour, repeating until no neighbour improves. It is fast
+ * to the best neighbor, repeating until no neighbor improves. It is fast
  * and simple but greedy – it happily gets stuck in a local optimum, which is
  * exactly why stochastic methods (simulated annealing) were invented.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(iterations × neighbours per step)
+ *   Time:  O(iterations × neighbors per step)
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current position is a bar/cell.
  *   - Each improvement step is highlighted.
@@ -83,23 +83,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     for (let i = 0; i < steps; i += 1) {
-        // Evaluate the two neighbours.
+        // Evaluate the two neighbors.
         const left = objective(x - 1);
         const right = objective(x + 1);
-        const bestNeighbour = Math.max(left, right);
+        const bestNeighbor = Math.max(left, right);
         const bestX = left >= right ? x - 1 : x + 1;
 
-        // Move if the neighbour improves.
-        if (bestNeighbour > value) {
+        // Move if the neighbor improves.
+        if (bestNeighbor > value) {
             x = bestX;
-            value = bestNeighbour;
+            value = bestNeighbor;
         } else {
             // Stuck at a peak (local optimum).
             yield {
                 stepNumber: step,
                 entities: makeCells(visited, visited.length - 1),
                 edges: [],
-                description: `Stuck at x=${x} (f=${value.toFixed(1)}) – no neighbour improves.`,
+                description: `Stuck at x=${x} (f=${value.toFixed(1)}) – no neighbor improves.`,
                 codeLineNumber: 3,
                 layout: "grid",
                 meta: { x, value, peak: true },
@@ -137,7 +137,7 @@ const module: AlgorithmModule = {
     id: "hill-climbing",
     name: "Hill Climbing",
     category: "math",
-    complexity: { time: "O(steps·neighbours)", space: "O(1)" },
+    complexity: { time: "O(steps·neighbors)", space: "O(1)" },
     defaultInput: { steps: 10 },
     visualType: "grid",
     run,
