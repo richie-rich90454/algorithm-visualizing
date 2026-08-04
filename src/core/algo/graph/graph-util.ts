@@ -41,7 +41,7 @@ export function makeGraphNodes(vertices: string[]): VisualEntity[] {
 /**
  * Build one `VisualEdge` per directed connection in the graph.
  *
- * @param adjacency Adjacency list: vertex → list of neighbours.
+ * @param adjacency Adjacency list: vertex → list of neighbors.
  * @returns Edge entities (`edge-<from>-<to>`) in `idle` state.
  */
 export function makeGraphEdges(adjacency: Record<string, string[]>): VisualEdge[] {
