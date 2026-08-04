@@ -125,18 +125,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const forwardLevel = [...forwardQueue];
         forwardQueue.length = 0;
         for (const current of forwardLevel) {
-            for (const neighbour of adjacency[current] ?? []) {
-                if (forwardVisited.has(neighbour)) {
+            for (const neighbor of adjacency[current] ?? []) {
+                if (forwardVisited.has(neighbor)) {
                     continue;
                 }
-                forwardVisited.add(neighbour);
-                forwardQueue.push(neighbour);
+                forwardVisited.add(neighbor);
+                forwardQueue.push(neighbor);
 
-                const neighbourNode = nodeById.get(`node-${neighbour}`);
-                if (neighbourNode) {
-                    neighbourNode.state = "active";
+                const neighborNode = nodeById.get(`node-${neighbor}`);
+                if (neighborNode) {
+                    neighborNode.state = "active";
                 }
-                if (backwardVisited.has(neighbour)) {
+                if (backwardVisited.has(neighbor)) {
                     met = true;
                 }
             }
@@ -149,18 +149,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const backwardLevel = [...backwardQueue];
         backwardQueue.length = 0;
         for (const current of backwardLevel) {
-            for (const neighbour of reverse[current] ?? []) {
-                if (backwardVisited.has(neighbour)) {
+            for (const neighbor of reverse[current] ?? []) {
+                if (backwardVisited.has(neighbor)) {
                     continue;
                 }
-                backwardVisited.add(neighbour);
-                backwardQueue.push(neighbour);
+                backwardVisited.add(neighbor);
+                backwardQueue.push(neighbor);
 
-                const neighbourNode = nodeById.get(`node-${neighbour}`);
-                if (neighbourNode) {
-                    neighbourNode.state = "highlight";
+                const neighborNode = nodeById.get(`node-${neighbor}`);
+                if (neighborNode) {
+                    neighborNode.state = "highlight";
                 }
-                if (forwardVisited.has(neighbour)) {
+                if (forwardVisited.has(neighbor)) {
                     met = true;
                 }
             }
