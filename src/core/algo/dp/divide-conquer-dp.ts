@@ -14,7 +14,7 @@
  * O(n log n) per row.
  *
  * The example problem is the classic "divide the array into m contiguous
- * parts minimising total cost" (here cost = sum of squared distances to the
+ * parts minimizing total cost" (here cost = sum of squared distances to the
  * part mean, using a simple proxy).
  *
  * ---------------------------------------------------------------------------
@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(dp),
         edges: [],
-        description: `Split [${arr.join(", ")}] into ${groups} groups, minimising cost.`,
+        description: `Split [${arr.join(", ")}] into ${groups} groups, minimizing cost.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { rows: m + 1, cols: n },
