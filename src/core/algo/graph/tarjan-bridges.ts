@@ -106,6 +106,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`);
         step += 1;
 
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
         for (const neighbour of adjacency[v] ?? []) {
             // Skip the edge back to the parent – it is not a back edge.
             if (neighbour === parent) {
