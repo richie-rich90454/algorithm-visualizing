@@ -185,6 +185,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Relax outgoing edges with the heap's cheap decrease-key.
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
         for (const [neighbour, weight] of graph[vertex] ?? []) {
             const alt = d + weight;
             if (alt < (dist.get(neighbour) ?? Infinity)) {
