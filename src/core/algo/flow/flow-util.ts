@@ -1,7 +1,7 @@
 /**
- * flow-util.ts â€“ Shared helpers for network flow visualisations.
+ * flow-util.ts â€?Shared helpers for network flow visualizations.
  *
- * Max-flow algorithms (Ford-Fulkerson, Edmonds-Karp, Dinic, â€¦) all share the
+ * Max-flow algorithms (Ford-Fulkerson, Edmonds-Karp, Dinic, â€? all share the
  * same scaffold: a directed capacity graph, a source, a sink, and the notion
  * of pushing flow along residual edges. This module centralises the entity
  * construction and the residual-capacity bookkeeping so each flow algorithm
@@ -32,7 +32,7 @@ export function makeFlowNodes(vertices: string[]): VisualEntity[] {
 }
 
 /**
- * Build a visual edge per directed capacity edge, labelled with its capacity.
+ * Build a visual edge per directed capacity edge, labeled with its capacity.
  *
  * @param edges The directed edges: `[from, to, capacity]`.
  * @returns Edge entities in `idle` state.
@@ -61,15 +61,15 @@ export class ResidualGraph {
     private caps = new Map<string, number>();
 
     set(u: string, v: string, capacity: number): void {
-        this.caps.set(`${u}â†’${v}`, capacity);
+        this.caps.set(`${u}â†?{v}`, capacity);
     }
 
     get(u: string, v: string): number {
-        return this.caps.get(`${u}â†’${v}`) ?? 0;
+        return this.caps.get(`${u}â†?{v}`) ?? 0;
     }
 
     add(u: string, v: string, amount: number): void {
-        this.caps.set(`${u}â†’${v}`, this.get(u, v) + amount);
+        this.caps.set(`${u}â†?{v}`, this.get(u, v) + amount);
     }
 
     push(u: string, v: string, amount: number): void {
