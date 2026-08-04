@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The generalised CRT handles moduli that are *not* pairwise coprime. It
+ * The generalized CRT handles moduli that are *not* pairwise coprime. It
  * merges the congruences two at a time: given x ≡ a (mod m) and x ≡ b (mod n),
  * a solution exists iff gcd(m, n) divides (a − b), in which case the pair is
  * combined into a single congruence x ≡ x0 (mod lcm(m, n)). Repeating over
@@ -69,7 +69,7 @@ function makeCells(values: number[], activeIndex = -1): VisualEntity[] {
 }
 
 /**
- * The CRT (generalised) generator.
+ * The CRT (generalized) generator.
  *
  * @param input `{ remainders, moduli }`.
  */
@@ -163,7 +163,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 
-/** The CRT (generalised) module, registered with the engine. */
+/** The CRT (generalized) module, registered with the engine. */
 const module: AlgorithmModule = {
     id: "crt-generalized",
     name: "CRT (Generalized)",
