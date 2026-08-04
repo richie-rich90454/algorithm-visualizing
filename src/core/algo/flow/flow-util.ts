@@ -3,7 +3,7 @@
  *
  * Max-flow algorithms (Ford-Fulkerson, Edmonds-Karp, Dinic, …) all share the
  * same scaffold: a directed capacity graph, a source, a sink, and the notion
- * of pushing flow along residual edges. This module centralises the entity
+ * of pushing flow along residual edges. This module centralizes the entity
  * construction and the residual-capacity bookkeeping so each flow algorithm
  * only implements its own search strategy.
  */
