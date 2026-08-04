@@ -18,7 +18,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each candidate 1..n is shown as a cell.
  *   - Coprime candidates are GREEN (sorted).
