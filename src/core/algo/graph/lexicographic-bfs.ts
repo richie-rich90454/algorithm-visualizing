@@ -151,7 +151,7 @@ const module: AlgorithmModule = {
     name: "Lexicographic BFS",
     category: "graph",
     complexity: { time: "O(V + E)", space: "O(V)" },
-    // A chordal graph – a good first demonstration of LBFS's labelling.
+    // A chordal graph – a good first demonstration of LBFS's labeling.
     defaultInput: {
         graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
         start: "A",
