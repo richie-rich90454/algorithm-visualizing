@@ -22,7 +22,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The gap currently in use is announced each pass.
  *   - Elements being compared across the gap are YELLOW (comparing).
