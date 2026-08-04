@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Finalising ${current} (distance ${currentDist}).`);
+        yield buildFrame(`Finalizing ${current} (distance ${currentDist}).`);
         step += 1;
 
         for (const edge of edges) {
