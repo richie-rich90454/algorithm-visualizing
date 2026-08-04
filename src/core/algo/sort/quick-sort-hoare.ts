@@ -21,7 +21,7 @@
  *   Space: O(log n) stack depth on average
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot (middle element) is PURPLE (pivot).
  *   - The left and right pointers are YELLOW (comparing).
