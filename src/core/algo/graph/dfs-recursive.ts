@@ -18,7 +18,7 @@
  *   Space: O(V) stack depth in the worst case (a long chain of vertices)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Unvisited nodes are GRAY (unvisited).
  *   - The node currently being explored is YELLOW (comparing).
