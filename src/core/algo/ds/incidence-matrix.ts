@@ -1,11 +1,11 @@
 /**
- * incidence-matrix.ts �?Incidence Matrix
+ * incidence-matrix.ts – Incidence Matrix
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
  * An incidence matrix has one row per vertex and one column per edge; entry
- * [v][e] is 1 if edge e touches vertex v. For directed graphs it uses �? for
+ * [v][e] is 1 if edge e touches vertex v. For directed graphs it uses −1 for
  * the tail and +1 for the head. This representation makes "which edges touch
  * this vertex?" a single column scan, but it uses O(V·E) space.
  *
@@ -32,7 +32,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * The Incidence Matrix generator.
  *
- * @param input `{ vertices, edges, inspect }` �?vertex labels, edge triples,
+ * @param input `{ vertices, edges, inspect }` – vertex labels, edge triples,
  *        and the edge to inspect.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Incidence matrix (${vertices.length} vertices × ${edges.length} edges) �?inspecting edge ${inspect}.`,
+        description: `Incidence matrix (${vertices.length} vertices × ${edges.length} edges) – inspecting edge ${inspect}.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length },
@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(inspect),
         edges: [],
-        description: `Edge ${inspect} (${edges[inspect]?.join("�?)}) touches the ±1 rows �?readable in one column scan.`,
+        description: `Edge ${inspect} (${edges[inspect]?.join("–")}) touches the ±1 rows – readable in one column scan.`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length },
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `The matrix costs O(V·E) cells �?dense, but each edge column is self-contained.`,
+        description: `The matrix costs O(V·E) cells – dense, but each edge column is self-contained.`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length },
