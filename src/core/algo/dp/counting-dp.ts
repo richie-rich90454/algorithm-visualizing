@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The "+" recurrence (vs. the "max" of optimisation DPs).
+ *   - The "+" recurrence (vs. the "max" of optimization DPs).
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
