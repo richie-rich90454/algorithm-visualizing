@@ -17,7 +17,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The edge being examined is YELLOW (comparing).
  *   - A discovered bridge is highlighted RED (swapped).
@@ -109,37 +109,37 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const neighbour of adjacency[v] ?? []) {
+        for (const neighbor of adjacency[v] ?? []) {
             // Skip the edge back to the parent – it is not a back edge.
-            if (neighbour === parent) {
+            if (neighbor === parent) {
                 continue;
             }
 
-            const edge = edgeById.get(`edge-${v}-${neighbour}`);
+            const edge = edgeById.get(`edge-${v}-${neighbor}`);
 
-            if (index.get(neighbour) === undefined) {
+            if (index.get(neighbor) === undefined) {
                 // Tree edge: recurse and pull the child's lowlink upward.
-                yield buildFrame(`Descending into ${neighbour}.`);
+                yield buildFrame(`Descending into ${neighbor}.`);
                 step += 1;
-                yield* dfs(neighbour, v);
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbour) ?? 0));
+                yield* dfs(neighbor, v);
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbor) ?? 0));
 
                 // Bridge test: no back path from the child's subtree.
-                if ((lowlink.get(neighbour) ?? 0) > (index.get(v) ?? 0)) {
-                    bridges.push([v, neighbour]);
+                if ((lowlink.get(neighbor) ?? 0) > (index.get(v) ?? 0)) {
+                    bridges.push([v, neighbor]);
                     if (edge) {
                         edge.state = "swapped";
                     }
-                    yield buildFrame(`BRIDGE: edge ${v}–${neighbour} disconnects the graph.`);
+                    yield buildFrame(`BRIDGE: edge ${v}–${neighbor} disconnects the graph.`);
                     step += 1;
                 }
             } else {
                 // Back edge to an ancestor: raise the lowlink.
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbour) ?? 0));
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbor) ?? 0));
                 if (edge) {
                     edge.state = "active";
                 }
-                yield buildFrame(`Back edge from ${v} to ancestor ${neighbour}.`);
+                yield buildFrame(`Back edge from ${v} to ancestor ${neighbor}.`);
                 step += 1;
             }
         }
