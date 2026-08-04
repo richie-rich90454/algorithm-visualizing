@@ -21,7 +21,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Suffixes grouped by index mod 3 are tinted differently.
  *   - The merge step is highlighted.
