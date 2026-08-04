@@ -166,7 +166,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Reconstruct and colour the path.
+    // Reconstruct and color the path.
     const path: string[] = [];
     if (dist.get(target) !== Infinity) {
         let cursor = target;
