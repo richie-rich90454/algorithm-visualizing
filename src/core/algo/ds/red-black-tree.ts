@@ -82,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
 
         // Simple RB fix-ups (educational): rotate when a red node has a red
-        // child and recolour when both children are red.
+        // child and recolor when both children are red.
         if (isRed(node.right) && !isRed(node.left)) {
             node = rotateLeft(node);
         }
