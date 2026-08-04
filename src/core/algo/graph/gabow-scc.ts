@@ -110,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Starting DFS from ${start}.`);
         step += 1;
 
-        // Iterative DFS using an explicit work stack of (vertex, neighbourPos).
+        // Iterative DFS using an explicit work stack of (vertex, neighborPos).
         type Work = { vertex: string; pos: number };
         const work: Work[] = [{ vertex: start, pos: 0 }];
 
