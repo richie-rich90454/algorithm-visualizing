@@ -61,9 +61,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const array = task.array ?? [-2, 1, -3, 4, -1, 2, 1, -5, 4];
 
     let step = 0;
+
+    // Edge case: empty array.
+    if (array.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty array – no subarray exists.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { bestOverall: -Infinity },
+        };
+        return;
+    }
+
     let bestEndingHere = -Infinity;
     let bestOverall = -Infinity;
     let bestStart = 0;
+    let bestEnd = 0;
     let currentStart = 0;
 
     // Frame 0: the array.
@@ -92,11 +108,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (bestEndingHere > bestOverall) {
             bestOverall = bestEndingHere;
             bestStart = currentStart;
+            bestEnd = i;
         }
 
         // Highlight the current element and the best subarray so far.
         const states = new Map<number, EntityState>([[i, "comparing"]]);
-        for (let k = bestStart; k <= i; k += 1) {
+        for (let k = bestStart; k <= bestEnd; k += 1) {
             states.set(k, "sorted");
         }
 
@@ -113,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     const finalStates = new Map<number, EntityState>();
-    for (let k = bestStart; k < array.length; k += 1) {
+    for (let k = bestStart; k <= bestEnd; k += 1) {
         finalStates.set(k, "sorted");
     }
 
