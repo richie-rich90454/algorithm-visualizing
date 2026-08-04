@@ -16,7 +16,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex popped from the heap is YELLOW (comparing).
  *   - The edge that joins the tree is CYAN (path).
@@ -126,14 +126,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const nodes = makeGraphNodes(vertices);
     const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
-    // Neighbour map: vertex → list of (neighbour, weight).
-    const neighbours = new Map<string, Array<[string, number]>>();
+    // Neighbour map: vertex → list of (neighbor, weight).
+    const neighbors = new Map<string, Array<[string, number]>>();
     for (const v of vertices) {
-        neighbours.set(v, []);
+        neighbors.set(v, []);
     }
     edgeList.forEach(([a, b, weight]) => {
-        neighbours.get(a)?.push([b, weight]);
-        neighbours.get(b)?.push([a, weight]);
+        neighbors.get(a)?.push([b, weight]);
+        neighbors.get(b)?.push([a, weight]);
     });
 
     // Edge lookup for colouring.
@@ -171,9 +171,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     // Preload the frontier: all edges from the start vertex.
-    for (const [neighbour, weight] of neighbours.get(start) ?? []) {
-        heap.push(weight, neighbour);
-        parent.set(neighbour, start);
+    for (const [neighbor, weight] of neighbors.get(start) ?? []) {
+        heap.push(weight, neighbor);
+        parent.set(neighbor, start);
     }
 
     while (inTree.size < vertices.length && heap.size > 0) {
@@ -214,12 +214,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Push all of the new vertex's outside neighbours onto the heap.
-        for (const [neighbour, w] of neighbours.get(vertex) ?? []) {
-            if (!inTree.has(neighbour)) {
-                heap.push(w, neighbour);
-                if (!parent.has(neighbour)) {
-                    parent.set(neighbour, vertex);
+        // Push all of the new vertex's outside neighbors onto the heap.
+        for (const [neighbor, w] of neighbors.get(vertex) ?? []) {
+            if (!inTree.has(neighbor)) {
+                heap.push(w, neighbor);
+                if (!parent.has(neighbor)) {
+                    parent.set(neighbor, vertex);
                 }
             }
         }
