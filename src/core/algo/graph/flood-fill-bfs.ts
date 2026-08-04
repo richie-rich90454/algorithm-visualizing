@@ -22,7 +22,7 @@
  *   - The grid is a matrix of cell entities.
  *   - The cell being dequeued and recolored is YELLOW (comparing).
  *   - Completed cells are GREEN (sorted).
- *   - Out-of-region cells stay GREY (unvisited).
+ *   - Out-of-region cells stay GRAY (unvisited).
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -143,7 +143,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         const [row, col] = cell;
 
-        // Recolour and record.
+        // Recolor and record.
         const key = `${row},${col}`;
         grid[row][col] = newColor;
         filled += 1;
