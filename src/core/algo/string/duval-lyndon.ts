@@ -1,11 +1,11 @@
 /**
- * duval-lyndon.ts – Duval's Algorithm (Lyndon factorisation)
+ * duval-lyndon.ts – Duval's Algorithm (Lyndon factorization)
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
  * A Lyndon word is a string that is strictly smaller than all its proper
- * rotations. Duval's algorithm factorises any string into a unique sequence of
+ * rotations. Duval's algorithm factorizes any string into a unique sequence of
  * non-increasing Lyndon words in O(n) time. It scans with three pointers
  * (i, j, k) maintaining an invariant about the current "prime" candidate;
  * whenever a factor completes, it is emitted and the search restarts after it.
@@ -27,7 +27,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - Lyndon words underpin the standard minimal-rotation algorithm.
- *   - The Chen-Fox-Lyndon factorisation is the non-increasing split.
+ *   - The Chen-Fox-Lyndon factorization is the non-increasing split.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text),
         edges: [],
-        description: `Duval's algorithm – factorising "${text}" into Lyndon words.`,
+        description: `Duval's algorithm – factorizing "${text}" into Lyndon words.`,
         codeLineNumber: 0,
         layout: "text",
         meta: {},
@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text),
         edges: [],
-        description: `Lyndon factorisation: ${factorStrings.join(" · ")}.`,
+        description: `Lyndon factorization: ${factorStrings.join(" · ")}.`,
         codeLineNumber: 4,
         layout: "text",
         meta: { factors: factors.length },
@@ -167,7 +167,7 @@ const module: AlgorithmModule = {
     name: "Duval Lyndon Factorisation",
     category: "string",
     complexity: { time: "O(n)", space: "O(1)" },
-    // "banana" factorises into "b", "an", "an", "a".
+    // "banana" factorizes into "b", "an", "an", "a".
     defaultInput: { text: "banana" },
     visualType: "text",
     run,
