@@ -1,5 +1,5 @@
 /**
- * xor-linked-list.ts â€?XOR Linked List (memory-efficient doubly linked list)
+ * xor-linked-list.ts â€“ XOR Linked List (memory-efficient doubly linked list)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -61,7 +61,7 @@ function makeGrid(values: number[], xors: number[], active = -1): VisualEntity[]
         cells.push({
             id: `x-${index}`,
             type: "cell" as const,
-            label: `âŠ?{value}`,
+            label: `âŠ•${value}`,
             value,
             state: "unvisited",
             x: 0,
@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeGrid(values, xors),
         edges: [],
-        description: "XOR linked list â€?each node stores prev âŠ?next.",
+        description: "XOR linked list â€“ each node stores prev âŠ• next.",
         codeLineNumber: 0,
         layout: "grid",
         meta: { size: n },
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeGrid(values, xors, current),
             edges: [],
-            description: `At node ${current} (value ${values[current]}) â€?next = ${prev} âŠ?${xors[current]} = ${prev ^ (xors[current] ?? 0)}.`,
+            description: `At node ${current} (value ${values[current]}) â€“ next = ${prev} âŠ• ${xors[current]} = ${prev ^ (xors[current] ?? 0)}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { size: n, current },
