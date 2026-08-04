@@ -1,5 +1,5 @@
 /**
- * bitmask-tsp.ts – Travelling Salesman Problem (bitmask DP, Held-Karp)
+ * bitmask-tsp.ts – Traveling Salesman Problem (bitmask DP, Held-Karp)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -21,7 +21,7 @@
  *   Space: O(2^n · n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The mask being extended is YELLOW (comparing).
  *   - The graph is shown as nodes.
