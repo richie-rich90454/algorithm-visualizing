@@ -1,5 +1,5 @@
 /**
- * dary-heap.ts â€“ D-ary Heap
+ * dary-heap.ts â€?D-ary Heap
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -18,7 +18,7 @@
  *   Space:     O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The heap is drawn with d children per node.
  *   - The bubbling element is YELLOW (comparing).
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((nd) => ({ ...nd })),
         edges: edges.map((e) => ({ ...e })),
-        description: `4-ary max-heap built from [${values.join(", ")}] â€“ each node has up to ${d} children.`,
+        description: `4-ary max-heap built from [${values.join(", ")}] â€?each node has up to ${d} children.`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: n, degree: d },
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((nd) => ({ ...nd })),
         edges: edges.map((e) => ({ ...e })),
-        description: `D-ary heap complete â€“ shallower than a binary heap for the same size.`,
+        description: `D-ary heap complete â€?shallower than a binary heap for the same size.`,
         codeLineNumber: 2,
         layout: "tree",
         meta: { size: n, degree: d },
