@@ -19,7 +19,7 @@
  * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The deque is a row of cells; front and rear are labeled.
- *   - Push-front / push-back are shown in different colours.
+ *   - Push-front / push-back are shown in different colors.
  *
  * ---------------------------------------------------------------------------
  * Properties
