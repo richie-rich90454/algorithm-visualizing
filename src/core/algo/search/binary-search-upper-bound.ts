@@ -23,7 +23,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The middle element is YELLOW (comparing).
  *   - The running interval is PINK (highlight).
