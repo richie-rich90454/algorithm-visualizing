@@ -1,4 +1,4 @@
-# Algorithmic Visualization Engine (AVE)
+# Algorithmic Visualization Engine
 
 An interactive, offline-capable web application for computer science education. It visualises **over 230 classic and modern algorithms** with pixel-perfect, high-DPI canvas graphics, and doubles as a standalone code reference – every algorithm module is a self-contained teaching resource with extensive comments, complexity annotations, and a step-by-step narrative.
 
