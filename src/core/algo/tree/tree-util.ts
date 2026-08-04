@@ -50,7 +50,7 @@ export function makeTreeNodes(
  *
  * @param parentMap A map from child id → parent id.
  * @param ids All node ids.
- * @returns Edge entities in `idle` state (undirected visualisation).
+ * @returns Edge entities in `idle` state (undirected visualization).
  */
 export function makeTreeEdges(parentMap: Map<string, string | null>, ids: string[]): VisualEdge[] {
     const edges: VisualEdge[] = [];
