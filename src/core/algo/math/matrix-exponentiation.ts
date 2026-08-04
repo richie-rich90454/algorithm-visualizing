@@ -17,7 +17,7 @@
  *   Space: O(d²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The matrix cells are shown in a grid.
  *   - The cells being multiplied/squared are YELLOW (comparing).
