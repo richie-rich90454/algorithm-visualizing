@@ -20,7 +20,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The candidate roots are shown as cells.
  *   - The verified root is GREEN (sorted).
