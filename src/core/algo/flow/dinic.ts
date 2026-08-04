@@ -22,7 +22,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The BFS levels are shown on the nodes.
  *   - The DFS pushing flow is BLUE (active).
@@ -143,10 +143,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 continue;
             }
             const currentLevel = nextLevel.get(current) ?? 0;
-            for (const neighbour of neighbourMap.get(current) ?? []) {
-                if (!nextLevel.has(neighbour) && (cap.get(`${current}→${neighbour}`) ?? 0) > 0) {
-                    nextLevel.set(neighbour, currentLevel + 1);
-                    queue.push(neighbour);
+            for (const neighbor of neighbourMap.get(current) ?? []) {
+                if (!nextLevel.has(neighbor) && (cap.get(`${current}→${neighbor}`) ?? 0) > 0) {
+                    nextLevel.set(neighbor, currentLevel + 1);
+                    queue.push(neighbor);
                 }
             }
         }
@@ -192,42 +192,42 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             let pushed = 0;
             while (pushed < incoming && (nextPtr.get(v) ?? 0) < neighbours.length) {
                 const ptr = nextPtr.get(v) ?? 0;
-                const neighbour = neighbours[ptr];
-                if (!neighbour) {
+                const neighbor = neighbours[ptr];
+                if (!neighbor) {
                     nextPtr.set(v, ptr + 1);
                     continue;
                 }
-                const residual = cap.get(`${v}→${neighbour}`) ?? 0;
+                const residual = cap.get(`${v}→${neighbor}`) ?? 0;
                 // Only advance strictly along the level graph.
-                if (residual > 0 && (level.get(neighbour) ?? -1) === (level.get(v) ?? -2) + 1) {
-                    const amount = dfs(neighbour, Math.min(incoming - pushed, residual));
+                if (residual > 0 && (level.get(neighbor) ?? -1) === (level.get(v) ?? -2) + 1) {
+                    const amount = dfs(neighbor, Math.min(incoming - pushed, residual));
                     if (amount > 0) {
-                        cap.set(`${v}→${neighbour}`, residual - amount);
-                        cap.set(`${neighbour}→${v}`, (cap.get(`${neighbour}→${v}`) ?? 0) + amount);
-                        if (flow.has(`${v}→${neighbour}`)) {
+                        cap.set(`${v}→${neighbor}`, residual - amount);
+                        cap.set(`${neighbor}→${v}`, (cap.get(`${neighbor}→${v}`) ?? 0) + amount);
+                        if (flow.has(`${v}→${neighbor}`)) {
                             flow.set(
-                                `${v}→${neighbour}`,
-                                (flow.get(`${v}→${neighbour}`) ?? 0) + amount,
+                                `${v}→${neighbor}`,
+                                (flow.get(`${v}→${neighbor}`) ?? 0) + amount,
                             );
                         }
-                        if (flow.has(`${neighbour}→${v}`)) {
+                        if (flow.has(`${neighbor}→${v}`)) {
                             flow.set(
-                                `${neighbour}→${v}`,
-                                Math.max(0, (flow.get(`${neighbour}→${v}`) ?? 0) - amount),
+                                `${neighbor}→${v}`,
+                                Math.max(0, (flow.get(`${neighbor}→${v}`) ?? 0) - amount),
                             );
                         }
                         pushed += amount;
 
                         // Highlight the edge that carried flow.
                         const edge = edges.find(
-                            (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbour}`,
+                            (e) => e.sourceId === `node-${v}` && e.targetId === `node-${neighbor}`,
                         );
                         if (edge) {
                             edge.state = "active";
                         }
                         refreshLabels();
                     } else {
-                        // The neighbour's subtree pushed nothing – this edge is
+                        // The neighbor's subtree pushed nothing – this edge is
                         // dead within the current level graph, so skip it.
                         nextPtr.set(v, ptr + 1);
                     }
@@ -263,7 +263,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         resetEdgeStates();
     }
 
-    // Colour saturated edges.
+    // Color saturated edges.
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
         if (!u || !v) {
