@@ -104,6 +104,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame();
         step += 1;
 
+        // Reset all edge states to idle before marking new active edges.
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
+
         // Push unvisited neighbours so they are explored next. Reversed so the
         // first neighbour is popped first (mimics recursive order).
         const neighbours = adjacency[current] ?? [];
