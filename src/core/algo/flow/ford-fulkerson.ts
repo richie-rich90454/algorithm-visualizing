@@ -230,7 +230,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Colour fully-saturated original edges.
+    // Color fully-saturated original edges.
     resetEdgeStates();
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
