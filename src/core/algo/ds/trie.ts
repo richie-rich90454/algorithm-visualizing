@@ -1,5 +1,5 @@
 /**
- * trie.ts â€?Trie (prefix tree)
+ * trie.ts â€“ Trie (prefix tree)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Trie containing [${words.join(", ")}] â€?searching for "${search}".`,
+        description: `Trie containing [${words.join(", ")}] â€“ searching for "${search}".`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { words: words.length },
@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ...e,
                 state: e.label === char && e.sourceId === `n-${node.id}` ? "active" : e.state,
             })),
-            description: `Followed "${char}" â€?prefix "${path.join("")}" exists.`,
+            description: `Followed "${char}" â€“ prefix "${path.join("")}" exists.`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { words: words.length, prefix: path.join("") },
