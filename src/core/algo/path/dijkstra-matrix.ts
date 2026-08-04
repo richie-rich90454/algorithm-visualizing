@@ -194,7 +194,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     path.reverse();
 
-    // Colour the path edges cyan.
+    // Color the path edges cyan.
     for (let i = 0; i < path.length - 1; i += 1) {
         const from = path[i];
         const to = path[i + 1];
