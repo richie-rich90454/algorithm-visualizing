@@ -20,7 +20,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Pass 1 vertices are visited in ORANGE (visited).
  *   - The farthest vertex A is YELLOW (comparing).
@@ -127,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const pass1 = bfs(start);
 
-    // Colour everything visited in pass 1.
+    // Color everything visited in pass 1.
     for (const id of pass1.parent.keys()) {
         const node = nodeById.get(`node-${id}`);
         if (node) {
@@ -157,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         cursor = pass2.parent.get(cursor) ?? null;
     }
 
-    // Colour the diameter path cyan.
+    // Color the diameter path cyan.
     for (const node of nodes) {
         node.state = "visited";
     }
