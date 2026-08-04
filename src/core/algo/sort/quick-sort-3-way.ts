@@ -19,7 +19,7 @@
  *   Space: O(log n) stack depth on average
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot is PURPLE (pivot).
  *   - Elements being scanned are YELLOW (comparing).
