@@ -16,7 +16,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The polygon is drawn as a closed polyline.
  *   - The query point is YELLOW (comparing).
