@@ -20,7 +20,7 @@
  *   Space: O(n·m)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - The backtrace path is GREEN (sorted).
