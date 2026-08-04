@@ -22,7 +22,7 @@
  *   Space: O(V) for the visited set and finish-time stack
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Pass 1 nodes are visited in DFS order (active/visited colours).
  *   - Pass 2 nodes are coloured per SCC (each component gets a distinct
@@ -111,9 +111,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Pass 1 – visiting ${v}.`);
         step += 1;
 
-        for (const neighbour of adjacency[v] ?? []) {
-            if (!visited1.has(neighbour)) {
-                yield* dfs1(neighbour);
+        for (const neighbor of adjacency[v] ?? []) {
+            if (!visited1.has(neighbor)) {
+                yield* dfs1(neighbor);
             }
         }
 
@@ -158,9 +158,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Pass 2 – exploring ${v} on the reversed graph.`);
         step += 1;
 
-        for (const neighbour of reverse[v] ?? []) {
-            if (!visited2.has(neighbour)) {
-                yield* dfs2(neighbour, component);
+        for (const neighbor of reverse[v] ?? []) {
+            if (!visited2.has(neighbor)) {
+                yield* dfs2(neighbor, component);
             }
         }
     }
@@ -175,12 +175,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield* dfs2(v, component);
         components.push(component);
 
-        // Colour this whole component with its own distinct state.
-        const colour = componentColours[(components.length - 1) % componentColours.length];
+        // Color this whole component with its own distinct state.
+        const color = componentColors[(components.length - 1) % componentColors.length];
         for (const member of component) {
             const memberNode = nodeById.get(`node-${member}`);
             if (memberNode) {
-                memberNode.state = colour;
+                memberNode.state = color;
             }
         }
         yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`);
