@@ -21,7 +21,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being explored is YELLOW (comparing).
  *   - An articulation point is highlighted RED (swapped).
@@ -110,32 +110,32 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         let childCount = 0;
 
-        for (const neighbour of adjacency[v] ?? []) {
+        for (const neighbor of adjacency[v] ?? []) {
             // Skip the edge back to the parent.
-            if (neighbour === parent) {
+            if (neighbor === parent) {
                 continue;
             }
 
-            if (index.get(neighbour) === undefined) {
+            if (index.get(neighbor) === undefined) {
                 // Tree edge: recurse, then update lowlink from the child.
                 childCount += 1;
-                yield* dfs(neighbour, v);
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbour) ?? 0));
+                yield* dfs(neighbor, v);
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbor) ?? 0));
 
                 // Articulation test for non-root vertices.
-                if (parent !== null && (lowlink.get(neighbour) ?? 0) >= (index.get(v) ?? 0)) {
+                if (parent !== null && (lowlink.get(neighbor) ?? 0) >= (index.get(v) ?? 0)) {
                     articulation.add(v);
                     if (node) {
                         node.state = "swapped";
                     }
                     yield buildFrame(
-                        `${v} is an articulation point (child ${neighbour} cannot reach above it).`,
+                        `${v} is an articulation point (child ${neighbor} cannot reach above it).`,
                     );
                     step += 1;
                 }
             } else {
                 // Back edge to an ancestor: raise the lowlink.
-                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbour) ?? 0));
+                lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbor) ?? 0));
             }
         }
 
