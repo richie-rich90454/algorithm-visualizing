@@ -247,7 +247,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Reconstruct and colour the shortest path.
+    // Reconstruct and color the shortest path.
     const path: string[] = [];
     let cursor = target;
     while (cursor !== undefined) {
