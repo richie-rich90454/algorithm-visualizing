@@ -17,7 +17,7 @@
  *   Space: O(1) auxiliary – in place, stable
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The element being inserted is YELLOW (comparing).
  *   - The sorted prefix is GREEN (sorted).
@@ -107,8 +107,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Shift loop: while the key is smaller than its left neighbour, that
-        // neighbour moves one position right to make room.
+        // Shift loop: while the key is smaller than its left neighbor, that
+        // neighbor moves one position right to make room.
         while (j >= 0) {
             const left = arr[j];
             if (left === undefined) {
