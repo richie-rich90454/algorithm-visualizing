@@ -1,5 +1,5 @@
 /**
- * fenwick-tree-range.ts â€“ Fenwick Tree (range update, range query)
+ * fenwick-tree-range.ts â€?Fenwick Tree (range update, range query)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -13,10 +13,10 @@
  * Complexity
  * ---------------------------------------------------------------------------
  *   Range update / range query: O(log n)
- *   Space:                      O(n) â€“ two trees
+ *   Space:                      O(n) â€?two trees
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two Fenwick trees are shown as two rows.
  *   - The cells touched by an update/query are YELLOW (comparing).
@@ -34,7 +34,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  *
  * @param tree1 The first Fenwick tree.
  * @param tree2 The second Fenwick tree.
- * @param states Optional `row,index` â†’ state overrides.
+ * @param states Optional `row,index` â†?state overrides.
  * @returns Cell entities with row/col metadata.
  */
 function makeGrid(
