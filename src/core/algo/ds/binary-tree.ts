@@ -17,7 +17,7 @@
  *   Height:    O(log n) balanced, O(n) degenerate
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The tree is drawn hierarchically.
  *   - The currently visited node is YELLOW (comparing).
