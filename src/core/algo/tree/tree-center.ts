@@ -20,7 +20,7 @@
  * Visualisation mapping
  * ---------------------------------------------------------------------------
  *   - The current leaves being peeled are YELLOW (comparing).
- *   - Already-removed vertices are GREY (unvisited).
+ *   - Already-removed vertices are GRAY (unvisited).
  *   - The surviving center(s) are GREEN (sorted).
  *
  * ---------------------------------------------------------------------------
@@ -110,8 +110,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const leaves: string[] = [];
         for (const id of remaining) {
             let d = 0;
-            for (const neighbour of adjacency.get(id) ?? []) {
-                if (remaining.has(neighbour)) {
+            for (const neighbor of adjacency.get(id) ?? []) {
+                if (remaining.has(neighbor)) {
                     d += 1;
                 }
             }
