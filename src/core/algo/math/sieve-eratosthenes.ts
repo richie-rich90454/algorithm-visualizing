@@ -17,7 +17,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The prime currently being processed is YELLOW (comparing).
  *   - Its multiples being crossed out are RED (swapped).
