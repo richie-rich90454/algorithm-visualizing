@@ -21,7 +21,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Segment 1 is BLUE (active).
  *   - Segment 2 is PINK (highlight).
