@@ -66,7 +66,7 @@ describe("Kadane", () => {
         expect(sorted).toHaveLength(3);
     });
 
-    it("correctly visualises the best subarray in intermediate frames", () => {
+    it("correctly visualizes the best subarray in intermediate frames", () => {
         // For array [1, -2, 3], the best subarray is [3] at index 2.
         const frames = collectFrames({ array: [1, -2, 3] });
         expect(frames.length).toBeGreaterThan(1);
