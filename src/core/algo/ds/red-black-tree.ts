@@ -7,7 +7,7 @@
  * A red-black tree is a self-balancing BST using one extra colour bit per
  * node. Its invariants (no two reds in a row; every root-to-leaf path has the
  * same number of black nodes) keep the tree balanced with just rotations and
- * recolourings. Unlike AVL, insertions never need more than a few rotations.
+ * recolorings. Unlike AVL, insertions never need more than a few rotations.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -16,11 +16,11 @@
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Red nodes are drawn RED (swapped).
  *   - Black nodes are drawn GREEN (sorted).
- *   - Recolourings and rotations are narrated.
+ *   - Recolorings and rotations are narrated.
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -190,7 +190,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             root.red = false; // the root is always black
         }
         yield buildFrame(
-            `Inserted ${value} – rotations and recolourings preserve the RB invariants.`,
+            `Inserted ${value} – rotations and recolorings preserve the RB invariants.`,
         );
         step += 1;
     }
