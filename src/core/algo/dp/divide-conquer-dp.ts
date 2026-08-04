@@ -24,7 +24,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The subproblem cell being solved is YELLOW (comparing).
  *   - The feasible split range is PINK (highlight).
@@ -77,7 +77,7 @@ function makeCells(
     return cells;
 }
 
-/** A simple cost proxy: cost(a, b) = Σ |a[i] - b| minimised at b = mean. */
+/** A simple cost proxy: cost(a, b) = Σ |a[i] - b| minimized at b = mean. */
 function costSum(arr: number[], l: number, r: number): number {
     const slice = arr.slice(l, r + 1);
     if (slice.length === 0) {
@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         dp[1][i] = costSum(arr, 0, i);
     }
 
-    // Frame 0: the initialised table.
+    // Frame 0: the initialized table.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
