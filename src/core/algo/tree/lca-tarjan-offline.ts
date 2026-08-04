@@ -18,7 +18,7 @@
  *   Space: O(V + Q)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node currently being finished by the DFS is YELLOW (comparing).
  *   - Merged components are hinted by node color.
