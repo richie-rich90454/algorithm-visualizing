@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * The monotonic queue optimises DPs with a sliding-window max/min:
+ * The monotonic queue optimizes DPs with a sliding-window max/min:
  *
  *   dp[i] = cost(i) + min/max over j in [i-k, i-1] of dp[j]
  *
@@ -29,7 +29,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The "amortised O(1) per element" deque is the heart to teach.
+ *   - The "amortized O(1) per element" deque is the heart to teach.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
