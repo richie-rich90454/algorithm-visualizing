@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * A red-black tree is a self-balancing BST using one extra colour bit per
+ * A red-black tree is a self-balancing BST using one extra color bit per
  * node. Its invariants (no two reds in a row; every root-to-leaf path has the
  * same number of black nodes) keep the tree balanced with just rotations and
  * recolorings. Unlike AVL, insertions never need more than a few rotations.
@@ -25,7 +25,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The colour invariants are the entire concept.
+ *   - The color invariants are the entire concept.
  */
 
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
@@ -42,7 +42,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
 
     // Educational simplified RB tree: we build a standard RB insert with
-    // colouring (red children of black parents alternate; root is black).
+    // coloring (red children of black parents alternate; root is black).
     type RNode = {
         value: number;
         left: RNode | null;
