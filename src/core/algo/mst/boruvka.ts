@@ -18,7 +18,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The edge being scanned in a round is YELLOW (comparing).
  *   - Edges chosen for the MST are GREEN (sorted).
