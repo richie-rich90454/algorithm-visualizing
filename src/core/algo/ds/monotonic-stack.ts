@@ -1,5 +1,5 @@
 /**
- * monotonic-stack.ts â€?Monotonic Stack (next smaller element)
+ * monotonic-stack.ts â€“ Monotonic Stack (next smaller element)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -13,7 +13,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(n) â€?each element pushed/popped once
+ *   Time:  O(n) â€“ each element pushed/popped once
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  * Build a row of cells for the values.
  *
  * @param values The array values.
- * @param states Optional index â†?state overrides.
+ * @param states Optional index â†’ state overrides.
  * @returns Cell entities in a single row.
  */
 function makeCells(values: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(values),
         edges: [],
-        description: "Monotonic stack â€?finding the next smaller element for each value.",
+        description: "Monotonic stack â€“ finding the next smaller element for each value.",
         codeLineNumber: 0,
         layout: "grid",
         meta: {},
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeCells(values, states),
                 edges: [],
-                description: `Popped ${values[popped ?? 0]} â€?its next smaller element is ${values[i]}.`,
+                description: `Popped ${values[popped ?? 0]} â€“ its next smaller element is ${values[i]}.`,
                 codeLineNumber: 2,
                 layout: "grid",
                 meta: { stack: [...stack] },
