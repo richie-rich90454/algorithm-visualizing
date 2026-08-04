@@ -5,10 +5,10 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Flood fill is the algorithm behind the paint bucket tool. Given a grid and a
- * starting cell, it recolours the entire connected region of cells that share
- * the starting cell's colour. This version uses depth-first search: from the
- * start, it recursively visits all four (or eight) neighbours that have the
- * same colour, recolouring as it goes.
+ * starting cell, it recolors the entire connected region of cells that share
+ * the starting cell's color. This version uses depth-first search: from the
+ * start, it recursively visits all four (or eight) neighbors that have the
+ * same color, recoloring as it goes.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -22,7 +22,7 @@
  *   - The grid is rendered as a matrix of cell entities.
  *   - The cell currently being filled is YELLOW (comparing).
  *   - Already-filled cells are GREEN (sorted) with the new colour.
- *   - Out-of-region cells stay GREY (unvisited).
+ *   - Out-of-region cells stay GRAY (unvisited).
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -138,8 +138,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     /**
-     * DFS over matching neighbours. Recolours `cell` and recurses into each
-     * orthogonal neighbour that has the region colour and is in bounds.
+     * DFS over matching neighbors. Recolors `cell` and recurses into each
+     * orthogonal neighbor that has the region color and is in bounds.
      */
     function* fill(row: number, col: number): Generator<VisualFrame, void, unknown> {
         // Guard against out-of-bounds and already-visited cells.
@@ -151,9 +151,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             return;
         }
 
-        const colour = grid[row]?.[col];
-        if (colour !== targetColor) {
-            return; // Different colour – outside the region.
+        const color = grid[row]?.[col];
+        if (color !== targetColor) {
+            return; // Different color – outside the region.
         }
 
         // Recolour and record.
@@ -173,7 +173,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Recurse into all four neighbours.
+        // Recurse into all four neighbors.
         for (const [dr, dc] of DIRS) {
             yield* fill(row + dr, col + dc);
         }
@@ -186,7 +186,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grid),
         edges: [],
-        description: `Flood fill complete – recoloured ${filled} cell(s).`,
+        description: `Flood fill complete – recolored ${filled} cell(s).`,
         codeLineNumber: 4,
         layout: "grid",
         meta: { filled },
