@@ -25,7 +25,7 @@ const FONT = '500 12px "Noto Sans", sans-serif';
  */
 export function renderLabels(ctx: CanvasRenderingContext2D, frame: VisualFrame): void {
     for (const entity of frame.entities) {
-        // Only bars participate in the overflow-label behaviour for now.
+        // Only bars participate in the overflow-label behavior for now.
         if (entity.type !== "bar") {
             continue;
         }
