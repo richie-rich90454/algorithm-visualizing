@@ -16,9 +16,9 @@
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The queue is a row of cells; front and rear are labelled.
+ *   - The queue is a row of cells; front and rear are labeled.
  *   - The enqueued element is YELLOW (comparing).
  *   - The dequeued element is GREEN (sorted).
  *
