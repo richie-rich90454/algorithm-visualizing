@@ -21,7 +21,7 @@
  * ---------------------------------------------------------------------------
  *   - The grid is rendered as a matrix of cell entities.
  *   - The cell currently being filled is YELLOW (comparing).
- *   - Already-filled cells are GREEN (sorted) with the new colour.
+ *   - Already-filled cells are GREEN (sorted) with the new color.
  *   - Out-of-region cells stay GRAY (unvisited).
  *
  * ---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ const DIRS: Array<[number, number]> = [
 /**
  * Build the grid of cell entities for a frame.
  *
- * @param grid The 2D grid of colour indices.
+ * @param grid The 2D grid of color indices.
  * @param states Optional `row,col` → state overrides for this frame.
  * @returns An array of `VisualEntity` cells with row/col metadata.
  */
@@ -81,8 +81,8 @@ function makeCells(grid: number[][], states: Map<string, EntityState> = new Map(
 /**
  * The Flood Fill (DFS) generator.
  *
- * @param input `{ grid, startRow, startCol, newColor }` – a 2D colour grid,
- *        the start cell, and the replacement colour.
+ * @param input `{ grid, startRow, startCol, newColor }` – a 2D color grid,
+ *        the start cell, and the replacement color.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task =
@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const rows = grid.length;
     const cols = rows > 0 ? (grid[0]?.length ?? 0) : 0;
 
-    // The colour of the region we are recoloring.
+    // The color of the region we are recoloring.
     const targetColor = grid[startRow]?.[startCol];
     if (targetColor === undefined) {
         // Malformed start – still emit one frame for the tests.
@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grid, initialStates),
         edges: [],
-        description: `Flood fill from (${startRow}, ${startCol}) with colour ${targetColor} → ${newColor}.`,
+        description: `Flood fill from (${startRow}, ${startCol}) with color ${targetColor} → ${newColor}.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { filled },
