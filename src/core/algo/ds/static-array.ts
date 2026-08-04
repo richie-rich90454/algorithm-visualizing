@@ -1,5 +1,5 @@
 /**
- * static-array.ts â€“ Static Array
+ * static-array.ts â€?Static Array
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,7 +7,7 @@
  * A static array is a fixed-size, contiguous block of memory. Its defining
  * property is O(1) random access: any element can be read or written directly
  * by index because the layout is contiguous and the base address is known.
- * The cost is that the size is fixed at allocation time â€“ you cannot grow or
+ * The cost is that the size is fixed at allocation time â€?you cannot grow or
  * shrink it.
  *
  * ---------------------------------------------------------------------------
@@ -18,7 +18,7 @@
  *   Append to a full array: impossible (fixed size)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The array is shown as a row of cells.
  *   - The accessed element is YELLOW (comparing).
@@ -36,7 +36,7 @@ import { makeArrayCells } from "./ds-util";
 /**
  * The Static Array generator.
  *
- * @param input `{ values }` â€“ the array contents.
+ * @param input `{ values }` â€?the array contents.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { values?: number[] } | null) ?? {};
@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeArrayCells(values),
         edges: [],
-        description: `Static array of size ${values.length} â€“ O(1) random access.`,
+        description: `Static array of size ${values.length} â€?O(1) random access.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { size: values.length },
