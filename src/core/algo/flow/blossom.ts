@@ -1,4 +1,4 @@
-/**
+﻿/**
  * blossom.ts – Blossom Algorithm (Maximum Matching in General Graphs)
  *
  * ---------------------------------------------------------------------------
@@ -21,7 +21,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Matching edges are GREEN (sorted).
  *   - The blossom being shrunk is PINK (highlight).
@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - Generalises the bipartite matching idea to arbitrary graphs.
+ *   - Generalizes the bipartite matching idea to arbitrary graphs.
  *   - The blossom (odd cycle) is the famous conceptual contribution.
  */
 
@@ -112,13 +112,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     };
 
-    const neighbours = new Map<string, string[]>();
+    const neighbors = new Map<string, string[]>();
     for (const v of vertices) {
-        neighbours.set(v, []);
+        neighbors.set(v, []);
     }
     for (const [a, b] of edgeList) {
-        neighbours.get(a)?.push(b);
-        neighbours.get(b)?.push(a);
+        neighbors.get(a)?.push(b);
+        neighbors.get(b)?.push(a);
     }
 
     // ------------------------------------------------------------------
@@ -156,30 +156,30 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (!current) {
                 continue;
             }
-            for (const neighbour of neighbours.get(current) ?? []) {
-                if (match.get(current) === neighbour) {
+            for (const neighbor of neighbors.get(current) ?? []) {
+                if (match.get(current) === neighbor) {
                     continue; // Skip the matching edge (alternating structure).
                 }
-                if (base.get(neighbour) === base.get(current)) {
+                if (base.get(neighbor) === base.get(current)) {
                     continue;
                 }
-                if (!visited.has(neighbour)) {
-                    // Discover the neighbour.
-                    visited.add(neighbour);
-                    const partner = match.get(neighbour);
+                if (!visited.has(neighbor)) {
+                    // Discover the neighbor.
+                    visited.add(neighbor);
+                    const partner = match.get(neighbor);
                     if (partner !== undefined && !visited.has(partner)) {
                         // Continue the alternating tree through the matching.
-                        parent.set(partner, neighbour);
-                        parent.set(neighbour, current);
+                        parent.set(partner, neighbor);
+                        parent.set(neighbor, current);
                         visited.add(partner);
                         queue.push(partner);
                     } else if (partner === undefined) {
-                        // Found an augmenting path: neighbour is unmatched.
-                        parent.set(neighbour, current);
+                        // Found an augmenting path: neighbor is unmatched.
+                        parent.set(neighbor, current);
 
-                        // --- Augment along the path root → … → neighbour. ---
+                        // --- Augment along the path root → … → neighbor. ---
                         const path: string[] = [];
-                        let cursor: string | undefined = neighbour;
+                        let cursor: string | undefined = neighbor;
                         while (cursor !== undefined) {
                             path.push(cursor);
                             cursor = parent.get(cursor);
@@ -237,7 +237,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         stepNumber: step,
                         entities: entities.map((n) => ({ ...n })),
                         edges: edges.map((e) => ({ ...e })),
-                        description: `Blossom (odd cycle) detected involving ${current} and ${neighbour} – shrinking it (simplified).`,
+                        description: `Blossom (odd cycle) detected involving ${current} and ${neighbor} – shrinking it (simplified).`,
                         codeLineNumber: 3,
                         layout: "graph",
                         meta: { matching: matchingSize, blossoms: blossomsFound },
