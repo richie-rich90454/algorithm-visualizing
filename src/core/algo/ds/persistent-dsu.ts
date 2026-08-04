@@ -13,7 +13,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Union:    O(log n) amortised (with rollback-friendly heuristics)
+ *   Union:    O(log n) amortized (with rollback-friendly heuristics)
  *   Query:    O(log n) per version
  *   Space:    O(ops · log n) if fully persistent
  *
