@@ -1,10 +1,10 @@
 /**
- * visualizer.ts – The single Pinia store backing the whole visualiser.
+ * visualizer.ts – The single Pinia store backing the whole visualizer.
  *
  * This store is the only piece of mutable application state in the project.
  * It owns the `StepEngine` instance, the currently selected algorithm id, the
  * playback flag and speed, and the entity the user clicked on. Every Vue
- * component reads and writes the visualiser through this store and nowhere
+ * component reads and writes the visualizer through this store and nowhere
  * else, which keeps the data flow one-way and easy to reason about.
  *
  * Playback is implemented with a plain `setInterval` whose delay is re-read
@@ -19,7 +19,7 @@ import { StepEngine } from "@/core/engine";
 import type { VisualEntity } from "@/types";
 
 /**
- * The visualiser store, written in Pinia's setup-store style.
+ * The visualizer store, written in Pinia's setup-store style.
  *
  * @returns The reactive state, computed views, and actions of the store.
  */
