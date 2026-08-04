@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * Dijkstra's algorithm with a Fibonacci heap instead of a binary heap. The
  * Fibonacci heap's superpower is that a decrease-key (the operation that
- * dominates edge relaxation in Dijkstra) costs O(1) amortised, versus O(log V)
+ * dominates edge relaxation in Dijkstra) costs O(1) amortized, versus O(log V)
  * for a binary heap. Since a dense graph performs E decrease-keys, the total
  * becomes O(V log V + E), the best known bound for Dijkstra.
  *
@@ -18,7 +18,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(V log V + E) amortised with a true Fibonacci heap
+ *   Time:  O(V log V + E) amortized with a true Fibonacci heap
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
@@ -44,7 +44,7 @@ import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
  * A simplified Fibonacci heap for the visualization.
  *
  * Inserts and decrease-keys append entries to a lazy list; extract-min scans
- * the list. This mimics the amortised O(1) inserts/decrease-keys while keeping
+ * the list. This mimics the amortized O(1) inserts/decrease-keys while keeping
  * the code classroom-friendly. A `version` counter on each vertex lets us
  * ignore stale entries.
  */
