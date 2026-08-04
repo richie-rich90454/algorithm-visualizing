@@ -17,7 +17,7 @@
  *   Space: O(k)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The congruence pair being merged is YELLOW (comparing).
  *   - A successful merge is GREEN (sorted).
@@ -27,7 +27,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The pairwise-coprime CRT is the special case.
- *   - This generalisation is what is actually implemented in libraries.
+ *   - This generalization is what is actually implemented in libraries.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
