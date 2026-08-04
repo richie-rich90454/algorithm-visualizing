@@ -52,7 +52,7 @@ export function applyGraphLayout(frame: VisualFrame, width: number, height: numb
         }
     }
 
-    // The ideal distance between neighbours; all forces derive from it.
+    // The ideal distance between neighbors; all forces derive from it.
     const area = Math.max(1, width * height);
     const k = Math.sqrt(area / n);
 
