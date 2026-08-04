@@ -78,7 +78,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Initialise every vertex's label to the empty string.
+    // Initialize every vertex's label to the empty string.
     for (const v of vertices) {
         labels.set(v, "");
     }
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `LBFS complete – labelled all ${labelCount} vertex(es).`,
+        description: `LBFS complete – labeled all ${labelCount} vertex(es).`,
         codeLineNumber: 4,
         layout: "graph",
         meta: { selected: labelCount },
