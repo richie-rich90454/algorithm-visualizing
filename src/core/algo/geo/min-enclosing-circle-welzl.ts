@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Welzl's algorithm finds the smallest circle enclosing a set of points in
- * expected O(n). It is a randomised incremental algorithm: points are added
+ * expected O(n). It is a randomized incremental algorithm: points are added
  * one at a time; when a new point lies outside the current circle, it must be
  * on the boundary of the optimal circle, so the problem recurses with that
  * point fixed on the boundary. The recursion's base cases use 1–3 points to
