@@ -16,7 +16,7 @@
  *   Space: O(h)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current hull vertex is YELLOW (comparing).
  *   - The candidate with the smallest turn is PINK (highlight).
