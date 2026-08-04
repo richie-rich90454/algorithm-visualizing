@@ -22,7 +22,7 @@
  *   Space: O(alphabet + m)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The aligned window of the text is PINK (highlight).
  *   - The pattern character being compared is YELLOW (comparing).
