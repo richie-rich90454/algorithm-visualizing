@@ -1,5 +1,5 @@
 /**
- * ds-util.ts – Shared helpers for data-structure visualisations.
+ * ds-util.ts – Shared helpers for data-structure visualizations.
  *
  * Data structures (arrays, lists, queues, heaps, trees, hash maps, …) are
  * visualised by showing the underlying storage as bars or cells and narrating
