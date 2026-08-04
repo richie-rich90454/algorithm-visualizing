@@ -19,7 +19,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The vertex being finalised is YELLOW (comparing).
+ *   - The vertex being finalized is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
  *   - The shortest path is CYAN (path).
  *
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Finalising ${current} (distance ${currentDist}).`);
+        yield buildFrame(`Finalizing ${current} (distance ${currentDist}).`);
         step += 1;
 
         for (const edge of edges) {
