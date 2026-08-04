@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         x = nextX;
     }
 
-    // Normalise the inverse into [0, m).
+    // Normalize the inverse into [0, m).
     const inverse = ((oldX % m) + m) % m;
 
     // Show the verification products for a few candidates.
