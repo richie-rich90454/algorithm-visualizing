@@ -18,7 +18,7 @@
  *   Space: O(V²) for the all-pairs distance table
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current Dijkstra source is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -102,8 +102,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Relax all edges V times (the virtual source adds nothing, so the first
     // round is equivalent to Bellman-Ford over the real edges).
     const edgeList: Array<{ from: string; to: string; weight: number }> = [];
-    for (const [from, neighbours] of Object.entries(graph)) {
-        for (const [to, weight] of neighbours) {
+    for (const [from, neighbors] of Object.entries(graph)) {
+        for (const [to, weight] of neighbors) {
             edgeList.push({ from, to, weight });
         }
     }
@@ -172,17 +172,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             for (const edge of edges) {
                 edge.state = "idle";
             }
-            for (const [neighbour, weight] of graph[current] ?? []) {
-                // Re-weighted cost = original weight + potential[current] − potential[neighbour].
+            for (const [neighbor, weight] of graph[current] ?? []) {
+                // Re-weighted cost = original weight + potential[current] − potential[neighbor].
                 const reweighted =
-                    weight + (potential.get(current) ?? 0) - (potential.get(neighbour) ?? 0);
+                    weight + (potential.get(current) ?? 0) - (potential.get(neighbor) ?? 0);
                 const alt = best + reweighted;
-                if (alt < (dist.get(neighbour) ?? Infinity)) {
-                    dist.set(neighbour, alt);
+                if (alt < (dist.get(neighbor) ?? Infinity)) {
+                    dist.set(neighbor, alt);
                 }
 
                 const edge = edges.find(
-                    (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                    (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
                 );
                 if (edge) {
                     edge.state = "active";
