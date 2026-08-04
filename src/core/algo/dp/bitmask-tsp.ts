@@ -79,9 +79,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Cost matrix.
     const cost: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(Infinity));
-    for (const [from, neighbours] of Object.entries(graph)) {
+    for (const [from, neighbors] of Object.entries(graph)) {
         const i = vertices.indexOf(from);
-        for (const [to, weight] of neighbours) {
+        for (const [to, weight] of neighbors) {
             const j = vertices.indexOf(to);
             if (i >= 0 && j >= 0) {
                 cost[i][j] = weight;
