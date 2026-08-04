@@ -21,7 +21,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The sweep line is drawn as it advances.
  *   - The segments currently being checked are highlighted.
@@ -184,7 +184,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Colour intersections.
+    // Color intersections.
     for (const [i, j] of intersections) {
         const e1 = edges[i];
         const e2 = edges[j];
