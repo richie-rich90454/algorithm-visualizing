@@ -2,9 +2,9 @@
  * EntityRenderer.ts – Draws every entity according to its type and state.
  *
  * This is the workhorse renderer. It holds the one true mapping from
- * `EntityState` to the exact palette colours in plan Section 3.2, then draws
+ * `EntityState` to the exact palette colors in plan Section 3.2, then draws
  * each entity's shape: bars as rectangles scaled to their value, nodes as
- * circles, cells as grid rectangles, and characters as small labelled boxes.
+ * circles, cells as grid rectangles, and characters as small labeled boxes.
  *
  * The canvas is already DPR-scaled, so all coordinates here are logical px.
  */
@@ -18,10 +18,10 @@ const FONT = '500 14px "Noto Sans", sans-serif';
 const NODE_RADIUS = 14;
 
 /**
- * The colour palette: every state maps to its exact fill, border, and text
- * colours. This table must stay in sync with the CSS variables in global.css.
+ * The color palette: every state maps to its exact fill, border, and text
+ * colors. This table must stay in sync with the CSS variables in global.css.
  */
-export const STATE_COLOURS: Record<EntityState, { fill: string; stroke: string; text: string }> = {
+export const STATE_COLORS: Record<EntityState, { fill: string; stroke: string; text: string }> = {
     idle: { fill: "#F3F4F6", stroke: "#D1D5DB", text: "#111827" },
     active: { fill: "#3B82F6", stroke: "#2563EB", text: "#FFFFFF" },
     comparing: { fill: "#FCD34D", stroke: "#F59E0B", text: "#000000" },
@@ -44,10 +44,10 @@ export const STATE_COLOURS: Record<EntityState, { fill: string; stroke: string; 
 export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame): void {
     for (const entity of frame.entities) {
         // Resolve the palette entry for this entity's state.
-        const colours = STATE_COLOURS[entity.state] ?? STATE_COLOURS.idle;
+        const colors = STATE_COLORS[entity.state] ?? STATE_COLORS.idle;
 
-        ctx.fillStyle = colours.fill;
-        ctx.strokeStyle = colours.stroke;
+        ctx.fillStyle = colors.fill;
+        ctx.strokeStyle = colors.stroke;
         ctx.lineWidth = 1;
 
         switch (entity.type) {
@@ -59,7 +59,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                     entity.width,
                     entity.height,
                     entity.label,
-                    colours.text,
+                    colors.text,
                 );
                 break;
             case "node":
@@ -71,7 +71,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                     entity.y,
                     entity.width > 0 ? Math.max(4, entity.width / 2) : NODE_RADIUS,
                     entity.label,
-                    colours.text,
+                    colors.text,
                 );
                 break;
             case "cell":
@@ -82,7 +82,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                     entity.width,
                     entity.height,
                     entity.label,
-                    colours.text,
+                    colors.text,
                 );
                 break;
             case "character":
@@ -93,7 +93,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                     entity.width,
                     entity.height,
                     entity.label,
-                    colours.text,
+                    colors.text,
                 );
                 break;
             // "edge" entities are never drawn directly; EdgeRenderer handles them.
@@ -113,14 +113,14 @@ function drawBar(
     width: number,
     height: number,
     label: string,
-    textColour: string,
+    textColor: string,
 ): void {
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
 
     // Only squeeze a label inside when the bar is tall enough to read it.
     if (height > 20) {
-        ctx.fillStyle = textColour;
+        ctx.fillStyle = textColor;
         ctx.font = FONT;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -137,14 +137,14 @@ function drawNode(
     y: number,
     radius: number,
     label: string,
-    textColour: string,
+    textColor: string,
 ): void {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = textColour;
+    ctx.fillStyle = textColor;
     ctx.font = FONT;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -161,12 +161,12 @@ function drawCell(
     width: number,
     height: number,
     label: string,
-    textColour: string,
+    textColor: string,
 ): void {
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
 
-    ctx.fillStyle = textColour;
+    ctx.fillStyle = textColor;
     ctx.font = FONT;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -186,12 +186,12 @@ function drawCharacter(
     width: number,
     height: number,
     label: string,
-    textColour: string,
+    textColor: string,
 ): void {
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
 
-    ctx.fillStyle = textColour;
+    ctx.fillStyle = textColor;
     ctx.font = FONT;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
