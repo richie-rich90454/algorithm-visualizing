@@ -164,7 +164,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 /** The Duval Lyndon module, registered with the engine. */
 const module: AlgorithmModule = {
     id: "duval-lyndon",
-    name: "Duval Lyndon Factorisation",
+    name: "Duval Lyndon Factorization",
     category: "string",
     complexity: { time: "O(n)", space: "O(1)" },
     // "banana" factorizes into "b", "an", "an", "a".
