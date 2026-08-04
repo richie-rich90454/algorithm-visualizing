@@ -16,7 +16,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot (lowest point) is YELLOW (comparing).
  *   - The current hull stack is GREEN (sorted).
