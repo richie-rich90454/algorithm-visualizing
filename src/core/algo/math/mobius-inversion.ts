@@ -10,7 +10,7 @@
  *
  *   if g(n) = Σ_{d|n} f(d)   then   f(n) = Σ_{d|n} μ(d)·g(n/d),
  *
- * which "inverts" a divisor-sum relationship. This visualisation computes μ
+ * which "inverts" a divisor-sum relationship. This visualization computes μ
  * for a range and demonstrates the inversion identity on a simple example.
  *
  * ---------------------------------------------------------------------------
@@ -23,7 +23,7 @@
  * Visualisation mapping
  * ---------------------------------------------------------------------------
  *   - The grid shows μ(n) for n = 1..limit.
- *   - Positive μ cells are GREEN (sorted), zero GREY (unvisited),
+ *   - Positive μ cells are GREEN (sorted), zero GRAY (unvisited),
  *     negative RED (swapped).
  *
  * ---------------------------------------------------------------------------
