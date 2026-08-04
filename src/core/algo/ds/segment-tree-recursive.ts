@@ -1,5 +1,5 @@
 /**
- * segment-tree-recursive.ts â€“ Segment Tree (recursive)
+ * segment-tree-recursive.ts â€?Segment Tree (recursive)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -19,7 +19,7 @@
  *   Space:   O(4n) node array
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The tree is drawn hierarchically; node labels show covered ranges.
  *   - The queried range is highlighted.
@@ -35,7 +35,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The Segment Tree (recursive) generator.
  *
- * @param input `{ array, query }` â€“ the array and a range query [l, r].
+ * @param input `{ array, query }` â€?the array and a range query [l, r].
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { array?: number[]; query?: [number, number] } | null) ?? {};
@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((nd) => ({ ...nd })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Segment tree over [${array.join(", ")}] â€“ querying range [${ql}, ${qr}].`,
+        description: `Segment tree over [${array.join(", ")}] â€?querying range [${ql}, ${qr}].`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { n },
@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             state: highlight.has(nd.id) ? ("sorted" as const) : nd.state,
         })),
         edges: edges.map((e) => ({ ...e })),
-        description: `The range [${ql}, ${qr}] is covered by the highlighted nodes â€“ O(log n) nodes total.`,
+        description: `The range [${ql}, ${qr}] is covered by the highlighted nodes â€?O(log n) nodes total.`,
         codeLineNumber: 2,
         layout: "tree",
         meta: { n },
@@ -137,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((nd) => ({ ...nd })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Range query complete â€“ the answer combines the highlighted node aggregates.`,
+        description: `Range query complete â€?the answer combines the highlighted node aggregates.`,
         codeLineNumber: 3,
         layout: "tree",
         meta: { n },
