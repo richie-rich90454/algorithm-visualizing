@@ -1,5 +1,5 @@
 /**
- * tree-util.ts – Shared helpers for tree algorithm visualisations.
+ * tree-util.ts – Shared helpers for tree algorithm visualizations.
  *
  * Tree algorithms (diameter, LCA, traversals, …) all need to turn a
  * parent-child relationship into the node/edge entities consumed by the tree
