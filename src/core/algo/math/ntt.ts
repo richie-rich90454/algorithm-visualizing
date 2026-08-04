@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The input coefficients are shown as bars.
  *   - Each butterfly stage is narrated.
