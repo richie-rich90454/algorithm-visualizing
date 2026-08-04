@@ -27,7 +27,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - The automaton generalises KMP from one pattern to many.
+ *   - The automaton generalizes KMP from one pattern to many.
  *   - Failure links make the scan linear even with many patterns.
  */
 
