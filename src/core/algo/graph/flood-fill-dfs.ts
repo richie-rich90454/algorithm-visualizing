@@ -17,7 +17,7 @@
  *   Space: O(rows × cols) stack depth in the worst case
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The grid is rendered as a matrix of cell entities.
  *   - The cell currently being filled is YELLOW (comparing).
@@ -28,7 +28,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - A direct application of DFS on a grid (each cell is a graph vertex).
- *   - Four-neighbour vs eight-neighbour connectivity changes the result.
+ *   - Four-neighbor vs eight-neighbor connectivity changes the result.
  *   - The grid layout engine positions cells by (row, col) metadata.
  */
 
@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const rows = grid.length;
     const cols = rows > 0 ? (grid[0]?.length ?? 0) : 0;
 
-    // The colour of the region we are recolouring.
+    // The colour of the region we are recoloring.
     const targetColor = grid[startRow]?.[startCol];
     if (targetColor === undefined) {
         // Malformed start – still emit one frame for the tests.
@@ -181,7 +181,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     yield* fill(startRow, startCol);
 
-    // Final frame: the region is recoloured.
+    // Final frame: the region is recolored.
     yield {
         stepNumber: step,
         entities: makeCells(grid),
