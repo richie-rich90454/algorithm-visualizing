@@ -18,9 +18,9 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The vertex being finalised is YELLOW (comparing).
+ *   - The vertex being finalized is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
  *   - The longest path is CYAN (path).
  *
@@ -168,7 +168,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Reconstruct and colour the path.
+    // Reconstruct and color the path.
     const path: string[] = [];
     if (dist.get(target) !== -Infinity) {
         let cursor = target;
