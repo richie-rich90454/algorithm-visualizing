@@ -21,7 +21,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex popped from the heap is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -212,31 +212,31 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Relax every outgoing edge, pushing improved distances onto the heap.
-        for (const [neighbour, weight] of graph[vertex] ?? []) {
+        for (const [neighbor, weight] of graph[vertex] ?? []) {
             // Reset all edge states to idle before marking new active edges.
             for (const edge of edges) {
                 edge.state = "idle";
             }
 
             const alt = d + weight;
-            if (alt < (dist.get(neighbour) ?? Infinity)) {
-                dist.set(neighbour, alt);
-                predecessor.set(neighbour, vertex);
-                heap.push(alt, neighbour);
+            if (alt < (dist.get(neighbor) ?? Infinity)) {
+                dist.set(neighbor, alt);
+                predecessor.set(neighbor, vertex);
+                heap.push(alt, neighbor);
             }
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${vertex}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${vertex}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.state = "visited";
-                neighbourNode.label = String(dist.get(neighbour) ?? Infinity);
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.state = "visited";
+                neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${vertex} → ${neighbour} (weight ${weight}).`);
+            yield buildFrame(`Relaxing edge ${vertex} → ${neighbor} (weight ${weight}).`);
             step += 1;
         }
 
