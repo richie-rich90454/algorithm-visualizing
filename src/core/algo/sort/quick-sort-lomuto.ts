@@ -9,7 +9,7 @@
  * its left and everything larger to its right, and then recurses on the two
  * sides. The Lomuto scheme walks a single pointer through the array, swapping
  * small elements into a "smaller region" as it goes. It is simpler to
- * implement and to visualise than the Hoare scheme, at the cost of doing more
+ * implement and to visualize than the Hoare scheme, at the cost of doing more
  * swaps.
  *
  * ---------------------------------------------------------------------------
@@ -20,7 +20,7 @@
  *   Space: O(log n) stack depth on average, O(n) worst
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot is PURPLE (pivot).
  *   - The element currently scanned by the partition pointer is YELLOW (comparing).

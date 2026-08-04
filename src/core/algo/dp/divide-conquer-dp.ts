@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * Divide-and-conquer DP optimises DP recurrences of the form
+ * Divide-and-conquer DP optimizes DP recurrences of the form
  *
  *   dp[i][j] = min over k < j of (dp[i-1][k] + cost(k, j))
  *
