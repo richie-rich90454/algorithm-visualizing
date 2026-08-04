@@ -213,6 +213,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Relax every outgoing edge, pushing improved distances onto the heap.
         for (const [neighbour, weight] of graph[vertex] ?? []) {
+            // Reset all edge states to idle before marking new active edges.
+            for (const edge of edges) {
+                edge.state = "idle";
+            }
+
             const alt = d + weight;
             if (alt < (dist.get(neighbour) ?? Infinity)) {
                 dist.set(neighbour, alt);
