@@ -21,7 +21,7 @@
  *   Space: O(n) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The bucket currently being filled is PINK (highlight).
  *   - Values being dropped into a bucket are YELLOW (comparing).
