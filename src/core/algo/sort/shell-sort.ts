@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * Shell sort is an in-place, generalised insertion sort. Instead of comparing
+ * Shell sort is an in-place, generalized insertion sort. Instead of comparing
  * only adjacent elements, it compares elements that are a fixed *gap* apart,
  * sorting the array into gap-sized interleaved subsequences. The gap shrinks
  * over a sequence of passes down to 1, at which point the final pass is a
