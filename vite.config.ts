@@ -15,6 +15,7 @@ import { defineConfig } from "vitest/config";
 
 // https://vite.dev/config/
 export default defineConfig({
+    base: "/algorithm-visualizing/",
     plugins: [vue(), vueDevTools()],
     resolve: {
         alias: {
