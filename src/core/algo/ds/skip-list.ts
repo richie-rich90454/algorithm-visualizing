@@ -1,12 +1,12 @@
 /**
- * skip-list.ts â€?Skip List
+ * skip-list.ts â€“ Skip List
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
  * A skip list is a probabilistic alternative to balanced search trees. It is
  * a linked list where some nodes also have pointers that skip ahead by 2, 4,
- * 8, â€?positions. Searching starts at the topmost level and drops down a level
+ * 8, â€¦ positions. Searching starts at the topmost level and drops down a level
  * whenever the next pointer overshoots, visiting only O(log n) nodes on
  * average. Insertion randomly promotes new nodes to higher levels.
  *
@@ -33,7 +33,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The Skip List generator.
  *
- * @param input `{ values, search }` â€?values to insert and a value to search.
+ * @param input `{ values, search }` â€“ values to insert and a value to search.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { values?: number[]; search?: number } | null) ?? {};
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: current,
             edges: edges.map((e) => ({ ...e })),
-            description: `Searching level ${levelIndex} for ${search}${found ? " â€?FOUND!" : " â€?overshot, dropping down"}.`,
+            description: `Searching level ${levelIndex} for ${search}${found ? " â€“ FOUND!" : " â€“ overshot, dropping down"}.`,
             codeLineNumber: 2,
             layout: "graph",
             meta: { search },
@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Skip list search visits only a few nodes â€?O(log n) expected.`,
+        description: `Skip list search visits only a few nodes â€“ O(log n) expected.`,
         codeLineNumber: 3,
         layout: "graph",
         meta: { search },
