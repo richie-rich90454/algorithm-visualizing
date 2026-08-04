@@ -1,5 +1,5 @@
 /**
- * concurrent-queue.ts â€?Concurrent Queue (lock-free, Michael-Scott style)
+ * concurrent-queue.ts â€“ Concurrent Queue (lock-free, Michael-Scott style)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -34,7 +34,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The Concurrent Queue generator.
  *
- * @param input `{ ops }` â€?a scripted sequence of [thread, op] events.
+ * @param input `{ ops }` â€“ a scripted sequence of [thread, op] events.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task =
@@ -67,9 +67,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Concurrent queue with sentinel head â€?threads A and B share it.",
+        description: "Concurrent queue with sentinel head â€“ threads A and B share it.",
         codeLineNumber: 0,
-        layout: "tree",
+        layout: "graph",
         meta: { size: 0 },
     };
     step += 1;
@@ -130,9 +130,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities,
             edges,
-            description: `Thread ${thread}: ${op} ${op === "dequeue" ? "" : value} â€?queue is [${queue.join(", ")}].`,
+            description: `Thread ${thread}: ${op} ${op === "dequeue" ? "" : value} â€“ queue is [${queue.join(", ")}].`,
             codeLineNumber: 2,
-            layout: "tree",
+            layout: "graph",
             meta: { size: queue.length, thread },
         };
         step += 1;
@@ -157,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: "All interleaved operations completed without data races.",
         codeLineNumber: 3,
-        layout: "tree",
+        layout: "graph",
         meta: { size: queue.length },
     };
 }
