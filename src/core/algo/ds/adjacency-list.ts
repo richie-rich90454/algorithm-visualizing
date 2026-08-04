@@ -66,7 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 height: 0,
                 metadata: { row, col: 0 },
             });
-            // Neighbour cells.
+            // Neighbor cells.
             neighbors.forEach((neighbor, col) => {
                 cells.push({
                     id: `n-${vertex}-${col}`,
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(queryIndex),
         edges: [],
-        description: `Neighbours of ${query}: [${(adjacency[query] ?? []).join(", ")}] – listed in O(degree) time.`,
+        description: `Neighbors of ${query}: [${(adjacency[query] ?? []).join(", ")}] – listed in O(degree) time.`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { vertices: vertices.length, degree: (adjacency[query] ?? []).length },
