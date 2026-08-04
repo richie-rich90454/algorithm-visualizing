@@ -54,7 +54,7 @@ let ctx: CanvasRenderingContext2D | null = null;
 /** Resize observer for keeping the canvas size in sync with the container. */
 let resizeObserver: ResizeObserver | null = null;
 
-/** Handle of the rAF loop so it can be cancelled on unmount. */
+/** Handle of the rAF loop so it can be canceled on unmount. */
 let rafId = 0;
 
 /** The entity currently hovered (drives the tooltip), or null. */
