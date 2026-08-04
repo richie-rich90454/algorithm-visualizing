@@ -19,7 +19,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cheapest augmenting path is BLUE (active).
  *   - Edges show "flow/capacity (cost)".
@@ -221,7 +221,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Saturate-colour edges.
+    // Saturate-color edges.
     for (const edge of edges) {
         edge.state = "idle";
     }
