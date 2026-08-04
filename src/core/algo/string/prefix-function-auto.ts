@@ -18,7 +18,7 @@
  *   Scan:  O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current automaton state is YELLOW (comparing).
  *   - The transition being followed is highlighted.
