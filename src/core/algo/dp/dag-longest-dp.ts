@@ -143,6 +143,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame(`Finalising ${current} (distance ${currentDist}).`);
         step += 1;
 
+        for (const edge of edges) {
+            edge.state = "idle";
+        }
         for (const [neighbour, weight] of graph[current] ?? []) {
             const alt = currentDist + weight;
             if (alt > (dist.get(neighbour) ?? -Infinity)) {
