@@ -1,5 +1,5 @@
 /**
- * dynamic-segment-tree.ts â€?Dynamic Segment Tree
+ * dynamic-segment-tree.ts â€“ Dynamic Segment Tree
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -13,7 +13,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Update / query: O(log MAX) â€?one new node per visited path segment
+ *   Update / query: O(log MAX) â€“ one new node per visited path segment
  *   Space:          O(ops Â· log MAX)
  *
  * ---------------------------------------------------------------------------
@@ -34,7 +34,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The Dynamic Segment Tree generator.
  *
- * @param input `{ inserts }` â€?points to insert (sparse).
+ * @param input `{ inserts }` â€“ points to insert (sparse).
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { inserts?: number[] } | null) ?? {};
@@ -123,17 +123,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 
     // Frame 0: the root only.
-    yield buildFrame("Dynamic segment tree over [0, 15] â€?only the root exists.");
+    yield buildFrame("Dynamic segment tree over [0, 15] â€“ only the root exists.");
     step += 1;
 
     for (const pos of inserts) {
         insert(root, 0, MAX - 1, pos);
-        yield buildFrame(`Inserted ${pos} â€?created only the O(log MAX) nodes on its path.`);
+        yield buildFrame(`Inserted ${pos} â€“ created only the O(log MAX) nodes on its path.`);
         step += 1;
     }
 
     yield buildFrame(
-        `Dynamic tree complete â€?${nextId} node(s) created lazily, far fewer than the full range.`,
+        `Dynamic tree complete â€“ ${nextId} node(s) created lazily, far fewer than the full range.`,
     );
 }
 
