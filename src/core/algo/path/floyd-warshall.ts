@@ -18,7 +18,7 @@
  *   Space: O(V²) for the distance matrix
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The intermediate vertex k is highlighted each outer iteration.
  *   - The cell (u,v) being updated is YELLOW (comparing).
@@ -29,7 +29,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - Handles negative weights (but not negative cycles, which it can detect).
- *   - The grid visualisation makes the matrix structure obvious.
+ *   - The grid visualization makes the matrix structure obvious.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -110,9 +110,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (let i = 0; i < n; i += 1) {
         dist[i][i] = 0;
     }
-    for (const [from, neighbours] of Object.entries(graph)) {
+    for (const [from, neighbors] of Object.entries(graph)) {
         const fromIndex = vertices.indexOf(from);
-        for (const [to, weight] of neighbours) {
+        for (const [to, weight] of neighbors) {
             const toIndex = vertices.indexOf(to);
             if (fromIndex >= 0 && toIndex >= 0) {
                 dist[fromIndex][toIndex] = weight;
