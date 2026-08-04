@@ -1,5 +1,5 @@
 /**
- * sorted-linked-list.ts â€?Sorted Linked List
+ * sorted-linked-list.ts â€“ Sorted Linked List
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -32,7 +32,7 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a linked-list Visualization.
+ * Build a linked-list visualization.
  *
  * @param values The node values in order.
  * @param highlight Index to highlight (or -1).
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Sorted list: [${values.join(" â†?")}].`,
+        description: `Sorted list: [${values.join(" â†’ ")}].`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: values.length },
@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Checking ${values[i]} â€?is ${insert} smaller?`,
+            description: `Checking ${values[i]} â€“ is ${insert} smaller?`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { size: values.length },
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Inserted ${insert} at position ${insertionIndex} â€?list stays sorted.`,
+        description: `Inserted ${insert} at position ${insertionIndex} â€“ list stays sorted.`,
         codeLineNumber: 3,
         layout: "tree",
         meta: { size: newValues.length },
