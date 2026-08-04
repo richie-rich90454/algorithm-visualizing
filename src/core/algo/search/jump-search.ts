@@ -17,7 +17,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current block's first element is YELLOW (comparing).
  *   - The block being linearly scanned is PINK (highlight).
@@ -61,7 +61,7 @@ function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): 
  * @param input The search task: `{ array, target }` with a sorted array.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
-    // Normalise the input; fall back to a fixed example when malformed.
+    // Normalize the input; fall back to a fixed example when malformed.
     const task = (input as { array?: number[]; target?: number } | null) ?? {};
     const arr = Array.isArray(task.array)
         ? [...(task.array as number[])]
