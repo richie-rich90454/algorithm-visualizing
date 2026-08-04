@@ -5,16 +5,16 @@
  * What it does
  * ---------------------------------------------------------------------------
  * A Fibonacci heap is a collection of min-heap-ordered trees. Its superpower
- * is O(1) amortised insert and decrease-key (thanks to lazy linking and
+ * is O(1) amortized insert and decrease-key (thanks to lazy linking and
  * cascade cutting), making it ideal for Dijkstra's algorithm. Extracting the
- * minimum is O(log n) amortised, and the heap consolidates trees of equal
+ * minimum is O(log n) amortized, and the heap consolidates trees of equal
  * degree during extraction.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Insert / decrease-key / merge: O(1) amortised
- *   Extract-min:                   O(log n) amortised
+ *   Insert / decrease-key / merge: O(1) amortized
+ *   Extract-min:                   O(log n) amortized
  *   Space:                         O(n)
  *
  * ---------------------------------------------------------------------------
@@ -120,7 +120,7 @@ const module: AlgorithmModule = {
     id: "fibonacci-heap",
     name: "Fibonacci Heap",
     category: "data-structures",
-    complexity: { time: "O(1) insert amortised", space: "O(n)" },
+    complexity: { time: "O(1) insert amortized", space: "O(n)" },
     defaultInput: { inserts: [7, 3, 9, 5, 2] },
     visualType: "graph",
     run,
