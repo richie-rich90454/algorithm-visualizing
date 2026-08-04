@@ -6,15 +6,15 @@
  * ---------------------------------------------------------------------------
  * A pairing heap is a simple but powerful meldable heap: it is a collection of
  * heap-ordered trees where each node links to its children as a singly linked
- * list. It supports insert and merge in O(1) amortised and extract-min by
+ * list. It supports insert and merge in O(1) amortized and extract-min by
  * merging child subtrees pairwise. Despite its simplicity it rivals the
  * Fibonacci heap in practice.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Insert / merge: O(1) amortised
- *   Extract-min:    O(log n) amortised
+ *   Insert / merge: O(1) amortized
+ *   Extract-min:    O(log n) amortized
  *   Space:          O(n)
  *
  * ---------------------------------------------------------------------------
@@ -131,7 +131,7 @@ const module: AlgorithmModule = {
     id: "pairing-heap",
     name: "Pairing Heap",
     category: "data-structures",
-    complexity: { time: "O(1) insert amortised", space: "O(n)" },
+    complexity: { time: "O(1) insert amortized", space: "O(n)" },
     defaultInput: { inserts: [5, 3, 8, 1, 9] },
     visualType: "tree",
     run,
