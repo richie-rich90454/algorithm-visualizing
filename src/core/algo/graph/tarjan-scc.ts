@@ -24,7 +24,7 @@
  * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes on the DFS stack are YELLOW (comparing).
- *   - Finished SCCs are coloured per component (sorted / path / highlight).
+ *   - Finished SCCs are colored per component (sorted / path / highlight).
  *   - The root vertex that pops a component is highlighted.
  *
  * ---------------------------------------------------------------------------
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         meta: { components: components.length },
     });
 
-    const componentColours = ["sorted", "path", "highlight"] as const;
+    const componentColors = ["sorted", "path", "highlight"] as const;
 
     /**
      * Recursive Tarjan DFS.
