@@ -7,7 +7,7 @@
  * A half-plane is the set of points on one side of a line. Their intersection
  * is always a convex region (possibly empty). The standard algorithm sorts the
  * half-planes by angle, then walks them with a deque, removing any half-plane
- * made redundant by its neighbours. The surviving "bounding lines" define the
+ * made redundant by its neighbors. The surviving "bounding lines" define the
  * convex intersection polygon.
  *
  * This educational version sorts the input lines by angle and reports the
@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each line is drawn through its defining points.
  *   - Surviving lines are GREEN (sorted).
@@ -119,8 +119,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Simple "keep the first four" heuristic that mirrors the deque idea: a
     // line is kept when it is not strictly redundant given its angular
-    // neighbours. For teaching, we keep lines whose angle differs from both
-    // neighbours (approximating the redundancy removal).
+    // neighbors. For teaching, we keep lines whose angle differs from both
+    // neighbors (approximating the redundancy removal).
     const kept = new Set<number>();
     for (let i = 0; i < order.length; i += 1) {
         const idx = order[i];
