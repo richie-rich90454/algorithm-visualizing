@@ -4,7 +4,7 @@
  *
  * Reads straight from the store: the algorithm's display name, its time
  * complexity, and its space complexity. Rendered as a small flat card with a
- * labelled row per field; hidden entirely when no algorithm is loaded.
+ * labeled row per field; hidden entirely when no algorithm is loaded.
  */
 
 import { computed } from "vue";
