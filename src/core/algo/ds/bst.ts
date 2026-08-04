@@ -1,5 +1,5 @@
 /**
- * bst.ts â€?Binary Search Tree
+ * bst.ts â€“ Binary Search Tree
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `BST with values [${values.join(", ")}] â€?searching for ${search}.`,
+        description: `BST with values [${values.join(", ")}] â€“ searching for ${search}.`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: values.length },
