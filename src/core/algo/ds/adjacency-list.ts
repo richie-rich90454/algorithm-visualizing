@@ -5,21 +5,21 @@
  * What it does
  * ---------------------------------------------------------------------------
  * An adjacency list stores a graph as V lists: for each vertex, a list of its
- * neighbours (and weights). It uses only O(V + E) memory – ideal for sparse
- * graphs – and lists a vertex's neighbours in O(degree) time. The cost is an
+ * neighbors (and weights). It uses only O(V + E) memory – ideal for sparse
+ * graphs – and lists a vertex's neighbors in O(degree) time. The cost is an
  * O(degree) check for whether a specific edge exists.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   List neighbours: O(degree)
+ *   List neighbors: O(degree)
  *   Edge check:      O(degree)
  *   Space:           O(V + E)
  *
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each vertex row shows its neighbour list.
+ *   - Each vertex row shows its neighbor list.
  *   - The queried vertex is YELLOW (comparing).
  *
  * ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const cells: VisualEntity[] = [];
         let row = 0;
         for (const vertex of vertices) {
-            const neighbours = adjacency[vertex] ?? [];
+            const neighbors = adjacency[vertex] ?? [];
             // Vertex cell.
             cells.push({
                 id: `v-${vertex}`,
@@ -67,12 +67,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 metadata: { row, col: 0 },
             });
             // Neighbour cells.
-            neighbours.forEach((neighbour, col) => {
+            neighbors.forEach((neighbor, col) => {
                 cells.push({
                     id: `n-${vertex}-${col}`,
                     type: "cell" as const,
-                    label: neighbour,
-                    value: neighbour,
+                    label: neighbor,
+                    value: neighbor,
                     state: (row === active ? "highlight" : "unvisited") as EntityState,
                     x: 0,
                     y: 0,
