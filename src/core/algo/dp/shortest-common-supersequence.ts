@@ -16,7 +16,7 @@
  *   Space: O(n·m)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - The reconstruction path is GREEN (sorted).
