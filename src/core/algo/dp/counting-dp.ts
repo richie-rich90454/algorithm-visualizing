@@ -10,7 +10,7 @@
  *
  *   ways[i] = ways[i-1] + ways[i-2],
  *
- * which is Fibonacci. This visualisation counts the ways and shows the DP
+ * which is Fibonacci. This visualization counts the ways and shows the DP
  * array filling.
  *
  * ---------------------------------------------------------------------------
