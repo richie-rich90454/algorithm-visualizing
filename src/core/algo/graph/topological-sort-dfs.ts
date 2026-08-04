@@ -19,7 +19,7 @@
  *   Space: O(V) for the recursion stack and visited set
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex currently being explored is YELLOW (comparing).
  *   - Finished vertices are GREEN (sorted) in output order.
@@ -131,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 }
                 yield buildFrame(`Descending into ${neighbor}.`);
                 step += 1;
-                yield* dfs(neighbour);
+                yield* dfs(neighbor);
             }
         }
 
