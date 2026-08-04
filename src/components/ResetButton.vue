@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * ResetButton.vue – Rewinds the visualisation to its first step.
+ * ResetButton.vue – Rewinds the visualization to its first step.
  *
  * Clicking delegates straight to the store's `reset` action, which moves the
  * engine back to frame zero. Playback is intentionally left running if it was
