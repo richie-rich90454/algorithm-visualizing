@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * A binary tree is a tree where every node has at most two children (left and
  * right). It is the container that hosts search trees, heaps, and expression
- * trees. This visualisation builds a balanced binary tree and performs all
+ * trees. This visualization builds a balanced binary tree and performs all
  * three classic traversals: pre-order (node, left, right), in-order (left,
  * node, right), and post-order (left, right, node).
  *
