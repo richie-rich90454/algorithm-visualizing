@@ -11,7 +11,7 @@
  *   u×v   = u1·v2 − u2·v1            (signed area of the parallelogram)
  *
  * The sign of the cross product is the standard "orientation" test: whether v
- * is a clockwise or counter-clockwise turn from u. This visualization draws
+ * is a clockwise or counterclockwise turn from u. This visualization draws
  * two vectors and computes both products.
  *
  * ---------------------------------------------------------------------------
@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
-        description: `u×v = ${u[0]}·${v[1]} − ${u[1]}·${v[0]} = ${cross} (${cross > 0 ? "counter-clockwise" : cross < 0 ? "clockwise" : "collinear"}).`,
+        description: `u×v = ${u[0]}·${v[1]} − ${u[1]}·${v[0]} = ${cross} (${cross > 0 ? "counterclockwise" : cross < 0 ? "clockwise" : "collinear"}).`,
         codeLineNumber: 3,
         layout: "point",
         meta: { dot, cross },
@@ -127,7 +127,7 @@ const module: AlgorithmModule = {
     name: "Dot & Cross Product",
     category: "geometry",
     complexity: { time: "O(1)", space: "O(1)" },
-    // u = (3,2), v = (1,4): cross = 3·4 − 2·1 = 10 (counter-clockwise).
+    // u = (3,2), v = (1,4): cross = 3·4 − 2·1 = 10 (counterclockwise).
     defaultInput: { u: [3, 2], v: [1, 4] },
     visualType: "graph",
     run,
