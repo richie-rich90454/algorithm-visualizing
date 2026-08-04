@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * The winding-number algorithm computes the total signed angle subtended by
  * the polygon around the query point. The winding number is the number of
- * times the polygon winds counter-clockwise around the point; it is non-zero
+ * times the polygon winds counterclockwise around the point; it is non-zero
  * exactly when the point is inside. Unlike ray casting, the winding number
  * also distinguishes "interior" correctly for self-touching polygons.
  *
