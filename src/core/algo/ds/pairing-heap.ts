@@ -1,5 +1,5 @@
 /**
- * pairing-heap.ts â€?Pairing Heap
+ * pairing-heap.ts â€“ Pairing Heap
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -115,14 +115,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         } else {
             rest.push(value);
         }
-        yield buildFrame(min, rest, `Inserted ${value} â€?the minimum ${min} stays at the root.`);
+        yield buildFrame(min, rest, `Inserted ${value} â€“ the minimum ${min} stays at the root.`);
         step += 1;
     }
 
     yield buildFrame(
         min,
         rest,
-        `Pairing heap complete â€?merge operations happen pairwise on extract-min.`,
+        `Pairing heap complete â€“ merge operations happen pairwise on extract-min.`,
     );
 }
 
