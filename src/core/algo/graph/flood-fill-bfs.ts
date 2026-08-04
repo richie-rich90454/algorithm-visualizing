@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grid, initialStates),
         edges: [],
-        description: `Flood fill (BFS) from (${startRow}, ${startCol}) with colour ${targetColor} → ${newColor}.`,
+        description: `Flood fill (BFS) from (${startRow}, ${startCol}) with color ${targetColor} → ${newColor}.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { filled },
