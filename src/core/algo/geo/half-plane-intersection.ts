@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         kept.add(idx);
     }
 
-    // Colour kept lines green.
+    // Color kept lines green.
     for (const idx of kept) {
         const edge = edges[idx];
         if (edge) {
