@@ -13,7 +13,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Enqueue / dequeue: O(1) amortised, lock-free
+ *   Enqueue / dequeue: O(1) amortized, lock-free
  *   Space:             O(n)
  *
  * ---------------------------------------------------------------------------
@@ -167,7 +167,7 @@ const module: AlgorithmModule = {
     id: "concurrent-queue",
     name: "Concurrent Queue",
     category: "data-structures",
-    complexity: { time: "O(1) amortised", space: "O(n)" },
+    complexity: { time: "O(1) amortized", space: "O(n)" },
     defaultInput: {
         ops: [
             ["A", "enqueue", 1],
