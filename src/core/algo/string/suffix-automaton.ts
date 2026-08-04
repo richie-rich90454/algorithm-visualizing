@@ -18,7 +18,7 @@
  *   Query: O(length of query)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current state is YELLOW (comparing).
  *   - Suffix-link edges are drawn dashed-ish via the label "link".
