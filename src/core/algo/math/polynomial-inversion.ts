@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current inverse approximation is shown as bars.
  *   - Each Newton round is narrated.
