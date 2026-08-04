@@ -1,5 +1,5 @@
 /**
- * adjacency-matrix.ts â€“ Adjacency Matrix
+ * adjacency-matrix.ts â€?Adjacency Matrix
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -17,7 +17,7 @@
  *   Space:                     O(VÂ²)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The matrix is a grid of cells.
  *   - The queried edge cell is YELLOW (comparing).
@@ -33,7 +33,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * The Adjacency Matrix generator.
  *
- * @param input `{ matrix, query }` â€“ the matrix and an edge query [u, v].
+ * @param input `{ matrix, query }` â€?the matrix and an edge query [u, v].
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { matrix?: number[][]; query?: [number, number] } | null) ?? {};
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Adjacency matrix (${matrix.length}Ã—${matrix.length}) â€“ checking edge (${qu}, ${qv}).`,
+        description: `Adjacency matrix (${matrix.length}Ã—${matrix.length}) â€?checking edge (${qu}, ${qv}).`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { size: matrix.length },
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells([qu, qv]),
         edges: [],
-        description: `Edge (${qu}, ${qv}) ${edge ? "EXISTS" : "does not exist"} â€“ answered in O(1).`,
+        description: `Edge (${qu}, ${qv}) ${edge ? "EXISTS" : "does not exist"} â€?answered in O(1).`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { edge, exists: edge !== 0 },
