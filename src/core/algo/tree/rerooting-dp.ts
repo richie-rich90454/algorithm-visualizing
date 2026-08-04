@@ -20,7 +20,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The down pass visits children first (comparing).
  *   - The up pass propagates parent values downward (active).
@@ -30,7 +30,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The two-pass structure is the universal rerooting template.
- *   - Generalises to any "combine subtree answers" DP that is a commutative
+ *   - Generalizes to any "combine subtree answers" DP that is a commutative
  *     monoid.
  */
 
