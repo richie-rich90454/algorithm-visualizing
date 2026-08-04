@@ -196,7 +196,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Colour the two sides.
+    // Color the two sides.
     for (const v of vertices) {
         const node = nodes.find((n) => n.label === v);
         if (!node) {
