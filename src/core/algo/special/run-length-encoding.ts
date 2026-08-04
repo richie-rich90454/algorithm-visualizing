@@ -16,7 +16,7 @@
  *   Space: O(n) for the output
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The input characters are shown as cells.
  *   - The current run is highlighted.
