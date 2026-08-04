@@ -17,10 +17,10 @@
  *   Space:           O(total characters) – 3 pointers per node
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Nodes are circles labelled with characters.
- *   - The three edges (LT, EQ, GT) are coloured distinctly.
+ *   - The three edges (LT, EQ, GT) are colored distinctly.
  *   - The search path is YELLOW (comparing).
  *
  * ---------------------------------------------------------------------------
