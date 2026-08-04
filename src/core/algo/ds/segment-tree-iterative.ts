@@ -7,7 +7,7 @@
  * The iterative segment tree avoids recursion by padding the array to the next
  * power of two and storing the tree in a flat array where node i's children
  * are 2i and 2i+1. Range queries combine nodes by walking two pointers from
- * the leaves upward, giving the same O(log n) behaviour without a call stack.
+ * the leaves upward, giving the same O(log n) behavior without a call stack.
  *
  * ---------------------------------------------------------------------------
  * Complexity
