@@ -1,8 +1,8 @@
 <script setup lang="ts">
 /**
- * ControlsBar.vue – The playback strip under the visualiser.
+ * ControlsBar.vue – The playback strip under the visualizer.
  *
- * A fixed-height (56px) flex row that centres the play/pause button, the step
+ * A fixed-height (56px) flex row that centers the play/pause button, the step
  * counter, the speed slider, and the reset button. Every control binds
  * directly to the store, so no events are wired up here.
  */
