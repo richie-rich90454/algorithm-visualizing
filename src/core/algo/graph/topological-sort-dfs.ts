@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
      * then marks it finished and prepends it to the topological order.
      */
     function* dfs(v: string): Generator<VisualFrame, void, unknown> {
-        // Grey the vertex: it is now on the recursion stack.
+        // Gray the vertex: it is now on the recursion stack.
         state.set(v, 1);
         const node = nodeById.get(`node-${v}`);
         if (node) {
