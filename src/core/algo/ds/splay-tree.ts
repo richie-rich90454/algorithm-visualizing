@@ -1,5 +1,5 @@
 /**
- * splay-tree.ts â€“ Splay Tree
+ * splay-tree.ts â€?Splay Tree
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -16,7 +16,7 @@
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The accessed node is YELLOW (comparing).
  *   - The splay rotations are narrated.
@@ -42,7 +42,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let step = 0;
 
-    // A basic BST array layout for visualisation (parentId via array indices).
+    // A basic BST array layout for Visualization (parentId via array indices).
     const nodes: VisualEntity[] = values.map((value, index) => ({
         id: `node-${index}`,
         type: "node" as const,
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Splay tree â€“ accessing ${access} splays it to the root.`,
+        description: `Splay tree â€?accessing ${access} splays it to the root.`,
         codeLineNumber: 0,
         layout: "tree",
         meta: { size: values.length },
@@ -92,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: current,
             edges: edges.map((e) => ({ ...e })),
-            description: `Found ${access} â€“ splaying it toward the root.`,
+            description: `Found ${access} â€?splaying it toward the root.`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { size: values.length },
@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: splayed,
             edges: edges.map((e) => ({ ...e })),
-            description: `${access} is now at the root â€“ future accesses to it are O(1).`,
+            description: `${access} is now at the root â€?future accesses to it are O(1).`,
             codeLineNumber: 3,
             layout: "tree",
             meta: { size: values.length },
