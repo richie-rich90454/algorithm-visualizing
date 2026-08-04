@@ -8,7 +8,7 @@
  *
  * This separation is what makes the engine so easy to extend: add a new file
  * to the right category folder, implement `run`, register it in the registry,
- * and the whole visualiser works with zero further changes.
+ * and the whole visualizer works with zero further changes.
  */
 
 import type { LayoutType, VisualFrame } from "./visual";
@@ -38,7 +38,7 @@ export interface AlgorithmComplexity {
 }
 
 /**
- * The contract every algorithm module must fulfil.
+ * The contract every algorithm module must fulfill.
  *
  * `run` is a generator function: each `yield` produces one `VisualFrame`.
  * The engine calls `run(defaultInput)` once when the algorithm is loaded and
