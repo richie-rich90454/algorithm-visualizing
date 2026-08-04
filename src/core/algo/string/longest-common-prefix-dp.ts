@@ -20,7 +20,7 @@
  *   Space: O(n·m) for the DP table
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - Positive LCP cells are highlighted.
