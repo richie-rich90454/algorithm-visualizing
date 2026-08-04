@@ -124,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Reset and colour the best pair.
+    // Reset and color the best pair.
     for (const node of entities) {
         node.state = "unvisited";
     }
