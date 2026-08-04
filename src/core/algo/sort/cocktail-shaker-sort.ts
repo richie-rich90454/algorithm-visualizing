@@ -18,7 +18,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pair being compared is YELLOW (comparing).
  *   - A swapped pair flashes RED (swapped).
