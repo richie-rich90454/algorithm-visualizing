@@ -17,7 +17,7 @@
  *   Build from n keys:           O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The heap is drawn as a tree (nodes) and as a backing array.
  *   - The inserted key's bubble-up path is YELLOW (comparing).
