@@ -19,7 +19,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The element being processed is YELLOW (comparing).
  *   - The predecessors that can extend it are PINK (highlight).
