@@ -11,7 +11,7 @@
  * increasing subsequence (LIS). After all cards are dealt, the piles are
  * repeatedly merged (with a priority queue) to produce the sorted output.
  *
- * For the visualisation, the piles are laid out as rows of bars so the pile
+ * For the visualization, the piles are laid out as rows of bars so the pile
  * structure is directly visible.
  *
  * ---------------------------------------------------------------------------
@@ -22,7 +22,7 @@
  *   Space: O(n) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The card being dealt is YELLOW (comparing).
  *   - The pile it lands on is PINK (highlight).
