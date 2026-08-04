@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * The 0/1 knapsack problem: given items with (weight, value) pairs and a
- * capacity W, choose a subset maximising total value without exceeding W.
+ * capacity W, choose a subset maximizing total value without exceeding W.
  * Each item is used at most once. The DP:
  *
  *   dp[i][w] = max(dp[i-1][w], dp[i-1][w - weight[i]] + value[i])
