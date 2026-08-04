@@ -6,13 +6,13 @@
  * ---------------------------------------------------------------------------
  * A skew heap is a simple meldable heap: after every merge, the children of
  * every node on the merge path are swapped unconditionally. This "always swap"
- * rule gives the heap O(log n) amortised merge without storing ranks. It is
+ * rule gives the heap O(log n) amortized merge without storing ranks. It is
  * the simplest self-adjusting heap.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Insert / merge / extract-min: O(log n) amortised
+ *   Insert / merge / extract-min: O(log n) amortized
  *   Space:                        O(n)
  *
  * ---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         heap.push(value);
         yield buildFrame(
             heap,
-            `Merged in ${value} – children on the merge path are swapped (amortised O(log n)).`,
+            `Merged in ${value} – children on the merge path are swapped (amortized O(log n)).`,
         );
         step += 1;
     }
@@ -124,7 +124,7 @@ const module: AlgorithmModule = {
     id: "skew-heap",
     name: "Skew Heap",
     category: "data-structures",
-    complexity: { time: "O(log n) amortised", space: "O(n)" },
+    complexity: { time: "O(log n) amortized", space: "O(n)" },
     defaultInput: { inserts: [5, 3, 8, 1, 9] },
     visualType: "tree",
     run,
