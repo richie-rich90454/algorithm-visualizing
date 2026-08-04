@@ -76,14 +76,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const neighbourMap = new Map<string, string[]>();
+    const neighborMap = new Map<string, string[]>();
     for (const [u, v] of edgeList) {
-        const listU = neighbourMap.get(u) ?? [];
+        const listU = neighborMap.get(u) ?? [];
         listU.push(v);
-        neighbourMap.set(u, listU);
-        const listV = neighbourMap.get(v) ?? [];
+        neighborMap.set(u, listU);
+        const listV = neighborMap.get(v) ?? [];
         listV.push(u);
-        neighbourMap.set(v, listV);
+        neighborMap.set(v, listV);
     }
 
     const flow = new Map<string, number>();
@@ -135,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 if (du === Infinity) {
                     continue;
                 }
-                for (const v of neighbourMap.get(u) ?? []) {
+                for (const v of neighborMap.get(u) ?? []) {
                     if ((cap.get(`${u}→${v}`) ?? 0) > 0) {
                         const alt = du + (cost.get(`${u}→${v}`) ?? 0);
                         if (alt < (dist.get(v) ?? Infinity)) {
