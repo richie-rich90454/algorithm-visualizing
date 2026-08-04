@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The grid shows μ(n) for n = 1..limit.
  *   - Positive μ cells are GREEN (sorted), zero GRAY (unvisited),
