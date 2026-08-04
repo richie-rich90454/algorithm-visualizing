@@ -25,7 +25,7 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - Generalises the simple "n^((p+1)/4)" formula to all odd primes.
+ *   - Generalizes the simple "n^((p+1)/4)" formula to all odd primes.
  *   - The generator/subgroup-hunting is the conceptual heart.
  */
 
