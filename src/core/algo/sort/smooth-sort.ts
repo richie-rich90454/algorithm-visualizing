@@ -22,7 +22,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The Leonardo heap being grown is YELLOW (comparing).
  *   - Elements being sifted are PINK (highlight).
