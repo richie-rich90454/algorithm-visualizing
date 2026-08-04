@@ -17,7 +17,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two trees are drawn side by side.
  *   - The node being hashed is YELLOW (comparing).
