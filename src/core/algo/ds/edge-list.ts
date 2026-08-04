@@ -1,5 +1,5 @@
 /**
- * edge-list.ts â€?Edge List
+ * edge-list.ts â€“ Edge List
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -33,7 +33,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * The Edge List generator.
  *
- * @param input `{ edges }` â€?edges as [u, v, weight] triples.
+ * @param input `{ edges }` â€“ edges as [u, v, weight] triples.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { edges?: Array<[string, string, number]> } | null) ?? {};
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Edge list with ${edges.length} edge(s) â€?iterating for Kruskal/Bellman-Ford style.`,
+        description: `Edge list with ${edges.length} edge(s) â€“ iterating for Kruskal/Bellman-Ford style.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { edges: edges.length },
@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(i),
             edges: [],
-            description: `Scanning edge ${u}â€?{v} (weight ${weight}).`,
+            description: `Scanning edge ${u}â€“${v} (weight ${weight}).`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { edges: edges.length },
@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Edge list scan complete â€?every edge visited in O(E).`,
+        description: `Edge list scan complete â€“ every edge visited in O(E).`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { edges: edges.length },
