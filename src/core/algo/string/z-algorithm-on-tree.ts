@@ -21,7 +21,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node being examined is YELLOW (comparing).
  *   - Nodes sharing the matched prefix are GREEN (sorted).
