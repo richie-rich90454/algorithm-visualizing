@@ -15,13 +15,13 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(n²) naive, O(n) with full Ukkonen optimisations
+ *   Time:  O(n²) naive, O(n) with full Ukkonen optimizations
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Edges are labelled with the substring they represent.
+ *   - Edges are labeled with the substring they represent.
  *   - The suffix currently being inserted is YELLOW (comparing).
  *   - The tree grows one suffix at a time.
  *
