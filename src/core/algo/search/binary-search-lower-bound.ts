@@ -10,7 +10,7 @@
  * it continues searching the left half, so it always lands on the *leftmost*
  * occurrence (or the insertion point if the target is absent).
  *
- * This is the exact behaviour of C++'s `std::lower_bound` and Python's
+ * This is the exact behavior of C++'s `std::lower_bound` and Python's
  * `bisect_left`, and it is the building block for many ordered-set operations.
  *
  * ---------------------------------------------------------------------------
@@ -150,7 +150,7 @@ const module: AlgorithmModule = {
     name: "Binary Search (Lower Bound)",
     category: "searching",
     complexity: { time: "O(log n)", space: "O(1)" },
-    // Duplicated 3s show off the "find the leftmost" behaviour clearly.
+    // Duplicated 3s show off the "find the leftmost" behavior clearly.
     defaultInput: { array: [1, 3, 3, 3, 5, 7, 9, 11], target: 3 },
     visualType: "array",
     run,
