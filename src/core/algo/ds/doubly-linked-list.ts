@@ -32,7 +32,7 @@
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a doubly linked list visualisation.
+ * Build a doubly linked list visualization.
  *
  * @param values The node values in order.
  * @param states Optional index → state overrides.
