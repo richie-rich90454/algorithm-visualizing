@@ -18,7 +18,7 @@
  *   Space:            O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The heap is drawn as a tree AND as a flat array.
  *   - The bubbling element is YELLOW (comparing).
