@@ -16,7 +16,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The lower hull is built first (BLUE / active).
  *   - The upper hull is added next (GREEN / sorted).
