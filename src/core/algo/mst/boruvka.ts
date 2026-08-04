@@ -22,7 +22,7 @@
  * ---------------------------------------------------------------------------
  *   - The edge being scanned in a round is YELLOW (comparing).
  *   - Edges chosen for the MST are GREEN (sorted).
- *   - Components are hinted by node colour.
+ *   - Components are hinted by node color.
  *
  * ---------------------------------------------------------------------------
  * Properties
