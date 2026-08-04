@@ -4,7 +4,7 @@
  *
  * Structure (plan Section 12.1):
  *   - A 280px `<Sidebar>` on the left holding search + the category tree.
- *   - A `<main>` area on the right stacking the canvas visualiser, a 40px
+ *   - A `<main>` area on the right stacking the canvas visualizer, a 40px
  *     description bar showing the current frame's caption, and the 56px
  *     controls bar with playback buttons.
  *
@@ -44,7 +44,7 @@ function onKeydown(event: KeyboardEvent): void {
 
     switch (event.key) {
         case " ":
-            // Space also scrolls the page by default; stop that behaviour.
+            // Space also scrolls the page by default; stop that behavior.
             event.preventDefault();
             store.togglePlay();
             break;
