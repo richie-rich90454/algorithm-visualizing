@@ -1,9 +1,9 @@
 /**
- * visual.ts – Core visualisation types for the Algorithmic Visualization Engine.
+ * visual.ts – Core visualization types for the Algorithmic Visualization Engine.
  *
  * These types describe the *pixel world*: the drawable objects that appear on
  * the canvas, the frames the step engine replays, and the state that decides
- * which colour every shape gets painted with.
+ * which color every shape gets painted with.
  *
  * Every algorithm module emits a stream of `VisualFrame` snapshots. A frame is
  * a complete description of one moment in time: every bar, node, cell, edge,
@@ -14,7 +14,7 @@
  * The five shapes the renderer knows how to draw.
  *
  * - `bar`       – a vertical rectangle whose height encodes a value (sorting).
- * - `node`      – a circle, the centre of a graph or tree vertex.
+ * - `node`      – a circle, the center of a graph or tree vertex.
  * - `cell`      – a rectangle in a grid, used by DP / matrix algorithms.
  * - `character` – a small box holding a single character (string algorithms).
  * - `edge`      – a connection between two nodes (drawn by EdgeRenderer).
@@ -22,9 +22,9 @@
 export type VisualEntityType = "node" | "edge" | "cell" | "bar" | "character";
 
 /**
- * Every state listed here maps one-to-one onto a row in the colour palette
+ * Every state listed here maps one-to-one onto a row in the color palette
  * (see Section 3.2 of the implementation plan). The renderer simply looks up
- * fill / stroke / text colours for the state an entity carries.
+ * fill / stroke / text colors for the state an entity carries.
  */
 export type EntityState =
     | "idle"
@@ -41,7 +41,7 @@ export type EntityState =
 
 /**
  * The layout engine that must position the frame's entities before drawing.
- * The main visualiser reads this field and dispatches to the matching
+ * The main visualizer reads this field and dispatches to the matching
  * layout function (ArrayLayout, GridLayout, TreeLayout, GraphLayout,
  * TextLayout, or a matrix fallback).
  */
@@ -51,7 +51,7 @@ export type LayoutType = "array" | "grid" | "tree" | "graph" | "text" | "matrix"
  * A single drawable object.
  *
  * `x` / `y` are *logical* (CSS) pixel coordinates. For bars and cells they
- * describe the top-left corner; for nodes they describe the circle centre.
+ * describe the top-left corner; for nodes they describe the circle center.
  * The HiDPI wrapper scales the canvas so the rest of the code can think in
  * plain CSS pixels regardless of the physical device pixel ratio.
  */
@@ -64,11 +64,11 @@ export interface VisualEntity {
     label: string;
     /** The underlying data, kept for the tooltip and hit-testing details. */
     value: number | string | object;
-    /** Current visual state, resolved against the colour palette. */
+    /** Current visual state, resolved against the color palette. */
     state: EntityState;
-    /** Logical x position – top-left (bars/cells) or centre (nodes). */
+    /** Logical x position – top-left (bars/cells) or center (nodes). */
     x: number;
-    /** Logical y position – top-left (bars/cells) or centre (nodes). */
+    /** Logical y position – top-left (bars/cells) or center (nodes). */
     y: number;
     /** Logical width in CSS pixels. */
     width: number;
@@ -93,14 +93,14 @@ export interface VisualEdge {
     targetId: string;
     /** Text drawn near the edge midpoint – usually the edge weight. */
     label: string;
-    /** Visual state, resolved against the colour palette. */
+    /** Visual state, resolved against the color palette. */
     state: EntityState;
     /** When true the renderer draws an arrowhead at the target end. */
     directed: boolean;
 }
 
 /**
- * A complete, immutable snapshot of the visualisation at one step.
+ * A complete, immutable snapshot of the visualization at one step.
  *
  * The step engine stores an array of these frames. Stepping forward and back
  * is just moving a pointer along the array – no algorithm code runs during
