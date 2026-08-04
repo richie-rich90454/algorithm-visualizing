@@ -17,7 +17,7 @@
  *   Space: O(n + k) auxiliary – count array plus the output buffer
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The value being counted is YELLOW (comparing) in the count phase.
  *   - The count cell being updated is PINK (highlight).
