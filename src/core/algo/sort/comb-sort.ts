@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * Comb sort improves on bubble sort by comparing elements that are *far*
- * apart rather than only neighbours. It starts with a large gap (roughly the
+ * apart rather than only neighbors. It starts with a large gap (roughly the
  * array length divided by 1.3) and shrinks the gap by the same factor each
  * pass until it reaches 1, at which point a final bubble-sort pass finishes
  * the job. The large gaps let "turtles" (small elements that crawl toward the
@@ -15,7 +15,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(n²) worst, but average behaviour is around O(n²/2^p) and often
+ *   Time:  O(n²) worst, but average behavior is around O(n²/2^p) and often
  *          approaches O(n log n) in practice
  *   Space: O(1) auxiliary
  *
