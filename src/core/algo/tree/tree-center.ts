@@ -5,7 +5,7 @@
  * What it does
  * ---------------------------------------------------------------------------
  * The center (centroid-like) of a tree is the vertex (or pair of vertices)
- * that minimises the maximum distance to any other vertex. The classic way to
+ * that minimizes the maximum distance to any other vertex. The classic way to
  * find it is "peeling": repeatedly remove all current leaves (vertices of
  * degree 1) along with their edges. The last one or two vertices remaining are
  * the centers.
@@ -17,7 +17,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current leaves being peeled are YELLOW (comparing).
  *   - Already-removed vertices are GRAY (unvisited).
