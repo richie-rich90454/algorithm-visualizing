@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * Jarvis march (gift wrapping) finds the convex hull by walking along its
  * boundary. Starting from the leftmost point, it repeatedly picks the next
- * hull vertex as the point that makes the smallest counter-clockwise turn from
+ * hull vertex as the point that makes the smallest counterclockwise turn from
  * the current edge – exactly like wrapping string around the point set.
  *
  * ---------------------------------------------------------------------------
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Gift wrapping loop.
     for (;;) {
         let next = (current + 1) % points.length;
-        // Find the point with the smallest counter-clockwise turn.
+        // Find the point with the smallest counterclockwise turn.
         for (let i = 0; i < points.length; i += 1) {
             const a = points[current];
             const b = points[next];
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (!a || !b || !c) {
                 continue;
             }
-            // If i is strictly more counter-clockwise than next, use i.
+            // If i is strictly more counterclockwise than next, use i.
             const cr = cross(a, b, c);
             if (cr > 0 || (cr === 0 && dist2(a, c) > dist2(a, b))) {
                 next = i;
