@@ -1,5 +1,5 @@
 /**
- * dsu.ts â€?Disjoint Set Union (Union-Find)
+ * dsu.ts â€“ Disjoint Set Union (Union-Find)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,7 +7,7 @@
  * A disjoint set union tracks a partition of elements into disjoint sets. It
  * supports `find` (which set is an element in) and `union` (merge two sets).
  * With path compression and union by rank, both operations run in
- * O(Î±(n)) â€?nearly constant. It is the engine behind Kruskal's algorithm and
+ * O(Î±(n)) â€“ nearly constant. It is the engine behind Kruskal's algorithm and
  * dynamic connectivity.
  *
  * ---------------------------------------------------------------------------
@@ -34,7 +34,7 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 /**
  * The DSU generator.
  *
- * @param input `{ size, unions }` â€?the element count and merges to perform.
+ * @param input `{ size, unions }` â€“ the element count and merges to perform.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { size?: number; unions?: Array<[number, number]> } | null) ?? {};
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             metadata: { parentId: "root" },
         })),
         edges: [],
-        description: `Disjoint set with ${size} elements â€?each is its own set.`,
+        description: `Disjoint set with ${size} elements â€“ each is its own set.`,
         codeLineNumber: 1,
         layout: "tree",
         meta: { sets: size },
@@ -127,13 +127,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             parent[rb] = ra;
         }
         yield buildFrame(
-            `Union(${a}, ${b}) â€?representatives ${ra} and ${rb} ${ra === rb ? "already in the same set" : "merged"}.`,
+            `Union(${a}, ${b}) â€“ representatives ${ra} and ${rb} ${ra === rb ? "already in the same set" : "merged"}.`,
         );
         step += 1;
     }
 
     yield buildFrame(
-        `DSU complete â€?${new Set(parent.map((p, i) => (p === i ? i : find(i)))).size} set(s) remain.`,
+        `DSU complete â€“ ${new Set(parent.map((p, i) => (p === i ? i : find(i)))).size} set(s) remain.`,
     );
 }
 
