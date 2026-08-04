@@ -22,7 +22,7 @@
  *   Query:      O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The Euler tour is traced across the tree (active edges).
  *   - The two query nodes are YELLOW (comparing).
