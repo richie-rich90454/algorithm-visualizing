@@ -1,5 +1,5 @@
 /**
- * string-util.ts – Shared helpers for string algorithm visualisations.
+ * string-util.ts – Shared helpers for string algorithm visualizations.
  *
  * String algorithms (KMP, Z, Rabin-Karp, …) all render the text as a row of
  * character boxes (the `text` layout). This helper builds those character
