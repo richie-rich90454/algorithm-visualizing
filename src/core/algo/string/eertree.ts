@@ -14,7 +14,7 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(n) amortised – each append does O(1) amortised work
+ *   Time:  O(n) amortized – each append does O(1) amortized work
  *   Space: O(n · alphabet) for the transitions
  *
  * ---------------------------------------------------------------------------
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     directed: true,
                 });
             }
-            // Suffix-link edges (visualised distinctly).
+            // Suffix-link edges (visualized distinctly).
             const sl = link[s];
             if (sl !== undefined && sl !== s && sl >= 0) {
                 edges.push({
