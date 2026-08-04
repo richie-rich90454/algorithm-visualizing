@@ -1,5 +1,5 @@
 /**
- * leftist-heap.ts â€?Leftist Heap
+ * leftist-heap.ts â€“ Leftist Heap
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,7 +7,7 @@
  * A leftist heap is a meldable heap that guarantees O(log n) merge by keeping
  * every node's right path as short as possible. Each node stores a "rank" (the
  * length of its right spine); the invariant is that a node's left child has
- * rank â‰?its right child's rank, which forces the right spine to be O(log n).
+ * rank â‰¥ its right child's rank, which forces the right spine to be O(log n).
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    yield buildFrame(heap, `Leftist heap complete â€?every right spine stays O(log n) long.`);
+    yield buildFrame(heap, `Leftist heap complete â€“ every right spine stays O(log n) long.`);
 }
 
 /** The Leftist Heap module, registered with the engine. */
