@@ -156,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             return; // Different color – outside the region.
         }
 
-        // Recolour and record.
+        // Recolor and record.
         visited.add(key);
         grid[row][col] = newColor;
         filled += 1;
