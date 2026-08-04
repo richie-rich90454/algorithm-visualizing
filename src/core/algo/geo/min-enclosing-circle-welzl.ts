@@ -18,7 +18,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current enclosing circle is drawn as edges.
  *   - The point that forces a boundary update is YELLOW (comparing).
