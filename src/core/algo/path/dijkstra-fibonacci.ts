@@ -22,7 +22,7 @@
  *   Space: O(V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex popped from the heap is YELLOW (comparing).
  *   - The edge being relaxed is BLUE (active).
@@ -41,7 +41,7 @@ import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
 
 /**
- * A simplified Fibonacci heap for the visualisation.
+ * A simplified Fibonacci heap for the visualization.
  *
  * Inserts and decrease-keys append entries to a lazy list; extract-min scans
  * the list. This mimics the amortised O(1) inserts/decrease-keys while keeping
@@ -188,26 +188,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const edge of edges) {
             edge.state = "idle";
         }
-        for (const [neighbour, weight] of graph[vertex] ?? []) {
+        for (const [neighbor, weight] of graph[vertex] ?? []) {
             const alt = d + weight;
-            if (alt < (dist.get(neighbour) ?? Infinity)) {
-                dist.set(neighbour, alt);
-                predecessor.set(neighbour, vertex);
-                heap.decreaseKey(neighbour, alt);
+            if (alt < (dist.get(neighbor) ?? Infinity)) {
+                dist.set(neighbor, alt);
+                predecessor.set(neighbor, vertex);
+                heap.decreaseKey(neighbor, alt);
             }
 
             const edge = edges.find(
-                (e) => e.sourceId === `node-${vertex}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${vertex}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
             }
-            const neighbourNode = nodeById.get(`node-${neighbour}`);
-            if (neighbourNode) {
-                neighbourNode.state = "visited";
-                neighbourNode.label = String(dist.get(neighbour) ?? Infinity);
+            const neighborNode = nodeById.get(`node-${neighbor}`);
+            if (neighborNode) {
+                neighborNode.state = "visited";
+                neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${vertex} → ${neighbour} (weight ${weight}).`);
+            yield buildFrame(`Relaxing edge ${vertex} → ${neighbor} (weight ${weight}).`);
             step += 1;
         }
 
