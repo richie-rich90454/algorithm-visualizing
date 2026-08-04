@@ -1,7 +1,7 @@
 /**
  * engine.ts – The StepEngine class.
  *
- * The StepEngine is the tiny brain behind the visualiser's playback controls.
+ * The StepEngine is the tiny brain behind the visualizer's playback controls.
  * When an algorithm is loaded it runs the module's generator function to
  * *exhaustion*, collecting every yielded frame into an in-memory array. From
  * that moment on, "stepping" through the algorithm is nothing more than
