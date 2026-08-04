@@ -21,7 +21,7 @@
  *   Space: O(log n) stack depth
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot is PURPLE (pivot).
  *   - Elements being partitioned are YELLOW (comparing).
