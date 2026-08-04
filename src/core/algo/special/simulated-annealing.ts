@@ -4,9 +4,9 @@
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * Simulated annealing is a probabilistic optimisation technique inspired by
+ * Simulated annealing is a probabilistic optimization technique inspired by
  * metal cooling. Starting from a candidate solution, it repeatedly proposes a
- * neighbour; a worse neighbour is accepted with probability exp(−Δ/T), where
+ * neighbor; a worse neighbor is accepted with probability exp(−Δ/T), where
  * T is a "temperature" that decreases over time. Early, hot iterations jump
  * around freely; later, cold iterations refine the best found so far. This
  * lets the search escape local optima.
@@ -14,11 +14,11 @@
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(iterations × cost of a neighbour)
+ *   Time:  O(iterations × cost of a neighbor)
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current solution is a bar/cell.
  *   - Accepted moves are GREEN (sorted); rejected moves RED (swapped).
@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Anneal.
     let T = 10;
     for (let iter = 0; iter < iterations; iter += 1) {
-        // Propose a neighbouring point.
+        // Propose a neighboring point.
         const nextX = x + (rand() * 2 - 1);
         const currentE = energy(x);
         const nextE = energy(nextX);
