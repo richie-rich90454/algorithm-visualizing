@@ -152,7 +152,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     // ------------------------------------------------------------------
 
     // When the user drags the speed slider during playback, rebuild the
-    // interval so the new delay is honoured on the very next tick.
+    // interval so the new delay is honored on the very next tick.
     watch(speed, () => {
         if (isPlaying.value) {
             stopPlayback();
