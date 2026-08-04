@@ -1,9 +1,9 @@
 /**
  * TreeLayout.ts – Tidy tree layout.
  *
- * Positions a rooted tree level by level: parents are centred above their
+ * Positions a rooted tree level by level: parents are centered above their
  * children, siblings sit side by side with a fixed gap, and the whole tree
- * is centred in the container (scaled down if it would overflow).
+ * is centered in the container (scaled down if it would overflow).
  *
  * It runs in O(n): one post-order pass computes each subtree's width, a
  * second pass assigns x positions, and the depth of every node fixes y.
@@ -29,12 +29,12 @@ const SIBLING_GAP = 16;
 const MARGIN = 40;
 
 /**
- * Lay out a tree so it is centred, balanced, and overlap-free.
+ * Lay out a tree so it is centered, balanced, and overlap-free.
  *
  * @param frame The frame whose entities link via metadata.parentId.
  * @param width Logical container width in pixels.
  * @param height Logical container height in pixels.
- * @returns The same frame, with entity centres filled in.
+ * @returns The same frame, with entity centers filled in.
  */
 export function applyTreeLayout(frame: VisualFrame, width: number, height: number): VisualFrame {
     const entities = frame.entities;
@@ -162,7 +162,7 @@ export function applyTreeLayout(frame: VisualFrame, width: number, height: numbe
     const scale = Math.min(1, availW / span);
 
     // ------------------------------------------------------------------
-    // Normalisation: centre the tree, scaling down only if it overflows.
+    // Normalization: center the tree, scaling down only if it overflows.
     // ------------------------------------------------------------------
     let maxDepth = 0;
     for (const entity of entities) {
@@ -172,7 +172,7 @@ export function applyTreeLayout(frame: VisualFrame, width: number, height: numbe
     const totalHeight = maxDepth * (NODE_SIZE + VERTICAL_GAP) + NODE_SIZE;
     const offsetY = MARGIN + Math.max(0, (height - 2 * MARGIN - totalHeight) / 2);
 
-    // Recompute minX after any re-placement so the tree is centred exactly.
+    // Recompute minX after any re-placement so the tree is centered exactly.
     let minX = Infinity;
     for (const entity of entities) {
         minX = Math.min(minX, entity.x);
