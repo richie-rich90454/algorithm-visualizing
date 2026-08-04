@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const nodes = makeGraphNodes(vertices);
     const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
-    // Neighbour map: vertex → list of (neighbor, weight).
+    // Neighbor map: vertex → list of (neighbor, weight).
     const neighbors = new Map<string, Array<[string, number]>>();
     for (const v of vertices) {
         neighbors.set(v, []);
