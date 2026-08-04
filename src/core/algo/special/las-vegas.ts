@@ -17,7 +17,7 @@
  *   Space: O(log n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The random pivot is PURPLE (pivot).
  *   - Partitioning elements are YELLOW (comparing).
