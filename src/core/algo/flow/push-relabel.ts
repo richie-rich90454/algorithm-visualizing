@@ -71,14 +71,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const neighbourMap = new Map<string, string[]>();
+    const neighborMap = new Map<string, string[]>();
     for (const [u, v] of edgeList) {
-        const listU = neighbourMap.get(u) ?? [];
+        const listU = neighborMap.get(u) ?? [];
         listU.push(v);
-        neighbourMap.set(u, listU);
-        const listV = neighbourMap.get(v) ?? [];
+        neighborMap.set(u, listU);
+        const listV = neighborMap.get(v) ?? [];
         listV.push(u);
-        neighbourMap.set(v, listV);
+        neighborMap.set(v, listV);
     }
 
     // Excess flow and height per vertex.
@@ -144,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     // ------------------------------------------------------------------
-    // Main loop: push excess to lower neighbours, relabel when stuck.
+    // Main loop: push excess to lower neighbors, relabel when stuck.
     // ------------------------------------------------------------------
     for (;;) {
         // Find a vertex (not source/sink) with positive excess.
@@ -163,8 +163,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Try to push to a neighbor of strictly lower height.
         let pushed = false;
-        const neighbours = neighbourMap.get(current) ?? [];
-        for (const neighbor of neighbours) {
+        const neighbors = neighborMap.get(current) ?? [];
+        for (const neighbor of neighbors) {
             if ((height.get(neighbor) ?? 0) < (height.get(current) ?? 0)) {
                 const available = cap.get(`${current}→${neighbor}`) ?? 0;
                 if (available > 0) {
