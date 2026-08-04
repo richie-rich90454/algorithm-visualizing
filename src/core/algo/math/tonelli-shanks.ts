@@ -16,7 +16,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The search steps are shown as cells.
  *   - The found root is GREEN (sorted).
