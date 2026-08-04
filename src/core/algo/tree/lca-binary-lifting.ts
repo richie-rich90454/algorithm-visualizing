@@ -21,7 +21,7 @@
  *   Query:      O(log V)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The two query nodes are YELLOW (comparing).
  *   - The node being lifted is BLUE (active).
