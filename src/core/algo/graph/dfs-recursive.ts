@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * Depth-first search explores a graph by going as deep as possible along one
  * branch before backtracking. Starting from a source vertex, it visits the
- * source, then recursively visits each unvisited neighbour in turn. The
+ * source, then recursively visits each unvisited neighbor in turn. The
  * recursion itself is the stack: each call remembers where to resume when its
  * subtree is exhausted. DFS produces a spanning tree of the visited vertices
  * and is the backbone of many algorithms (topological sort, SCCs, bridges).
@@ -20,7 +20,7 @@
  * ---------------------------------------------------------------------------
  * Visualisation mapping
  * ---------------------------------------------------------------------------
- *   - Unvisited nodes are GREY (unvisited).
+ *   - Unvisited nodes are GRAY (unvisited).
  *   - The node currently being explored is YELLOW (comparing).
  *   - The edge taken to reach a node is BLUE (active).
  *   - Fully explored nodes are ORANGE (visited).
@@ -80,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     /**
      * Recursive DFS visit. Marks `current` visited, then recurses into each
-     * unvisited neighbour. The generator yields a frame per visit.
+     * unvisited neighbor. The generator yields a frame per visit.
      */
     function* dfs(current: string): Generator<VisualFrame, void, unknown> {
         visited.add(current);
@@ -106,10 +106,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield buildFrame();
         step += 1;
 
-        // Explore each neighbour that has not been visited yet.
-        for (const neighbour of adjacency[current] ?? []) {
+        // Explore each neighbor that has not been visited yet.
+        for (const neighbor of adjacency[current] ?? []) {
             // Skip already-visited vertices to avoid cycles.
-            if (visited.has(neighbour)) {
+            if (visited.has(neighbor)) {
                 continue;
             }
 
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
 
             // Highlight the edge we are about to cross.
-            const edge = edgeById.get(`edge-${current}-${neighbour}`);
+            const edge = edgeById.get(`edge-${current}-${neighbor}`);
             if (edge) {
                 edge.state = "active";
             }
@@ -127,8 +127,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             yield buildFrame();
             step += 1;
 
-            // Recurse into the neighbour's subtree.
-            yield* dfs(neighbour);
+            // Recurse into the neighbor's subtree.
+            yield* dfs(neighbor);
         }
 
         // This node is fully explored – mark it done.
