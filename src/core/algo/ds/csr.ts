@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             })),
         ],
         edges: [],
-        description: `Neighbours of ${inspect}: [${neighbors.join(", ")}] – the contiguous slice col[${from}..${to}).`,
+        description: `Neighbors of ${inspect}: [${neighbors.join(", ")}] – the contiguous slice col[${from}..${to}).`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length, neighbors: neighbors.length },
