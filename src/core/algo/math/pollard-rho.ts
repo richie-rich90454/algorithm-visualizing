@@ -1,5 +1,5 @@
 /**
- * pollard-rho.ts – Pollard's Rho Algorithm (integer factorisation)
+ * pollard-rho.ts – Pollard's Rho Algorithm (integer factorization)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -28,7 +28,7 @@
  * Properties
  * ---------------------------------------------------------------------------
  *   - The cycle-detection trick is the heart to teach.
- *   - Usually paired with Miller-Rabin for full factorisation.
+ *   - Usually paired with Miller-Rabin for full factorization.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
