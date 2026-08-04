@@ -17,7 +17,7 @@
  *   Space: O(1)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each pile is shown as a stack of stones (bars/cells).
  *   - The winning move is highlighted (removing stones to zero the nim-sum).
@@ -26,14 +26,14 @@
  * ---------------------------------------------------------------------------
  * Properties
  * ---------------------------------------------------------------------------
- *   - Sprague-Grundy generalises this XOR to all impartial games.
+ *   - Sprague-Grundy generalizes this XOR to all impartial games.
  *   - The winning move sets some pile to (pile XOR nim-sum).
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 /**
- * Build a pile visualisation: each pile is a column of cells.
+ * Build a pile visualization: each pile is a column of cells.
  *
  * @param piles The pile sizes.
  * @param highlight The pile to highlight (or -1).
