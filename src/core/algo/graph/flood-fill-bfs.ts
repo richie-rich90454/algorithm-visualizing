@@ -5,9 +5,9 @@
  * What it does
  * ---------------------------------------------------------------------------
  * The queue-based sibling of flood-fill DFS. From the start cell, it enqueues
- * matching neighbours and recolours them as they are dequeued. Because the
+ * matching neighbors and recolors them as they are dequeued. Because the
  * queue is FIFO, the region fills outward level by level from the start,
- * producing a distinctive "ripple" visualisation that contrasts nicely with
+ * producing a distinctive "ripple" visualization that contrasts nicely with
  * the depth-first spiral of the recursive version.
  *
  * ---------------------------------------------------------------------------
@@ -44,7 +44,7 @@ const DIRS: Array<[number, number]> = [
 /**
  * Build the grid of cell entities for a frame.
  *
- * @param grid The 2D grid of colour indices.
+ * @param grid The 2D grid of color indices.
  * @param states Optional `row,col` → state overrides for this frame.
  * @returns An array of `VisualEntity` cells with row/col metadata.
  */
@@ -160,7 +160,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Enqueue matching, unvisited neighbours for the next level.
+        // Enqueue matching, unvisited neighbors for the next level.
         for (const [dr, dc] of DIRS) {
             const nr = row + dr;
             const nc = col + dc;
@@ -185,7 +185,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grid),
         edges: [],
-        description: `Flood fill (BFS) complete – recoloured ${filled} cell(s).`,
+        description: `Flood fill (BFS) complete – recolored ${filled} cell(s).`,
         codeLineNumber: 4,
         layout: "grid",
         meta: { filled },
