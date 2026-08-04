@@ -24,8 +24,8 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Pass 1 nodes are visited in DFS order (active/visited colours).
- *   - Pass 2 nodes are coloured per SCC (each component gets a distinct
+ *   - Pass 1 nodes are visited in DFS order (active/visited colors).
+ *   - Pass 2 nodes are colored per SCC (each component gets a distinct
  *     state: sorted / path / highlight).
  *   - Reversed edges are drawn in pass 2.
  *
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const visited2 = new Set<string>();
     const components: string[][] = [];
 
-    // Reset node colours for the second pass.
+    // Reset node colors for the second pass.
     for (const node of nodes) {
         node.state = "unvisited";
     }
@@ -146,7 +146,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield buildFrame("Pass 1 complete – starting pass 2 on the reversed graph.");
     step += 1;
 
-    const componentColours = ["sorted", "path", "highlight"] as const;
+    const componentColors = ["sorted", "path", "highlight"] as const;
 
     function* dfs2(v: string, component: string[]): Generator<VisualFrame, void, unknown> {
         visited2.add(v);
