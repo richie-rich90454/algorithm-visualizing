@@ -19,7 +19,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Nodes are circles labelled with characters.
+ *   - Nodes are circles labeled with characters.
  *   - The three edges (LT, EQ, GT) are colored distinctly.
  *   - The search path is YELLOW (comparing).
  *
