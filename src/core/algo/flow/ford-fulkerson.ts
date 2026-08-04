@@ -77,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Neighbour list for the residual search (u → all possible v with an edge).
+    // Neighbor list for the residual search (u → all possible v with an edge).
     const neighborMap = new Map<string, string[]>();
     for (const [u, v] of edgeList) {
         const listU = neighborMap.get(u) ?? [];
