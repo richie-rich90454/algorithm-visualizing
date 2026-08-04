@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // The deque holds indices with increasing dp values.
     const deque: number[] = [0];
 
-    // Frame 0: the initialised dp array.
+    // Frame 0: the initialized dp array.
     yield {
         stepNumber: step,
         entities: makeCells(dp),
