@@ -7,7 +7,7 @@
  * Linear search scans the array from left to right, comparing each element to
  * the target until either a match is found or the end of the array is
  * reached. It is the simplest search algorithm and the only one that works on
- * unsorted data. The visualisation walks a highlight across the array, so the
+ * unsorted data. The visualization walks a highlight across the array, so the
  * worst-case cost is plainly visible: every element gets examined when the
  * target is absent.
  *
@@ -19,7 +19,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The element currently being checked is YELLOW (comparing).
  *   - A match flashes GREEN (sorted) and the search stops.
@@ -66,7 +66,7 @@ function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): 
  * @param input The search task: an array plus the value to find.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
-    // Normalise the input; fall back to a fixed example when malformed.
+    // Normalize the input; fall back to a fixed example when malformed.
     const task = (input as { array?: number[]; target?: number } | null) ?? {};
     const arr = Array.isArray(task.array)
         ? [...(task.array as number[])]
