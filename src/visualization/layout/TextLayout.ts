@@ -1,9 +1,9 @@
 /**
- * TextLayout.ts – Lays out character entities in a single centred row.
+ * TextLayout.ts – Lays out character entities in a single Centerd row.
  *
  * Used by string algorithms (KMP, Rabin–Karp, Z-algorithm, …). Every entity
  * is one character drawn in a small fixed-size box; the boxes sit side by side
- * with no gap, centred horizontally and vertically in the container.
+ * with no gap, Centerd horizontally and vertically in the container.
  */
 
 import type { VisualFrame } from "@/types";
@@ -15,7 +15,7 @@ const CHAR_WIDTH = 16;
 const CHAR_HEIGHT = 20;
 
 /**
- * Lay out characters as a single centred row.
+ * Lay out characters as a single Centerd row.
  *
  * @param frame The frame whose entities are characters.
  * @param width Logical container width in pixels.
@@ -33,7 +33,7 @@ export function applyTextLayout(frame: VisualFrame, width: number, height: numbe
     // Total row width is simply each box stacked with no gap between them.
     const totalWidth = entities.length * CHAR_WIDTH;
 
-    // Centre the row horizontally and the (single) row vertically.
+    // Center the row horizontally and the (single) row vertically.
     const startX = (width - totalWidth) / 2;
     const topY = (height - CHAR_HEIGHT) / 2;
 
