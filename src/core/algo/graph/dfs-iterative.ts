@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * The iterative twin of recursive DFS. Instead of relying on the call stack,
  * it manages an explicit stack of vertices to visit. On each step it pops the
- * top vertex, marks it visited, and pushes its unvisited neighbours. Because
+ * top vertex, marks it visited, and pushes its unvisited neighbors. Because
  * the traversal order depends on the stack, an iterative DFS is a great
  * lesson in *explicit vs implicit* state: the recursion's hidden stack is made
  * visible and controllable.
@@ -18,7 +18,7 @@
  *   Space: O(V) for the explicit stack
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The node at the top of the stack (being processed) is YELLOW (comparing).
  *   - Nodes waiting in the stack are ORANGE (visited).
