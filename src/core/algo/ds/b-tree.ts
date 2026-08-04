@@ -1,23 +1,23 @@
 /**
- * b-tree.ts â€“ B-Tree
+ * b-tree.ts â€?B-Tree
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
  * A B-tree is a self-balancing search tree with many keys per node and many
- * children (a branching factor â‰¥ 2). It is designed for block-based storage
+ * children (a branching factor â‰?2). It is designed for block-based storage
  * (databases, filesystems): a wide node holds an entire disk block, so few
  * levels are needed and few disk reads occur. A node of order t holds at most
- * 2tâˆ’1 keys and 2t children; overflow splits a full node into two.
+ * 2tâˆ? keys and 2t children; overflow splits a full node into two.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Search / insert / delete: O(log_t n) â€“ few levels, wide nodes
+ *   Search / insert / delete: O(log_t n) â€?few levels, wide nodes
  *   Space:                    O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each node is a box containing several key cells.
  *   - The node being searched is YELLOW (comparing).
@@ -34,7 +34,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 /**
  * The B-Tree generator.
  *
- * @param input `{ keys, search }` â€“ the root node's keys and a search value.
+ * @param input `{ keys, search }` â€?the root node's keys and a search value.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { keys?: number[]; search?: number } | null) ?? {};
@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNode(keys),
         edges: [],
-        description: "B-tree root node (order 3 â€“ up to 5 keys per node).",
+        description: "B-tree root node (order 3 â€?up to 5 keys per node).",
         codeLineNumber: 0,
         layout: "grid",
         meta: {},
@@ -95,8 +95,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ),
         edges: [],
         description: found
-            ? `Found ${search} in the node â€“ descending into children only if needed.`
-            : `${search} not in this node â€“ follow the appropriate child pointer.`,
+            ? `Found ${search} in the node â€?descending into children only if needed.`
+            : `${search} not in this node â€?follow the appropriate child pointer.`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { found },
