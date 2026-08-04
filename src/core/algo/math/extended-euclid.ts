@@ -19,7 +19,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current (a, b) pair is YELLOW (comparing).
  *   - The current Bezout coefficients are reported each step.
