@@ -19,7 +19,7 @@
  *   Space: O(V) for the in-degree map and the queue
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The vertex being emitted is YELLOW (comparing).
  *   - Vertices with in-degree zero (ready to go) are ORANGE (visited).
@@ -62,9 +62,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of vertices) {
         inDegree[v] = 0;
     }
-    for (const neighbours of Object.values(adjacency)) {
-        for (const neighbour of neighbours) {
-            inDegree[neighbour] = (inDegree[neighbour] ?? 0) + 1;
+    for (const neighbors of Object.values(adjacency)) {
+        for (const neighbor of neighbors) {
+            inDegree[neighbor] = (inDegree[neighbor] ?? 0) + 1;
         }
     }
 
@@ -123,14 +123,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Emit the vertex and free its successors.
         order.push(current);
-        for (const neighbour of adjacency[current] ?? []) {
-            inDegree[neighbour] = (inDegree[neighbour] ?? 0) - 1;
+        for (const neighbor of adjacency[current] ?? []) {
+            inDegree[neighbor] = (inDegree[neighbor] ?? 0) - 1;
             // A successor that reached zero in-degree is now ready.
-            if ((inDegree[neighbour] ?? 0) === 0) {
-                queue.push(neighbour);
-                const neighbourNode = nodeById.get(`node-${neighbour}`);
-                if (neighbourNode) {
-                    neighbourNode.state = "visited";
+            if ((inDegree[neighbor] ?? 0) === 0) {
+                queue.push(neighbor);
+                const neighborNode = nodeById.get(`node-${neighbor}`);
+                if (neighborNode) {
+                    neighborNode.state = "visited";
                 }
             }
         }
