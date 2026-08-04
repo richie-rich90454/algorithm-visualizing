@@ -1,5 +1,5 @@
 /**
- * monotonic-queue.ts â€“ Monotonic Queue (sliding-window minimum)
+ * monotonic-queue.ts â€?Monotonic Queue (sliding-window minimum)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -18,7 +18,7 @@
  *   Space: O(k) for a window of size k
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The deque contents are highlighted.
  *   - The window minimum (front) is YELLOW (comparing).
@@ -36,7 +36,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  * Build a row of cells for the values.
  *
  * @param values The array values.
- * @param states Optional index â†’ state overrides.
+ * @param states Optional index â†?state overrides.
  * @returns Cell entities in a single row.
  */
 function makeCells(values: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeCells(values, poppedStates),
                 edges: [],
-                description: `Popped index ${popped} from the back â€“ it can never be the minimum.`,
+                description: `Popped index ${popped} from the back â€?it can never be the minimum.`,
                 codeLineNumber: 2,
                 layout: "grid",
                 meta: { window: k, deque: [...deque] },
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(values, states),
             edges: [],
-            description: `Index ${i} added. Deque [${deque.join(", ")}] â€“ window minimum is ${values[deque[0] ?? 0]}.`,
+            description: `Index ${i} added. Deque [${deque.join(", ")}] â€?window minimum is ${values[deque[0] ?? 0]}.`,
             codeLineNumber: 3,
             layout: "grid",
             meta: { window: k, deque: [...deque] },
