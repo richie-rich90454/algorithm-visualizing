@@ -109,19 +109,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edge.state = "idle";
         }
 
-        // Push unvisited neighbours so they are explored next. Reversed so the
-        // first neighbour is popped first (mimics recursive order).
-        const neighbours = adjacency[current] ?? [];
-        for (let i = neighbours.length - 1; i >= 0; i -= 1) {
-            const neighbour = neighbours[i];
-            if (!neighbour || visited.has(neighbour)) {
+        // Push unvisited neighbors so they are explored next. Reversed so the
+        // first neighbor is popped first (mimics recursive order).
+        const neighbors = adjacency[current] ?? [];
+        for (let i = neighbors.length - 1; i >= 0; i -= 1) {
+            const neighbor = neighbors[i];
+            if (!neighbor || visited.has(neighbor)) {
                 continue;
             }
-            stack.push(neighbour);
+            stack.push(neighbor);
 
-            // Light up the edge that will lead us to this neighbour.
+            // Light up the edge that will lead us to this neighbor.
             const edge = edges.find(
-                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbour}`,
+                (e) => e.sourceId === `node-${current}` && e.targetId === `node-${neighbor}`,
             );
             if (edge) {
                 edge.state = "active";
