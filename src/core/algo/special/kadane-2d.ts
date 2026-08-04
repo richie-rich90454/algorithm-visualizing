@@ -16,7 +16,7 @@
  *   Space: O(rows)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The compressed row-sum array is shown.
  *   - The best sub-rectangle is highlighted GREEN (sorted).
