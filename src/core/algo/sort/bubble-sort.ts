@@ -41,7 +41,7 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
  *
  * Each bar carries its value as both `label` (what the renderer prints) and
  * `value` (what the layout uses to scale its height). The optional `states`
- * map lets the caller override individual bars' colours per frame, defaulting
+ * map lets the caller override individual bars' colors per frame, defaulting
  * to `idle` for every bar.
  *
  * @param arr The current array values, in display order.
