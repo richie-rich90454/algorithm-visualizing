@@ -21,7 +21,7 @@
  *   Space: O(n) for the Z array
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The character being inspected is YELLOW (comparing).
  *   - The active [l, r] window is PINK (highlight).
@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let r = 0;
 
     for (let i = 1; i < n; i += 1) {
-        // Initialise Z[i] from the window when i is inside [l, r].
+        // Initialize Z[i] from the window when i is inside [l, r].
         if (i <= r) {
             z[i] = Math.min(r - i + 1, z[i - l] ?? 0);
         }
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Colour the found matches green.
+    // Color the found matches green.
     const finalStates = new Map<number, EntityState>();
     for (const start of matches) {
         for (

@@ -21,7 +21,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The current scaling factor ε is announced each phase.
  *   - The edges usable under the current ε are highlighted.
@@ -33,7 +33,7 @@
  *   - Demonstrates the "scaling" algorithmic technique (like capacity scaling
  *     in max flow).
  *   - The ε-doubling/halving loop is a recurring pattern in approximation and
- *     optimisation algorithms.
+ *     optimization algorithms.
  */
 
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
@@ -229,7 +229,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         eps = Math.floor(eps / 2);
     }
 
-    // Saturate-colour edges.
+    // Saturate-color edges.
     for (const edge of edges) {
         edge.state = "idle";
     }
