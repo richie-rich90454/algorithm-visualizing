@@ -131,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    // Colour the MST edges cyan.
+    // Color the MST edges cyan.
     for (const index of mstEdges) {
         const edge = edges[index];
         if (edge) {
