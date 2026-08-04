@@ -1,5 +1,5 @@
 /**
- * hash-map-chaining.ts â€?Hash Map (separate chaining)
+ * hash-map-chaining.ts â€“ Hash Map (separate chaining)
  *
  * ---------------------------------------------------------------------------
  * What it does
@@ -7,7 +7,7 @@
  * A hash map stores key-value pairs in an array of "buckets". Each bucket is
  * a small chain (linked list) holding every key that hashes to that bucket.
  * On average each bucket holds n/m entries (the load factor), so lookups are
- * O(1 + Î±) â‰?O(1). Chaining is the simplest collision-resolution strategy.
+ * O(1 + Î±) â‰ˆ O(1). Chaining is the simplest collision-resolution strategy.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -41,7 +41,7 @@ function hashKey(key: string, buckets: number): number {
 /**
  * The Hash Map (chaining) generator.
  *
- * @param input `{ keys, buckets, probe }` â€?keys to insert and a key to probe.
+ * @param input `{ keys, buckets, probe }` â€“ keys to insert and a key to probe.
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { keys?: string[]; buckets?: number; probe?: string } | null) ?? {};
@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Hash map with ${buckets} bucket(s) â€?[${keys.join(", ")}] inserted by chaining.`,
+        description: `Hash map with ${buckets} bucket(s) â€“ [${keys.join(", ")}] inserted by chaining.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { buckets, keys: keys.length },
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(targetBucket),
         edges: [],
-        description: `"${probe}" hashes to bucket ${targetBucket} â€?${found ? "FOUND" : "not found"} by scanning its chain.`,
+        description: `"${probe}" hashes to bucket ${targetBucket} â€“ ${found ? "FOUND" : "not found"} by scanning its chain.`,
         codeLineNumber: 2,
         layout: "grid",
         meta: { buckets, probe, found },
@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(),
         edges: [],
-        description: `Average chain length = load factor Î± = ${keys.length}/${buckets} â‰?${(keys.length / buckets).toFixed(1)} â€?lookups are ~O(1).`,
+        description: `Average chain length = load factor Î± = ${keys.length}/${buckets} â‰ˆ ${(keys.length / buckets).toFixed(1)} â€“ lookups are ~O(1).`,
         codeLineNumber: 3,
         layout: "grid",
         meta: { buckets, keys: keys.length },
