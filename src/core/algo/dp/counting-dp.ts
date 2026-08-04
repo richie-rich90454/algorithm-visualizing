@@ -20,7 +20,7 @@
  *   Space: O(n)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The cell being computed is YELLOW (comparing).
  *   - Its two contributors are PINK (highlight).
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const ways = new Array<number>(steps + 1).fill(0);
     ways[0] = 1; // one way to stand at the bottom
 
-    // Frame 0: the initialised array.
+    // Frame 0: the initialized array.
     yield {
         stepNumber: step,
         entities: makeCells(ways),
