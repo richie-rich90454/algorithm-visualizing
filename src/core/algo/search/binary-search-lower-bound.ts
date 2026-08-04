@@ -20,7 +20,7 @@
  *   Space: O(1) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The middle element is YELLOW (comparing).
  *   - The candidate answer (current lower bound) is PINK (highlight).
