@@ -22,7 +22,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Left-side vertices are drawn in one row, right-side in another.
  *   - Matching edges are GREEN (sorted).
