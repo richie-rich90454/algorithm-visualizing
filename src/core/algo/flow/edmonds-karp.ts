@@ -17,7 +17,7 @@
  *   Space: O(V + E)
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The shortest augmenting path found by BFS is BLUE (active).
  *   - Saturated edges are CYAN (path).
@@ -133,11 +133,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (!current) {
                 continue;
             }
-            for (const neighbour of neighbourMap.get(current) ?? []) {
-                if (!visited.has(neighbour) && (cap.get(`${current}→${neighbour}`) ?? 0) > 0) {
-                    visited.add(neighbour);
-                    parent.set(neighbour, current);
-                    queue.push(neighbour);
+            for (const neighbor of neighbourMap.get(current) ?? []) {
+                if (!visited.has(neighbor) && (cap.get(`${current}→${neighbor}`) ?? 0) > 0) {
+                    visited.add(neighbor);
+                    parent.set(neighbor, current);
+                    queue.push(neighbor);
                 }
             }
         }
@@ -212,7 +212,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Colour saturated edges.
+    // Color saturated edges.
     resetEdgeStates();
     for (let i = 0; i < edgeList.length; i += 1) {
         const [u, v, capacity] = edgeList[i] ?? [];
