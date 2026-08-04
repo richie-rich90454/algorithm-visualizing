@@ -6,7 +6,7 @@
  * ---------------------------------------------------------------------------
  * Gaussian elimination solves a system of linear equations A·x = b by turning
  * the augmented matrix [A | b] into row-echelon form. For each column it finds
- * a pivot (a non-zero entry), swaps it to the diagonal, normalises the pivot
+ * a pivot (a non-zero entry), swaps it to the diagonal, normalizes the pivot
  * row, and eliminates the variable from all rows below. Back-substitution then
  * yields the solution vector.
  *
@@ -17,7 +17,7 @@
  *   Space: O(n²) for the augmented matrix
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The pivot cell is YELLOW (comparing).
  *   - The pivot row is PINK (highlight).
@@ -142,7 +142,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step += 1;
         }
 
-        // Normalise the pivot row to make the diagonal entry 1.
+        // Normalize the pivot row to make the diagonal entry 1.
         const pivot = M[col]?.[col] ?? 1;
         const pivotRowData = M[col];
         if (pivotRowData) {
@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(M, states),
             edges: [],
-            description: `Normalised pivot row ${col}.`,
+            description: `Normalized pivot row ${col}.`,
             codeLineNumber: 3,
             layout: "matrix",
             meta: { rows: n, cols: n + 1 },
