@@ -20,7 +20,7 @@
  *   Space: O(n + b) auxiliary
  *
  * ---------------------------------------------------------------------------
- * Visualisation mapping
+ * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - The digit being examined is YELLOW (comparing).
  *   - Elements being re-ordered in a digit pass are PINK (highlight).
