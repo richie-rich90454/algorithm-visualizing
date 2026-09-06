@@ -48,6 +48,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
     const n = array.length;
 
+    // An empty array has no tree to draw.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty array – no segment tree to build.",
+            codeLineNumber: 0,
+            layout: "tree",
+            meta: { n },
+        };
+        return;
+    }
+
     // Build the tree structure.
     const nodes: VisualEntity[] = [];
     const edges: VisualEdge[] = [];
