@@ -121,141 +121,171 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         neighbors.get(b)?.push(a);
     }
 
+    // A candidate augmenting path is only flipped when it strictly alternates
+    // (non-matching / matching / …) between two unmatched endpoints with no
+    // repeated vertices – otherwise the "path" runs through an uncontracted
+    // odd cycle and flipping it would corrupt the matching.
+    const isAlternating = (path: string[]): boolean => {
+        // Vertices = edges + 1; an augmenting path has an odd number of edges.
+        if (path.length < 2 || path.length % 2 !== 0) {
+            return false;
+        }
+        if (new Set(path).size !== path.length) {
+            return false;
+        }
+        if (match.has(path[0]!) || match.has(path[path.length - 1]!)) {
+            return false;
+        }
+        for (let i = 0; i + 1 < path.length; i += 1) {
+            const matched = match.get(path[i]!) === path[i + 1];
+            if (i % 2 === 0 ? matched : !matched) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     // ------------------------------------------------------------------
     // Main loop: find augmenting paths, shrinking blossoms as needed.
     // ------------------------------------------------------------------
     for (;;) {
-        // Find an unmatched vertex to grow an alternating tree from.
-        let root = "";
-        for (const v of vertices) {
-            if (!match.has(v)) {
-                root = v;
-                break;
-            }
-        }
-        if (root === "") {
+        const unmatched = vertices.filter((v) => !match.has(v));
+        if (unmatched.length === 0) {
             break; // Perfect matching – everyone is paired.
         }
 
-        // BFS through alternating paths from the root.
-        const parent = new Map<string, string>();
-        const base = new Map<string, string>();
-        for (const v of vertices) {
-            base.set(v, v);
-        }
-        const visited = new Set<string>();
-        const queue: string[] = [root];
-        visited.add(root);
-
-        // Detect a blossom: a non-tree edge between two vertices at even
-        // distance from the root.
-        let blossomFound = false;
-
-        while (queue.length > 0 && !blossomFound) {
-            const current = queue.shift();
-            if (!current) {
-                continue;
+        let augmented = false;
+        for (const root of unmatched) {
+            // BFS through alternating paths from the root.
+            const parent = new Map<string, string>();
+            const base = new Map<string, string>();
+            for (const v of vertices) {
+                base.set(v, v);
             }
-            for (const neighbor of neighbors.get(current) ?? []) {
-                if (match.get(current) === neighbor) {
-                    continue; // Skip the matching edge (alternating structure).
+            const visited = new Set<string>();
+            const queue: string[] = [root];
+            visited.add(root);
+
+            // Simplified shrink: treat every visited vertex as a single
+            // super-node rooted at the BFS root, then keep searching.
+            const shrink = function* (a: string, b: string): Generator<VisualFrame, void, unknown> {
+                blossomsFound += 1;
+                for (const v of visited) {
+                    base.set(v, root);
                 }
-                if (base.get(neighbor) === base.get(current)) {
+
+                // Mark the blossom vertices (the cycle) pink.
+                refreshMatching();
+                for (const v of visited) {
+                    const node = entities.find((n) => n.label === v);
+                    if (node) {
+                        node.state = "highlight";
+                    }
+                }
+                yield {
+                    stepNumber: step,
+                    entities: entities.map((n) => ({ ...n })),
+                    edges: edges.map((e) => ({ ...e })),
+                    description: `Blossom (odd cycle) detected involving ${a} and ${b} – shrinking it (simplified).`,
+                    codeLineNumber: 3,
+                    layout: "graph",
+                    meta: { matching: matchingSize, blossoms: blossomsFound },
+                };
+                step += 1;
+            };
+
+            let done = false;
+            while (queue.length > 0 && !done) {
+                const current = queue.shift();
+                if (!current) {
                     continue;
                 }
-                if (!visited.has(neighbor)) {
-                    // Discover the neighbor.
-                    visited.add(neighbor);
-                    const partner = match.get(neighbor);
-                    if (partner !== undefined && !visited.has(partner)) {
-                        // Continue the alternating tree through the matching.
-                        parent.set(partner, neighbor);
-                        parent.set(neighbor, current);
-                        visited.add(partner);
-                        queue.push(partner);
-                    } else if (partner === undefined) {
-                        // Found an augmenting path: neighbor is unmatched.
-                        parent.set(neighbor, current);
+                for (const neighbor of neighbors.get(current) ?? []) {
+                    if (done) {
+                        break;
+                    }
+                    if (match.get(current) === neighbor) {
+                        continue; // Skip the matching edge (alternating structure).
+                    }
+                    if (base.get(neighbor) === base.get(current)) {
+                        continue;
+                    }
+                    if (!visited.has(neighbor)) {
+                        // Discover the neighbor.
+                        visited.add(neighbor);
+                        const partner = match.get(neighbor);
+                        if (partner !== undefined && !visited.has(partner)) {
+                            // Continue the alternating tree through the matching.
+                            parent.set(partner, neighbor);
+                            parent.set(neighbor, current);
+                            visited.add(partner);
+                            queue.push(partner);
+                        } else if (partner === undefined) {
+                            // Candidate augmenting path: neighbor is unmatched.
+                            parent.set(neighbor, current);
 
-                        // --- Augment along the path root → … → neighbor. ---
-                        const path: string[] = [];
-                        let cursor: string | undefined = neighbor;
-                        while (cursor !== undefined) {
-                            path.push(cursor);
-                            cursor = parent.get(cursor);
-                        }
-
-                        // Flip matching edges along the path (length is odd).
-                        for (let i = 0; i + 1 < path.length; i += 2) {
-                            const a = path[i] as string;
-                            const b = path[i + 1] as string;
-                            match.set(a, b);
-                            match.set(b, a);
-                        }
-                        matchingSize += 1;
-
-                        // Highlight the augmenting path.
-                        refreshMatching();
-                        for (let i = 0; i + 1 < path.length; i += 2) {
-                            const edge = edges.find(
-                                (e) =>
-                                    (e.sourceId === `node-${path[i]}` &&
-                                        e.targetId === `node-${path[i + 1]}`) ||
-                                    (e.sourceId === `node-${path[i + 1]}` &&
-                                        e.targetId === `node-${path[i]}`),
-                            );
-                            if (edge) {
-                                edge.state = "path";
+                            const path: string[] = [];
+                            let cursor: string | undefined = neighbor;
+                            while (cursor !== undefined) {
+                                path.push(cursor);
+                                cursor = parent.get(cursor);
                             }
-                        }
-                        yield {
-                            stepNumber: step,
-                            entities: entities.map((n) => ({ ...n })),
-                            edges: edges.map((e) => ({ ...e })),
-                            description: `Augmented along ${path.join(" → ")} – matching is now ${matchingSize}.`,
-                            codeLineNumber: 2,
-                            layout: "graph",
-                            meta: { matching: matchingSize, blossoms: blossomsFound },
-                        };
-                        step += 1;
-                        queue.length = 0;
-                        blossomFound = true;
-                    }
-                } else {
-                    // A non-tree edge closes an odd cycle – a blossom to shrink.
-                    blossomsFound += 1;
 
-                    // Mark the blossom vertices (the cycle) pink.
-                    refreshMatching();
-                    for (const v of visited) {
-                        const node = entities.find((n) => n.label === v);
-                        if (node) {
-                            node.state = "highlight";
-                        }
-                    }
-                    yield {
-                        stepNumber: step,
-                        entities: entities.map((n) => ({ ...n })),
-                        edges: edges.map((e) => ({ ...e })),
-                        description: `Blossom (odd cycle) detected involving ${current} and ${neighbor} – shrinking it (simplified).`,
-                        codeLineNumber: 3,
-                        layout: "graph",
-                        meta: { matching: matchingSize, blossoms: blossomsFound },
-                    };
-                    step += 1;
+                            if (!isAlternating(path)) {
+                                // Runs through an odd cycle – shrink instead.
+                                yield* shrink(neighbor, current);
+                                continue;
+                            }
 
-                    // Simplified shrink: treat every visited vertex as a single
-                    // super-node (base of the blossom) and continue the BFS.
-                    for (const v of vertices) {
-                        base.set(v, root);
+                            // Flip matching edges along the path (length is odd).
+                            for (let i = 0; i + 1 < path.length; i += 2) {
+                                const a = path[i] as string;
+                                const b = path[i + 1] as string;
+                                match.set(a, b);
+                                match.set(b, a);
+                            }
+                            matchingSize += 1;
+
+                            // Highlight the augmenting path.
+                            refreshMatching();
+                            for (let i = 0; i + 1 < path.length; i += 2) {
+                                const edge = edges.find(
+                                    (e) =>
+                                        (e.sourceId === `node-${path[i]}` &&
+                                            e.targetId === `node-${path[i + 1]}`) ||
+                                        (e.sourceId === `node-${path[i + 1]}` &&
+                                            e.targetId === `node-${path[i]}`),
+                                );
+                                if (edge) {
+                                    edge.state = "path";
+                                }
+                            }
+                            yield {
+                                stepNumber: step,
+                                entities: entities.map((n) => ({ ...n })),
+                                edges: edges.map((e) => ({ ...e })),
+                                description: `Augmented along ${path.join(" → ")} – matching is now ${matchingSize}.`,
+                                codeLineNumber: 2,
+                                layout: "graph",
+                                meta: { matching: matchingSize, blossoms: blossomsFound },
+                            };
+                            step += 1;
+                            done = true;
+                        }
+                    } else {
+                        // A non-tree edge closes an odd cycle – a blossom to shrink.
+                        yield* shrink(current, neighbor);
                     }
-                    queue.length = 0;
-                    blossomFound = true;
                 }
+            }
+
+            if (done) {
+                augmented = true;
+                break;
             }
         }
 
-        if (!blossomFound) {
+        if (!augmented) {
             break; // No augmenting path from any root – matching is maximum.
         }
     }
