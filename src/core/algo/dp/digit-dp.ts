@@ -61,7 +61,10 @@ function makeDigits(digits: string[], activeIndex = -1): VisualEntity[] {
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { n?: number } | null) ?? {};
-    const n = typeof task.n === "number" ? task.n : 543;
+    // Only non-negative integers have a digit string; anything else falls
+    // back to the default (a "-" or "." would poison the digit walk).
+    const raw = typeof task.n === "number" ? task.n : 543;
+    const n = Number.isInteger(raw) && raw >= 0 ? raw : 543;
 
     const digits = String(n).split("");
     let step = 0;
