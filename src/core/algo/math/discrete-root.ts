@@ -41,7 +41,7 @@ function extendedGcd(a: number, b: number): { x: number; y: number; gcd: number 
         return { x: 1, y: 0, gcd: a };
     }
     const { x, y, gcd } = extendedGcd(b, a % b);
-    return { x: y, y: x - Math.floor(a / b) * y, gcd };
+    return { x: y, y: x - Math.trunc(a / b) * y, gcd };
 }
 
 /** Modular exponentiation. */
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         yield {
             stepNumber: step,
-            entities: makeCells([a, kInv, root]),
+            entities: makeCells([a, kInv, root], 2),
             edges: [],
             description: `gcd(${k}, ${p - 1}) = 1 → x = ${a}^(${k}⁻¹) = ${a}^${kInv} mod ${p} = ${root}.`,
             codeLineNumber: 2,
