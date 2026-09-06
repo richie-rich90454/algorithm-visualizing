@@ -139,10 +139,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // The LIS length is the max dp value.
     const lisLen = Math.max(...dp);
+
+    // Reconstruct one actual LIS by walking backwards: take the rightmost
+    // index with each needed dp value whose value still extends the chain.
     const finalStates = new Map<number, EntityState>();
-    for (let i = 0; i < n; i += 1) {
-        if ((dp[i] ?? 0) === lisLen) {
+    let need = lisLen;
+    let prevVal = Infinity;
+    for (let i = n - 1; i >= 0 && need > 0; i -= 1) {
+        if ((dp[i] ?? 0) === need && (arr[i] ?? 0) < prevVal) {
             finalStates.set(i, "sorted");
+            prevVal = arr[i] ?? 0;
+            need -= 1;
+        }
+    }
+
+    const lisVals: number[] = [];
+    for (let i = 0; i < n; i += 1) {
+        if (finalStates.has(i)) {
+            lisVals.push(arr[i] ?? 0);
         }
     }
 
@@ -150,7 +164,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, finalStates),
         edges: [],
-        description: `LIS length = ${lisLen}.`,
+        description: `LIS length = ${lisLen} (${lisVals.join(", ")}).`,
         codeLineNumber: 4,
         layout: "array",
         meta: { lisLen, dp: [...dp] },
