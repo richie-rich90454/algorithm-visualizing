@@ -9,14 +9,10 @@
  * Grid dimensions come from `frame.meta.rows` / `frame.meta.cols` when
  * declared, otherwise from the largest row/col seen in the entities, and
  * finally from the entity count. The metadata fallback keeps the layout
- * robust against loosely-specified frames instead of overflowing a 5×5 grid.
+ * robust against loosely-specified frames.
  */
 
 import type { VisualFrame } from "@/types";
-
-/** Default grid dimensions when nothing else is known. */
-const DEFAULT_ROWS = 5;
-const DEFAULT_COLS = 5;
 
 /**
  * Lay out entities into a uniform grid.
@@ -51,10 +47,6 @@ export function applyGridLayout(frame: VisualFrame, width: number, height: numbe
     } else {
         rows = Math.ceil(Math.sqrt(entities.length));
         cols = Math.ceil(entities.length / rows);
-        if (rows < DEFAULT_ROWS && cols < DEFAULT_COLS) {
-            rows = DEFAULT_ROWS;
-            cols = DEFAULT_COLS;
-        }
     }
     rows = Math.max(1, rows);
     cols = Math.max(1, cols);
