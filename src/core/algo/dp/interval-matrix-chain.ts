@@ -86,6 +86,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = dims.length - 1; // number of matrices
     let step = 0;
 
+    // Edge case: fewer than two dimensions means no chain to parenthesize.
+    if (n <= 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Need at least two dimensions (one matrix) to form a chain.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { rows: 0, cols: 0, minCost: 0 },
+        };
+        return;
+    }
+
     const dp: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(Infinity));
     for (let i = 0; i < n; i += 1) {
         dp[i][i] = 0;
