@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const suffixArray: number[] = task.suffixArray ?? [5, 3, 1, 0, 4, 2];
 
     let step = 0;
-    const lcp = new Array<number>(n - 1).fill(0);
+    const lcp = new Array<number>(Math.max(0, n - 1)).fill(0);
 
     // Frame 0: the untouched text.
     yield {
@@ -128,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `LCP array: [${lcp.join(", ")}].`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { maxLcp: Math.max(0, ...lcp) },
+        meta: { maxLcp: Math.max(0, ...lcp), lcp: [...lcp] },
     };
 }
 
