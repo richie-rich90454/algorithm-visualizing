@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let x = 0;
 
     while (r !== 0) {
-        const quotient = Math.floor(oldR / r);
+        const quotient = Math.trunc(oldR / r);
         const nextR = oldR - quotient * r;
         oldR = r;
         r = nextR;
