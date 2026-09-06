@@ -150,10 +150,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Relax every outgoing edge.
-        for (const edge of edges) {
-            edge.state = "idle";
-        }
         for (const [neighbor, weight] of graph[current] ?? []) {
+            // Reset all edge states to idle before marking new active edges.
+            for (const edge of edges) {
+                edge.state = "idle";
+            }
             const alt = bestDist + weight;
             if (alt < (dist.get(neighbor) ?? Infinity)) {
                 dist.set(neighbor, alt);
