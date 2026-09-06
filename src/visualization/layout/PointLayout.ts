@@ -14,6 +14,14 @@ import type { VisualFrame } from "@/types";
 const MARGIN = 50;
 
 /**
+ * Original algorithm coordinates per frame, snapshotted on the first layout
+ * pass. Layouts mutate entities in place, so a resize re-runs layout on the
+ * same frame object – without this snapshot the already-mapped canvas
+ * coordinates would be mapped a second time and the plot would drift.
+ */
+const originals = new WeakMap<VisualFrame, Map<string, { x: number; y: number }>>();
+
+/**
  * Fit the frame's entities (whose x/y are algorithm coordinates) to the
  * container, preserving their relative geometry.
  *
@@ -28,15 +36,22 @@ export function applyPointLayout(frame: VisualFrame, width: number, height: numb
         return frame;
     }
 
+    let coords = originals.get(frame);
+    if (!coords) {
+        coords = new Map(entities.map((entity) => [entity.id, { x: entity.x, y: entity.y }]));
+        originals.set(frame, coords);
+    }
+
     let minX = Infinity;
     let maxX = -Infinity;
     let minY = Infinity;
     let maxY = -Infinity;
     for (const entity of entities) {
-        minX = Math.min(minX, entity.x);
-        maxX = Math.max(maxX, entity.x);
-        minY = Math.min(minY, entity.y);
-        maxY = Math.max(maxY, entity.y);
+        const original = coords.get(entity.id) ?? entity;
+        minX = Math.min(minX, original.x);
+        maxX = Math.max(maxX, original.x);
+        minY = Math.min(minY, original.y);
+        maxY = Math.max(maxY, original.y);
     }
 
     const spanX = Math.max(1, maxX - minX);
@@ -50,8 +65,9 @@ export function applyPointLayout(frame: VisualFrame, width: number, height: numb
     const offsetY = MARGIN + (availH - spanY * scale) / 2;
 
     for (const entity of entities) {
-        entity.x = offsetX + (entity.x - minX) * scale;
-        entity.y = offsetY + (entity.y - minY) * scale;
+        const original = coords.get(entity.id) ?? entity;
+        entity.x = offsetX + (original.x - minX) * scale;
+        entity.y = offsetY + (original.y - minY) * scale;
     }
 
     return frame;
