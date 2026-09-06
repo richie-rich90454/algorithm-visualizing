@@ -77,6 +77,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = vertices.length;
     const startIndex = vertices.indexOf(start);
 
+    // Edge case: zero or one city – the tour is trivial.
+    if (n <= 1 || startIndex < 0) {
+        const nodes = makeGraphNodes(vertices);
+        const edges = makeWeightedEdges(graph);
+        yield {
+            stepNumber: 0,
+            entities: nodes.map((nd) => ({ ...nd })),
+            edges: edges.map((e) => ({ ...e })),
+            description:
+                n === 0 ? "No cities – no tour exists." : `Only one city – tour stays at ${start}.`,
+            codeLineNumber: 0,
+            layout: "graph",
+            meta: { bestCost: 0 },
+        };
+        return;
+    }
+
     // Cost matrix.
     const cost: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(Infinity));
     for (const [from, neighbors] of Object.entries(graph)) {
