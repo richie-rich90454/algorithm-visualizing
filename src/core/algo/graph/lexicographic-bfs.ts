@@ -94,6 +94,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 bestLabel = label;
             }
         }
+        // All remaining labels tie (e.g. the empty first round): honor the
+        // requested start, otherwise take the first remaining vertex.
+        if (best === "") {
+            best = labels.has(start) ? start : ([...labels.keys()][0] ?? "");
+            bestLabel = labels.get(best) ?? "";
+        }
 
         // Remove it and record its position in the LBFS ordering.
         labels.delete(best);
@@ -105,17 +111,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.label = best;
         }
 
-        const buildFrame = (): VisualFrame => ({
+        const buildFrame = (message: string): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Selecting ${best} (label "${bestLabel}") as vertex #${labelCount}.`,
+            description: message,
             codeLineNumber: 2,
             layout: "graph",
             meta: { selected: labelCount },
         });
 
-        yield buildFrame();
+        yield buildFrame(`Selecting ${best} (label "${bestLabel}") as vertex #${labelCount}.`);
         step += 1;
 
         // Append a bit to every remaining vertex's label: 1 if it is adjacent
@@ -130,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "sorted";
         }
 
-        yield buildFrame();
+        yield buildFrame(`Updated neighbor labels after selecting ${best}.`);
         step += 1;
     }
 
