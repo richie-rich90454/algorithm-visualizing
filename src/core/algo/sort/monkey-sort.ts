@@ -153,8 +153,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     // The array is (finally) sorted – or we hit the safety limit.
-    const doneStates = new Map<number, EntityState>(arr.map((_, index) => [index, "sorted"]));
+    // Only claim green when the array truly is sorted; a gave-up run keeps
+    // its bars unmarked so the final frame never lies.
     const sortedNow = isSorted();
+    const doneStates = new Map<number, EntityState>(
+        arr.map((_, index) => [
+            index,
+            sortedNow ? ("sorted" as EntityState) : ("idle" as EntityState),
+        ]),
+    );
     yield {
         stepNumber: step,
         entities: makeBars(arr, doneStates),
