@@ -120,9 +120,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (let round = 0; round < vertices.length - 1; round += 1) {
         relaxedAny = false;
 
-        for (const edge of edges) {
-            edge.state = "idle";
-        }
         for (const { from, to, weight } of edgeList) {
             const fromDist = dist.get(from) ?? Infinity;
             if (fromDist === Infinity) {
@@ -130,6 +127,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
             const alt = fromDist + weight;
             if (alt < (dist.get(to) ?? Infinity)) {
+                // Reset all edge states to idle before marking new active edges.
+                for (const edge of edges) {
+                    edge.state = "idle";
+                }
                 dist.set(to, alt);
                 predecessor.set(to, from);
                 relaxedAny = true;
