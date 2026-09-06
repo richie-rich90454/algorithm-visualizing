@@ -73,6 +73,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const entities = makePoints(points);
     const nodeById = new Map(entities.map((e) => [e.id, e]));
 
+    // Fewer than two points have no pair to compare.
+    if (points.length < 2) {
+        yield {
+            stepNumber: step,
+            entities: entities.map((e) => ({ ...e })),
+            edges: [],
+            description: "Need at least two points to find a closest pair.",
+            codeLineNumber: 0,
+            layout: "point",
+            meta: {},
+        };
+        return;
+    }
+
     // Frame 0: all points.
     yield {
         stepNumber: step,
