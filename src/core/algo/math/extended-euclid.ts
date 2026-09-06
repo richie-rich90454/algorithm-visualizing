@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // The Euclidean loop, extended with coefficient tracking.
     while (r !== 0) {
-        const quotient = Math.floor(oldR / r);
+        const quotient = Math.trunc(oldR / r);
 
         const states = new Map<number, EntityState>([
             [0, "comparing"],
