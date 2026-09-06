@@ -101,6 +101,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const m = groups;
     let step = 0;
 
+    // Edge case: nothing to split, or no groups to split into.
+    if (n === 0 || m < 1) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Need a non-empty array and at least one group.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { rows: 0, cols: 0, minCost: n === 0 ? 0 : Infinity },
+        };
+        return;
+    }
+
     // dp[g][i] = min cost to split arr[0..i] into g groups.
     const dp: number[][] = Array.from({ length: m + 1 }, () => new Array<number>(n).fill(Infinity));
 
