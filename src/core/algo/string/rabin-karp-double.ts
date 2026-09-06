@@ -80,6 +80,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // An empty pattern has no window to hash; report it without searching.
+    if (m === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeText(text),
+            edges: [],
+            description: "Empty pattern – nothing to search for.",
+            codeLineNumber: 4,
+            layout: "text",
+            meta: { matches: 0 },
+        };
+        return;
+    }
+
     // Precompute BASE^(m-1) under both moduli.
     let pow1 = 1;
     let pow2 = 1;
@@ -149,9 +163,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
+    // Keep every verified match highlighted in the final frame.
+    const finalStates = new Map<number, EntityState>();
+    for (const start of matches) {
+        for (let k = start; k < start + m; k += 1) {
+            finalStates.set(k, "sorted");
+        }
+    }
+
     yield {
         stepNumber: step,
-        entities: makeText(text),
+        entities: makeText(text, finalStates),
         edges: [],
         description:
             matches.length === 0
