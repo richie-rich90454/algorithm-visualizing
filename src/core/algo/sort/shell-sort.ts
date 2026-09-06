@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     stepNumber: step,
                     entities: makeBars(arr, cmpStates),
                     edges: [],
-                    description: `Gap ${gap}: comparing ${String(arr[i])} with ${left}.`,
+                    description: `Gap ${gap}: comparing ${key} with ${left}.`,
                     codeLineNumber: 3,
                     layout: "array",
                     meta: { comparisons, shifts, gap },
