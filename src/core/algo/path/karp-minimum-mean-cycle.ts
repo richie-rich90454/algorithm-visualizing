@@ -121,7 +121,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
 
-        // Show the current DP row.
+        // Show the current DP row (clearing last row's highlights first).
+        for (const node of nodes) {
+            node.state = "unvisited";
+        }
         for (let v = 0; v < n; v += 1) {
             if (next[v] !== Infinity) {
                 const node = nodeById.get(`node-${vertices[v]}`);
@@ -170,7 +173,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     if (bestVertex) {
         const winner = nodeById.get(`node-${bestVertex}`);
         if (winner) {
-            winner.state = "sorted";
+            winner.state = "highlight";
         }
         yield buildFrame(
             `Minimum mean cycle value λ* = ${bestMean.toFixed(2)}, achieved at vertex ${bestVertex}.`,
