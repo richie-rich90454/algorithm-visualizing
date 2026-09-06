@@ -135,12 +135,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Relax every outgoing edge of the dequeued vertex.
-        for (const edge of edges) {
-            edge.state = "idle";
-        }
         for (const [neighbor, weight] of graph[current] ?? []) {
             const alt = currentDist + weight;
             if (alt < (dist.get(neighbor) ?? Infinity)) {
+                // Reset all edge states to idle before marking new active edges.
+                for (const edge of edges) {
+                    edge.state = "idle";
+                }
                 dist.set(neighbor, alt);
                 predecessor.set(neighbor, current);
 
