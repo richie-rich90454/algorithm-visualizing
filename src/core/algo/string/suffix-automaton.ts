@@ -87,7 +87,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: message,
             codeLineNumber: 2,
             layout: "graph",
-            meta: { states: stateCount },
+            // stateCount tallies created states; +1 for the initial state 0.
+            meta: { states: stateCount + 1 },
         };
     };
 
@@ -156,7 +157,7 @@ const module: AlgorithmModule = {
     name: "Suffix Automaton",
     category: "string",
     complexity: { time: "O(n)", space: "O(n)" },
-    // "ababa" builds a small, readable automaton with one clone.
+    // "ababa" builds a small, readable 6-state automaton.
     defaultInput: { text: "ababa" },
     visualType: "graph",
     run,
