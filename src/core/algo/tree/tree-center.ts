@@ -79,6 +79,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let step = 0;
 
+    if (ids.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty tree – no center exists.",
+            codeLineNumber: 0,
+            layout: "tree",
+            meta: { centers: 0 },
+        };
+        return;
+    }
+
     // Frame 0: the untouched tree.
     yield {
         stepNumber: step,
