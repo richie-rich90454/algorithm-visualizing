@@ -94,6 +94,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     if (arr.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeBars(arr),
+            edges: [],
+            description: "Empty array – already sorted.",
+            codeLineNumber: 4,
+            layout: "array",
+            meta: {},
+        };
         return;
     }
 
@@ -103,11 +112,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     /**
      * Recursively sort a sub-array by a given digit place, most significant
      * first. The `range` keeps track of which slice of the array we own.
+     * With `desc`, buckets are reassembled 9→0 so the slice sorts by
+     * descending magnitude (used for the negative partition).
      */
     function* msdSort(
         lo: number,
         hi: number,
         place: number,
+        desc = false,
     ): Generator<VisualFrame, void, unknown> {
         // Base cases: slices of size ≤ 1 are sorted; no digits left → done.
         if (hi <= lo || place < 0) {
@@ -127,7 +139,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Reassemble the slice in bucket order.
         let writeIndex = lo;
-        for (let d = 0; d < 10; d += 1) {
+        const order = desc ? [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        for (const d of order) {
             const bucket = buckets[d];
             if (!bucket) {
                 continue;
@@ -157,19 +170,47 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         // Recurse into each non-empty bucket for the next (less significant)
         // digit. The bucket boundaries are tracked with a running offset.
         let bucketStart = lo;
-        for (let d = 0; d < 10; d += 1) {
+        for (const d of order) {
             const bucket = buckets[d];
             if (!bucket || bucket.length === 0) {
                 continue;
             }
             const bucketEnd = bucketStart + bucket.length - 1;
-            yield* msdSort(bucketStart, bucketEnd, place - 1);
+            yield* msdSort(bucketStart, bucketEnd, place - 1, desc);
             bucketStart = bucketEnd + 1;
         }
     }
 
+    // Negatives sort by descending magnitude (= ascending value), so split
+    // them off stably first; each partition is then MSD-sorted in its order.
+    const negatives = arr.filter((v) => v < 0);
+    const rest = arr.filter((v) => v >= 0);
+    for (let i = 0; i < negatives.length; i += 1) {
+        arr[i] = negatives[i] as number;
+    }
+    for (let i = 0; i < rest.length; i += 1) {
+        arr[negatives.length + i] = rest[i] as number;
+    }
+    if (negatives.length > 0 && rest.length > 0) {
+        yield {
+            stepNumber: step,
+            entities: makeBars(arr),
+            edges: [],
+            description: `Separated ${negatives.length} negative(s) – they sort by descending magnitude.`,
+            codeLineNumber: 1,
+            layout: "array",
+            meta: { digitPlace: maxDigits },
+        };
+        step += 1;
+    }
+
     // Start the recursion at the most significant digit over the whole array.
-    yield* msdSort(0, arr.length - 1, maxDigits - 1);
+    if (negatives.length > 0) {
+        yield* msdSort(0, negatives.length - 1, maxDigits - 1, true);
+    }
+    if (rest.length > 0) {
+        yield* msdSort(negatives.length, arr.length - 1, maxDigits - 1, false);
+    }
 
     // Final frame: the entire array is green and fully sorted.
     const sortedStates = new Map<number, EntityState>(arr.map((_, index) => [index, "sorted"]));
