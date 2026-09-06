@@ -94,6 +94,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // Edge case: empty grid.
+    if (rows === 0 || cols === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty grid – no sub-rectangle exists.",
+            codeLineNumber: 3,
+            layout: "grid",
+            meta: { rows, cols, best: 0 },
+        };
+        return;
+    }
+
     let best = -Infinity;
     let bestRect: string[] = [];
 
@@ -108,40 +122,43 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 rowSums[r] = (rowSums[r] ?? 0) + (grid[r]?.[right] ?? 0);
             }
 
-            // Run 1D Kadane on rowSums.
-            let bestHere = -Infinity;
-            let bestEnd = 0;
-            let start = 0;
+            // Run 1D Kadane on rowSums, tracking the winning row interval.
+            let colBest = -Infinity;
+            let colStart = 0;
+            let colEnd = -1;
+            let runSum = -Infinity;
             let runStart = 0;
             for (let r = 0; r < rows; r += 1) {
                 const value = rowSums[r] ?? 0;
-                if (bestHere + value > value) {
-                    bestHere += value;
+                if (runSum + value > value) {
+                    runSum += value;
                 } else {
-                    bestHere = value;
+                    runSum = value;
                     runStart = r;
                 }
-                if (bestHere > bestEnd) {
-                    bestEnd = bestHere;
-                    start = runStart;
+                if (runSum > colBest) {
+                    colBest = runSum;
+                    colStart = runStart;
+                    colEnd = r;
                 }
             }
 
-            if (bestEnd > best) {
-                best = bestEnd;
+            if (colBest > best) {
+                best = colBest;
                 bestRect = [];
-                for (let r = start; r < rows; r += 1) {
+                for (let r = colStart; r <= colEnd; r += 1) {
                     for (let c = left; c <= right; c += 1) {
                         bestRect.push(`${r},${c}`);
                     }
                 }
             }
 
-            // Show the current window being compressed.
+            // Show the current window being compressed, keeping the best
+            // rectangle so far highlighted.
             const active = `${0},${right}`;
             yield {
                 stepNumber: step,
-                entities: makeGrid(grid, new Set(), active),
+                entities: makeGrid(grid, new Set(bestRect), active),
                 edges: [],
                 description: `Columns [${left}..${right}] compressed – best so far ${best}.`,
                 codeLineNumber: 2,
