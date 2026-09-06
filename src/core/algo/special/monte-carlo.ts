@@ -39,7 +39,10 @@ const GRID = 10;
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { samples?: number } | null) ?? {};
-    const samples = typeof task.samples === "number" ? task.samples : 60;
+    // Only non-negative integers make sense as a sample count (a float would
+    // desync the "from N samples" caption; NaN would poison the estimate).
+    const raw = typeof task.samples === "number" ? task.samples : 60;
+    const samples = Number.isInteger(raw) && raw >= 0 ? raw : 60;
 
     let step = 0;
 
@@ -74,6 +77,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         return cells;
     };
+
+    // Edge case: no samples means no estimate.
+    if (samples <= 0) {
+        yield {
+            stepNumber: step,
+            entities: makeCells(),
+            edges: [],
+            description: "No samples – nothing to estimate π from.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { inside: 0, estimate: 0 },
+        };
+        return;
+    }
 
     // Frame 0: the empty square.
     yield {
