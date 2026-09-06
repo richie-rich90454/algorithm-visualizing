@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
 
     // dp[w] = max value obtainable with total weight ≤ w.
-    const dp = new Array<number>(capacity + 1).fill(0);
+    const dp = new Array<number>(Math.max(1, capacity + 1)).fill(0);
 
     // Frame 0: the initialized DP array.
     yield {
@@ -125,10 +125,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(dp, finalStates),
         edges: [],
-        description: `Maximum value = ${dp[capacity]}.`,
+        description: `Maximum value = ${dp[capacity] ?? 0}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { capacity, maxValue: dp[capacity] },
+        meta: { capacity, maxValue: dp[capacity] ?? 0 },
     };
 }
 
