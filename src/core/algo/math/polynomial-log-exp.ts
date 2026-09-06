@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             B.push(0);
         }
         const AB = multiply(A, B);
-        const twoMinusAB = [2, ...AB.slice(1).map((v) => -v)];
+        const twoMinusAB = [2 - (AB[0] ?? 0), ...AB.slice(1).map((v) => -v)];
         inv = multiply(B, twoMinusAB).slice(0, len);
     }
 
@@ -169,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 B.push(0);
             }
             const EB = multiply(exp.slice(0, el), B);
-            const twoMinus = [2, ...EB.slice(1).map((v) => -v)];
+            const twoMinus = [2 - (EB[0] ?? 0), ...EB.slice(1).map((v) => -v)];
             eInv.length = 0;
             eInv.push(...multiply(B, twoMinus).slice(0, el));
         }
