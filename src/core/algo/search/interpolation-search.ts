@@ -100,7 +100,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
 
         // Bail out when the interval is degenerate (division by zero).
+        // Every value in [low..high] is identical then, so check it once.
         if (highVal === lowVal) {
+            comparisons += 1;
+            if (lowVal === target) {
+                const foundStates = new Map<number, EntityState>([[low, "sorted"]]);
+                yield {
+                    stepNumber: step,
+                    entities: makeBars(arr, foundStates),
+                    edges: [],
+                    description: `Found ${target} at index ${low} after ${comparisons} comparisons.`,
+                    codeLineNumber: 3,
+                    layout: "array",
+                    meta: { comparisons, target, foundIndex: low },
+                };
+                return;
+            }
             break;
         }
 
