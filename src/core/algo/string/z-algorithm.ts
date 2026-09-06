@@ -80,6 +80,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // An empty pattern has no span to highlight; report it without searching
+    // (every Z-value would trivially equal 0).
+    if (pattern.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeText(combined),
+            edges: [],
+            description: "Empty pattern – nothing to search for.",
+            codeLineNumber: 4,
+            layout: "text",
+            meta: { matches: 0 },
+        };
+        return;
+    }
+
     // ------------------------------------------------------------------
     // Compute the Z-array.
     // ------------------------------------------------------------------
