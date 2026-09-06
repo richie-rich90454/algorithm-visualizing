@@ -45,6 +45,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
     const n = array.length;
 
+    // An empty array has no tree to draw.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty array – no segment tree to build.",
+            codeLineNumber: 0,
+            layout: "tree",
+            meta: { n },
+        };
+        return;
+    }
+
     // Build the segment tree recursively into a node list.
     const nodes: VisualEntity[] = [];
     const edges: VisualEdge[] = [];
@@ -133,14 +147,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    const querySum = array.slice(ql, qr + 1).reduce((a, b) => a + b, 0);
+
     yield {
         stepNumber: step,
-        entities: nodes.map((nd) => ({ ...nd })),
+        entities: nodes.map((nd) => ({
+            ...nd,
+            state: highlight.has(nd.id) ? ("sorted" as const) : nd.state,
+        })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Range query complete – the answer combines the highlighted node aggregates.`,
+        description: `Range query [${ql}, ${qr}] complete – sum = ${querySum} from the highlighted node aggregates.`,
         codeLineNumber: 3,
         layout: "tree",
-        meta: { n },
+        meta: { n, sum: querySum },
     };
 }
 
