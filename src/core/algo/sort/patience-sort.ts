@@ -24,8 +24,8 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The card being dealt is YELLOW (comparing).
- *   - The pile it lands on is PINK (highlight).
+ *   - The card being dealt is YELLOW (comparing); the pile it lands on is
+ *     announced in the caption along with the pile count.
  *   - The output being assembled is GREEN (sorted).
  *
  * ---------------------------------------------------------------------------
@@ -116,10 +116,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             (piles[lo] ?? []).push(value);
         }
 
-        const dealStates = new Map<number, EntityState>([
-            [i, "comparing"],
-            [lo, "highlight"],
-        ]);
+        // Only the dealt card is marked – the pile index is not a bar
+        // position, so it must not highlight a data bar.
+        const dealStates = new Map<number, EntityState>([[i, "comparing"]]);
         yield {
             stepNumber: step,
             entities: makeBars(arr, dealStates),
