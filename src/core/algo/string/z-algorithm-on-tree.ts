@@ -34,7 +34,7 @@
  *   - The "label on every edge" framing is the standard variant.
  */
 
-import type { AlgorithmModule, VisualEntity, VisualFrame } from "@/types";
+import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 import { makeTreeEdges, makeTreeNodes } from "../tree/tree-util";
 
 /**
@@ -77,18 +77,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const nodes = makeTreeNodes(parentMap, ids);
     const edges = makeTreeEdges(parentMap, ids);
-    const nodeById = new Map(nodes.map((n) => [n.id, n]));
-
-    const children = new Map<string, string[]>();
-    for (const id of ids) {
-        children.set(id, []);
-    }
-    for (const [child, parent] of parentMap) {
-        if (parent) {
-            children.get(parent)?.push(child);
-        }
-    }
-    const root = ids.find((id) => parentMap.get(id) === null) ?? ids[0] ?? "A";
 
     let step = 0;
 
@@ -104,9 +92,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (
+        message: string,
+        states: Map<string, EntityState> = new Map(),
+    ): VisualFrame => ({
         stepNumber: step,
-        entities: nodes.map((n) => ({ ...n })),
+        entities: nodes.map((n) => ({ ...n, state: states.get(n.id) ?? n.state })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
         codeLineNumber: 2,
@@ -116,16 +107,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Compute the label string along each root-to-node path.
     const pathString = new Map<string, string>();
-    const assign = function* (node: string): Generator<VisualFrame, void, unknown> {
-        const parent = parentMap.get(node);
-        pathString.set(node, (parent ? (pathString.get(parent) ?? "") : "") + (labels[node] ?? ""));
-        yield* parent
-            ? assign(parent)
-            : (function* (): Generator<VisualFrame> {
-                  return;
-              })();
-    };
-    void assign;
 
     // Simpler: compute path strings by walking parents (no need for recursion).
     for (const id of ids) {
@@ -138,8 +119,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         pathString.set(id, parts.reverse().join(""));
     }
 
-    // The reference string is the root-to-deepest path's label string.
-    const reference = pathString.get(root) ?? "";
+    // The reference string is the longest root-to-node path's label string.
+    let reference = "";
+    for (const s of pathString.values()) {
+        if (s.length > reference.length) {
+            reference = s;
+        }
+    }
 
     // For each node, compute the Z-value: the LCP of its path string with the
     // reference string.
@@ -152,25 +138,30 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         zValues.set(id, z);
 
-        // Highlight the node and its matched prefix.
-        const states = new Map<string, "comparing" | "sorted" | "highlight">();
-        let cursor: string | null = id;
-        let depth = 0;
-        while (cursor !== null && depth < z) {
-            states.set(cursor, "sorted");
-            cursor = parentMap.get(cursor) ?? null;
-            depth += 1;
+        // Highlight the matched prefix (the top z nodes of this node's path)
+        // green and the node under inspection yellow.
+        const chain: string[] = [];
+        let down: string | null = id;
+        while (down !== null) {
+            chain.unshift(down);
+            down = parentMap.get(down) ?? null;
         }
-        const nodeEntity = nodeById.get(`node-${id}`);
-        if (nodeEntity) {
-            nodeEntity.state = "comparing";
+        const states = new Map<string, EntityState>();
+        for (const nodeId of chain.slice(0, z)) {
+            states.set(`node-${nodeId}`, "sorted");
         }
+        states.set(`node-${id}`, "comparing");
 
-        yield buildFrame(`Z-value of node ${id} (path "${s}") = ${z}.`);
+        yield buildFrame(`Z-value of node ${id} (path "${s}") = ${z}.`, states);
         step += 1;
     }
 
-    yield buildFrame(`Z-values computed for every root-to-node path (reference "${reference}").`);
+    yield {
+        ...buildFrame(
+            `Z-values: ${ids.map((id) => `${id}=${zValues.get(id) ?? 0}`).join(", ")} (reference "${reference}").`,
+        ),
+        meta: { reference, z: ids.map((id) => zValues.get(id) ?? 0) },
+    };
 }
 
 /** The Z-Algorithm on Tree module, registered with the engine. */
