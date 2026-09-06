@@ -42,7 +42,11 @@ const DEFAULT_N = 60;
  * @param states Optional index → state overrides.
  * @returns Cell entities in a 10-column grid layout.
  */
-function makeCells(limit: number, states: Map<number, EntityState> = new Map()): VisualEntity[] {
+function makeCells(
+    limit: number,
+    isComposite: boolean[] = [],
+    states: Map<number, EntityState> = new Map(),
+): VisualEntity[] {
     const cells: VisualEntity[] = [];
     const cols = 10;
     for (let num = 2; num <= limit; num += 1) {
@@ -53,7 +57,7 @@ function makeCells(limit: number, states: Map<number, EntityState> = new Map()):
             type: "cell" as const,
             label: String(num),
             value: num,
-            state: states.get(num) ?? "unvisited",
+            state: states.get(num) ?? (isComposite[num] ? "swapped" : "unvisited"),
             x: 0,
             y: 0,
             width: 0,
@@ -94,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const states = new Map<number, EntityState>([[i, "comparing"]]);
         yield {
             stepNumber: step,
-            entities: makeCells(limit, states),
+            entities: makeCells(limit, isComposite, states),
             edges: [],
             description: `Processing ${i}.`,
             codeLineNumber: 2,
@@ -122,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ]);
             yield {
                 stepNumber: step,
-                entities: makeCells(limit, markStates),
+                entities: makeCells(limit, isComposite, markStates),
                 edges: [],
                 description: `Marked ${multiple} = ${i} × ${prime}.`,
                 codeLineNumber: 3,
@@ -146,7 +150,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield {
         stepNumber: step,
-        entities: makeCells(limit, finalStates),
+        entities: makeCells(limit, isComposite, finalStates),
         edges: [],
         description: `Found ${primes.length} primes up to ${limit} in linear time.`,
         codeLineNumber: 4,
