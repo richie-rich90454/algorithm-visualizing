@@ -153,6 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
     const inTree = new Set<string>();
     const parent = new Map<string, string | null>();
+    const best = new Map<string, number>();
     const heap = new MinHeap();
 
     inTree.add(start);
@@ -172,8 +173,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Preload the frontier: all edges from the start vertex.
     for (const [neighbor, weight] of neighbors.get(start) ?? []) {
-        heap.push(weight, neighbor);
-        parent.set(neighbor, start);
+        if (weight < (best.get(neighbor) ?? Infinity)) {
+            best.set(neighbor, weight);
+            parent.set(neighbor, start);
+            heap.push(weight, neighbor);
+        }
     }
 
     while (inTree.size < vertices.length && heap.size > 0) {
@@ -214,13 +218,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Push all of the new vertex's outside neighbors onto the heap.
+        // Relax the frontier: keep each outside neighbor's cheapest edge.
         for (const [neighbor, w] of neighbors.get(vertex) ?? []) {
-            if (!inTree.has(neighbor)) {
+            if (!inTree.has(neighbor) && w < (best.get(neighbor) ?? Infinity)) {
+                best.set(neighbor, w);
+                parent.set(neighbor, vertex);
                 heap.push(w, neighbor);
-                if (!parent.has(neighbor)) {
-                    parent.set(neighbor, vertex);
-                }
             }
         }
 
