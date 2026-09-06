@@ -47,13 +47,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
     const n = array.length;
 
+    // An empty array has no tree to draw.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Empty array – no persistent tree to build.",
+            codeLineNumber: 0,
+            layout: "tree",
+            meta: { versions: 0 },
+        };
+        return;
+    }
+
     // Build the initial tree structure.
     const nodes: VisualEntity[] = [];
     const edges: VisualEdge[] = [];
     let nextId = 0;
     const versions: string[] = [];
 
-    const build = (l: number, r: number): string => {
+    const build = (l: number, r: number, parentId = "root"): string => {
         const id = `n-${nextId}`;
         nextId += 1;
         nodes.push({
@@ -66,14 +80,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             y: 0,
             width: 0,
             height: 0,
-            metadata: { parentId: "root" },
+            metadata: { parentId },
         });
         if (l === r) {
             return id;
         }
         const mid = Math.floor((l + r) / 2);
-        const left = build(l, mid);
-        const right = build(mid + 1, r);
+        const left = build(l, mid, id);
+        const right = build(mid + 1, r, id);
         edges.push({
             id: `e-${id}-${left}`,
             sourceId: id,
@@ -111,6 +125,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Apply each update by "cloning" the path (simulated by adding a node).
     for (let v = 0; v < updates.length; v += 1) {
         const [pos, value] = updates[v] ?? [0, 0];
+        // Nodes cloned = nodes on the update path from the root to the leaf.
+        let pathLength = 0;
+        let l = 0;
+        let r = n - 1;
+        for (;;) {
+            pathLength += 1;
+            if (l === r) {
+                break;
+            }
+            const mid = Math.floor((l + r) / 2);
+            if ((pos ?? 0) <= mid) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
         const clonedId = `n-${nextId}`;
         nextId += 1;
         nodes.push({
@@ -139,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((nd) => ({ ...nd })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Update ${v + 1}: setting index ${pos} to ${value} – cloned ${pos} new node(s) on the path.`,
+            description: `Update ${v + 1}: setting index ${pos} to ${value} – cloned ${pathLength} new node(s) on the path.`,
             codeLineNumber: 2,
             layout: "tree",
             meta: { versions: versions.length },
