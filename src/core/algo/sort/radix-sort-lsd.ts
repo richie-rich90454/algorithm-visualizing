@@ -93,12 +93,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     if (arr.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeBars(arr),
+            edges: [],
+            description: "Empty array – already sorted.",
+            codeLineNumber: 4,
+            layout: "array",
+            meta: {},
+        };
         return;
     }
 
     // The number of digit passes equals the digit count of the largest value.
     const maxValue = Math.max(...arr.map(Math.abs));
     const maxDigits = String(maxValue).length;
+
+    // Negative values sort by magnitude in reverse: on the final (most
+    // significant) pass they are reassembled first, largest magnitude first.
+    const hasNeg = arr.some((v) => v < 0);
 
     // One stable counting-sort pass per digit position, LSD → MSD.
     for (let place = 0; place < maxDigits; place += 1) {
@@ -128,23 +141,40 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
 
         // Reassemble the array in bucket order, preserving within-bucket order
-        // (this is what keeps every pass stable).
+        // (this is what keeps every pass stable). On the final pass with
+        // negatives present, negatives come first in reverse-magnitude order
+        // (their earlier passes left them ascending by magnitude, so reversing
+        // each bucket's negatives yields descending magnitude = ascending value).
+        const signAware = hasNeg && place === maxDigits - 1;
         let index = 0;
+        const emit = (value: number): void => {
+            arr[index] = value;
+            index += 1;
+        };
+        if (signAware) {
+            for (let d = 9; d >= 0; d -= 1) {
+                const bucket = buckets[d] ?? [];
+                for (let k = bucket.length - 1; k >= 0; k -= 1) {
+                    if ((bucket[k] as number) < 0) {
+                        emit(bucket[k] as number);
+                    }
+                }
+            }
+        }
         for (let d = 0; d < 10; d += 1) {
             const bucket = buckets[d];
             if (!bucket) {
                 continue;
             }
-            for (const value of bucket) {
-                arr[index] = value;
-                index += 1;
+            const ordered = signAware ? bucket.filter((v) => v >= 0) : bucket;
+            for (const value of ordered) {
+                emit(value);
             }
         }
 
-        const passStates = new Map<number, EntityState>([[place, "highlight"]]);
         yield {
             stepNumber: step,
-            entities: makeBars(arr, passStates),
+            entities: makeBars(arr),
             edges: [],
             description: `Pass ${place + 1} complete – array ordered by the ${String(10 ** place)}s digit.`,
             codeLineNumber: 3,
