@@ -84,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const target = typeof task.target === "number" ? task.target : 11;
 
     const rows = numbers.length + 1;
-    const cols = target + 1;
+    const cols = Math.max(0, target + 1);
     let step = 0;
 
     // dp[i][s] as 0/1 numbers for display.
