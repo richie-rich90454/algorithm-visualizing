@@ -168,7 +168,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Reconstruct and color the path.
     const path: string[] = [];
-    if (dist.get(target) !== Infinity) {
+    const targetDist = dist.get(target) ?? Infinity;
+    if (targetDist !== Infinity) {
         let cursor = target;
         while (cursor !== undefined) {
             path.push(cursor);
@@ -193,12 +194,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description:
-            dist.get(target) === Infinity
+            targetDist === Infinity
                 ? `${target} unreachable from ${start}.`
-                : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
+                : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${targetDist}).`,
         codeLineNumber: 4,
         layout: "graph",
-        meta: { distance: dist.get(target) ?? Infinity },
+        meta: { distance: targetDist },
     };
 }
 
