@@ -57,7 +57,10 @@ function hash2(key: string): number {
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { keys?: string[]; m?: number; probe?: string } | null) ?? {};
     const keys = task.keys ?? ["apple", "banana", "cherry"];
-    const m = typeof task.m === "number" ? task.m : 20;
+    // Only positive integers size the bit array (`new Array` throws on
+    // floats/NaN).
+    const rawM = typeof task.m === "number" ? task.m : 20;
+    const m = Number.isInteger(rawM) && rawM > 0 ? rawM : 20;
     const probe = task.probe ?? "banana";
 
     let step = 0;
