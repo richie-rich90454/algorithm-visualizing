@@ -81,6 +81,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const entities = makePoints(points);
     const nodeById = new Map(entities.map((e) => [e.id, e]));
 
+    // Degenerate inputs are their own hull.
+    if (points.length <= 1) {
+        yield {
+            stepNumber: step,
+            entities: entities.map((e) => ({ ...e })),
+            edges: [],
+            description:
+                points.length === 0
+                    ? "No points – the hull is empty."
+                    : "A single point is its own convex hull.",
+            codeLineNumber: 0,
+            layout: "point",
+            meta: { hull: points.map((_, i) => i) },
+        };
+        return;
+    }
+
     // Frame 0: all points.
     yield {
         stepNumber: step,
