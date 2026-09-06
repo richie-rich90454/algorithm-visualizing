@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is not prime.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { prime: false },
         };
         return;
     }
@@ -131,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is prime.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { prime: true },
         };
         return;
     }
