@@ -130,30 +130,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Sort group A using the group B order as a hint (compare via group B
-    // ranks where possible).
-    groupA.sort((i, j) => {
-        // The rank of position i in the sorted group B.
-        const rankOf = (pos: number): number => {
-            const index = groupB.indexOf(pos);
-            if (index >= 0) {
-                return index;
-            }
-            // Fall back: if pos+1 is in group B, use its rank.
-            const next = groupB.indexOf(pos + 1);
-            return next >= 0 ? next : 0;
-        };
-        if (i === j) {
-            return 0;
-        }
-        const ri = rankOf(i);
-        const rj = rankOf(j);
-        if (ri !== rj) {
-            return ri - rj;
-        }
-        // Tie-break by comparing the actual suffixes.
-        return compare(i, j);
-    });
+    // Sort group A with the same true lexicographic order (the recursive
+    // hint only narrows the search; the merge below needs both groups
+    // genuinely sorted, so compare the suffixes directly).
+    groupA.sort(compare);
 
     // Merge the two sorted groups by comparing suffixes.
     const suffixArray: number[] = [];
@@ -189,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Suffix array (DC3): [${suffixArray.join(", ")}] – ${suffixArray.map((i) => `"${text.slice(i)}"`).join(", ")}.`,
         codeLineNumber: 4,
         layout: "text",
-        meta: {},
+        meta: { suffixArray },
     };
 }
 
