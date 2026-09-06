@@ -64,10 +64,27 @@ function makeCells(values: number[], states: Map<number, EntityState> = new Map(
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { costs?: number[]; window?: number } | null) ?? {};
     const costs = task.costs ?? [0, 3, 1, 2, 5, 1, 2, 1];
-    const k = typeof task.window === "number" ? task.window : 3;
+    // A window below 1 leaves every position unreachable; fall back instead
+    // of silently treating an empty deque as dp 0.
+    const rawWindow = typeof task.window === "number" ? task.window : 3;
+    const k = Number.isInteger(rawWindow) && rawWindow >= 1 ? rawWindow : 3;
 
     const n = costs.length;
     let step = 0;
+
+    // Edge case: no positions to reach.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "No positions – the minimum cost is 0.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { n, k, answer: 0 },
+        };
+        return;
+    }
 
     // dp[i] = min cost to reach position i.
     const dp = new Array<number>(n).fill(Infinity);
