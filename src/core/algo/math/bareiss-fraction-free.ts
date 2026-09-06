@@ -78,11 +78,13 @@ function makeCells(
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { matrix?: number[][] } | null) ?? {};
-    const M: number[][] = task.matrix ?? [
-        [2, 1, 1],
-        [1, 3, 2],
-        [1, 0, 0],
-    ];
+    const M: number[][] = (
+        task.matrix ?? [
+            [2, 1, 1],
+            [1, 3, 2],
+            [1, 0, 0],
+        ]
+    ).map((row) => [...row]);
     const n = M.length;
 
     let step = 0;
@@ -191,7 +193,7 @@ const module: AlgorithmModule = {
     name: "Bareiss (Fraction-Free)",
     category: "math",
     complexity: { time: "O(n³)", space: "O(n²)" },
-    // A 3×3 integer matrix with determinant 2.
+    // A 3×3 integer matrix with determinant −1.
     defaultInput: {
         matrix: [
             [2, 1, 1],
