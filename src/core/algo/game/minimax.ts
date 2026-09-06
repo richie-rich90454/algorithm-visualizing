@@ -67,7 +67,7 @@ function buildTree(
     ];
     if (depth > 0) {
         for (let i = 0; i < branch; i += 1) {
-            nodes.push(...buildTree(depth - 1, branch, id, String(current)));
+            nodes.push(...buildTree(depth - 1, branch, id, `node-${current}`));
         }
     }
     return nodes;
@@ -91,9 +91,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const nodes = buildTree(3, 3, id, null);
     const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
-    // Leaf nodes are the last 27 created.
-    const leafCount = leaves.length;
-    const leafIds = nodes.slice(nodes.length - leafCount).map((n) => n.id);
+    // Build parent-child relationships from the metadata.
+    const childrenOf = new Map<string, string[]>();
+    for (const node of nodes) {
+        const parent = String(node.metadata["parentId"]);
+        const list = childrenOf.get(parent) ?? [];
+        list.push(node.id);
+        childrenOf.set(parent, list);
+    }
+
+    // Structural leaves (nodes with no children), in creation order.
+    const leafIds = nodes.filter((n) => (childrenOf.get(n.id) ?? []).length === 0).map((n) => n.id);
 
     // Frame 0: the tree.
     yield {
@@ -118,15 +126,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Evaluate bottom-up: work on a copy of values.
     // valueOf(nodeId): undefined until evaluated.
     const valueOf = new Map<string, number>();
-
-    // Build parent-child relationships from the metadata.
-    const childrenOf = new Map<string, string[]>();
-    for (const node of nodes) {
-        const parent = String(node.metadata["parentId"]);
-        const list = childrenOf.get(parent) ?? [];
-        list.push(node.id);
-        childrenOf.set(parent, list);
-    }
 
     const evaluate = function* (
         nodeId: string,
