@@ -71,19 +71,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    // Show a write operation.
-    const written = [...values];
-    written[2] = 42;
-    const writeStates = new Map<number, EntityState>([[2, "sorted"]]);
-    yield {
-        stepNumber: step,
-        entities: makeArrayCells(written, writeStates),
-        edges: [],
-        description: `Write arr[2] = 42 in O(1).`,
-        codeLineNumber: 3,
-        layout: "grid",
-        meta: { size: values.length },
-    };
+    // Show a write operation (skipped for an empty array – index 2 would
+    // create holes past the end).
+    if (values.length > 0) {
+        const written = [...values];
+        const writeIndex = Math.min(2, written.length - 1);
+        written[writeIndex] = 42;
+        const writeStates = new Map<number, EntityState>([[writeIndex, "sorted"]]);
+        yield {
+            stepNumber: step,
+            entities: makeArrayCells(written, writeStates),
+            edges: [],
+            description: `Write arr[${writeIndex}] = 42 in O(1).`,
+            codeLineNumber: 3,
+            layout: "grid",
+            meta: { size: values.length },
+        };
+    }
 }
 
 /** The Static Array module, registered with the engine. */
