@@ -130,6 +130,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield buildFrame(`Prefix-function automaton built for "${pattern}".`, 0);
     step += 1;
 
+    // An empty pattern is already "matched" everywhere and nowhere useful;
+    // report it without searching.
+    if (m === 0) {
+        yield buildFrame("Empty pattern – nothing to search for.", 0);
+        step += 1;
+        return;
+    }
+
     // ------------------------------------------------------------------
     // Scan the text using the automaton (no fallback loop needed).
     // ------------------------------------------------------------------
