@@ -31,7 +31,7 @@
  *   - Failure links make the scan linear even with many patterns.
  */
 
-import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
+import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
 /**
  * The Aho-Corasick generator.
@@ -41,13 +41,16 @@ import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/t
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { text?: string; patterns?: string[] } | null) ?? {};
     const text = task.text ?? "abacababa";
-    const patterns = task.patterns ?? ["aba", "ab", "ba"];
+    // Skip empty patterns: they would "match" at every position.
+    const patterns = (task.patterns ?? ["aba", "ab", "ba"]).filter((p) => p.length > 0);
 
     let step = 0;
     let nodeCount = 1; // node 0 is the root
 
     // Trie children: node index → char → child index.
     const children: Array<Map<string, number>> = [new Map()];
+    // Trie parent of each node (root has none) for the tree layout.
+    const trieParent: number[] = [-1];
     // Failure links and which patterns end at each node.
     const fail: number[] = [-1];
     const output: Array<string[]> = [[]];
@@ -65,6 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 children.push(new Map());
                 fail.push(0);
                 output.push([]);
+                trieParent.push(node);
                 children[node]?.set(char, nodeCount);
                 node = nodeCount;
                 nodeCount += 1;
@@ -106,20 +110,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const buildFrame = (message: string): VisualFrame => {
+    const buildFrame = (message: string, currentNode = -1, matchCount = 0): VisualFrame => {
         const entities: VisualEntity[] = [];
         for (let i = 0; i < nodeCount; i += 1) {
+            const parent = trieParent[i];
             entities.push({
                 id: `node-${i}`,
                 type: "node" as const,
                 label: String(i),
                 value: i,
-                state: (output[i]?.length ?? 0) > 0 ? "unvisited" : "unvisited",
+                state:
+                    i === currentNode
+                        ? ("comparing" as EntityState)
+                        : (output[i]?.length ?? 0) > 0
+                          ? ("sorted" as EntityState)
+                          : ("unvisited" as EntityState),
                 x: 0,
                 y: 0,
                 width: 0,
                 height: 0,
-                metadata: { parentId: "root" },
+                metadata: {
+                    parentId: parent === undefined || parent < 0 ? "root" : `node-${parent}`,
+                },
             });
         }
         // Trie edges (labeled by character).
@@ -143,7 +155,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: message,
             codeLineNumber: 2,
             layout: "tree",
-            meta: { nodes: nodeCount, matches: 0 },
+            meta: { nodes: nodeCount, matches: matchCount },
         };
     };
 
@@ -177,6 +189,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             matches.length === 0
                 ? `Scanning text[${i}]="${char}" – no match yet.`
                 : `At text[${i}]: ${matches.map((m) => `"${m.pattern}"@${m.index}`).join(", ")}`,
+            node,
+            matches.length,
         );
         step += 1;
     }
@@ -185,6 +199,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         matches.length === 0
             ? "No pattern found in the text."
             : `Found ${matches.length} match(es): ${matches.map((m) => `"${m.pattern}"@${m.index}`).join(", ")}.`,
+        -1,
+        matches.length,
     );
 }
 
