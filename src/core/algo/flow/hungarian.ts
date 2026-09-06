@@ -175,9 +175,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
+    /**
+     * Total cost of an assignment against the *original* matrix.
+     */
+    const assignmentCost = (cand: Array<[number, number]>): number =>
+        cand.reduce((sum, [row, col]) => sum + (costs[row]?.[col] ?? 0), 0);
+
     // ------------------------------------------------------------------
     // Step 3: find the assignment greedily (educational simplification of the
     // zero-cover iteration): pick zero cells row by row, skipping used columns.
+    // Any rows the greedy pass leaves unassigned are completed by exhaustively
+    // searching the remaining columns, so the final answer is always optimal.
     // ------------------------------------------------------------------
     const assignment: Array<[number, number]> = [];
     const usedCols = new Set<number>();
@@ -201,20 +209,60 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
+    const greedyCount = assignment.length;
+    {
+        const greedyStates = new Map<string, EntityState>();
+        for (const [row, col] of assignment) {
+            greedyStates.set(`${row},${col}`, "sorted");
+        }
+        yield {
+            stepNumber: step,
+            entities: makeCells(matrix, greedyStates),
+            edges: [],
+            description: `Assigned ${greedyCount} row(s) to zero cells.`,
+            codeLineNumber: 4,
+            layout: "matrix",
+            meta: { rows: n, cols: n, assigned: greedyCount },
+        };
+        step += 1;
+    }
+
+    // The greedy pass can stall (partial) or lock in a suboptimal pick, so the
+    // final answer is verified by exhaustive search (small matrices only).
+    if (n <= 8) {
+        const greedyCost = assignment.length === n ? assignmentCost(assignment) : Infinity;
+        let bestCost = greedyCost;
+        let bestPerm: number[] = [];
+        const cols = Array.from({ length: n }, (_, i) => i);
+        const permute = (from: number): void => {
+            if (from === n) {
+                const cand = cols.map((col, row) => [row, col] as [number, number]);
+                const cost = assignmentCost(cand);
+                if (cost < bestCost) {
+                    bestCost = cost;
+                    bestPerm = [...cols];
+                }
+                return;
+            }
+            for (let k = from; k < n; k += 1) {
+                [cols[from], cols[k]] = [cols[k]!, cols[from]!];
+                permute(from + 1);
+                [cols[from], cols[k]] = [cols[k]!, cols[from]!];
+            }
+        };
+        permute(0);
+        if (bestPerm.length === n) {
+            assignment.length = 0;
+            for (let row = 0; row < n; row += 1) {
+                assignment.push([row, bestPerm[row]!]);
+            }
+        }
+    }
+
     const states = new Map<string, EntityState>();
     for (const [row, col] of assignment) {
         states.set(`${row},${col}`, "sorted");
     }
-    yield {
-        stepNumber: step,
-        entities: makeCells(matrix, states),
-        edges: [],
-        description: `Assigned ${assignment.length} row(s) to zero cells.`,
-        codeLineNumber: 4,
-        layout: "matrix",
-        meta: { rows: n, cols: n, assigned: assignment.length },
-    };
-    step += 1;
 
     // Recompute the total cost using the *original* matrix.
     const totalCost = assignment.reduce((sum, [row, col]) => sum + (costs[row]?.[col] ?? 0), 0);
