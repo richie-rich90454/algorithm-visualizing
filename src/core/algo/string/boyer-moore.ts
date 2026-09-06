@@ -100,6 +100,39 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // An empty pattern has no span to align; report it without searching
+    // (it would otherwise shift by 0 forever).
+    if (m === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeText(text),
+            edges: [],
+            description: "Empty pattern – nothing to search for.",
+            codeLineNumber: 6,
+            layout: "text",
+            meta: { matches: 0 },
+        };
+        return;
+    }
+
+    // Good-suffix shift after a full match: re-align the longest proper
+    // prefix that is also a suffix (the pattern's period), so overlapping
+    // occurrences are still found. For "aa" this shifts by 1, not 2.
+    const period = (() => {
+        const pi = new Array<number>(m).fill(0);
+        for (let i = 1; i < m; i += 1) {
+            let k = pi[i - 1] ?? 0;
+            while (k > 0 && pattern[i] !== pattern[k]) {
+                k = pi[k - 1] ?? 0;
+            }
+            if (pattern[i] === pattern[k]) {
+                k += 1;
+            }
+            pi[i] = k;
+        }
+        return m - (pi[m - 1] ?? 0);
+    })();
+
     // ------------------------------------------------------------------
     // Scan with right-to-left comparisons and skip jumps.
     // ------------------------------------------------------------------
@@ -163,8 +196,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             };
             step += 1;
 
-            // Skip by the whole pattern length (simplified good-suffix rule).
-            shift += m;
+            // Shift by the pattern's period so overlapping matches survive.
+            shift += Math.max(1, period);
         } else {
             // Bad-character rule: how far can we shift?
             const mismatchChar = text[shift + j] as string;
@@ -187,9 +220,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
+    // Keep every full match highlighted in the final frame.
+    const finalStates = new Map<number, EntityState>();
+    for (const start of matches) {
+        for (let k = start; k < start + m; k += 1) {
+            finalStates.set(k, "sorted");
+        }
+    }
+
     yield {
         stepNumber: step,
-        entities: makeText(text),
+        entities: makeText(text, finalStates),
         edges: [],
         description:
             matches.length === 0
