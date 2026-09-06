@@ -111,6 +111,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // ------------------------------------------------------------------
     let j = 0;
 
+    // An empty pattern has no span to highlight; report it without searching.
+    if (m === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeText(text),
+            edges: [],
+            description: "Empty pattern – nothing to search for.",
+            codeLineNumber: 6,
+            layout: "text",
+            meta: { matches: 0 },
+        };
+        return;
+    }
+
     for (let i = 0; i < text.length; i += 1) {
         // While characters mismatch, fall back along the failure function.
         while (j > 0 && text[i] !== pattern[j]) {
@@ -176,9 +190,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
+    // Keep every full match highlighted in the final frame.
+    const finalStates = new Map<number, EntityState>();
+    for (const start of matches) {
+        for (let k = start; k < start + m; k += 1) {
+            finalStates.set(k, "sorted");
+        }
+    }
+
     yield {
         stepNumber: step,
-        entities: makeText(text),
+        entities: makeText(text, finalStates),
         edges: [],
         description:
             matches.length === 0
