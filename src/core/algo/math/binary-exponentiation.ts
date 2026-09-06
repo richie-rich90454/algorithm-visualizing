@@ -64,6 +64,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { base?: number; exponent?: number } | null) ?? {};
     const base = typeof task.base === "number" ? task.base : 3;
     let exponent = typeof task.exponent === "number" ? task.exponent : 13;
+    // Only non-negative integers have a binary scan; clamp anything else.
+    exponent = Math.max(0, Math.floor(exponent));
 
     // The exponent in binary (LSB first, for the classic left-to-right scan).
     const bits = exponent.toString(2).split("").reverse().map(Number);
