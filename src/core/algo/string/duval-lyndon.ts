@@ -103,8 +103,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 k = i;
                 j += 1;
             } else if (a > b) {
-                // The candidate ends here – emit a Lyndon factor [i, k].
-                const length = k - i + 1;
+                // The candidate ends here – emit repeats of the Lyndon word
+                // of length j - k starting at i.
+                const length = j - k;
                 while (i <= k) {
                     factors.push([i, i + length - 1]);
                     i += length;
@@ -119,9 +120,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
 
-        // Reached the end of the string – the tail is a Lyndon factor.
+        // Reached the end of the string – split the tail into repeats of
+        // the Lyndon word of length j - k (the last chunk may be shorter).
         if (j >= n) {
-            const length = k - i + 1;
+            const length = j - k;
             while (i < n) {
                 factors.push([i, Math.min(n, i + length) - 1]);
                 i += length;
