@@ -161,9 +161,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     yield {
         stepNumber: step,
-        entities: makePair(factor, 0).map((cell) => ({
+        entities: makePair(factor, 0).map((cell, index) => ({
             ...cell,
-            state: factorStates.get(0) ?? cell.state,
+            state: factorStates.get(index) ?? cell.state,
         })),
         edges: [],
         description:
