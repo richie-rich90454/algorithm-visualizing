@@ -23,8 +23,8 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - The bucket currently being filled is PINK (highlight).
- *   - Values being dropped into a bucket are YELLOW (comparing).
+ *   - Values being dropped into a bucket are YELLOW (comparing); the target
+ *     bucket number is announced in the caption.
  *   - The final concatenated array turns GREEN (sorted).
  *
  * ---------------------------------------------------------------------------
@@ -88,6 +88,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
 
     if (arr.length === 0) {
+        yield {
+            stepNumber: step,
+            entities: makeBars(arr, new Map()),
+            edges: [],
+            description: "Empty array – already sorted.",
+            codeLineNumber: 4,
+            layout: "array",
+            meta: { buckets: BUCKET_COUNT },
+        };
         return;
     }
 
@@ -103,14 +112,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             continue;
         }
 
-        // Clamp the bucket index to avoid overflow at exactly 1.0.
-        const bucketIndex = Math.min(BUCKET_COUNT - 1, Math.floor(value * BUCKET_COUNT));
+        // Clamp the bucket index to avoid overflow at exactly 1.0 (and to
+        // keep out-of-range values sortable instead of dropping them).
+        const bucketIndex = Math.max(
+            0,
+            Math.min(BUCKET_COUNT - 1, Math.floor(value * BUCKET_COUNT)),
+        );
         (buckets[bucketIndex] ?? []).push(value);
 
-        const fillStates = new Map<number, EntityState>([
-            [i, "comparing"],
-            [bucketIndex, "highlight"],
-        ]);
+        // Only the value being distributed is marked – the bucket index is
+        // not a bar position, so it must not highlight a data bar.
+        const fillStates = new Map<number, EntityState>([[i, "comparing"]]);
         yield {
             stepNumber: step,
             entities: makeBars(arr, fillStates),
@@ -157,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         yield {
             stepNumber: step,
-            entities: makeBars(bucket.length ? bucket : arr),
+            entities: makeBars(sorted.length ? [...sorted, ...arr.slice(sorted.length)] : arr),
             edges: [],
             description: `Bucket ${b} sorted – appended ${bucket.length} element(s).`,
             codeLineNumber: 3,
