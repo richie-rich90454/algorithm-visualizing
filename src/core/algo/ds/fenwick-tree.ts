@@ -91,9 +91,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const k = 4;
     let sum = 0;
     let idx = k;
+    const queried = new Set<number>();
     while (idx > 0) {
         sum += tree[idx] ?? 0;
-        const states = new Map<number, EntityState>([[idx - 1, "comparing"]]);
+        queried.add(idx - 1);
+        const states = new Map<number, EntityState>();
+        for (const seen of queried) {
+            states.set(seen, "comparing");
+        }
         yield {
             stepNumber: step,
             entities: makeCells(tree.slice(1), states),
@@ -116,13 +121,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "grid",
         meta: { n, sum },
     };
+    step += 1;
 
-    // Point update.
+    // Point update (positions are 1-based; anything outside 1..n is a no-op
+    // instead of looping forever on index 0).
     const [pos, delta] = update;
     idx = pos;
-    while (idx <= n) {
+    const updated = new Set<number>();
+    while (idx >= 1 && idx <= n) {
         tree[idx] = (tree[idx] ?? 0) + delta;
-        const states = new Map<number, EntityState>([[idx - 1, "sorted"]]);
+        updated.add(idx - 1);
+        const states = new Map<number, EntityState>();
+        for (const seen of updated) {
+            states.set(seen, "sorted");
+        }
         yield {
             stepNumber: step,
             entities: makeCells(tree.slice(1), states),
