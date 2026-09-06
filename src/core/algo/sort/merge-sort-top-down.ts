@@ -102,23 +102,35 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         // Walk the output position from lo to hi, always taking the smaller
         // front element of the two runs (left on ties → stability).
         for (let k = lo; k <= hi; k += 1) {
+            const leftAlive = i <= mid;
+            const rightAlive = j <= hi;
             const leftVal = temp[i];
             const rightVal = temp[j];
 
             // Pick from the right run when the left run is exhausted, or when
             // the right run's front is strictly smaller than the left's.
-            const takeRight = i > mid || (j <= hi && (rightVal as number) < (leftVal as number));
+            const takeRight =
+                !leftAlive || (rightAlive && (rightVal as number) < (leftVal as number));
 
-            // Highlight the two elements being compared across the boundary.
-            const cmpStates = new Map<number, EntityState>([
-                [i, "comparing"],
-                [j, "comparing"],
-            ]);
+            // Highlight the live run fronts. An exhausted run has no front to
+            // compare, so only the surviving side is shown.
+            const cmpStates = new Map<number, EntityState>();
+            if (leftAlive) {
+                cmpStates.set(i, "comparing");
+            }
+            if (rightAlive) {
+                cmpStates.set(j, "comparing");
+            }
+            const cmpDescription = leftAlive
+                ? rightAlive
+                    ? `Merging – comparing ${String(leftVal)} and ${String(rightVal)}.`
+                    : `Right run exhausted – taking ${String(leftVal)} from the left run.`
+                : `Left run exhausted – taking ${String(rightVal)} from the right run.`;
             yield {
                 stepNumber: step,
                 entities: makeBars(arr, cmpStates),
                 edges: [],
-                description: `Merging – comparing ${String(leftVal)} and ${String(rightVal)}.`,
+                description: cmpDescription,
                 codeLineNumber: 2,
                 layout: "array",
                 meta: { merges },
