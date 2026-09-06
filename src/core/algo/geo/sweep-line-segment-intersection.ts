@@ -41,7 +41,7 @@ function orient(a: [number, number], b: [number, number], c: [number, number]): 
     return cross > 0 ? 1 : cross < 0 ? -1 : 0;
 }
 
-/** Do segments ab and cd intersect? */
+/** Do segments ab and cd intersect (including touching and overlap)? */
 function intersect(
     a: [number, number],
     b: [number, number],
@@ -52,7 +52,25 @@ function intersect(
     const o2 = orient(a, b, d);
     const o3 = orient(c, d, a);
     const o4 = orient(c, d, b);
-    return o1 !== o2 && o3 !== o4;
+    if (o1 !== o2 && o3 !== o4) {
+        return true;
+    }
+    return (
+        (o1 === 0 && onSegment(a, b, c)) ||
+        (o2 === 0 && onSegment(a, b, d)) ||
+        (o3 === 0 && onSegment(c, d, a)) ||
+        (o4 === 0 && onSegment(c, d, b))
+    );
+}
+
+/** Does c lie on segment ab? (assumes collinear). */
+function onSegment(a: [number, number], b: [number, number], c: [number, number]): boolean {
+    return (
+        c[0] <= Math.max(a[0], b[0]) &&
+        c[0] >= Math.min(a[0], b[0]) &&
+        c[1] <= Math.max(a[1], b[1]) &&
+        c[1] >= Math.min(a[1], b[1])
+    );
 }
 
 /**
@@ -139,6 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     events.sort((a, b) => a - b);
 
     const intersections: Array<[number, number]> = [];
+    const reported = new Set<string>();
 
     // Walk the sweep. When two segments are active at the same sweep x and
     // they intersect, report it.
@@ -159,7 +178,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     continue;
                 }
                 if (intersect(a.seg[0], a.seg[1], b.seg[0], b.seg[1])) {
-                    intersections.push([a.index, b.index]);
+                    // The same pair stays active across several sweep
+                    // positions – report it only once.
+                    const key = `${Math.min(a.index, b.index)},${Math.max(a.index, b.index)}`;
+                    if (!reported.has(key)) {
+                        reported.add(key);
+                        intersections.push([a.index, b.index]);
+                    }
                     const e1 = edges[a.index];
                     const e2 = edges[b.index];
                     if (e1) {
