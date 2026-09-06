@@ -150,14 +150,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // The total size of the "outside" of the whole tree relative to node.
-        const nodeSize = subSize.get(node) ?? 0;
         const nodeOutside = outside.get(node) ?? 0;
 
         for (const child of children.get(node) ?? []) {
             const childSize = subSize.get(child) ?? 0;
             // outside[child] = (total distance in node's other subtrees) +
             //                  (node's own outside) + (# other nodes) * 1 edge.
-            const otherNodes = nodeSize - childSize;
+            const otherNodes = ids.length - childSize;
             const childOutside =
                 (subDist.get(node) ?? 0) -
                 ((subDist.get(child) ?? 0) + childSize) +
@@ -179,6 +178,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     };
     yield* up(root);
+
+    for (const node of nodes) {
+        node.state = "sorted";
+    }
 
     yield {
         stepNumber: step,
