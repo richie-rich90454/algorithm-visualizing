@@ -218,6 +218,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Find the heaviest edge on the path (u..v via MST).
         let heaviestOnPath = -Infinity;
+        let heaviestIndex = -1;
         for (let p = 0; p < path.length - 1; p += 1) {
             const a = path[p];
             const b = path[p + 1];
@@ -225,8 +226,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ([ea, eb, ew], idx) =>
                     mstSet.has(idx) && ((ea === a && eb === b) || (ea === b && eb === a)),
             );
-            if (edgeIndex >= 0) {
-                heaviestOnPath = Math.max(heaviestOnPath, edgeList[edgeIndex]?.[2] ?? -Infinity);
+            if (edgeIndex >= 0 && (edgeList[edgeIndex]?.[2] ?? -Infinity) > heaviestOnPath) {
+                heaviestOnPath = edgeList[edgeIndex]?.[2] ?? -Infinity;
+                heaviestIndex = edgeIndex;
             }
         }
 
@@ -235,7 +237,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             const swapWeight = weight - heaviestOnPath;
             if (swapWeight < secondBestWeight) {
                 secondBestWeight = swapWeight;
-                secondBestSwap = { add: i, remove: -1 };
+                secondBestSwap = { add: i, remove: heaviestIndex };
             }
         }
 
@@ -253,13 +255,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             meta: { mstEdges: mstEdges.length },
         };
         step += 1;
+        if (edge) {
+            edge.state = "idle";
+        }
     }
 
-    // Show the winning replacement.
+    // Show the winning replacement: added edge green, removed edge red.
     if (secondBestSwap) {
         const winningEdge = edges[secondBestSwap.add];
         if (winningEdge) {
             winningEdge.state = "sorted";
+        }
+        const removedEdge = edges[secondBestSwap.remove];
+        if (removedEdge) {
+            removedEdge.state = "swapped";
         }
     }
 
