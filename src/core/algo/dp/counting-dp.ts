@@ -68,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     let step = 0;
 
     // ways[i] = number of ways to climb i stairs with 1- and 2-steps.
-    const ways = new Array<number>(steps + 1).fill(0);
+    const ways = new Array<number>(Math.max(1, steps + 1)).fill(0);
     ways[0] = 1; // one way to stand at the bottom
 
     // Frame 0: the initialized array.
@@ -100,7 +100,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(ways, states),
             edges: [],
-            description: `ways[${i}] = ways[${i - 1}] + ways[${i - 2}] = ${from1} + ${from2} = ${ways[i]}.`,
+            description:
+                i >= 2
+                    ? `ways[${i}] = ways[${i - 1}] + ways[${i - 2}] = ${from1} + ${from2} = ${ways[i]}.`
+                    : `ways[${i}] = ways[${i - 1}] = ${from1}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { steps },
@@ -108,15 +111,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
 
-    const finalStates = new Map<number, EntityState>([[steps, "sorted"]]);
+    const finalStates = new Map<number, EntityState>([[Math.max(0, steps), "sorted"]]);
     yield {
         stepNumber: step,
         entities: makeCells(ways, finalStates),
         edges: [],
-        description: `There are ${ways[steps]} ways to climb ${steps} stairs.`,
+        description: `There are ${ways[steps] ?? 0} ways to climb ${steps} stairs.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { steps, answer: ways[steps] },
+        meta: { steps, answer: ways[steps] ?? 0 },
     };
 }
 
