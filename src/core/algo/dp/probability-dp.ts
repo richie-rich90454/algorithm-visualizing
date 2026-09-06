@@ -64,13 +64,37 @@ function makeCells(values: number[], states: Map<number, EntityState> = new Map(
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { target?: number } | null) ?? {};
-    const target = typeof task.target === "number" ? task.target : 3;
+    // Only integers size the E array (a float would throw in `new Array`,
+    // NaN/Infinity would poison it); negatives keep their dedicated branch.
+    const raw = typeof task.target === "number" ? task.target : 3;
+    const target = Number.isInteger(raw) ? raw : 3;
 
     let step = 0;
+
+    // Edge case: a negative target is meaningless.
+    if (target < 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "Negative target – no streak to wait for.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { target },
+        };
+        return;
+    }
+
+    // E[k] = 1 + ½·E[k+1] + ½·E[0] is circular in E[0]: substituting the
+    // not-yet-computed E[0] with 0 would silently under-count. E[0] satisfies
+    // E[0] = 2 + E[1], which unfolds to the closed form 2^(target+1) − 2, so
+    // seed it up front and every displayed equation below is exact.
+    const answer = 2 ** (target + 1) - 2;
 
     // E[streak] = expected flips remaining given `streak` consecutive heads.
     const E = new Array<number>(target + 1).fill(0);
     E[target] = 0; // already done
+    E[0] = answer;
 
     // Frame 0: the initialized array (E[target] = 0).
     yield {
