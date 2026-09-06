@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, states),
             edges: [],
-            description: `Random pivot chosen: ${pivot} at index ${pivotIndex}.`,
+            description: `Random pivot ${pivot} chosen – moved to index ${hi} for partitioning.`,
             codeLineNumber: 2,
             layout: "array",
             meta: {},
