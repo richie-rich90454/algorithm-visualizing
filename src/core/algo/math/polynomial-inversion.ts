@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         // B ← B·(2 − A·B) mod x^len
         const AB = multiply(A, B);
         // 2 − AB: 2 at index 0, negatives elsewhere.
-        const twoMinusAB = [2, ...AB.slice(1).map((v) => -v)];
+        const twoMinusAB = [2 - (AB[0] ?? 0), ...AB.slice(1).map((v) => -v)];
         const product = multiply(B, twoMinusAB).slice(0, len);
         inv = product;
 
