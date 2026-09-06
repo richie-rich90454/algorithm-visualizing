@@ -194,12 +194,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
 
         // Relax each neighbor.
-        for (const edge of edges) {
-            edge.state = "idle";
-        }
         for (const [neighbor, weight] of graph[current] ?? []) {
             if (closed.has(neighbor)) {
                 continue;
+            }
+            // Reset all edge states to idle before marking new active edges.
+            for (const edge of edges) {
+                edge.state = "idle";
             }
             const tentativeG = (gScore.get(current) ?? Infinity) + weight;
             if (tentativeG < (gScore.get(neighbor) ?? Infinity)) {
