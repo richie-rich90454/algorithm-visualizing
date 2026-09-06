@@ -82,13 +82,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Cost of a group from l to r (inclusive): sum of elements (proxy).
+    // Cost of a group from l to r (inclusive): the squared sum, so merging
+    // two groups always costs more than keeping them split – that tradeoff
+    // against the per-group penalty λ is what the binary search balances.
     const groupCost = (l: number, r: number): number => {
         let sum = 0;
         for (let i = l; i <= r; i += 1) {
             sum += arr[i] ?? 0;
         }
-        return sum;
+        return sum * sum;
     };
 
     // Solve for a given penalty λ: split into as many groups as useful, each
@@ -153,14 +155,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     const finalStart = new Set(bestStarts);
+    const foundGroups = bestStarts.length;
     yield {
         stepNumber: step,
         entities: makeCells(arr, finalStart),
         edges: [],
-        description: `Converged: ${K} groups with boundaries at [${bestStarts.join(", ")}].`,
+        description:
+            foundGroups === K
+                ? `Converged: ${K} groups with boundaries at [${bestStarts.join(", ")}].`
+                : `Closest λ found ${foundGroups} group(s) – exact ${K} groups unreachable.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { groups: K, boundaries: bestStarts },
+        meta: { groups: foundGroups, targetGroups: K, boundaries: bestStarts },
     };
 }
 
