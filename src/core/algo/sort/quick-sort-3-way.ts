@@ -152,22 +152,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 i += 1;
             }
 
-            // Show the current three-region structure after each action.
-            const regionStates = new Map<number, EntityState>([
-                [i, "comparing"],
-                [hi, "pivot"],
-            ]);
+            // Show the current three-region structure after each action. Only
+            // [lt..i-1] is confirmed equal (and final); [i..gt] is still
+            // unprocessed, so it stays unmarked.
+            const regionStates = new Map<number, EntityState>();
             for (let k = lo; k < lt; k += 1) {
+                regionStates.set(k, "highlight");
+            }
+            for (let k = lt; k < i; k += 1) {
                 regionStates.set(k, "sorted");
             }
             for (let k = gt + 1; k <= hi; k += 1) {
-                regionStates.set(k, "sorted");
+                regionStates.set(k, "highlight");
             }
+            regionStates.set(i, "comparing");
+            regionStates.set(hi, "pivot");
             yield {
                 stepNumber: step,
                 entities: makeBars(arr, regionStates),
                 edges: [],
-                description: `Regions: smaller [${lo}..${lt - 1}], equal [${lt}..${gt}], larger [${gt + 1}..${hi}].`,
+                description: `Regions: smaller [${lo}..${lt - 1}], equal [${lt}..${i - 1}], larger [${gt + 1}..${hi}].`,
                 codeLineNumber: 3,
                 layout: "array",
                 meta: { comparisons, swaps },
