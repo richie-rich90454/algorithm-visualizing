@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const capacity = typeof task.capacity === "number" ? task.capacity : 5;
 
     const rows = weights.length + 1;
-    const cols = capacity + 1;
+    const cols = Math.max(1, capacity + 1);
     let step = 0;
 
     const dp: number[][] = Array.from({ length: rows }, () => new Array<number>(cols).fill(0));
