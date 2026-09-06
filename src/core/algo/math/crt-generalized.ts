@@ -38,7 +38,7 @@ function extendedGcd(a: number, b: number): { x: number; y: number; gcd: number 
         return { x: 1, y: 0, gcd: a };
     }
     const { x, y, gcd } = extendedGcd(b, a % b);
-    return { x: y, y: x - Math.floor(a / b) * y, gcd };
+    return { x: y, y: x - Math.trunc(a / b) * y, gcd };
 }
 
 /** Least common multiple. */
@@ -75,7 +75,7 @@ function makeCells(values: number[], activeIndex = -1): VisualEntity[] {
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { remainders?: number[]; moduli?: number[] } | null) ?? {};
-    const remainders = task.remainders ?? [2, 3, 1];
+    const remainders = task.remainders ?? [2, 4, 1];
     const moduli = task.moduli ?? [4, 6, 3];
 
     let step = 0;
@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         n: number,
     ): { x: number; mod: number } | null => {
         const { x, gcd } = extendedGcd(m, n);
-        const diff = a - b;
+        const diff = b - a;
         if (diff % gcd !== 0) {
             return null; // inconsistent
         }
@@ -124,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             inconsistent = true;
             yield {
                 stepNumber: step,
-                entities: makeCells(progress, i),
+                entities: makeCells(progress, progress.length - 1),
                 edges: [],
                 description: `Pair ${i} is inconsistent – no solution exists.`,
                 codeLineNumber: 2,
@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         yield {
             stepNumber: step,
-            entities: makeCells(progress, i),
+            entities: makeCells(progress, progress.length - 1),
             edges: [],
             description: `Merged pair ${i}: x ≡ ${currentX} (mod ${currentMod}).`,
             codeLineNumber: 3,
@@ -169,8 +169,8 @@ const module: AlgorithmModule = {
     name: "CRT (Generalized)",
     category: "math",
     complexity: { time: "O(k·log max m)", space: "O(k)" },
-    // x ≡ 2 (mod 4), 3 (mod 6), 1 (mod 3) – merges to a solution mod lcm.
-    defaultInput: { remainders: [2, 3, 1], moduli: [4, 6, 3] },
+    // x ≡ 2 (mod 4), 4 (mod 6), 1 (mod 3) – merges to x ≡ 10 (mod 12).
+    defaultInput: { remainders: [2, 4, 1], moduli: [4, 6, 3] },
     visualType: "grid",
     run,
 };
