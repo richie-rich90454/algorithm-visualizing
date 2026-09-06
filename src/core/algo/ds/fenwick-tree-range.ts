@@ -97,7 +97,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const tree2 = new Array<number>(n + 1).fill(0);
 
     const addTo = (tree: number[], idx: number, delta: number): void => {
-        while (idx <= n) {
+        // Positions are 1-based; index 0 would never advance (0 & -0 === 0).
+        while (idx >= 1 && idx <= n) {
             tree[idx] = (tree[idx] ?? 0) + delta;
             idx += idx & -idx;
         }
