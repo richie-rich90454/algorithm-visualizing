@@ -95,6 +95,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = freq.length;
     let step = 0;
 
+    // Edge case: no keys means no tree and zero cost.
+    if (n === 0) {
+        yield {
+            stepNumber: step,
+            entities: [],
+            edges: [],
+            description: "No keys – the optimal BST cost is 0.",
+            codeLineNumber: 0,
+            layout: "grid",
+            meta: { rows: 0, cols: 0, minCost: 0 },
+        };
+        return;
+    }
+
     // dp[i][j] = min cost BST for keys i..j. opt[i][j] = optimal split.
     const dp: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(0));
     const opt: number[][] = Array.from({ length: n }, () => new Array<number>(n).fill(0));
