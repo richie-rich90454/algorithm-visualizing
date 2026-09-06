@@ -114,9 +114,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         yield {
             stepNumber: step,
-            entities: makeCells(energies, iter).map((c) =>
-                accepted && iter === energies.length - 1
-                    ? { ...c, state: "sorted" as EntityState }
+            entities: makeCells(energies, iter).map((c, index) =>
+                index === energies.length - 1
+                    ? { ...c, state: (accepted ? "sorted" : "swapped") as EntityState }
                     : c,
             ),
             edges: [],
