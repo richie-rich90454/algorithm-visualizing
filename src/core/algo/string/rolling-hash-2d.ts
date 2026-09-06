@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     ];
     const pattern: string[][] = task.pattern ?? [
         ["a", "c"],
-        ["a", "b"],
+        ["c", "a"],
     ];
 
     const rows = grid.length;
@@ -233,7 +233,7 @@ const module: AlgorithmModule = {
     name: "Rolling Hash (2D)",
     category: "string",
     complexity: { time: "O(rows·cols)", space: "O(rows·cols)" },
-    // The 2×2 pattern "ac/ab" appears at (0,2) and (2,2).
+    // The 2×2 pattern "ac/ca" appears at (0,2).
     defaultInput: {
         grid: [
             ["a", "b", "a", "c"],
@@ -243,7 +243,7 @@ const module: AlgorithmModule = {
         ],
         pattern: [
             ["a", "c"],
-            ["a", "b"],
+            ["c", "a"],
         ],
     },
     visualType: "grid",
