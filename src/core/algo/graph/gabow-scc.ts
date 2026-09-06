@@ -144,10 +144,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     step += 1;
 
                     work.push({ vertex: neighbor, pos: 0 });
-                } else if (pathStack.includes(neighbor)) {
-                    // Back edge to a vertex on the current path: pop the path
-                    // stack down to it, marking the SCC boundary.
-                    while (pathStack.length > 0 && pathStack[pathStack.length - 1] !== neighbor) {
+                } else if (stack.includes(neighbor)) {
+                    // Back edge to a vertex still on the main stack (not yet
+                    // assigned to a component): contract the path stack past
+                    // every boundary newer than it.
+                    while (
+                        pathStack.length > 0 &&
+                        (index.get(pathStack[pathStack.length - 1] ?? "") ?? 0) >
+                            (index.get(neighbor) ?? 0)
+                    ) {
                         pathStack.pop();
                     }
                     yield buildFrame(
