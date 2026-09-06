@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         [1, 1],
         [1, 0],
     ];
-    const exponent = typeof task.exponent === "number" ? task.exponent : 7;
+    const exponent = typeof task.exponent === "number" ? Math.max(0, Math.floor(task.exponent)) : 7;
 
     const n = base.length;
     const bits = exponent.toString(2).split("").reverse().map(Number);
