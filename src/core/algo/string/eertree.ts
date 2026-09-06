@@ -51,9 +51,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const link: number[] = [];
     const children: Array<Map<string, number>> = [];
 
-    // Two roots: node 0 = even root (length -1), node 1 = odd root (length 0).
-    // The even root links to itself; the odd root links back to the even root
-    // so the suffix-link walk always terminates at the even root.
+    // Two roots: node 0 = odd root (length -1), node 1 = even root (length 0).
+    // The odd root links to itself; the even root links back to the odd root
+    // so the suffix-link walk always terminates at the odd root.
     const addNode = (length: number, suffix: number): number => {
         len.push(length);
         link.push(suffix);
