@@ -131,9 +131,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     // ------------------------------------------------------------------
-    // Phase 2: linear scan inside the block [prev, next).
+    // Phase 2: linear scan inside the block [prev, next].
+    // The overshoot probe at `next` showed arr[next] >= target, so the
+    // target (if present) lies at or before `next` – the scan is inclusive.
     // ------------------------------------------------------------------
-    for (let i = prev; i < Math.min(next, n); i += 1) {
+    const scanEnd = Math.min(next + 1, n);
+    for (let i = prev; i < scanEnd; i += 1) {
         const value = arr[i];
         if (value === undefined) {
             break;
@@ -141,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         comparisons += 1;
 
         const scanStates = new Map<number, EntityState>();
-        for (let k = prev; k < Math.min(next, n); k += 1) {
+        for (let k = prev; k < scanEnd; k += 1) {
             scanStates.set(k, "highlight");
         }
         scanStates.set(i, "comparing");
@@ -150,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, scanStates),
             edges: [],
-            description: `Scanning block [${prev}..${Math.min(next, n) - 1}] – checking ${value} at ${i}.`,
+            description: `Scanning block [${prev}..${scanEnd - 1}] – checking ${value} at ${i}.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, target, blockStart: prev },
