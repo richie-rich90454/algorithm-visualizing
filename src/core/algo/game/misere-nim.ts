@@ -74,10 +74,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const allOnes = piles.every((p) => p <= 1);
     const onesCount = piles.filter((p) => p === 1).length;
 
-    // Misère rule.
+    // Misère rule: with only singletons left, taking the last stone loses,
+    // so an even number of 1-piles wins (you hand the opponent the last stone).
     let winning: boolean;
     if (allOnes) {
-        winning = onesCount % 2 === 1; // odd ones → you win (you leave 0 piles)
+        winning = onesCount % 2 === 0;
     } else {
         winning = nimSum !== 0;
     }
