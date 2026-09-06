@@ -6,10 +6,9 @@
  * ---------------------------------------------------------------------------
  * Given a string, Booth's algorithm finds the rotation (cyclic shift) that is
  * lexicographically smallest in O(n) time. It conceptually doubles the string
- * and walks a single index `i` while maintaining the best-known rotation start
- * `k`. When comparing rotation k against rotation i, a mismatch or a
- * better-worse result tells the algorithm how far to advance `i`, so no
- * character pair is compared more than a constant number of times.
+ * and races two candidate starts `i` and `j`: comparing the rotations offset
+ * by offset, the loser is skipped past the mismatch, so every round eliminates
+ * at least one candidate and no pair is compared more than O(n) times total.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -73,52 +72,36 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    // Failure lengths: fail[i] = longest proper prefix of rotation 0 that is
-    // also a suffix of rotation i (used to skip redundant comparisons).
-    const fail = new Array<number>(n).fill(-1);
-
+    // Textbook Booth: two candidate starts i and j. Compare the rotations
+    // offset by offset; the loser is skipped past the mismatch, so each
+    // round eliminates at least one candidate in O(n) total.
+    let i = 0;
+    let j = 1;
     let best = 0; // start of the best rotation found so far
 
-    // Scan every possible rotation start i.
-    for (let i = 1; i < n; i += 1) {
-        let j = 0; // comparison offset within the rotation
-        let bestRotation = best;
-
-        // Compare rotation `bestRotation` with rotation `i` character by
-        // character, using the failure table to skip when possible.
-        while (j < n) {
-            const a = doubled[bestRotation + j] as string;
-            const b = doubled[i + j] as string;
-
-            if (a === b) {
-                // Same character – advance; use the failure table to jump.
-                const f = fail[j];
-                if (f !== undefined && f !== -1) {
-                    j = f;
-                } else {
-                    j += 1;
-                }
-                continue;
-            }
-
-            if (a > b) {
-                // Rotation i is lexicographically smaller: it becomes the new
-                // best, and we can skip ahead by the failure length + 1.
-                bestRotation = i;
-                best = i;
-                if (j !== 0) {
-                    fail[i - best + j] = j + 1;
-                }
-                break;
-            }
-
-            // Rotation `best` is smaller here: rotation i is dominated. Skip
-            // ahead using the failure length.
-            if (j !== 0) {
-                fail[i - best + j] = j + 1;
-            }
+    while (i < n && j < n) {
+        let k = 0; // comparison offset within the rotations
+        while (k < n && doubled[i + k] === doubled[j + k]) {
+            k += 1;
+        }
+        if (k >= n) {
             break;
         }
+
+        if ((doubled[i + k] as string) > (doubled[j + k] as string)) {
+            // Rotation j is smaller – rotation i is eliminated.
+            i = i + k + 1;
+            if (i === j) {
+                i += 1;
+            }
+        } else {
+            // Rotation i is smaller – rotation j is eliminated.
+            j = j + k + 1;
+            if (j === i) {
+                j += 1;
+            }
+        }
+        best = Math.min(i, j);
 
         // Highlight the best rotation window.
         const states = new Map<number, EntityState>();
