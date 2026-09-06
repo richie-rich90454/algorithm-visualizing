@@ -91,167 +91,238 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const n = arr.length;
 
-    // Leonard(0) = 1, Leonard(1) = 1, then Leonard(k) = Leonard(k-1) +
-    // Leonard(k-2) + 1. `leo` maps a rank to the tree size.
-    const leo = (rank: number): number => {
-        if (rank <= 1) {
-            return 1;
+    // Leonardo numbers L(0) = L(1) = 1, L(k) = L(k-1) + L(k-2) + 1.
+    // A Leonardo heap of order k holds L(k) elements; its left subtree has
+    // order k-1 and its right subtree order k-2.
+    const LP = [
+        1, 1, 3, 5, 9, 15, 25, 41, 67, 109, 177, 287, 465, 753, 1219, 1973, 3193, 5167, 8361, 13529,
+        21891, 35421, 57313, 92735, 150049, 242785, 392835, 635621, 1028457, 1664079, 2692537,
+        4356617, 7049155, 11405773, 18454929, 29860703, 48315633, 78176337, 126491971, 204668309,
+        331160281, 535828591, 866988873,
+    ];
+
+    // Trailing zero count for a 32-bit bitmap (used to walk heap-size bits).
+    const trailingZeros = (x: number): number => {
+        let t = 0;
+        while (t < 32 && (x & 1) === 0) {
+            x >>>= 1;
+            t += 1;
         }
-        let a = 1;
-        let b = 1;
-        for (let k = 2; k <= rank; k += 1) {
-            const c = a + b + 1;
-            a = b;
-            b = c;
-        }
-        return b;
+        return t;
     };
 
-    // Right offset of a Leonardo tree of the given rank: its right subtree
-    // holds the rank-2 tree.
-    const rightOffset = (rank: number): number => leo(rank - 2);
+    const swapYield = function* (
+        a: number,
+        b: number,
+        message: string,
+        codeLine: number,
+    ): Generator<VisualFrame, void, unknown> {
+        const tmp = arr[a] as number;
+        arr[a] = arr[b] as number;
+        arr[b] = tmp;
+        yield {
+            stepNumber: step,
+            entities: makeBars(
+                arr,
+                new Map<number, EntityState>([
+                    [a, "swapped"],
+                    [b, "swapped"],
+                ]),
+            ),
+            edges: [],
+            description: message,
+            codeLineNumber: codeLine,
+            layout: "array",
+            meta: {},
+        };
+        step += 1;
+    };
 
     /**
-     * Restore the heap order in a single Leonardo tree rooted at `root` with
-     * the given rank. The heap property: the root is larger than both of its
-     * subtree roots.
+     * Restore heap order inside the Leonardo tree of order `pshift` rooted at
+     * `head`. Only descendants move; the roots of earlier trees are untouched.
      */
-    function* sift(root: number, rank: number): Generator<VisualFrame, void, unknown> {
-        while (rank > 1) {
-            // The larger child subtree root is the candidate to promote.
-            const rightChild = root - rightOffset(rank);
-            const leftChild = rightChild - 1;
-            const rootVal = arr[root];
-            const leftVal = arr[leftChild];
-            const rightVal = arr[rightChild];
-
-            // Choose the child to compare against: prefer the larger of the two.
-            let candidate = leftChild;
-            if (rightVal !== undefined && leftVal !== undefined && rightVal > leftVal) {
-                candidate = rightChild;
-            }
-            const candidateVal = arr[candidate];
-
-            if (candidateVal === undefined || rootVal === undefined || candidateVal <= rootVal) {
+    function* sift(head: number, pshift: number): Generator<VisualFrame, void, unknown> {
+        for (;;) {
+            if (pshift <= 1) {
                 break;
             }
+            const rt = head - 1;
+            const lf = head - 1 - (LP[pshift - 2] ?? 0);
+            const headVal = arr[head];
+            const lfVal = arr[lf];
+            const rtVal = arr[rt];
+            if (headVal === undefined || lfVal === undefined || rtVal === undefined) {
+                break;
+            }
+            const goLeft = lfVal >= rtVal;
+            const child = goLeft ? lf : rt;
+            const childVal = goLeft ? lfVal : rtVal;
+            if (headVal >= childVal) {
+                break;
+            }
+            yield* swapYield(
+                head,
+                child,
+                `Sifting ${String(headVal)} down – parent must exceed its children.`,
+                2,
+            );
+            head = child;
+            pshift -= goLeft ? 1 : 2;
+        }
+    }
 
-            // The child dominates – swap it up and descend into that subtree.
-            arr[root] = candidateVal;
-            arr[candidate] = rootVal;
+    /**
+     * Dijkstra's trinkle: fix a root that may violate the heap property with
+     * its children *and* with the roots of the trees to its left (its
+     * "stepsons"), then sift within its own tree.
+     */
+    function* trinkle(
+        p: number,
+        pshift: number,
+        head: number,
+        isTrusty: boolean,
+    ): Generator<VisualFrame, void, unknown> {
+        const val = arr[head];
+        if (val === undefined) {
+            return;
+        }
+        while (p !== 1) {
+            const stepson = head - (LP[pshift] ?? 0);
+            const stepsonVal = arr[stepson];
+            if (stepsonVal === undefined || stepsonVal <= val) {
+                break;
+            }
+            if (!isTrusty && pshift > 1) {
+                const rt = head - 1;
+                const lf = head - 1 - (LP[pshift - 2] ?? 0);
+                const lfVal = arr[lf];
+                const rtVal = arr[rt];
+                if (lfVal === undefined || rtVal === undefined) {
+                    break;
+                }
+                if (rtVal >= stepsonVal || lfVal >= stepsonVal) {
+                    break;
+                }
+            }
+            yield* swapYield(
+                head,
+                stepson,
+                `Trinkling – ${String(stepsonVal)} reclaims the root.`,
+                2,
+            );
+            head = stepson;
+            const trail = trailingZeros(p & ~1);
+            p >>>= trail;
+            pshift += trail;
+            isTrusty = false;
+        }
+        if (!isTrusty) {
+            yield* sift(head, pshift);
+        }
+    }
 
-            const swapStates = new Map<number, EntityState>([
-                [root, "swapped"],
-                [candidate, "swapped"],
-            ]);
-            yield {
-                stepNumber: step,
-                entities: makeBars(arr, swapStates),
-                edges: [],
-                description: `Sifting – ${String(arr[candidate])} promoted above ${String(arr[root])}.`,
-                codeLineNumber: 2,
-                layout: "array",
-                meta: {},
-            };
-            step += 1;
-
-            root = candidate;
-            // The child subtree has rank-1 when it was the right child,
-            // rank-2 when it was the left child.
-            rank = candidate === rightChild ? rank - 1 : rank - 2;
+    /**
+     * Semitrinkle: the tree at `head` is already a heap; only its root may be
+     * smaller than the previous tree's root, so compare the two roots and
+     * trinkle on a swap.
+     */
+    function* semitrinkle(
+        p: number,
+        pshift: number,
+        head: number,
+    ): Generator<VisualFrame, void, unknown> {
+        const prev = head - (LP[pshift] ?? 0);
+        const headVal = arr[head];
+        const prevVal = arr[prev];
+        if (headVal === undefined || prevVal === undefined) {
+            return;
+        }
+        if (prevVal >= headVal) {
+            yield* swapYield(
+                head,
+                prev,
+                `Semitrinkle – ${String(prevVal)} outranks ${String(headVal)}.`,
+                2,
+            );
+            yield* trinkle(p, pshift, prev, false);
         }
     }
 
     // ------------------------------------------------------------------
-    // Phase 1: build the Leonardo-heap forest by "growing" heaps.
+    // Phase 1: grow a forest of Leonardo heaps over the prefix.
+    // `p` is a bitmap of the heap sizes; `pshift` is the order of the
+    // rightmost heap; `head` is the element being incorporated.
     // ------------------------------------------------------------------
-    let p = 1; // index of the next element to add
-    let q = 1; // helper: q = p - leo(r) + 1 for the current heap's span
-    let r = 0; // rank of the current heap
+    let p = 1;
+    let pshift = 1;
+    let head = 0;
+    const hi = n - 1;
 
-    while (p < n) {
-        // When the last two heaps have consecutive ranks, they can fuse into
-        // one larger Leonardo heap.
-        if ((p & 1) === 1) {
-            r += 1;
-            p += 1;
-            continue;
-        }
-
-        // Two consecutive ranks available for a fuse.
-        if ((p & 2) === 0) {
-            if (r === 0) {
-                // Grow a fresh rank-1 heap.
-                r = 1;
+    while (head < hi) {
+        if ((p & 3) === 3) {
+            // The last two heaps have consecutive orders – fuse them with the
+            // new element into one larger heap.
+            yield* sift(head, pshift);
+            p >>>= 2;
+            pshift += 2;
+        } else {
+            // Start a new single-element heap; sift it when it will merge
+            // later, trinkle it when this is its final shape.
+            if ((LP[pshift - 1] ?? 0) >= hi - head) {
+                yield* trinkle(p, pshift, head, false);
             } else {
-                // Merge the previous two heaps into a rank-(r+1) heap.
-                const root = p - 1;
-                yield* sift(root, r + 1);
-                r += 1;
+                yield* sift(head, pshift);
             }
-        } else {
-            // Split a heap: two heaps of rank-1 appear.
-            const root = p - 1 - leo(r);
-            yield* sift(root, r - 1);
-            r = 2;
+            if (pshift === 1) {
+                p <<= 1;
+                pshift -= 1;
+            } else {
+                p <<= pshift - 1;
+                pshift = 1;
+            }
         }
-        p += 1;
+        p |= 1;
+        head += 1;
     }
 
-    // The forest now covers the whole array. (This compact build loop follows
-    // Dijkstra's original presentation; the details are intricate but the
-    // invariant is always "the prefix [0..p-1] is covered by Leonardo heaps".)
+    if (n > 0) {
+        yield* trinkle(p, pshift, head, false);
+    }
 
     // ------------------------------------------------------------------
-    // Phase 2: extract maxima one at a time.
+    // Phase 2: shrink the forest, depositing each maximum at the end.
+    // Roots ascend left to right, so index `head` always holds the maximum
+    // of the remaining prefix when the iteration starts.
     // ------------------------------------------------------------------
-    p = n - 1;
-    q = 1;
-    r = 0;
+    while (pshift !== 1 || p !== 1) {
+        const rootVal = arr[head];
+        yield {
+            stepNumber: step,
+            entities: makeBars(arr, new Map<number, EntityState>([[head, "sorted"]])),
+            edges: [],
+            description: `Maximum ${String(rootVal)} extracted – index ${head} is final.`,
+            codeLineNumber: 4,
+            layout: "array",
+            meta: {},
+        };
+        step += 1;
 
-    while (p >= 1) {
-        const rootVal = arr[p];
-        const isBigHeap = (p & 1) === 0;
-
-        if (r === 0 || isBigHeap) {
-            // If the heap is large, split it into its two subtrees.
-            if (r >= 1) {
-                yield {
-                    stepNumber: step,
-                    entities: makeBars(arr, new Map<number, EntityState>([[p, "sorted"]])),
-                    edges: [],
-                    description: `Maximum ${String(rootVal)} extracted – index ${p} is final.`,
-                    codeLineNumber: 4,
-                    layout: "array",
-                    meta: {},
-                };
-                step += 1;
-            }
-            p -= 1;
-            q -= 1;
-            if (q === 0) {
-                q = leo(r);
-                r -= 1;
-            }
+        if (pshift <= 1) {
+            // Single-element heap – just drop it from the forest.
+            const trail = trailingZeros(p & ~1);
+            p >>>= trail;
+            pshift += trail;
         } else {
-            // A rank-r heap splits into rank-(r-1) and rank-2 heaps.
-            const leftHeapRoot = p - 1;
-            const rightHeapRoot = p - 1 - leo(r - 1);
-            yield {
-                stepNumber: step,
-                entities: makeBars(arr, new Map<number, EntityState>([[p, "sorted"]])),
-                edges: [],
-                description: `Splitting a Leonardo heap – extracting ${String(rootVal)}.`,
-                codeLineNumber: 5,
-                layout: "array",
-                meta: {},
-            };
-            step += 1;
-            yield* sift(leftHeapRoot, r - 1);
-            yield* sift(rightHeapRoot, r - 2);
-            r -= 2;
-            p -= 1;
+            // Split the heap into its rank-(pshift-1) and rank-(pshift-2)
+            // subtrees and restore both new roots.
+            p <<= 2;
+            p ^= 7;
+            pshift -= 2;
+            yield* trinkle(p >>> 1, pshift + 1, head - (LP[pshift] ?? 0) - 1, true);
+            yield* trinkle(p, pshift, head - 1, true);
         }
+        head -= 1;
     }
 
     // Final frame: the entire array is green and fully sorted.
