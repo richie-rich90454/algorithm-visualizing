@@ -70,7 +70,7 @@ function buildTree(
     ];
     if (depth > 0) {
         for (let i = 0; i < branch; i += 1) {
-            nodes.push(...buildTree(depth - 1, branch, id, String(current)));
+            nodes.push(...buildTree(depth - 1, branch, id, `node-${current}`));
         }
     }
     return nodes;
@@ -93,8 +93,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const nodes = buildTree(3, 3, id, null);
     const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
-    const leafCount = leaves.length;
-    const leafIds = nodes.slice(nodes.length - leafCount).map((n) => n.id);
+    const childrenOf = new Map<string, string[]>();
+    for (const node of nodes) {
+        const parent = String(node.metadata["parentId"]);
+        const list = childrenOf.get(parent) ?? [];
+        list.push(node.id);
+        childrenOf.set(parent, list);
+    }
+
+    // Structural leaves (nodes with no children), in creation order.
+    const leafIds = nodes.filter((n) => (childrenOf.get(n.id) ?? []).length === 0).map((n) => n.id);
     leafIds.forEach((leafId, index) => {
         const node = nodeById.get(leafId);
         if (node) {
@@ -116,14 +124,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         meta: {},
     };
     step += 1;
-
-    const childrenOf = new Map<string, string[]>();
-    for (const node of nodes) {
-        const parent = String(node.metadata["parentId"]);
-        const list = childrenOf.get(parent) ?? [];
-        list.push(node.id);
-        childrenOf.set(parent, list);
-    }
 
     let pruningHappened = false;
 
@@ -236,12 +236,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const rootId = nodes[0]?.id ?? "";
     const value = yield* alphaBeta(rootId, 0, true, -Infinity, Infinity);
 
-    // Color pruned subtrees red.
-    for (const prunedId of pruned) {
-        const node = nodeById.get(prunedId);
+    // Color pruned subtrees red (roots and all their descendants).
+    const paintPruned = (id: string): void => {
+        const node = nodeById.get(id);
         if (node) {
             node.state = "swapped";
         }
+        for (const child of childrenOf.get(id) ?? []) {
+            paintPruned(child);
+        }
+    };
+    for (const prunedId of pruned) {
+        paintPruned(prunedId);
     }
 
     yield {
