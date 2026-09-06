@@ -47,18 +47,24 @@ export function applyArrayLayout(frame: VisualFrame, width: number, height: numb
         return frame;
     }
 
-    // Bars are as wide as possible while keeping the fixed gap, capped at 80.
+    // Bars are as wide as possible while keeping the fixed gap, clamped to the
+    // documented min/max so huge arrays still paint every bar.
     const barWidth = Math.min(
         MAX_BAR_WIDTH,
-        (width - (entities.length - 1) * GAP) / entities.length,
+        Math.max(MIN_BAR_WIDTH, (width - (entities.length - 1) * GAP) / entities.length),
     );
 
     // The usable height for bars is the container minus the vertical padding.
     const maxHeight = height - VERTICAL_PADDING;
 
     // Scale relative to the largest magnitude so negative values (FFT bins,
-    // delta arrays) also get proportional, visible bars.
-    const maxAbs = Math.max(1, ...entities.map((e) => Math.abs(Number(e.value))));
+    // delta arrays) also get proportional, visible bars. Non-finite values
+    // (NaN from bad input) count as zero so they still paint a sliver.
+    const magnitudeOf = (e: { value: unknown }): number => {
+        const magnitude = Math.abs(Number(e.value));
+        return Number.isFinite(magnitude) ? magnitude : 0;
+    };
+    const maxAbs = Math.max(1, ...entities.map(magnitudeOf));
 
     // Total width occupied by all bars and gaps, used to center the row.
     const totalWidth = entities.length * barWidth + (entities.length - 1) * GAP;
@@ -73,10 +79,11 @@ export function applyArrayLayout(frame: VisualFrame, width: number, height: numb
 
         const value = Number(entity.value);
         const isNegative = value < 0;
+        const magnitude = Number.isFinite(Math.abs(value)) ? Math.abs(value) : 0;
 
         // Bar height scales with magnitude; the tallest bar fills the height.
         // Clamp to a sliver so zero/NaN values still show up.
-        const barHeight = Math.max(2, (Math.abs(value) / maxAbs) * maxHeight);
+        const barHeight = Math.max(2, (magnitude / maxAbs) * maxHeight);
 
         // x advances by barWidth + gap; positive bars rise from the baseline,
         // negative bars hang below it.
