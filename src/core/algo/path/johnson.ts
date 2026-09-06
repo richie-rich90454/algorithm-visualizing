@@ -166,12 +166,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (currentNode) {
                 currentNode.state = "comparing";
             }
-            yield buildFrame(`Dijkstra from ${source} – settling ${current}.`);
-            step += 1;
-
+            // Reset all edge states to idle before marking new active edges.
             for (const edge of edges) {
                 edge.state = "idle";
             }
+            yield buildFrame(`Dijkstra from ${source} – settling ${current}.`);
+            step += 1;
+
             for (const [neighbor, weight] of graph[current] ?? []) {
                 // Re-weighted cost = original weight + potential[current] − potential[neighbor].
                 const reweighted =
