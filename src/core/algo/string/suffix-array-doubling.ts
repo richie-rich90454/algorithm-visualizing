@@ -148,7 +148,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Suffix array: [${suffix.join(", ")}] meaning suffixes ${suffix.map((i) => `"${text.slice(i)}"`).join(", ")}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows: n, cols: n },
+        meta: { rows: n, cols: n, suffixArray: [...suffix] },
     };
 }
 
