@@ -27,4 +27,18 @@ export default defineConfig({
         environment: "node",
         include: ["src/**/*.test.ts"],
     },
+    build: {
+        rollupOptions: {
+            output: {
+                // Framework code changes rarely; splitting it off keeps the
+                // entry chunk small and lets browsers cache vendor separately.
+                manualChunks(id: string): string | undefined {
+                    if (id.includes("node_modules")) {
+                        return "vendor";
+                    }
+                    return undefined;
+                },
+            },
+        },
+    },
 });
