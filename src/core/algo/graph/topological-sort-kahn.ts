@@ -94,17 +94,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const buildFrame = (): VisualFrame => ({
+    const buildFrame = (message: string): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Queue of ready vertices: [${queue.join(", ")}].`,
+        description: message,
         codeLineNumber: 2,
         layout: "graph",
         meta: { emitted: order.length },
     });
 
-    yield buildFrame();
+    yield buildFrame(`Ready queue seeded with zero-in-degree vertices: [${queue.join(", ")}].`);
     step += 1;
 
     while (queue.length > 0) {
@@ -118,16 +118,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (currentNode) {
             currentNode.state = "comparing";
         }
-        yield buildFrame();
+        yield buildFrame(`Dequeued ${current} – it has no remaining prerequisites.`);
         step += 1;
 
         // Emit the vertex and free its successors.
         order.push(current);
+        const freed: string[] = [];
         for (const neighbor of adjacency[current] ?? []) {
             inDegree[neighbor] = (inDegree[neighbor] ?? 0) - 1;
             // A successor that reached zero in-degree is now ready.
             if ((inDegree[neighbor] ?? 0) === 0) {
                 queue.push(neighbor);
+                freed.push(neighbor);
                 const neighborNode = nodeById.get(`node-${neighbor}`);
                 if (neighborNode) {
                     neighborNode.state = "visited";
@@ -138,7 +140,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (currentNode) {
             currentNode.state = "sorted";
         }
-        yield buildFrame();
+        yield buildFrame(
+            freed.length > 0
+                ? `Emitted ${current} (#${order.length}); freed ${freed.join(", ")} – queue: [${queue.join(", ")}].`
+                : `Emitted ${current} (#${order.length}); nothing newly freed – queue: [${queue.join(", ")}].`,
+        );
         step += 1;
     }
 
