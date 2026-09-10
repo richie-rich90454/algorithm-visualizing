@@ -161,13 +161,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         i += 1;
         if (step > 11) break;
     }
-    yield FR(
-        step++,
-        N([...d.left, ...d.right]),
-        ME(show, new Map(show.map((_, k) => [k, "sorted"] as [number, EntityState])), true),
-        `Maximum b-matching size ${f.value}: L0 takes R0+R1, L1 takes R1.`,
-        i + 1,
-    );
+    yield {
+        ...FR(
+            step++,
+            N([...d.left, ...d.right]),
+            ME(show, new Map(show.map((_, k) => [k, "sorted"] as [number, EntityState])), true),
+            `Maximum b-matching size ${f.value}: L0 takes R0+R1, L1 takes R1.`,
+            i + 1,
+        ),
+        meta: { matching: f.value },
+    };
 }
 
 const module: AlgorithmModule = {
