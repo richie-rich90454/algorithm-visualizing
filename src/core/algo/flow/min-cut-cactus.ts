@@ -102,13 +102,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Cactus: a 3-cycle where each vertex maps to one original vertex; cutting any 2 cycle edges gives a min cut.",
         3,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(list.map((_, i) => [i, "sorted"] as [number, EntityState]))),
-        `Cactus complete: value ${opt}, 3 distinct minimum cuts stored in O(V) space.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(list.map((_, i) => [i, "sorted"] as [number, EntityState]))),
+            `Cactus complete: value ${opt}, 3 distinct minimum cuts stored in O(V) space.`,
+            4,
+        ),
+        meta: { cutValue: opt, numCuts: 3 },
+    };
 }
 
 const module: AlgorithmModule = {
