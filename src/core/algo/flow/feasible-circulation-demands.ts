@@ -183,15 +183,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         3,
     );
     const ok = f.value === need;
-    yield FR(
-        step++,
-        N(verts),
-        ME(show, new Map([0, 1].map((i) => [i, "sorted"] as [number, EntityState])), true),
-        ok
-            ? "Feasible circulation exists: send 1 unit 0->1 and 1 unit 1->0 (balances hold, bounds respected)."
-            : "No feasible circulation: super-source arcs cannot all saturate.",
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(show, new Map([0, 1].map((i) => [i, "sorted"] as [number, EntityState])), true),
+            ok
+                ? "Feasible circulation exists: send 1 unit 0->1 and 1 unit 1->0 (balances hold, bounds respected)."
+                : "No feasible circulation: super-source arcs cannot all saturate.",
+            4,
+        ),
+        meta: { feasible: ok, flow: f.value, demand: need },
+    };
 }
 
 const module: AlgorithmModule = {
