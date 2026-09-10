@@ -138,18 +138,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
     const weight = Math.round(mst.reduce((s, i) => s + all[i].w, 0) * 100) / 100;
-    yield FR(
-        step++,
-        N(labels),
-        ME(all, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Euclidean MST length ${weight}: edges ${mst
-            .map((i) => {
-                const e = all[i] as E3;
-                return `${e.a}-${e.b}(${e.w})`;
-            })
-            .join(", ")}.`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(labels),
+            ME(all, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Euclidean MST length ${weight}: edges ${mst
+                .map((i) => {
+                    const e = all[i] as E3;
+                    return `${e.a}-${e.b}(${e.w})`;
+                })
+                .join(", ")}.`,
+            3,
+        ),
+        meta: { weight },
+    };
 }
 
 const module: AlgorithmModule = {
