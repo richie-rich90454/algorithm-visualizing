@@ -150,18 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Brute-force over all matchings confirms optimum ${best}.`,
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(bestM.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Max-weight matching ${best}: ${bestM
-            .map((i) => {
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(bestM.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Max-weight matching ${best}: ${bestM
+                .map((i) => {
+                    const e = list[i] as E3;
+                    return `${e.a}-${e.b}(${e.w})`;
+                })
+                .join(", ")}.`,
+            5,
+        ),
+        meta: {
+            weight: best,
+            matching: bestM.map((i) => {
                 const e = list[i] as E3;
-                return `${e.a}-${e.b}(${e.w})`;
-            })
-            .join(", ")}.`,
-        5,
-    );
+                return `${e.a}-${e.b}`;
+            }),
+        },
+    };
 }
 
 const module: AlgorithmModule = {
