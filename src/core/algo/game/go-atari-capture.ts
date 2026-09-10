@@ -1,5 +1,5 @@
 // go-atari-capture.ts – Go atari: a group with one liberty is captured by
-// filling it. Default 3×3: black centre with white on three sides has a
+// filling it. Default 3×3: black center with white on three sides has a
 // single liberty at (2,1); White fills it and removes the stone.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -32,8 +32,8 @@ function goCells(board: string[][], hot: string | null = null): VisualEntity[] {
 }
 
 function liberties(board: string[][], r: number, c: number): number {
-    const colour = board[r]?.[c];
-    if (colour !== "B" && colour !== "W") return 0;
+    const color = board[r]?.[c];
+    if (color !== "B" && color !== "W") return 0;
     const seen = new Set<string>();
     const libs = new Set<string>();
     const stack: Array<[number, number]> = [[r, c]];
@@ -53,7 +53,7 @@ function liberties(board: string[][], r: number, c: number): number {
             if (nr < 0 || nr > 2 || nc < 0 || nc > 2) continue;
             const v = board[nr]?.[nc] ?? ".";
             if (v === ".") libs.add(`${nr},${nc}`);
-            else if (v === colour) stack.push([nr, nc]);
+            else if (v === color) stack.push([nr, nc]);
         }
     }
     return libs.size;
@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: goCells(board),
         edges: [],
-        description: "Black removed; White holds the centre territory.",
+        description: "Black removed; White holds the center territory.",
         codeLineNumber: 3,
         layout: "grid",
         meta: { captured: 1 },
