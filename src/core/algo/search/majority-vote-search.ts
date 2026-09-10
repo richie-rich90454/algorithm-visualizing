@@ -1,7 +1,7 @@
 /**
  * majority-vote-search.ts – Boyer-Moore Majority Vote
  *
- * One pass elects a candidate by cancelling differing votes, a second
+ * One pass elects a candidate by canceling differing votes, a second
  * pass verifies it truly holds the majority. All occurrences go green,
  * verified by brute-force counting.
  */
