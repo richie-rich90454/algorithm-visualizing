@@ -20,7 +20,10 @@
  * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Each pile is shown as a stack of stones (bars/cells).
- *   - The winning move is highlighted (removing stones to zero the nim-sum).
+ *   - One frame per pile shows its binary contribution (`pile ^ running-xor`).
+ *   - The winning move is highlighted (removing stones to zero the nim-sum),
+ *     then executed so the zeroed position is shown.
+ *   - From a losing position one sample reply shows the non-zero nim-sum handed back.
  *   - Winning positions are GREEN (sorted); losing positions RED (swapped).
  *
  * ---------------------------------------------------------------------------
@@ -73,7 +76,7 @@ function makeGrid(piles: number[], highlight = -1): VisualEntity[] {
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const task = (input as { piles?: number[] } | null) ?? {};
-    const piles = task.piles ?? [3, 4, 5];
+    const piles = Array.isArray(task.piles) ? task.piles : [3, 4, 5];
 
     let step = 0;
     const nimSum = piles.reduce((a, b) => a ^ b, 0);
@@ -89,6 +92,31 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         meta: { nimSum },
     };
     step += 1;
+
+    // One frame per pile: its binary contribution to the running xor.
+    const bitLen = (x: number): number => Math.max(1, Math.floor(Math.abs(x)).toString(2).length);
+    const width = Math.max(bitLen(nimSum), ...piles.map((p) => bitLen(p)));
+    const bin = (x: number): string => {
+        const v = Math.floor(x);
+        const s = Math.abs(v).toString(2).padStart(width, "0");
+        return v < 0 ? `-${s}` : s;
+    };
+    let running = 0;
+    for (let i = 0; i < piles.length; i += 1) {
+        const p = piles[i] ?? 0;
+        const next = running ^ p;
+        yield {
+            stepNumber: step,
+            entities: makeGrid(piles, i),
+            edges: [],
+            description: `Pile ${i} = ${p} (${bin(p)}) ^ running ${running} (${bin(running)}) = ${next} (${bin(next)}).`,
+            codeLineNumber: 1,
+            layout: "grid",
+            meta: { nimSum, pile: i, pileSize: p, runningBefore: running, runningAfter: next },
+        };
+        step += 1;
+        running = next;
+    }
 
     // The position is winning iff nim-sum ≠ 0.
     const winning = nimSum !== 0;
@@ -119,16 +147,61 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             layout: "grid",
             meta: { nimSum, winning: true, chosen, newSize },
         };
+        step += 1;
+
+        // Execute the move: show the reduced piles with nim-sum 0.
+        if (chosen >= 0) {
+            const after = [...piles];
+            after[chosen] = newSize;
+            const afterSum = after.reduce((a, b) => a ^ b, 0);
+            yield {
+                stepNumber: step,
+                entities: makeGrid(after),
+                edges: [],
+                description: `After the move [${after.join(", ")}] – nim-sum = ${afterSum}, a P-position (losing for the next player).`,
+                codeLineNumber: 3,
+                layout: "grid",
+                meta: { nimSum: afterSum, winning: true, chosen, newSize },
+            };
+        }
     } else {
         yield {
             stepNumber: step,
             entities: makeGrid(piles),
             edges: [],
             description: "Losing position – every move hands the opponent a winning position.",
-            codeLineNumber: 3,
+            codeLineNumber: 2,
             layout: "grid",
             meta: { nimSum, winning: false },
         };
+        step += 1;
+
+        // One sample reply: take a single stone and show the non-zero nim-sum handed back.
+        const mover = piles.findIndex((p) => p > 0);
+        if (mover < 0) {
+            yield {
+                stepNumber: step,
+                entities: makeGrid(piles),
+                edges: [],
+                description: `No legal move – [${piles.join(", ")}] is terminal with nim-sum 0.`,
+                codeLineNumber: 3,
+                layout: "grid",
+                meta: { nimSum, winning: false },
+            };
+        } else {
+            const after = [...piles];
+            after[mover] = (after[mover] ?? 0) - 1;
+            const afterSum = after.reduce((a, b) => a ^ b, 0);
+            yield {
+                stepNumber: step,
+                entities: makeGrid(after, mover),
+                edges: [],
+                description: `Sample reply: reduce pile ${mover} from ${piles[mover]} to ${after[mover]} → [${after.join(", ")}] with nim-sum ${afterSum} ≠ 0, winning for the next player.`,
+                codeLineNumber: 3,
+                layout: "grid",
+                meta: { nimSum: afterSum, winning: false },
+            };
+        }
     }
 }
 
