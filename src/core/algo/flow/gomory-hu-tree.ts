@@ -191,13 +191,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             2,
         );
     const wsum = tree.reduce((s, e) => s + e.w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(tree, new Map(tree.map((_, i) => [i, "sorted"] as [number, EntityState]))),
-        `Gomory-Hu tree (weight ${wsum}): every pair's min cut equals the bottleneck on its tree path.`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(tree, new Map(tree.map((_, i) => [i, "sorted"] as [number, EntityState]))),
+            `Gomory-Hu tree (weight ${wsum}): every pair's min cut equals the bottleneck on its tree path.`,
+            3,
+        ),
+        meta: { weight: wsum },
+    };
 }
 
 const module: AlgorithmModule = {
