@@ -158,13 +158,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (step > 12) break;
     }
     const cost = links.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(links.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Heuristic CMST cost ${cost}: subtrees {1} and {2,3}, loads 1 and 2 within capacity.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(links.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Heuristic CMST cost ${cost}: subtrees {1} and {2,3}, loads 1 and 2 within capacity.`,
+            4,
+        ),
+        meta: { cost },
+    };
 }
 
 const module: AlgorithmModule = {
