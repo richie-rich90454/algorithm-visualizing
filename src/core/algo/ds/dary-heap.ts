@@ -41,7 +41,8 @@ function buildNodes(heap: number[], d: number, highlight = -1, sortedRoot = fals
         type: "node" as const,
         label: String(value),
         value,
-        state: index === highlight ? "comparing" : index === 0 && sortedRoot ? "sorted" : "unvisited",
+        state:
+            index === highlight ? "comparing" : index === 0 && sortedRoot ? "sorted" : "unvisited",
         x: 0,
         y: 0,
         width: 0,
