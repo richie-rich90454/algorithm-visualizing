@@ -82,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: domCells(used, null),
         edges: [],
         description:
-            "Every free cell's horizontal neighbour is taken – Right has no reply and loses this line.",
+            "Every free cell's horizontal neighbor is taken – Right has no reply and loses this line.",
         codeLineNumber: 2,
         layout: "grid",
         meta: { size: 4, winner: "Left" },
