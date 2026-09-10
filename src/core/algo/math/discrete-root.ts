@@ -106,19 +106,87 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // Degenerate inputs: need a prime p >= 3 and a positive exponent.
+    if (p < 3 || k < 1) {
+        yield {
+            stepNumber: step,
+            entities: makeCells([a]),
+            edges: [],
+            description: `Degenerate input (k = ${k}, p = ${p}) – need k ≥ 1 and prime p ≥ 3.`,
+            codeLineNumber: 1,
+            layout: "grid",
+            meta: {},
+        };
+        return;
+    }
+
     // Case 1: gcd(k, p−1) = 1 → closed form.
     const { x: ex, gcd } = extendedGcd(k, p - 1);
     let root = -1;
 
     if (gcd === 1) {
         const kInv = ((ex % (p - 1)) + (p - 1)) % (p - 1);
-        root = modPow(a, kInv, p);
+
+        yield {
+            stepNumber: step,
+            entities: makeCells([k, p - 1, gcd]),
+            edges: [],
+            description: `gcd(${k}, ${p - 1}) = ${gcd} – the map x ↦ x^${k} is a bijection mod ${p}.`,
+            codeLineNumber: 2,
+            layout: "grid",
+            meta: {},
+        };
+        step += 1;
+
+        yield {
+            stepNumber: step,
+            entities: makeCells([kInv]),
+            edges: [],
+            description: `Exponent inverse: ${k}⁻¹ mod ${p - 1} = ${kInv}. Computing ${a}^${kInv} mod ${p}.`,
+            codeLineNumber: 2,
+            layout: "grid",
+            meta: {},
+        };
+        step += 1;
+
+        let result = 1;
+        let base = ((a % p) + p) % p;
+        let exp = kInv;
+        while (exp > 0) {
+            if (exp % 2 === 1) {
+                const next = (result * base) % p;
+                yield {
+                    stepNumber: step,
+                    entities: makeCells([result, base, next]),
+                    edges: [],
+                    description: `exp ${exp} is odd: result = ${result}·${base} mod ${p} = ${next}.`,
+                    codeLineNumber: 2,
+                    layout: "grid",
+                    meta: {},
+                };
+                result = next;
+            } else {
+                yield {
+                    stepNumber: step,
+                    entities: makeCells([result, base, exp]),
+                    edges: [],
+                    description: `exp ${exp} is even: square base ${base} → ${(base * base) % p} mod ${p}.`,
+                    codeLineNumber: 2,
+                    layout: "grid",
+                    meta: {},
+                };
+            }
+            base = (base * base) % p;
+            exp = Math.floor(exp / 2);
+            step += 1;
+        }
+        root = result;
 
         yield {
             stepNumber: step,
             entities: makeCells([a, kInv, root], 2),
             edges: [],
-            description: `gcd(${k}, ${p - 1}) = 1 → x = ${a}^(${k}⁻¹) = ${a}^${kInv} mod ${p} = ${root}.`,
+            description: `gcd(${k}, ${p - 1}) = 1 → x = ${a}^(${k}⁻¹) = ${a}^${kInv} mod ${p} = ${root}. Verified ${root}^${k} mod ${p} = ${modPow(root, k, p)}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { root },
