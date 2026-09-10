@@ -31,7 +31,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const snap = (
         description: string,
         codeLineNumber: number,
-        meta: Record<string, number | string | boolean> = {},
+        meta: Record<string, number | string | boolean | Array<number | string>> = {},
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
@@ -104,7 +104,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ? "1-WL cannot distinguish these graphs (possibly isomorphic)."
             : "Histograms differ → the triangle and the path are non-isomorphic.",
         2,
-        {},
+        {
+            g1: l1.map((v) => `${v}:${c1.get(v)}`),
+            g2: l2.map((v) => `${v}:${c2.get(v)}`),
+            distinguishable: h1 !== h2,
+        },
     );
 }
 
