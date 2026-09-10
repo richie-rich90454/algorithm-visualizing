@@ -15,7 +15,7 @@ function B(i: number, label: string, value: number, state: EntityState = "idle")
 }
 /**
  * gray-code-generation – Binary Reflected Gray Code.
- * G(i) = i XOR (i >> 1); neighbours differ in exactly one bit.
+ * G(i) = i XOR (i >> 1); neighbors differ in exactly one bit.
  * Default 3 bits: [0,1,3,2,6,7,5,4]. Time O(2^n), space O(2^n).
  */
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
