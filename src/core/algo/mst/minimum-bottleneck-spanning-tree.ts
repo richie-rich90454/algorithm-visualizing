@@ -115,13 +115,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
     const weight = mst.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `MBST weight ${weight}, bottleneck ${bottleneck}: every spanning tree needs an edge of at least ${bottleneck}.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `MBST weight ${weight}, bottleneck ${bottleneck}: every spanning tree needs an edge of at least ${bottleneck}.`,
+            2,
+        ),
+        meta: { weight, bottleneck },
+    };
 }
 
 const module: AlgorithmModule = {
