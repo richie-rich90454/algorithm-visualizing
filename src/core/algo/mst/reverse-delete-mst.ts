@@ -126,13 +126,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const i of kept) fin.set(i, "sorted");
     const allV = new Map<string, EntityState>();
     for (const v of verts) allV.set(v, "visited");
-    yield FR(
-        step++,
-        N(verts, allV),
-        ME(list, fin),
-        `Reverse-Delete MST weight ${weight}: ${mst.map((e) => `${e.a}-${e.b}(${e.w})`).join(", ")}.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts, allV),
+            ME(list, fin),
+            `Reverse-Delete MST weight ${weight}: ${mst.map((e) => `${e.a}-${e.b}(${e.w})`).join(", ")}.`,
+            2,
+        ),
+        meta: { weight },
+    };
 }
 
 const module: AlgorithmModule = {
