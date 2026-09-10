@@ -177,15 +177,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         3,
     );
     const elim = f.value < gAB;
-    yield FR(
-        step++,
-        N(d.teams, new Map([[d.query, "swapped"]] as [string, EntityState][])),
-        [],
-        elim
-            ? `${d.query} is eliminated: games between {${others.join(", ")}} (${gAB}) exceed their combined cap ${(caps[0] as number) + (caps[1] as number)}.`
-            : `${d.query} can still finish first.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(d.teams, new Map([[d.query, "swapped"]] as [string, EntityState][])),
+            [],
+            elim
+                ? `${d.query} is eliminated: games between {${others.join(", ")}} (${gAB}) exceed their combined cap ${(caps[0] as number) + (caps[1] as number)}.`
+                : `${d.query} can still finish first.`,
+            4,
+        ),
+        meta: { eliminated: elim, flow: f.value, required: gAB },
+    };
 }
 
 const module: AlgorithmModule = {
