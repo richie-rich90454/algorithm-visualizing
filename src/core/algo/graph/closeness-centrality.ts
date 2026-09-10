@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const snap = (
         description: string,
         codeLineNumber: number,
-        meta: Record<string, number | string | boolean> = {},
+        meta: Record<string, number | string | boolean | Array<number | string>> = {},
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield snap(
         `Closeness: ${labels.map((v) => `${v}=${close.get(v)}`).join(", ")} – center A reaches all in 1 hop.`,
         2,
-        {},
+        { scores: labels.map((v) => `${v}:${close.get(v)}`), max: mx },
     );
 }
 
