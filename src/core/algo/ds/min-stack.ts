@@ -138,7 +138,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Popped – getMin is now ${mins.length > 0 ? mins[mins.length - 1] : "undefined"}.`,
             codeLineNumber: 3,
             layout: "grid",
-            meta: {},
+            meta: {
+                stack: [...stack],
+                mins: [...mins],
+                min: mins.length > 0 ? (mins[mins.length - 1] as number) : "empty",
+            },
         };
         step += 1;
     }
