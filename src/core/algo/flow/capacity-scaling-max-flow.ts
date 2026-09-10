@@ -132,13 +132,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
         delta = Math.floor(delta / 2);
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(show, new Map(show.map((_, i) => [i, "sorted"] as [number, EntityState])), true),
-        `Max flow ${total} (saturates 1->3 and 2->3 into the sink).`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(show, new Map(show.map((_, i) => [i, "sorted"] as [number, EntityState])), true),
+            `Max flow ${total} (saturates 1->3 and 2->3 into the sink).`,
+            4,
+        ),
+        meta: { maxFlow: total },
+    };
 }
 
 const module: AlgorithmModule = {
