@@ -55,6 +55,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const S = 1 << rows;
     const dp: number[][] = Array.from({ length: cols + 1 }, () => new Array<number>(S).fill(0));
     dp[0][0] = 1;
+    // The grid shows the dp table (cols+1 rows x S mask columns), so the
+    // layout dims describe the table; the board size rides along separately.
+    const gridMeta = { rows: dp.length, cols: S, boardRows: rows, boardCols: cols };
     yield {
         stepNumber: step,
         entities: makeCells(dp),
@@ -62,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Tile ${rows}x${cols} with dominoes. dp[col][mask]: mask = plug overhang.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { rows, cols },
+        meta: { ...gridMeta },
     };
     step += 1;
     for (let c = 0; c < cols; c += 1) {
@@ -93,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Column ${c} closed: dp[${c + 1}][0] = ${dp[c + 1]?.[0]}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: { rows, cols },
+            meta: { ...gridMeta },
         };
         step += 1;
     }
@@ -105,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Traceback: ${answer} domino tilings of ${rows}x${cols}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { answer },
+        meta: { ...gridMeta, answer },
     };
 }
 
