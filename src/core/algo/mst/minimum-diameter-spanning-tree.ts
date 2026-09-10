@@ -158,13 +158,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (step > 13) break;
     }
     const weight = bestS.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(bestS.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Minimum diameter ${bestD}: tree A-B(1), B-C(2), C-D(3), weight ${weight}.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(bestS.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Minimum diameter ${bestD}: tree A-B(1), B-C(2), C-D(3), weight ${weight}.`,
+            2,
+        ),
+        meta: { diameter: bestD, weight },
+    };
 }
 
 const module: AlgorithmModule = {
