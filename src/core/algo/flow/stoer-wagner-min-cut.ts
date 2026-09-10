@@ -125,13 +125,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
         if (step > 12) break;
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Global min cut = ${best} (singleton {2}: edges 1-2 and 0-2 sum to 3).`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Global min cut = ${best} (singleton {2}: edges 1-2 and 0-2 sum to 3).`,
+            3,
+        ),
+        meta: { cutValue: best },
+    };
 }
 
 const module: AlgorithmModule = {
