@@ -142,13 +142,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Heavy edges filtered against the sample MSF; surviving candidates contracted recursively.`,
         3,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Verified MST weight ${weight}: A-B(1), B-C(2), C-D(3) - matches Kruskal exactly.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Verified MST weight ${weight}: A-B(1), B-C(2), C-D(3) - matches Kruskal exactly.`,
+            4,
+        ),
+        meta: { weight },
+    };
 }
 
 const module: AlgorithmModule = {
