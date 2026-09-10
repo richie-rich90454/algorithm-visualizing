@@ -124,20 +124,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "No negative reduced cost remains: tree solution is optimal.",
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            show,
-            new Map([
-                [0, "sorted"],
-                [1, "sorted"],
-            ] as [number, EntityState][]),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                show,
+                new Map([
+                    [0, "sorted"],
+                    [1, "sorted"],
+                ] as [number, EntityState][]),
+                true,
+            ),
+            `Optimum ${d.demand * 2}: route everything via 0-1-2.`,
+            5,
         ),
-        `Optimum ${d.demand * 2}: route everything via 0-1-2.`,
-        5,
-    );
+        meta: { optimum: d.demand * 2 },
+    };
 }
 
 const module: AlgorithmModule = {
