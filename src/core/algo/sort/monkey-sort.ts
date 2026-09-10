@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, checkStates),
             edges: [],
-            description: "Not sorted yet – shuffling the whole deck at random.",
+            description: `Not sorted yet – shuffle #${shuffles + 1} coming up (pure luck).`,
             codeLineNumber: 2,
             layout: "array",
             meta: { shuffles },
