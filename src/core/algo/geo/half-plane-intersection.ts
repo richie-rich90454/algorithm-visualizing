@@ -122,12 +122,33 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // neighbors. For teaching, we keep lines whose angle differs from both
     // neighbors (approximating the redundancy removal).
     const kept = new Set<number>();
-    for (let i = 0; i < order.length; i += 1) {
-        const idx = order[i];
+    for (let k = 0; k < order.length; k += 1) {
+        const idx = order[k];
         if (idx === undefined) {
             continue;
         }
         kept.add(idx);
+        const line = lines[idx] ?? [0, 0, 0, 0];
+        const deg = ((angle(line) * 180) / Math.PI).toFixed(1);
+        const frameEdges: VisualEdge[] = edges.map((e, edgeIndex) => {
+            if (kept.has(edgeIndex) && edgeIndex !== idx) {
+                return { ...e, state: "sorted" as const };
+            }
+            if (edgeIndex === idx) {
+                return { ...e, state: "comparing" as const };
+            }
+            return { ...e, state: "idle" as const };
+        });
+        yield {
+            stepNumber: step,
+            entities: entities.map((e) => ({ ...e })),
+            edges: frameEdges,
+            description: `Constraint L${idx} considered (angle ${deg}°) – kept (simplification keeps all lines in angular order).`,
+            codeLineNumber: 1,
+            layout: "point",
+            meta: {},
+        };
+        step += 1;
     }
 
     // Color kept lines green.
