@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             X = [...X, v];
         }
     }
-    yield* bk([...labels].sort(), [...labels].sort(), []);
+    yield* bk([], [...labels].sort(), []);
     clr();
     for (const c of cliques.flat()) setN(c, "sorted");
     yield snap(`Maximal cliques: ${cliques.map((c) => `{${c.join(",")}}`).join(" ")}.`, 3, {
