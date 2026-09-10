@@ -150,13 +150,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             2,
         );
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(tree.map((i) => [i, "sorted"] as [number, EntityState]))),
-        "Tolerances: A-B +3, B-C +2, C-D +5; A-C -2, A-D -5. MST weight stays 6 inside these ranges.",
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(tree.map((i) => [i, "sorted"] as [number, EntityState]))),
+            "Tolerances: A-B +3, B-C +2, C-D +5; A-C -2, A-D -5. MST weight stays 6 inside these ranges.",
+            3,
+        ),
+        meta: { weight: 6 },
+    };
 }
 
 const module: AlgorithmModule = {
