@@ -111,13 +111,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Bareiss elimination done: cofactor determinant = ${det}.`,
         3,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(list.map((_, i) => [i, "sorted"] as [number, EntityState]))),
-        `K3 has exactly ${det} spanning trees (Cayley: 3^(3-2) = 3).`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(list.map((_, i) => [i, "sorted"] as [number, EntityState]))),
+            `K3 has exactly ${det} spanning trees (Cayley: 3^(3-2) = 3).`,
+            4,
+        ),
+        meta: { count: det },
+    };
 }
 
 const module: AlgorithmModule = {
