@@ -183,22 +183,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Combine: cancel opposite arcs; here P1 and P2 share none.",
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            list,
-            new Map([
-                [0, "sorted"],
-                [2, "sorted"],
-                [1, "sorted"],
-                [3, "sorted"],
-            ] as [number, EntityState][]),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                list,
+                new Map([
+                    [0, "sorted"],
+                    [2, "sorted"],
+                    [1, "sorted"],
+                    [3, "sorted"],
+                ] as [number, EntityState][]),
+                true,
+            ),
+            `Disjoint pair 0-1-3 and 0-2-3, total length ${d1} + ${d1} = 6.`,
+            5,
         ),
-        `Disjoint pair 0-1-3 and 0-2-3, total length ${d1} + ${d1} = 6.`,
-        5,
-    );
+        meta: { totalLength: d1 + d1, paths: [p1.join("-"), p2.join("-")] },
+    };
 }
 
 const module: AlgorithmModule = {
