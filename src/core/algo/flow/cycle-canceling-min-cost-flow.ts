@@ -126,20 +126,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `No negative cycle remains (Bellman-Ford clean): optimal cost ${cost}.`,
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            show,
-            new Map([
-                [0, "sorted"],
-                [1, "sorted"],
-            ] as [number, EntityState][]),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                show,
+                new Map([
+                    [0, "sorted"],
+                    [1, "sorted"],
+                ] as [number, EntityState][]),
+                true,
+            ),
+            `Min-cost flow = ${cost}: ${d.demand} units via 0-1-2 at 1+1 each.`,
+            5,
         ),
-        `Min-cost flow = ${cost}: ${d.demand} units via 0-1-2 at 1+1 each.`,
-        5,
-    );
+        meta: { minCost: cost, flow: d.demand },
+    };
 }
 
 const module: AlgorithmModule = {
