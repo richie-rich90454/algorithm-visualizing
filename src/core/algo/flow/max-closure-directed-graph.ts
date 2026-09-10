@@ -185,13 +185,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Brute-force check over closed sets confirms optimum ${best} = {${bestSet.join(", ")}}.`,
         3,
     );
-    yield FR(
-        step++,
-        N(verts, new Map(bestSet.map((v) => [v, "visited"] as [string, EntityState]))),
-        ME(show, new Map(), true),
-        `Max closure weight ${best}: take {${bestSet.join(", ")}} (5 - 3 + 4).`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts, new Map(bestSet.map((v) => [v, "visited"] as [string, EntityState]))),
+            ME(show, new Map(), true),
+            `Max closure weight ${best}: take {${bestSet.join(", ")}} (5 - 3 + 4).`,
+            4,
+        ),
+        meta: { weight: best, closure: bestSet },
+    };
 }
 
 const module: AlgorithmModule = {
