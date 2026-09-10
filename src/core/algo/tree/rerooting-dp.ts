@@ -190,7 +190,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Rerooting complete – each node shows the sum of distances to all others.",
         codeLineNumber: 4,
         layout: "tree",
-        meta: {},
+        meta: {
+            sums: ids.map((id) => `${id}:${answer.get(id) ?? 0}`),
+            count: ids.length,
+        },
     };
 }
 
