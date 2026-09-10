@@ -1,6 +1,6 @@
 // snort.ts – Snort (partisan): Left claims L, Right claims R; no claiming
 // next to an enemy piece. Line on 1×4: L0, R3, L1 strands Right, since the
-// last free cell 2 neighbours enemy L1. Legal by construction.
+// last free cell 2 neighbors enemy L1. Legal by construction.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function snortCells(board: string[], hot = -1): VisualEntity[] {
@@ -64,7 +64,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snortCells(board),
         edges: [],
         description:
-            "Cell 2 neighbours enemy L at 1, so Right has no legal claim and loses this line.",
+            "Cell 2 neighbors enemy L at 1, so Right has no legal claim and loses this line.",
         codeLineNumber: 2,
         layout: "grid",
         meta: { size, winner: "Left" },
