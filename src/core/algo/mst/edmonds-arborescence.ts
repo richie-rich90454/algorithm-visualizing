@@ -123,13 +123,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const weight = chosen.reduce((s, e) => s + e.w, 0);
     const fin = new Map<number, EntityState>();
     for (const i of pick.values()) fin.set(i, "sorted");
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, fin, true),
-        `Optimum arborescence weight ${weight}: ${chosen.map((e) => `${e.a}->${e.b}(${e.w})`).join(", ")}.`,
-        k++,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, fin, true),
+            `Optimum arborescence weight ${weight}: ${chosen.map((e) => `${e.a}->${e.b}(${e.w})`).join(", ")}.`,
+            k++,
+        ),
+        meta: { weight },
+    };
 }
 
 const module: AlgorithmModule = {
