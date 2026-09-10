@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Verify ${d} x ${Math.trunc(n / d)} = ${d * Math.trunc(n / d)}.`,
                 codeLineNumber: 3,
                 layout: "grid",
-                meta: {},
+                meta: { factors: [d, Math.trunc(n / d)] },
             };
             return;
         }
