@@ -20,7 +20,7 @@
  * ---------------------------------------------------------------------------
  *   - The candidate products a·x mod m are shown as cells.
  *   - The candidate whose product equals 1 is GREEN (sorted).
- *   - The Bezout computation is narrated.
+ *   - Each Euclid step shows (oldR, r, quotient, oldX, x) as cells.
  *
  * ---------------------------------------------------------------------------
  * Properties
@@ -87,6 +87,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // Degenerate modulus: no meaningful inverse ring.
+    if (m < 2) {
+        yield {
+            stepNumber: step,
+            entities: makeCells([a]),
+            edges: [],
+            description: `Modulus m = ${m} is degenerate – no modular inverse exists.`,
+            codeLineNumber: 1,
+            layout: "grid",
+            meta: {},
+        };
+        return;
+    }
+
     // If not coprime, no inverse exists.
     if (gcd(a, m) !== 1) {
         yield {
@@ -110,9 +124,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     while (r !== 0) {
         const quotient = Math.trunc(oldR / r);
         const nextR = oldR - quotient * r;
+        const nextX = oldX - quotient * x;
+        yield {
+            stepNumber: step,
+            entities: makeCells([oldR, r, quotient, oldX, x]),
+            edges: [],
+            description: `${oldR} = ${quotient}·${r} + ${nextR} (x: ${oldX} → ${nextX}).`,
+            codeLineNumber: 2,
+            layout: "grid",
+            meta: {},
+        };
+        step += 1;
         oldR = r;
         r = nextR;
-        const nextX = oldX - quotient * x;
         oldX = x;
         x = nextX;
     }
