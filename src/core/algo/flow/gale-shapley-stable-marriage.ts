@@ -157,13 +157,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Stability audit: ${blocking} blocking pairs (must be 0).`,
         3,
     );
-    yield FR(
-        step++,
-        N([...d.men, ...d.women]),
-        ME(show, new Map(), true),
-        `Stable matching: ${[...engaged.entries()].map((e) => `${e[1]}-${e[0]}`).join(", ")}.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N([...d.men, ...d.women]),
+            ME(show, new Map(), true),
+            `Stable matching: ${[...engaged.entries()].map((e) => `${e[1]}-${e[0]}`).join(", ")}.`,
+            4,
+        ),
+        meta: {
+            matching: [...engaged.entries()].map((e) => `${e[1]}-${e[0]}`),
+            stable: blocking === 0,
+        },
+    };
 }
 
 const module: AlgorithmModule = {
