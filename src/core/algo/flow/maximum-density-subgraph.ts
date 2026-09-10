@@ -116,13 +116,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Lambda probe confirms: no set beats density ${best}.`,
         3,
     );
-    yield FR(
-        step++,
-        N(verts, new Map(bestSet.map((v) => [v, "sorted"] as [string, EntityState]))),
-        ME(show),
-        `Maximum density ${best}: induced subgraph on {${bestSet.join(", ")}}.`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts, new Map(bestSet.map((v) => [v, "sorted"] as [string, EntityState]))),
+            ME(show),
+            `Maximum density ${best}: induced subgraph on {${bestSet.join(", ")}}.`,
+            4,
+        ),
+        meta: { density: best, subgraph: bestSet },
+    };
 }
 
 const module: AlgorithmModule = {
