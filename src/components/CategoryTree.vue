@@ -13,8 +13,9 @@
 
 import { computed, ref } from "vue";
 import { getAllAlgorithms } from "@/core";
+import type { AlgorithmMeta } from "@/core/manifest";
 import { useVisualizerStore } from "@/stores/visualizer";
-import type { AlgorithmCategory, AlgorithmModule } from "@/types";
+import type { AlgorithmCategory } from "@/types";
 
 /** The current search query; leaves not matching it are hidden. */
 const props = defineProps<{
@@ -39,7 +40,7 @@ const groups = computed(() => {
     });
 
     // Bucket algorithms into their category, keeping first-seen order.
-    const buckets = new Map<AlgorithmCategory, AlgorithmModule[]>();
+    const buckets = new Map<AlgorithmCategory, AlgorithmMeta[]>();
     for (const module of filtered) {
         const list = buckets.get(module.category) ?? [];
         list.push(module);
