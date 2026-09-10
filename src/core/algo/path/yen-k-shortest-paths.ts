@@ -77,10 +77,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             s += (wadj[p[i] as string] ?? []).find(([v]) => v === p[i + 1])?.[1] ?? Infinity;
         return s;
     };
-    const dijkstra = (banN: Set<string>, banE: Set<string>): string[] | null => {
+    const dijkstra = (banN: Set<string>, banE: Set<string>, from: string = start): string[] | null => {
         const d = new Map(labels.map((v) => [v, Infinity]));
         const pr = new Map<string, string | null>(labels.map((v) => [v, null]));
-        d.set(start, 0);
+        d.set(from, 0);
         const done = new Set<string>();
         for (;;) {
             let u: string | null = null;
@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             p.unshift(cur);
             cur = pr.get(cur) as string | null;
         }
-        return p[0] === start ? p : null;
+        return p[0] === from ? p : null;
     };
     yield snap(`Yen's algorithm: ${k} shortest loopless paths ${start}→${target}.`, 0, { k });
     step += 1;
@@ -134,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 if (p.length > i && root.join(",") === p.slice(0, i + 1).join(","))
                     banE.add(`${p[i]}|${p[i + 1]}`);
             }
-            const spur = dijkstra(banN, banE);
+            const spur = dijkstra(banN, banE, root[root.length - 1] as string);
             if (spur && spur[0] === root[root.length - 1]) {
                 const full = [...root.slice(0, -1), ...spur];
                 const key = full.join(",");
