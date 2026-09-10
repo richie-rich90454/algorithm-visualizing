@@ -119,13 +119,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         if (step > 11) break;
     }
-    yield FR(
-        step++,
-        N([...d.arrivals, ...d.left]),
-        ME(show, new Map(), true),
-        `Online matching size ${matched.length}: ${matched.map((m) => m.join("-")).join(", ")} (offline optimum is 2).`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N([...d.arrivals, ...d.left]),
+            ME(show, new Map(), true),
+            `Online matching size ${matched.length}: ${matched.map((m) => m.join("-")).join(", ")} (offline optimum is 2).`,
+            3,
+        ),
+        meta: { matching: matched.length, pairs: matched.map((m) => m.join("-")), optimum: 2 },
+    };
 }
 
 const module: AlgorithmModule = {
