@@ -116,7 +116,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Final phase cut = 4, above the best: global min cut stays 3.",
         4,
     );
-    yield FR(step++, N(verts), ME(list), "Global min cut = 3 (isolate vertex 2).", 5);
+    yield {
+        ...FR(step++, N(verts), ME(list), "Global min cut = 3 (isolate vertex 2).", 5),
+        meta: { cutValue: 3 },
+    };
 }
 
 const module: AlgorithmModule = {
