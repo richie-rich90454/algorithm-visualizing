@@ -126,13 +126,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
     const weight = mst.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Heuristic tree weight ${weight} with max degree 2: feasible and optimal here.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Heuristic tree weight ${weight} with max degree 2: feasible and optimal here.`,
+            2,
+        ),
+        meta: { weight },
+    };
 }
 
 const module: AlgorithmModule = {
