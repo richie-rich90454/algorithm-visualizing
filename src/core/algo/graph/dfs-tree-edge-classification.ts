@@ -105,7 +105,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     clr();
     for (const [a, b] of found.tree) setE(a, b, "path");
     for (const [a, b] of found.forward) setE(a, b, "active");
-    yield snap(`Classification done: tree A→B, B→C; forward A→C.`, 4, {});
+    yield snap(`Classification done: tree A→B, B→C; forward A→C.`, 4, {
+        tree: found.tree.length,
+        back: found.back.length,
+        forward: found.forward.length,
+        cross: found.cross.length,
+    });
 }
 
 const module: AlgorithmModule = {
