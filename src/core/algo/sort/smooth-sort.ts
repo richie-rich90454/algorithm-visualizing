@@ -334,7 +334,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Array sorted with Leonardo heaps.",
         codeLineNumber: 6,
         layout: "array",
-        meta: {},
+        meta: { sorted: true, values: [...arr] },
     };
 }
 
