@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `L*U = [${prod.map((r) => `[${r}]`).join(", ")}] matches A.`,
         codeLineNumber: 5,
         layout: "grid",
-        meta: {},
+        meta: { size: n, verified: true, L: L.flat(), U: U.flat(), product: prod.flat() },
     };
 }
 const module: AlgorithmModule = {
