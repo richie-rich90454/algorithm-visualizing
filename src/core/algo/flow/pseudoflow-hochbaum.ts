@@ -167,13 +167,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Gap relabeling: no active component can reach the sink except through saturated arcs.",
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(show, new Map(show.map((_, i) => [i, "sorted"] as [number, EntityState])), true),
-        `Max flow = min cut = ${f.value}: pseudoflow forest collapses to the optimum.`,
-        5,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(show, new Map(show.map((_, i) => [i, "sorted"] as [number, EntityState])), true),
+            `Max flow = min cut = ${f.value}: pseudoflow forest collapses to the optimum.`,
+            5,
+        ),
+        meta: { maxFlow: f.value, minCut: f.value },
+    };
 }
 
 const module: AlgorithmModule = {
