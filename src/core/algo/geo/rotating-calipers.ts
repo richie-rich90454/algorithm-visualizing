@@ -106,9 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: edges.map((e) => ({ ...e })),
             description:
-                n === 0
-                    ? "No vertices – no diameter."
-                    : "A single vertex has no diameter.",
+                n === 0 ? "No vertices – no diameter." : "A single vertex has no diameter.",
             codeLineNumber: 0,
             layout: "point",
             meta: {},
