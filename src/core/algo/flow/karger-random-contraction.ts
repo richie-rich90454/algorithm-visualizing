@@ -123,13 +123,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const c = list.filter((e) => side.has(e.a) !== side.has(e.b)).reduce((s, e) => s + e.w, 0);
         opt = Math.min(opt, c);
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Best trial cut ${best}; brute-force optimum ${opt}: ${best === opt ? "trials found the true min cut 3" : "optimum confirmed"}.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Best trial cut ${best}; brute-force optimum ${opt}: ${best === opt ? "trials found the true min cut 3" : "optimum confirmed"}.`,
+            2,
+        ),
+        meta: { cutValue: best, optimum: opt },
+    };
 }
 
 const module: AlgorithmModule = {
