@@ -131,13 +131,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Chained ${matchL.size} matched pairs into paths: ${paths.map((p) => p.join("->")).join(" | ")}.`,
         3,
     );
-    yield FR(
-        step++,
-        N(verts, new Map(verts.map((v) => [v, "sorted"] as [string, EntityState]))),
-        ME(show, new Map(), true),
-        `Minimum path cover size ${verts.length} - ${matchL.size} = ${paths.length}: [${(paths[0] ?? []).join("->")}].`,
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts, new Map(verts.map((v) => [v, "sorted"] as [string, EntityState]))),
+            ME(show, new Map(), true),
+            `Minimum path cover size ${verts.length} - ${matchL.size} = ${paths.length}: [${(paths[0] ?? []).join("->")}].`,
+            4,
+        ),
+        meta: { size: paths.length, matching: matchL.size },
+    };
 }
 
 const module: AlgorithmModule = {
