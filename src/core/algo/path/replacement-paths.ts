@@ -53,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const snap = (
         description: string,
         codeLineNumber: number,
-        meta: Record<string, number | string | boolean> = {},
+        meta: Record<string, number | string | boolean | Array<number | string>> = {},
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
@@ -132,7 +132,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         step += 1;
     }
-    yield snap(`Replacement costs: ${reps.map((r) => `${r.edge}↦${r.cost}`).join(", ")}.`, 2, {});
+    yield snap(`Replacement costs: ${reps.map((r) => `${r.edge}↦${r.cost}`).join(", ")}.`, 2, {
+        replacements: reps.map((r) => `${r.edge}↦${r.cost}`),
+        baseCost: base.cost,
+    });
 }
 
 const module: AlgorithmModule = {
