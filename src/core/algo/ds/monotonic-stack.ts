@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Monotonic stack processed all elements in O(n).",
         codeLineNumber: 4,
         layout: "grid",
-        meta: {},
+        meta: { stack: [...stack], size: stack.length },
     };
 }
 
