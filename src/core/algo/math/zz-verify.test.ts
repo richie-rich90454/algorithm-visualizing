@@ -104,7 +104,7 @@ describe("verify", () => {
         expect(results["josephus-problem"]).toEqual({ survivor: 4 });
         expect(results["divisor-sieve-sigma"]).toEqual({ sigma: 28 });
         expect(results["hensel-lifting-root"]).toEqual({ r: 10, ok: true });
-        expect(results["pollard-p-minus-1"]).toEqual({});
+        expect(results["pollard-p-minus-1"]).toEqual({ factors: [7, 13] });
         expect(results["legendre-symbol-euler-criterion"]).toEqual({ legendre: 1, wit: 4 });
         expect(results["jacobi-symbol"]).toEqual({ jacobi: -1 });
         expect(results["wilson-theorem-prime-test"]).toEqual({ prime: true });
