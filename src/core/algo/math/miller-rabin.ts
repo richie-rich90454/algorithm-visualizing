@@ -191,7 +191,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeChain(chain, i),
                 edges: [],
-                description: `Squared: x = ${x}.`,
+                description: `Witness ${a}, squaring ${i}/${s - 1}: x = ${x}.`,
                 codeLineNumber: 5,
                 layout: "grid",
                 meta: {},
