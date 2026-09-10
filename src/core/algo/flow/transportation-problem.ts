@@ -109,21 +109,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
         if (step > 11) break;
     }
-    yield FR(
-        step++,
-        N(labels),
-        ME(
-            show,
-            new Map([
-                [0, "sorted"],
-                [1, "sorted"],
-                [3, "sorted"],
-            ] as [number, EntityState][]),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(labels),
+            ME(
+                show,
+                new Map([
+                    [0, "sorted"],
+                    [1, "sorted"],
+                    [3, "sorted"],
+                ] as [number, EntityState][]),
+                true,
+            ),
+            `Optimum ${best} at S0->D0=${bestX}: ship [2,1,0,2] (2*1 + 1*3 + 2*1).`,
+            2,
         ),
-        `Optimum ${best} at S0->D0=${bestX}: ship [2,1,0,2] (2*1 + 1*3 + 2*1).`,
-        2,
-    );
+        meta: { optimum: best },
+    };
 }
 
 const module: AlgorithmModule = {
