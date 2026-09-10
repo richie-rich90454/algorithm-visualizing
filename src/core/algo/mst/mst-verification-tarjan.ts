@@ -131,18 +131,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
     }
     const weight = d.tree.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            list,
-            new Map(d.tree.map((i) => [i, ok ? "sorted" : "swapped"] as [number, EntityState])),
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                list,
+                new Map(d.tree.map((i) => [i, ok ? "sorted" : "swapped"] as [number, EntityState])),
+            ),
+            ok
+                ? `Valid MST of weight ${weight}: every non-tree edge is heaviest on its cycle.`
+                : `Invalid: candidate weight ${weight} is not minimum.`,
+            3,
         ),
-        ok
-            ? `Valid MST of weight ${weight}: every non-tree edge is heaviest on its cycle.`
-            : `Invalid: candidate weight ${weight} is not minimum.`,
-        3,
-    );
+        meta: { weight, valid: ok },
+    };
 }
 
 const module: AlgorithmModule = {
