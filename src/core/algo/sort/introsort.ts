@@ -274,7 +274,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Array sorted – quick sort with heap-sort fallback and insertion-sort finisher.",
         codeLineNumber: 4,
         layout: "array",
-        meta: {},
+        meta: { sorted: true, values: [...arr] },
     };
 }
 
