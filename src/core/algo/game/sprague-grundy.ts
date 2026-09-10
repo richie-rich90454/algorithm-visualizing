@@ -117,7 +117,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Grundy numbers computed – positions with value 0 are losing.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: {},
+        meta: {
+            maxTokens,
+            grundy: [...grundy],
+            winner: (grundy[maxTokens] ?? 0) !== 0 ? "first" : "second",
+        },
     };
 }
 
