@@ -144,16 +144,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Cover C = (L\\Z) u (R cap Z) = {${cover.join(", ")}}: every edge touches it.`,
         3,
     );
-    yield FR(
-        step++,
-        N(
-            [...d.left, ...d.right],
-            new Map(cover.map((v) => [v, "visited"] as [string, EntityState])),
+    yield {
+        ...FR(
+            step++,
+            N(
+                [...d.left, ...d.right],
+                new Map(cover.map((v) => [v, "visited"] as [string, EntityState])),
+            ),
+            ME(show, new Map(), true),
+            `Minimum vertex cover size ${cover.length} = matching size ${matchL.size} (Konig equality).`,
+            4,
         ),
-        ME(show, new Map(), true),
-        `Minimum vertex cover size ${cover.length} = matching size ${matchL.size} (Konig equality).`,
-        4,
-    );
+        meta: { size: cover.length, matching: matchL.size },
+    };
 }
 
 const module: AlgorithmModule = {
