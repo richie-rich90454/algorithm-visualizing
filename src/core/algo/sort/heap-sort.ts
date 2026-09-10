@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeBars(arr, swapStates),
                 edges: [],
-                description: `Sifting ${String(arr[largest])} down – parent must exceed its children.`,
+                description: `Sifting ${String(rootVal)} down: swapped positions ${root} and ${largest} (${String(childVal)} rises).`,
                 codeLineNumber: 3,
                 layout: "array",
                 meta: { comparisons, swaps },
