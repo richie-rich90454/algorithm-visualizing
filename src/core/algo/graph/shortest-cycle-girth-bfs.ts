@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const snap = (
         description: string,
         codeLineNumber: number,
-        meta: Record<string, number | string | boolean> = {},
+        meta: Record<string, number | string | boolean | Array<number | string>> = {},
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
@@ -110,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ? `Girth = ${girth}: the triangle closes at ${witness}.`
             : "Acyclic – girth is infinite.",
         2,
-        {},
+        { girth: girth < Infinity ? girth : -1, witness: witness || "none" },
     );
 }
 
