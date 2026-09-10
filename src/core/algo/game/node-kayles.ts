@@ -1,6 +1,6 @@
-// node-kayles.ts – Node Kayles: pick a vertex; it and its neighbours vanish.
+// node-kayles.ts – Node Kayles: pick a vertex; it and its neighbors vanish.
 // Solved by bitmask recursion on the tiny default path graph; the winning
-// pick is verified in-code. Default P5: take the centre, leaving two singles.
+// pick is verified in-code. Default P5: take the center, leaving two singles.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function nodeWin(mask: number, adj: number[][], memo: Map<number, boolean>): boolean {
