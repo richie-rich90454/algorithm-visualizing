@@ -232,7 +232,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Array sorted by detecting and merging natural runs.",
         codeLineNumber: 4,
         layout: "array",
-        meta: {},
+        meta: { sorted: true, values: [...arr] },
     };
 }
 
