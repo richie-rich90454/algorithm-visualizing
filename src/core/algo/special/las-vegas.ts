@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sorted with high probability in O(n log n) expected time.`,
         codeLineNumber: 4,
         layout: "array",
-        meta: {},
+        meta: { sorted: true, values: [...arr] },
     };
 }
 
