@@ -106,11 +106,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 [i, "comparing"],
                 [j, "comparing"],
             ]);
+            const leftAlive = i <= mid;
+            const rightAlive = j <= hi;
             yield {
                 stepNumber: step,
                 entities: makeBars(arr, cmpStates),
                 edges: [],
-                description: `Merging runs [${lo}..${mid}] and [${mid + 1}..${hi}].`,
+                description:
+                    leftAlive && rightAlive
+                        ? `Merging [${lo}..${mid}] and [${mid + 1}..${hi}]: comparing ${String(leftVal)} vs ${String(rightVal)} – taking ${takeRight ? String(rightVal) : String(leftVal)}.`
+                        : `Merging [${lo}..${mid}] and [${mid + 1}..${hi}]: ${leftAlive ? "right run exhausted" : "left run exhausted"} – taking ${takeRight ? String(rightVal) : String(leftVal)}.`,
                 codeLineNumber: 2,
                 layout: "array",
                 meta: { merges },
