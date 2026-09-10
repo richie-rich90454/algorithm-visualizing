@@ -120,13 +120,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             1,
         );
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map((trees[0] ?? []).map((i) => [i, "sorted"] as [number, EntityState]))),
-        `Exactly ${trees.length} spanning trees (weights ${trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)).join(", ")}).`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map((trees[0] ?? []).map((i) => [i, "sorted"] as [number, EntityState]))),
+            `Exactly ${trees.length} spanning trees (weights ${trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)).join(", ")}).`,
+            2,
+        ),
+        meta: { count: trees.length },
+    };
 }
 
 const module: AlgorithmModule = {
