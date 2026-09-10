@@ -81,7 +81,11 @@ onBeforeUnmount(() => {
 
             <!-- The 40px description bar mirrors the canvas overlay caption. -->
             <div class="description-bar">
-                {{ store.currentFrame?.description ?? "Select an algorithm to begin." }}
+                {{
+                    store.isLoading
+                        ? "Loading algorithm…"
+                        : (store.currentFrame?.description ?? "Select an algorithm to begin.")
+                }}
             </div>
 
             <ControlsBar />
