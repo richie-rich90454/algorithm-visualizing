@@ -85,10 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // The golden ratio.
     const phi = (1 + Math.sqrt(5)) / 2;
-    const cold = (n: number): [number, number] => [
-        Math.floor(n * phi),
-        Math.floor(n * phi * phi),
-    ];
+    const cold = (n: number): [number, number] => [Math.floor(n * phi), Math.floor(n * phi * phi)];
 
     // Cold-pair table n = 0..5 with the input's n marked.
     const lo0 = Math.min(a, b);
@@ -155,7 +152,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 const [c1, c2] = cold(m);
                 if (c1 > max) break;
                 const placements: Array<[number, number]> =
-                    c1 === c2 ? [[c1, c2]] : [[c1, c2], [c2, c1]];
+                    c1 === c2
+                        ? [[c1, c2]]
+                        : [
+                              [c1, c2],
+                              [c2, c1],
+                          ];
                 for (const [na, nb] of placements) {
                     if (na > a || nb > b || (na === a && nb === b)) continue;
                     const da = a - na;
