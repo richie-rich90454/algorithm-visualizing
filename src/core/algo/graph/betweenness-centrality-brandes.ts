@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const snap = (
         description: string,
         codeLineNumber: number,
-        meta: Record<string, number | string | boolean> = {},
+        meta: Record<string, number | string | boolean | Array<number | string>> = {},
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield snap(
         `Betweenness (undirected): ${labels.map((v) => `${v}=${cb.get(v)}`).join(", ")}.`,
         2,
-        {},
+        { scores: labels.map((v) => `${v}:${cb.get(v)}`), count: labels.length },
     );
 }
 
