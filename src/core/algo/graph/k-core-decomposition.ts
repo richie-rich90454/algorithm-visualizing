@@ -64,7 +64,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         alive.delete(victim);
         core.set(victim, d);
         for (const nb of adjacency[victim] ?? [])
-            if (alive.has(nb)) deg.set(nb, (deg.get(nb) as number) - 1);
+            if (alive.has(nb) && (deg.get(nb) as number) > d) deg.set(nb, (deg.get(nb) as number) - 1);
         setN(victim, "swapped");
         yield snap(`Remove ${victim} at min-degree ${d}: core[${victim}]=${d}.`, 1, {
             remaining: alive.size,
