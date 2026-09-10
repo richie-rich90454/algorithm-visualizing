@@ -14,7 +14,7 @@
 
 import { computed, reactive, ref, watch } from "vue";
 import { defineStore } from "pinia";
-import { getAlgorithm } from "@/core";
+import { getAlgorithm, loadAlgorithmModule } from "@/core";
 import { StepEngine } from "@/core/engine";
 import type { VisualEntity } from "@/types";
 
@@ -40,6 +40,12 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     /** The entity the user last clicked on, highlighted by the overlay. */
     const selectedEntity = ref<VisualEntity | null>(null);
 
+    /** True while an algorithm's code chunk is being fetched. */
+    const isLoading = ref(false);
+
+    /** Monotonic token so rapid selections only apply the latest fetch. */
+    let loadToken = 0;
+
     /** The internal step engine; owns the frame buffer and current index. */
     // Reactive so computed getters (currentFrame/totalSteps) invalidate when
     // load()/next()/prev() mutate the frame buffer and index.
@@ -64,7 +70,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     /** Total number of frames in the loaded run. */
     const totalSteps = computed(() => engine.totalFrames);
 
-    /** The loaded algorithm module, or null before any selection. */
+    /** The loaded algorithm's metadata, or null before any selection. */
     const algorithm = computed(() => (algorithmId.value ? getAlgorithm(algorithmId.value) : null));
 
     // ------------------------------------------------------------------
@@ -75,19 +81,38 @@ export const useVisualizerStore = defineStore("visualizer", () => {
      * Load an algorithm by id, run it, and rewind to the first frame.
      *
      * Loading always stops playback first – starting to play a brand-new
-     * algorithm without the user asking would be surprising.
+     * algorithm without the user asking would be surprising. The module's
+     * code chunk is fetched on demand (and cached), so opening an
+     * algorithm for the first time briefly sets `isLoading`.
      *
      * @param id Kebab-case algorithm id, e.g. `"bubble-sort"`.
      */
-    function loadAlgorithm(id: string): void {
-        const module = getAlgorithm(id);
-        if (!module) {
+    async function loadAlgorithm(id: string): Promise<void> {
+        // Unknown ids change nothing (and never show a spinner).
+        if (!getAlgorithm(id)) {
             return;
         }
+        const token = ++loadToken;
         stopPlayback();
-        engine.load(module, module.defaultInput);
         selectedEntity.value = null;
         algorithmId.value = id;
+        isLoading.value = true;
+        let module = null;
+        try {
+            module = await loadAlgorithmModule(id);
+        } catch {
+            module = null;
+        }
+        // A newer selection supersedes this fetch – drop stale results.
+        if (token !== loadToken) {
+            return;
+        }
+        if (!module) {
+            isLoading.value = false;
+            return;
+        }
+        engine.load(module, module.defaultInput);
+        isLoading.value = false;
     }
 
     /** Advance one frame and pause when the final frame is reached. */
@@ -170,6 +195,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     return {
         algorithmId,
         isPlaying,
+        isLoading,
         speed,
         selectedEntity,
         currentFrame,
