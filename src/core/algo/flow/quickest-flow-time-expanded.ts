@@ -182,20 +182,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Flows per horizon [0,1,2]: first arrival at t=2, second at t=3.",
         4,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            d.edges.map((e) => ({ a: String(e[0]), b: String(e[1]), w: e[3] })),
-            new Map([
-                [0, "sorted"],
-                [1, "sorted"],
-            ] as [number, EntityState][]),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                d.edges.map((e) => ({ a: String(e[0]), b: String(e[1]), w: e[3] })),
+                new Map([
+                    [0, "sorted"],
+                    [1, "sorted"],
+                ] as [number, EntityState][]),
+                true,
+            ),
+            "Quickest feasible horizon T* = 3: pipeline one unit per step.",
+            5,
         ),
-        "Quickest feasible horizon T* = 3: pipeline one unit per step.",
-        5,
-    );
+        meta: { horizon: 3 },
+    };
 }
 
 const module: AlgorithmModule = {
