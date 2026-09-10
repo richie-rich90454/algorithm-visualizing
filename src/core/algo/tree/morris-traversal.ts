@@ -93,7 +93,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step += 1;
             st.set(cur, "sorted");
             cur = (thread.get(cur) ?? R.get(cur)) || null;
-            if (thread.has(cur ?? "")) void 0;
         } else {
             let p: string = lc;
             while ((R.get(p) ?? thread.get(p)) && (R.get(p) ?? thread.get(p)) !== cur)
@@ -115,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 });
                 step += 1;
                 st.set(cur, "sorted");
-                cur = R.get(cur) ?? null;
+                cur = (thread.get(cur) ?? R.get(cur)) || null;
             }
         }
         if (step > 12) break;
