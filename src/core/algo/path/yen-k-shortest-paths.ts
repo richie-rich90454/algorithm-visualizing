@@ -77,7 +77,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             s += (wadj[p[i] as string] ?? []).find(([v]) => v === p[i + 1])?.[1] ?? Infinity;
         return s;
     };
-    const dijkstra = (banN: Set<string>, banE: Set<string>, from: string = start): string[] | null => {
+    const dijkstra = (
+        banN: Set<string>,
+        banE: Set<string>,
+        from: string = start,
+    ): string[] | null => {
         const d = new Map(labels.map((v) => [v, Infinity]));
         const pr = new Map<string, string | null>(labels.map((v) => [v, null]));
         d.set(from, 0);
