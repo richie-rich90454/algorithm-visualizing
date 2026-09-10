@@ -180,20 +180,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Enumerating feasible sets: {} =0, {P1,C} =-1, {P1,P2,C} =5+4-6 =3.",
         3,
     );
-    yield FR(
-        step++,
-        N(
-            verts,
-            new Map([
-                ["P1", "visited"],
-                ["P2", "visited"],
-                ["C", "visited"],
-            ] as [string, EntityState][]),
+    yield {
+        ...FR(
+            step++,
+            N(
+                verts,
+                new Map([
+                    ["P1", "visited"],
+                    ["P2", "visited"],
+                    ["C", "visited"],
+                ] as [string, EntityState][]),
+            ),
+            ME(show, new Map(), true),
+            "Optimal selection {P1, P2, C} with net profit 3.",
+            4,
         ),
-        ME(show, new Map(), true),
-        "Optimal selection {P1, P2, C} with net profit 3.",
-        4,
-    );
+        meta: { profit: pos - f.value, selected: ["P1", "P2", "C"] },
+    };
 }
 
 const module: AlgorithmModule = {
