@@ -1,4 +1,4 @@
-// col.ts – Col (partisan): paint a cell your colour; neighbours must differ.
+// col.ts – Col (partisan): paint a cell your color; neighbors must differ.
 // Enemy adjacency is fine, so on 1×4 the line L0, R1, L2, R3 fills the
 // board and the second player makes the last move. Legal by construction.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -34,7 +34,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: colCells(board),
         edges: [],
-        description: `Col on 1×${size} – Left (L) moves first; same colours may never touch.`,
+        description: `Col on 1×${size} – Left (L) moves first; same colors may never touch.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { size },
@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: colCells(board, at),
             edges: [],
-            description: `${who === "L" ? "Left" : "Right"} paints cell ${at} ${who} (neighbour ${at > 0 ? board[at - 1] || "empty" : "none"} differs).`,
+            description: `${who === "L" ? "Left" : "Right"} paints cell ${at} ${who} (neighbor ${at > 0 ? board[at - 1] || "empty" : "none"} differs).`,
             codeLineNumber: 1,
             layout: "grid",
             meta: { size, at, who },
