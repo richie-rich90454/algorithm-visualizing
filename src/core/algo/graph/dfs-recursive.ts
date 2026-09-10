@@ -93,17 +93,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
 
         // Build the frame with the current state of every node and edge.
-        const buildFrame = (): VisualFrame => ({
+        const buildFrame = (message: string): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Visiting node ${current}.`,
+            description: message,
             codeLineNumber: 2,
             layout: "graph",
             meta: { visits },
         });
 
-        yield buildFrame();
+        yield buildFrame(`Visiting node ${current} (visit #${visits}).`);
         step += 1;
 
         // Explore each neighbor that has not been visited yet.
@@ -124,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 edge.state = "active";
             }
 
-            yield buildFrame();
+            yield buildFrame(`Following edge ${current} → ${neighbor}.`);
             step += 1;
 
             // Recurse into the neighbor's subtree.
@@ -137,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             doneNode.state = "visited";
         }
 
-        yield buildFrame();
+        yield buildFrame(`Finished node ${current} – backtracking.`);
         step += 1;
     }
 
