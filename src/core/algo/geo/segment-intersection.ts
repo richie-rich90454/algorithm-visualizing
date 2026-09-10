@@ -127,6 +127,31 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const o3 = orient(c, d, a);
     const o4 = orient(c, d, b);
 
+    const snapshot = (highlightIds: string[]): VisualEntity[] =>
+        entities.map((e) => ({
+            ...e,
+            state: highlightIds.includes(e.id) ? ("comparing" as const) : ("unvisited" as const),
+        }));
+
+    const orientationFrames: Array<{ value: number; ids: string[]; label: string }> = [
+        { value: o1, ids: ["a", "b", "c"], label: "o1 = orient(a, b, c)" },
+        { value: o2, ids: ["a", "b", "d"], label: "o2 = orient(a, b, d)" },
+        { value: o3, ids: ["c", "d", "a"], label: "o3 = orient(c, d, a)" },
+        { value: o4, ids: ["c", "d", "b"], label: "o4 = orient(c, d, b)" },
+    ];
+    for (const frame of orientationFrames) {
+        yield {
+            stepNumber: step,
+            entities: snapshot(frame.ids),
+            edges: edges.map((e) => ({ ...e })),
+            description: `${frame.label} = ${frame.value}.`,
+            codeLineNumber: 1,
+            layout: "point",
+            meta: {},
+        };
+        step += 1;
+    }
+
     let intersects = false;
     if (o1 !== o2 && o3 !== o4) {
         intersects = true;
