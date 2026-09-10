@@ -99,6 +99,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
+    // Degenerate inputs have no diameter pair.
+    if (n < 2) {
+        yield {
+            stepNumber: step,
+            entities: entities.map((e) => ({ ...e })),
+            edges: edges.map((e) => ({ ...e })),
+            description:
+                n === 0
+                    ? "No vertices – no diameter."
+                    : "A single vertex has no diameter.",
+            codeLineNumber: 0,
+            layout: "point",
+            meta: {},
+        };
+        return;
+    }
+
     // Diameter via antipodal pairs.
     let bestDist = 0;
     let bestPair: [number, number] = [0, 0];
@@ -115,10 +132,32 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 bestDist = d;
                 bestPair = [i, j];
             }
+            for (const node of entities) {
+                node.state = "unvisited";
+            }
+            for (const idx of [i, j]) {
+                const node = nodeById.get(`p-${idx}`);
+                if (node) {
+                    node.state = "comparing";
+                }
+            }
+            yield {
+                stepNumber: step,
+                entities: entities.map((e) => ({ ...e })),
+                edges: edges.map((e) => ({ ...e })),
+                description: `Caliper rotation step: antipodal pair (${i}, ${j}) at distance ${d.toFixed(2)}.`,
+                codeLineNumber: 1,
+                layout: "point",
+                meta: {},
+            };
+            step += 1;
         }
     }
 
     // Highlight the diameter.
+    for (const node of entities) {
+        node.state = "unvisited";
+    }
     for (const idx of bestPair) {
         const node = nodeById.get(`p-${idx}`);
         if (node) {
