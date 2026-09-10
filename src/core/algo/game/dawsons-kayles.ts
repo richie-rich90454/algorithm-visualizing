@@ -1,4 +1,4 @@
-// dawsons-kayles.ts – Dawson's Kayles: fell 2 adjacent pins, neighbours go too.
+// dawsons-kayles.ts – Dawson's Kayles: fell 2 adjacent pins, neighbors go too.
 // A move at i leaves segments of length max(0,i-1) and max(0,n-i-3).
 // Grundy computed in-code; default row of 7 has G=0 (P-position).
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
