@@ -137,13 +137,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         "Pruning: every leaf of the expanded tree is a terminal, nothing to prune.",
         3,
     );
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map([...used].map((i) => [i, "sorted"] as [number, EntityState]))),
-        "KMB Steiner tree weight 3 (0-1, 1-2, 2-3): optimal here, within the 2-2/t bound.",
-        4,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map([...used].map((i) => [i, "sorted"] as [number, EntityState]))),
+            "KMB Steiner tree weight 3 (0-1, 1-2, 2-3): optimal here, within the 2-2/t bound.",
+            4,
+        ),
+        meta: { weight: 3 },
+    };
 }
 
 const module: AlgorithmModule = {
