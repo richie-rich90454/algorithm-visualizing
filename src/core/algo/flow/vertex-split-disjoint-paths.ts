@@ -166,13 +166,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         k += 1;
         if (step > 11) break;
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(show, new Map(), true),
-        `Maximum ${f.value} vertex-disjoint paths: 0-1-3 and 0-2-3.`,
-        k,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(show, new Map(), true),
+            `Maximum ${f.value} vertex-disjoint paths: 0-1-3 and 0-2-3.`,
+            k,
+        ),
+        meta: { count: f.value, paths: f.paths.map((p) => clean(p).join("-")) },
+    };
 }
 
 const module: AlgorithmModule = {
