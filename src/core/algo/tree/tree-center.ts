@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, remaining: remaining.size },
     });
 
     // Peel the leaves layer by layer.
@@ -152,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 node.state = "unvisited";
             }
         }
-        yield buildFrame(`Removed ${leaves.length} leaf/leaves.`);
+        yield buildFrame(`Peeled leaves [${leaves.join(", ")}] cleared – ${remaining.size} nodes remain.`);
         step += 1;
     }
 
@@ -175,7 +175,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `The tree has two adjacent centers: ${centers[0]} and ${centers[1]}.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { centers: centers.length },
+        meta: { centers, centerCount: centers.length },
     };
 }
 
@@ -192,6 +192,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "compute degree of every node in the tree",
+        "collect current leaves with degree at most one",
+        "peel all current leaves in one layer",
+        "repeat peeling until one or two nodes remain",
+        "return remaining center nodes as the answer",
+    ],
 };
 
 export default module;
