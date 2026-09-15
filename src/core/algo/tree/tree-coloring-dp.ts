@@ -1,6 +1,7 @@
 /**
- * tree-coloring-dp.ts – minimum-cost 3-coloring of a tree (DP).
- * dp[u][c] = cost[u][c] + Σ min over c'≠c of dp[child][c'].
+ * tree-coloring-dp.ts – Minimum-cost 3-coloring of a tree with DP.
+ *
+ * dp[u][c] equals cost[u][c] plus sum over children of best differing color.
  * Default costs give min cost 9 (A=1, B=0, C=0, D=2).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -137,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield emit(
         fstates,
         `Cheapest proper 3-coloring costs ${minCost}: ${ids.map((id) => `${id}=c${colorOf.get(id)}`).join(", ")}.`,
-        2,
+        4,
         { minCost, colors: ids.map((id) => `${id}=c${colorOf.get(id)}`) },
     );
 }
@@ -154,6 +155,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree and list children postorder",
+        "compute dp[u][c] from cheapest differing child colors",
+        "combine child DP states bottom-up to the root",
+        "reconstruct colors greedily from root downward",
+        "return minimum cost coloring as the answer",
+    ],
 };
 
 export default module;
