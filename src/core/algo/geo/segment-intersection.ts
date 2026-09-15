@@ -114,10 +114,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Segments ab and cd.`,
+        description: `Segments (${a})–(${b}) and (${c})–(${d}).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { a, b, c, d },
     };
     step += 1;
 
@@ -144,10 +144,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: snapshot(frame.ids),
             edges: edges.map((e) => ({ ...e })),
-            description: `${frame.label} = ${frame.value}.`,
-            codeLineNumber: 1,
+            description: `${frame.label} = ${frame.value} (cross-product sign).`,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { label: frame.label, value: frame.value },
         };
         step += 1;
     }
@@ -175,7 +175,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
         description: `Orientations: (${o1}, ${o2}, ${o3}, ${o4}) → ${intersects ? "SEGMENTS INTERSECT" : "no intersection"}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "point",
         meta: { intersects },
     };
@@ -191,6 +191,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: [0, 0], b: [6, 4], c: [1, 3], d: [5, 1] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from segments ab and cd with known endpoints",
+        "compute orientation o1 of triangle abc",
+        "compute o2 of abd, o3 of cda, o4 of cdb",
+        "opposite signs on both pairs means a proper crossing",
+        "zero signs fall back to on-segment checks",
+        "done: the verdict tells whether the segments intersect",
+    ],
 };
 
 export default module;
