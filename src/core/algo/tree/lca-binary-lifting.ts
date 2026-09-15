@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, query: [...query] },
     });
 
     // ------------------------------------------------------------------
@@ -168,10 +168,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `The LCA is ${u}.`,
+            description: `Both lifted to ${u} – query nodes met, so LCA is ${u}.`,
             codeLineNumber: 3,
             layout: "tree",
-            meta: { lcaFound: u.charCodeAt(0) },
+            meta: { lca, query: [...query] },
         };
         return;
     }
@@ -201,7 +201,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `The LCA of ${query[0]} and ${query[1]} is ${lca}.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { lcaFound: lca.charCodeAt(0) },
+        meta: { lca, query: [...query] },
     };
 }
 
@@ -219,6 +219,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree and precompute depth plus up table",
+        "lift the deeper query node up to equal depth",
+        "lift both nodes together while ancestors differ",
+        "take the parent of either node as the LCA",
+        "return LCA node of the query pair as answer",
+    ],
 };
 
 export default module;
