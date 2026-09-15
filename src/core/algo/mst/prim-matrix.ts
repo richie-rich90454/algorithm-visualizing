@@ -95,10 +95,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Prim's algorithm starting from vertex ${start} – growing the MST outward.`,
+        description: `Prim's algorithm on ${vertices.length} vertices, ${edgeList.length} edges starting from vertex ${start} – growing the MST outward.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { inTree: 0, totalWeight: 0 },
+        meta: { inTree: 0, accepted: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -147,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Starting the tree at vertex ${current}.`,
             codeLineNumber: 2,
             layout: "graph",
-            meta: { inTree: inTree.size },
+            meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight: 0 },
         };
         step += 1;
 
@@ -170,10 +170,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Updated frontier keys around vertex ${current}.`,
+            description: `Updated frontier keys around vertex ${current}: cheapest links into the tree refreshed.`,
             codeLineNumber: 3,
             layout: "graph",
-            meta: { inTree: inTree.size },
+            meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight: 0 },
         };
         step += 1;
     }
@@ -190,7 +190,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimum spanning tree complete – ${inTree.size} vertices, total weight ${totalWeight}.`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { inTree: inTree.size, totalWeight },
+        meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight },
     };
 }
 
