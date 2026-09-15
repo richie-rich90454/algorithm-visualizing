@@ -1,9 +1,36 @@
 /**
  * bidirectional-dijkstra.ts – Bidirectional Dijkstra
  *
- * Two Dijkstra searches grow from source and target until their frontiers
- * meet; the best bridged pair is optimal. A→D meets at C with cost 4.
- * Time: O(E log V) typical Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Two Dijkstra searches grow at once, one forward from the source and one
+ * backward from the target, until their frontiers meet. Every vertex tracks
+ * a forward distance and a backward distance; the best meeting vertex
+ * minimizes their sum and yields the optimal path. On the demo graph the
+ * searches meet at C with total cost 4, visiting far fewer vertices than a
+ * one-sided search.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) worst case, typically much faster in practice
+ *   Space: O(V + E) for both frontiers and bookkeeping
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The forward frontier vertex is YELLOW (comparing).
+ *   - The backward frontier vertex is PINK (highlight).
+ *   - The current best meeting vertex is ORANGE (visited).
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal on graphs with non-negative weights, like plain Dijkstra.
+ *   - Stops early once no unvisited pair can beat the best meeting cost.
+ *   - Most effective when source and target are far apart.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -85,7 +112,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     db.set(target, 0);
     const sf = new Set<string>();
     const sb = new Set<string>();
-    yield snap(`Bidirectional search: forward from ${start}, backward from ${target}.`, 0, {});
+    yield snap(
+        `Bidirectional search: forward distances from ${start}, backward distances from ${target}.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     let best = Infinity;
     let meet = "";
@@ -127,9 +158,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setN(w, "highlight");
         setN(meet, "visited");
         yield snap(
-            `Round ${round + 1}: forward settles ${u}, backward settles ${w}; best via ${meet} = ${best}.`,
-            1,
-            { best },
+            `Round ${round + 1}: forward settles ${u} at distance ${df.get(u)}, backward settles ${w} at distance ${db.get(w)}; best via ${meet} costs ${best}.`,
+            2,
+            { best, settled: sf.size + sb.size, visits: round + 1 },
         );
         step += 1;
         const fu = extract(df, sf);
@@ -146,9 +177,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     clr();
     for (const v of fwd) setN(v, "sorted");
     yield snap(
-        `Forward settled {${[...sf].join(", ")}}, backward {${[...sb].join(", ")}} – frontiers overlap at ${meet}.`,
-        2,
-        { best },
+        `Forward settled {${[...sf].join(", ")}}, backward settled {${[...sb].join(", ")}} with frontiers overlapping at ${meet}.`,
+        4,
+        { best, settled: sf.size + sb.size, visits: sf.size + sb.size },
     );
     step += 1;
     const bwd: string[] = [];
@@ -163,9 +194,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (let i = 0; i + 1 < path.length; i += 1)
         setE(path[i] as string, path[i + 1] as string, "path");
     yield snap(
-        `Frontiers met at ${meet}: shortest ${start}→${target} = ${best} via ${path.join("→")}.`,
-        3,
-        { distance: best },
+        `Frontiers met at ${meet}: shortest path ${start} to ${target} costs ${best} via ${path.join(" → ")}.`,
+        6,
+        {
+            distance: best,
+            path: path.join("→"),
+            settled: sf.size + sb.size,
+            visits: sf.size + sb.size,
+        },
     );
 }
 
@@ -200,6 +236,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "distF[s] ← 0, distB[t] ← 0, both frontiers open",
+        "pop u from forward frontier with smallest distance",
+        "pop w from backward frontier with smallest distance",
+        "relax edges out of u and into w on each side",
+        "update best meeting vertex minimizing distF+distB",
+        "stop when frontiers cannot beat the best cost",
+        "done: rebuild full path through meeting vertex",
+    ],
 };
 
 export default module;
