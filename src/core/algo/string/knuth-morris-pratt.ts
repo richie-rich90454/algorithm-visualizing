@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(text),
             edges: [],
-            description: "Empty pattern – nothing to search for.",
+            description: `Empty pattern "" – nothing to search for in "${text}".`,
             codeLineNumber: 6,
             layout: "text",
             meta: { comparisons, matches: 0 },
@@ -225,6 +225,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build prefix function for pattern self-overlaps",
+        "initialize text index and pattern length counters",
+        "scan text extending current matched prefix",
+        "fall back along prefix function on mismatch",
+        "extend matched prefix on character equality",
+        "record match at i minus m plus one on full align",
+        "report all match positions found",
+    ],
 };
 
 export default module;
