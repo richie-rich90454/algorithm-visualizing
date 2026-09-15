@@ -1,6 +1,26 @@
 /**
- * euclidean-mst-delaunay.ts - Euclidean MST via Delaunay.
- * Euclidean MST is contained in the Delaunay triangulation; Kruskal over its edges.
+ * euclidean-mst-delaunay.ts – Euclidean MST via Delaunay.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Points in the plane are joined by straight-line distances. A classic
+ * geometric fact says the Euclidean MST is contained in the Delaunay
+ * triangulation, so instead of checking every pair, the algorithm triangulates
+ * the points and then runs Kruskal's greedy scan over those short edges.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n) – triangulation dominates the sort and union steps
+ *   Space: O(n) for the point set and edge lists
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Candidate triangulation edges stay idle until examined.
+ *   - An accepted MST edge turns GREEN (sorted).
+ *   - A skipped edge flashes RED (swapped).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -97,20 +117,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let j = i + 1; j < pts.length; j += 1)
             all.push({ a: String(i), b: String(j), w: dist(i, j) });
     let step = 0;
-    yield FR(
-        step++,
-        N(labels),
-        ME(all),
-        `${pts.length} points, ${all.length} pairwise distances computed.`,
-        0,
-    );
-    yield FR(
-        step++,
-        N(labels),
-        ME(all),
-        "Delaunay triangulation built (all 6 pairs here); the Euclidean MST is guaranteed among its edges.",
-        1,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(labels),
+            ME(all),
+            `${pts.length} points give ${all.length} pairwise distances; computing every length.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0 },
+    };
+    yield {
+        ...FR(
+            step++,
+            N(labels),
+            ME(all),
+            "Delaunay triangulation built — the Euclidean MST is guaranteed among its short edges.",
+            1,
+        ),
+        meta: { accepted: 0 },
+    };
     const order = all.map((_, i) => i).sort((x, y) => all[x].w - all[y].w);
     const uf = UF();
     const mst: number[] = [];
@@ -119,21 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (mst.length >= pts.length - 1) break;
         if (uf.union(e.a, e.b)) {
             mst.push(idx);
-            yield FR(
-                step++,
-                N(labels),
-                ME(all, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-                `Accepted ${e.a}-${e.b} (dist ${e.w}).`,
-                2,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(labels),
+                    ME(all, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+                    `Adding ${e.a}–${e.b} (distance ${e.w}) to the MST.`,
+                    3,
+                ),
+                meta: { accepted: mst.length },
+            };
         } else {
-            yield FR(
-                step++,
-                N(labels),
-                ME(all, new Map([[idx, "swapped"]])),
-                `Skipped ${e.a}-${e.b} (dist ${e.w}): would close a cycle.`,
-                2,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(labels),
+                    ME(all, new Map([[idx, "swapped"]])),
+                    `Skipping ${e.a}–${e.b} (distance ${e.w}): it would close a cycle.`,
+                    4,
+                ),
+                meta: { accepted: mst.length },
+            };
             if (step > 11) break;
         }
     }
@@ -143,15 +175,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(labels),
             ME(all, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Euclidean MST length ${weight}: edges ${mst
+            `Euclidean MST length ${weight}, total weight ${weight}: edges ${mst
                 .map((i) => {
                     const e = all[i] as E3;
-                    return `${e.a}-${e.b}(${e.w})`;
+                    return `${e.a}–${e.b}(${e.w})`;
                 })
                 .join(", ")}.`,
-            3,
+            5,
         ),
-        meta: { weight },
+        meta: { weight, totalWeight: weight, accepted: mst.length },
     };
 }
 
@@ -170,5 +202,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute the distance between every pair of points",
+        "build the Delaunay triangulation of the points",
+        "sort the triangulation edges by increasing length",
+        "if endpoints differ: add the edge to the MST",
+        "skip the edge when it would form a cycle",
+        "done: accepted edges form the Euclidean MST length",
+    ],
 };
 export default module;
