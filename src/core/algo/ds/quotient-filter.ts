@@ -1,6 +1,29 @@
 /**
  * quotient-filter.ts - Quotient Filter
  * Quotient buckets + remainder slots, compact + resizable. Demo: add <=5 keys, query member + nonmember.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Quotient buckets + remainder slots, compact + resizable. Demo: add <=5 keys, query member + nonmember.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) ops
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Quotient Filter behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -38,7 +61,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Quotient Filter: empty filter. Quotient buckets + remainder slots, compact + resizable.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const k of keys) {
@@ -53,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Add ${k} -> positions ${hs(k).join(", ")}.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -66,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query ${q}: ${hit ? "possibly present" : "definitely absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const miss = 999;
@@ -90,5 +113,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 17, 9], query: 17 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty table of quotient buckets and remainder slots",
+        "hash key: split the fingerprint into quotient and remainder",
+        "insert: store the remainder in the quotient bucket run",
+        "shift runs right to keep buckets in sorted order",
+        "query: check whether the remainder sits in the expected run",
+        "absence proves nonmembership, presence means possibly present",
+        "done: filter holds all keys and the query verdict is reported",
+    ],
 };
 export default module;
