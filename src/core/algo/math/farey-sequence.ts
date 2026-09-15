@@ -30,7 +30,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 1 <= order <= 8).`,
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: desc,
         codeLineNumber: line,
         layout: "array",
-        meta: {},
+        meta: { step },
     });
     yield bars(-1, `Farey start: 0/1, 1/1.`, 0);
     step += 1;
@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Pass ${pass + 1}: [${seq.map(([a, b]) => `${a}/${b}`).join(", ")}].`,
             codeLineNumber: 1,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         step += 1;
         if (!added || step > 10) break;
@@ -95,5 +95,12 @@ const module: AlgorithmModule = {
     defaultInput: { order: 4 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start from the endpoints 0/1 and 1/1",
+        "insert each mediant whose denominator fits the order",
+        "done: Farey(order) with count terms",
+        "fractions stay sorted between 0 and 1",
+        "done: passes end when no mediant fits",
+    ],
 };
 export default module;
