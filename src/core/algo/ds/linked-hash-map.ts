@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `Linked hash map complete – the order chain is the doubly linked list.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { buckets, keys: keys.length },
     };
@@ -137,6 +137,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["one", "two", "three", "four"], buckets: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize hash buckets plus empty insertion-order list",
+        "hash key to bucket index for storage",
+        "insert key into bucket and append to order list",
+        "compare access order to move hits to tail if configured",
+        "lookup key by bucket probe then follow order links",
+        "count entries to track map size",
+        "done: map holds keys with ordered iteration state",
+    ],
 };
 
 export default module;
