@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "text",
             meta: { bits, roundTrip },
         };
@@ -104,6 +104,15 @@ const module: AlgorithmModule = {
     defaultInput: { numbers: [1, 2, 3, 4, 5] },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize empty bit stream for numbers list",
+        "for each value n compute zeros <- floor(log2 n)",
+        "write zeros zero-bits followed by n in binary",
+        "append the code to the growing bit stream",
+        "decode by counting zeros to learn each length",
+        "verify decoded numbers match the input",
+        "done: bit stream round-trips back to inputs",
+    ],
 };
 
 export default module;
