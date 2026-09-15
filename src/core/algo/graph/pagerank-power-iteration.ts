@@ -1,9 +1,31 @@
 /**
  * pagerank-power-iteration.ts – PageRank (Power Iteration)
  *
- * rank(v) = (1−d)/n + d·Σ rank(u)/outdeg(u): random surfer with damping
- * d=0.85. Symmetric 3-cycle converges to uniform 1/3 each.
- * Time: O(k·(V + E)) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * PageRank models a random surfer: with probability d follow a random
+ * out-link, else teleport anywhere. Each round sets rank(v) to (1−d)/n plus
+ * d times the rank flowing in from in-neighbors, split by their out-degree.
+ * Repeated rounds converge to the dominant eigenvector – the long-run visit
+ * shares. On the symmetric 3-cycle every vertex settles at 1/3.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k·(V + E)) – k power-iteration rounds over all edges
+ *   Space: O(V) for the rank vector
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The round leader is YELLOW (comparing); the rest ORANGE (visited).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Damping (usually 0.85) guarantees convergence on any graph.
+ *   - Dangling vertices (no out-links) leak rank without special handling.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -80,8 +102,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         `PageRank converged: ${labels.map((v) => `${v}≈${(rank.get(v) as number).toFixed(3)}`).join(", ")} (uniform on a symmetric cycle).`,
-        2,
-        {},
+        4,
+        { ranks: labels.map((v) => `${v}:${(rank.get(v) as number).toFixed(3)}`) },
     );
 }
 
@@ -93,6 +115,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["C"], C: ["A"] }, damping: 0.85, iterations: 3 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "rank[v] ← 1/n for every vertex",
+        "rank[v] ← (1−d)/n + d times incoming rank shares; repeat k rounds",
+        "the leader changes as rank flows along the links",
+        "check that the values have settled",
+        "done: converged ranks such as A≈B≈C≈0.333",
+    ],
 };
 
 export default module;
