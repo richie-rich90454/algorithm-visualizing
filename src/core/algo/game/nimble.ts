@@ -88,10 +88,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: stripCells(coins, size, from),
         edges: [],
-        description: `Winning move: slide the coin from ${from} back to ${to} (${from} ^ ${x} = ${to}), zeroing the xor.`,
-        codeLineNumber: 1,
+        description: `Winning Nimble move: slide the coin from square ${from} back to ${to} (${from} ^ ${x} = ${to}), zeroing the xor.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { xor: x, from, to },
+        meta: { coins: [...coins], xor: x, from, to, winning: true },
     };
     step += 1;
     const after = new Set(coins);
@@ -101,20 +101,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: stripCells(after, size, to),
         edges: [],
-        description: `Coins at [${[...after].sort((a, b) => a - b).join(", ")}] – xor = ${[...after].reduce((a, b) => a ^ b, 0)}, a P-position.`,
-        codeLineNumber: 2,
+        description: `Coins at squares [${[...after].sort((a, b) => a - b).join(", ")}] – xor = ${[...after].reduce((a, b) => a ^ b, 0)}, a P-position.`,
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { coins: [...after], xor: 0 },
+        meta: { coins: [...after], xor: 0, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: stripCells(after, size),
         edges: [],
-        description: "First player wins Nimble with this slide.",
-        codeLineNumber: 3,
+        description: `First player wins Nimble from [${[...coins].sort((a, b) => a - b).join(", ")}] by sliding ${from} to ${to}.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { winning: true },
+        meta: { coins: [...after], xor: 0, from, to, winning: true },
     };
 }
 
@@ -126,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { coins: [1, 4, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "place coins on strip squares, value is xor of coin squares",
+        "if xor = 0: losing P-position, every slide makes xor nonzero",
+        "else find coin c with (c ⊕ xor) < c on an empty square",
+        "slide coin c back to c ⊕ xor, zeroing the total xor",
+        "show new coin squares with xor 0 for the opponent to face",
+        "winner is the player making the last slide on the strip",
+    ],
 };
 
 export default module;
