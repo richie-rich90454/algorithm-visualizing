@@ -1,9 +1,35 @@
 /**
  * dpll-sat-search.ts – DPLL SAT Search
  *
- * Davis-Putnam-Logemann-Loveland on 3 variables and 4 clauses: unit
- * propagation plus one splitting decision. One cell per variable
- * (metadata.variable); satisfied formula goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Decides satisfiability of a 3-variable, 4-clause formula with the
+ * Davis-Putnam-Logemann-Loveland method. It repeats two moves: unit
+ * propagation (a clause with one unassigned literal forces that literal
+ * true) and splitting (guess a value for an unassigned variable). A clause
+ * falsified under the current assignment signals a conflict that full DPLL
+ * would backtrack over; a fully satisfied formula is reported SAT.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(2^n) worst – splitting can explore both truth values
+ *   Space: O(n) – the partial assignment plus the decision trail
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Forced and guessed variables flash YELLOW (comparing).
+ *   - Conflicted variables flash RED (swapped).
+ *   - A satisfying assignment turns GREEN (sorted); one cell per variable.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Complete and sound: the backbone of modern CDCL SAT solvers.
+ *   - Unit propagation does the deductive work; splitting only guesses.
+ *   - Pure-literal elimination is skipped here to keep the demo focused.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -91,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(assign, new Map([[v, "comparing"]])),
                 edges: [],
                 description: `Unit propagation forces ${v}=${value === true ? "T" : "F"}.`,
-                codeLineNumber: 1,
+                codeLineNumber: 2,
                 layout: "grid",
                 meta: { decisions },
             };
@@ -102,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(assign, new Map([[v, "comparing"]])),
                 edges: [],
                 description: `Decision ${decisions}: splitting on ${v}=${value === true ? "T" : "F"}.`,
-                codeLineNumber: 2,
+                codeLineNumber: 3,
                 layout: "grid",
                 meta: { decisions },
             };
@@ -113,8 +139,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeCells(assign, new Map([[v, "swapped"]])),
                 edges: [],
-                description: `Conflict under ${v} – would backtrack here.`,
-                codeLineNumber: 3,
+                description: `Conflict under ${v}: a clause is falsified and would backtrack here.`,
+                codeLineNumber: 4,
                 layout: "grid",
                 meta: { decisions },
             };
@@ -131,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(assign, done),
             edges: [],
             description: `SAT after ${decisions} decision(s): ${VARS.map((v) => `${v}=${assign.get(v) === true ? "T" : "F"}`).join(", ")}.`,
-            codeLineNumber: 4,
+            codeLineNumber: 5,
             layout: "grid",
             meta: { decisions, solution: [...assign.entries()].map(([k, v]) => `${k}=${v}`) },
         };
@@ -140,8 +166,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign),
             edges: [],
-            description: "Formula not yet decided – deeper search would follow.",
-            codeLineNumber: 4,
+            description: "Formula not yet decided after this pass; deeper search would follow.",
+            codeLineNumber: 5,
             layout: "grid",
             meta: { decisions },
         };
@@ -163,6 +189,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty assignment over x1, x2, x3",
+        "while unassigned variables remain: look for a unit clause",
+        "if a unit clause exists: propagate its forced literal",
+        "else split on the next variable with a decision value",
+        "if a clause turns unsat: halt with a conflict at this branch",
+        "done: return satisfying assignment or deeper-search notice",
+    ],
 };
 
 export default module;
