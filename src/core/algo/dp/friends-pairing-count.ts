@@ -1,6 +1,32 @@
 /**
- * Friends Pairing: f[i] = f[i-1] + (i-1) * f[i-2].
- * Time O(n), Space O(n). Default n = 4 -> 10.
+ * friends-pairing-count.ts - Friends Pairing (Count)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: f[i] <- f[i-1] + (i-1) * f[i-2].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -31,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Negative n \u2013 nothing to pair.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -69,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(f, done),
         edges: [],
         description: `Traceback: ${f[n]} ways to pair ${n} friends.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer: f[n] },
     };
@@ -83,6 +109,14 @@ const module: AlgorithmModule = {
     defaultInput: { n: 4 },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up f[0] <- 1 and f[1] <- 1 as pairing bases",
+        "f[i] holds ways for i friends to stay single or pair",
+        "f[i] <- f[i-1] + (i-1) * f[i-2]",
+        "iterate i from 2 up to n using two prior counts",
+        "either friend i stays single or picks one of i-1 partners",
+        "multiply pair subcase by the partner choices available",
+        "answer <- f[n] as total single-or-pair arrangements",
+    ],};
 
 export default module;
