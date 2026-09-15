@@ -1,9 +1,35 @@
 /**
  * ida-star-search.ts – IDA* Search
  *
- * Iterative-deepening A*: depth-first search bounded by an f-cost
- * threshold that rises to the smallest cutoff each round. Tiny explicit
- * graph; the goal goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Iterative-deepening A* gets A*'s optimality with only linear memory. It
+ * runs depth-first search bounded by an f-cost threshold (starting at h of
+ * the start node), cutting off any path whose f = g + h exceeds it. When a
+ * round ends without the goal, the threshold rises to the smallest cutoff
+ * seen, and the search repeats – each round re-explores, but memory stays
+ * proportional to the path depth.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^d) – rounds re-expand nodes, like iterative deepening
+ *   Space: O(d) – only the current depth-first path plus the threshold
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Nodes expanded inside the threshold are YELLOW (comparing).
+ *   - Cutoff nodes over the threshold are PINK (highlight).
+ *   - The goal turns GREEN (sorted) with its optimal cost and path.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal and complete with an admissible heuristic, like A*.
+ *   - The threshold schedule is the lesson: min-cutoff guarantees progress.
+ *   - Re-expansion is the price paid for linear memory.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -113,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeNodes(),
             edges: [],
             description: `Raising threshold to ${threshold} for round ${round + 2}.`,
-            codeLineNumber: 3,
+            codeLineNumber: 4,
             layout: "graph",
             meta: { threshold, start, goal },
         };
@@ -123,8 +149,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(),
         edges: [],
-        description: `Goal ${goal} was not reached.`,
-        codeLineNumber: 4,
+        description: `Goal ${goal} stayed beyond 3 threshold rounds ending at ${threshold}.`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { threshold, start, goal },
     };
@@ -138,6 +164,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with threshold ← h(start) over the weighted graph",
+        "run depth-first search cutting paths with f = g+h > threshold",
+        "if goal pops within threshold: return its cost and path",
+        "track nextThreshold ← smallest f that exceeded the threshold",
+        "raise threshold ← nextThreshold and repeat the round",
+        "done: return optimum or report that goal is unreachable",
+    ],
 };
 
 export default module;
