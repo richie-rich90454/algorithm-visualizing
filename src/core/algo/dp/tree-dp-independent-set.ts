@@ -14,6 +14,10 @@
  *   dp[node][0] = Σ max(dp[c][0], dp[c][1])
  *   dp[node][1] = weight[node] + Σ dp[c][0]
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -88,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Maximum weight independent set – two-state tree DP.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -99,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step },
     });
 
     // dp0 / dp1 per node.
@@ -165,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Maximum weight independent set = ${best}, using {${[...selected].join(", ")}}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { best, selected: [...selected] },
     };
@@ -185,6 +189,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
-};
+    pseudocode: [
+        "set up include[v] <- weight[v] and exclude[v] <- 0",
+        "include takes v, exclude skips v for best subtree values",
+        "include[v] <- w(v) + sum exclude[child]; exclude[v] <- sum max",
+        "post-order traversal computes children before parents",
+        "each node combines child results per take-or-skip rule",
+        "track choice flags to rebuild the selected set",
+        "answer <- max(include[root], exclude[root]) with set listed",
+    ],};
 
 export default module;
