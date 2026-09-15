@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { trials: pts.length, allEqual: pts.every((x) => P(x) === Q(x)) },
         };
@@ -85,6 +85,15 @@ const module: AlgorithmModule = {
     defaultInput: { trials: 5, seed: 9 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize polynomials P and Q for comparison",
+        "for trial t <- 1 to trials",
+        "sample random x uniformly from 1 to 20",
+        "evaluate P(x) and Q(x) with difference delta",
+        "record agreement or mismatch for this point",
+        "distinct polynomials rarely agree repeatedly",
+        "done: verdict identical or distinct reported",
+    ],
 };
 
 export default module;
