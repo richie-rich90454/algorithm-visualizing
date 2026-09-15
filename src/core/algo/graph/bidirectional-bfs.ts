@@ -106,17 +106,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let met = start === target;
 
-    const buildFrame = (): VisualFrame => ({
+    const buildFrame = (message: string, line: number): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Expanding both search frontiers one level each.",
-        codeLineNumber: 2,
+        description: message,
+        codeLineNumber: line,
         layout: "graph",
         meta: { forwardSize: forwardQueue.length, backwardSize: backwardQueue.length },
     });
 
-    yield buildFrame();
+    yield buildFrame(`Frontiers seeded at ${start} and ${target}.`, 0);
     step += 1;
 
     // Alternate expansion: forward first, then backward, one level at a time.
@@ -142,10 +142,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
 
-        yield buildFrame();
+        yield buildFrame(`Forward frontier expanded one level from the ${start} side.`, 1);
         step += 1;
-
-        // --- Expand the backward frontier by one level. ---
         const backwardLevel = [...backwardQueue];
         backwardQueue.length = 0;
         for (const current of backwardLevel) {
@@ -166,7 +164,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
 
-        yield buildFrame();
+        yield buildFrame(`Backward frontier expanded one level from the ${target} side.`, 2);
         step += 1;
     }
 
@@ -192,7 +190,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : `No path exists between ${start} and ${target}.`,
         codeLineNumber: 4,
         layout: "graph",
-        meta: { met },
+        meta: { met, forwardVisited: forwardVisited.size, backwardVisited: backwardVisited.size },
     };
 }
 
@@ -217,6 +215,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "seed the forward queue at start and the backward queue at target",
+        "expand the forward frontier one level; meet check on every vertex",
+        "expand the backward frontier one level; meet check on every vertex",
+        "repeat until the frontiers meet or both queues drain",
+        "done: frontiers met on a shortest path, or no path exists",
+    ],
 };
 
 export default module;
