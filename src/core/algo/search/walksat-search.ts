@@ -1,9 +1,35 @@
 /**
  * walksat-search.ts – WalkSAT Search
  *
- * Stochastic local search on 3 variables / 4 clauses: pick a random
- * unsatisfied clause with a seeded LCG, then flip a random variable in
- * it. One cell per variable (metadata.variable).
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Hunts a satisfying assignment with stochastic local search on the same
+ * 3-variable, 4-clause formula DPLL solves exactly. From the all-false
+ * assignment it repeats: pick a random unsatisfied clause (seeded LCG, so
+ * the walk replays), then flip a random variable inside it. Satisfying all
+ * clauses stops the walk SAT; leftover clauses after the flip budget mean a
+ * restart would follow.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(flips·clauses) – a bounded random walk, no complete guarantee
+ *   Space: O(n) – the single current assignment
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each flipped variable flashes YELLOW (comparing).
+ *   - A satisfying assignment turns GREEN (sorted).
+ *   - An unfinished walk ends all IDLE; one cell per variable.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Incomplete but often shockingly fast on satisfiable formulas.
+ *   - Randomness is seeded, so the demo flips identically every run.
+ *   - The local-search counterpart to systematic DPLL – compare the two.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -81,7 +107,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(assign, done),
                 edges: [],
                 description: `SAT after ${flips} flip(s): ${VARS.map((v) => `${v}=${assign.get(v) === true ? "T" : "F"}`).join(", ")}.`,
-                codeLineNumber: 2,
+                codeLineNumber: 4,
                 layout: "grid",
                 meta: { flips, solution: [...assign.entries()].map(([k, v]) => `${k}=${v}`) },
             };
@@ -96,8 +122,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign, new Map([[variable, "comparing"]])),
             edges: [],
-            description: `Flip ${flips}: clause (${clause.join("∨")}) unsatisfied – flipping ${variable}.`,
-            codeLineNumber: 1,
+            description: `Flip ${flips}: clause (${clause.join("∨")}) unsatisfied, so flip ${variable} to ${assign.get(variable) === true ? "T" : "F"}.`,
+            codeLineNumber: 3,
             layout: "grid",
             meta: { flips },
         };
@@ -111,8 +137,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign, done),
             edges: [],
-            description: `SAT after ${flips} flip(s).`,
-            codeLineNumber: 2,
+            description: `SAT after ${flips} flip(s) on the final check.`,
+            codeLineNumber: 4,
             layout: "grid",
             meta: { flips, solution: [...assign.entries()].map(([k, v]) => `${k}=${v}`) },
         };
@@ -121,8 +147,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign),
             edges: [],
-            description: `Still ${unsatisfied(assign).length} unsatisfied clause(s) after ${flips} flips – restart would follow.`,
-            codeLineNumber: 3,
+            description: `Still ${unsatisfied(assign).length} unsatisfied clause(s) after ${flips} flips; a restart would follow.`,
+            codeLineNumber: 5,
             layout: "grid",
             meta: { flips },
         };
@@ -137,6 +163,14 @@ const module: AlgorithmModule = {
     defaultInput: { seed: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the all-false assignment and flips ← 0",
+        "while unsatisfied clauses remain and flips are left",
+        "pick a random unsatisfied clause with the seeded generator",
+        "flip a random variable inside that clause and count the flip",
+        "if every clause is satisfied: return the assignment as SAT",
+        "done: return SAT assignment or report restart would follow",
+    ],
 };
 
 export default module;
