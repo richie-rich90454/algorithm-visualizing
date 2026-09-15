@@ -154,6 +154,7 @@ const module: AlgorithmModule = {
         "ascending order permits unlimited reuse of each type",
         "each capacity keeps the best value across types so far",
         "answer <- dp[W] with item counts reconstructed from picks",
-    ],};
+    ],
+};
 
 export default module;
