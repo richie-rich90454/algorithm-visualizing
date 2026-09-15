@@ -93,17 +93,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
 
         // Build the frame with the current state of every node and edge.
-        const buildFrame = (message: string): VisualFrame => ({
+        const buildFrame = (message: string, line = 2): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: line,
             layout: "graph",
             meta: { visits },
         });
 
-        yield buildFrame(`Visiting node ${current} (visit #${visits}).`);
+        yield buildFrame(`Visiting node ${current} (visit #${visits}).`, 1);
         step += 1;
 
         // Explore each neighbor that has not been visited yet.
@@ -137,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             doneNode.state = "visited";
         }
 
-        yield buildFrame(`Finished node ${current} – backtracking.`);
+        yield buildFrame(`Finished node ${current} – backtracking.`, 3);
         step += 1;
     }
 
@@ -168,6 +168,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "call dfs(s) to start the search",
+        "mark u visited the first time it is reached",
+        "for each unvisited neighbor: cross over and recurse",
+        "finish u once its whole subtree is explored, then backtrack",
+        "done: depth-first spanning tree of the reachable vertices",
+    ],
 };
 
 export default module;
