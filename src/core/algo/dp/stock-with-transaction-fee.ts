@@ -131,6 +131,7 @@ const module: AlgorithmModule = {
         "buys spend cash while sells deduct the fixed fee",
         "fee applies once per completed round-trip trade",
         "answer <- cash as max profit after all trading fees",
-    ],};
+    ],
+};
 
 export default module;
