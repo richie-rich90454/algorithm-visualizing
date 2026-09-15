@@ -1,8 +1,31 @@
 /**
- * cube-sort.ts – Cube Sort.
+ * cube-sort.ts – Cube Sort
  *
- * Compare-exchanges along hypercube dimensions.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Cube sort routes values along the dimensions of a hypercube, comparing neighbors that differ in one bit. Each dimension pass exchanges out-of-order neighbors, just like bubble sort limited to cube edges. It is parallel by construction: all edges of one dimension fire at once.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -101,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -130,5 +153,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 2, 7, 1, 6, 3, 8, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with values sitting on cube vertices",
+        "route along the next cube dimension",
+        "compare cube neighbors and exchange if flipped",
+        "advance through all cube dimensions",
+        "scan vertices into final order",
+        "done: cube order is sorted",
+    ],
 };
 export default module;
