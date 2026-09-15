@@ -43,10 +43,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         meta,
     });
 
-    yield F(tx(text), `Set Horspool over ${patterns.length} pattern(s).`, 0);
+    yield F(tx(text), `Set Horspool over ${patterns.length} pattern(s).`, 0, { comparisons: 0, hits: [] });
     step += 1;
     if (patterns.length === 0 || text.length === 0) {
-        yield F(tx(text), "Nothing to search – empty text or pattern set.", 1, { hits: [] });
+        yield F(tx(text), "Nothing to search – empty text or pattern set.", 1, { comparisons: 0, hits: [] });
         return;
     }
     const m = Math.min(...patterns.map((p) => p.length));
@@ -62,16 +62,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
     const table = [...shift.entries()].map(([c, s]) => `${c}:${s}`).join(" ");
-    yield F(tx(text), `Shared shift table (min length ${m}): ${table || "(all full shifts)"}.`, 1);
+    yield F(tx(text), `Shared shift table (min length ${m}): ${table || "(all full shifts)"}.`, 1, { comparisons: 0, shifts: shift.size });
     step += 1;
 
     const hits: Array<{ pat: string; pos: number }> = [];
+    let comparisons = 0;
     let pos = 0;
     while (pos + m <= text.length) {
         const window = new Map<number, EntityState>();
         for (let k = pos; k < pos + m; k += 1) {
             window.set(k, "comparing");
         }
+        comparisons += patterns.length;
         const found: string[] = [];
         for (const pat of patterns) {
             if (text.slice(pos, pos + pat.length) === pat) {
@@ -85,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ? `Alignment ${pos}: matched ${found.map((p) => `"${p}"`).join(", ")}.`
                 : `Alignment ${pos}: no pattern matches here.`,
             2,
-            { pos },
+            { comparisons, pos },
         );
         step += 1;
         const last = text[pos + m - 1] ?? "";
@@ -103,6 +105,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         hits.length > 0 ? `${hits.length} hit(s): ${hitStr.join(", ")}.` : "No hits.",
         3,
         {
+            comparisons,
+            shifts: shift.size,
             hits: hitStr,
         },
     );
