@@ -1,10 +1,36 @@
 /**
- * goldberg-radzik-shortest-path.ts – Goldberg–Radzik Shortest Path
+ * goldberg-radzik-shortest-path.ts – Goldberg-Radzik Shortest Path
  *
- * Each round DFS-orders the reachable vertices and relaxes edges in that
- * topological order; a round with no change certifies optimality. Handles
- * the B→C = −1 edge: A0, B2, C1, D3, no negative cycle.
- * Time: O(V·E) worst Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Goldberg-Radzik finds single-source shortest paths with negative edges but
+ * no negative cycles. Each round runs a depth-first search over reachable
+ * vertices to get a topological-like order, then relaxes edges in that
+ * order so distances propagate quickly. A round with no change certifies
+ * optimality. The demo handles edge B to C of weight -1, settling A at 0,
+ * B at 2, C at 1, D at 3.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V x E) worst case, fast in practice
+ *   Space: O(V + E) for distances and the DFS stack
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The source stays PINK (highlight) during each round.
+ *   - Newly reached vertices are ORANGE (visited).
+ *   - Relaxed edges flash BLUE (active).
+ *   - Final distances are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Handles negative weights without full Bellman-Ford rounds.
+ *   - A no-change round is the optimality certificate to teach.
+ *   - A final improving edge proves a negative cycle exists.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -66,9 +92,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const prev = new Map<string, string | null>(labels.map((v) => [v, null]));
     dist.set(start, 0);
     yield snap(
-        `Goldberg–Radzik from ${start}: DFS-topological relaxation rounds (negative edges OK).`,
+        `Goldberg-Radzik from ${start}: distances set with ${start}=0, relaxing in DFS topological order (negative edges allowed).`,
         0,
-        {},
+        { settled: 0, visits: 0 },
     );
     step += 1;
     for (let round = 1; round <= labels.length; round += 1) {
@@ -98,9 +124,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const v of labels)
             if ((dist.get(v) as number) < Infinity && v !== start) setN(v, "visited");
         yield snap(
-            `Round ${round}: topological order ${[...order].reverse().join("→")}${changed ? "" : " – no change, optimal"}.`,
-            1,
-            { round },
+            `Round ${round}: DFS order ${[...order].reverse().join(" → ")} with distances ${labels.map((v) => `${v}=${dist.get(v)}`).join(", ")}${changed ? "" : " with no change, so distances are optimal"}.`,
+            3,
+            {
+                round,
+                settled: labels.filter((v) => (dist.get(v) as number) < Infinity).length,
+                visits: round,
+            },
         );
         step += 1;
         if (!changed) break;
@@ -113,10 +143,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of labels) if ((dist.get(v) as number) < Infinity) setN(v, "sorted");
     yield snap(
         negCycle
-            ? "Negative cycle detected – distances unbounded."
-            : `Distances from ${start}: ${labels.map((v) => `${v}=${dist.get(v)}`).join(", ")}.`,
-        2,
-        { negativeCycle: negCycle },
+            ? "Negative cycle detected through a still-relaxable edge: distances are unbounded."
+            : `Final distances from ${start}: ${labels.map((v) => `${v}=${dist.get(v)}`).join(", ")}.`,
+        6,
+        {
+            negativeCycle: negCycle,
+            settled: labels.length,
+            visits: labels.length,
+            distance: dist.get(labels[labels.length - 1] as string) as number,
+        },
     );
 }
 
@@ -139,6 +174,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← infinite for v not equal to s",
+        "DFS over reachable vertices for topological order",
+        "relax edges in that order to propagate improvements",
+        "repeat rounds until one round changes nothing",
+        "no-change round certifies all distances optimal",
+        "one more check: improvement means negative cycle",
+        "done: report final distances from source s",
+    ],
 };
 
 export default module;
