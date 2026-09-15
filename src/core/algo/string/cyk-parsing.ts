@@ -1,6 +1,7 @@
 /**
  * cyk-parsing.ts – CYK Parsing.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n³·|G|)", space: "O(n²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F([cell(0, 0, s, "idle")], `CYK parse "${s}" (S→AB, A→a, B→b).`, 0);
     step += 1;
@@ -70,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 out.push(cell(i, j, [...(T[i] as Set<string>[])[j]].join("") || "∅", "sorted"));
         return out;
     };
-    yield F(show(1), "Length-1 cells from terminals.", 1);
+    yield F(show(1), 'Length-1 cells from terminals "a" and "b".', 1);
     step += 1;
     for (let len = 2; len <= n; len += 1) {
         for (let i = 0; i + len <= n; i += 1) {
@@ -87,7 +88,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const accept = (T[0] as Set<string>[])[n - 1].has("S");
     yield F(show(n), accept ? `S ∈ T[0][${n - 1}]: ACCEPT.` : "S missing: REJECT.", 3, { accept });
     step += 1;
-    yield F(show(n), accept ? `Parse complete: "S" derives the input: ACCEPT.` : "Parse complete: no S derivation: REJECT.", 4, { accept });
+    yield F(
+        show(n),
+        accept
+            ? `Parse complete: "S" derives the input: ACCEPT.`
+            : "Parse complete: no S derivation: REJECT.",
+        4,
+        { accept },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -98,6 +106,15 @@ const module: AlgorithmModule = {
     defaultInput: { input: "ab" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize table with terminal productions for each character",
+        "set diagonal cells from grammar terminal rules",
+        "combine split intervals with binary productions",
+        "fill longer spans from shorter constituent spans",
+        "propagate derivations bottom-up through table",
+        "check start symbol in top cell for acceptance",
+        "report acceptance and parse table",
+    ],
 };
 
 export default module;
