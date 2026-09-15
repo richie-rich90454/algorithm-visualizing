@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { stem: s1 },
     );
     step += 1;
-    yield F(tx(s1), "Done.", 4, { stem: s1 });
+    yield F(tx(s1), `Stemming complete: "${word}" stems to "${s1}".`, 4, { stem: s1 });
 }
 
 const module: AlgorithmModule = {
