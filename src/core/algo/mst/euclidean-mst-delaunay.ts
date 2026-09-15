@@ -122,7 +122,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(labels),
             ME(all),
-            `${pts.length} points give ${all.length} pairwise distances; computing every length.`,
+            `${pts.length} points give ${all.length} pairwise distances — computing every length for edges ${all
+                .slice(0, 3)
+                .map((e) => `${e.a}–${e.b}(${e.w})`)
+                .join(", ")} and more.`,
             0,
         ),
         meta: { accepted: 0, totalWeight: 0 },
@@ -135,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Delaunay triangulation built — the Euclidean MST is guaranteed among its short edges.",
             1,
         ),
-        meta: { accepted: 0 },
+        meta: { accepted: 0, totalWeight: 0 },
     };
     const order = all.map((_, i) => i).sort((x, y) => all[x].w - all[y].w);
     const uf = UF();
@@ -153,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     `Adding ${e.a}–${e.b} (distance ${e.w}) to the MST.`,
                     3,
                 ),
-                meta: { accepted: mst.length },
+                meta: { accepted: mst.length, totalWeight: 0 },
             };
         } else {
             yield {
@@ -164,7 +167,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     `Skipping ${e.a}–${e.b} (distance ${e.w}): it would close a cycle.`,
                     4,
                 ),
-                meta: { accepted: mst.length },
+                meta: { accepted: mst.length, totalWeight: 0 },
             };
             if (step > 11) break;
         }
