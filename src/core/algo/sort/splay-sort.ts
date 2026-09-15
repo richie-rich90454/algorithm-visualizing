@@ -1,8 +1,31 @@
 /**
- * splay-sort.ts – Splay Sort.
+ * splay-sort.ts – Splay Sort
  *
- * Inserts into a BST with splaying rotations.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Splay sort inserts every key into a splay tree, which rotates each accessed node to the root, then emits an in-order walk. Frequently accessed keys stay near the top, giving adaptivity for skewed input. It connects sorting to self-adjusting data structures.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -140,7 +163,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -169,5 +192,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 1, 4, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with an empty splay tree",
+        "insert the next value with splaying rotations",
+        "splay each inserted node to the root",
+        "walk the tree in order to emit sorted values",
+        "scan emitted values into final order",
+        "done: in-order walk is sorted",
+    ],
 };
 export default module;
