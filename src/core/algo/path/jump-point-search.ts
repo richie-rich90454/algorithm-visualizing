@@ -1,10 +1,36 @@
 /**
  * jump-point-search.ts – Jump Point Search
  *
- * A* on uniform grids re-expands symmetric paths; JPS jumps straight past
- * cells with no forced neighbors and branches only at jump points. Corridor
- * through the wall gap: (0,2)→(2,2)→(4,2), optimal cost 4.
- * Time: O(E log V) worst Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Jump Point Search speeds up A* on uniform grids by skipping symmetric
+ * paths. Instead of stepping cell by cell, it jumps straight past cells
+ * with no forced neighbors and branches only at jump points where the wall
+ * forces a turn. On the demo grid a vertical wall blocks every row except
+ * the gap at (2,2), so the search jumps the corridor (0,2) to (2,2) to
+ * (4,2) with optimal cost 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) worst case, far less on open grids
+ *   Space: O(V) for the open set and bookkeeping
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The start cell is YELLOW (comparing), the goal PINK (highlight).
+ *   - Jump landing cells are YELLOW (comparing).
+ *   - Closed cells are GREEN (sorted).
+ *   - The final corridor is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal on uniform-cost grids with straight and diagonal moves.
+ *   - Symmetry breaking is the core idea worth teaching.
+ *   - Degrades to A* in mazes with forced neighbors everywhere.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "../graph/graph-util";
@@ -115,7 +141,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     setN(skk, "comparing");
     setN(gkk, "highlight");
-    yield snap(`JPS from ${skk} to ${gkk}: jump east along the corridor.`, 0, {});
+    yield snap(
+        `Jump Point Search from ${skk} to ${gkk}: jumping east along the corridor past cells with no forced neighbors.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     const g = new Map([[skk, 0]]);
     const parent = new Map<string, string | null>([[skk, null]]);
@@ -139,7 +169,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const jp = jump(cx, cy, 1, 0);
         if (!jp) {
             setN(cur, "visited");
-            yield snap(`${cur}: eastward jump runs into the wall – dead end.`, 1, {});
+            yield snap(
+                `Cell ${cur} at distance ${g.get(cur)}: eastward jump from here runs into the wall, a dead end.`,
+                2,
+                { settled: closed.size, visits: closed.size },
+            );
             step += 1;
             continue;
         }
@@ -156,9 +190,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setN(jk, "comparing");
         setN(gkk, "highlight");
         yield snap(
-            `Jump ${cur}→${jk}${jk === gkk ? " (goal reached)" : " (forced neighbor at the wall)"}.`,
-            1,
-            { cost: ng },
+            `Jump from ${cur} to ${jk} with cost ${ng}${jk === gkk ? " reaching goal " + gkk : " stopping at a forced neighbor by the wall"}.`,
+            3,
+            { cost: ng, settled: closed.size, visits: closed.size },
         );
         step += 1;
         if (jk === gkk) found = true;
@@ -184,10 +218,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     setN(gkk, "path");
     yield snap(
         found
-            ? `Optimal path cost ${g.get(gkk)}: ${line.join("→")}.`
-            : "Goal unreachable on this grid.",
-        2,
-        { cost: found ? (g.get(gkk) as number) : -1 },
+            ? `Optimal grid path with cost ${g.get(gkk)}: ${line.join(" → ")} through the wall gap without extra expansions.`
+            : "Goal cell is unreachable on this grid.",
+        6,
+        {
+            cost: found ? (g.get(gkk) as number) : -1,
+            distance: found ? (g.get(gkk) as number) : -1,
+            path: line.join("→"),
+            settled: closed.size,
+            visits: closed.size,
+        },
     );
 }
 
@@ -199,6 +239,15 @@ const module: AlgorithmModule = {
     defaultInput: { size: 5, wall: 2, gap: [2, 2], start: [0, 2], goal: [4, 2] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "open holds start with f ← heuristic to goal",
+        "pop cell u with smallest f-score for expansion",
+        "jump east from u past cells with no forced neighbors",
+        "stop at jump point, wall, or goal cell reached",
+        "push jump point with updated cost g plus heuristic",
+        "close u, repeat until goal is expanded",
+        "done: rebuild optimal corridor through jump points",
+    ],
 };
 
 export default module;
