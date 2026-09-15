@@ -1,6 +1,25 @@
 /**
- * karger-klein-tarjan-randomized-mst.ts - Karger-Klein-Tarjan Randomized MST.
- * Boruvka phases plus random sampling and heavy-edge filtering in linear expected time.
+ * karger-klein-tarjan-randomized-mst.ts – Karger-Klein-Tarjan Randomized MST.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The Karger-Klein-Tarjan algorithm finds the MST in linear expected time. It
+ * runs a few Boruvka rounds to shrink the graph, randomly samples half the
+ * edges, solves the sample recursively, then discards every heavy edge that
+ * is provably useless before finishing on the survivors.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) expected – random sampling keeps the work linear
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Boruvka picks are YELLOW (comparing).
+ *   - Sampled edges are highlighted, survivors turn GREEN (sorted).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +68,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -95,13 +114,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        "KKT randomized MST (fixed seed 42): Boruvka step, random sampling, heavy-edge filtering.",
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            "KKT randomized MST (fixed seed 42): Boruvka step, random sampling, then heavy-edge filtering.",
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0 },
+    };
     const rnd = lcg(42);
     const minOf: number[] = verts.map((v) => {
         let best = -1;
@@ -111,21 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         return best;
     });
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(minOf.map((i) => [i, "comparing"] as [number, EntityState]))),
-        `Boruvka picks: A->A-B(1), B->A-B(1), C->B-C(2), D->C-D(3): components {A,B} and {C,D}.`,
-        1,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(minOf.map((i) => [i, "comparing"] as [number, EntityState]))),
+            `Boruvka picks: A–B(1), B–A(1), C–B(2), D–C(3): components merge into {A,B} and {C,D}.`,
+            1,
+        ),
+        meta: { accepted: 0 },
+    };
     const sampled = list.map((_, i) => i).filter(() => rnd() < 0.5);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(sampled.map((i) => [i, "highlight"] as [number, EntityState]))),
-        `Random sample (p=1/2, seed 42): ${sampled.length} of ${list.length} edges kept: indices [${sampled.join(", ")}].`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(sampled.map((i) => [i, "highlight"] as [number, EntityState]))),
+            `Random sample (p=1/2, seed 42): ${sampled.length} of ${list.length} edges kept: indices [${sampled.join(", ")}].`,
+            2,
+        ),
+        meta: { accepted: 0, sampled: sampled.length },
+    };
     const order = list.map((_, i) => i).sort((x, y) => (list[x] as E3).w - (list[y] as E3).w);
     const uf = UF();
     const mst: number[] = [];
@@ -135,22 +163,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (uf.union(e.a, e.b)) mst.push(i);
     }
     const weight = mst.reduce((s, i) => s + (list[i] as E3).w, 0);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(mst.map((i) => [i, "highlight"] as [number, EntityState]))),
-        `Heavy edges filtered against the sample MSF; surviving candidates contracted recursively.`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(mst.map((i) => [i, "highlight"] as [number, EntityState]))),
+            `Heavy edges filtered against the sample forest; surviving candidates contracted recursively.`,
+            4,
+        ),
+        meta: { accepted: mst.length },
+    };
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Verified MST weight ${weight}: A-B(1), B-C(2), C-D(3) - matches Kruskal exactly.`,
-            4,
+            `Verified MST weight ${weight}, total weight ${weight}: A–B(1), B–C(2), C–D(3) — matches Kruskal exactly.`,
+            5,
         ),
-        meta: { weight },
+        meta: { weight, totalWeight: weight, accepted: mst.length },
     };
 }
 
@@ -171,5 +202,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "run a few Boruvka rounds to shrink the components",
+        "randomly sample about half of the remaining edges",
+        "recursively find the minimum forest of the sample",
+        "filter out heavy edges useless against the sample forest",
+        "recursively solve the contracted graph of survivors",
+        "done: survivors form the MST with minimum total weight",
+    ],
 };
 export default module;
