@@ -164,10 +164,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Prim's algorithm (heap) starting from ${start}.`,
+        description: `Prim's algorithm (heap) starting from vertex ${start}.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { inTree: inTree.size },
+        meta: { inTree: inTree.size, totalWeight: 0 },
     };
     step += 1;
 
@@ -211,8 +211,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Popped cheapest frontier edge (weight ${weight}) – added ${vertex} to the tree.`,
-            codeLineNumber: 2,
+            description: parentVertex
+                ? `Adding ${parentVertex}–${vertex} (weight ${weight}) to the MST.`
+                : `Adding start vertex ${vertex} to the MST.`,
+            codeLineNumber: 3,
             layout: "graph",
             meta: { inTree: inTree.size },
         };
@@ -234,8 +236,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Pushed new frontier edges around ${vertex}.`,
-            codeLineNumber: 3,
+            description: `Updated frontier edges around vertex ${vertex}.`,
+            codeLineNumber: 4,
             layout: "graph",
             meta: { inTree: inTree.size },
         };
@@ -252,7 +254,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Minimum spanning tree complete – ${inTree.size} vertices, total weight ${totalWeight}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { inTree: inTree.size, totalWeight },
     };
@@ -282,6 +284,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the start vertex with key 0 in the heap",
+        "push all edges from the start vertex onto the heap",
+        "pop the cheapest frontier edge from the heap",
+        "if the endpoint is new: add the vertex and edge to the MST",
+        "push cheaper edges from the new vertex onto the heap",
+        "repeat until all vertices join the tree or the heap empties",
+        "done: tree edges form the MST with minimum total weight",
+    ],
 };
 
 export default module;
