@@ -4,6 +4,29 @@
  * Keys live in small buckets; only bucket representatives sit in an x-fast
  * index. A query finds the representative predecessor, scans its bucket,
  * and checks the next bucket – linear in bucket size, tiny here.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Keys live in small buckets; only bucket representatives sit in an x-fast index. A query finds the representative predecessor, scans its bucket, and checks the next bucket – linear in bucket size, tiny here.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log log U)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Y-Fast Trie behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -131,6 +154,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [2, 5, 11, 14], query: 12 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty buckets of bounded capacity",
+        "group sorted keys into buckets keeping representatives",
+        "index representatives in a small x-fast trie",
+        "predecessor search first finds the representative bucket",
+        "then scan inside the small bucket linearly",
+        "splits and merges keep every bucket near target size",
+        "done: buckets plus representatives answer the query neighbor",
+    ],
 };
 
 export default module;
