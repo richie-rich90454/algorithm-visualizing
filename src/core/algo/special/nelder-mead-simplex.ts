@@ -40,7 +40,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { op, best: Math.round(f(s[0] as Pt) * 10000) / 10000 },
         };
@@ -91,6 +91,15 @@ const module: AlgorithmModule = {
     defaultInput: { iters: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize triangle simplex with three vertices",
+        "order vertices best to worst by objective",
+        "reflect worst vertex through centroid of rest",
+        "expand further if reflection beats best",
+        "contract or shrink when reflection still worst",
+        "track best vertex value each iteration",
+        "done: best point near optimum (2,1) reported",
+    ],
 };
 
 export default module;
