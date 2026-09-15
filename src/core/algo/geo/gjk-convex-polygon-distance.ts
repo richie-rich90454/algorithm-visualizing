@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `GJK distance between ${A.length}-gon A and ${B.length}-gon B.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { sidesA: A.length, sidesB: B.length },
     };
     if (A.length < 3 || B.length < 3) {
         yield {
@@ -152,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: snap(),
             edges: snapE(),
             description: `Iter ${it}: support A${ai}(${pa[0]},${pa[1]}) − B${bi}(${pb[0]},${pb[1]}) along (${dx.toFixed(2)},${dy.toFixed(2)}).`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { iter: it },
         };
@@ -166,9 +166,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE(),
         description: "Simplex converged; closest-feature pair verified by edge scan.",
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { distance: d },
     };
     for (const e of ents) e.state = "sorted";
     yield {
@@ -176,7 +176,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE().map((e) => ({ ...e, state: "sorted" as EntityState })),
         description: `Convex polygon distance = ${d.toFixed(4)}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { distance: d },
     };
@@ -203,6 +203,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygons A and B with a search direction",
+        "take support points farthest along plus and minus the direction",
+        "build the simplex from their Minkowski difference",
+        "when the simplex traps the origin: distance is zero",
+        "otherwise aim the search at the closest simplex feature",
+        "done: the reported distance separates the polygons",
+    ],
 };
 
 export default module;
