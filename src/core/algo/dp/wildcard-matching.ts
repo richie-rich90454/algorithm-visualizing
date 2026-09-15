@@ -149,6 +149,7 @@ const module: AlgorithmModule = {
         "stars combine empty, consume-one, and match-empty moves",
         "question marks match exactly one arbitrary character",
         "answer <- dp[n][m] with match result confirmed",
-    ],};
+    ],
+};
 
 export default module;
