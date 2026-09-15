@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { parts },
     );
     step += 1;
-    yield F(tx(text), "Done.", 4, { parts });
+    yield F(tx(text), `Partition complete: ${parts.length} part(s): ${parts.join(" | ")}.`, 4, { parts });
 }
 
 const module: AlgorithmModule = {
