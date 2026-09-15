@@ -216,5 +216,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize dynamic network with transit times and demand",
+        "expand network over time horizon with holdover arcs",
+        "run max flow over time expanded network probe",
+        "increase horizon until demand can be satisfied",
+        "pipeline units to find earliest arrival schedule",
+        "report quickest horizon with maximum flow value",
+    ],
 };
 export default module;
