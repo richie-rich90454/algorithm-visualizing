@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "K-D Tree: empty. Axes split alternately at medians.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: pts.length
             ? `Partition invariant holds. Nearest to (${q[0]},${q[1]}) is (${pts[bi]![0]},${pts[bi]![1]}).`
             : "No points indexed.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { nearest: pts[bi] ?? [] },
     };
@@ -134,5 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize k-d tree build over point set",
+        "choose split dimension cycling by depth",
+        "partition points by median along split dimension",
+        "insert query point comparing split coordinate",
+        "search nearest by pruning far side with plane distance",
+        "compare best distance to update candidate",
+        "done: k-d tree holds points with nearest answer",
+    ],
 };
 export default module;
