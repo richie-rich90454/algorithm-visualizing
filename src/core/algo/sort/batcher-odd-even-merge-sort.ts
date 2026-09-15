@@ -1,8 +1,31 @@
 /**
- * batcher-odd-even-merge-sort.ts – Batcher Odd-Even Merge Sort.
+ * batcher-odd-even-merge-sort.ts – Batcher Odd-Even Merge Sort
  *
- * Batcher merging network with fixed compare stages.
- * Time: O(log² n), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Batcher's odd-even merge network sorts with a fixed pattern of compare-and-swap wires, no branching required. Each stage merges odd and even subsequences with a widening then narrowing stride. It is a classic parallel sorting network that maps directly onto hardware.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log² n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -103,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -132,5 +155,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 3, 7, 1, 5, 2, 8, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted wires before stage one",
+        "set stride p for this Batcher merge stage",
+        "compare and exchange wires distance p apart",
+        "halve the stride and repeat until stride is 0",
+        "scan wires into final order",
+        "done: network output is sorted",
+    ],
 };
 export default module;
