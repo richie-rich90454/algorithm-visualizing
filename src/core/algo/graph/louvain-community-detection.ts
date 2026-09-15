@@ -1,9 +1,34 @@
 /**
  * louvain-community-detection.ts – Louvain Community Detection
  *
- * Phase 1 moves each vertex to the neighboring community with the best
- * modularity gain; phase 2 aggregates. Barbell: {A,B,C} | {D,E,F}.
- * Time: O(V log V) typical Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Modularity Q scores a partition: dense inside links minus the share
+ * expected by chance. Louvain climbs it greedily in two repeating phases.
+ * Phase 1 moves each vertex into the neighboring community with the best
+ * modularity gain. Phase 2 aggregates each community into a super-vertex
+ * and repeats. On the barbell, phase 1 already separates {A,B,C} from
+ * {D,E,F} at high modularity.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V log V) typical – few passes with local gain checks
+ *   Space: O(V + E) for communities, degrees, and adjacency
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - A vertex switching community is YELLOW (comparing).
+ *   - Its new community mates show GREEN (sorted).
+ *   - Final communities each get their own color.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Greedy and fast, but the resolution limit can merge small groups.
+ *   - The industry default first try for large-network communities.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -73,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield snap(
         `Louvain phase 1: ${labels.length} singleton communities, Q=${q().toFixed(3)}.`,
         0,
-        {},
+        { modularity: Math.round(q() * 1000) / 1000 },
     );
     step += 1;
     let moved = true;
@@ -102,7 +127,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 clr();
                 setN(v, "comparing");
                 for (const u of labels) if (comm.get(u) === bestC && u !== v) setN(u, "sorted");
-                yield snap(`${v} joins community ${bestC}: Q=${bestQ.toFixed(3)}.`, 1, {});
+                yield snap(`${v} joins community ${bestC}: Q=${bestQ.toFixed(3)}.`, 1, {
+                    community: bestC,
+                });
                 step += 1;
                 if (step > 12) break;
             }
@@ -124,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         `Phase 2 aggregate: ${[...groups.values()].map((x) => `{${x.sort().join(",")}}`).join(" ")} at Q=${q().toFixed(3)}.`,
-        2,
+        4,
         { communities: groups.size },
     );
 }
@@ -146,6 +173,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with every vertex in its own singleton community",
+        "move each vertex to the neighboring community of best modularity gain",
+        "repeat moves until no gain remains (phase 1 done)",
+        "aggregate communities into super-vertices for phase 2",
+        "done: communities such as {A,B,C} and {D,E,F} at high modularity",
+    ],
 };
 
 export default module;
