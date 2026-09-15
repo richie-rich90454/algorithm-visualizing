@@ -122,6 +122,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [4, 1, 6, 2] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty funnel heap with graded funnels",
+        "insert key into smallest funnel buffer",
+        "compare fill against capacity to trigger merge",
+        "merge funnels upward preserving heap order",
+        "extract minimum from top funnel output",
+        "count I/Os across funnel levels",
+        "done: heap holds keys with minimum extracted",
+    ],
 };
 
 export default module;
