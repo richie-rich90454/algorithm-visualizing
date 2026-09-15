@@ -58,9 +58,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base(),
         edges: seg,
         description: `Line AB vs circle (C, r=${r}).`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { radius: r },
     };
     step += 1;
     const t = ((c[0] - a[0]) * dx + (c[1] - a[1]) * dy) / len2;
@@ -73,9 +73,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: seg,
         description: `Closest point M at t=${t.toFixed(2)}.`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { t },
     };
     step += 1;
     const dist = Math.hypot(m[0] - c[0], m[1] - c[1]);
@@ -84,9 +84,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...base(), ptNode("m", m, "M", "highlight")],
         edges: seg,
         description: `|M−C|=${dist.toFixed(2)} vs r=${r}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { dist, radius: r },
     };
     step += 1;
     if (dist > r + 1e-9) {
@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: seg,
         description: h < 1e-9 ? `Tangent at (${p}).` : `h=${h.toFixed(2)}: hits (${p}) and (${q}).`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { points: pts.map(([x, y]) => `${x},${y}`) },
     };
@@ -133,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...base(), ...pts.map((s, i) => ptNode(`x-${i}`, s, `X${i}(${s})`, "sorted"))],
         edges: seg,
         description: `Verified: |X0−C|=${Math.hypot(pts[0][0] - c[0], pts[0][1] - c[1]).toFixed(2)} (r=${r}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { points: pts.map(([x, y]) => `${x},${y}`) },
     };
@@ -154,6 +154,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from line AB and circle with center C radius r",
+        "project C onto the line to find closest point M",
+        "measure distance from M to C against r",
+        "when farther than r: the line misses the circle",
+        "when equal: report the single tangent point",
+        "done: offset h from M gives zero, one, or two hits",
+    ],
 };
 
 export default module;
