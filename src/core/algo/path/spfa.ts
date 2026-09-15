@@ -131,7 +131,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Dequeued ${current} with distance ${currentDist}, relaxing its outgoing edges.`, 1);
+        yield buildFrame(
+            `Dequeued ${current} with distance ${currentDist}, relaxing its outgoing edges.`,
+            1,
+        );
         step += 1;
 
         // Relax every outgoing edge of the dequeued vertex.
@@ -168,7 +171,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     neighborNode.state = "visited";
                     neighborNode.label = String(alt);
                 }
-                yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${alt}.`, 3);
+                yield buildFrame(
+                    `Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${alt}.`,
+                    3,
+                );
                 step += 1;
             }
         }
@@ -214,7 +220,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
               : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: vertices.length, visits: vertices.length, negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity, path: path.join("→") },
+        meta: {
+            settled: vertices.length,
+            visits: vertices.length,
+            negativeCycle: hasNegativeCycle,
+            distance: dist.get(target) ?? Infinity,
+            path: path.join("→"),
+        },
     };
 }
 
