@@ -3,6 +3,29 @@
  *
  * Each update copies only the root-to-leaf path; untouched subtrees are
  * shared between versions, so old roots keep answering queries.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Each update copies only the root-to-leaf path; untouched subtrees are shared between versions, so old roots keep answering queries.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) per version
+ *   Space: O(log n) per update
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes and edges show the structure.
+ *    - The active element is YELLOW (comparing).
+ *    - Finished elements are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Persistent BST behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -151,6 +174,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [3, 1, 4], queryVersion: 1, query: 1 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with no nodes and no versions",
+        "insert key into a version: copy only nodes on the search path",
+        "unchanged subtrees are shared with the previous version",
+        "repeat to build one root per version",
+        "query (version, key): search from that version root as usual",
+        "sharing keeps every old version intact and readable",
+        "done: every version is queryable and the query answer is reported",
+    ],
 };
 
 export default module;
