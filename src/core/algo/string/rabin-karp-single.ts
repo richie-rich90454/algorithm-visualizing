@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(text),
             edges: [],
-            description: "Empty pattern – nothing to search for.",
+            description: `Empty pattern "" – nothing to search for in "${text}".`,
             codeLineNumber: 4,
             layout: "text",
             meta: { comparisons, matches: 0 },
@@ -196,6 +196,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "compute pattern hash with rolling base modulus",
+        "compute initial window hash for text prefix",
+        "compare window hash against pattern hash",
+        "verify characters directly on hash equality",
+        "roll hash forward dropping outgoing character",
+        "slide window across entire text length",
+        "report all verified match positions",
+    ],
 };
 
 export default module;
