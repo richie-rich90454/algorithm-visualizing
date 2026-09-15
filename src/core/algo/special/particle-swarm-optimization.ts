@@ -44,7 +44,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "array",
             meta: { gbest: Number(gbest.toFixed(4)), gfit: Number(f(gbest).toFixed(4)) },
         };
@@ -82,6 +82,15 @@ const module: AlgorithmModule = {
     defaultInput: { particles: 4, iters: 5, seed: 7 },
     visualType: "array",
     run,
+    pseudocode: [
+        "scatter n particles on [0,6] with random velocities",
+        "evaluate fitness (x-3)^2 tracking personal bests",
+        "remember global best across the whole swarm",
+        "update velocity with inertia plus social pulls",
+        "move particles clamped inside the bounds",
+        "repeat for each iteration t",
+        "done: swarm converged near optimum x=3",
+    ],
 };
 
 export default module;
