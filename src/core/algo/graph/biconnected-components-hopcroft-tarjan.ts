@@ -1,10 +1,37 @@
 /**
  * biconnected-components-hopcroft-tarjan.ts – Biconnected Components
  *
- * Hopcroft–Tarjan DFS tracks discovery/low numbers on an edge stack; when
- * low[child] ≥ disc[v], the popped edges form one biconnected component.
- * Triangle + tail: {A,B,C} and {C,D}, articulation C.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A biconnected component is a maximal set of edges that stay connected no
+ * matter which single vertex is removed. Hopcroft–Tarjan finds them in one
+ * depth-first search that stamps every vertex with a discovery number
+ * (disc) and a low number (low, the oldest vertex reachable through its
+ * subtree), pushing each traversed edge onto a stack. Whenever a child
+ * cannot reach above its parent (low[child] ≥ disc[v]), the edges down to
+ * that child pop off as one component. On the triangle-plus-tail graph,
+ * {A,B,C} pops as one component and {C,D} as another, exposing C as the
+ * articulation point between them.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – a single DFS with an edge stack
+ *   Space: O(V + E) for discovery/low numbers and the stack
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex being discovered is YELLOW (comparing).
+ *   - Tree edges under exploration are BLUE (active).
+ *   - Popped components are GREEN (path); articulation points end PINK.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Edge-based sibling of Tarjan's articulation-point test.
+ *   - Every biconnected component shares at most one vertex with another.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -120,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const desc = comps.map((c) => `{${[...new Set(c.flat())].sort().join(",")}}`).join(" ");
     yield snap(
         `Biconnected components ${desc}; articulation point C (removing it splits the graph).`,
-        3,
+        4,
         { components: comps.length },
     );
 }
@@ -136,6 +163,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "DFS from start with disc/low clocks and an empty edge stack",
+        "discover u (stamp disc/low); follow each back edge to update low",
+        "low[child] ≥ disc[u]: pop the edge stack into one biconnected component",
+        "mark cut vertices found along the way as articulation points",
+        "done: edge-disjoint components plus every articulation point",
+    ],
 };
 
 export default module;
