@@ -135,6 +135,15 @@ const module: AlgorithmModule = {
     defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c", "b"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty ARC with T1 T2 recency and frequency plus B1 B2 ghosts",
+        "request key and check T1 or T2 for a cache hit",
+        "on hit move entry to T2 frequency side and count hit",
+        "on ghost hit in B1 grow target p toward recency",
+        "on ghost hit in B2 shrink target p toward frequency",
+        "on miss evict from T1 or T2 then insert into T1",
+        "done: cached entries with hit count and tuned target p",
+    ],
 };
 
 export default module;
