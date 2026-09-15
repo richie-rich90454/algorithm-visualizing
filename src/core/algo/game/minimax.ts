@@ -108,10 +108,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: [],
-        description: "Minimax on a depth-3 ternary game tree.",
+        description: `Minimax on depth-3 ternary tree with ${leaves.length} leaf scores, MAX to move at root.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { leaves: leaves.length, depth: 3, player: "MAX" },
     };
     step += 1;
 
@@ -162,10 +162,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: [],
-            description: `${isMax ? "MAX" : "MIN"} node chose ${result} from {${childValues.join(", ")}}.`,
-            codeLineNumber: 2,
+            description: `${isMax ? "MAX" : "MIN"} node ${nodeId} chose ${result} from child scores {${childValues.join(", ")}}.`,
+            codeLineNumber: 3,
             layout: "tree",
-            meta: {},
+            meta: { node: nodeId, isMax, childValues: [...childValues], value: result },
         };
         step += 1;
         if (node) {
@@ -181,10 +181,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: [],
-        description: `Game value under optimal play = ${rootValue}.`,
-        codeLineNumber: 4,
+        description: `Game value under optimal play = ${rootValue}; root MAX picks the best-scoring move.`,
+        codeLineNumber: 6,
         layout: "tree",
-        meta: { value: rootValue },
+        meta: { value: rootValue, optimal: rootValue, leaves: leaves.length, winner: "optimal play" },
     };
 }
 
@@ -200,6 +200,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build depth-3 ternary game tree with fixed leaf scores",
+        "reveal leaf utilities along the bottom row of the tree",
+        "evaluate bottom-up: leaves return their assigned scores",
+        "MAX takes max over own moves, MIN takes min over replies",
+        "back up each child value choice to its parent node",
+        "propagate optimal values level by level toward the root",
+        "game value at root is the score under optimal play",
+    ],
 };
 
 export default module;
