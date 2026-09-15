@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Computing the LCP array of the suffix array [${suffixArray.join(", ")}].`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0 },
     };
     step += 1;
 
@@ -82,6 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         rank[suffixArray[i] as number] = i;
     }
 
+    let comparisons = 0;
     let h = 0; // the current LCP length (reused across iterations).
 
     // Walk suffixes in text order (Kasai's trick).
@@ -91,8 +92,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             const prev = suffixArray[pos - 1] as number;
             // Extend the shared prefix as far as possible.
             while (i + h < n && prev + h < n && text[i + h] === text[prev + h]) {
+                comparisons += 1;
                 h += 1;
             }
+            comparisons += 1;
             lcp[pos - 1] = h;
 
             // Show the compared suffix pair and their common prefix.
@@ -108,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `LCP of suffix ${i} ("${text.slice(i)}") and suffix ${prev} ("${text.slice(prev)}") is ${h}.`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { maxLcp: Math.max(0, ...lcp) },
+                meta: { comparisons, maxLcp: Math.max(0, ...lcp) },
             };
             step += 1;
 
@@ -128,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `LCP array: [${lcp.join(", ")}].`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { maxLcp: Math.max(0, ...lcp), lcp: [...lcp] },
+        meta: { comparisons, maxLcp: Math.max(0, ...lcp), lcp: [...lcp] },
     };
 }
 
