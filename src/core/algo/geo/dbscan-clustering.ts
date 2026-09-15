@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts),
             edges: [],
             description: "One point – noise (needs minPts=2).",
-            codeLineNumber: 0,
+            codeLineNumber: 1,
             layout: "point",
             meta: { clusters: [-1] },
         };
@@ -78,9 +78,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: [],
         description: `DBSCAN: eps=${eps}, minPts=${minPts} on ${pts.length} points.`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { eps, minPts, points: pts.length },
     };
     step += 1;
     let cluster = 0;
@@ -94,9 +94,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: nodes(pts, toStates()),
                 edges: [],
                 description: `p-${i} has ${seeds.length} neighbors – noise for now.`,
-                codeLineNumber: 1,
+                codeLineNumber: 3,
                 layout: "point",
-                meta: {},
+                meta: { point: i, neighbors: seeds.length },
             };
             step += 1;
             continue;
@@ -117,9 +117,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts, toStates()),
             edges: [],
             description: `p-${i} is core (${seeds.length} neighbors) – cluster ${cluster} expanded.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
-            meta: {},
+            meta: { point: i, cluster },
         };
         step += 1;
         cluster += 1;
@@ -139,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 .filter((v) => v !== null)
                 .join(", ") || "none"
         }}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { clusters: final },
     };
@@ -164,6 +164,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all points with radius eps and minPts",
+        "count neighbors inside eps for each unvisited point",
+        "label sparse points as noise for now",
+        "grow a new cluster from each dense core point",
+        "absorb every density-reachable neighbor into the cluster",
+        "done: clusters plus noise label the whole set",
+    ],
 };
 
 export default module;
