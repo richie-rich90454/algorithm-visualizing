@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs mod >= 2 and n x (n+1) tableau).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: desc,
         codeLineNumber: line,
         layout: "grid",
-        meta: {},
+        meta: { step },
     });
     yield show(-1, `Solve mod ${p}: [${M.map((r) => `[${r}]`).join(", ")}].`, 0);
     step += 1;
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Column ${col} all zero – singular, stopping honestly.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             return;
         }
@@ -153,5 +153,12 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "load the tableau [A | b] over F_p",
+        "an all-zero column means singular: stop here",
+        "normalize the pivot row and clear its column",
+        "read the solution vector off the tableau",
+        "done: A·x matches b mod p",
+    ],
 };
 export default module;
