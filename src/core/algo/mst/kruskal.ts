@@ -36,7 +36,6 @@
  */
 
 import type { AlgorithmModule, VisualEdge, VisualEntity, VisualFrame } from "@/types";
-import { makeGraphNodes } from "../graph/graph-util";
 
 /**
  * A tiny union-find (disjoint set) used for cycle detection.
@@ -111,7 +110,6 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     ];
 
     const nodes = makeNodes(vertices);
-    const nodeById = new Map(nodes.map((n) => [n.id, n]));
 
     // Build the visual edge entities (undirected).
     const edges: VisualEdge[] = edgeList.map(([a, b, weight], index) => ({
@@ -131,10 +129,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Kruskal's algorithm – considering edges from lightest to heaviest.",
+        description: `Kruskal's algorithm on ${vertices.length} vertices, ${edgeList.length} edges – considering edges from lightest to heaviest.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { accepted: 0 },
+        meta: { accepted: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -161,7 +159,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Considering edge ${a}–${b} (weight ${edgeList[index]?.[2]}).`,
             codeLineNumber: 2,
             layout: "graph",
-            meta: { accepted: accepted.length },
+            meta: {
+                accepted: accepted.length,
+                totalWeight: accepted.reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+            },
         };
         step += 1;
 
@@ -169,6 +170,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (uf.union(a, b)) {
             edge.state = "sorted";
             accepted.push(index);
+            yield {
+                stepNumber: step,
+                entities: nodes.map((n) => ({ ...n })),
+                edges: edges.map((e) => ({ ...e })),
+                description: `Adding ${a}–${b} (weight ${edgeList[index]?.[2]}) to the MST.`,
+                codeLineNumber: 3,
+                layout: "graph",
+                meta: {
+                    accepted: accepted.length,
+                    totalWeight: accepted.reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+                },
+            };
+            step += 1;
         } else {
             edge.state = "swapped";
             yield {
@@ -178,7 +192,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Rejected ${a}–${b} (weight ${edgeList[index]?.[2]}) – it would create a cycle.`,
                 codeLineNumber: 4,
                 layout: "graph",
-                meta: { accepted: accepted.length },
+                meta: {
+                    accepted: accepted.length,
+                    totalWeight: accepted.reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+                },
             };
             step += 1;
         }
@@ -191,7 +208,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Minimum spanning tree complete – ${accepted.length} edges, total weight ${totalWeight}.`,
+        description: `Minimum spanning tree complete – ${accepted.length} edges, total weight ${totalWeight}: ${accepted.map((i) => `${edgeList[i]?.[0]}–${edgeList[i]?.[1]}(${edgeList[i]?.[2]})`).join(", ")}.`,
         codeLineNumber: 6,
         layout: "graph",
         meta: { accepted: accepted.length, totalWeight },
