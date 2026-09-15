@@ -1,6 +1,34 @@
-// node-kayles.ts – Node Kayles: pick a vertex; it and its neighbors vanish.
-// Solved by bitmask recursion on the tiny default path graph; the winning
-// pick is verified in-code. Default P5: take the center, leaving two singles.
+/**
+ * node-kayles.ts – Node Kayles (vertex-deletion game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Node Kayles picks a vertex; the vertex and its neighbors vanish. The
+ * player unable to pick loses. Simply: take the center to split the graph
+ * into small dead piles. Formally: positions are solved by bitmask
+ * recursion with memoization, and on the default path P5 the winning pick
+ * is the center v2, leaving two isolated singles that form a P-position.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(2^n) game states
+ *   Space: O(2^n) memo table
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Live vertices paint GREEN (sorted); removed vertices go idle.
+ *   - The winning pick flashes YELLOW (comparing).
+ *   - The remaining components show the P-position handed over.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Impartial vertex game; last pick wins.
+ *   - Picking a vertex deletes its closed neighborhood.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function nodeWin(mask: number, adj: number[][], memo: Map<number, boolean>): boolean {
@@ -52,10 +80,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodeCells(count, alive),
         edges: [],
-        description: `Node Kayles on path P${count} – the player to move ${winning ? "wins" : "loses"} with perfect play.`,
+        description: `Node Kayles on path graph P${count} with ${count} live vertices – the player to move ${winning ? "wins (N-position)" : "loses (P-position)"} with perfect play.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { vertices: count, winning },
+        meta: { vertices: count, winning, winner: winning ? "first" : "second" },
     };
     step += 1;
     let pick = -1;
@@ -74,20 +102,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodeCells(count, alive),
             edges: [],
-            description: "Every pick leaves the opponent a winning reply – a P-position.",
-            codeLineNumber: 1,
+            description:
+                "Every vertex pick leaves the opponent a winning reply – a P-position for the player to move.",
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { vertices: count, winning: false },
+            meta: { vertices: count, winning: false, winner: "second" },
         };
         step += 1;
         yield {
             stepNumber: step,
             entities: nodeCells(count, alive),
             edges: [],
-            description: `Node Kayles on P${count} is losing for the player to move.`,
-            codeLineNumber: 2,
+            description: `Node Kayles on P${count} with ${count} vertices is losing for the player to move.`,
+            codeLineNumber: 5,
             layout: "grid",
-            meta: { vertices: count, winning: false },
+            meta: { vertices: count, winning: false, winner: "second" },
         };
         return;
     }
@@ -96,13 +125,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodeCells(count, alive, pick),
         edges: [],
-        description: `Winning pick: vertex v${pick} (removes ${[...removed]
+        description: `Winning pick: vertex v${pick} deletes its neighborhood ${[...removed]
             .sort((a, b) => a - b)
             .map((v) => `v${v}`)
-            .join(", ")}).`,
-        codeLineNumber: 1,
+            .join(", ")} from path P${count}.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { vertices: count, pick },
+        meta: { vertices: count, pick, winning: true },
     };
     step += 1;
     const rest = new Set([...alive].filter((v) => !removed.has(v)));
@@ -110,20 +139,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodeCells(count, rest),
         edges: [],
-        description: `Remaining components are losing for the player to move – a P-position.`,
-        codeLineNumber: 2,
+        description: `Remaining ${rest.size} vertices ${[...rest].map((v) => `v${v}`).join(", ") || "none"} form losing components for the player to move – a P-position.`,
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { vertices: count, remaining: [...rest] },
+        meta: { vertices: count, remaining: [...rest], winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: nodeCells(count, rest),
         edges: [],
-        description: `First player wins Node Kayles on P${count} by taking v${pick}.`,
-        codeLineNumber: 3,
+        description: `First player wins Node Kayles on P${count} by taking center vertex v${pick}.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { vertices: count, winning: true },
+        meta: { vertices: count, winning: true, winner: "first", pick },
     };
 }
 
@@ -135,6 +164,14 @@ const module: AlgorithmModule = {
     defaultInput: { vertices: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from path graph P5 with all 5 vertices live",
+        "a move picks one live vertex and deletes its closed neighborhood",
+        "solve positions by bitmask recursion with memoization",
+        "if every pick leaves a winning reply: losing P-position",
+        "else highlight the center pick leaving two losing singles",
+        "winner is the first player via the center vertex deletion",
+    ],
 };
 
 export default module;
