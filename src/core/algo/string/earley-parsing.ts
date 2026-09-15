@@ -1,6 +1,7 @@
 /**
  * earley-parsing.ts – Earley Parsing.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n³)", space: "O(n²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F([cell(0, 0, s || "ε", "idle")], `Earley parse "${s}" (S→AB, A→a, B→b).`, 0);
     step += 1;
@@ -78,7 +79,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { accept },
     );
     step += 1;
-    yield F([cell(9, 0, accept ? "ACCEPT" : "REJECT", "sorted")], accept ? "Earley complete: S-derivation found: ACCEPT." : "Earley complete: no parse: REJECT.", 4, { accept });
+    yield F(
+        [cell(9, 0, accept ? "ACCEPT" : "REJECT", "sorted")],
+        accept
+            ? `Earley complete for "${s}": "S" derives input: ACCEPT.`
+            : "Earley complete: no parse: REJECT.",
+        4,
+        { accept },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -89,6 +97,15 @@ const module: AlgorithmModule = {
     defaultInput: { input: "ab" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "seed set zero with start production and dot at left",
+        "scan terminal matching input character at position",
+        "predict new items from nonterminal after dot",
+        "complete finished items advancing waiting items",
+        "repeat closure until no new items added",
+        "advance chart position through entire input",
+        "report acceptance and completed parse sets",
+    ],
 };
 
 export default module;
