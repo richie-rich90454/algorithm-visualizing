@@ -91,6 +91,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty Brodal heap with null root",
+        "insert key as new node and compare against minimum",
+        "update minimum pointer if new key is smaller",
+        "merge heaps by linking root lists in O(1)",
+        "extract minimum and guide links to restore order",
+        "count operations across inserts and extracts",
+        "done: heap holds keys with minimum identified",
+    ],
 };
 
 export default module;
