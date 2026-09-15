@@ -1,6 +1,7 @@
 /**
  * distinct-substrings-count.ts – Distinct Substrings Count.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n²)", space: "O(n²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -31,7 +32,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Counting distinct substrings of "${text}".`, 0);
     step += 1;
@@ -79,6 +80,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "aba" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize empty set for seen substrings",
+        "enumerate substrings by growing length",
+        "insert each substring into hash set",
+        "count new entries as distinct substrings",
+        "extend length until full string covered",
+        "compute total minus duplicates for verification",
+        "report distinct substring count",
+    ],
 };
 
 export default module;
