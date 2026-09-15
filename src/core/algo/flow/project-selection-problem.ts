@@ -214,5 +214,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize projects with profits and prerequisite arcs",
+        "build source sink network with infinite dependency arcs",
+        "run max flow to find minimum selection cut",
+        "derive net profit as positive sum minus cut value",
+        "enumerate feasible sets to confirm optimal choice",
+        "report optimal project set with maximum net profit",
+    ],
 };
 export default module;
