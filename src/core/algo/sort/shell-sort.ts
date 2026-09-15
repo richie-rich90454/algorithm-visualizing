@@ -186,6 +186,14 @@ const module: AlgorithmModule = {
     defaultInput: [23, 3, 41, 7, 11, 13, 17, 29],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with gap ← floor(n/2)",
+        "begin a pass with the current gap",
+        "pick key at i and compare across the gap",
+        "if left > key: shift it right by gap",
+        "insert key, shrink gap, repeat until gap is 0",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
