@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `"${probe}" ${found ? "found" : "not found"} after ${probes} probe(s).`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { buckets, probe, found, probes },
     };
@@ -135,6 +135,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["cat", "car", "dog", "cow", "bat"], buckets: 6, probe: "dog" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize table with empty slots and deleted markers",
+        "hash key to home slot by modulo size",
+        "probe forward linearly on collision comparing slots",
+        "insert into first empty or deleted slot found",
+        "if load exceeds threshold then resize and rehash all",
+        "lookup by probing until key or empty slot",
+        "done: table holds keys with lookup answer",
+    ],
 };
 
 export default module;
