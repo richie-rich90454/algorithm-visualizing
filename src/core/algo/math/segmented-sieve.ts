@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs limit >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Base primes to sqrt(${limit}): [${base}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const lo = sq + 1;
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Segment [${lo}, ${limit}] after marking with base primes.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (const p of base.slice(0, 2)) {
@@ -110,5 +110,12 @@ const module: AlgorithmModule = {
     defaultInput: { limit: 30 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sieve base primes up to √limit",
+        "sweep the segment [lo, limit] with the base primes",
+        "cross out multiples of each base prime p",
+        "survivors join the output primes",
+        "done: all primes to limit with count",
+    ],
 };
 export default module;
