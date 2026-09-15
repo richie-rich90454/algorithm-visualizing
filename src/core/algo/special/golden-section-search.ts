@@ -41,7 +41,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "array",
             meta: {
                 a: Math.round(a * 1000) / 1000,
@@ -83,6 +83,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: 0, b: 5, iters: 7 },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize bracket [a,b] with interior points c and d",
+        "place c and d by the golden ratio PHI",
+        "for iteration t <- 1 to iters",
+        "compare f(c) versus f(d) to pick a side",
+        "discard the outer third and reuse one evaluation",
+        "shrink the bracket width geometrically",
+        "done: midpoint approximates true minimum x=2",
+    ],
 };
 
 export default module;
