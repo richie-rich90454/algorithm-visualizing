@@ -113,7 +113,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list),
-            `Degree-constrained MST with bound ${d.bound}: Kruskal scan plus a degree check.`,
+            `Degree-constrained MST on ${verts.length} vertices, ${list.length} edges with bound ${d.bound}: Kruskal scan plus a degree check.`,
             0,
         ),
         meta: { accepted: 0, totalWeight: 0 },
@@ -134,7 +134,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     `Skipping ${e.a}–${e.b} (weight ${e.w}): degree bound ${d.bound} would break.`,
                     3,
                 ),
-                meta: { accepted: mst.length },
+                meta: {
+                    accepted: mst.length,
+                    totalWeight: mst.reduce((s, i) => s + (list[i] as E3).w, 0),
+                },
             };
             continue;
         }
@@ -150,7 +153,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     `Adding ${e.a}–${e.b} (weight ${e.w}) to the tree: degrees stay within bound ${d.bound}.`,
                     4,
                 ),
-                meta: { accepted: mst.length },
+                meta: {
+                    accepted: mst.length,
+                    totalWeight: mst.reduce((s, i) => s + (list[i] as E3).w, 0),
+                },
+            };
+        } else {
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map([[idx, "swapped"]])),
+                    `Skipping ${e.a}–${e.b} (weight ${e.w}): endpoints already connected, it would form a cycle.`,
+                    3,
+                ),
+                meta: {
+                    accepted: mst.length,
+                    totalWeight: mst.reduce((s, i) => s + (list[i] as E3).w, 0),
+                },
             };
         }
     }
