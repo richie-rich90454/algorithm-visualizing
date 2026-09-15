@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: desc,
         codeLineNumber: c,
         layout: "point" as const,
-        meta: {} as VisualFrame["meta"],
+        meta: { progress: step } as VisualFrame["meta"],
     });
     let [a, b] = seg;
     yield show(
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ],
                 edges: [],
                 description: "Trivial reject – shared outside bit.",
-                codeLineNumber: 1,
+                codeLineNumber: 0,
                 layout: "point",
                 meta: { clipped: "none" },
             };
@@ -142,7 +142,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: `Visible part (${a.map((v) => v.toFixed(2))})→(${b.map((v) => v.toFixed(2))}).`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "point",
         meta: { clipped: [a, b].map(([x, y]) => `${x},${y}`) },
     };
@@ -162,6 +162,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from segment endpoints with 4-bit outcodes",
+        "when both outcodes are zero: trivially accept the segment",
+        "when endpoints share an outside bit: trivially reject it",
+        "otherwise clip the outside endpoint at the window edge",
+        "recompute its outcode and repeat the tests",
+        "stop once the segment is accepted or rejected",
+        "done: the visible part of the segment stays on screen",
+    ],
 };
 
 export default module;
