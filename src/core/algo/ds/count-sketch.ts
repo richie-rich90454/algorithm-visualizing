@@ -107,6 +107,15 @@ const module: AlgorithmModule = {
     defaultInput: { stream: ["a", "b", "a", "c", "a"], query: "a" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize Count-Sketch table of counters with hash functions",
+        "hash item to one counter per row with random sign",
+        "update by adding signed count to each hashed counter",
+        "compare signs to keep estimate unbiased",
+        "estimate query by median of signed counters",
+        "count total updates processed",
+        "done: sketch summarizes stream with frequency estimate",
+    ],
 };
 
 export default module;
