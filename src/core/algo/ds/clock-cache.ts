@@ -86,6 +86,15 @@ const module: AlgorithmModule = {
     defaultInput: { capacity: 3, accesses: ["a", "b", "c", "a", "d"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize CLOCK cache with reference bits cleared",
+        "request key and check frames for a hit",
+        "on hit set reference bit to 1 and count hit",
+        "sweep hand clearing reference bits on second chance",
+        "evict first frame with reference bit 0",
+        "insert missed key at hand position",
+        "done: cache frames hold keys with hit count",
+    ],
 };
 
 export default module;
