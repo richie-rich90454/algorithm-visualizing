@@ -59,7 +59,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { moved: moved.size },
         };
@@ -118,6 +118,15 @@ const module: AlgorithmModule = {
     defaultInput: { nodes: ["N0", "N1", "N2"], keys: ["a", "b", "c", "d", "e"], drop: "N1" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "place nodes and keys on ring 0..99 by hash",
+        "assign each key to its clockwise successor node",
+        "record ownership table before the change",
+        "remove the dropped node from the ring",
+        "re-home only keys owned by the dropped node",
+        "survivors keep their previous assignments",
+        "done: minimal disruption with only moved keys reassigned",
+    ],
 };
 
 export default module;
