@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { bestLen: bestLen === Infinity ? 0 : Math.round(bestLen * 100) / 100, bestTour },
         };
@@ -138,6 +138,15 @@ const module: AlgorithmModule = {
     defaultInput: { ants: 3, iters: 4, seed: 11 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize pheromone to 1 on every city-pair edge",
+        "for iteration t <- 1 to iters",
+        "each ant builds a tour weighted by pheromone and distance",
+        "evaporate every pheromone value by half",
+        "deposit 1/tour-length on edges used by each ant",
+        "remember the shortest tour seen so far",
+        "done: best tour visits all cities with minimal length",
+    ],
 };
 
 export default module;
