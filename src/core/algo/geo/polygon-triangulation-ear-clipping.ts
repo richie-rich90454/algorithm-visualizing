@@ -72,9 +72,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: boundary(),
         description: `Ear clipping on a ${pts.length}-gon – scanning for ears.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { vertices: pts.length },
     };
     step += 1;
     const alive = pts.map((_, i) => i);
@@ -118,9 +118,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ),
                 edges: boundary([...diag]),
                 description: `Clipped ear (${prev}, ${cur}, ${next}) – diagonal ${prev}–${next} added.`,
-                codeLineNumber: 1,
+                codeLineNumber: 3,
                 layout: "point",
-                meta: {},
+                meta: { ear: [prev, cur, next] },
             };
             step += 1;
             clipped = true;
@@ -135,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, all),
         edges: boundary([...diag]),
         description: `Triangulation complete: ${found.length} triangles.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { triangles: found.map((t) => t.join(",")) },
     };
@@ -157,6 +157,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the polygon vertex ring",
+        "scan the ring for a convex ear with no intruders",
+        "clip the ear into the triangle list",
+        "link its neighbors with a new diagonal",
+        "done: the triangles exactly tile the polygon",
+    ],
 };
 
 export default module;
