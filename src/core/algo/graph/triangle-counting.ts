@@ -1,10 +1,32 @@
 /**
  * triangle-counting.ts – Triangle Counting (Node Ordering)
  *
- * Orients each edge from the smaller to the larger vertex, then counts
- * length-2 directed paths u→v→w closed by edge u–w: each triangle counted
- * once. Diamond: triangles ABC and ABD = 2.
- * Time: O(m·√m) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Orienting each edge from the smaller to the larger vertex turns every
+ * triangle into exactly one directed wedge u→v, u→w closed by v→w – so each
+ * triangle is counted once, at its smallest vertex. The scan walks vertices
+ * in order and checks pairs of higher neighbors for the closing edge. The
+ * diamond holds triangles ABC (closed at A) and ABD (closed at A): 2 total.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(m·√m) – orientation bounds the wedge checks per vertex
+ *   Space: O(V + E) for adjacency sets and ranks
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The wedge root is YELLOW (comparing); higher neighbors ORANGE.
+ *   - Closing edges flash GREEN (path); wedge arms BLUE (active).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Triangle counts feed clustering coefficients and community scores.
+ *   - Orientation is the trick that avoids triple-counting.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -89,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         );
         step += 1;
     }
-    yield snap(`Total triangles: ${total} (ABC and ABD on this diamond).`, 2, { triangles: total });
+    yield snap(`Total triangles: ${total}.`, 4, { triangles: total });
 }
 
 const module: AlgorithmModule = {
@@ -102,6 +124,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "rank vertices and orient each edge from smaller to larger",
+        "for u: check pairs of higher neighbors for the closing edge",
+        "each closed wedge counts one triangle at its smallest vertex",
+        "repeat for every vertex u in order",
+        "done: the total triangle count",
+    ],
 };
 
 export default module;
