@@ -1,8 +1,31 @@
 /**
- * bidirectional-selection-sort.ts – Bidirectional Selection Sort.
+ * bidirectional-selection-sort.ts – Bidirectional Selection Sort
  *
- * Picks both min and max each pass from both ends.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Bidirectional selection sort picks both the minimum and the maximum on every pass through the unsorted middle. The minimum goes to the front, the maximum to the back, so the sorted region grows from both ends at once. It halves the number of passes of plain selection sort while keeping its tiny write count.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -118,7 +141,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -147,5 +170,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with both ends open, lo ← 0, hi ← n-1",
+        "scan [lo..hi] for the minimum and maximum",
+        "swap the minimum to lo and maximum to hi",
+        "shrink to [lo+1..hi-1] and repeat",
+        "scan settled ends into final order",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
