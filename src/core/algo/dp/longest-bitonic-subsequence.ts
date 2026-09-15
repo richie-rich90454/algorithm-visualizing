@@ -154,6 +154,7 @@ const module: AlgorithmModule = {
         "each index serves once as the bitonic peak point",
         "subtract one to avoid double counting the peak",
         "answer <- max bitonic length with peak index reported",
-    ],};
+    ],
+};
 
 export default module;
