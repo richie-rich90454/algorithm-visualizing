@@ -1,6 +1,32 @@
 /**
- * Longest Bitonic Subsequence: inc[i] + dec[i] - 1 maximized.
- * Time O(n^2), Space O(n). Default [1,11,2,10,4,5,2,1] -> 6.
+ * longest-bitonic-subsequence.ts - Longest Bitonic Subsequence
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: bitonic[i] <- inc[i] + dec[i] - 1 per peak candidate.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input \u2013 length 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -106,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), marks),
         edges: [],
         description: `Traceback: peak at ${peak} (value ${nums[peak]}), bitonic length ${best}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: best },
     };
@@ -120,6 +146,14 @@ const module: AlgorithmModule = {
     defaultInput: { nums: [1, 11, 2, 10, 4, 5, 2, 1] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up inc[i] <- LIS ending at i and dec[i] <- LDS from i",
+        "inc uses forward LIS, dec uses reverse LIS passes",
+        "bitonic[i] <- inc[i] + dec[i] - 1 per peak candidate",
+        "compute both directional tables before combining",
+        "each index serves once as the bitonic peak point",
+        "subtract one to avoid double counting the peak",
+        "answer <- max bitonic length with peak index reported",
+    ],};
 
 export default module;
