@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Extended a short run [${lo}..${hi - 1}] to minimum length.`,
             codeLineNumber: 2,
             layout: "array",
-            meta: {},
+            meta: { run: [lo, hi] },
         };
         step += 1;
     }
@@ -176,7 +176,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Merged runs [${lo}..${mid - 1}] and [${mid}..${hi - 1}].`,
             codeLineNumber: 3,
             layout: "array",
-            meta: {},
+            meta: { merged: [lo, hi] },
         };
         step += 1;
     }
@@ -246,6 +246,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 2, 8, 1, 4, 9, 3, 7],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with empty run stack over the array",
+        "scan for natural runs, extend short ones by insertion",
+        "extend a short run to minimum length by insertion sort",
+        "merge adjacent runs into one sorted run",
+        "done: single run covers the whole array",
+    ],
 };
 
 export default module;
