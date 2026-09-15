@@ -1,6 +1,7 @@
 /**
  * thompson-nfa-construction.ts – Thompson NFA.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(|regex|)", space: "O(|regex|)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,9 +52,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F([cell(0, 0, re, "idle")], `Thompson NFA for /${re}/.`, 0);
+    yield F([cell(0, 0, re, "idle")], `Thompson NFA for regex "${re}".`, 0);
     step += 1;
     const edges: Array<[number, string, number]> = [
         [0, "a", 1],
@@ -73,7 +74,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         2,
     );
     step += 1;
-    yield F([cell(1, 0, "b|c", "comparing")], "Union (b|c) via new split/join states.", 3);
+    yield F(
+        [cell(1, 0, "b|c", "comparing")],
+        `Union "(b|c)" via new split/join states for "${re}".`,
+        3,
+    );
     step += 1;
     const cells = edges.map(([f, l, to], i) => cell(2, i, `${f}-${l}→${to}`, "sorted"));
     yield F(cells, `Concat a·(b|c): 8 states, ${edges.length} edges.`, 4, {
@@ -92,6 +97,15 @@ const module: AlgorithmModule = {
     defaultInput: { regex: "a(b|c)" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "create fragment with start and accept states",
+        "add epsilon branches for alternation choice",
+        "concatenate fragments linking accept to start",
+        "wrap fragment with epsilon loop for star",
+        "assign unique numbers to all NFA states",
+        "connect transitions preserving regex order",
+        "report complete NFA state graph",
+    ],
 };
 
 export default module;
