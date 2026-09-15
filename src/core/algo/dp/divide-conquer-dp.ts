@@ -229,6 +229,7 @@ const module: AlgorithmModule = {
         "opt[g][i] monotonicity bounds the k search per midpoint",
         "recurse left and right halves with narrowed k windows",
         "answer <- dp[groups][n-1] with splits from opt choices",
-    ],};
+    ],
+};
 
 export default module;
