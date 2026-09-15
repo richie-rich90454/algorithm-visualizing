@@ -35,7 +35,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     yield {
@@ -87,5 +87,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize disjoint sparse table over input array",
+        "build level k blocks of size 2^k with prefix and suffix aggregates",
+        "compare query range against block boundaries",
+        "answer range query by combining suffix and prefix in O(1)",
+        "count levels built as log n",
+        "verify query result on sample range",
+        "done: table holds aggregates with range query answer",
+    ],
 };
 export default module;
