@@ -139,6 +139,7 @@ const module: AlgorithmModule = {
         "try every coin denomination fitting the current amount",
         "keep the minimum coin count plus its chosen coin",
         "answer <- dp[amount] with coins reconstructed via parent picks",
-    ],};
+    ],
+};
 
 export default module;
