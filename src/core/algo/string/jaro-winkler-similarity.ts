@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { jaro: j, winkler: w },
     );
     step += 1;
-    yield F(tx(b), "Done.", 4, { jaro: j, winkler: w });
+    yield F(tx(b), `Similarity complete: Jaro ${j.toFixed(4)}, Winkler ${w.toFixed(4)}.`, 4, { jaro: j, winkler: w });
 }
 
 const module: AlgorithmModule = {
