@@ -4,6 +4,29 @@
  * Balanced search tree with 2-nodes and 3-nodes: overflowing nodes
  * split upward and short nodes borrow or merge downward, so every leaf
  * stays at one depth.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Balanced search tree with 2-nodes and 3-nodes: overflowing nodes split upward and short nodes borrow or merge downward, so every leaf stays at one depth.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard 2-3 Tree behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -122,6 +145,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 9], query: 8 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty 2-3 tree of no nodes",
+        "insert key into the correct leaf in sorted order",
+        "leaves regroup into 2-nodes and 3-nodes of one or two keys",
+        "split overflowing 4-nodes and promote the middle key upward",
+        "repeat until every level holds only 2-nodes and 3-nodes",
+        "search compares within each node then descends correctly",
+        "done: tree stays balanced and the query verdict is reported",
+    ],
 };
 
 export default module;
