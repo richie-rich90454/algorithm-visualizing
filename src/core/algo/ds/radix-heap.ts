@@ -4,6 +4,29 @@
  * Integer priority queue for monotone extracts: buckets are keyed by the
  * highest differing bit against the last extracted minimum, so each
  * extract scans only a few buckets.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Integer priority queue for monotone extracts: buckets are keyed by the highest differing bit against the last extracted minimum, so each extract scans only a few buckets.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log C) amortized
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Radix Heap behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -113,6 +136,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [1, 4, 6, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty buckets keyed by highest differing bit",
+        "distribute keys into buckets by msb of key xor last extracted",
+        "find the first nonempty bucket holding the smallest keys",
+        "redistribute that bucket around its minimum and tighten last",
+        "extract the minimum and set last to its value (monotone)",
+        "repeat until every key leaves in nondecreasing order",
+        "done: keys drained in monotone order with last tracked",
+    ],
 };
 
 export default module;
