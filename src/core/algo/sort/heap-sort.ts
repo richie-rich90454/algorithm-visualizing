@@ -217,6 +217,14 @@ const module: AlgorithmModule = {
     defaultInput: [6, 4, 8, 1, 9, 3, 7, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted array, heap size ← n",
+        "for i ← n/2-1 down to 0: heapify subtree at i",
+        "compare parent with children, swap with larger child",
+        "sift down after a swap to restore heap order",
+        "swap root (max) to end, shrink heap, repeat",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
