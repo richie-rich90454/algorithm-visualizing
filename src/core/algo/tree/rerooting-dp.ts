@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, nodes: ids.length, root },
     });
 
     // ------------------------------------------------------------------
@@ -210,6 +210,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree arbitrarily at the first node",
+        "post-order: combine child DP states into subtree sums",
+        "reroot: pass parent contribution down to each child",
+        "compute every node total as if it were the root",
+        "return per-node distance sums as the answer",
+    ],
 };
 
 export default module;
