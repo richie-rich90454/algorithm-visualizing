@@ -50,7 +50,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate parameters – nothing to solve.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solve ${g}^x = ${h} mod ${p} with Floyd walk from v=1.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let T: [number, number, number] = [1, 0, 0];
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `No usable collision within cap – stopping honestly.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -141,5 +141,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 11, g: 2, h: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "walk two sequences from v = 1 with Floyd stepping",
+        "advance the tortoise once and the hare twice",
+        "cap reached with no usable collision: stop honestly",
+        "a collision solves x; verify g^x ≡ h",
+        "done: discrete log x",
+    ],
 };
 export default module;
