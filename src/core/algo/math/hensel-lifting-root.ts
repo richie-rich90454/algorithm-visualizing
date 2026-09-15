@@ -44,7 +44,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs prime p, power >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${r0}^2 = ${r0 * r0} != ${a} mod ${p} – not a root, stopping honestly.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lift a root of x^2 = ${a} from mod ${p} to mod ${p}^${e}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Root ${r0}^2 = ${r0 * r0} = ${a} mod ${p}; f' = ${fp(r0)}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let r = r0;
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `f'(r) = 0 mod ${p} – cannot lift, stopping honestly.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             return;
         }
@@ -146,5 +146,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 7, r: 3, power: 2, target: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "check the starting root mod p with nonzero derivative",
+        "measure the error t = f(r)/mod mod p",
+        "correct with c = −t/f′(r) and lift r higher",
+        "verify r² ≡ a at the new modulus",
+        "done: lifted root verified, or honest stop",
+    ],
 };
 export default module;
