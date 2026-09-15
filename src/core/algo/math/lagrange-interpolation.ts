@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs [x,y] points).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Interpolate through ${pts.map(([x, y]) => `(${x},${y})`).join(", ")} at x=${at}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let total = 0;
@@ -111,5 +111,12 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "load the points and the target x",
+        "build each basis L_i(x) vanishing at other nodes",
+        "done: P(at) = total",
+        "weight each basis by its y_i and accumulate",
+        "done: unique interpolant through every point",
+    ],
 };
 export default module;
