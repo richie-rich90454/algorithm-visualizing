@@ -153,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr),
             edges: [],
             description: `${target} is not in the array after ${comparisons} comparisons.`,
-            codeLineNumber: 4,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -170,6 +170,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 5, 7, 9, 11, 13, 15], target: 11 },
     visualType: "array",
     run,
+    pseudocode: [
+        "call Search(lo ← 0, hi ← n-1) on the sorted array",
+        "if lo > hi: base case reached, target is absent",
+        "mid ← ⌊(lo+hi)/2⌋; compare A[mid] with target",
+        "if A[mid] = target: return mid as the match",
+        "else recurse into Search(lo, mid-1) or Search(mid+1, hi)",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
