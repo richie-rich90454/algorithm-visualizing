@@ -1,6 +1,32 @@
 /**
- * Box Stacking: rotations sorted by base area, then LIS on (w,d) for height.
- * Time O(n^2), Space O(n). Default [[4,6,7],[1,2,3]] -> 15.
+ * box-stacking.ts - Box Stacking
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: best[i] <- max(best[i], best[j] + height[i]) for valid base j < i.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -53,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No boxes \u2013 height 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -103,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...best]], new Map([["0,0", "sorted"]])),
         edges: [],
         description: `Traceback: max stack height = ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -122,6 +148,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up all rotations sorted by base area descending",
+        "best[i] <- height[i] as stack of one box",
+        "best[i] <- max(best[i], best[j] + height[i]) for valid base j < i",
+        "a lower box needs strictly larger width and depth",
+        "scan prior rotations to find the tallest valid base",
+        "track maximum over all best[i] values seen",
+        "answer <- max(best) with stack reconstructed via parent links",
+    ],};
 
 export default module;
