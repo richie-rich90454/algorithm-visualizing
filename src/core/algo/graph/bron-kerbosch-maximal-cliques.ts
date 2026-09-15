@@ -1,9 +1,35 @@
 /**
  * bron-kerbosch-maximal-cliques.ts – Maximal Cliques (Bron–Kerbosch)
  *
- * Recursive backtracking with pivoting: R grows a clique, P holds
- * candidates, X holds excluded vertices. Triangle+tail: {A,B,C} and {C,D}.
- * Time: O(3^(V/3)) Space: O(V²)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A clique is a set of pairwise adjacent vertices; it is maximal when no
+ * outsider connects to all of it. Bron–Kerbosch grows cliques by recursive
+ * backtracking with three sets: R (the clique under construction), P
+ * (candidates that extend R), and X (excluded vertices that prevent
+ * duplicates). A pivot from P ∪ X that covers the most candidates shrinks
+ * the branching to P ∖ N(pivot). When P and X are both empty, R is maximal.
+ * On the triangle-plus-tail graph it reports {A,B,C} and {C,D}.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(3^(V/3)) worst case – optimal for clique enumeration
+ *   Space: O(V²) for adjacency sets and recursion
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The pivot vertex is PINK (highlight).
+ *   - The growing clique R is YELLOW (comparing).
+ *   - A reported maximal clique flashes GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Maximal (cannot grow) is weaker than maximum (largest possible).
+ *   - Pivoting prunes the search without missing any clique.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -98,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield* bk([], [...labels].sort(), []);
     clr();
     for (const c of cliques.flat()) setN(c, "sorted");
-    yield snap(`Maximal cliques: ${cliques.map((c) => `{${c.join(",")}}`).join(" ")}.`, 3, {
+    yield snap(`Maximal cliques: ${cliques.map((c) => `{${c.join(",")}}`).join(" ")}.`, 4, {
         cliques: cliques.length,
     });
 }
@@ -111,6 +137,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with R empty, P all vertices, X empty",
+        "pick the pivot covering the most candidates; branch over P ∖ N(pivot)",
+        "P and X empty: R is maximal, so record it",
+        "move v from P into R for the call, then into X, and repeat",
+        "done: every maximal clique such as {A,B,C} is listed",
+    ],
 };
 
 export default module;
