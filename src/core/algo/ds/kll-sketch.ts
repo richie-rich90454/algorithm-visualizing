@@ -34,7 +34,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "KLL Sketch: stream start. Compactor levels estimate quantiles.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const v of vals) {
@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Ingest ${v} (${seen.length} seen).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty stream: no estimate.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sorted ${s.join(", ")}; median candidate ${med}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     yield {
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(s, new Map([[0, "sorted"]])),
         edges: [],
         description: `Estimate: min ${mn}, median~${med}, max ${mx} over ${s.length} values verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { median: med, n: s.length },
     };
@@ -95,5 +95,14 @@ const module: AlgorithmModule = {
     defaultInput: { values: [7, 2, 9, 4, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize KLL sketch with empty compactors per level",
+        "insert value into level zero buffer",
+        "compare buffer size against capacity k",
+        "compact by sorting and keeping half randomly",
+        "promote survivors to next level with doubled weight",
+        "estimate quantile by scanning weighted levels",
+        "done: sketch summarizes stream with quantile estimate",
+    ],
 };
 export default module;
