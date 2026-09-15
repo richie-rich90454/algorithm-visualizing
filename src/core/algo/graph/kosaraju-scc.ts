@@ -86,15 +86,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: {},
+        meta: { finished: finishOrder.length },
     });
+
+    // ------------------------------------------------------------------
+    // Pass 1: DFS to compute finish-time order (a "post-order" stack).
+    // ------------------------------------------------------------------
 
     // ------------------------------------------------------------------
     // Pass 1: DFS to compute finish-time order (a "post-order" stack).
@@ -108,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Pass 1 – visiting ${v}.`);
+        yield buildFrame(`Pass 1 – visiting ${v}.`, 1);
         step += 1;
 
         for (const neighbor of adjacency[v] ?? []) {
@@ -155,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Pass 2 – exploring ${v} on the reversed graph.`);
+        yield buildFrame(`Pass 2 – exploring ${v} on the reversed graph.`, 3);
         step += 1;
 
         for (const neighbor of reverse[v] ?? []) {
@@ -183,7 +187,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 memberNode.state = color;
             }
         }
-        yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`);
+        yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`, 4);
         step += 1;
     }
 
@@ -192,7 +196,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Kosaraju complete – found ${components.length} strongly connected component(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { components: components.length },
     };
@@ -217,6 +221,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "reverse every edge of the graph",
+        "pass 1: DFS-visit each vertex of the original graph",
+        "record vertices into the finish-time ordering stack",
+        "pass 2: DFS the reversed graph in reverse finish order",
+        "each pass-2 tree is exactly one strongly connected component",
+        "repeat until every vertex belongs to a component",
+        "done: all SCCs such as {A,B,C}, {D,E}, and {F}",
+    ],
 };
 
 export default module;
