@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Recursion too deep – switching this sub-array to heap sort.",
             codeLineNumber: 3,
             layout: "array",
-            meta: {},
+            meta: { fallback: "heap-sort" },
         };
         step += 1;
 
@@ -202,7 +202,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Partitioned around pivot ${String(arr[i])} – it is now in place.`,
             codeLineNumber: 2,
             layout: "array",
-            meta: {},
+            meta: { pivotIndex: i },
         };
         step += 1;
 
@@ -288,6 +288,13 @@ const module: AlgorithmModule = {
     defaultInput: [9, 2, 6, 1, 8, 3, 7, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with depth limit ← 2 * floor(log2(n))",
+        "if range is small: finish with insertion sort",
+        "partition range around pivot, pivot lands in place",
+        "if depth limit hit zero: heap sort this range",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
