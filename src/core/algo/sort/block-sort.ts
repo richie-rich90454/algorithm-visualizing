@@ -1,8 +1,31 @@
 /**
- * block-sort.ts – Block Sort.
+ * block-sort.ts – Block Sort
  *
- * Block-wise in-place merge sort with rotations.
- * Time: O(n log n), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Block sort (wiki sort) is the in-place answer to merge sort: it merges sorted runs using only O(1) extra space. Small blocks are sorted first, then rotated into place and merged with buffer tricks. It proves stable merging does not require a full auxiliary array.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -124,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -153,5 +176,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted blocks queued for merging",
+        "sort each block of size B in place",
+        "rotate each sorted block into its run position",
+        "merge sorted blocks in place across the array",
+        "scan blocks into final order",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
