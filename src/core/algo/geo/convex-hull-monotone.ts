@@ -102,9 +102,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: "Monotone chain – sorting points by (x, y).",
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { count: points.length },
     };
     step += 1;
 
@@ -152,9 +152,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: `Lower hull: [${lower.join(", ")}].`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { lower },
     };
     step += 1;
 
@@ -175,9 +175,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: `Upper hull built – combined hull: [${hull.join(", ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
-        meta: {},
+        meta: { hull },
     };
     step += 1;
 
@@ -202,7 +202,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges,
         description: `Convex hull: ${hull.join(" → ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "point",
         meta: { hull },
     };
@@ -230,6 +230,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort points by x, then y",
+        "start the lower hull with the first two sorted points",
+        "while last two plus new point make a non-left turn: pop",
+        "push the point and continue across the sorted order",
+        "repeat the same sweep backward for the upper hull",
+        "drop the duplicated endpoints where the hulls meet",
+        "upper plus lower hull equals the convex hull",
+    ],
 };
 
 export default module;
