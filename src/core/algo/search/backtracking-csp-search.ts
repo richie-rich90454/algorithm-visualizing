@@ -1,8 +1,35 @@
 /**
  * backtracking-csp-search.ts – Backtracking CSP Search
  *
- * Assigns X, Y, Z from {1,2} under X≠Y and Y≠Z, undoing assignments
- * that violate a constraint. One cell per variable (metadata.variable).
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Solves a tiny constraint problem (X≠Y and Y≠Z over {1,2}) by assigning
+ * variables in order and undoing bad choices. Each variable tries its domain
+ * values one at a time: inconsistent values are rejected immediately, and
+ * when a variable exhausts its domain the search backtracks to the previous
+ * variable and tries its next value. The first full consistent assignment is
+ * a solution.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(d^n) worst – every combination may be tried (d values, n vars)
+ *   Space: O(n) – the assignment stack plus remaining-value lists
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Fresh consistent assignments are YELLOW (comparing).
+ *   - Rejected values flash PINK (highlight); backtracked vars RED (swapped).
+ *   - A full solution turns GREEN (sorted); one cell per variable.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Complete and sound: tries everything, accepts only consistent answers.
+ *   - Chronological backtracking is the baseline every CSP speedup beats.
+ *   - Forward checking and arc consistency prune what this explores blindly.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -142,6 +169,14 @@ const module: AlgorithmModule = {
     defaultInput: { domains: { X: [1, 2], Y: [1, 2], Z: [1, 2] } },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty assignment and a stack of untried domain values",
+        "assign the next value to the current variable in order",
+        "if the value violates a constraint: reject it and try the next",
+        "if a variable exhausts its domain: backtrack to the previous variable",
+        "if every variable is assigned consistently: return the solution",
+        "done: return solution or report that none exists for these domains",
+    ],
 };
 
 export default module;
