@@ -114,6 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(grid),
             edges: [],
             description: "Invalid start cell.",
+            codeLineNumber: 0,
             layout: "grid",
             meta: {},
         };
@@ -213,6 +214,13 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "target ← start color; call fill on the start cell",
+        "recolor the cell when it matches the target color",
+        "recurse into each matching orthogonal neighbor",
+        "return from cells outside the region or already visited",
+        "done: the whole connected region wears the new color",
+    ],
 };
 
 export default module;
