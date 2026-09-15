@@ -60,6 +60,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty external B-heap with large fanout blocks",
+        "insert key into appropriate block preserving heap order",
+        "compare parent block minimum against child block minimum",
+        "swap blocks that violate heap ordering",
+        "extract minimum from root block and refill from child",
+        "count I/O operations across block accesses",
+        "done: external heap holds keys with minimum at root",
+    ],
 };
 
 export default module;
