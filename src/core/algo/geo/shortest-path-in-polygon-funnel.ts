@@ -68,10 +68,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: base.map((e) => ({ ...e })),
         edges: bound.map((e) => ({ ...e })),
-        description: "Polygon with start s and goal g inside.",
-        codeLineNumber: 0,
+        description: `Polygon (${n} vertices) with start (${start}) and goal (${goal}) inside.`,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { vertices: n, start, goal },
     };
     step += 1;
     yield {
@@ -92,9 +92,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: "Triangulate sleeve from s to g (diagonal 0–2).",
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { diagonal: [0, 2] },
     };
     step += 1;
     yield {
@@ -123,9 +123,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: "Funnel opens at apex s.",
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { apex: start },
     };
     step += 1;
     yield {
@@ -146,9 +146,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: "Goal inside the funnel wedge – no reflex pinch, apex advances to g.",
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
-        meta: {},
+        meta: { endpoints: [`(${start})`, `(${goal})`] },
     };
     step += 1;
     const length = Math.hypot(goal[0] - start[0], goal[1] - start[1]);
@@ -170,7 +170,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: `Shortest path is the segment, length ${length.toFixed(2)}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "point",
         meta: { path: [start, goal].map(([x, y]) => `${x},${y}`), length },
     };
@@ -193,6 +193,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from a polygon with start s and goal g",
+        "triangulate the sleeve of triangles from s to g",
+        "open the funnel with apex at s",
+        "tighten left and right chains past reflex vertices",
+        "advance the apex whenever the funnel pinches",
+        "stop when g sits inside the open wedge",
+        "done: the apex chain plus final segment is shortest",
+    ],
 };
 
 export default module;
