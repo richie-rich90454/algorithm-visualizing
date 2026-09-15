@@ -74,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Starting lexicographic BFS – every vertex gets a label.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { selected: labelCount },
     };
     step += 1;
 
@@ -111,17 +111,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.label = best;
         }
 
-        const buildFrame = (message: string): VisualFrame => ({
+        const buildFrame = (message: string, line = 2): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: line,
             layout: "graph",
             meta: { selected: labelCount },
         });
 
-        yield buildFrame(`Selecting ${best} (label "${bestLabel}") as vertex #${labelCount}.`);
+        yield buildFrame(`Selecting ${best} (label "${bestLabel}") as vertex #${labelCount}.`, 1);
         step += 1;
 
         // Append a bit to every remaining vertex's label: 1 if it is adjacent
@@ -164,6 +164,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "label every vertex with the empty string",
+        "pick the unselected vertex of lexicographically largest label",
+        "append 1 (neighbor) or 0 to each remaining label and repeat",
+        "mark each selected vertex done in LBFS order",
+        "done: full lexicographic ordering of all vertices",
+    ],
 };
 
 export default module;
