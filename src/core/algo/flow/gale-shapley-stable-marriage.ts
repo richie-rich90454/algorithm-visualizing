@@ -193,5 +193,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize free proposers with ranked preference lists",
+        "each free proposer applies to next choice on list",
+        "receiver keeps best offer and rejects the other suitor",
+        "rejected proposer continues with next ranked choice",
+        "repeat until no free proposer remains unmatched",
+        "report stable matching with zero blocking pairs",
+    ],
 };
 export default module;
