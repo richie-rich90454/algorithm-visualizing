@@ -1,6 +1,7 @@
 /**
  * needleman-wunsch-alignment.ts – Needleman-Wunsch.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm)", space: "O(nm)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -98,12 +99,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const { dp, x, y, score } = nw(a, b);
     yield F(grid(dp, -1), `Global align "${a}" vs "${b}" (match+1/mis-1/gap-2).`, 0);
     step += 1;
-    yield F(grid(dp, 1), "First row/col initialized with gap penalties.", 1);
+    yield F(grid(dp, 1), 'First row/col initialized with gap penalties "-2" for gaps.', 1);
     step += 1;
     const rows = Math.min(dp.length - 1, 3);
     for (let r = 1; r <= rows; r += 1) {
@@ -141,6 +142,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "GATT", b: "GCAT" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize first row and column with gap penalties",
+        "score cell from deletion insertion or substitution",
+        "fill table row by row through dynamic programming",
+        "track maximum scoring predecessor for traceback",
+        "trace back from bottom right to origin",
+        "emit aligned strings with gaps inserted",
+        "report optimal global alignment and score",
+    ],
 };
 
 export default module;
