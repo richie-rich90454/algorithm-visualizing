@@ -1,6 +1,33 @@
-// staircase-nim.ts – Staircase Nim: move stones down one pile; off pile 1 vanish.
-// Only piles at odd positions (1st, 3rd, …) matter: xor them like Nim.
-// Default [2,1,3] xors to 1; winning move trims pile 3 from 3 to 2.
+/**
+ * staircase-nim.ts – Staircase Nim (stones shifted downstairs)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Staircase Nim stacks piles as stairs; a move shifts any number of stones
+ * from a pile down one step, with stones off pile 1 vanishing. Simply: play
+ * Nim on the odd-position piles only. Formally: the value is the xor of
+ * piles 1, 3, 5, and the default [2,1,3] xors to 1, so the winning move
+ * trims pile 3 from 3 to 2 and hands over xor 0.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(p) over the piles
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Odd-position piles paint GREEN; even piles stay idle.
+ *   - The shifted pile flashes YELLOW with stones moved and target size.
+ *   - The landing frame names the zero odd-xor P-position.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Even-position stones are inert buffers, not Nim heaps.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function pileCells(piles: number[], hot = -1): VisualEntity[] {
