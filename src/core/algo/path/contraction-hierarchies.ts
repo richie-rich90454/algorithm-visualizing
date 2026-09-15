@@ -1,10 +1,36 @@
 /**
  * contraction-hierarchies.ts – Contraction Hierarchies
  *
- * Preprocess: contract vertices least-important-first, adding shortcuts
- * that preserve distances (B adds A→C=3). Query: upward Dijkstra from both
- * ends. A→D = 4.
- * Time: O(E log V) query Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Contraction Hierarchies speed up road-network queries with a preprocessing
+ * step: vertices are contracted least-important-first, and a shortcut edge is
+ * added whenever the only short route passes through the contracted vertex.
+ * Contracting B adds shortcut A to C with weight 3, preserving distances.
+ * Each query then runs an upward Dijkstra from both ends that only follows
+ * edges to higher-ranked vertices, meeting in the middle for cost 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) per query after preprocessing
+ *   Space: O(V + E) including added shortcuts
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex being contracted is ORANGE (swapped).
+ *   - The query source is YELLOW (comparing), the target PINK (highlight).
+ *   - The meeting vertex is ORANGE (visited).
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Preprocessing is expensive but each query is dramatically faster.
+ *   - Shortcuts preserve exact shortest distances, so queries stay optimal.
+ *   - The standard choice for continent-scale routing engines.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -75,7 +101,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         Object.values(wadj).filter((vs) => vs.some(([t]) => t === v)).length;
     const order = [...labels].sort((a, b) => deg(a) - deg(b) || (a < b ? -1 : 1));
     const rank = new Map(order.map((v, i) => [v, i]));
-    yield snap(`Contraction order by degree: ${order.join("→")}.`, 0, {});
+    yield snap(
+        `Contraction order by degree: ${order.join(" → ")} from least to most important.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     const up: Record<string, Array<[string, number]>> = {};
     for (const v of labels) up[v] = [...(wadj[v] ?? [])];
@@ -115,9 +145,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         clr();
         setN(v, "swapped");
-        yield snap(`Contract ${v}: ${shortcuts.length} shortcut(s) so far.`, 1, {
-            shortcuts: shortcuts.length,
-        });
+        yield snap(
+            `Contract vertex ${v}: preserving distances with ${shortcuts.length} shortcut(s) added so far.`,
+            2,
+            {
+                shortcuts: shortcuts.length,
+                settled: contracted.size,
+                visits: contracted.size,
+            },
+        );
         step += 1;
         if (step > 10) break;
     }
@@ -168,14 +204,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     setN(target, "highlight");
     setN(meet, "visited");
     yield snap(
-        `Upward query meets at ${meet}: distance ${dExact} on ${shortcuts.length} shortcut(s).`,
-        2,
-        { distance: dExact },
+        `Upward query from ${start} and ${target} meets at ${meet}: distance ${dExact} using ${shortcuts.length} shortcut(s).`,
+        5,
+        { distance: dExact, settled: labels.length, visits: labels.length },
     );
     step += 1;
-    yield snap(`Contraction hierarchies: A→D = ${dExact} (shortcut A→C=3 preserved it).`, 3, {
-        distance: dExact,
-    });
+    yield snap(
+        `Contraction hierarchies: shortest path ${start} to ${target} costs ${dExact} with shortcut A to C of weight 3.`,
+        6,
+        {
+            distance: dExact,
+            settled: labels.length,
+            visits: labels.length,
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -201,6 +243,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "rank vertices least-important-first by degree",
+        "contract next vertex v in rank order",
+        "add shortcut u→t when via v is the only short route",
+        "repeat until one vertex remains uncontracted",
+        "upward Dijkstra from s and t over higher ranks",
+        "meet at vertex minimizing forward plus backward distance",
+        "done: shortest distance preserved through shortcuts",
+    ],
 };
 
 export default module;
