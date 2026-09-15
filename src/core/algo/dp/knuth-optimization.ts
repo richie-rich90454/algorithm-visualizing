@@ -217,6 +217,7 @@ const module: AlgorithmModule = {
         "opt[i][j-1] <= opt[i][j] <= opt[i+1][j] narrows splits",
         "quadrangle inequality keeps the search window monotone",
         "answer <- dp[0][n-1] with BST shape from opt choices",
-    ],};
+    ],
+};
 
 export default module;
