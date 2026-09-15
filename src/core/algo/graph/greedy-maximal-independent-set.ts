@@ -1,9 +1,34 @@
 /**
  * greedy-maximal-independent-set.ts – Maximal Independent Set (Greedy)
  *
- * Scans vertices in order, taking each one whose neighbors are all untaken.
- * On triangle+tail (A,B,C,D) this picks {A, D} – maximal, not maximum.
- * Time: O(V + E) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * An independent set holds vertices with no edge between any two; it is
+ * maximal when every outsider touches the set (nothing more can be added).
+ * The greedy scan walks the vertices in order and takes each vertex whose
+ * neighbors are all still untaken, blocking its neighbors as it goes. On
+ * the triangle-plus-tail it takes A (blocking B, C) and then D: {A, D} is
+ * maximal, though not the largest possible.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – one scan with neighbor marking
+ *   Space: O(V) for the taken and blocked sets
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex under test is YELLOW (comparing).
+ *   - Taken vertices turn GREEN (sorted); skipped ones ORANGE (visited).
+ *   - The final set flashes GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Maximal (cannot grow) differs from maximum (largest): greed can miss it.
+ *   - The complement of a maximal independent set is a minimal vertex cover.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -79,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of labels) if (!taken.has(v)) setN(v, "visited");
     yield snap(
         `Maximal independent set {${[...taken].sort().join(",")}} – every outsider touches it.`,
-        2,
+        4,
         { size: taken.size },
     );
 }
@@ -92,6 +117,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "walk the vertices in order with empty taken and blocked sets",
+        "take v if no neighbor is taken, else skip it as covered",
+        "repeat until every vertex is taken or skipped",
+        "check that every outsider touches the set",
+        "done: a maximal independent set such as {A,D}",
+    ],
 };
 
 export default module;
