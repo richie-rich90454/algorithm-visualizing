@@ -1,6 +1,33 @@
-// turning-turtles.ts – Turning Turtles: flip a head, optionally one coin left.
-// Position value = xor of head squares (1-indexed). Default H T H T has
-// heads {1,3}, xor 2; flipping 3 and toggling 1 clears the board (P).
+/**
+ * turning-turtles.ts – Turning Turtles (Green Hackenbush row game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Turning Turtles shows coins H/T in a row; a move flips a head to tails and
+ * optionally toggles one coin to its left. Simply: zero the head-xor like
+ * Nim. Formally: the value is the xor of head squares (1-indexed), and the
+ * default H T H T holds heads {1,3} with xor 2, so flipping coin 3 and
+ * toggling coin 1 clears the winning line to a P-position.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) flip-and-toggle search
+ *   Space: O(n) row state
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Heads paint GREEN; tails stay idle; flipped coins flash YELLOW.
+ *   - Each frame names the head-xor and the flip plus toggle squares.
+ *   - The zero-xor landing shows the P-position handed over.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Head-xor 0 marks a P-position; every nonzero row has a zeroing flip.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function turtleCells(coins: boolean[], hot: Set<number> = new Set()): VisualEntity[] {
