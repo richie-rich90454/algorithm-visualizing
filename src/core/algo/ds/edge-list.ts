@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `Edge list scan complete – every edge visited in O(E).`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { edges: edges.length },
     };
@@ -122,6 +122,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty edge list with no pairs",
+        "insert each edge as (u, v) pair in order",
+        "scan list comparing endpoints for queries",
+        "answer edge existence by linear scan",
+        "count edges by list length",
+        "list neighbors by filtering on source",
+        "done: edge list stores graph with query answer",
+    ],
 };
 
 export default module;
