@@ -1,6 +1,32 @@
 /**
- * Interleaving String: dp[i][j] from s1[i-1] or s2[j-1] matching s3[i+j-1].
- * Time O(n*m), Space O(n*m). Default -> true.
+ * interleaving-string.ts - Interleaving String
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- (dp[i-1][j] and s1 match) or (dp[i][j-1] and s2 match).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b7m)
+ *   Space: O(n\u00b7m)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -46,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Lengths ${s1.length} + ${s2.length} \u2260 ${s3.length} \u2013 cannot interleave.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -61,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : "Trivial interleave \u2013 no match.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -108,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${n},${m}`, "sorted"]])),
         edges: [],
         description: match ? `"${s3}" is an interleaving.` : `"${s3}" is not an interleaving.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { match },
     };
@@ -122,6 +148,14 @@ const module: AlgorithmModule = {
     defaultInput: { s1: "aabcc", s2: "dbbca", s3: "aadbbcbcac" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp with first row and column seeded from prefixes",
+        "dp[i][j] holds whether s1[:i] and s2[:j] form s3[:i+j]",
+        "dp[i][j] <- (dp[i-1][j] and s1 match) or (dp[i][j-1] and s2 match)",
+        "fill rows over s1 and columns over s2 in order",
+        "each cell checks the top and left predecessor characters",
+        "seed edges handle single-string prefix interleavings",
+        "answer <- dp[n][m] with interleave path backtraced",
+    ],};
 
 export default module;
