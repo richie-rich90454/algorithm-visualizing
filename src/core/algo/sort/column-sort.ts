@@ -1,8 +1,31 @@
 /**
- * column-sort.ts – Column Sort.
+ * column-sort.ts – Column Sort
  *
- * Sorts columns, permutes, sorts again until ordered.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Column sort treats the array as a matrix and alternates sorting columns with permuting rows into columns. After a few column-sort plus reshape rounds, the flattened matrix is sorted. It is a clean example of how reshaping data can expose parallelism.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -115,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -144,5 +167,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 2, 7, 1, 5, 3, 8, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with values in column-major matrix order",
+        "sort every column top to bottom",
+        "permute rows into columns (transpose-like reshape)",
+        "sort every column again after reshaping",
+        "scan columns back into linear order",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
