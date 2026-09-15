@@ -4,6 +4,29 @@
  * A binary heap with the ordering relaxed to grandparents: every right
  * child only needs to beat its grandparent. A reverse-bit array records
  * the shape, halving the comparisons of classic heapsort.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A binary heap with the ordering relaxed to grandparents: every right child only needs to beat its grandparent. A reverse-bit array records the shape, halving the comparisons of classic heapsort.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Weak Heap behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -103,6 +126,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the keys in input order plus cleared reverse bits",
+        "compare each node against its distinguished ancestor",
+        "swap when the ancestor is larger and flip the node reverse bit",
+        "apostrophes mark flipped bits in the display",
+        "grandparent ordering replaces full heap ordering",
+        "extract minima one by one from the weak-heap order",
+        "done: keys drain sorted and the flip history is shown",
+    ],
 };
 
 export default module;
