@@ -1,6 +1,32 @@
 /**
- * Jump Game II (greedy): extend current reach; jump when passing its end.
- * Time O(n), Space O(1). Default [2,3,1,1,4] -> 2 jumps.
+ * jump-game-min-jumps.ts - Jump Game (Min Jumps)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: extend farthest <- max(farthest, i + nums[i]) per index.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -31,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Already at the end \u2013 0 jumps.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -72,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(nums, done),
         edges: [],
         description: `Traceback: reach the end in ${jumps} jumps.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer: jumps },
     };
@@ -86,6 +112,14 @@ const module: AlgorithmModule = {
     defaultInput: { nums: [2, 3, 1, 1, 4] },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up jumps <- 0, currentEnd <- 0, farthest <- 0",
+        "farthest holds reach of the current jump window",
+        "extend farthest <- max(farthest, i + nums[i]) per index",
+        "scan once, closing a jump when i reaches currentEnd",
+        "each closure increments jumps and opens a new window",
+        "track window bounds to count the fewest jumps used",
+        "answer <- jumps to reach the end with jump points listed",
+    ],};
 
 export default module;
