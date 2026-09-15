@@ -1,6 +1,7 @@
 /**
  * bom-factor-oracle-matching.ts – BOM Matching.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm) worst, O(n) avg", space: "O(m)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -33,13 +34,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `BOM factor-oracle search for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const subs = new Set<string>();
@@ -93,7 +97,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -107,6 +113,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build factor oracle automaton for reversed pattern",
+        "initialize scan position at start of text",
+        "scan backward while factor oracle accepts substring",
+        "record longest accepted factor length for shift",
+        "verify full window equals pattern on factor hit",
+        "shift by factor length or full pattern length",
+        "report all match positions found",
+    ],
 };
 
 export default module;
