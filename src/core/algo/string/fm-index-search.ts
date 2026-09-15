@@ -41,13 +41,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `FM-index backward search "${pat}" in "${text}".`, 0);
+    yield F(tx(text), `FM-index backward search "${pat}" in "${text}".`, 0, { comparisons: 0, count: 0 });
     step += 1;
     const bwt = bwtOf(text);
-    yield F(tx(text), `BWT = "${bwt}".`, 1, { bwt });
+    yield F(tx(text), `BWT = "${bwt}".`, 1, { comparisons: 0, bwt });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { count: 0 });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, count: 0 });
         return;
     }
     const Fcol = bwt.split("").sort().join("");
@@ -60,14 +60,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < k; i += 1) if (bwt[i] === c) n += 1;
         return n;
     };
+    let comparisons = 0;
     let lo = 0,
         hi = bwt.length;
     for (let k = pat.length - 1; k >= 0; k -= 1) {
         const c = pat[k] as string;
+        comparisons += 1;
         lo = (first.get(c) ?? 0) + occ(c, lo);
         hi = (first.get(c) ?? 0) + occ(c, hi);
         if (step < 10) {
             yield F(tx(text, stAt([k], "comparing")), `Char "${c}": interval [${lo},${hi}).`, 2, {
+                comparisons,
                 lo,
                 hi,
             });
@@ -82,16 +85,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         matches.push(idx);
         idx = text.indexOf(pat, idx + 1);
     }
+    comparisons += Math.max(0, text.length - pat.length + 1);
     const fin = new Map<number, EntityState>();
     for (const s0 of matches) for (let x = s0; x < s0 + pat.length; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        count > 0 ? `"${pat}" occurs ${count}x at ${matches.join(", ")}.` : "No occurrence.",
+        count > 0 ? `"${pat}" occurs ${count}x at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         3,
-        { count, matches },
+        { comparisons, count, matches },
     );
     step += 1;
-    yield F(tx(text, fin), "Done.", 4, { count, matches });
+    yield F(tx(text, fin), `FM-index complete: "${pat}" occurs ${count}x.`, 4, { comparisons, count, matches });
 }
 
 const module: AlgorithmModule = {
