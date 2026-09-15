@@ -1,9 +1,33 @@
 /**
  * sublist-search.ts – Sublist Search
  *
- * Slides a pattern window along a list (linked-list-as-array) and
- * compares element by element at each start. The verified match goes
- * green with its start index.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Tests whether a pattern appears as a contiguous sublist of a longer list.
+ * It slides a window along the list one start position at a time, comparing
+ * element by element inside the window and abandoning the start at the first
+ * mismatch. When every pattern element matches in a row, the start index is
+ * the answer; exhausting all starts proves the pattern absent.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n·m) worst – every start may compare against the full pattern
+ *   Space: O(1) auxiliary – only the start and match counters
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Matched prefix cells are PINK (highlight), the failing cell YELLOW.
+ *   - The confirmed occurrence turns GREEN (sorted) across its full width.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Works on any list, sorted or not – the naive string-matching analog.
+ *   - KMP and Boyer-Moore build on this by skipping hopeless starts.
+ *   - The list is rendered as an array; metadata.index marks each node.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -45,8 +69,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(list),
             edges: [],
-            description: "Empty list or pattern – nothing to match.",
-            codeLineNumber: 1,
+            description: "Empty list or pattern holds nothing to match.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons },
         };
@@ -68,8 +92,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(list, states),
             edges: [],
-            description: `Start ${start}: matched ${matched}/${pattern.length} before failing.`,
-            codeLineNumber: 1,
+            description: `Start ${start}: matched ${matched}/${pattern.length} elements before failing, sliding right.`,
+            codeLineNumber: 3,
             layout: "array",
             meta: { comparisons },
         };
@@ -89,8 +113,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(list, states),
             edges: [],
-            description: `Pattern found at index ${verified} after ${comparisons} comparisons.`,
-            codeLineNumber: 2,
+            description: `Pattern [${pattern.join(",")}] found at index ${verified} after ${comparisons} comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, foundIndex: verified },
         };
@@ -99,8 +123,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(list),
             edges: [],
-            description: `Pattern [${pattern.join(",")}] is not a sublist.`,
-            codeLineNumber: 2,
+            description: `Pattern [${pattern.join(",")}] is not a sublist after ${comparisons} comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons },
         };
@@ -115,6 +139,14 @@ const module: AlgorithmModule = {
     defaultInput: { list: [1, 2, 3, 4, 5], pattern: [3, 4] },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with start ← 0 at the head of the list",
+        "for each start: compare pattern[k] with list[start+k] in order",
+        "if all m pattern elements match: return start as the match",
+        "on the first mismatch: abandon this start and slide start ← start+1",
+        "repeat until start+m exceeds the list length",
+        "done: return match index or report pattern absent",
+    ],
 };
 
 export default module;
