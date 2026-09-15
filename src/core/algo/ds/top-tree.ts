@@ -4,6 +4,29 @@
  * A dynamic tree compressed into clusters: rake merges glue side
  * subtrees, compress merges glue path pieces. Path aggregates (here the
  * maximum edge weight) are maintained per cluster.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A dynamic tree compressed into clusters: rake merges glue side subtrees, compress merges glue path pieces. Path aggregates (here the maximum edge weight) are maintained per cluster.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Top Tree behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -98,6 +121,15 @@ const module: AlgorithmModule = {
     defaultInput: { chain: [1, 2, 3, 4], weights: [5, 2, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with every path edge as its own cluster",
+        "each edge cluster carries its endpoint pair and max weight",
+        "compress: merge two adjacent clusters into one parent cluster",
+        "parent max is the larger of the two child maxima",
+        "rake merges would attach side subtrees in a full tree",
+        "repeat until one root cluster covers the whole path",
+        "done: root cluster carries the path maximum",
+    ],
 };
 
 export default module;
