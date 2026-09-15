@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Baillie-PSW on ${n}: stage 1 Miller-Rabin base 2.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let d = n - 1,
@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Passes base 2 – Lucas stage would run next (demo stops here).`,
             codeLineNumber: 3,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -151,5 +151,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "handle n < 2 and even n, then start Miller-Rabin base 2",
+        "write n−1 ← d·2^s with d odd",
+        "compute x ← 2^d mod n",
+        "square x repeatedly; survivors pass the base-2 stage",
+        "done: composite, or probable prime pending Lucas",
+    ],
 };
 export default module;
