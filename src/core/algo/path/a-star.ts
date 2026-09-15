@@ -175,7 +175,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `A* found shortest path ${path.join(" → ")} with cost ${gScore.get(target)}.`,
                 codeLineNumber: 6,
                 layout: "graph",
-                meta: { settled: expandedCount, visits: expandedCount, distance: gScore.get(target) ?? Infinity, path: path.join("→") },
+                meta: {
+                    settled: expandedCount,
+                    visits: expandedCount,
+                    distance: gScore.get(target) ?? Infinity,
+                    path: path.join("→"),
+                },
             };
             return;
         }
@@ -223,14 +228,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (neighborNode) {
                 neighborNode.state = "visited";
             }
-            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new g-score ${gScore.get(neighbor)}.`, 3);
+            yield buildFrame(
+                `Relaxing edge ${current} → ${neighbor} (weight ${weight}), new g-score ${gScore.get(neighbor)}.`,
+                3,
+            );
             step += 1;
         }
 
         if (node) {
             node.state = "sorted";
         }
-        yield buildFrame(`${current} closed with final g-score ${gScore.get(current)}, continuing search.`, 5);
+        yield buildFrame(
+            `${current} closed with final g-score ${gScore.get(current)}, continuing search.`,
+            5,
+        );
         step += 1;
     }
 
