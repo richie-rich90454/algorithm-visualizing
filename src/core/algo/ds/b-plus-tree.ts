@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "B+ tree – routing keys above, linked leaves below.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
 
@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Scanning the leaf chain – comparing ${search} with ${targetLeaf[i]}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
         if (search === targetLeaf[i]) {
@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: found
             ? `Found ${search} in a leaf – internal nodes only routed us here.`
             : `${search} not found.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { found },
     };
@@ -140,6 +140,15 @@ const module: AlgorithmModule = {
     defaultInput: { routing: [9], leaves: [3, 5, 9, 12, 18, 21], search: 12 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty B+ tree with single leaf root",
+        "search down internal keys to locate target leaf",
+        "insert key into leaf in sorted order",
+        "if leaf overflows then split and promote middle key",
+        "link leaves together for range scans",
+        "count keys and height during traversal",
+        "done: balanced B+ tree holds keys with linked leaves",
+    ],
 };
 
 export default module;
