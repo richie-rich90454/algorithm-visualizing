@@ -1,10 +1,36 @@
 /**
  * dominators-lengauer-tarjan.ts – Dominators (Lengauer–Tarjan)
  *
- * Lengauer–Tarjan frames flow analysis as DFS order + semidominators with
- * union-find link-eval; the iterative dataflow below converges to the same
- * idom tree. Flow A→{B,C}→D→E: idom(D)=A, idom(E)=D.
- * Time: O((V + E) log(V + E)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * In a flow graph with a fixed entry, vertex d dominates v when every path
+ * from the entry to v passes through d; the immediate dominator idom(v) is
+ * the closest such dominator. The Lengauer–Tarjan view frames this as DFS
+ * order plus semidominators with union-find link-eval, and the iterative
+ * dataflow below converges to the same tree: start with Dom(entry) =
+ * {entry} and every other set full, then repeatedly intersect each
+ * vertex's predecessor sets and add the vertex itself. On A→{B,C}→D→E the
+ * fixed point gives idom(D)=A and idom(E)=D.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O((V + E) log(V + E)) for Lengauer–Tarjan with link-eval
+ *   Space: O(V + E) for predecessor lists and dominator sets
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The entry vertex is PINK (highlight).
+ *   - Immediate-dominator tree edges turn GREEN (path).
+ *   - Dominated vertices finish GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The idom links always form a tree rooted at the entry.
+ *   - Dominators drive compilers: loops, SSA form, and control dependence.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -121,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             .filter((v) => v !== start)
             .map((v) => `idom(${v})=${idom.get(v)}`)
             .join(", ")}; Dom(${last})={${[...(dom.get(last) as Set<string>)].sort().join(",")}}.`,
-        2,
+        4,
         { rounds },
     );
 }
@@ -134,6 +160,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["D"], C: ["D"], D: ["E"], E: [] }, start: "A" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "Dom(entry) ← {entry}; every other Dom set starts full",
+        "round: Dom[v] ← {v} ∪ intersect of Dom over all predecessors",
+        "repeat rounds until no set changes",
+        "read each immediate dominator off the fixed-point sets",
+        "done: idom tree such as idom(D)=A and idom(E)=D",
+    ],
 };
 
 export default module;
