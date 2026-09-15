@@ -67,7 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the longest palindromic substring of "${text}".`,
         codeLineNumber: 0,
         layout: "text",
-        meta: { comparisons },
+        meta: { comparisons, shifts: 0, matches: [] },
     };
     step += 1;
 
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Center ${i}: palindrome radius ${arm[i]} (centered on "${padded[i]}").`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { comparisons },
+            meta: { comparisons, shifts: 0, matches: [] },
         };
         step += 1;
     }
@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest palindromic substring: "${longest}".`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { comparisons, longestLen: longest.length },
+        meta: { comparisons, shifts: 0, matches: [longest], longestLen: longest.length },
     };
 }
 
@@ -168,6 +168,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "babadcdabab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "transform string with separators for uniform centers",
+        "initialize center and right boundary of mirror box",
+        "mirror radius from symmetric center when inside box",
+        "expand around center while characters match",
+        "update center and boundary on wider palindrome",
+        "track longest radius across all centers",
+        "report longest palindromic substring",
+    ],
 };
 
 export default module;
