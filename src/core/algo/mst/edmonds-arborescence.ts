@@ -93,10 +93,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(), true),
-            `Edmonds rooted at vertex ${d.root}: pick the cheapest incoming edge per vertex.`,
+            `Edmonds rooted at vertex ${d.root} on ${verts.length} vertices, ${list.length} directed edges: pick the cheapest incoming edge per vertex.`,
             0,
         ),
-        meta: { picked: 0, totalWeight: 0 },
+        meta: { picked: 0, accepted: 0, totalWeight: 0 },
     };
     const pick = new Map<string, number>();
     for (const v of verts) {
@@ -113,10 +113,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 step++,
                 N(verts),
                 ME(list, new Map([[best, "comparing"]]), true),
-                `Cheapest edge into vertex ${v} is ${e.a}–${v} (weight ${e.w}).`,
+                best >= 0
+                    ? `Cheapest edge into vertex ${v} is ${e.a}–${v} (weight ${e.w}).`
+                    : `Vertex ${v} has no incoming edge, so it stays unreachable.`,
                 2,
             ),
-            meta: { picked: pick.size },
+            meta: { picked: pick.size, accepted: pick.size, totalWeight: 0 },
         };
     }
     const seen = new Set<string>();
@@ -143,9 +145,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             cyc
                 ? "A directed cycle was found among the picks — it would be contracted and the search repeated."
                 : "No directed cycle among the picks — they already form the optimum arborescence.",
-            4,
+            3,
         ),
-        meta: { picked: pick.size },
+        meta: { picked: pick.size, accepted: pick.size, totalWeight: 0 },
     };
     const chosen = [...pick.values()].map((i) => list[i] as E3);
     const weight = chosen.reduce((s, e) => s + e.w, 0);
@@ -156,10 +158,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, fin, true),
-            `Optimum arborescence weight ${weight}: ${chosen.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
+            `Optimum arborescence weight ${weight}, total weight ${weight}: ${chosen.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
             6,
         ),
-        meta: { weight, totalWeight: weight, picked: pick.size },
+        meta: { weight, totalWeight: weight, picked: pick.size, accepted: pick.size },
     };
 }
 
