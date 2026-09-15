@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
     yield F(
         bwt.split("").map((c, i) => cell(3, i, c, "sorted")),
-        "Done.",
+        `BWT complete: "${bwt}" (primary index ${primary}).`,
         4,
         { bwt, primary },
     );
