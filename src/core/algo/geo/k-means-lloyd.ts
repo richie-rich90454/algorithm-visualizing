@@ -75,9 +75,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities(pts, assign, cents),
         edges: [],
         description: `Lloyd k=2: seeds μ0=${cents[0]}, μ1=${cents[1]}.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { seeds: cents.map((c) => `(${(c as Pt)[0]},${(c as Pt)[1]})`).join(" ") },
     };
     step += 1;
     for (let it = 0; it < 4; it += 1) {
@@ -92,9 +92,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities(pts, assign, cents),
             edges: [],
             description: `Iter ${it + 1}: assigned [${assign.join(", ")}].`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { iter: it + 1, assignment: assign },
         };
         step += 1;
         const next: Pt[] = [0, 1].map((c) => {
@@ -114,9 +114,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities(pts, assign, cents),
             edges: [],
             description: `Iter ${it + 1}: means μ0=${cents[0].map((v) => Math.round(v * 100) / 100)}, μ1=${cents[1].map((v) => Math.round(v * 100) / 100)}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
-            meta: {},
+            meta: { iter: it + 1, centroids: cents.map((c) => `(${c[0]},${c[1]})`).join(" ") },
         };
         step += 1;
         if (moved < 1e-9) break;
@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities(pts, assign, cents),
         edges: [],
         description: `Converged: cluster 0 = {${pts.map((_, i) => i).filter((i) => assign[i] === 0)}}, cluster 1 = {${pts.map((_, i) => i).filter((i) => assign[i] === 1)}}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { assignment: assign, centroids: cents.map(([x, y]) => `${x},${y}`) },
     };
@@ -149,6 +149,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from two seed means mu0 and mu1",
+        "assign each point to its nearer mean",
+        "recompute each mean from its members",
+        "repeat assign and update until means stop moving",
+        "freeze the final assignment of every point",
+        "done: two clusters plus centroids describe the data",
+    ],
 };
 
 export default module;
