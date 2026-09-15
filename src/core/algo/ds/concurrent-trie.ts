@@ -131,6 +131,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["01", "10", "11"], lookup: "10" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty concurrent trie with single root",
+        "hash key characters to guide level by level descent",
+        "insert with CAS on child pointer when slot is empty",
+        "compare query characters against edges atomically",
+        "retry on contention without global locks",
+        "count stored keys across snapshots",
+        "done: trie holds keys with lock-free lookup answer",
+    ],
 };
 
 export default module;
