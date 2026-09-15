@@ -160,6 +160,15 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["cat", "car", "cart", "dog"], search: "car" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with a bare root holding no characters",
+        "insert word: walk one edge per character creating nodes as needed",
+        "shared prefixes reuse existing nodes automatically",
+        "mark the terminal node when the full word is stored",
+        "search query: follow one edge per character from the root",
+        "a missing edge means the prefix is absent entirely",
+        "done: words share prefixes and the query verdict is reported",
+    ],
 };
 
 export default module;
