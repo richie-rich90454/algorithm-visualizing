@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Computing topological order with Kahn's algorithm (in-degrees listed).",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { emitted: order.length },
     };
     step += 1;
 
@@ -94,17 +94,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { emitted: order.length },
     });
 
-    yield buildFrame(`Ready queue seeded with zero-in-degree vertices: [${queue.join(", ")}].`);
+    yield buildFrame(`Ready queue seeded with zero-in-degree vertices: [${queue.join(", ")}].`, 0);
     step += 1;
 
     while (queue.length > 0) {
@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (currentNode) {
             currentNode.state = "comparing";
         }
-        yield buildFrame(`Dequeued ${current} – it has no remaining prerequisites.`);
+        yield buildFrame(`Dequeued ${current} – it has no remaining prerequisites.`, 1);
         step += 1;
 
         // Emit the vertex and free its successors.
@@ -175,6 +175,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute in-degrees; seed the queue with zero in-degree vertices",
+        "dequeue the next ready vertex and emit it",
+        "decrement successors; newly freed vertices join the queue",
+        "repeat until the queue drains",
+        "done: topological order, or a cycle verdict when short",
+    ],
 };
 
 export default module;
