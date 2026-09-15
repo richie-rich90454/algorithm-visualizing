@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: "Cyclic buffer wrapped around without shifting a single element.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { capacity, count },
     };
@@ -115,6 +115,15 @@ const module: AlgorithmModule = {
     defaultInput: { capacity: 5, writes: [1, 2, 3, 4, 5, 6, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize ring buffer with fixed capacity and head at 0",
+        "write value at tail and advance tail modulo capacity",
+        "compare tail against head to detect full buffer",
+        "read value from head and advance head modulo capacity",
+        "wrap indices around end back to start",
+        "count stored items from head to tail distance",
+        "done: ring holds values in FIFO order with head and tail",
+    ],
 };
 
 export default module;
