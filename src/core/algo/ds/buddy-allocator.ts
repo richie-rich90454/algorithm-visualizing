@@ -132,6 +132,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize single free block of power-of-two size",
+        "round request up to next power of two",
+        "split larger buddy blocks until size fits request",
+        "compare buddy addresses with xor to find partner",
+        "allocate smallest fitting block and mark used",
+        "free block and coalesce with free buddy recursively",
+        "done: blocks show allocation with coalesced free space",
+    ],
 };
 
 export default module;
