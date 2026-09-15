@@ -185,6 +185,13 @@ const module: AlgorithmModule = {
     defaultInput: [3, 1, 4, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted array and shuffle count ← 0",
+        "scan for the first adjacent disorder",
+        "if disordered: show the failing pair",
+        "shuffle the whole array at random (Fisher-Yates)",
+        "done: array is sorted by luck or limit reached",
+    ],
 };
 
 export default module;
