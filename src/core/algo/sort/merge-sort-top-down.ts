@@ -225,6 +225,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with full range [0..n-1] to sort",
+        "split [lo..hi] at mid, sort each half recursively",
+        "compare run fronts, take the smaller into output",
+        "merged slice [lo..hi] is now sorted",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
