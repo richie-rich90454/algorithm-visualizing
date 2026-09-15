@@ -75,16 +75,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Gabow's algorithm – iterative SCC with two stacks.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { components: components.length },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { components: components.length },
     });
@@ -107,7 +107,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (startNode) {
             startNode.state = "comparing";
         }
-        yield buildFrame(`Starting DFS from ${start}.`);
+        yield buildFrame(`Starting DFS from ${start}.`, 1);
         step += 1;
 
         // Iterative DFS using an explicit work stack of (vertex, neighborPos).
@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     if (neighborNode) {
                         neighborNode.state = "comparing";
                     }
-                    yield buildFrame(`Descending into ${neighbor}.`);
+                    yield buildFrame(`Descending into ${neighbor}.`, 1);
                     step += 1;
 
                     work.push({ vertex: neighbor, pos: 0 });
@@ -157,6 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     }
                     yield buildFrame(
                         `Back edge from ${vertex} to ${neighbor} – shrinking the path.`,
+                        2,
                     );
                     step += 1;
                 }
@@ -184,7 +185,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                             memberNode.state = color;
                         }
                     }
-                    yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`);
+                    yield buildFrame(`SCC #${components.length}: {${component.join(", ")}}.`, 3);
                     step += 1;
                 }
             }
@@ -196,7 +197,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Gabow complete – found ${components.length} strongly connected component(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { components: components.length },
     };
@@ -221,6 +222,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "push the start vertex onto the vertex stack and the path stack",
+        "follow a tree edge: index the neighbor and push it on both stacks",
+        "back edge to a stacked vertex: pop the path stack past it",
+        "finished path-stack top: pop one SCC off the vertex stack",
+        "repeat for every unvisited vertex",
+        "done: every strongly connected component listed",
+    ],
 };
 
 export default module;
