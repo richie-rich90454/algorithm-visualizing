@@ -14,6 +14,10 @@
  *
  * The answer is the min over dp[all][v] + cost[v][0], closing the cycle.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -129,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Held-Karp DP for the TSP on ${vertices.length} cities.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -227,7 +231,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Optimal tour ${tourLabels.join(" → ")} with cost ${bestCost}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { bestCost },
     };
@@ -268,6 +272,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
-};
+    pseudocode: [
+        "set up cost matrix for n cities, dp[mask][v] <- infinity",
+        "base dp[1<<start][start] <- 0 for tour starting at start",
+        "dp[mask | (1<<u)][u] <- min(dp[mask][v] + cost[v][u])",
+        "iterate masks in increasing order containing the start city",
+        "extend each reachable state to every unvisited city u",
+        "close each full tour with return edge to start city",
+        "answer <- min over v of dp[full][v] + cost[v][start] plus tour path",
+    ],};
 
 export default module;
