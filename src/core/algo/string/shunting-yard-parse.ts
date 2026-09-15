@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
     yield F(
         out.map((x, i) => cell(3, i, x, "sorted")),
-        "Done.",
+        `Parse complete: RPN is ${out.join(" ")}.`,
         4,
         { rpn: out.join(" ") },
     );
