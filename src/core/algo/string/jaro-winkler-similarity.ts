@@ -1,6 +1,7 @@
 /**
  * jaro-winkler-similarity.ts – Jaro-Winkler.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n·m)", space: "O(n+m)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -63,7 +64,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(a), `Jaro-Winkler("${a}", "${b}").`, 0);
     step += 1;
@@ -101,7 +102,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { jaro: j, winkler: w },
     );
     step += 1;
-    yield F(tx(b), `Similarity complete: Jaro ${j.toFixed(4)}, Winkler ${w.toFixed(4)}.`, 4, { jaro: j, winkler: w });
+    yield F(tx(b), `Similarity complete: Jaro ${j.toFixed(4)}, Winkler ${w.toFixed(4)}.`, 4, {
+        jaro: j,
+        winkler: w,
+    });
 }
 
 const module: AlgorithmModule = {
@@ -112,6 +116,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "MARTHA", b: "MARHTA" },
     visualType: "text",
     run,
+    pseudocode: [
+        "find matching characters within sliding window",
+        "count transpositions among matched characters",
+        "compute Jaro score from matches and transpositions",
+        "measure common prefix up to four characters",
+        "boost Jaro score by prefix scaling factor",
+        "clamp final score between zero and one",
+        "report Jaro and Winkler similarity scores",
+    ],
 };
 
 export default module;
