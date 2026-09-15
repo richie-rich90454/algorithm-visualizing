@@ -10,6 +10,10 @@
  * prefix (forcing the next digit to stay ≤ N's digit). The classic example
  * problem: count the numbers from 0 to N that do not contain the digit 4.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -77,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Counting numbers from 0 to ${n} that do not contain digit 4.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -124,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeDigits(digits),
         edges: [],
         description: `Answer: ${count} valid numbers (0..${n} without the digit 4).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { count },
     };
@@ -140,6 +144,14 @@ const module: AlgorithmModule = {
     defaultInput: { n: 543 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up digit array of n plus memo[pos][tight][started]",
+        "state holds count of valid completions from this position",
+        "f(pos) <- sum over allowed digits d of f(pos+1 with flags)",
+        "recurse positions left to right honoring the tight bound",
+        "skip digit 4 transitions while propagating started flag",
+        "memoize on (pos, tight, started) to reuse suffix counts",
+        "answer <- f(0) as count of numbers in 0..n avoiding 4",
+    ],};
 
 export default module;
