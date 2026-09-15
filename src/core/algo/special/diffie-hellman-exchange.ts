@@ -90,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: i,
+            codeLineNumber: Math.min(i, 6),
             layout: "grid",
             meta: { sharedSecret: sa, match: sa === sb },
         };
@@ -128,6 +128,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: 6, b: 15 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "publish prime p=23 and generator g=5 openly",
+        "Alice picks secret a and computes A <- g^a mod p",
+        "Bob picks secret b and computes B <- g^b mod p",
+        "exchange public values A and B over the channel",
+        "Alice computes s <- B^a mod p locally",
+        "Bob computes s <- A^b mod p locally",
+        "done: both sides share secret s without sending it",
+    ],
 };
 
 export default module;
