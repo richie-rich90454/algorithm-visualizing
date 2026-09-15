@@ -145,6 +145,7 @@ const module: AlgorithmModule = {
         "edges propagate straight-line sums from the start",
         "interior cells pick the cheaper of top or left entry",
         "answer <- dp[m-1][cols-1] with path backtraced via mins",
-    ],};
+    ],
+};
 
 export default module;
