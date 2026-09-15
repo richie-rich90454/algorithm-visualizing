@@ -1,7 +1,8 @@
 /**
- * morris-traversal.ts – Morris inorder (threaded, O(1) space)
- * Temporarily threads predecessor→current, then restores links.
- * Time O(n), Space O(1). current=comparing, done=sorted.
+ * morris-traversal.ts – Morris inorder traversal with O(1) extra space.
+ *
+ * Temporarily threads predecessor to current, then restores links.
+ * Time O(n), Space O(1). Current node uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -139,5 +140,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start at root with no stack or recursion",
+        "visit node directly when it has no left child",
+        "thread predecessor right link to current node",
+        "remove thread and visit current on second pass",
+        "return inorder node list as the traversal",
+    ],
 };
 export default module;
