@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs odd prime p >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Compute (${a}|${p}) via Euler: a^((p-1)/2) mod p.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     if (am === 0) {
@@ -139,5 +139,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 5, p: 11 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state (a|p) via Euler's a^((p−1)/2) mod p",
+        "raise a to (p−1)/2 modulo p",
+        "residue 1 means residue; p−1 maps to −1",
+        "confirm with an explicit square root when one exists",
+        "done: Legendre symbol with witness",
+    ],
 };
 export default module;
