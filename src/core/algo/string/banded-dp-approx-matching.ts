@@ -1,6 +1,7 @@
 /**
  * banded-dp-approx-matching.ts – Banded DP Approx.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nk)", space: "O(nk)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -53,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const m = pat.length,
         n = text.length;
@@ -79,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
     step += 1;
     if (m === 0) {
-        yield F(grid([[0]], 9), "Empty pattern.", 5, { matches: [] });
+        yield F(grid([[0]], 9), 'Empty pattern "" - nothing to search for.', 5, { matches: [] });
         return;
     }
     yield F(
@@ -87,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             dp.map((r) => r.map((v) => (v === Infinity ? -1 : v))),
             1,
         ),
-        "Band initialized around diagonal.",
+        'Band initialized around diagonal for current pattern "p" in text "t".',
         1,
     );
     step += 1;
@@ -114,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ),
         matches.length
             ? `Hits ending where dist≤${k}: starts ${matches.join(", ")}.`
-            : "No hit within band.",
+            : "No hit within band for current pattern.",
         3,
         { matches, k },
     );
@@ -139,6 +140,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc", k: 1 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize banded table with gap penalties near diagonal",
+        "set band width W equal to 2k+1 around main diagonal",
+        "fill cells inside band with substitution cost",
+        "skip cells outside band as infinite distance",
+        "scan last row for distances at most k",
+        "trace matching windows with distance within bound",
+        "report match starts and edit distances",
+    ],
 };
 
 export default module;
