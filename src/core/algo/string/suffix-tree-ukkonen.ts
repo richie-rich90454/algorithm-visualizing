@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const root: TreeNode = { id: nextId, edges: new Map() };
     nextId += 1;
 
-    const buildFrame = (message: string): VisualFrame => {
+    const buildFrame = (message: string, codeLine = 2): VisualFrame => {
         // Flatten the tree into node/edge entities (tree layout needs
         // parentId metadata, so build a parent map).
         const parentMap = new Map<string, string | null>();
@@ -107,13 +107,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges,
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: codeLine,
             layout: "tree",
-            meta: { suffixes: n },
+            meta: { comparisons: nextId, shifts: 0, suffixes: n, matches: nextId },
         };
     };
 
-    yield buildFrame("Starting the suffix tree – inserting suffixes one by one.");
+    yield buildFrame(`Starting suffix tree for "${text}" – inserting ${n} suffixes one by one.`, 0);
     step += 1;
 
     // Insert every suffix (Ukkonen's incremental suffix-by-suffix idea).
@@ -172,11 +172,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             i += k;
         }
 
-        yield buildFrame(`Inserted suffix "${suffix}".`);
+        yield buildFrame(`Inserted suffix "${suffix}" at index ${start}.`, 3);
         step += 1;
     }
 
-    yield buildFrame(`Suffix tree of "${text}" complete – ${nextId} nodes.`);
+    yield buildFrame(`Suffix tree of "${text}" complete – ${nextId} nodes.`, 6);
 }
 
 /** The Suffix Tree (Ukkonen) module, registered with the engine. */
@@ -189,6 +189,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize tree with single root node",
+        "extend tree with next text character phase",
+        "follow suffix links for active point updates",
+        "split edge when mismatch inside label",
+        "create new leaf for remaining suffixes",
+        "update active point and remainder count",
+        "report completed suffix tree",
+    ],
 };
 
 export default module;
