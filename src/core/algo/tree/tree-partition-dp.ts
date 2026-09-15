@@ -1,7 +1,8 @@
 /**
- * tree-partition-dp.ts – Partition tree into subtrees bounded by S
- * Postorder sums; cuts a child when its sum plus u exceeds S.
- * Time O(n), Space O(n). cut=highlight, kept=sorted.
+ * tree-partition-dp.ts – Partition tree into subtrees bounded by S.
+ *
+ * Postorder sums; cuts a child when its sum plus parent exceeds S.
+ * Time O(n), Space O(n). Cut uses highlight, kept uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -124,5 +125,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes postorder with weight limit S",
+        "accumulate child remainders while fitting limit",
+        "cut child edge when its sum would overflow",
+        "count cuts plus final root component",
+        "return component count as the partition answer",
+    ],
 };
 export default module;
