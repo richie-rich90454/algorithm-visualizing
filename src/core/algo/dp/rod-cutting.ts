@@ -147,6 +147,7 @@ const module: AlgorithmModule = {
         "try every feasible first-cut length per total",
         "combine cut price with optimal remainder revenue",
         "answer <- dp[n] with cut lengths reconstructed",
-    ],};
+    ],
+};
 
 export default module;
