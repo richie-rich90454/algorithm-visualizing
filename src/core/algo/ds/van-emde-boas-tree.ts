@@ -3,6 +3,29 @@
  *
  * Sqrt-decomposition over a fixed universe: min/max shortcuts plus a
  * summary of non-empty clusters. Predecessor walks clusters, not keys.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Sqrt-decomposition over a fixed universe: min/max shortcuts plus a summary of non-empty clusters. Predecessor walks clusters, not keys.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log log U)
+ *   Space: O(U)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard van Emde Boas Tree behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -122,6 +145,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [2, 5, 11], query: 6 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty universe split into fixed clusters",
+        "track global min and max separately for O(1) extremes",
+        "insert key: update min and max, mark its cluster in the summary",
+        "recurse into the cluster for the remaining low bits",
+        "successor walks the summary to the next nonempty cluster",
+        "universe squaring gives doubly logarithmic operations",
+        "done: clusters index all keys and the query answer is reported",
+    ],
 };
 
 export default module;
