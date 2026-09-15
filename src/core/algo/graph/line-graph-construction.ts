@@ -1,9 +1,32 @@
 /**
  * line-graph-construction.ts – Line Graph Construction
  *
- * Each edge becomes a vertex; two are adjacent when the edges share an
- * endpoint. Star K1,3 becomes a triangle on {AB, AC, AD}.
- * Time: O(V + E²) Space: O(E²)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The line graph L(G) turns edges into vertices: each edge of G becomes one
+ * vertex, and two line-graph vertices link up exactly when their edges
+ * share an endpoint in G. Triple intersections in G become triangles in
+ * L(G). The star K1,3 (hub A with leaves B, C, D) converts to a triangle
+ * on {AB, AC, AD}, since all three edges meet at A.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E²) – each edge pair sharing an endpoint links up
+ *   Space: O(E²) for the line-graph adjacency
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Original edges convert one by one, flashing BLUE (active).
+ *   - The finished line graph renders GREEN (sorted) with GREEN (path) edges.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Edge coloring of G equals vertex coloring of L(G).
+ *   - Claw-free structure: line graphs never contain K1,3 as an induced part.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -100,8 +123,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: lgNodes.map((n) => ({ ...n })),
         edges: lgEdges.map((e) => ({ ...e })),
-        description: `Line graph L(G): ${lgNodes.length} vertices, ${lgEdges.length / 2} adjacencies – a triangle.`,
-        codeLineNumber: 2,
+        description: `Line graph L(G): ${lgNodes.length} vertices, ${lgEdges.length / 2} adjacencies.`,
+        codeLineNumber: 4,
         layout: "graph" as const,
         meta: { vertices: lgNodes.length },
     };
@@ -115,6 +138,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C", "D"], B: ["A"], C: ["A"], D: ["A"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "list every edge of the original graph",
+        "turn each edge into one line-graph vertex",
+        "link line vertices whose edges share an endpoint",
+        "render the finished line graph L(G)",
+        "done: L(G) with its vertices and shared-endpoint links",
+    ],
 };
 
 export default module;
