@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Computing the Möbius function μ(n) for n = 1..${limit}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -174,6 +174,13 @@ const module: AlgorithmModule = {
     defaultInput: { n: DEFAULT_N },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sieve μ(n) for n = 1..limit",
+        "factor each n and flag squared primes",
+        "assign by parity: even → 1, odd → −1, squared → 0",
+        "pick the demo value and list its divisors",
+        "done: divisor sum inverts back to f(demoN)",
+    ],
 };
 
 export default module;
