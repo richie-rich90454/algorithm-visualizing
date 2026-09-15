@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate division (empty or zero leading divisor).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -50,7 +50,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Divide [${dvd}] by [${dvs}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const rem = [...dvd];
@@ -94,5 +94,12 @@ const module: AlgorithmModule = {
     defaultInput: { dividend: [1, 2, 3, 4], divisor: [1, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "line up dividend and nonzero divisor",
+        "cancel the leading term; record one quotient term",
+        "done: quotient with remainder r0",
+        "each round shrinks the working remainder",
+        "done: degree rule stops the division",
+    ],
 };
 export default module;
