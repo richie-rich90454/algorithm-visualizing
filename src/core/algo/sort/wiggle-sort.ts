@@ -1,8 +1,31 @@
 /**
- * wiggle-sort.ts – Wiggle Sort.
+ * wiggle-sort.ts – Wiggle Sort
  *
- * Interleaves halves so neighbors wiggle up and down.
- * Time: O(n), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Wiggle sort arranges values so they alternately dip and peak, then settles equal neighbors into sorted spots for this lesson. Ranking splits the array into small and large halves that interleave cleanly. It previews the true wiggle problem, where strict alternation needs careful duplicate handling.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -108,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -137,5 +160,13 @@ const module: AlgorithmModule = {
     defaultInput: [3, 1, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with values before wiggle interleaving",
+        "rank values to split small and large halves",
+        "interleave the halves into wiggle order",
+        "settle any equal neighbors into sorted spots",
+        "scan wiggles into final order",
+        "done: array is sorted and ready to wiggle",
+    ],
 };
 export default module;
