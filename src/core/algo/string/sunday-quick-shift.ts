@@ -34,33 +34,37 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Sunday search for "${pat}" in "${text}".`, 0);
+    yield F(tx(text), `Sunday search for "${pat}" in "${text}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
     const shift = new Map<string, number>();
     for (let i = 0; i < m; i += 1) shift.set(pat[i] as string, m - i);
-    yield F(tx(text), `Shift table built over ${shift.size} distinct chars.`, 1);
+    yield F(tx(text), `Shift table built over ${shift.size} distinct chars.`, 1, { comparisons: 0, shifts: shift.size });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     let i = 0;
     while (i <= text.length - m) {
         let j = 0;
         while (j < m && text[i + j] === pat[j]) j += 1;
+        comparisons += j + (j < m ? 1 : 0);
         const cur = Array.from({ length: m }, (_, k) => i + k);
         if (j === m) {
             matches.push(i);
-            yield F(tx(text, stAt(cur, "path")), `Match at ${i}.`, 2, { matches: [...matches] });
+            yield F(tx(text, stAt(cur, "path")), `Match: "${pat}" found at index ${i}.`, 2, { comparisons, matches: [...matches] });
             step += 1;
         } else {
             const s = new Map<number, EntityState>(
                 cur.map((p) => [p, "comparing"] as [number, EntityState]),
             );
             s.set(i + j, "swapped");
-            yield F(tx(text, s), `Mismatch at text[${i + j}] – align text[${i + m}] next.`, 3, {
+            yield F(tx(text, s), `Mismatch: text[${i + j}]="${text[i + j]}" vs pattern[${j}]="${pat[j]}"; aligning text[${i + m}] next.`, 3, {
+                comparisons,
+                shifts: shift.size,
                 matches: [...matches],
             });
             step += 1;
@@ -77,9 +81,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let k = s0; k < s0 + m; k += 1) fin.set(k, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         4,
-        { matches },
+        { comparisons, matches },
     );
 }
 
