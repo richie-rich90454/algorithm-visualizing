@@ -1,6 +1,32 @@
 /**
- * Longest Valid Parentheses: dp[i] closes at i via dp[i-1] links.
- * Time O(n), Space O(n). Default ")()())" -> 4.
+ * longest-valid-parentheses-dp.ts - Longest Valid Parentheses (DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- dp[i-1] + 2 + dp[i-dp[i-1]-2] on matching close.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 length 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -90,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...dp]]),
         edges: [],
         description: `Traceback: longest valid run = ${best}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: best },
     };
@@ -104,6 +130,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: ")()())" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[i] <- 0 as best valid run ending at i",
+        "dp[i] holds longest valid parentheses run ending at i",
+        "dp[i] <- dp[i-1] + 2 + dp[i-dp[i-1]-2] on matching close",
+        "scan closings left to right linking to prior opens",
+        "add inner run plus any run adjoining the matched open",
+        "opens contribute zero while extending closings only",
+        "answer <- max(dp) with longest run positions reported",
+    ],};
 
 export default module;
