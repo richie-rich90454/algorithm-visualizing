@@ -1,7 +1,8 @@
 /**
- * prufer-encode.ts – Prüfer code from a labeled tree
+ * prufer-encode.ts – Prufer code from a labeled tree.
+ *
  * Repeatedly strips the smallest leaf, recording its neighbor.
- * Time O(n²) demo, Space O(n). leaf=comparing, done=sorted.
+ * Time O(n^2) demo, Space O(n). Leaf uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -109,5 +110,12 @@ const module: AlgorithmModule = {
     defaultInput: { parentMap: { "2": "1", "3": "1", "4": "3" }, ids: ["1", "2", "3", "4"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the full labeled tree alive",
+        "find smallest leaf with degree one",
+        "record its neighbor then strip the leaf",
+        "repeat stripping until two nodes remain",
+        "return recorded neighbors as the Prufer code",
+    ],
 };
 export default module;
