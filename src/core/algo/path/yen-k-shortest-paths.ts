@@ -1,9 +1,34 @@
 /**
  * yen-k-shortest-paths.ts – Yen's K Shortest Paths
  *
- * Takes the best path, then deviates: for each spur node, forbid the used
- * edge and re-run Dijkstra. k=3: costs 4, 6, 6.
- * Time: O(k·V·(E log V)) Space: O(k·V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Lists the K best loopless paths in increasing cost order. It takes the
+ * current best path, then for each spur node forbids the used edge and any
+ * root vertices to force a fresh deviation, rerunning Dijkstra for every
+ * spur candidate and keeping the cheapest survivor. With k=3 the demo finds
+ * costs 4, 6, and 6.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k x V x (E log V)) for k rounds of spur searches
+ *   Space: O(k x V + E) for accepted paths and candidates
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The first shortest path is CYAN (path).
+ *   - Each new accepted path is YELLOW (comparing).
+ *   - Forbidden root edges are skipped during spur search.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Every path is loopless and results arrive in sorted cost order.
+ *   - Duplicate candidates are filtered so each path appears once.
+ *   - Powers backup routing and alternative-itinerary features.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -114,7 +139,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         return p[0] === from ? p : null;
     };
-    yield snap(`Yen's algorithm: ${k} shortest loopless paths ${start}→${target}.`, 0, { k });
+    yield snap(
+        `Yen's setup: finding ${k} shortest loopless paths from ${start} to ${target} in cost order.`,
+        0,
+        { k, settled: 0, visits: 0 },
+    );
     step += 1;
     const first = dijkstra(new Set(), new Set());
     if (!first) {
@@ -124,7 +153,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const A: string[][] = [first];
     clr();
     for (const v of first) setN(v, "path");
-    yield snap(`P1 = ${first.join("→")} (cost ${cost(first)}).`, 1, { paths: 1 });
+    yield snap(
+        `First shortest path P1 from ${start} to ${target}: ${first.join(" → ")} with cost ${cost(first)}.`,
+        1,
+        { paths: 1, settled: 1, visits: 1 },
+    );
     step += 1;
     const seenP = new Set([first.join(",")]);
     const cands: Array<{ p: string[]; c: number }> = [];
@@ -155,15 +188,23 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         clr();
         for (const v of next.p) setN(v, "comparing");
         yield snap(
-            `P${ki + 1} = ${next.p.join("→")} (cost ${next.c}) – best surviving spur candidate.`,
-            2,
-            { paths: A.length },
+            `Path P${ki + 1} from ${start} to ${target}: ${next.p.join(" → ")} with cost ${next.c} as the best surviving spur candidate.`,
+            4,
+            { paths: A.length, settled: A.length, visits: A.length },
         );
         step += 1;
     }
-    yield snap(`${k} shortest: ${A.map((p) => `${p.join("→")}(${cost(p)})`).join("; ")}.`, 3, {
-        paths: A.length,
-    });
+    yield snap(
+        `${A.length} shortest paths from ${start} to ${target}: ${A.map((p) => `${p.join(" → ")} with cost ${cost(p)}`).join("; ")}.`,
+        6,
+        {
+            paths: A.length,
+            settled: A.length,
+            visits: A.length,
+            distance: cost(A[0] as string[]),
+            path: (A[0] as string[]).join("→"),
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -190,6 +231,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute P1 shortest path from s to t via Dijkstra",
+        "for k ← 2 to K for next best path",
+        "for each spur node on previous path Pk-1",
+        "forbid used edge plus root vertices, run spur Dijkstra",
+        "join root plus spur into a loopless candidate",
+        "take cheapest new candidate as next path Pk",
+        "done: K shortest paths in increasing cost order",
+    ],
 };
 
 export default module;
