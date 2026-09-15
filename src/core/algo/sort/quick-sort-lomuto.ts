@@ -218,6 +218,14 @@ const module: AlgorithmModule = {
     defaultInput: [8, 3, 6, 1, 7, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with range [lo..hi] and pivot ← A[hi]",
+        "set boundary i ← lo for the smaller region",
+        "for j ← lo to hi-1: compare A[j] with pivot",
+        "if A[j] < pivot: swap A[i] and A[j], grow i",
+        "swap pivot into place at i, it is now final",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
