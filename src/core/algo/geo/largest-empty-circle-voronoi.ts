@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Largest empty circle over ${pts.length} sites.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { sites: pts.length },
     };
     if (pts.length < 3) {
         yield {
@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         ],
                         edges: [],
                         description: `Triple (${i},${j},${k}): center (${cc.o[0].toFixed(2)}, ${cc.o[1].toFixed(2)}), r=${cc.r.toFixed(3)} ${empty ? "empty ✓" : "non-empty"}.`,
-                        codeLineNumber: 2,
+                        codeLineNumber: 3,
                         layout: "point",
                         meta: { triple: [i, j, k], r: cc.r },
                     };
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: [...base.map((e) => ({ ...e })), ...centers.map((e) => ({ ...e }))],
             edges: [],
             description: "No empty circumcircle inside the bbox; fallback reports radius 0.",
-            codeLineNumber: 3,
+            codeLineNumber: 4,
             layout: "point",
             meta: { radius: 0 },
         };
@@ -131,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: fin,
         edges: [],
         description: `Largest empty circle: center (${best.o[0].toFixed(3)}, ${best.o[1].toFixed(3)}), r=${best.r.toFixed(4)} via sites ${best.triple.join(",")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { center: best.o, radius: best.r, triple: best.triple },
     };
@@ -152,6 +152,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all triples of sites",
+        "compute each triple circumcenter and radius",
+        "skip circles that escape the bounding box",
+        "test whether any fourth site falls inside",
+        "keep the biggest empty circle found so far",
+        "done: the winning center and radius mark the emptiest spot",
+    ],
 };
 
 export default module;
