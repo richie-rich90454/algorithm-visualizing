@@ -54,9 +54,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [node("o", 0, 0, "r=" + r, "highlight")],
         edges: [],
         description: `Counting lattice points with x²+y²≤${r}² (πr²≈${(Math.PI * r * r).toFixed(2)}).`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { radius: r },
     };
     step += 1;
     const shown: VisualEntity[] = [];
@@ -68,9 +68,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: [...shown.map((e) => ({ ...e })), node("o", 0, 0, "r=" + r, "highlight")],
             edges: [],
             description: `Shell x²+y²=${keys[s]}: ${shown.length} inside so far.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { shell: keys[s], inside: shown.length },
         };
         step += 1;
     }
@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...shown.map((e) => ({ ...e })), node("o", 0, 0, "r=" + r, "highlight")],
         edges: [],
         description: `N(${r})=${inside.length}; error vs πr² is ${(inside.length - Math.PI * r * r).toFixed(2)}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "point",
         meta: { count: inside.length, points: inside.map(([x, y]) => `${x},${y}`) },
     };
@@ -93,6 +93,14 @@ const module: AlgorithmModule = {
     defaultInput: { radius: 2 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from radius r and the area estimate pi r squared",
+        "scan integer grid points inside the bounding square",
+        "keep points with x squared plus y squared within r squared",
+        "group kept points into shells by radius squared",
+        "tally shells outward from the origin",
+        "done: total count N(r) approximates pi r squared",
+    ],
 };
 
 export default module;
