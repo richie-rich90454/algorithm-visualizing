@@ -1,8 +1,34 @@
 /**
  * uniform-cost-search.ts – Uniform-Cost Search
  *
- * Expands the frontier node with the lowest path cost g, guaranteeing
- * the cheapest route. Tiny explicit graph; the goal goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the cheapest path from a start node to a goal in a weighted graph.
+ * It keeps a frontier ordered by path cost g and always expands the cheapest
+ * unexpanded node (Dijkstra's algorithm on an explicit graph). The first time
+ * the goal is expanded – not merely reached – its cost is optimal, because
+ * every alternative still waiting is at least as expensive.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^(Cstar/e)) – exponential in the cheapest-solution cost
+ *   Space: O(b^(Cstar/e)) – the frontier holds every candidate path
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The node being expanded is YELLOW (comparing).
+ *   - Already expanded nodes stay PINK (highlight).
+ *   - The goal turns GREEN (sorted) with its optimal cost.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal and complete for non-negative edge costs; labels show g values.
+ *   - Expanding, not generating, the goal is what guarantees optimality.
+ *   - Breadth-first search is the special case where every cost equals 1.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -94,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }.`,
             codeLineNumber: 1,
             layout: "graph",
-            meta: { expansions, start, goal },
+            meta: { expansions, start, goal, current, g },
         };
         step += 1;
         for (const [nb, cost] of neighbors(current)) {
@@ -109,8 +135,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(best),
         edges: [],
-        description: `Goal ${goal} was not reached.`,
-        codeLineNumber: 3,
+        description: `Goal ${goal} is unreachable after ${expansions} expansions.`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { expansions, start, goal },
     };
@@ -124,6 +150,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with frontier ← {(start, g=0)} and best costs ← {start: 0}",
+        "while frontier is nonempty: pop the node with smallest g",
+        "if popped node = goal: return its path cost as optimal",
+        "else expand it and relax every neighbor with g+edge cost",
+        "record cheaper arrivals and push them onto the frontier",
+        "done: return optimal cost or report that goal is unreachable",
+    ],
 };
 
 export default module;
