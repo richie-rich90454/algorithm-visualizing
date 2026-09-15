@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Inserted ${insertValue} at the front in O(1).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { size: newValues.length },
     };
@@ -155,6 +155,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [10, 20, 30], insert: 15 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize doubly linked list from input values",
+        "traverse forward following next pointers comparing keys",
+        "traverse backward following prev pointers comparing keys",
+        "insert new value at front by rewiring next and prev",
+        "update head and tail pointers after insert",
+        "count nodes visited in both directions",
+        "done: list holds values with bidirectional order",
+    ],
 };
 
 export default module;
