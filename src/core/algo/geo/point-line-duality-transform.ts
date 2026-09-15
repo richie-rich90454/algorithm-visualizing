@@ -47,9 +47,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: [],
         description: `Primal: ${points.length} points. Dual maps (a,b) to y=${"ax−b"}.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { points: points.length },
     };
     step += 1;
     const shown: VisualEntity[] = base.map((e) => ({ ...e }));
@@ -84,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: ent,
             edges: edges.map((e) => ({ ...e })),
             description: `p-${i} (${points[i]}) ↔ y=${d.m}x${d.b < 0 ? d.b : "+" + d.b}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
             meta: { m: d.m, b: d.b },
         };
@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: edges.map((e) => ({ ...e })),
         description: `Dual complete: ${duals.length} lines; collinear primal points would concur in dual.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { lines: duals.map((d) => `${d.m},${d.b}`) },
     };
@@ -118,6 +118,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from primal points (a,b)",
+        "map each point to dual line y equals ax minus b",
+        "plot every dual line in the dual plane",
+        "concurrent dual lines flag collinear primal points",
+        "done: dual lines encode the primal point pattern",
+    ],
 };
 
 export default module;
