@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "KDB-Tree: empty. KD splits with paged regions.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: pts.length
             ? `Partition invariant holds. Nearest to (${q[0]},${q[1]}) is (${pts[bi]![0]},${pts[bi]![1]}).`
             : "No points indexed.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { nearest: pts[bi] ?? [] },
     };
@@ -134,5 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize KDB tree with single region covering space",
+        "insert point by descending region splits",
+        "compare point against partition lines",
+        "split full region along longest spread dimension",
+        "balance splits to keep tree height low",
+        "query range by visiting overlapping regions",
+        "done: tree holds points with range query answer",
+    ],
 };
 export default module;
