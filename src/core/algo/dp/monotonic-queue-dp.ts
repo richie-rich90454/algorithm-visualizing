@@ -13,6 +13,10 @@
  * recurrence into O(n). The classic example is jumping-game style DPs; here we
  * use the classic "best dp in the last k positions" template.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -146,7 +150,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, finalStates),
         edges: [],
         description: `Minimum cost to reach the end = ${dp[n - 1]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { n, k, answer: dp[n - 1] },
     };
@@ -162,6 +166,14 @@ const module: AlgorithmModule = {
     defaultInput: { costs: [0, 3, 1, 2, 5, 1, 2, 1], window: 3 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[0] <- costs[0] with deque holding index 0",
+        "dp[i] holds min cost reaching position i in window k",
+        "dp[i] <- dp[best] + costs[i] where best is deque front",
+        "slide i forward maintaining increasing dp deque order",
+        "drop indices outside the window before reading best",
+        "pop worse backs before pushing current index",
+        "answer <- dp[n-1] as min cost to reach the final cell",
+    ],};
 
 export default module;
