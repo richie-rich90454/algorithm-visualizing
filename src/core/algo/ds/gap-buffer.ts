@@ -32,7 +32,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         st: EntityState = "comparing",
         msg: string,
         line: number,
-        meta: VisualFrame["meta"] = {},
+        meta: VisualFrame["meta"] = { operations: step },
     ) => ({
         stepNumber: step,
         entities: cells(arr, new Map(hl.map((i) => [i, st]))),
@@ -71,8 +71,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         arr.map((_, i) => i),
         "sorted",
         `Final [${arr.join(", ")}]; contains ${val}: ${ok}. Length ${arr.length} verified.`,
-        3,
-        { ok },
+        6,
+        { ok, operations: step, size: arr.length },
     );
 }
 
@@ -84,5 +84,14 @@ const module: AlgorithmModule = {
     defaultInput: { items: [4, 1, 7, 3, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize buffer with gap positioned at cursor",
+        "move gap by shifting characters across the gap",
+        "compare cursor against gap start to choose shift side",
+        "insert text into gap and shrink gap size",
+        "delete by expanding gap over removed range",
+        "count characters on each side of gap",
+        "done: buffer holds text with cursor position",
+    ],
 };
 export default module;
