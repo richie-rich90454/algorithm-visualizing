@@ -166,6 +166,7 @@ const module: AlgorithmModule = {
         "each type contributes at most count[i] copies total",
         "bounded loop or monotone optimization enforces copy caps",
         "answer <- dp[W] with copy counts reconstructed from picks",
-    ],};
+    ],
+};
 
 export default module;
