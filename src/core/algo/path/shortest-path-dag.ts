@@ -152,7 +152,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Processing ${current} in topological order (final distance ${currentDist}).`, 3);
+        yield buildFrame(
+            `Processing ${current} in topological order (final distance ${currentDist}).`,
+            3,
+        );
         step += 1;
 
         // Relax each outgoing edge exactly once.
@@ -177,7 +180,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (neighborNode) {
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 4);
+            yield buildFrame(
+                `Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`,
+                4,
+            );
             step += 1;
         }
 
@@ -218,7 +224,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: topo.length, visits: topo.length, distance: dist.get(target) ?? Infinity, path: path.join("→") },
+        meta: {
+            settled: topo.length,
+            visits: topo.length,
+            distance: dist.get(target) ?? Infinity,
+            path: path.join("→"),
+        },
     };
 }
 
