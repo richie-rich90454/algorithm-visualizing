@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: idx,
+            codeLineNumber: Math.max(0, Math.min(idx, 6)),
             layout: "grid",
             meta: { reservoir: [...res], index: idx },
         };
@@ -113,6 +113,15 @@ const module: AlgorithmModule = {
     defaultInput: { k: 3, stream: [5, 1, 8, 3, 7, 2, 6, 4], seed: 13 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty reservoir holding k slots",
+        "for each stream item with index i",
+        "if reservoir not full then keep the item",
+        "else pick random j uniformly up to i",
+        "replace slot j when j falls inside k",
+        "every item keeps probability k over i",
+        "done: uniform sample with verified probability",
+    ],
 };
 
 export default module;
