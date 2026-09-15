@@ -192,6 +192,7 @@ const module: AlgorithmModule = {
         "for each lambda record groups used and boundary positions",
         "adjust lambda up or down based on groups versus K",
         "answer <- boundaries at converged lambda giving K groups",
-    ],};
+    ],
+};
 
 export default module;
