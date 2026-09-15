@@ -134,6 +134,7 @@ const module: AlgorithmModule = {
         "each buy subtracts price, each sell adds price back",
         "later states build only on earlier completed trades",
         "answer <- sell2 as max profit with at most 2 trades",
-    ],};
+    ],
+};
 
 export default module;
