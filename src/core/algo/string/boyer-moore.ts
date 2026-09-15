@@ -66,6 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = text.length;
     const m = pattern.length;
     const matches: number[] = [];
+    let comparisons = 0;
     let step = 0;
 
     // Frame 0: the untouched text.
@@ -76,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Boyer-Moore: searching for "${pattern}" right-to-left with skip tables.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -93,10 +94,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text),
         edges: [],
-        description: `Bad-character table built.`,
+        description: `Bad-character table built over ${badChar.size} distinct chars.`,
         codeLineNumber: 1,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -110,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty pattern – nothing to search for.",
             codeLineNumber: 6,
             layout: "text",
-            meta: { matches: 0 },
+            meta: { comparisons, matches: 0 },
         };
         return;
     }
@@ -154,7 +155,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Window at ${shift} – comparing from the right.`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { matches: matches.length },
+            meta: { comparisons, matches: matches.length },
         };
         step += 1;
 
@@ -165,6 +166,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 cmpStates.set(k, "highlight");
             }
             cmpStates.set(shift + j, "comparing");
+            comparisons += 1;
             yield {
                 stepNumber: step,
                 entities: makeText(text, cmpStates),
@@ -172,7 +174,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Matched "${pattern[j]}" at text[${shift + j}].`,
                 codeLineNumber: 3,
                 layout: "text",
-                meta: { matches: matches.length },
+                meta: { comparisons, matches: matches.length },
             };
             step += 1;
             j -= 1;
@@ -192,7 +194,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Pattern found at index ${shift}!`,
                 codeLineNumber: 4,
                 layout: "text",
-                meta: { matches: matches.length },
+                meta: { comparisons, matches: matches.length },
             };
             step += 1;
 
@@ -203,6 +205,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             const mismatchChar = text[shift + j] as string;
             const rightmost = badChar.get(mismatchChar) ?? -1;
             // Shift so the rightmost occurrence aligns with j (at least 1).
+            comparisons += 1;
             const skip = Math.max(1, j - rightmost);
 
             yield {
@@ -212,7 +215,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Mismatch on "${mismatchChar}" at pattern position ${j} – shifting by ${skip}.`,
                 codeLineNumber: 5,
                 layout: "text",
-                meta: { matches: matches.length },
+                meta: { comparisons, matches: matches.length },
             };
             step += 1;
 
@@ -238,7 +241,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `"${pattern}" occurs at ${matches.join(", ")}.`,
         codeLineNumber: 6,
         layout: "text",
-        meta: { matches: matches.length },
+        meta: { comparisons, matches: matches.length },
     };
 }
 
