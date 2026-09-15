@@ -1,6 +1,29 @@
 /**
  * sparse-set.ts - Sparse Set
  * Dense/sparse pair give O(1) membership. Demo: add <=6 values, test hit + miss.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Dense/sparse pair give O(1) membership. Demo: add <=6 values, test hit + miss.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) ops
+ *   Space: O(u)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Sparse Set behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -35,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Sparse Set: empty. Dense/sparse pair give O(1) membership.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of vals) {
@@ -47,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Add ${v} (size ${set.size}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -59,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty set.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -72,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Contains ${q}: ${hit}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const miss = 999;
@@ -96,5 +119,14 @@ const module: AlgorithmModule = {
     defaultInput: { values: [3, 1, 4, 6], query: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty dense and sparse arrays",
+        "add value: append it to dense and record its index in sparse",
+        "back pointers let removal swap with the last dense entry",
+        "membership test checks the sparse index round-trips correctly",
+        "test both a member and a nonmember to show both paths",
+        "size counts the occupied dense prefix",
+        "done: set holds all values and both query verdicts are reported",
+    ],
 };
 export default module;
