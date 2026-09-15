@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "grid",
             meta: { key, target, hops: path.length - 1 },
         };
@@ -108,6 +108,15 @@ const module: AlgorithmModule = {
     defaultInput: { key: 10, from: 1 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize 4-bit ring with nodes {1,4,9,12} and key target",
+        "build finger table from the query start node",
+        "jump to the closest preceding finger of the key",
+        "forward hop by hop toward the successor",
+        "arrive at the node that owns the key",
+        "count total hops along the lookup path",
+        "done: key found at its successor in O(log n) hops",
+    ],
 };
 
 export default module;
