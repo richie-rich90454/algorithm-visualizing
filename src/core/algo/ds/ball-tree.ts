@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Ball Tree: empty. Nested balls partition metric points.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: pts.length
             ? `Partition invariant holds. Nearest to (${q[0]},${q[1]}) is (${pts[bi]![0]},${pts[bi]![1]}).`
             : "No points indexed.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { nearest: pts[bi] ?? [] },
     };
@@ -134,5 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize ball tree build over full point set",
+        "pick split dimension with largest spread",
+        "partition points into two clusters by median",
+        "enclose each cluster in minimum bounding ball",
+        "compare query point distance against ball radius to prune",
+        "recurse into nearer ball first for nearest search",
+        "done: ball tree partitions points and nearest query answer",
+    ],
 };
 export default module;
