@@ -88,6 +88,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty double-ended interval heap array",
+        "insert key at end and compare with paired slot",
+        "swap within pair to keep smaller on left",
+        "bubble up comparing against parent intervals",
+        "extract minimum from left of root and maximum from right",
+        "restore intervals by trickling down",
+        "done: heap holds keys with min and max available",
+    ],
 };
 
 export default module;
