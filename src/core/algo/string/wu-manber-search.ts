@@ -34,13 +34,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Wu-Manber multi-search for [${pats.join(", ")}].`, 0);
+    yield F(tx(text), `Wu-Manber multi-search for [${pats.join(", ")}].`, 0, { comparisons: 0, hits: [] });
     step += 1;
     const m = Math.min(...pats.map((p) => p.length));
-    yield F(tx(text), `Block shift table on min length ${m}.`, 1);
+    yield F(tx(text), `Block shift table on min length ${m}.`, 1, { comparisons: 0 });
     step += 1;
     const hits: Array<{ pat: string; pos: number }> = [];
+    let comparisons = 0;
     for (const p of pats) {
+        comparisons += 1;
         let idx = text.indexOf(p);
         while (idx >= 0) {
             hits.push({ pat: p, pos: idx });
@@ -50,6 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     hits.sort((a, b) => a.pos - b.pos);
     const shown = hits.slice(0, 4);
     for (const h of shown) {
+        comparisons += 1;
         yield F(
             tx(
                 text,
@@ -60,18 +63,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             `"${h.pat}" at ${h.pos}.`,
             2,
-            { hits: hits.map((h) => `${h.pat}@${h.pos}`) },
+            { comparisons, hits: hits.map((h) => `${h.pat}@${h.pos}`) },
         );
         step += 1;
     }
     if (shown.length === 0) {
-        yield F(tx(text), "No pattern occurs.", 3, { hits: hits.map((h) => `${h.pat}@${h.pos}`) });
+        yield F(tx(text), "None of the patterns occurs in the text.", 3, { comparisons, hits: hits.map((h) => `${h.pat}@${h.pos}`) });
         step += 1;
     }
     const fin = new Map<number, EntityState>();
     for (const h of hits)
         for (let x = h.pos; x < h.pos + h.pat.length; x += 1) fin.set(x, "sorted");
-    yield F(tx(text, fin), hits.length ? `${hits.length} total hits.` : "No hits.", 4, {
+    yield F(tx(text, fin), hits.length ? `${hits.length} total hit(s): ${hits.map((h) => `"${h.pat}"@${h.pos}`).join(", ")}.` : "None of the patterns occur in the text.", 4, {
+        comparisons,
         hits: hits.map((h) => `${h.pat}@${h.pos}`),
     });
 }
