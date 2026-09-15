@@ -1,9 +1,34 @@
 /**
  * majority-vote-search.ts – Boyer-Moore Majority Vote
  *
- * One pass elects a candidate by canceling differing votes, a second
- * pass verifies it truly holds the majority. All occurrences go green,
- * verified by brute-force counting.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The Boyer-Moore vote finds a majority element (one appearing more than
+ * n/2 times) in two passes. Pass one elects a candidate: keep a tally that
+ * rises on matches and falls on mismatches, swapping in a new candidate
+ * whenever the tally hits zero. Differing votes cancel out, so a true
+ * majority must survive as the final candidate. Pass two counts its real
+ * occurrences to confirm or reject it.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) – one electing pass plus one verifying pass
+ *   Space: O(1) auxiliary – only candidate and tally
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element casting the current vote is YELLOW (comparing).
+ *   - Confirmed majority copies turn GREEN (sorted); rejection ends IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Needs no sorting and no hash map – the constant-space classic.
+ *   - Verification is mandatory: the first pass can elect a false candidate.
+ *   - Generalizes to k-way majorities with k-1 counters.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
