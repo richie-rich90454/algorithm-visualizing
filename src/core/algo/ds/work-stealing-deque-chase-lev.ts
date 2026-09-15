@@ -4,6 +4,29 @@
  * Per-worker deque: the owner pushes and pops its own bottom while
  * thieves CAS-steal from the top – the classic scheduler that keeps
  * parallel runtimes fed.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Per-worker deque: the owner pushes and pops its own bottom while thieves CAS-steal from the top – the classic scheduler that keeps parallel runtimes fed.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) owner ops
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Work-Stealing Deque behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -85,6 +108,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [1, 2, 3, 4], steals: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty Chase-Lev deque shared by owner and thieves",
+        "owner push: append at the bottom with a plain store",
+        "thief steal: copy the top and claim it with a compare-and-swap",
+        "owner pop: take the bottom, using CAS only when one item remains",
+        "failed CAS means another thief won the race, so retry",
+        "stolen items accumulate separately from the deque remainder",
+        "done: owner and stolen splits are reported with counts",
+    ],
 };
 
 export default module;
