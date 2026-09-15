@@ -1,7 +1,8 @@
 /**
- * tree-pattern-matching.ts – Rooted subtree pattern matching
- * Checks each text node as candidate root via ordered comparison.
- * Time O(n·m), Space O(n). match=comparing, found=sorted.
+ * tree-pattern-matching.ts – Rooted subtree pattern matching.
+ *
+ * Checks each text node as candidate root with ordered comparison.
+ * Time O(n*m), Space O(n). Match uses comparing, found uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -113,5 +114,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "set up text tree and small pattern tree",
+        "compare ordered children recursively at candidate",
+        "try every text node as pattern root",
+        "stop at first fully matching candidate",
+        "return matching text node as the answer",
+    ],
 };
 export default module;
