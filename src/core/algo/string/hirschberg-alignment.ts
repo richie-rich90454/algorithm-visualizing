@@ -1,6 +1,7 @@
 /**
  * hirschberg-alignment.ts – Hirschberg.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm)", space: "O(min(n,m))"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -135,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const mid = a.length >> 1;
     const L = nwScore(a.slice(0, mid), b);
@@ -172,14 +173,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const [x, y] = hirsch(a, b);
     yield F(
         [cell(0, 0, x, "path"), cell(1, 0, y, "path")],
-        `Recurse both halves: ${x} / ${y}.`,
+        `Recurse both halves: "${x}" / "${y}".`,
         4,
         { x, y },
     );
     step += 1;
     yield F(
         [cell(0, 0, x, "sorted"), cell(1, 0, y, "sorted")],
-        `Optimal alignment (linear space).`,
+        `Optimal alignment "${x}" / "${y}" (linear space).`,
         5,
         { x, y },
     );
@@ -193,6 +194,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "GATT", b: "GCAT" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "split first string at middle row for divide step",
+        "compute forward scores to middle with linear space",
+        "compute backward scores from end to middle",
+        "find split point maximizing combined scores",
+        "recurse on left and right halves independently",
+        "concatenate alignments from both halves",
+        "report optimal alignment and score",
+    ],
 };
 
 export default module;
