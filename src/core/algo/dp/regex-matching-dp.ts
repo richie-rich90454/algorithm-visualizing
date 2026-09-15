@@ -142,6 +142,7 @@ const module: AlgorithmModule = {
         "stars combine zero-use (two back) with extended use",
         "dots match any single character like literals",
         "answer <- dp[n][m] with match result confirmed",
-    ],};
+    ],
+};
 
 export default module;
