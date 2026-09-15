@@ -93,6 +93,15 @@ const module: AlgorithmModule = {
     defaultInput: { arenaSize: 8, allocs: [2, 3, 2] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty arena of fixed size with bump pointer at 0",
+        "request allocation of size s and compare with remaining space",
+        "bump-allocate by advancing pointer and recording block",
+        "if block does not fit then start a fresh arena",
+        "track total used bytes across all arenas",
+        "free everything at once by resetting pointer to 0",
+        "done: arenas hold allocations and final usage is zero after reset",
+    ],
 };
 
 export default module;
