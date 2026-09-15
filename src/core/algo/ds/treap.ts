@@ -124,6 +124,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [30, 20, 40, 10, 35], priorities: [5, 9, 6, 2, 4] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with no nodes, each key paired with a random priority",
+        "insert key with plain BST placement by key order",
+        "bubble the node up while its priority exceeds its parent",
+        "rotations preserve BST order while fixing heap order",
+        "the top-priority key therefore ends at the root",
+        "search compares keys exactly like a BST",
+        "done: BST order plus heap order both hold at the root",
+    ],
 };
 
 export default module;
