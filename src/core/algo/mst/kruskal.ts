@@ -175,8 +175,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: nodes.map((n) => ({ ...n })),
                 edges: edges.map((e) => ({ ...e })),
-                description: `Rejected ${a}–${b} – it would create a cycle.`,
-                codeLineNumber: 3,
+                description: `Rejected ${a}–${b} (weight ${edgeList[index]?.[2]}) – it would create a cycle.`,
+                codeLineNumber: 4,
                 layout: "graph",
                 meta: { accepted: accepted.length },
             };
@@ -192,7 +192,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Minimum spanning tree complete – ${accepted.length} edges, total weight ${totalWeight}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { accepted: accepted.length, totalWeight },
     };
@@ -221,6 +221,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort all edges by increasing weight",
+        "make a single vertex set for each vertex",
+        "for each edge u–v in sorted order: examine it",
+        "if u and v are in different sets: add the edge",
+        "skip the edge when it would form a cycle",
+        "union the two sets after adding an edge",
+        "done: accepted edges form the MST with minimum total weight",
+    ],
 };
 
 export default module;
