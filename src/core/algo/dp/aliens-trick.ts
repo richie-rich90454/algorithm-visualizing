@@ -14,6 +14,10 @@
  * sum of group costs, where each group incurs a fixed penalty λ. Binary
  * searching λ finds the optimum for the exact-K version.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -78,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Split [${arr.join(", ")}] into exactly ${K} groups (Aliens trick).`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -164,7 +168,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             foundGroups === K
                 ? `Converged: ${K} groups with boundaries at [${bestStarts.join(", ")}].`
                 : `Closest λ found ${foundGroups} group(s) – exact ${K} groups unreachable.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { groups: foundGroups, targetGroups: K, boundaries: bestStarts },
     };
@@ -180,6 +184,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 2, 6, 8, 10, 20], groups: 3 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up array of length n and target group count K",
+        "define cost(l, r) plus penalty lambda per group",
+        "dp[i] <- min over k < i of dp[k] + cost(k, i-1) + lambda",
+        "binary search lambda so unconstrained optimum uses K groups",
+        "for each lambda record groups used and boundary positions",
+        "adjust lambda up or down based on groups versus K",
+        "answer <- boundaries at converged lambda giving K groups",
+    ],};
 
 export default module;
