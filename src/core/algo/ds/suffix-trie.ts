@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Suffix trie of "${text}" – checking if "${query}" is a substring.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
 
@@ -150,6 +150,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana", query: "ana" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty trie of no suffixes",
+        "insert every suffix of the text as its own root-to-leaf path",
+        "shared prefixes merge so common endings share nodes",
+        "walk the query characters from the root edge by edge",
+        "a missing edge means the query is not a substring",
+        "consuming all query characters proves substring presence",
+        "done: suffixes index the text and the substring verdict is reported",
+    ],
 };
 
 export default module;
