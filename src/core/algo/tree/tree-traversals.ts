@@ -1,7 +1,8 @@
 /**
- * tree-traversals.ts – Preorder, inorder-style, postorder, level order
+ * tree-traversals.ts – Preorder, postorder, and level order walks.
+ *
  * One tiny binary tree; each order visits every node exactly once.
- * Time O(n), Space O(n). current=comparing, visited=sorted.
+ * Time O(n), Space O(n). Current uses comparing, visited uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -96,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         q.push(...(kids.get(u) ?? []));
     }
     for (const id of ids) st.set(id, "sorted");
-    yield frame(`Level order [${level.join(",")}]; all ${ids.length} nodes visited.`, 3, {
+    yield frame(`Level order [${level.join(",")}]; all ${ids.length} nodes visited.`, 4, {
         preorder: pre,
         postorder: post,
         level,
@@ -110,5 +111,12 @@ const module: AlgorithmModule = {
     defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start traversals from the tree root node",
+        "visit node then children for preorder list",
+        "collect postorder after visiting all children",
+        "walk level by level with a queue for breadth",
+        "return preorder, postorder, and level orders",
+    ],
 };
 export default module;
