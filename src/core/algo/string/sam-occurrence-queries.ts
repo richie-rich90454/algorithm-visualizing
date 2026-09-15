@@ -35,21 +35,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `SAM walk for "${pat}" over "${text}".`, 0);
+    yield F(tx(text), `SAM walk for "${pat}" over "${text}".`, 0, { comparisons: 0, count: 0 });
     step += 1;
-    yield F(tx(text), `SAM built online in O(n) (${text.length} extensions).`, 1);
+    yield F(tx(text), `SAM built online in O(n) (${text.length} extensions).`, 1, { comparisons: 0 });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { count: 0 });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, count: 0 });
         return;
     }
+    let comparisons = 0;
     let state = 0,
         ok = true;
     for (let i = 0; i < pat.length && step < 10; i += 1) {
+        comparisons += 1;
         yield F(
             tx(text, stAt([i], "comparing")),
-            `Transition on "${pat[i]}" from state ${state}.`,
+            `Character ${i} "${pat[i]}": transition from state ${state} (match so far "${pat.slice(0, i + 1)}").`,
             2,
+            { comparisons },
         );
         step += 1;
         state += 1;
@@ -69,10 +72,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         tx(text, fin),
         ok ? `"${pat}" endpos count = ${count} (at ${matches.join(", ")}).` : "Absent from SAM.",
         3,
-        { count, matches },
+        { comparisons, count, matches },
     );
     step += 1;
-    yield F(tx(text, fin), "Done.", 4, { count, matches });
+    yield F(tx(text, fin), `SAM query complete: "${pat}" occurs ${count}x.`, 4, { comparisons, count, matches });
 }
 
 const module: AlgorithmModule = {
