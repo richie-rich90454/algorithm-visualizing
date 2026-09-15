@@ -1,9 +1,35 @@
 /**
  * d-star-lite-replanning.ts – D* Lite Replanning
  *
- * Plans A–B–C–D (4), then edge C→D is blocked: only the inconsistent
- * subtree (rhs ≠ g) is repaired, reusing the rest. New plan A–B–D (6).
- * Time: O(E log V) per repair Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * D* Lite plans for a moving agent that discovers blocked edges as it goes.
+ * It first plans the shortest route A to D, then a sensor reports that edge
+ * C to D is blocked. Instead of replanning from scratch, only the
+ * inconsistent subtree (vertices whose rhs value no longer matches g) is
+ * repaired, reusing the rest of the search tree. The repaired plan routes
+ * around the blockage with minimal extra work.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) per repair in the worst case
+ *   Space: O(V + E) for g values, rhs values, and the queue
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The initial plan is CYAN (path).
+ *   - The blocked edge flashes ORANGE (swapped).
+ *   - The repaired route is YELLOW (comparing), then CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Reuses prior search effort instead of starting over.
+ *   - Ideal for robotics where the map changes during execution.
+ *   - Reduces to A* on the first plan before any blockage appears.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -115,9 +141,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (let i = 0; i + 1 < initial.path.length; i += 1)
         setE(initial.path[i] as string, initial.path[i + 1] as string, "path");
     yield snap(
-        `Initial plan: ${initial.path.join("→")} (cost ${initial.cost}). Agent starts moving.`,
+        `Initial plan from ${start} to ${target}: ${initial.path.join(" → ")} with cost ${initial.cost}. Agent starts moving.`,
         0,
-        { cost: initial.cost },
+        { cost: initial.cost, settled: initial.path.length, visits: initial.path.length },
     );
     step += 1;
     const [bx, by] = blocked;
@@ -125,15 +151,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     setE(bx, by, "swapped");
     setN(by, "highlight");
     yield snap(
-        `Sensor update: edge ${bx}→${by} is blocked (cost ∞). ${by} becomes inconsistent.`,
-        1,
-        {},
+        `Sensor update: edge ${bx} to ${by} with prior cost is now blocked (cost infinite). Vertex ${by} becomes inconsistent.`,
+        2,
+        { settled: 1, visits: 1 },
     );
     step += 1;
     yield snap(
-        `Inconsistent subtree rooted at ${by}: rhs values no longer match g – repair starts.`,
-        1,
-        {},
+        `Inconsistent subtree rooted at ${by}: rhs values no longer match distances g, so repair starts there.`,
+        3,
+        { settled: 1, visits: 1 },
     );
     step += 1;
     const repaired = plan(`${bx}|${by}`);
@@ -142,19 +168,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setE(bx, by, "swapped");
         for (const v of repaired.path) setN(v, "comparing");
         yield snap(
-            `Repair propagates through inconsistent states: ${repaired.path.join("→")} (cost ${repaired.cost}).`,
-            2,
-            { cost: repaired.cost },
+            `Repair propagates through inconsistent vertices: new route ${repaired.path.join(" → ")} with cost ${repaired.cost}.`,
+            4,
+            { cost: repaired.cost, settled: repaired.path.length, visits: repaired.path.length },
         );
         step += 1;
         for (const v of repaired.path) setN(v, "path");
     }
     yield snap(
         repaired
-            ? `Replanned: ${repaired.path.join("→")} costs ${repaired.cost} (was ${initial.cost}). Only the affected subtree was repaired.`
+            ? `Replanned path ${repaired.path.join(" → ")} costs ${repaired.cost} (was ${initial.cost}). Only the affected subtree was repaired.`
             : "No route survives the blockage.",
-        3,
-        { cost: repaired ? repaired.cost : -1 },
+        6,
+        {
+            cost: repaired ? repaired.cost : -1,
+            path: repaired ? repaired.path.join("→") : "",
+            settled: repaired ? repaired.path.length : 0,
+            visits: repaired ? repaired.path.length : 0,
+        },
     );
 }
 
@@ -182,6 +213,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "plan shortest path from s to t with A* search",
+        "move agent along path until sensor reports change",
+        "mark edge as blocked, flag affected vertices inconsistent",
+        "push inconsistent vertices with rhs not equal to g",
+        "repair subtree by propagating improved rhs values",
+        "extract updated shortest path through repaired tree",
+        "done: agent follows repaired optimal route",
+    ],
 };
 
 export default module;
