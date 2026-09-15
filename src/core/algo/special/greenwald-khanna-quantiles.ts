@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { n, size: summary.length },
         };
@@ -113,6 +113,15 @@ const module: AlgorithmModule = {
     defaultInput: { stream: [7, 2, 9, 4, 1, 8, 3, 6, 5, 10], eps: 0.2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty tuple summary with epsilon 0.2",
+        "for each stream value v in order",
+        "insert tuple (v, gap, slack) keeping sorted order",
+        "periodically compress by merging cheap tuples",
+        "query the median by scanning rank plus slack",
+        "compare estimate against the true median",
+        "done: median estimate within epsilon times n",
+    ],
 };
 
 export default module;
