@@ -1,6 +1,32 @@
 /**
- * Dungeon Game (reverse): need[i][j] = max(1, min(need[i+1][j], need[i][j+1]) - d[i][j]).
- * Time O(m*n), Space O(m*n). Default answer: 7 HP.
+ * dungeon-game.ts - Dungeon Game
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: need[i][j] <- max(1, min(need[i+1][j], need[i][j+1]) - dungeon[i][j]).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(m\u00b7n)
+ *   Space: O(m\u00b7n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty dungeon \u2013 1 HP suffices.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -93,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(need, new Map([["0,0", "sorted"]])),
         edges: [],
         description: `Traceback: start with ${answer} HP to survive.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -113,6 +139,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up need table sized m x cols with need at princess",
+        "need[i][j] holds minimum HP entering cell (i, j)",
+        "need[i][j] <- max(1, min(need[i+1][j], need[i][j+1]) - dungeon[i][j])",
+        "fill table bottom-up from bottom-right to top-left",
+        "each cell prepares for the cheaper of right or down exits",
+        "clamp values to at least 1 HP to stay alive",
+        "answer <- need[0][0] with path following min-need moves",
+    ],};
 
 export default module;
