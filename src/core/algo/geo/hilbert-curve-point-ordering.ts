@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             })),
             edges: [],
             description: `Point ${i} (${pts[i]?.[0]},${pts[i]?.[1]}) → cell Hilbert index ${idx[i]}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { point: i, index: idx[i] },
         };
@@ -113,7 +113,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: path.map((e) => ({ ...e })),
         description: `Hilbert order: [${seq.join(" → ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { order: seq },
     };
@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e, state: "sorted" as EntityState })),
         edges: path.map((e) => ({ ...e, state: "sorted" as EntityState })),
         description: `Sorted ${pts.length} points by Hilbert index.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { order: seq, indices: idx },
     };
@@ -144,6 +144,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the points plus the curve order",
+        "snap each point into its grid cell",
+        "interleave cell bits into a Hilbert index",
+        "sort points by their Hilbert index",
+        "walk the sorted order as the space-filling path",
+        "done: neighbors in space stay neighbors in the order",
+    ],
 };
 
 export default module;
