@@ -190,6 +190,13 @@ const module: AlgorithmModule = {
     defaultInput: { values: [1, 2, 3, 4] },
     visualType: "array",
     run,
+    pseudocode: [
+        "pad the coefficients to a power-of-two length n",
+        "plan the butterfly stages over log n levels",
+        "apply the bit-reversal permutation",
+        "combine pairs in each butterfly stage of width len",
+        "done: frequency magnitudes from real/imag parts",
+    ],
 };
 
 export default module;
