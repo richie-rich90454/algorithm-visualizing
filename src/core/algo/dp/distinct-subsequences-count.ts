@@ -1,6 +1,32 @@
 /**
- * Distinct Subsequences: dp[i][j] = dp[i-1][j] + (match ? dp[i-1][j-1] : 0).
- * Time O(n*m), Space O(n*m). Default "babgbag"/"bag" -> 5.
+ * distinct-subsequences-count.ts - Distinct Subsequences (Count)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- dp[i-1][j-1] + dp[i-1][j] on match else dp[i-1][j].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b7m)
+ *   Space: O(n\u00b7m)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 nothing to match.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -86,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${n},${m}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} distinct subsequences equal "${t}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -100,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "babgbag", t: "bag" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up table with dp[i][0] <- 1 for the empty target",
+        "dp[i][j] holds matches of t[:j] inside s[:i]",
+        "dp[i][j] <- dp[i-1][j-1] + dp[i-1][j] on match else dp[i-1][j]",
+        "fill rows over s and columns over t in order",
+        "matching chars add the use-it plus skip-it options",
+        "mismatches carry down the skip-it value only",
+        "answer <- dp[n][m] with match positions from backtrace",
+    ],};
 
 export default module;
