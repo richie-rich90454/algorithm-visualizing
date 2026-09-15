@@ -1,6 +1,33 @@
-// expectiminimax.ts – Expectiminimax on a tiny game-vs-chance tree.
-// MAX root picks between chance nodes C1 (leaves 10, 0 → EV 5) and C2
-// (leaves 8, 4 → EV 6); expected values are computed, so MAX takes C2.
+/**
+ * expectiminimax.ts – Expectiminimax (game tree with chance nodes)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Expectiminimax extends minimax with chance nodes that average their
+ * children. Simply: MAX picks the chance node with the higher expected
+ * value. Formally: chance nodes back up the mean of leaf utilities while
+ * MAX nodes take the max; the demo MAX root picks between chance nodes C1
+ * (leaves 10, 0 for EV 5) and C2 (leaves 8, 4 for EV 6), so MAX takes C2.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^d) over the tree
+ *   Space: O(d) recursion
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Leaf utilities highlight; evaluated chance nodes flash YELLOW.
+ *   - The chosen chance branch paints GREEN with its expected value.
+ *   - The root shows the backed-up optimal value and pick.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Chance nodes average; MAX/MIN nodes optimize.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function tnode(
