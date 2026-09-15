@@ -1,6 +1,32 @@
 /**
- * Egg Drop (moves form): F(e,m) = F(e-1,m-1) + F(e,m-1) + 1.
- * Time O(eggs*moves), Space O(eggs). Default: 2 eggs, 10 floors -> 4.
+ * egg-drop.ts - Egg Drop
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: F(e, m) <- F(e-1, m-1) + F(e, m-1) + 1.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(eggs\u00b7moves)
+ *   Space: O(eggs)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input \u2013 no eggs or no floors.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -85,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(rows, new Map([[`${rows.length - 1},${eggs}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${moves} moves cover ${dp[eggs]} floors \u2265 ${floors} \u2013 answer ${moves}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: moves },
     };
@@ -99,6 +125,14 @@ const module: AlgorithmModule = {
     defaultInput: { eggs: 2, floors: 10 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[e] <- floors covered with e eggs and m moves",
+        "base F(e, 0) <- 0 with zero moves covering nothing",
+        "F(e, m) <- F(e-1, m-1) + F(e, m-1) + 1",
+        "increase moves m until coverage reaches floors target",
+        "each move splits into break versus survive subcases",
+        "accumulate coverage across egg counts per move round",
+        "answer <- smallest m with F(eggs, m) >= floors target",
+    ],};
 
 export default module;
