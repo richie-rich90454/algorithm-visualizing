@@ -84,9 +84,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: boundary,
         description: `Kernel: clipping against ${pts.length} edge half-planes.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { edges: pts.length },
     };
     step += 1;
     let kernel: Pt[] = pts.map((p) => [...p] as Pt);
@@ -121,9 +121,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 kernel.length === 0
                     ? `Half-plane ${e} emptied the kernel – polygon is not star-shaped.`
                     : `After half-plane ${e}: kernel has ${kernel.length} vertices.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { edge: e, kernel: kernel.length },
         };
         step += 1;
         if (kernel.length === 0) break;
@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             kernel.length === 0
                 ? "Kernel is empty."
                 : `Kernel found with ${kernel.length} vertices.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { kernel: kernel.map(([x, y]) => `${x},${y}`) },
     };
@@ -157,6 +157,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the full polygon as the kernel candidate",
+        "clip the candidate against each edge half-plane",
+        "drop the part falling outside the current edge",
+        "stop early when the kernel turns empty",
+        "done: leftover vertices see the whole polygon",
+    ],
 };
 
 export default module;
