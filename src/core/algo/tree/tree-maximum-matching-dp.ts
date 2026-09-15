@@ -1,7 +1,8 @@
 /**
- * tree-maximum-matching-dp.ts – Maximum matching on a tree
- * dp0=u free, dp1=u matched to a child. Postorder max.
- * Time O(n), Space O(n). current=comparing, done=sorted.
+ * tree-maximum-matching-dp.ts – Maximum matching on a tree.
+ *
+ * dp0 means u free, dp1 means u matched to a child. Postorder maximum.
+ * Time O(n), Space O(n). Current uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -109,5 +110,12 @@ const module: AlgorithmModule = {
     defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "C" }, ids: ["A", "B", "C", "D", "E"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes postorder from the tree root",
+        "compute free state from best child choices",
+        "try matching node with each child in turn",
+        "keep maximum of free and matched states",
+        "return maximum matching size as the answer",
+    ],
 };
 export default module;
