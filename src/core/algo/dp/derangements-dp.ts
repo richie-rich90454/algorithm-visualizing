@@ -141,6 +141,7 @@ const module: AlgorithmModule = {
         "pick partner for item i then handle fixed-or-swapped cases",
         "multiply the summed subcases by the partner choices",
         "answer <- D[n] as derangement count with recurrence history",
-    ],};
+    ],
+};
 
 export default module;
