@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Tree diameter – pass 1: find the farthest vertex from an arbitrary start.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { nodes: ids.length, start: ids[0] ?? "A" },
     };
     step += 1;
 
@@ -110,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, nodes: ids.length },
     });
 
     // ------------------------------------------------------------------
@@ -199,7 +199,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Diameter is ${diameter.length - 1} edges along ${diameter.join(" → ")}.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { diameter: diameter.length - 1 },
+        meta: { diameter: diameter.length - 1, path: [...diameter], endpoints: [diameter[0], diameter[diameter.length - 1]] },
     };
 }
 
@@ -216,6 +216,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "pick any start node s in the tree",
+        "search from s to find farthest node A",
+        "search from A to find farthest node B",
+        "rebuild the parent chain from B back to A",
+        "return path A to B as the diameter answer",
+    ],
 };
 
 export default module;
