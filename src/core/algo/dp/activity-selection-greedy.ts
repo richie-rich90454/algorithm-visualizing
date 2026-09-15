@@ -1,6 +1,32 @@
 /**
- * Activity Selection (greedy): sort by finish, take if start >= last finish.
- * Time O(n log n), Space O(n). Default [[1,3],[2,4],[3,5]] -> 2.
+ * activity-selection-greedy.ts - Activity Selection (Greedy)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: for each activity i in finish order: check start[i] >= lastFinish.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -50,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No activities \u2013 select none.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -94,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...picked]]),
         edges: [],
         description: `Traceback: ${count} compatible activities selected.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: count },
     };
@@ -114,6 +140,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "sort activities by finish time, set lastFinish <- -1",
+        "selected <- empty set, count <- 0",
+        "for each activity i in finish order: check start[i] >= lastFinish",
+        "if compatible: take it, lastFinish <- finish[i], count += 1",
+        "else skip it as overlapping the last selected activity",
+        "continue until all activities are classified take or skip",
+        "answer <- count with selected set reconstructed from takes",
+    ],};
 
 export default module;
