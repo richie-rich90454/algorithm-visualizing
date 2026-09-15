@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Vectors u=${u.join(", ")} and v=${v.join(", ")}.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { u, v },
     };
     step += 1;
 
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
         description: `u×v = ${u[0]}·${v[1]} − ${u[1]}·${v[0]} = ${cross} (${cross > 0 ? "counterclockwise" : cross < 0 ? "clockwise" : "collinear"}).`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { dot, cross },
     };
@@ -131,6 +131,13 @@ const module: AlgorithmModule = {
     defaultInput: { u: [3, 2], v: [1, 4] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from vectors u and v at the origin",
+        "multiply matching parts and add for the dot product",
+        "cross-multiply and subtract for the cross product",
+        "read the sign: counterclockwise, clockwise, or collinear",
+        "done: dot measures alignment and cross measures turning",
+    ],
 };
 
 export default module;
