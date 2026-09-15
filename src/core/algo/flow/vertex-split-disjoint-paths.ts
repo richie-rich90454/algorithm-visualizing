@@ -161,7 +161,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             N(verts),
             ME(show, new Map(), true),
             `Disjoint path ${k - 1}: ${clean(p).join("->")}.`,
-            k,
+            Math.min(k, 4),
         );
         k += 1;
         if (step > 11) break;
@@ -172,7 +172,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             N(verts),
             ME(show, new Map(), true),
             `Maximum ${f.value} vertex-disjoint paths: 0-1-3 and 0-2-3.`,
-            k,
+            5,
         ),
         meta: { count: f.value, paths: f.paths.map((p) => clean(p).join("-")) },
     };
@@ -195,5 +195,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize directed graph with source and sink vertices",
+        "split inner vertices into in out arcs of unit capacity",
+        "run max flow over split network for disjoint count",
+        "extract each augmenting path as disjoint route",
+        "map split paths back to original vertex sequences",
+        "report maximum disjoint path count with routes",
+    ],
 };
 export default module;
