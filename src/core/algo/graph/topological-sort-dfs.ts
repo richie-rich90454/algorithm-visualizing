@@ -75,16 +75,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Computing topological order with a DFS.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { outputSize: order.length, hasCycle },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { outputSize: order.length },
     });
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Exploring ${v}.`);
+        yield buildFrame(`Exploring ${v}.`, 1);
         step += 1;
 
         for (const edge of edges) {
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 if (edge) {
                     edge.state = "highlight";
                 }
-                yield buildFrame(`Back edge to ${neighbor} – cycle detected!`);
+                yield buildFrame(`Back edge to ${neighbor} – cycle detected!`, 2);
                 step += 1;
                 continue;
             }
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 if (edge) {
                     edge.state = "active";
                 }
-                yield buildFrame(`Descending into ${neighbor}.`);
+                yield buildFrame(`Descending into ${neighbor}.`, 2);
                 step += 1;
                 yield* dfs(neighbor);
             }
@@ -141,7 +141,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "sorted";
         }
-        yield buildFrame(`${v} finished – prepended to the order.`);
+        yield buildFrame(`${v} finished – prepended to the order.`, 3);
         step += 1;
     }
 
@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: hasCycle
             ? "Cycle detected – no topological order exists."
             : `Topological order: ${order.join(" → ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { outputSize: order.length, hasCycle },
     };
@@ -177,6 +177,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "color every vertex white (unvisited)",
+        "gray v and explore each successor",
+        "successor gray: back edge and a cycle; white: descend into it",
+        "finish v: blacken it and prepend it to the order",
+        "repeat from every white vertex",
+        "done: topological order, or a cycle verdict",
+    ],
 };
 
 export default module;
