@@ -1,10 +1,10 @@
 <script setup lang="ts">
 /**
- * InfoPanel.vue – Displays the loaded algorithm's name and complexities.
+ * InfoPanel.vue – Educational header for the loaded algorithm.
  *
- * Reads straight from the store: the algorithm's display name, its time
- * complexity, and its space complexity. Rendered as a small flat card with a
- * labeled row per field; hidden entirely when no algorithm is loaded.
+ * Shows the algorithm's name, category, time/space complexity, layout, and
+ * frame count so learners always know what they are watching and what it
+ * costs. Hidden entirely when no algorithm is loaded.
  */
 
 import { computed } from "vue";
@@ -13,8 +13,8 @@ import { useVisualizerStore } from "@/stores/visualizer";
 
 const store = useVisualizerStore();
 
-/** The loaded algorithm module, or null before any selection. */
-const { algorithm } = storeToRefs(store);
+/** The loaded algorithm metadata plus live frame count. */
+const { algorithm, totalSteps } = storeToRefs(store);
 
 /** Rows for the info table, built only when an algorithm is present. */
 const rows = computed(() => {
@@ -22,12 +22,13 @@ const rows = computed(() => {
     if (!module) {
         return [];
     }
-    // Every algorithm has a story; this table is its name tag.
     return [
         { key: "Name", value: module.name },
         { key: "Category", value: module.category },
         { key: "Time", value: module.complexity.time },
         { key: "Space", value: module.complexity.space },
+        { key: "View", value: module.visualType },
+        { key: "Steps", value: String(totalSteps.value) },
     ];
 });
 </script>
@@ -69,5 +70,7 @@ const rows = computed(() => {
 
 .info-table dd {
     color: var(--color-text-primary);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 </style>
