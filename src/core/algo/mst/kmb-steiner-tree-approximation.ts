@@ -1,6 +1,27 @@
 /**
- * kmb-steiner-tree-approximation.ts - KMB Steiner Tree Approximation.
- * Metric closure on terminals, MST, expansion, pruning: 2-2/t approximation.
+ * kmb-steiner-tree-approximation.ts – KMB Steiner Tree Approximation.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The Steiner tree problem connects a chosen set of terminal vertices as
+ * cheaply as possible, optionally using extra Steiner vertices. Kou, Markowsky,
+ * and Berman approximate it: build the metric closure over terminals with
+ * shortest paths, take its MST, expand each closure edge back into a path,
+ * then prune leaves that are not terminals. The result is within 2 - 2/t of
+ * optimal, where t is the terminal count.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(T V^2) – all-pairs shortest paths among terminals dominates
+ *   Space: O(V^2) for the distance and next-hop tables
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The expanded terminal path turns GREEN (sorted).
+ *   - The pruned tree is highlighted, final edges are GREEN (sorted).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +70,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -69,13 +90,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     const T = [...d.terminals];
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Steiner instance: terminals {${T.join(", ")}} among ${verts.length} vertices.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Steiner instance: terminals {${T.join(", ")}} among ${verts.length} vertices.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0 },
+    };
     const n = verts.length;
     const idx = new Map(verts.map((v, i) => [v, i]));
     const D: number[][] = Array.from({ length: n }, (_, i) =>
@@ -101,13 +125,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
     const a = idx.get(T[0]) as number;
     const b = idx.get(T[1]) as number;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Metric closure: terminal distance d(${T[0]},${T[1]}) = ${D[a][b]} (via the 0-1-2-3 chain, not the direct 10 edge).`,
-        1,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Metric closure: terminal distance d(${T[0]},${T[1]}) = ${D[a][b]} (via the 0–1–2–3 chain, not the direct weight 10 edge).`,
+            1,
+        ),
+        meta: { accepted: 0 },
+    };
     const path: string[] = [];
     let c = a;
     path.push(verts[c] as string);
@@ -115,37 +142,43 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         c = NX[c][b] as number;
         path.push(verts[c] as string);
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            list,
-            new Map([
-                [0, "sorted"],
-                [1, "sorted"],
-                [2, "sorted"],
-            ]),
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                list,
+                new Map([
+                    [0, "sorted"],
+                    [1, "sorted"],
+                    [2, "sorted"],
+                ]),
+            ),
+            `Terminal MST expands edge 0–3 into path ${path.join("–")} using edges 0–1(1), 1–2(1), 2–3(1).`,
+            3,
         ),
-        `Terminal MST (single closure edge) expands to path ${path.join("->")}.`,
-        2,
-    );
+        meta: { accepted: 3 },
+    };
     const used = new Set<number>([0, 1, 2]);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map([...used].map((i) => [i, "highlight"] as [number, EntityState]))),
-        "Pruning: every leaf of the expanded tree is a terminal, nothing to prune.",
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map([...used].map((i) => [i, "highlight"] as [number, EntityState]))),
+            "Pruning pass: every leaf of the expanded tree is a terminal, so nothing is pruned.",
+            4,
+        ),
+        meta: { accepted: used.size },
+    };
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map([...used].map((i) => [i, "sorted"] as [number, EntityState]))),
-            "KMB Steiner tree weight 3 (0-1, 1-2, 2-3): optimal here, within the 2-2/t bound.",
-            4,
+            "KMB Steiner tree weight 3, total weight 3 (edges 0–1, 1–2, 2–3): optimal here, within the 2-2/t bound.",
+            5,
         ),
-        meta: { weight: 3 },
+        meta: { weight: 3, totalWeight: 3, accepted: used.size },
     };
 }
 
@@ -166,5 +199,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute all-pairs shortest paths between terminals",
+        "build the metric closure over the terminal set",
+        "find the MST of the metric closure graph",
+        "expand each closure edge back into a shortest path",
+        "prune non-terminal leaves from the expanded tree",
+        "done: pruned tree is the Steiner approximation weight",
+    ],
 };
 export default module;
