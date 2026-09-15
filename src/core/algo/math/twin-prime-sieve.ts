@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs limit >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Primes to ${limit}: [${primes}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const pairs: Array<[number, number]> = [];
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     description: `(${p}, ${p + 2}) both prime – twin pair ${pairs.length}.`,
                     codeLineNumber: 1,
                     layout: "grid",
-                    meta: {},
+                    meta: { step },
                 };
                 step += 1;
             }
@@ -101,5 +101,12 @@ const module: AlgorithmModule = {
     defaultInput: { limit: 20 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sieve the primes up to limit",
+        "keep prime pairs (p, p+2) as twins",
+        "done: twin count with every pair listed",
+        "the prime 2 is skipped: no even twin partner",
+        "done: count twin pairs to limit",
+    ],
 };
 export default module;
