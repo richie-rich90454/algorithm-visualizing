@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sieve divisor sums up to ${n}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let d = 1; d <= n; d += 1) {
@@ -78,7 +78,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Divisors of ${n}: [${divs}].`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -99,5 +99,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 12 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "zero the sigma table sig[1..n]",
+        "add each d to sig[d], sig[2d], ... (sieve pass)",
+        "read off the divisors of n from the table",
+        "sum the divisors into sigma(n)",
+        "done: sigma(n) = sum of its divisors",
+    ],
 };
 export default module;
