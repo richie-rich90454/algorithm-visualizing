@@ -1,9 +1,33 @@
 /**
  * hamiltonian-cycle-backtracking.ts – Hamiltonian Cycle (Backtracking)
  *
- * Places vertices one by one, keeping only neighbors of the last placed
- * vertex, and backtracks on dead ends. Square: A→B→C→D→A closes.
- * Time: O(V!) worst Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A Hamiltonian cycle visits every vertex exactly once and returns to the
+ * start. Backtracking builds the path step by step: extend it with an
+ * unvisited neighbor of the last vertex, and when no neighbor is free,
+ * backtrack to try another branch. If the path ever covers all vertices and
+ * the last one links back to the start, the cycle closes. The square
+ * A→B→C→D→A closes with no backtracking needed.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V!) worst case – exponential backtracking search
+ *   Space: O(V) for the current path
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Path vertices are YELLOW (comparing); tried edges BLUE (active).
+ *   - Backtracked vertices revert to gray; the closed cycle is GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - NP-complete: no known polynomial algorithm.
+ *   - Pruning (dead-end detection) is what separates fast from slow solvers.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -89,7 +113,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             setN(drop, "unvisited");
             const prev = path[path.length - 1];
             if (prev !== undefined) setE(prev, drop, "idle");
-            yield snap(`Dead end at ${drop}: backtrack to ${path.join("→") || "∅"}.`, 1, {
+            yield snap(`Dead end at ${drop}: backtrack to ${path.join("→") || "∅"}.`, 2, {
                 placed: path.length,
             });
             step += 1;
@@ -98,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     if (!done) {
         clr();
-        yield snap("No Hamiltonian cycle exists from this start.", 2, {});
+        yield snap("No Hamiltonian cycle exists from this start.", 4, {});
     }
 }
 
@@ -113,6 +137,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "path ← [start]",
+        "extend the path with an unvisited neighbor of its last vertex",
+        "dead end: backtrack; full path plus an edge home: close the cycle",
+        "repeat until a cycle closes or all options are exhausted",
+        "done: a Hamiltonian cycle, or proof that none exists",
+    ],
 };
 
 export default module;
