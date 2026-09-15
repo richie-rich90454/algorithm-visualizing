@@ -106,10 +106,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Borůvka's algorithm – every component picks its cheapest edge each round.",
+        description: `Borůvka's algorithm on ${vertices.length} vertices, ${edgeList.length} edges – every component picks its cheapest edge each round.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { rounds: 0, chosen: 0, totalWeight: 0 },
+        meta: { rounds: 0, chosen: 0, accepted: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -151,7 +151,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Round ${rounds}: scanning edge ${a}–${b} (weight ${weight}).`,
                 codeLineNumber: 2,
                 layout: "graph",
-                meta: { rounds, chosen: chosen.size },
+                meta: {
+                    rounds,
+                    chosen: chosen.size,
+                    accepted: chosen.size,
+                    totalWeight: [...chosen].reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+                },
             };
             step += 1;
 
@@ -192,10 +197,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Round ${rounds} complete – merged components along the cheapest outgoing edges.`,
+            description: `Round ${rounds} complete – added ${[...cheapest.values()].map(({ index }) => `${edgeList[index]?.[0]}–${edgeList[index]?.[1]}(${edgeList[index]?.[2]})`).join(", ")}; ${chosen.size} edges chosen.`,
             codeLineNumber: 4,
             layout: "graph",
-            meta: { rounds, chosen: chosen.size },
+            meta: {
+                rounds,
+                chosen: chosen.size,
+                accepted: chosen.size,
+                totalWeight: [...chosen].reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+            },
         };
         step += 1;
     }
@@ -206,10 +216,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Minimum spanning tree complete – ${chosen.size} edges, total weight ${totalWeight}, in ${rounds} round(s).`,
+        description: `Minimum spanning tree complete – ${chosen.size} edges, total weight ${totalWeight} (${[...chosen].map((i) => `${edgeList[i]?.[0]}–${edgeList[i]?.[1]}(${edgeList[i]?.[2]})`).join(", ")}), in ${rounds} round(s).`,
         codeLineNumber: 5,
         layout: "graph",
-        meta: { rounds, chosen: chosen.size, totalWeight },
+        meta: { rounds, chosen: chosen.size, accepted: chosen.size, totalWeight },
     };
 }
 
