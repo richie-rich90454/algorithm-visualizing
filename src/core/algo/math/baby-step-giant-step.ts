@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Discrete log: solve ${a}^x ≡ ${b} (mod ${p}). m = ⌈√${p}⌉ = ${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Baby steps computed: a^0..a^(${m - 1}) mod ${p}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -161,7 +161,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Giant step q=${q}: value ${value} not found in baby steps.`,
             codeLineNumber: 4,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
 
@@ -188,11 +188,18 @@ const module: AlgorithmModule = {
     name: "Baby-Step Giant-Step",
     category: "math",
     complexity: { time: "O(√p)", space: "O(√p)" },
-    // 2^x ≡ 3 (mod 29) → x = 8 (2^8 = 256 = 8·29 + 24? no: 256 mod 29 = 24).
-    // Using 2^x ≡ 24 → x = 8; adjust: this instance uses 2^x ≡ 5 → x = 22.
+    // 2^x ≡ 5 (mod 29) → x = 22.
     defaultInput: { a: 2, b: 5, p: 29 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "set m ← ⌈√p⌉ and state the goal a^x ≡ b (mod p)",
+        "precompute the factor a^(−m) mod p for giant leaps",
+        "build the baby-step table a^0..a^(m−1) mod p",
+        "match each giant target against the table → x = q·m + r",
+        "on a miss advance q and try the next giant leap",
+        "done: a^x ≡ b (mod p), or no solution exists",
+    ],
 };
 
 export default module;
