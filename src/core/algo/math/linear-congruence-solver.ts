@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs m >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solve ${a}x = ${b} mod ${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const [g] = egcd(((a % m) + m) % m, m);
@@ -130,5 +130,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 4, b: 8, m: 12 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state ax ≡ b (mod m)",
+        "compute g = gcd(a, m); need g | b",
+        "reduce and solve for the base solution x0",
+        "lift x0 to all g solutions modulo m",
+        "done: solution set verified by check",
+    ],
 };
 export default module;
