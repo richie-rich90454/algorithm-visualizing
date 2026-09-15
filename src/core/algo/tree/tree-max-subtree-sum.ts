@@ -1,6 +1,7 @@
 /**
- * tree-max-subtree-sum.ts – maximum connected downward sum (postorder DP).
- * sub[u] = value[u] + Σ sub[child]; the answer is the max over all u.
+ * tree-max-subtree-sum.ts – Maximum connected downward sum with postorder DP.
+ *
+ * sub[u] equals value[u] plus child sums; the answer is the max over all u.
  * Default tree peaks at B with sum 6.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -116,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const states: Record<string, EntityState> = {};
     for (const id of ids) states[id] = "visited";
     states[best] = "highlight";
-    yield emit(states, `Maximum subtree sum is ${sub.get(best)} rooted at ${best}.`, 2, {
+    yield emit(states, `Maximum subtree sum is ${sub.get(best)} rooted at ${best}.`, 4, {
         maxSum: sub.get(best) ?? 0,
         bestRoot: best,
     });
@@ -134,6 +135,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree and prepare postorder accumulation",
+        "post-order: combine child DP states into subtree sums",
+        "add current node value to child totals",
+        "track maximum subtree sum and its root",
+        "return best sum with its root as the answer",
+    ],
 };
 
 export default module;
