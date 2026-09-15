@@ -33,7 +33,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         hot: number,
         desc: string,
         line: number,
-        meta: VisualFrame["meta"] = {},
+        meta: VisualFrame["meta"] = { step },
     ): VisualFrame => ({
         stepNumber: step,
         entities: [
@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is degenerate – nothing to factor.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -107,5 +107,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 91 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "list trial divisors d with d² ≤ n",
+        "a nonzero remainder rules d out",
+        "a zero remainder splits n = d × cofactor",
+        "done: factor pair, or n is prime",
+        "done: every d with d² ≤ n decides it",
+    ],
 };
 export default module;
