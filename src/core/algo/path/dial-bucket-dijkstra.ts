@@ -1,9 +1,35 @@
 /**
  * dial-bucket-dijkstra.ts – Dial's Bucket Dijkstra
  *
- * Integer weights ≤ C go into buckets 0..C·V: extract-min is O(1), each
- * edge relaxes once. A→D: A–B–C–D costs 4.
- * Time: O(C·V + E) Space: O(C·V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Dial's algorithm is Dijkstra specialized for small integer weights. When
+ * every edge weight is at most C, distances grow by bounded steps, so
+ * vertices live in buckets 0 through C x V and extract-min scans forward
+ * for the next nonempty bucket in amortized O(1). Each edge relaxes once.
+ * On the demo graph the route A to B to C to D costs 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(C x V + E) for bounded integer weights
+ *   Space: O(C x V) for the bucket array
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex settled from its bucket is YELLOW (comparing).
+ *   - Relaxed edges are BLUE (active), improved vertices ORANGE (visited).
+ *   - Settled vertices are GREEN (sorted).
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires non-negative integer weights with a small maximum C.
+ *   - Beats a binary heap when C is small; loses when C is huge.
+ *   - The ancestor of modern radix-heap priority queues.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -77,9 +103,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const buckets = new Map<number, string[]>();
     buckets.set(0, [start]);
     let settled = 0;
-    yield snap(`Dial's: buckets 0..${C * labels.length}, source ${start} in bucket 0.`, 0, {
-        maxEdge: C,
-    });
+    yield snap(
+        `Dial's setup from ${start}: integer weights up to ${C}, source distance 0 sits in bucket 0.`,
+        0,
+        {
+            maxEdge: C,
+            settled: 0,
+            visits: 0,
+        },
+    );
     step += 1;
     for (let d = 0; d <= C * labels.length && settled < labels.length; d += 1) {
         const b = buckets.get(d) ?? [];
@@ -100,7 +132,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     setN(v, "visited");
                 }
             }
-            yield snap(`Settle ${u} at distance ${d} (bucket ${d}).`, 1, { settled, distance: d });
+            yield snap(
+                `Settle vertex ${u} at distance ${d} from bucket ${d}, relaxing each outgoing edge once.`,
+                3,
+                { settled, visits: settled, distance: d },
+            );
             step += 1;
             setN(u, "sorted");
         }
@@ -120,10 +156,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         ok
-            ? `Shortest ${start}→${target} = ${dist.get(target)} via ${path.join("→")}.`
-            : `${target} unreachable from ${start}.`,
-        2,
-        { distance: ok ? (dist.get(target) as number) : -1 },
+            ? `Shortest path ${start} to ${target} costs ${dist.get(target)} via ${path.join(" → ")}.`
+            : `${target} is unreachable from ${start}.`,
+        6,
+        {
+            distance: ok ? (dist.get(target) as number) : -1,
+            path: ok ? path.join("→") : "",
+            settled,
+            visits: settled,
+        },
     );
 }
 
@@ -150,6 +191,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, buckets 0..C×V hold integer distances",
+        "scan forward for the next nonempty bucket d",
+        "pop u from bucket d and settle it as final",
+        "for each edge u→v with weight w: relax edge",
+        "if d+w < dist[v]: move v into bucket d+w",
+        "repeat until every reachable bucket is empty",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
