@@ -1,8 +1,34 @@
 /**
  * greedy-best-first-search.ts – Greedy Best-First Search
  *
- * Always expands the frontier node with the smallest heuristic, ignoring
- * path cost. Runs on a tiny explicit graph; the goal goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Chases the goal using only a heuristic h that estimates distance to go. It
+ * keeps a frontier ordered by h and always expands the node that *looks*
+ * closest, ignoring the path cost paid so far. That makes it fast and often
+ * lucky, but it can be lured down a dead end and it does not guarantee the
+ * cheapest – or even a particularly short – path.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^m) worst – the heuristic can mislead it across the graph
+ *   Space: O(b^m) – visited set plus frontier in the worst case
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The node being expanded is YELLOW (comparing).
+ *   - Visited nodes stay PINK (highlight); labels show each h value.
+ *   - The goal turns GREEN (sorted) when first expanded.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Incomplete and suboptimal in general – speed trades against guarantees.
+ *   - A* is literally this idea plus the path cost: f = g + h.
+ *   - Perfect contrast with uniform-cost search, which ignores h instead.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -84,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Expanding ${current} (h=${H[current]}); frontier adds ${neighbors(current).join(", ") || "none"}.`,
             codeLineNumber: 1,
             layout: "graph",
-            meta: { expansions, start, goal },
+            meta: { expansions, start, goal, current },
         };
         step += 1;
         for (const nb of neighbors(current)) {
@@ -95,8 +121,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(),
         edges: [],
-        description: `Goal ${goal} was not reached.`,
-        codeLineNumber: 3,
+        description: `Goal ${goal} is unreachable after ${expansions} expansions.`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { expansions, start, goal },
     };
@@ -110,6 +136,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with frontier ← {start} ordered by heuristic h",
+        "while frontier is nonempty: pop the node with smallest h",
+        "if popped node = goal: return it as the found goal",
+        "else expand it and push each unvisited neighbor",
+        "re-sort the frontier by h so the closest-looking node is next",
+        "done: return goal or report that it was never reached",
+    ],
 };
 
 export default module;
