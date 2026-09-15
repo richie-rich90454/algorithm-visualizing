@@ -1,9 +1,34 @@
 /**
  * second-shortest-path.ts – Second Shortest Path
  *
- * The runner-up must deviate from the shortest path exactly once (detour
- * lemma): try every spur off P1 and keep the best. P1 = 4, P2 = 6.
- * Time: O(E log V) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the runner-up route: the cheapest path that differs from the
+ * shortest one. The detour lemma says the runner-up must deviate from the
+ * shortest path exactly once, so the algorithm forbids each shortest-path
+ * edge in turn, reruns Dijkstra, and keeps the best spur. On the demo the
+ * shortest path costs 4 and the second shortest costs 6.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) with smart reuse, naive O(V x E log V)
+ *   Space: O(V + E) for distances and predecessors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The shortest path is CYAN (path).
+ *   - The forbidden edge flashes ORANGE (swapped).
+ *   - Each spur candidate is YELLOW (comparing).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The runner-up may share most edges with the winner.
+ *   - A missing spur means the edge is unavoidable for this query.
+ *   - The same deviate-once idea generalizes to K shortest paths.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -164,6 +189,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute shortest path P1 from s to t via Dijkstra",
+        "for each edge e on path P1 in order",
+        "forbid e and run Dijkstra for a spur path",
+        "keep spur when it differs from P1 in one detour",
+        "restore e before testing the next edge",
+        "take the cheapest surviving spur as P2",
+        "done: P1 shortest and P2 second shortest paths",
+    ],
 };
 
 export default module;
