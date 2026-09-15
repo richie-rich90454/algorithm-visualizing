@@ -1,6 +1,7 @@
 /**
  * myers-diff-ond.ts – Myers Diff O(ND).
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(ND)", space: "O(D²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -52,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const N = a.length,
         M = b.length;
@@ -69,9 +70,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const dist = (dp[N] as number[])[M] as number;
     yield F(grid(dp, -1), `Myers O(ND) diff "${a}" → "${b}".`, 0);
     step += 1;
-    yield F(grid(dp, 1), "D=0 diagonal: snake while chars equal.", 1);
+    yield F(grid(dp, 1), 'D=0 diagonal: snake while chars "a" equal.', 1);
     step += 1;
-    yield F(grid(dp, 2, [[1, 1]]), "Greedy furthest-x per diagonal.", 2);
+    yield F(grid(dp, 2, [[1, 1]]), "Greedy furthest-x per diagonal k=1.", 2);
     step += 1;
     let i = N,
         j = M;
@@ -111,6 +112,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "abcab", b: "acbab" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize furthest reaching x for zero edits",
+        "extend snake while characters match diagonally",
+        "record furthest x for each diagonal k",
+        "increase edit distance D expanding frontier",
+        "trace back from end through saved frontiers",
+        "emit keep insert and delete operations",
+        "report shortest edit script and distance",
+    ],
 };
 
 export default module;
