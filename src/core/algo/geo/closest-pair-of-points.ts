@@ -82,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Need at least two points to find a closest pair.",
             codeLineNumber: 0,
             layout: "point",
-            meta: {},
+            meta: { count: points.length },
         };
         return;
     }
@@ -93,9 +93,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: `Closest pair of ${points.length} points – divide and conquer.`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { count: points.length },
     };
     step += 1;
 
@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: entities.map((e) => ({ ...e })),
                 edges: [],
                 description: `Comparing points ${i} and ${j}: distance ${d.toFixed(2)}.`,
-                codeLineNumber: 2,
+                codeLineNumber: 3,
                 layout: "point",
                 meta: { bestDist },
             };
@@ -162,7 +162,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [edge],
         description: `Closest pair: points ${best[0]} and ${best[1]} at distance ${bestDist.toFixed(2)}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { best, bestDist },
     };
@@ -187,6 +187,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the full point set",
+        "compare pairs and track the best distance so far",
+        "record each pair distance against the running best",
+        "keep the pair with the smallest distance seen",
+        "reset highlights and mark the winning pair",
+        "done: the closest pair and its distance are reported",
+    ],
 };
 
 export default module;
