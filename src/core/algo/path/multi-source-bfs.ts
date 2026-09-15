@@ -1,9 +1,35 @@
 /**
  * multi-source-bfs.ts – Multi-Source BFS
  *
- * All sources enter one queue at distance 0; the wavefront that reaches a
- * vertex first owns it. Line with sources A, E: A owns A/B/C, E owns D/E.
- * Time: O(V + E) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Multi-source BFS grows one shared wavefront from every source at once.
+ * All sources enter a single queue at distance 0; the wavefront that reaches
+ * a vertex first owns it and sets its distance and owner. On a line graph
+ * with sources A and E, source A claims A, B, C while source E claims D
+ * and E, partitioning the graph into Voronoi regions by nearest source.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) for one queue pass over the graph
+ *   Space: O(V) for distances, owners, and the queue
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Sources start PINK (highlight).
+ *   - The vertex spreading its wavefront is YELLOW (comparing).
+ *   - Newly reached vertices are ORANGE (visited).
+ *   - Finished vertices are GREEN (sorted), then recolored by owner.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Equivalent to adding a super source connected to every source.
+ *   - Distances equal the shortest distance to the nearest source.
+ *   - Powers Voronoi diagrams, fire spread, and infection modeling.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeGraphEdges } from "../graph/graph-util";
@@ -53,9 +79,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         queue.push(s);
         setN(s, "highlight");
     }
-    yield snap(`Multi-source BFS from {${[...owner.keys()].join(", ")}}: one shared queue.`, 0, {
-        sources: owner.size,
-    });
+    yield snap(
+        `Multi-source BFS from sources {${[...owner.keys()].join(", ")}} sharing one queue at distance 0.`,
+        0,
+        {
+            sources: owner.size,
+            settled: 0,
+            visits: 0,
+        },
+    );
     step += 1;
     while (queue.length > 0) {
         const u = queue.shift() as string;
@@ -68,9 +100,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 setN(v, "visited");
             }
         }
-        yield snap(`${u} (owner ${owner.get(u)}, dist ${dist.get(u)}) spreads its wavefront.`, 1, {
-            distance: dist.get(u) as number,
-        });
+        yield snap(
+            `Vertex ${u} owned by ${owner.get(u)} at distance ${dist.get(u)} spreads its wavefront to unvisited neighbors.`,
+            3,
+            {
+                distance: dist.get(u) as number,
+                settled: labels.filter((v) => (dist.get(v) as number) < Infinity).length,
+                visits: step,
+            },
+        );
         step += 1;
         setN(u, "sorted");
     }
@@ -82,9 +120,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const [v, s] of owner)
         setN(v, palette[(idx.get(s) as number) % palette.length] as EntityState);
     yield snap(
-        `Voronoi regions: ${[...idx.keys()].map((s) => `${s}→{${labels.filter((v) => owner.get(v) === s).join(",")}}`).join(" ")}.`,
-        2,
-        { regions: idx.size },
+        `Voronoi regions by nearest source: ${[...idx.keys()].map((s) => `${s} owns {${labels.filter((v) => owner.get(v) === s).join(",")}}`).join("; ")}.`,
+        6,
+        {
+            regions: idx.size,
+            settled: labels.length,
+            visits: labels.length,
+            distance: 1,
+            path: [...owner.keys()].join("→"),
+        },
     );
 }
 
@@ -99,6 +143,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "enqueue all sources with distance 0 and owner set",
+        "dequeue next vertex u from shared queue",
+        "for each neighbor v still unvisited: claim it",
+        "set dist[v] ← dist[u]+1 with owner of u",
+        "mark u finished, continue with the queue",
+        "repeat until the shared queue is empty",
+        "done: every vertex maps to its nearest source",
+    ],
 };
 
 export default module;
