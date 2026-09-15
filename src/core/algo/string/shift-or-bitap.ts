@@ -1,6 +1,7 @@
 /**
  * shift-or-bitap.ts – Shift-Or Bitap.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n·m/w)", space: "O(σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,13 +33,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Shift-Or exact search for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const mask = new Map<string, number>();
@@ -76,7 +80,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let k = s0; k < s0 + m; k += 1) fin.set(k, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         3,
         { comparisons, matches },
     );
@@ -90,6 +96,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "precompute bitmasks marking mismatches per character",
+        "initialize state vector to all ones",
+        "update state by shifting and masking input",
+        "detect zero in high bit as pattern match",
+        "record ending position converting to start index",
+        "advance through text character by character",
+        "report all match start positions",
+    ],
 };
 
 export default module;
