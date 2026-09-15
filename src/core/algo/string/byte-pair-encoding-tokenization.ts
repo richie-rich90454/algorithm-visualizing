@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield F(tx(toks.join(" ")), `Tokens: [${toks.join(" | ")}].`, 3, { toks });
     step += 1;
-    yield F(tx(toks.join(" ")), "Done.", 4, { toks, merges });
+    yield F(tx(toks.join(" ")), `BPE complete: ${toks.length} tokens after ${merges.length} merges.`, 4, { toks, merges });
 }
 
 const module: AlgorithmModule = {
