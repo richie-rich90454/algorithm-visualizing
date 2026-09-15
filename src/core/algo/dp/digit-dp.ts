@@ -152,6 +152,7 @@ const module: AlgorithmModule = {
         "skip digit 4 transitions while propagating started flag",
         "memoize on (pos, tight, started) to reuse suffix counts",
         "answer <- f(0) as count of numbers in 0..n avoiding 4",
-    ],};
+    ],
+};
 
 export default module;
