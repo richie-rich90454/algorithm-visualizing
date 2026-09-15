@@ -147,5 +147,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize offline vertices with random rank order",
+        "draw fixed seed ranks and sort offline vertices",
+        "match each arrival to highest ranked free neighbor",
+        "skip arrival when no free neighbor is available",
+        "compare online size against offline optimum value",
+        "report online matching size with competitive ratio",
+    ],
 };
 export default module;
