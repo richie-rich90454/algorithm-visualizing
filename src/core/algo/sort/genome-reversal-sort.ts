@@ -1,8 +1,31 @@
 /**
- * genome-reversal-sort.ts – Genome Reversal Sort.
+ * genome-reversal-sort.ts – Genome Reversal Sort
  *
- * Reverses gene blocks until the genome is ordered.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Genome reversal sort models evolution: it transforms one gene order into another using the fewest segment reversals. Each step finds the wanted gene and flips the whole block into place. It links sorting to bioinformatics, where reversals are real mutations.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -96,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -125,5 +148,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 2, 1, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with genome blocks out of order",
+        "find where the wanted gene currently sits",
+        "reverse the segment to bring the gene home",
+        "advance to the next position and repeat",
+        "scan genes into final order",
+        "done: genome blocks are in order",
+    ],
 };
 export default module;
