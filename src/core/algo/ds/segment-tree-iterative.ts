@@ -146,6 +146,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 1, 3, 4, 5], query: [1, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the raw array and a power-of-two leaf row",
+        "build parents bottom-up where each holds the sum of its children",
+        "query range: walk two pointers inward from both ends",
+        "when a pointer covers its segment fully: take it and step inward",
+        "accumulate the taken segments into one range sum",
+        "no recursion is used, only index arithmetic on the flat tree",
+        "done: flat tree holds all sums and the range answer is reported",
+    ],
 };
 
 export default module;
