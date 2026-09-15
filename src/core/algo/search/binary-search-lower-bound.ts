@@ -154,6 +154,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 3, 3, 5, 7, 9, 11], target: 3 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with lo ← 0 and hi ← n for range [lo, hi)",
+        "while lo < hi: keep narrowing the half-open interval",
+        "mid ← ⌊(lo+hi)/2⌋; compare A[mid] with target",
+        "if A[mid] ≥ target: hi ← mid else lo ← mid+1",
+        "done: lo is the leftmost index ≥ target or insertion point",
+    ],
 };
 
 export default module;
