@@ -1,8 +1,31 @@
 /**
- * loser-tree-merge-sort.ts – Loser Tree Merge Sort.
+ * loser-tree-merge-sort.ts – Loser Tree Merge Sort
  *
- * Tournament tree of run heads picks each winner.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A loser tree is a tournament bracket that remembers who lost each match, so replaying after one leaf changes costs only O(log K). Seeding runs as leaves and repeatedly extracting the winner merges K runs efficiently. It is the data structure behind fast multiway external merges.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -128,5 +151,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 1, 5, 2, 4, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with sorted runs seeded as tree leaves",
+        "play matches up the loser tree to find each winner",
+        "append each winner to the output run",
+        "replay matches along the winner path",
+        "scan output into final order",
+        "done: single sorted run remains",
+    ],
 };
 export default module;
