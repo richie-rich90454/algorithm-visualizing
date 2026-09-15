@@ -64,4 +64,13 @@ export interface AlgorithmModule {
      * responsible for deep-copying before it mutates anything.
      */
     run: (input: unknown) => Generator<VisualFrame, void, unknown>;
+    /**
+     * Textbook pseudocode, one entry per line, displayed in PseudocodePanel.
+     * Each frame's `codeLineNumber` is an index into this array. Every module
+     * must supply it: 5-12 lines, imperative textbook style
+     * (e.g. "for j ← 0 to n-2-i"), AP CSP + university level. The first line
+     * (index 0) describes setup/initial state; the last line describes the
+     * finished result.
+     */
+    pseudocode?: string[];
 }
