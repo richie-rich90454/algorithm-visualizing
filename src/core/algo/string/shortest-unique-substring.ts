@@ -1,6 +1,7 @@
 /**
  * shortest-unique-substring.ts – Shortest Unique Substring.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n²)", space: "O(n²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -31,7 +32,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Shortest substring occurring once in "${text}".`, 0);
     step += 1;
@@ -84,7 +85,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { answer: best, pos },
     );
     step += 1;
-    yield F(tx(text, fin), best ? `Search complete: shortest unique "${best}" at ${pos}.` : "Search complete: no unique substring.", 4, { answer: best, pos });
+    yield F(
+        tx(text, fin),
+        best
+            ? `Search complete: shortest unique "${best}" at ${pos}.`
+            : "Search complete: no unique substring.",
+        4,
+        { answer: best, pos },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -95,6 +103,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "enumerate all substrings with occurrence counts",
+        "order candidates by increasing length",
+        "test substrings of current length for uniqueness",
+        "select lexicographically smallest unique candidate",
+        "record its position and substring value",
+        "stop at first length containing uniques",
+        "report shortest unique substring and position",
+    ],
 };
 
 export default module;
