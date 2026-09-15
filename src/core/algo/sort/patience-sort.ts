@@ -197,6 +197,14 @@ const module: AlgorithmModule = {
     defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with no piles on the table",
+        "binary search the leftmost pile top >= x",
+        "deal x onto that pile (or start a new pile)",
+        "repeatedly pop the smallest pile top to output",
+        "merge piles in order until output is complete",
+        "done: output is sorted, pile count is the LIS length",
+    ],
 };
 
 export default module;
