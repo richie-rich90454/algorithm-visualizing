@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `Set contains ${inserts.length} unique value(s): [${inserts.join(", ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { buckets, unique: inserts.length },
     };
@@ -136,6 +136,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["cat", "dog", "cat", "bird", "dog"], buckets: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize hash set with empty buckets",
+        "hash value to bucket index",
+        "compare bucket entries to avoid duplicates",
+        "add value to bucket if absent",
+        "lookup value by checking bucket membership",
+        "count distinct values for set size",
+        "done: set holds values with membership answer",
+    ],
 };
 
 export default module;
