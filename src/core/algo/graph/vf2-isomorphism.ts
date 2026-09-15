@@ -1,9 +1,33 @@
 /**
  * vf2-isomorphism.ts – Graph Isomorphism (VF2)
  *
- * VF2 grows a partial mapping, pruning by degree and neighbor-consistency:
- * matched pairs must see the same matched neighborhood. Triangles match.
- * Time: O(V!·V) worst Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * VF2 decides whether two graphs share the same structure by growing a
+ * partial vertex mapping one pair at a time. Each candidate pair must pass
+ * feasibility: equal degrees plus neighbor consistency (matched neighbors
+ * of one map exactly onto matched neighbors of the other). Failures prune
+ * the branch and backtrack. The two triangles match pair by pair with no
+ * backtracking needed.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V!·V) worst case – factorial search with pruning
+ *   Space: O(V) for the partial mapping
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Candidate pairs flash YELLOW (comparing).
+ *   - The confirmed mapping turns GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - No known polynomial algorithm for general graphs.
+ *   - Degree and neighborhood checks prune hopeless branches early.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -95,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         iso
             ? `Isomorphic: ${[...map.entries()].map(([a, x]) => `${a}↔${x}`).join(", ")}.`
             : "Not isomorphic: mapping cannot complete.",
-        2,
+        4,
         { isomorphic: iso },
     );
 }
@@ -111,6 +135,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with an empty partial mapping between G1 and G2",
+        "try an unmapped pair passing degree and neighbor checks",
+        "infeasible pair: prune the branch and backtrack",
+        "repeat until the mapping covers G1 or stalls",
+        "done: a full isomorphism such as A↔X, B↔Y, C↔Z, or a mismatch",
+    ],
 };
 
 export default module;
