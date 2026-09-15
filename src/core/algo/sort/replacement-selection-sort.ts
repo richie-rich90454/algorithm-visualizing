@@ -1,8 +1,31 @@
 /**
- * replacement-selection-sort.ts – Replacement Selection Sort.
+ * replacement-selection-sort.ts – Replacement Selection Sort
  *
- * Snowplow heap grows runs twice memory size.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Replacement selection builds initial runs longer than memory by snowplowing a heap: output the heap minimum, then replace it with the next input, freezing entries that break the run. Average runs stretch to twice memory size. Longer runs mean fewer merge passes downstream.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -105,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -134,5 +157,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the heap snowplow ready for run one",
+        "snowplow the heap to build long sorted runs",
+        "flush each completed run to the output tapes",
+        "merge all runs in a single pass",
+        "scan runs into final order",
+        "done: single sorted run remains",
+    ],
 };
 export default module;
