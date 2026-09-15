@@ -93,10 +93,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `SPFA from ${start} – only relaxing edges of recently-improved vertices.`,
+        description: `SPFA from ${start} to ${target} – distances set, queue holds only improved vertices.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
@@ -105,14 +105,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     inQueue.add(start);
     enqueueCount.set(start, 1);
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: { queueSize: queue.length },
+        meta: { queueSize: queue.length, visits: 0 },
     });
 
     let hasNegativeCycle = false;
@@ -131,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Processing ${current} (distance ${currentDist}).`);
+        yield buildFrame(`Dequeued ${current} with distance ${currentDist}, relaxing its outgoing edges.`, 1);
         step += 1;
 
         // Relax every outgoing edge of the dequeued vertex.
@@ -168,7 +168,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     neighborNode.state = "visited";
                     neighborNode.label = String(alt);
                 }
-                yield buildFrame(`Relaxed ${current} → ${neighbor}: now ${alt}.`);
+                yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${alt}.`, 3);
                 step += 1;
             }
         }
@@ -212,9 +212,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : dist.get(target) === Infinity
               ? `${target} is unreachable from ${start}.`
               : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity },
+        meta: { settled: vertices.length, visits: vertices.length, negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity, path: path.join("→") },
     };
 }
 
@@ -251,6 +251,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← ∞ for v ≠ s, queue ← [s]",
+        "dequeue u with current distance dist[u]",
+        "for each edge u→v with weight w: relax edge",
+        "if dist[u]+w < dist[v]: update dist[v], enqueue v",
+        "if v enqueued V+1 times: negative cycle found",
+        "repeat until queue is empty",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
