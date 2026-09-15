@@ -66,9 +66,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: [],
         description: `Alpha shape with α=${alpha} on ${pts.length} points – Delaunay first.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { alpha, points: pts.length },
     };
     step += 1;
     const tris: Array<[number, number, number]> = [];
@@ -133,9 +133,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges: toEdges(shown.slice(0, t + 1)),
             description: `Edge ${u}–${v} kept (half-length ≤ α=${alpha}).`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { edge: [u, v], alpha },
         };
         step += 1;
     }
@@ -153,9 +153,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges: toEdges(kept),
             description: `Triangle (${i},${j},${k}): circumradius=${r.toFixed(2)} ${r <= alpha + 1e-9 ? "≤ α, kept" : "> α, dropped"}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
-            meta: {},
+            meta: { triangle: [i, j, k], circumradius: r },
         };
         step += 1;
     }
@@ -164,7 +164,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, new Map(pts.map((_, i) => [i, "sorted"] as [number, EntityState]))),
         edges: toEdges(kept),
         description: `Alpha shape complete: ${kept.length} edges, ${tris.filter(([i, j, k]) => (circumR(pts[i] as Pt, pts[j] as Pt, pts[k] as Pt) as number) <= alpha + 1e-9).length} triangles.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { edges: kept.map(([u, v]) => `${u}-${v}`) },
     };
@@ -188,6 +188,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the Delaunay triangulation of the points",
+        "for each Delaunay edge: keep it when half its length is at most alpha",
+        "for each Delaunay triangle: compute its circumradius",
+        "keep triangles whose circumradius is at most alpha, drop the rest",
+        "kept edges plus kept triangles form the alpha complex",
+        "done: the alpha shape outlines the point set at scale alpha",
+    ],
 };
 
 export default module;
