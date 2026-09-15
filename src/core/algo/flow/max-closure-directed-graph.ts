@@ -212,5 +212,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize directed graph with positive and negative weights",
+        "build source sink network with infinite precedence arcs",
+        "run max flow to find minimum s t cut capacity",
+        "derive closure value as positive sum minus cut",
+        "verify optimum by checking all closed vertex sets",
+        "report maximum closure weight with chosen vertices",
+    ],
 };
 export default module;
