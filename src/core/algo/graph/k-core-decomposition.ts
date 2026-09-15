@@ -1,10 +1,33 @@
 /**
  * k-core-decomposition.ts – K-Core Decomposition
  *
- * Repeatedly peels the current minimum-degree vertices; a vertex removed
- * while the minimum degree is d gets core number d. Diamond+leaf: D=1,
- * A=B=C=2, so the degeneracy is 2.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The k-core is the largest subgraph where every vertex keeps degree at
+ * least k; the core number of a vertex is the deepest core it belongs to.
+ * Peeling assigns them: repeatedly remove current minimum-degree vertices,
+ * stamping each with the degree at removal time. Later removal means deeper
+ * embedding. On the diamond-plus-leaf, D peels at degree 1 while A, B, C
+ * survive to degree 2, and the degeneracy (max core number) is 2.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) with bucketed degrees
+ *   Space: O(V + E) for degrees, core numbers, and survivors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each removed vertex flashes RED (swapped).
+ *   - Survivors deepen in color by core number.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Core numbers expose the dense heart of social and web graphs.
+ *   - The max core number equals the graph's degeneracy.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -78,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const degen = Math.max(...core.values());
     yield snap(
         `Core numbers ${labels.map((v) => `${v}=${core.get(v)}`).join(", ")} – degeneracy ${degen}.`,
-        2,
+        4,
         { degeneracy: degen },
     );
 }
@@ -91,6 +114,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute every degree; all vertices start alive",
+        "remove a minimum-degree vertex, stamp its core number",
+        "lower the degrees of its surviving neighbors",
+        "repeat until no vertex survives",
+        "done: core numbers with degeneracy 2",
+    ],
 };
 
 export default module;
