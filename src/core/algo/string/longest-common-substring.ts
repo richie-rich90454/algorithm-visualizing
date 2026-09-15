@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest common substring of "${a}" and "${b}".`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { rows, cols },
+        meta: { comparisons: 0, shifts: 0, rows, cols, matches: [] },
     };
     step += 1;
 
@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Computing dp[${i}][${j}] for "${a[i - 1]}" vs "${b[j - 1]}" = ${dp[i]?.[j]}.`,
                 codeLineNumber: 2,
                 layout: "grid",
-                meta: { rows, cols, bestLen },
+                meta: { comparisons: bestLen, shifts: 0, rows, cols, bestLen, matches: [] },
             };
             step += 1;
         }
@@ -156,7 +156,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest common substring: "${longest}" (length ${bestLen}).`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows, cols, bestLen, longestLen: longest.length },
+        meta: {
+            comparisons: bestLen,
+            shifts: 0,
+            rows,
+            cols,
+            bestLen,
+            matches: [longest],
+            longestLen: longest.length,
+        },
     };
 }
 
@@ -170,6 +178,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "abacaba", b: "cabac" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "create table for substring ending lengths",
+        "initialize first row and column to zero",
+        "extend diagonal by one when characters match",
+        "reset cell to zero on character mismatch",
+        "track maximum value and its end position",
+        "trace back diagonally to recover substring",
+        "report longest substring and length",
+    ],
 };
 
 export default module;
