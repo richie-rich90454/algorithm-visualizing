@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 0 <= secret < mod).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Secret ${s} mod ${p}, threshold 2: f(x) = ${s}+${c1}x.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const shares: Array<[number, number]> = [];
@@ -109,5 +109,12 @@ const module: AlgorithmModule = {
     defaultInput: { secret: 7, mod: 13 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "hide the secret as f(0) of a random line mod p",
+        "hand out shares (x, f(x))",
+        "rebuild the Lagrange weights at 0",
+        "combine shares into the recovered secret",
+        "done: recovered value matches the secret",
+    ],
 };
 export default module;
