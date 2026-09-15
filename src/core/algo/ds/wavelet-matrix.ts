@@ -1,6 +1,29 @@
 /**
  * wavelet-matrix.ts - Wavelet Matrix
  * Level bitvectors + offsets replace pointers. Demo: build on <=6 items, 1 range query verified.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Level bitvectors + offsets replace pointers. Demo: build on <=6 items, 1 range query verified.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log s) rank
+ *   Space: O(n log s)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Wavelet Matrix behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -35,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -65,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     yield {
@@ -87,5 +110,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the raw array and no level bitvectors",
+        "stable-partition by the current bit into zeros then ones",
+        "record the bitvector plus the zero count as the offset",
+        "recurse on the reordered array for the next bit level",
+        "query range: map the interval down with rank on each level",
+        "combine level counts into the final range aggregate",
+        "done: bit levels index the array and the range answer verifies",
+    ],
 };
 export default module;
