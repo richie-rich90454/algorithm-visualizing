@@ -1,9 +1,33 @@
 /**
  * scc-condensation-graph.ts – SCC Condensation Graph
  *
- * Kosaraju finds SCCs {A,B} and {C,D}; contracting each to one node yields
- * the DAG S0→S1. The condensation of any digraph is always acyclic.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Contracting each strongly connected component into a single super-vertex
+ * yields the condensation graph – and it is always a DAG, since any cycle
+ * between components would have merged them. The pipeline runs Kosaraju's
+ * two passes (finish order, then reversed-graph sweep), paints each SCC,
+ * and links super-vertices wherever an original edge crosses components.
+ * Here {A,B} and {C,D} contract to S0→S1.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – Kosaraju plus one edge scan for cross links
+ *   Space: O(V + E) for order, components, and links
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The finish-order leader is YELLOW (comparing).
+ *   - Each SCC gets its own color; cross-component edges turn GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The condensation DAG unlocks DP over SCCs (reachability, 2-SAT order).
+ *   - Sources and sinks of the DAG are the natural start/end blocks.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -51,7 +75,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield snap("Empty graph – nothing to explore.", 0);
         return;
     }
-    yield snap("Kosaraju pass 1: DFS finish order on the original graph.", 0, {});
+    yield snap("Kosaraju pass 1: DFS finish order on the original graph.", 0, {
+        vertices: labels.length,
+    });
     step += 1;
     const seen = new Set<string>();
     const order: string[] = [];
@@ -62,7 +88,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     for (const v of labels) if (!seen.has(v)) visit(v);
     setN(order[order.length - 1] as string, "comparing");
-    yield snap(`Finish order: ${order.join(", ")} – process reversed graph in reverse.`, 1, {});
+    yield snap(`Finish order: ${order.join(", ")} – process reversed graph in reverse.`, 1, {
+        ordered: order.length,
+    });
     step += 1;
     const rev: Record<string, string[]> = {};
     for (const v of labels) rev[v] = [];
@@ -111,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     yield snap(
         `Condensation DAG: ${comps.map((m, i) => `S${i}={${m.join(",")}}`).join(" ")} with edge ${[...links].join(", ")}.`,
-        3,
+        4,
         { sccs: comps.length },
     );
 }
@@ -124,6 +152,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["D"], D: ["C"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "run Kosaraju pass 1: DFS finish order on the original graph",
+        "sweep the reversed graph in reverse finish order into SCCs",
+        "contract each SCC into one super-vertex",
+        "link super-vertices wherever an edge crosses components",
+        "done: the condensation DAG such as S0={A,B} → S1={C,D}",
+    ],
 };
 
 export default module;
