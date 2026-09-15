@@ -144,5 +144,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize suppliers demanders and unit cost matrix",
+        "enumerate feasible shipment plans meeting supply demand",
+        "compute total cost for each candidate shipment plan",
+        "track cheapest plan seen across enumeration steps",
+        "verify optimum shipment against all feasible plans",
+        "report optimal shipment with minimum total cost",
+    ],
 };
 export default module;
