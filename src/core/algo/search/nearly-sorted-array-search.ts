@@ -1,8 +1,36 @@
 /**
  * nearly-sorted-array-search.ts – Nearly Sorted Array Search
  *
- * Each element sits at most k away from its sorted slot, so every step
- * checks i−1, i, and i+1, then jumps two ahead. Verified by brute force.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * In a nearly sorted array every element sits at most k positions from its
+ * sorted slot (here k = 1, so each value moved by at most one). The algorithm
+ * walks the array two steps at a time and checks the window [i-1, i, i+1]:
+ * the target, if present near i, must appear inside that window. Finding it
+ * ends the search; otherwise the scan jumps ahead by two. It is a tiny
+ * specialization of searching in k-sorted data, where a heap would handle
+ * larger k.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) worst – each element is examined at most twice
+ *   Space: O(1) auxiliary – only the index and a 3-element window
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The 3-element window under test is YELLOW (comparing).
+ *   - A hit turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires a k-sorted array with k = 1 for this exact window logic.
+ *   - Shows how a displacement promise turns linear search into strided
+ *     checks without missing any candidate.
+ *   - The general k-sorted case uses a min-heap of size k+1 instead.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -34,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Searching nearly-sorted array (k=${k}) for ${target}.`,
+        description: `Searching nearly sorted array (k=${k}) of ${arr.length} elements for target ${target}.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, target, k },
@@ -45,8 +73,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – nothing to search.",
-            codeLineNumber: 1,
+            description: `Empty array holds nothing, so target ${target} is absent.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target, k },
         };
@@ -64,10 +92,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, states),
             edges: [],
-            description: `Window around ${i} holds ${values} – no ${target}, jumping ahead.`,
-            codeLineNumber: 1,
+            description: `Window centered at ${i} holds ${values}: no match for ${target}, jumping two ahead.`,
+            codeLineNumber: 2,
             layout: "array",
-            meta: { comparisons, target, k },
+            meta: { comparisons, target, k, center: i },
         };
         step += 1;
     }
@@ -77,8 +105,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[verified, "sorted"]])),
             edges: [],
-            description: `Found ${target} at index ${verified} after ${comparisons} comparisons.`,
-            codeLineNumber: 2,
+            description: `Found target ${target} at index ${verified} after ${comparisons} comparisons.`,
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, target, k, foundIndex: verified },
         };
@@ -87,8 +115,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: `${target} is not in the array.`,
-            codeLineNumber: 2,
+            description: `Target ${target} is absent after ${comparisons} windowed comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target, k },
         };
@@ -103,6 +131,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [3, 1, 2, 4, 6, 5], target: 5, k: 1 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start at i ← 0 knowing each element is within k slots",
+        "build window W ← {i-1, i, i+1} clipped to [0, n-1]",
+        "compare every element of W with target",
+        "if target is in W: return its index as the match",
+        "advance i ← i+2 and repeat while i < n",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
