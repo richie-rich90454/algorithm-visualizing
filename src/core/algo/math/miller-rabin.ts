@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Testing ${n} for primality with Miller-Rabin.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `n − 1 = ${n - 1} = 2^${s} × ${d}.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -173,7 +173,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Witness ${a}: a^d = ${a}^${d} mod ${n} = ${x}.`,
             codeLineNumber: 4,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
 
@@ -194,7 +194,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Witness ${a}, squaring ${i}/${s - 1}: x = ${x}.`,
                 codeLineNumber: 5,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             step += 1;
             if (x === n - 1) {
@@ -212,7 +212,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Witness ${a} proves ${n} is composite.`,
                 codeLineNumber: 6,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             step += 1;
             break;
@@ -246,6 +246,16 @@ const module: AlgorithmModule = {
     defaultInput: { n: 29 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "rule out trivial inputs, then test n with Miller-Rabin",
+        "small even or divisible inputs are not prime",
+        "tiny primes pass immediately",
+        "factor n−1 ← 2^s·d with d odd",
+        "compute x ← a^d mod n for the witness",
+        "square x watching for n−1, up to s−1 times",
+        "a bad witness proves n is composite",
+        "done: prime, or composite by witness",
+    ],
 };
 
 export default module;
