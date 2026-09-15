@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs limit >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -95,5 +95,12 @@ const module: AlgorithmModule = {
     defaultInput: { limit: 30 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "set the bound m = (limit−1)/2",
+        "remove every k = i+j+2ij",
+        "done: primes via 2k+1 with count",
+        "the value 1 maps to the prime 2 by hand",
+        "done: removed k values mark odd composites",
+    ],
 };
 export default module;
