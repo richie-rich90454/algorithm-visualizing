@@ -282,7 +282,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Maximum flow from ${source} to ${sink} is ${totalFlow} across ${phases} phase(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { flow: totalFlow, phases },
     };
@@ -311,6 +311,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize zero flow and residual graph with reverse edges",
+        "run BFS from source to build level graph distances",
+        "BFS builds level graph and stops if sink is unreachable",
+        "push blocking flow with DFS along level edges",
+        "repeat BFS phases until sink is unreachable",
+        "report maximum flow value across all phases",
+    ],
 };
 
 export default module;
