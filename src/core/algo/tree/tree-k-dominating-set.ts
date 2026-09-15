@@ -1,7 +1,8 @@
 /**
- * tree-k-dominating-set.ts – minimum k-dominating set (k=1 default).
+ * tree-k-dominating-set.ts – Minimum k-dominating set with k=1 by default.
+ *
  * Every node must sit within distance k of a chosen node.
- * Brute-forced tiny: {B, C} dominates all 5 default nodes.
+ * Exhaustive tiny search: {B, C} dominates all 5 default nodes.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -144,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield emit(
         fstates,
         `Minimum ${k}-dominating set has size ${winner.length}: {${winner.join(", ")}}.`,
-        3,
+        4,
         { k, minSize: winner.length, set: winner },
     );
 }
@@ -161,6 +162,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "compute all-pairs distances with BFS from each node",
+        "try candidate sets in growing size order",
+        "reject candidates leaving some node uncovered",
+        "keep first set covering within distance k",
+        "return smallest k-dominating set as the answer",
+    ],
 };
 
 export default module;
