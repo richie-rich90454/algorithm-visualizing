@@ -118,6 +118,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize DSU with each element as its own parent",
+        "find root by climbing parent pointers",
+        "compare ranks and attach smaller tree under larger",
+        "record change on rollback stack before mutation",
+        "union pair and push parent and rank changes",
+        "rollback to snapshot by popping stack entries",
+        "done: DSU holds sets with rollback restored state",
+    ],
 };
 
 export default module;
