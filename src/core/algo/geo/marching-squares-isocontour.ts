@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: all(),
             edges: segEdges.map((e) => ({ ...e })),
             description: `Row ${r}: case indices [${arr.map((x) => x.idx).join(", ")}].`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { row: r },
         };
@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: all(),
         edges: segEdges.map((e) => ({ ...e })),
         description: `Paired ${crossing} edge crossing(s) into ${total} contour segment(s) in cyclic order.`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { crossings: crossing, segments: total },
     };
@@ -156,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ),
         edges: segEdges.map((e) => ({ ...e, state: "sorted" as EntityState })),
         description: `Isocontour done: ${total} segment(s) at iso=${iso}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { segments: total, iso },
     };
@@ -177,6 +177,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the scalar grid and the iso value",
+        "mark grid corners at or above iso",
+        "classify each cell into a 4-bit case index",
+        "pair edge crossings inside every active cell",
+        "link crossings into contour segments in cyclic order",
+        "done: segments trace the isocontour at iso",
+    ],
 };
 
 export default module;
