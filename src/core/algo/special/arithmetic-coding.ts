@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { lo: r(lo), hi: r(hi) },
         };
@@ -129,6 +129,15 @@ const module: AlgorithmModule = {
     defaultInput: { message: "aaba" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize interval [lo, hi) <- [0, 1) with symbol probabilities",
+        "for each message symbol at position t",
+        "narrow [lo, hi) into the symbol probability sub-range",
+        "advance to the next symbol with the shrunken interval",
+        "pick a code number inside the final interval",
+        "decode by locating each sub-range in turn",
+        "done: decoded message matches the original input",
+    ],
 };
 
 export default module;
