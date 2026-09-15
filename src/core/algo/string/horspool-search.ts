@@ -1,6 +1,7 @@
 /**
  * horspool-search.ts – Horspool Search.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm) worst, O(n) avg", space: "O(σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,18 +33,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Horspool search for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const shift = new Map<string, number>();
     for (let i = 0; i < m - 1; i += 1) shift.set(pat[i] as string, m - 1 - i);
-    yield F(tx(text), `Bad-char shifts ready (${shift.size} entries).`, 1, { comparisons: 0, shifts: shift.size });
+    yield F(tx(text), `Bad-char shifts ready (${shift.size} entries).`, 1, {
+        comparisons: 0,
+        shifts: shift.size,
+    });
     step += 1;
     const matches: number[] = [];
     let comparisons = 0;
@@ -55,18 +62,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const cur = Array.from({ length: m }, (_, k) => i + k);
         if (j < 0) {
             matches.push(i);
-            yield F(tx(text, stAt(cur, "path")), `Match: "${pat}" found at index ${i}.`, 2, { comparisons, matches: [...matches] });
+            yield F(tx(text, stAt(cur, "path")), `Match: "${pat}" found at index ${i}.`, 2, {
+                comparisons,
+                matches: [...matches],
+            });
             step += 1;
         } else {
             const s = new Map<number, EntityState>(
                 cur.map((p) => [p, "comparing"] as [number, EntityState]),
             );
             s.set(i + j, "swapped");
-            yield F(tx(text, s), `Mismatch: text[${i + j}]="${text[i + j]}" vs pattern[${j}]="${pat[j]}"; shifting right.`, 3, {
-                comparisons,
-                shifts: shift.size,
-                matches: [...matches],
-            });
+            yield F(
+                tx(text, s),
+                `Mismatch: text[${i + j}]="${text[i + j]}" vs pattern[${j}]="${pat[j]}"; shifting right.`,
+                3,
+                {
+                    comparisons,
+                    shifts: shift.size,
+                    matches: [...matches],
+                },
+            );
             step += 1;
         }
         if (step > 11) break;
@@ -78,7 +93,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let k = s0; k < s0 + m; k += 1) fin.set(k, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -92,6 +109,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabcab", pattern: "abc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build bad-character shift table from pattern prefix",
+        "align pattern at start of text window",
+        "compare pattern right to left within window",
+        "record match when all characters align",
+        "shift by table value of last window character",
+        "repeat until window passes text end",
+        "report all match positions found",
+    ],
 };
 
 export default module;
