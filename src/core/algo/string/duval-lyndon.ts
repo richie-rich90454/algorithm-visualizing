@@ -96,7 +96,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Comparing text[${k}]="${a}" with text[${j}]="${b}".`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
+                meta: {
+                    comparisons,
+                    shifts: 0,
+                    factors: factors.length,
+                    matches: factors.map(([s, e]) => `${s}-${e}`),
+                },
             };
             step += 1;
 
@@ -147,7 +152,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Emitted factor ${factors.length}: "${text.slice(factors[factors.length - 1]?.[0], (factors[factors.length - 1]?.[1] ?? 0) + 1)}".`,
             codeLineNumber: 3,
             layout: "text",
-            meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
+            meta: {
+                comparisons,
+                shifts: 0,
+                factors: factors.length,
+                matches: factors.map(([s, e]) => `${s}-${e}`),
+            },
         };
         step += 1;
     }
@@ -161,7 +171,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lyndon factorization: "${factorStrings.join(" | ")}".`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
+        meta: {
+            comparisons,
+            shifts: 0,
+            factors: factors.length,
+            matches: factors.map(([s, e]) => `${s}-${e}`),
+        },
     };
 }
 
