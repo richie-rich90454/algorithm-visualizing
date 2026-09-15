@@ -1,6 +1,26 @@
 /**
- * degree-constrained-mst-heuristic.ts - Degree-Constrained MST Heuristic.
- * Kruskal that skips edges violating a per-vertex degree bound.
+ * degree-constrained-mst-heuristic.ts – Degree-Constrained MST Heuristic.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A degree-constrained spanning tree limits how many tree edges may touch
+ * each vertex. This heuristic runs Kruskal's greedy scan but skips any edge
+ * that would exceed the per-vertex degree bound or form a cycle. It is fast
+ * and often optimal on small graphs, though the exact problem is NP-hard.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log E) – dominated by sorting the edges
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The edge under test is YELLOW (comparing).
+ *   - An accepted edge turns GREEN (sorted).
+ *   - A skipped edge flashes RED (swapped).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -88,13 +108,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Degree-constrained MST with bound ${d.bound}: Kruskal plus a degree check.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Degree-constrained MST with bound ${d.bound}: Kruskal scan plus a degree check.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0 },
+    };
     const order = list.map((_, i) => i).sort((x, y) => (list[x] as E3).w - (list[y] as E3).w);
     const uf = UF();
     const deg = new Map<string, number>(verts.map((v) => [v, 0]));
@@ -103,26 +126,32 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const e = list[idx] as E3;
         if (mst.length >= verts.length - 1) break;
         if ((deg.get(e.a) as number) >= d.bound || (deg.get(e.b) as number) >= d.bound) {
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map([[idx, "swapped"]])),
-                `Skipped ${e.a}-${e.b} (${e.w}): degree bound ${d.bound} would break.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map([[idx, "swapped"]])),
+                    `Skipping ${e.a}–${e.b} (weight ${e.w}): degree bound ${d.bound} would break.`,
+                    3,
+                ),
+                meta: { accepted: mst.length },
+            };
             continue;
         }
         if (uf.union(e.a, e.b)) {
             mst.push(idx);
             deg.set(e.a, (deg.get(e.a) as number) + 1);
             deg.set(e.b, (deg.get(e.b) as number) + 1);
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-                `Accepted ${e.a}-${e.b} (${e.w}): degrees A1 B2 C2 D1 stay within ${d.bound}.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+                    `Adding ${e.a}–${e.b} (weight ${e.w}) to the tree: degrees stay within bound ${d.bound}.`,
+                    4,
+                ),
+                meta: { accepted: mst.length },
+            };
         }
     }
     const weight = mst.reduce((s, i) => s + (list[i] as E3).w, 0);
@@ -131,10 +160,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Heuristic tree weight ${weight} with max degree 2: feasible and optimal here.`,
-            2,
+            `Heuristic tree weight ${weight} with max degree ${d.bound}: ${mst.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ")}.`,
+            5,
         ),
-        meta: { weight },
+        meta: { weight, totalWeight: weight, accepted: mst.length },
     };
 }
 
@@ -156,5 +185,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort all edges by increasing weight",
+        "track the current degree of every vertex",
+        "for each edge u–v in sorted order: examine it",
+        "skip the edge when a degree bound would break",
+        "if it joins different sets: add the edge and union",
+        "done: accepted edges form a bounded-degree tree weight",
+    ],
 };
 export default module;
