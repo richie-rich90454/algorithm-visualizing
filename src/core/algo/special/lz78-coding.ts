@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "text",
             meta: { phrases: pairs.slice(0, line).map(([c, ch]) => `(${c},${ch})`), roundTrip },
         };
@@ -99,6 +99,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "abababa" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize empty phrase dictionary over text",
+        "scan text tracking consumed prefix length",
+        "find longest known prefix plus next character",
+        "emit pair (prefix code, new char)",
+        "add the new phrase to the dictionary",
+        "decode pairs by replaying dictionary growth",
+        "done: phrase count with verified round-trip",
+    ],
 };
 
 export default module;
