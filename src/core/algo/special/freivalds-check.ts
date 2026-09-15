@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: t,
+            codeLineNumber: Math.min(t, 6),
             layout: "grid",
             meta: { trial: t, match },
         };
@@ -95,6 +95,15 @@ const module: AlgorithmModule = {
     defaultInput: { trials: 3, seed: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize matrices A, B, and claimed product C",
+        "for trial t <- 1 to trials",
+        "pick random binary vector r",
+        "compute A(Br) and Cr by matrix-vector products",
+        "if results differ then product is wrong",
+        "repeat to drive error below 1/2^k",
+        "done: verdict probably equal or definitely wrong",
+    ],
 };
 
 export default module;
