@@ -52,10 +52,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: base.map((e) => ({ ...e })),
         edges: [],
-        description: "Polygon and viewpoint – casting one ray per vertex.",
-        codeLineNumber: 0,
+        description: `Eye (${viewpoint}) sees a ${polygon.length}-gon – casting one ray per vertex.`,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { vertices: polygon.length, eye: viewpoint },
     };
     step += 1;
     const edges: {
@@ -94,9 +94,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: ents,
             edges: edges.map((e) => ({ ...e })),
             description: `Ray ${ring + 1}/${polygon.length} cast – vertex ${ring} ${"visible"}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { ray: ring + 1, total: polygon.length },
         };
         step += 1;
         if (step > 6) break;
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: [...edges.map((e) => ({ ...e })), ...loop],
         description: `Visibility polygon: all ${order.length} vertices visible from the eye.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { visible: order },
     };
@@ -143,6 +143,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the polygon plus viewpoint eye",
+        "cast one ray from the eye to each vertex",
+        "stop each ray at its first polygon hit",
+        "link hit points in angular order",
+        "done: linked hits outline the visible region",
+    ],
 };
 
 export default module;
