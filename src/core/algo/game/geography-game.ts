@@ -1,6 +1,34 @@
-// geography-game.ts – Geography: move a token along unused directed edges.
-// Stuck player loses. DFS in-code shows start A is losing (both replies B,C
-// reach the dead end D), while the demo line A->B->D strands the mover.
+/**
+ * geography-game.ts – Geography (directed vertex-path game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Geography moves a token along unused directed edges; revisiting a vertex
+ * is illegal and the stuck player loses. Simply: move where the opponent
+ * runs out of fresh roads. Formally: positions are solved by depth-first
+ * search with memoization, and start A is losing because both replies B and
+ * C reach the dead end D, while the demo line A to B to D strands the mover.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(2^n) game-tree search
+ *   Space: O(n) recursion and visited set
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The token cell flashes YELLOW (comparing); visited cells highlight.
+ *   - Unvisited cells stay idle; the stranded end shows the losing line.
+ *   - The verdict names the N-position or P-position status of the start.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Directed Geography is PSPACE-complete in general.
+ *   - The player with no unused outgoing edge loses.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 const NODES = ["A", "B", "C", "D"];
@@ -48,10 +76,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: geoCells(start, new Set([start])),
         edges: [],
-        description: `Geography on A->{B,C}, B->D, C->D with token at ${start} – player to move ${winning ? "wins" : "loses"} with perfect play.`,
+        description: `Geography on directed map A to B,C then B to D and C to D, token at ${start} – player to move ${winning ? "wins (N-position)" : "loses (P-position)"} with perfect play.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { start, winning },
+        meta: { start, winning, winner: winning ? "first" : "second" },
     };
     step += 1;
     // ponytail: one illustrative legal line; full game-tree search when analysis input exists.
@@ -63,10 +91,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: geoCells(line[i] as string, visited),
             edges: [],
-            description: `Token moves ${line[i - 1]} -> ${line[i]} (edge used up).`,
-            codeLineNumber: 1,
+            description: `Token travels directed edge ${line[i - 1]} to ${line[i]}, marking ${line[i]} visited and burning the edge.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { start, token: line[i] },
+            meta: { start, token: line[i], from: line[i - 1], visited: [...visited] },
         };
         step += 1;
     }
@@ -77,21 +105,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: geoCells(end, visited),
         edges: [],
         description: stuck
-            ? `Token stranded at ${end} – no unused outgoing edge, so the player to move loses this line.`
-            : `Token at ${end}; the game continues.`,
-        codeLineNumber: 2,
+            ? `Token stranded at dead-end ${end} with no unused outgoing edge, so the player to move loses this line.`
+            : `Token rests at ${end} with fresh outgoing edges; the game continues.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { start, end, stuck },
+        meta: { start, end, stuck, winning },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: geoCells(end, visited),
         edges: [],
-        description: `Solved: ${start} is ${winning ? "winning (N-position)" : "losing (P-position)"} with perfect play.`,
-        codeLineNumber: 3,
+        description: `Solved: start ${start} is ${winning ? "winning (N-position)" : "losing (P-position)"}, so ${winning ? "first" : "second"} player wins with perfect play.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { start, winning },
+        meta: { start, winning, winner: winning ? "first" : "second" },
     };
 }
 
@@ -103,6 +131,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the token on vertex start and mark it visited",
+        "a move travels one unused directed edge to a fresh vertex",
+        "the player with no unused outgoing edge loses the game",
+        "search replies by DFS: start A loses since B and C reach D",
+        "play the demo line A to B to D and strand the mover",
+        "winner is first player from N-positions, second from P-positions",
+    ],
 };
 
 export default module;
