@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `The matrix uses ${matrix.length * matrix.length} cells regardless of how sparse the graph is.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { size: matrix.length },
     };
@@ -124,6 +124,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize n by n zero matrix for n vertices",
+        "insert edge (u, v) by setting matrix[u][v] to 1",
+        "compare row entries to count degree of a vertex",
+        "answer edge query by reading matrix[u][v] in O(1)",
+        "scan matrix row to list all neighbors of vertex",
+        "count ones to get total edge count",
+        "done: matrix stores graph and edge query answer",
+    ],
 };
 
 export default module;
