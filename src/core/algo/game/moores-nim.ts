@@ -126,33 +126,33 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             new Set(taken.map((t, i) => (t > 0 ? i : -1)).filter((i) => i >= 0)),
         ),
         edges: [],
-        description: `Winning move: take ${taken
+        description: `Winning Moore move on [${piles.join(", ")}]: take ${taken
             .map((t, i) => (t > 0 ? `${t} from pile ${i + 1}` : ""))
             .filter(Boolean)
             .join(", ")} -> [${(move as number[]).join(", ")}].`,
-        codeLineNumber: 1,
-        layout: "grid",
-        meta: { piles, k, after: move },
-    };
-    step += 1;
-    yield {
-        stepNumber: step,
-        entities: pileCells(move),
-        edges: [],
-        description: `Result [${move.join(", ")}] has digit sums [${bitSums(move, mod).join(", ")}] – a P-position.`,
-        codeLineNumber: 2,
-        layout: "grid",
-        meta: { piles: move, k, winning: true },
-    };
-    step += 1;
-    yield {
-        stepNumber: step,
-        entities: pileCells(move),
-        edges: [],
-        description: `First player wins Moore's Nim_${k} [${piles.join(", ")}] with this move.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: { piles: move, k, winning: true },
+        meta: { piles: [...piles], k, sums, after: move, winning: true },
+    };
+    step += 1;
+    yield {
+        stepNumber: step,
+        entities: pileCells(move),
+        edges: [],
+        description: `Result piles [${move.join(", ")}] have digit sums [${bitSums(move, mod).join(", ")}] – a P-position.`,
+        codeLineNumber: 4,
+        layout: "grid",
+        meta: { piles: [...move], k, sums: bitSums(move, mod), winning: true },
+    };
+    step += 1;
+    yield {
+        stepNumber: step,
+        entities: pileCells(move),
+        edges: [],
+        description: `First player wins Moore's Nim_${k} [${piles.join(", ")}] by moving to [${move.join(", ")}].`,
+        codeLineNumber: 5,
+        layout: "grid",
+        meta: { piles: [...move], k, from: [...piles], winning: true },
     };
 }
 
@@ -164,6 +164,14 @@ const module: AlgorithmModule = {
     defaultInput: { piles: [3, 4, 5], k: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from piles [p0, p1, p2] with limit k piles per move",
+        "compute binary digit sums of all piles modulo (k+1)",
+        "if every digit sum is 0: losing P-position to move",
+        "else search takes on at most k piles zeroing every digit sum",
+        "play the verified take and show resulting piles with sums 0",
+        "winner is first player except from zero-sum piles where second wins",
+    ],
 };
 
 export default module;
