@@ -1,6 +1,35 @@
-// proof-number-search.ts – Proof-Number Search on a tiny AND/OR tree.
-// OR root: A=AND(W,L), B=W leaf. Proof/disproof numbers use the standard
-// rules (OR: min/sum; AND: sum/min); the root proves (pn 0), computed live.
+/**
+ * proof-number-search.ts – Proof-Number Search (AND/OR tree solver)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Proof-number search proves a game position by growing the smallest tree
+ * that settles the root. Simply: expand the child closest to a proof first.
+ * Formally: each node holds a proof number (leaves to prove) and a disproof
+ * number (leaves to refute), with OR nodes taking min/sum and AND nodes
+ * taking sum/min; the demo OR root over AND-node A and winning leaf B
+ * proves the root with proof number 0 via B.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(nodes) expanded
+ *   Space: O(nodes) tree state
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The node being expanded flashes YELLOW (comparing).
+ *   - Proven wins paint GREEN (sorted); refuted lines paint RED (swapped).
+ *   - Labels show live proof and disproof numbers per node.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Root proof number 0 means proved winning; disproof 0 means refuted.
+ *   - Best-first expansion beats full minimax on tactical positions.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 const INF = 999;
@@ -82,17 +111,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: tree("", false),
         edges: [],
-        description: "PNS tree: OR root over AND-node A (leaves W, L) and leaf B (W).",
+        description:
+            "PNS tree: OR root over AND-node A (leaves W, L) and leaf B (W) – all numbers unevaluated.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { nodes: 5, root: "OR", winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: tree("w1", false),
         edges: [],
-        description: `Terminal W: pn=0, dn=${INF}. Terminal L: pn=${INF}, dn=0.`,
+        description: `Terminal winning leaves hold pn=0 with dn=${INF}; terminal losing leaf L holds pn=${INF} with dn=0.`,
         codeLineNumber: 1,
         layout: "tree",
         meta: { leafW, leafL },
@@ -102,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: tree("a", false),
         edges: [],
-        description: `AND-node A: pn = 0+${INF} = ${andA[0]}, dn = min(${INF}, 0) = ${andA[1]} – disproved via L.`,
+        description: `AND-node A sums proof: pn = 0+${INF} = ${andA[0]}, and takes min disproof dn = min(${INF}, 0) = ${andA[1]} – disproved via losing leaf L.`,
         codeLineNumber: 2,
         layout: "tree",
         meta: { andA },
@@ -112,8 +142,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: tree("b", false),
         edges: [],
-        description: `Leaf B is a win: pn=0, dn=${INF} – one proof for the OR root.`,
-        codeLineNumber: 2,
+        description: `Leaf B is a proven win with pn=0 and dn=${INF} – a one-leaf proof for the OR root.`,
+        codeLineNumber: 3,
         layout: "tree",
         meta: { leafB: leafW },
     };
@@ -122,20 +152,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: tree("root", false),
         edges: [],
-        description: `OR root: pn = min(${andA[0]}, 0) = ${root[0]} – proved via B.`,
-        codeLineNumber: 3,
+        description: `OR root takes min proof pn = min(${andA[0]}, 0) = ${root[0]} – proved winning via leaf B.`,
+        codeLineNumber: 4,
         layout: "tree",
-        meta: { root },
+        meta: { root, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: tree("", true),
         edges: [],
-        description: "Root pn is 0: the position is proved winning; search stops.",
-        codeLineNumber: 4,
+        description:
+            "Root proof number is 0: the root position is proved winning, so search stops and reports first player wins.",
+        codeLineNumber: 5,
         layout: "tree",
-        meta: { root, proved: true },
+        meta: { root, proved: true, winner: "first", winning: true },
     };
 }
 
@@ -147,6 +178,14 @@ const module: AlgorithmModule = {
     defaultInput: { extra: false },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start from the OR root over AND-node A and winning leaf B",
+        "set terminal wins to pn 0 and losses to dn 0 for scoring",
+        "evaluate AND-node A by sum of proof and min of disproof",
+        "evaluate leaf B as a one-leaf proof for the OR root",
+        "back up the OR root by min proof over children A and B",
+        "winner is first player since the root proof number reaches 0",
+    ],
 };
 
 export default module;
