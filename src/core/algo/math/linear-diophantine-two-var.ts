@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (a and b both zero).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solve ${a}x + ${b}y = ${c}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const [g, xg, yg] = egcd(Math.abs(a), Math.abs(b));
@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Particular solution (${sx}, ${sy}).`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     // ponytail: shift to the smallest non-negative x for a tidy demo point
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Shifted tidy solution (${px}, ${py}); general +(${dx}, -${dy})t.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const ok = a * px + b * py === c;
@@ -143,5 +143,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 6, b: 9, c: 30 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state ax + by = c",
+        "compute g = gcd(a, b); solvable only if g | c",
+        "extend Euclid to one particular solution",
+        "shift to the tidy general solution family",
+        "done: verified solution, or proof none exists",
+    ],
 };
 export default module;
