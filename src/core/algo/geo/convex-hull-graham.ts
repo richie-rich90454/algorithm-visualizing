@@ -104,9 +104,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: "Graham scan – computing the convex hull.",
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { count: points.length },
     };
     step += 1;
 
@@ -133,9 +133,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: `Pivot is point ${pivotIndex} (${points[pivotIndex]?.join(", ")}).`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { pivot: pivotIndex },
     };
     step += 1;
 
@@ -201,9 +201,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: [],
             description: `Hull stack after point ${candidate}: [${stack.join(", ")}].`,
-            codeLineNumber: 3,
+            codeLineNumber: 5,
             layout: "point",
-            meta: {},
+            meta: { candidate, hull: stack },
         };
         step += 1;
     }
@@ -230,7 +230,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges,
         description: `Convex hull: ${stack.join(" → ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "point",
         meta: { hull: stack },
     };
@@ -258,6 +258,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all input points",
+        "pick the lowest then leftmost point as pivot",
+        "sort the rest by polar angle around the pivot",
+        "push points while each turn stays counterclockwise",
+        "pop the stack on any clockwise or collinear turn",
+        "close the stack back at the pivot",
+        "done: the stack lists the convex hull in order",
+    ],
 };
 
 export default module;
