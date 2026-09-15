@@ -91,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         subject,
         0,
         `Subject triangle vs window [${win.minX},${win.minY}]–[${win.maxX},${win.maxY}].`,
-        {},
+        { vertices: subject.length },
         false,
     );
     step += 1;
@@ -145,7 +145,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             } else if (pi) out.push(E.cross(prev, cur));
         }
         poly = out;
-        yield show(poly, 1, `After ${E.name}: ${poly.length} vertices.`, {}, false);
+        yield show(
+            poly,
+            1,
+            `After ${E.name}: ${poly.length} vertices.`,
+            { edge: E.name, vertices: poly.length },
+            false,
+        );
         step += 1;
     }
     yield show(
@@ -172,6 +178,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the subject polygon and clip window",
+        "clip against the right edge x at most max",
+        "clip against the left edge x at least min",
+        "clip against the top edge y at most max",
+        "clip against the bottom edge y at least min",
+        "carry survivors plus crossings edge to edge",
+        "done: leftover vertices form the clipped polygon",
+    ],
 };
 
 export default module;
