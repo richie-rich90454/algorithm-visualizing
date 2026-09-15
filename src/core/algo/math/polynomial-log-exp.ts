@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Formal log and exp of A(x) = ${coeffs.map((c, i) => `${c}x^${i}`).join(" + ")}.`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Derivative A'(x) = ${deriv.map((c, i) => `${c.toFixed(0)}x^${i}`).join(" + ")}.`,
         codeLineNumber: 2,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `ln(A(x)) = ∫ A'(x)/A(x) dx ≈ ${logA.map((c, i) => `${c.toFixed(2)}x^${i}`).join(" + ")}.`,
         codeLineNumber: 3,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -206,6 +206,13 @@ const module: AlgorithmModule = {
     defaultInput: { coeffs: [1, 1, 0, 1] },
     visualType: "array",
     run,
+    pseudocode: [
+        "state A(x) for formal log and exp",
+        "plan the series through the derivative",
+        "differentiate term by term into A′(x)",
+        "integrate A′/A into ln A(x)",
+        "done: exp(A(x)) alongside the log",
+    ],
 };
 
 export default module;
