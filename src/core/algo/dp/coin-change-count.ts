@@ -130,6 +130,7 @@ const module: AlgorithmModule = {
         "each coin extends all reachable larger amounts",
         "accumulate combination counts without permuting coin order",
         "answer <- dp[amount] as total combinations using all coins",
-    ],};
+    ],
+};
 
 export default module;
