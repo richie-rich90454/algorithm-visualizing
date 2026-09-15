@@ -1,6 +1,29 @@
 /**
  * rope.ts - Rope
  * Leaves hold chunks; concat/split rebalance. Demo: build + charAt + split.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Leaves hold chunks; concat/split rebalance. Demo: build + charAt + split.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) index
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Rope behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Rope: empty.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (let i = 0; i < chunks.length; i += 1) {
@@ -57,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Concat "${chunks[i]}".`,
             codeLineNumber: 1,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -70,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `charAt(${idx}) = "${ch}" of "${full}".`,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const at = Math.min(idx, full.length);
@@ -93,5 +116,14 @@ const module: AlgorithmModule = {
     defaultInput: { chunks: ["hel", "lo ", "wor", "ld"], index: 7 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty rope of no chunks",
+        "concat each chunk as a leaf with cached subtree lengths",
+        "rebalance when one side grows much heavier than the other",
+        "charAt: descend by comparing the index against left weights",
+        "split at the index into left and right ropes sharing structure",
+        "verify length equals the sum of the chunk lengths",
+        "done: rope spells the full text and split halves verify",
+    ],
 };
 export default module;
