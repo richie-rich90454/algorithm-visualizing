@@ -17,6 +17,10 @@
  * parts minimizing total cost" (here cost = sum of squared distances to the
  * part mean, using a simple proxy).
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -201,7 +205,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Minimum total cost with ${groups} groups = ${dp[m]?.[n - 1]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows: m + 1, cols: n, minCost: dp[m]?.[n - 1] },
     };
@@ -217,6 +221,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 2, 6, 8, 10, 20], groups: 3 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up cost table with dp[0][i] base partition costs",
+        "dp[g][i] holds min cost splitting prefix i into g groups",
+        "dp[g][i] <- min over k < i of dp[g-1][k] + C[k+1][i]",
+        "compute each layer g with divide-and-conquer over k range",
+        "opt[g][i] monotonicity bounds the k search per midpoint",
+        "recurse left and right halves with narrowed k windows",
+        "answer <- dp[groups][n-1] with splits from opt choices",
+    ],};
 
 export default module;
