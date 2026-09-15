@@ -145,6 +145,7 @@ const module: AlgorithmModule = {
         "each step extends climbs ending one or two below",
         "accumulate counts from both predecessor positions",
         "answer <- ways[steps] as total climbs using steps 1 and 2",
-    ],};
+    ],
+};
 
 export default module;
