@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(combined),
             edges: [],
-            description: "Empty pattern – nothing to search for.",
+            description: `Empty pattern "" – nothing to search for in "${combined}".`,
             codeLineNumber: 4,
             layout: "text",
             meta: { comparisons, matches: 0 },
@@ -183,6 +183,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build combined string pattern plus text",
+        "initialize Z-box left and right boundaries",
+        "reuse mirror Z-value when inside current box",
+        "extend match by direct character comparison",
+        "update box when match exceeds right edge",
+        "record full pattern length as match found",
+        "report all match positions found",
+    ],
 };
 
 export default module;
