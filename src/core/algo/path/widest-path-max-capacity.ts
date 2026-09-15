@@ -1,9 +1,36 @@
 /**
  * widest-path-max-capacity.ts – Widest Path (Max Capacity)
  *
- * Dijkstra with max-heap semantics: width(v) = max over paths of the
- * bottleneck edge. A→D via C: bottleneck min(3,4) = 3.
- * Time: O(E log V) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the route whose bottleneck edge is as large as possible, which
+ * models maximum truck weight or network throughput. Like Dijkstra with a
+ * max-heap, each vertex tracks width(v), the best bottleneck so far, always
+ * expanding the largest width first and updating width(v) to
+ * max(width(v), min(width(u), capacity(u,v))). From A to D the route via C
+ * has bottleneck min(3,4) = 3 and beats the route via B.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) with a max-heap frontier
+ *   Space: O(V + E) for widths and predecessors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex settled from the max frontier is YELLOW (comparing).
+ *   - Improved edges are BLUE (active), vertices ORANGE (visited).
+ *   - Settled vertices are GREEN (sorted).
+ *   - The widest route is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The greedy max-first order is optimal for bottleneck objectives.
+ *   - Also solvable from any maximum spanning tree of the graph.
+ *   - Models evacuation, freight, and bandwidth routing directly.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -70,7 +97,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const prev = new Map<string, string | null>(labels.map((v) => [v, null]));
     width.set(start, Infinity);
     const done = new Set<string>();
-    yield snap(`Widest path from ${start}: always expand the largest bottleneck first.`, 0, {});
+    yield snap(
+        `Widest path setup from ${start}: widths start at 0 with source infinite, always expanding the largest bottleneck first.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     while (done.size < labels.length) {
         let u: string | null = null;
@@ -94,7 +125,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
         setN(u, "sorted");
-        yield snap(`Settle ${u} with bottleneck ${bw}.`, 1, { bottleneck: bw });
+        yield snap(
+            `Settle vertex ${u} with bottleneck width ${bw}, relaxing each outgoing capacity edge.`,
+            3,
+            { bottleneck: bw, settled: done.size, visits: done.size },
+        );
         step += 1;
     }
     const path: string[] = [];
@@ -112,10 +147,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         ok
-            ? `Widest ${start}→${target}: capacity ${width.get(target)} via ${path.join("→")}.`
-            : `${target} unreachable.`,
-        2,
-        { capacity: ok ? (width.get(target) as number) : -1 },
+            ? `Widest path ${start} to ${target} has capacity ${width.get(target)} via ${path.join(" → ")}.`
+            : `${target} is unreachable from ${start}.`,
+        6,
+        {
+            capacity: ok ? (width.get(target) as number) : -1,
+            distance: ok ? (width.get(target) as number) : -1,
+            path: ok ? path.join("→") : "",
+            settled: done.size,
+            visits: done.size,
+        },
     );
 }
 
@@ -139,6 +180,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "width[s] ← infinite, width[v] ← 0 for v not equal to s",
+        "pop unsettled u with largest bottleneck width",
+        "for each edge u→v with capacity c: relax edge",
+        "candidate ← min(width[u], c) through this edge",
+        "if candidate > width[v]: update width[v] via u",
+        "settle u, repeat until target is settled",
+        "done: rebuild widest path via predecessors",
+    ],
 };
 
 export default module;
