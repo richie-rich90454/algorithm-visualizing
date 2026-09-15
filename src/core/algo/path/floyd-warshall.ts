@@ -127,10 +127,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(dist),
         edges: [],
-        description: "Initial distance matrix – 0 on the diagonal, edge weights elsewhere.",
+        description: "Initial distance matrix – 0 on the diagonal, edge weights elsewhere, infinity otherwise.",
         codeLineNumber: 0,
         layout: "matrix",
-        meta: { rows: n, cols: n },
+        meta: { rows: n, cols: n, settled: 0, visits: 0 },
     };
     step += 1;
 
@@ -157,10 +157,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     stepNumber: step,
                     entities: makeCells(dist, states),
                     edges: [],
-                    description: `Considering ${vertices[i]} → ${vertices[k]} → ${vertices[j]} (through ${vertices[k]}).`,
+                    description: `Checking ${vertices[i]} → ${vertices[k]} → ${vertices[j]}: direct ${direct === Infinity ? "∞" : direct} versus via ${vertices[k]} ${viaK === Infinity ? "∞" : viaK}.`,
                     codeLineNumber: 2,
                     layout: "matrix",
-                    meta: { rows: n, cols: n, k },
+                    meta: { rows: n, cols: n, k, settled: k, visits: i * n + j },
                 };
                 step += 1;
             }
@@ -170,10 +170,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(dist),
             edges: [],
-            description: `Pass through intermediate ${vertices[k]} complete.`,
-            codeLineNumber: 3,
+            description: `Pass with intermediate ${vertices[k]} complete – all routes through it are now optimal.`,
+            codeLineNumber: 4,
             layout: "matrix",
-            meta: { rows: n, cols: n, k },
+            meta: { rows: n, cols: n, k, settled: k + 1, visits: (k + 1) * n * n },
         };
         step += 1;
     }
@@ -200,10 +200,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description: hasNegativeCycle
             ? "Negative cycle detected – distances are not well-defined."
-            : "All-pairs shortest paths computed.",
-        codeLineNumber: 4,
+            : `All-pairs shortest paths computed over ${n} vertices – matrix holds every optimal distance.`,
+        codeLineNumber: 6,
         layout: "matrix",
-        meta: { rows: n, cols: n, negativeCycle: hasNegativeCycle },
+        meta: { rows: n, cols: n, settled: n, visits: n * n * n, negativeCycle: hasNegativeCycle },
     };
 }
 
@@ -234,6 +234,15 @@ const module: AlgorithmModule = {
     },
     visualType: "matrix",
     run,
+    pseudocode: [
+        "dist[u][v] ← weight(u,v), 0 on diagonal, ∞ otherwise",
+        "for each intermediate k over all vertices",
+        "for each pair (u,v): compare direct versus via k",
+        "if dist[u][k]+dist[k][v] < dist[u][v] then update",
+        "end of k pass: routes through k are optimal",
+        "check diagonal: dist[v][v] < 0 means cycle",
+        "done: matrix holds all-pairs shortest distances",
+    ],
 };
 
 export default module;
