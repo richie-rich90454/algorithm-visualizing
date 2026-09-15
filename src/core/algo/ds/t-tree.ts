@@ -123,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
     }
-    yield snap(new Set(), found ? `${query} found.` : `${query} is absent.`, 3);
+    yield snap(new Set(), found ? `${query} found in the T-tree.` : `${query} is absent from the T-tree.`, 6);
 }
 
 const module: AlgorithmModule = {
