@@ -100,21 +100,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Dijkstra from ${start} to ${target} – settling vertices by smallest distance.`,
+        description: `Dijkstra from ${start} to ${target} – distances set, scanning unsettled set for the minimum.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { settled: 0 },
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: { settled: settledCount },
+        meta: { settled: settledCount, visits: settledCount },
     });
 
     // Repeat until every reachable vertex is settled.
@@ -146,7 +146,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(bestDist);
         }
-        yield buildFrame(`Settling ${current} (distance ${bestDist}).`);
+        yield buildFrame(`Scanning unsettled vertices, settling ${current} with final distance ${bestDist}.`, 1);
         step += 1;
 
         // Relax every outgoing edge.
@@ -172,14 +172,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 neighborNode.state = "visited";
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}).`);
+            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 3);
             step += 1;
         }
 
         if (node) {
             node.state = "sorted";
         }
-        yield buildFrame(`${current} settled.`);
+        yield buildFrame(`${current} settled with final distance ${bestDist}, continuing to next minimum.`, 5);
         step += 1;
     }
 
@@ -215,9 +215,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             dist.get(target) === Infinity
                 ? `${target} is unreachable from ${start}.`
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: settledCount, distance: dist.get(target) ?? Infinity },
+        meta: { settled: settledCount, visits: settledCount, distance: dist.get(target) ?? Infinity, path: path.join("→") },
     };
 }
 
@@ -254,6 +254,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← ∞ for v ≠ s",
+        "pick unsettled u with smallest distance",
+        "if none reachable then stop scanning",
+        "for each edge u→v with weight w: relax edge",
+        "if dist[u]+w < dist[v]: update dist[v] via u",
+        "mark u settled, repeat until all settled",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
