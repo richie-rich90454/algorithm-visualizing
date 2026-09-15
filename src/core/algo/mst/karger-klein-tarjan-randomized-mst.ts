@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "KKT randomized MST (fixed seed 42): Boruvka step, random sampling, then heavy-edge filtering.",
             0,
         ),
-        meta: { accepted: 0, totalWeight: 0 },
+        meta: { accepted: 0, totalWeight: 0, sampled: 0 },
     };
     const rnd = lcg(42);
     const minOf: number[] = verts.map((v) => {
@@ -138,10 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(minOf.map((i) => [i, "comparing"] as [number, EntityState]))),
-            `Boruvka picks: A–B(1), B–A(1), C–B(2), D–C(3): components merge into {A,B} and {C,D}.`,
+            `Boruvka picks: cheapest edge at each vertex, e.g. A–B(1), B–C(2), C–D(3): components start merging.`,
             1,
         ),
-        meta: { accepted: 0 },
+        meta: { accepted: 0, totalWeight: 0 },
     };
     const sampled = list.map((_, i) => i).filter(() => rnd() < 0.5);
     yield {
@@ -149,10 +149,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(sampled.map((i) => [i, "highlight"] as [number, EntityState]))),
-            `Random sample (p=1/2, seed 42): ${sampled.length} of ${list.length} edges kept: indices [${sampled.join(", ")}].`,
+            `Random sample (p=1/2, seed 42): ${sampled.length} of ${list.length} edges kept: ${sampled.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ") || "none"}.`,
             2,
         ),
-        meta: { accepted: 0, sampled: sampled.length },
+        meta: { accepted: 0, totalWeight: 0, sampled: sampled.length },
     };
     const order = list.map((_, i) => i).sort((x, y) => (list[x] as E3).w - (list[y] as E3).w);
     const uf = UF();
@@ -168,17 +168,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(mst.map((i) => [i, "highlight"] as [number, EntityState]))),
-            `Heavy edges filtered against the sample forest; surviving candidates contracted recursively.`,
-            4,
+            `Heavy edges filtered against the sample forest; ${mst.length} survivor edges stay contracted for recursion.`,
+            3,
         ),
-        meta: { accepted: mst.length },
+        meta: { accepted: mst.length, totalWeight: 0 },
     };
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Verified MST weight ${weight}, total weight ${weight}: A–B(1), B–C(2), C–D(3) — matches Kruskal exactly.`,
+            `Verified MST weight ${weight}, total weight ${weight}: ${mst.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ")} — matches Kruskal exactly.`,
             5,
         ),
         meta: { weight, totalWeight: weight, accepted: mst.length },
