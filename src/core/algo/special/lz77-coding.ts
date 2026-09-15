@@ -67,7 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "text",
             meta: {
                 tokens: toks.slice(0, line).map((t) => `(${t.off},${t.len},${t.next || "∅"})`),
@@ -100,6 +100,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "abcababcab", window: 6 },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize sliding window of size 6 over text",
+        "scan text left to right tracking consumed prefix",
+        "find longest back-match inside the window",
+        "emit triple (offset, length, next char)",
+        "advance consumed pointer past the match",
+        "decode triples by copying from history",
+        "done: triple count with verified round-trip",
+    ],
 };
 
 export default module;
