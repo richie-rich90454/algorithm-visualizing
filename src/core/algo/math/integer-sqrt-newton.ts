@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 0).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Newton for sqrt(${n}) from x0 = ${x}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let guard = 0; guard < 10; guard += 1) {
@@ -101,5 +101,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 50 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "guess x0 for √n (trivial cases return at once)",
+        "refine x ← (x + n/x)/2 each round",
+        "done: isqrt(n) = x",
+        "stop when the guess stops improving",
+        "done: x² ≤ n < (x+1)² pins x",
+    ],
 };
 export default module;
