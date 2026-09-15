@@ -160,6 +160,7 @@ const module: AlgorithmModule = {
         "fill dp for all masks with k bits before moving to k+1",
         "track best cost per mask across worker assignments",
         "answer <- dp[(1<<n)-1] with assignment reconstructed via parent",
-    ],};
+    ],
+};
 
 export default module;
