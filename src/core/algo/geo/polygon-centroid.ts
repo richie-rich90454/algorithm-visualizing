@@ -57,9 +57,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges,
         description: `Shoelace: accumulating cross terms over ${pts.length} edges.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { edges: pts.length },
     };
     step += 1;
     let cross2 = 0;
@@ -83,9 +83,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges,
             description: `Edge ${i}→${(i + 1) % pts.length}: cross=${cr}, running Σ=${cross2}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { edge: i, cross: cr },
         };
         step += 1;
     }
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: done,
         edges,
         description: `Area=${area}, centroid=(${centroid[0]}, ${centroid[1]}).`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { area, centroid },
     };
@@ -132,6 +132,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygon vertices in order",
+        "accumulate edge cross terms into the doubled area",
+        "weight each edge midpoint by its cross term",
+        "divide the weighted sum by six times the area",
+        "done: area plus centroid balance the polygon",
+    ],
 };
 
 export default module;
