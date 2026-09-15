@@ -4,6 +4,29 @@
  * Priority queue shaped as a 2-3 tree: every internal node has 2 or 3
  * ordered children and all leaves share one depth. Operations stay
  * logarithmic with a working-set flavor.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Priority queue shaped as a 2-3 tree: every internal node has 2 or 3 ordered children and all leaves share one depth. Operations stay logarithmic with a working-set flavor.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard 2-3 Heap behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -86,6 +109,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 7, 4] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with unsorted keys and no groups",
+        "sort leaves and group them by threes",
+        "each group parent carries its group minimum",
+        "the leftmost parent therefore holds the global minimum",
+        "inserts regroup leaves to keep groups at size two or three",
+        "extracts remove the minimum and regroup the survivors",
+        "done: groups index all keys and the minimum is reported",
+    ],
 };
 
 export default module;
