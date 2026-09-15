@@ -1,6 +1,33 @@
-// fibonacci-nim.ts – Fibonacci Nim: first take may not empty the heap, then at most twice.
-// Simply, always leave a Fibonacci number; formally P-positions are Fibonacci
-// numbers (Zeckendorf). From 10 the unique win is take 2 -> 8, then keep leaving Fibonacci to 0.
+/**
+ * fibonacci-nim.ts – Fibonacci Nim (bounded-take subtraction game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Fibonacci Nim starts with n stones; the first take may not empty the heap
+ * and later takes are at most twice the previous take. Simply: always leave
+ * a Fibonacci number for the opponent. Formally: P-positions are exactly the
+ * Fibonacci numbers via Zeckendorf representation, so from 10 the unique win
+ * is taking 2 to leave 8, then mirroring back to Fibonacci heaps down to 0.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) Fibonacci steps
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Stones show as cells; the just-taken stones flash YELLOW.
+ *   - Each frame names the mover, the take, the limit, and stones left.
+ *   - Leaving a Fibonacci heap is called out as the winning tactic.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Fibonacci heaps are P-positions; all others are N-positions.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 const FIBS = [1, 2, 3, 5, 8, 13, 21, 34];
@@ -125,10 +152,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: heapCells(stones, 0),
         edges: [],
-        description: stones === 0 ? "Heap empty after final take, game is over." : `Stopped Fibonacci demo at heap ${stones} stones (demo cap).`,
+        description:
+            stones === 0
+                ? "Heap empty after final take, game is over."
+                : `Stopped Fibonacci demo at heap ${stones} stones (demo cap).`,
         codeLineNumber: 5,
         layout: "grid",
-        meta: { stones, start, winner: stones === 0 ? mover : undefined },
+        meta: { stones, start, winner: stones === 0 ? mover : "undecided" },
     };
 }
 
