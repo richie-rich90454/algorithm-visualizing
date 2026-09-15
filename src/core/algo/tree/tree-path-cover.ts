@@ -1,7 +1,8 @@
 /**
- * tree-path-cover.ts – minimum vertex-disjoint path cover of a tree.
- * Kept edges must form disjoint paths (max degree ≤ 2, acyclic for free
- * in a tree), so min paths = n − max keepable edges (brute-forced tiny).
+ * tree-path-cover.ts – Minimum vertex-disjoint path cover of a tree.
+ *
+ * Kept edges must form disjoint paths (max degree at most 2, acyclic for free
+ * in a tree), so min paths equals n minus max keepable edges (tiny search).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -192,7 +193,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         fstates,
         hot,
         `Minimum path cover uses ${minPaths} paths, keeping ${bestKept} of ${m} edges.`,
-        3,
+        4,
         { minPaths, paths: paths.map((p) => p.join("→")), maxKeptEdges: bestKept },
     );
 }
@@ -208,6 +209,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "list every tree edge as a keep candidate",
+        "search kept subsets from largest downward",
+        "keep subset only when max degree stays at most two",
+        "trace kept edges into disjoint cover paths",
+        "return minimum path count as the cover answer",
+    ],
 };
 
 export default module;
