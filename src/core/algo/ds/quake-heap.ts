@@ -4,6 +4,29 @@
  * Simplified Fibonacci alternative: nodes sit in level lists, and a
  * quake drops every level whose node count exceeds the one below –
  * top-heavy layers shake away, keeping trees shallow.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Simplified Fibonacci alternative: nodes sit in level lists, and a quake drops every level whose node count exceeds the one below – top-heavy layers shake away, keeping trees shallow.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) amortized
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Quake Heap behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -101,6 +124,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty heap where level 0 holds fresh roots",
+        "insert key: add a singleton tree at level 0",
+        "link equal-rank trees upward when both children exist",
+        "repeat until all keys sit in leveled tournament trees",
+        "quake: drop any upper level outnumbering the level below",
+        "the minimum always sits at the lowest occupied level",
+        "done: levels are balanced and the minimum is reported",
+    ],
 };
 
 export default module;
