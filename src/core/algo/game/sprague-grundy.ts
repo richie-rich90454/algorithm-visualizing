@@ -75,10 +75,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grundy),
         edges: [],
-        description: `Sprague-Grundy numbers for a subtraction game (remove 1–3 tokens) up to ${maxTokens}.`,
+        description: `Sprague-Grundy subtraction game removing moves {${moves.join(", ")}} up to heap ${maxTokens}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { maxTokens, moves: [...moves], heap: maxTokens },
     };
     step += 1;
 
@@ -102,10 +102,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(grundy, tokens),
             edges: [],
-            description: `G(${tokens}) = mex of {${[...reachable].join(", ")}} = ${mex}.`,
-            codeLineNumber: 2,
+            description: `Heap ${tokens}: reachable Grundy {${[...reachable].join(", ")}} from moves {${moves.join(", ")}} gives G(${tokens}) = ${mex}.`,
+            codeLineNumber: 3,
             layout: "grid",
-            meta: {},
+            meta: { tokens, reachable: [...reachable], mex, grundy: mex },
         };
         step += 1;
     }
@@ -114,12 +114,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grundy),
         edges: [],
-        description: `Grundy numbers computed – positions with value 0 are losing.`,
-        codeLineNumber: 4,
+        description: `Grundy table to heap ${maxTokens} complete – G(${maxTokens}) = ${grundy[maxTokens]} so ${(grundy[maxTokens] ?? 0) !== 0 ? "first" : "second"} player wins heap ${maxTokens}.`,
+        codeLineNumber: 5,
         layout: "grid",
         meta: {
             maxTokens,
             grundy: [...grundy],
+            value: grundy[maxTokens],
             winner: (grundy[maxTokens] ?? 0) !== 0 ? "first" : "second",
         },
     };
@@ -135,6 +136,14 @@ const module: AlgorithmModule = {
     defaultInput: { maxTokens: 20 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "set up subtraction game removing 1, 2, or 3 tokens per move",
+        "initialize G(0) ← 0 for the empty heap as losing",
+        "for n ← 1 to max: collect reachable Grundy values G(n-moves)",
+        "set G(n) ← mex of reachable values, the smallest missing number",
+        "mark G(n) = 0 as losing P-positions, others as winning",
+        "winner is first player from n unless G(n) = 0, then second wins",
+    ],
 };
 
 export default module;
