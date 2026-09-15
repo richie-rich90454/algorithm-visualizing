@@ -4,6 +4,29 @@
  * Fully persistent random access: each slot keeps every versioned value
  * it ever held, so reading version v means scanning back to the newest
  * write at or before v.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Fully persistent random access: each slot keeps every versioned value it ever held, so reading version v means scanning back to the newest write at or before v.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log versions) read
+ *   Space: O(writes)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Persistent Array behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -119,6 +142,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty fat-node slots that all read as zero",
+        "write (version, slot, value): append the stamped value to that slot",
+        "old stamps stay untouched so earlier versions never change",
+        "repeat until every versioned write is recorded",
+        "read (slot, version): scan the slot history backward",
+        "return the newest stamp at or before the requested version",
+        "done: all versions are retained and the read answer is reported",
+    ],
 };
 
 export default module;
