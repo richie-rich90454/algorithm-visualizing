@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "tree",
             meta: { root, proved: leaves[prove] },
         };
@@ -127,6 +127,15 @@ const module: AlgorithmModule = {
     defaultInput: { leaves: ["a", "b", "c", "d"], prove: 2 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "hash four leaves upward into level-1 parents",
+        "combine parents into a single published root",
+        "select proof leaf and collect sibling hashes",
+        "recompute hashes upward from the leaf",
+        "compare recomputed root with published root",
+        "confirm inclusion with O(log n) hashes",
+        "done: leaf inclusion proven for the tree",
+    ],
 };
 
 export default module;
