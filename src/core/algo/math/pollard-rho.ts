@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding a factor of ${n} with Pollard's rho.`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -186,6 +186,13 @@ const module: AlgorithmModule = {
     defaultInput: { n: 91 },
     visualType: "array",
     run,
+    pseudocode: [
+        "handle small inputs, then walk x ← x² + c mod n",
+        "an even n splits off factor 2 at once",
+        "track tortoise x and hare y each round",
+        "a full cycle restarts with fresh parameters",
+        "done: strict split found, or failure after the cap",
+    ],
 };
 
 export default module;
