@@ -66,9 +66,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: siteNodes(pts),
         edges: [],
         description: `Fortune sweep: ${pts.length} sites, beach line starts above all sites.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { sites: pts.length },
     };
     step += 1;
     const order = pts.map((p, i) => i).sort((a, b) => (pts[b] as Pt)[1] - (pts[a] as Pt)[1]);
@@ -78,9 +78,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: siteNodes(pts, new Map([[idx, "active"]])),
             edges: [],
             description: `Site event at s-${idx}: new parabolic arc joins the beach line.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { site: idx },
         };
         step += 1;
     }
@@ -126,9 +126,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: withVerts(new Map()),
         edges: [],
         description: `Circle events resolved: ${verts.length} finite Voronoi vertices.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { vertices: verts.length },
     };
     step += 1;
     const edges: VisualEdge[] = [];
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: withVerts(new Map(pts.map((_, i) => [i, "sorted"] as [number, EntityState]))),
         edges,
         description: `Voronoi edges join vertices of adjacent Delaunay triangles (${edges.length} bounded edges).`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { vertices: verts.map(([x, y]) => `${x},${y}`) },
     };
@@ -172,6 +172,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all sites with the sweep line above",
+        "feed each site event into the beach line",
+        "resolve circle events into Voronoi vertices",
+        "link vertices of neighboring Delaunay triangles",
+        "color every site cell by its nearest site",
+        "done: vertices plus edges form the Voronoi diagram",
+    ],
 };
 
 export default module;
