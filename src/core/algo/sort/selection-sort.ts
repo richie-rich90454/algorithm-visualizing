@@ -188,6 +188,14 @@ const module: AlgorithmModule = {
     defaultInput: [7, 2, 9, 1, 5, 8],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with sorted prefix empty, i ← 0",
+        "assume A[i] is the minimum of the suffix",
+        "for j ← i+1 to n-1: compare A[j] with current minimum",
+        "if smaller found: swap winner into position i",
+        "position i joins the sorted prefix",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
