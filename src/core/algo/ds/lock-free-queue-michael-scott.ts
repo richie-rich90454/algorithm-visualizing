@@ -91,6 +91,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["enq", 1], ["enq", 2], ["deq"], ["enq", 3]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize Michael-Scott queue with dummy head node",
+        "enqueue value by CAS-linking node after tail",
+        "compare tail next pointer to help lagging tail",
+        "dequeue by CAS-advancing head past dummy",
+        "retry CAS loop when contention detected",
+        "count enqueues and dequeues for verification",
+        "done: queue holds remaining values in FIFO order",
+    ],
 };
 
 export default module;
