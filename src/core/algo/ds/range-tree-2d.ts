@@ -1,6 +1,29 @@
 /**
  * range-tree-2d.ts - Range Tree 2D
  * x-tree nodes hold y-sorted lists for 2D reports. Demo: build on <=6 items, 1 range query verified.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * x-tree nodes hold y-sorted lists for 2D reports. Demo: build on <=6 items, 1 range query verified.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log^2 n + k)
+ *   Space: O(n log n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Range Tree 2D behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -35,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -65,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     yield {
@@ -87,5 +110,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with points unsorted and no auxiliary lists",
+        "sort points by x to form the primary search order",
+        "build y-sorted lists so each subtree reports by y quickly",
+        "query rectangle: split x range and scan y lists inside",
+        "combine the canonical cover nodes into one answer",
+        "verify the reported points all lie inside the rectangle",
+        "done: range contents are listed and the counts verify",
+    ],
 };
 export default module;
