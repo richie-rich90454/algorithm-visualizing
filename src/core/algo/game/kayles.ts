@@ -1,5 +1,6 @@
 // kayles.ts – Kayles: knock down 1 pin or 2 adjacent pins; last move wins.
-// Grundy numbers are memoised in-code; a move wins iff it leaves xor 0.
+// Simply, split the row into dead segments; formally Grundy numbers are
+// memoized in-code and a move wins exactly when it leaves xor 0.
 // Default row of 8 has G=1, winning move removes pins 3 and 4.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -59,11 +60,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description:
             singleWin >= 0
-                ? `Single-pin knockdown at ${singleWin} leaves xor 0.`
-                : `Every single-pin knockdown leaves xor in {${[...new Set(singles)].join(", ")}} – no instant win there.`,
+                ? `Single-pin knockdown at pin ${singleWin} splits row ${n} into xor 0 segments.`
+                : `Every single-pin knockdown on row ${n} leaves xor in {${[...new Set(singles)].join(", ")}} – no instant win there.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: { pins: n, singles },
+        meta: { pins: n, grundy: g, singles, singleWin },
     };
     step += 1;
     // ponytail: single-row demo; full split-position search when multi-row input exists.
@@ -92,10 +93,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: rowCells(present),
             edges: [],
-            description: `Kayles(${n}) is losing for the player to move (G = 0).`,
-            codeLineNumber: 3,
+            description: `Kayles(${n}) with Grundy G = ${g} is losing for the player to move.`,
+            codeLineNumber: 5,
             layout: "grid",
-            meta: { pins: n, winning: false },
+            meta: { pins: n, grundy: g, winning: false },
         };
         return;
     }
@@ -103,10 +104,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: rowCells(present, new Set(move)),
         edges: [],
-        description: `Winning move: knock down pin${move.length > 1 ? "s" : ""} ${move.join(" and ")} (remaining segments xor to 0).`,
-        codeLineNumber: 2,
+        description: `Winning move on Kayles(${n}): knock down pin${move.length > 1 ? "s" : ""} ${move.join(" and ")} (remaining segments xor to 0).`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { pins: n, grundy: g, move },
+        meta: { pins: n, grundy: g, move, winning: true },
     };
     step += 1;
     const after = present.map((up, i) => up && !move.includes(i));
@@ -114,20 +115,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: rowCells(after),
         edges: [],
-        description: "Remaining segments form a P-position – every reply has a winning response.",
-        codeLineNumber: 3,
+        description: `After knocking down ${move.join(" and ")} the remaining segments of Kayles(${n}) form a P-position.`,
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { pins: n, move },
+        meta: { pins: n, grundy: 0, move, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: rowCells(after),
         edges: [],
-        description: `First player wins Kayles(${n}) via the highlighted knockdown.`,
-        codeLineNumber: 4,
+        description: `First player wins Kayles(${n}) via the highlighted knockdown of ${move.join(" and ")}.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { pins: n, winning: true },
+        meta: { pins: n, grundy: g, move, winning: true },
     };
 }
 
@@ -139,6 +140,14 @@ const module: AlgorithmModule = {
     defaultInput: { pins: 8 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from a row of n standing pins with Grundy G(n)",
+        "test each single-pin knockdown for split xor equal to 0",
+        "test each adjacent-pair knockdown for split xor equal to 0",
+        "if a zero-xor knockdown exists: highlight it as winning move",
+        "remove the pins and show segments forming a P-position",
+        "winner is first player except G(n) = 0 where second wins",
+    ],
 };
 
 export default module;
