@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is degenerate for Fermat (needs odd n >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Factor odd ${n} as a difference of squares.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Start at a = ceil(sqrt(${n})) = ${a0}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let a = a0;
@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `No square within cap – stopping honestly.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
 }
 const module: AlgorithmModule = {
@@ -143,5 +143,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 77 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start at a ← ⌈√n⌉ to write n = a² − b²",
+        "test whether a² − n is a perfect square b²",
+        "split n = (a−b)(a+b)",
+        "verify the factors, or stop honestly at the cap",
+        "done: factor pair found, or cap reached",
+    ],
 };
 export default module;
