@@ -80,12 +80,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { articulationPoints: articulation.size },
     });
@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`);
+        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`, 1);
         step += 1;
 
         let childCount = 0;
@@ -130,6 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     }
                     yield buildFrame(
                         `${v} is an articulation point (child ${neighbor} cannot reach above it).`,
+                        3,
                     );
                     step += 1;
                 }
@@ -145,14 +146,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (node) {
                 node.state = "swapped";
             }
-            yield buildFrame(`Root ${v} is an articulation point with ${childCount} DFS children.`);
+            yield buildFrame(`Root ${v} is an articulation point with ${childCount} DFS children.`, 3);
             step += 1;
         }
 
         if (!articulation.has(v) && node) {
             node.state = "visited";
         }
-        yield buildFrame(`Finished subtree of ${v}.`);
+        yield buildFrame(`Finished subtree of ${v}.`, 4);
         step += 1;
     }
 
@@ -170,7 +171,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             articulation.size === 0
                 ? "No articulation points – the graph is vertex-biconnected."
                 : `Articulation points: {${[...articulation].join(", ")}}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { articulationPoints: articulation.size },
     };
@@ -196,6 +197,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up discovery index and lowlink for every vertex",
+        "visit v: stamp index and lowlink, then explore neighbors",
+        "recurse on tree edges and pull each child's lowlink upward",
+        "lowlink[child] ≥ index[v] (or a multi-child root): v is critical",
+        "finish each subtree and repeat from every unvisited vertex",
+        "done: all articulation points such as B and D",
+    ],
 };
 
 export default module;
