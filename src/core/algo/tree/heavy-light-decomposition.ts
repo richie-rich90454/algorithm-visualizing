@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, paths: pathIndex, nodes: ids.length },
     });
 
     // ------------------------------------------------------------------
@@ -208,6 +208,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the rooted tree and empty path assignment",
+        "compute subtree sizes with one post-order pass",
+        "pick heavy child with largest subtree per node",
+        "walk heavy chains down assigning one shared path",
+        "return heavy path count as the decomposition",
+    ],
 };
 
 export default module;
