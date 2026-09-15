@@ -258,6 +258,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize flow network with source s and sink t",
+        "compute maximum flow with augmenting paths",
+        "push maximum flow until no augmenting path remains",
+        "run residual reachability from source to define S side",
+        "collect crossing edges as minimum cut with equal capacity",
+        "report minimum cut capacity equal to maximum flow",
+    ],
 };
 
 export default module;
