@@ -152,6 +152,7 @@ const module: AlgorithmModule = {
         "each one-cell extends the smallest neighboring square",
         "track best side seen across the whole matrix",
         "answer <- best side with area side*side and bounds located",
-    ],};
+    ],
+};
 
 export default module;
