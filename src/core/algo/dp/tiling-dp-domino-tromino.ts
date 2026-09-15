@@ -1,6 +1,32 @@
 /**
- * Domino + Tromino tiling: dp[n] = 2*dp[n-1] + dp[n-3].
- * Time O(n), Space O(n). Default n = 3 -> 5.
+ * tiling-dp-domino-tromino.ts - Tiling (Domino + Tromino)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- 2*dp[i-1] + dp[i-3] via domino and tromino fills.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -31,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Negative n \u2013 nothing to tile.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -70,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(dp, done),
         edges: [],
         description: `Traceback: ${dp[n]} tilings of 2x${n}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer: dp[n] },
     };
@@ -84,6 +110,14 @@ const module: AlgorithmModule = {
     defaultInput: { n: 3 },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up dp[0] <- 1 and dp[1] <- 1 as tiling bases",
+        "dp[i] holds tilings of the 2 x i board",
+        "dp[i] <- 2*dp[i-1] + dp[i-3] via domino and tromino fills",
+        "iterate widths from 2 up to n accumulating counts",
+        "each width extends prior tilings plus gapped tromino pairs",
+        "combine full and partial profile contributions per step",
+        "answer <- dp[n] as tilings of the 2 x n board",
+    ],};
 
 export default module;
