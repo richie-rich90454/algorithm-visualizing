@@ -1,7 +1,8 @@
 /**
- * tree-perfect-matching-greedy.ts – leaf-up greedy maximum matching.
- * Process nodes deepest-first; match an unmatched node with its
- * unmatched parent. Perfect iff all n (even) nodes end matched.
+ * tree-perfect-matching-greedy.ts – Leaf-up greedy maximum matching.
+ *
+ * Processes nodes deepest-first; matches an unmatched node with its
+ * unmatched parent. Perfect when all n (even) nodes end matched.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -184,7 +185,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         perfect
             ? `Perfect matching of size ${matching.length}: ${matching.map(([a, b]) => `${a}–${b}`).join(", ")}.`
             : `No perfect matching – ${ids.length - matched.size} nodes left unmatched.`,
-        3,
+        4,
         { matching: matching.map(([a, b]) => `${a}–${b}`), matchingSize: matching.length, perfect },
     );
 }
@@ -200,6 +201,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "sort nodes deepest-first from the leaves",
+        "match each free node with its free parent",
+        "skip nodes already matched or parentless",
+        "verify greedy size against brute force max",
+        "return matched pairs and perfect flag as answer",
+    ],
 };
 
 export default module;
