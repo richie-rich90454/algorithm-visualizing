@@ -95,6 +95,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize calendar with buckets spanning time range",
+        "hash event time to bucket index by modulo width",
+        "enqueue event into bucket keeping bucket sorted",
+        "compare bucket top times to find global minimum",
+        "dequeue earliest event and advance current time",
+        "resize bucket count when density passes threshold",
+        "done: calendar holds events with dequeue order answer",
+    ],
 };
 
 export default module;
