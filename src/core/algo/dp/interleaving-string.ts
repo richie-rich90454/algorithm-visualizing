@@ -156,6 +156,7 @@ const module: AlgorithmModule = {
         "each cell checks the top and left predecessor characters",
         "seed edges handle single-string prefix interleavings",
         "answer <- dp[n][m] with interleave path backtraced",
-    ],};
+    ],
+};
 
 export default module;
