@@ -35,7 +35,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     yield {
@@ -87,5 +87,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize 2D BIT with zero grid of size n by m",
+        "update point by propagating with i plus lowbit(i)",
+        "compare indices to climb both dimensions",
+        "query prefix sum by accumulating with i minus lowbit(i)",
+        "combine four prefix sums for rectangle query",
+        "count operations across updates and queries",
+        "done: 2D tree holds grid with rectangle sum answer",
+    ],
 };
 export default module;
