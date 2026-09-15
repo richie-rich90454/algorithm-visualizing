@@ -82,9 +82,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: [],
         description: `Rotating calipers over ${h.length} hull edges.`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { hullEdges: h.length },
     };
     step += 1;
     let best = { area: Infinity, corners: [] as Pt[], edge: -1 };
@@ -122,9 +122,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges: [],
             description: `Calipers on hull edge ${e}: θ=${((ang * 180) / Math.PI).toFixed(1)}°, bbox area=${area.toFixed(2)}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { edge: e, area },
         };
         step += 1;
     }
@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities,
         edges,
         description: `Minimum rectangle at hull edge ${best.edge}: area=${best.area.toFixed(2)}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "point",
         meta: { area: best.area, corners: corners.map(([x, y]) => `${x},${y}`) },
     };
@@ -181,6 +181,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the convex hull of the points",
+        "align calipers with each hull edge in turn",
+        "measure the bounding box area at every angle",
+        "track the edge with the smallest area seen",
+        "rebuild the rectangle corners at the best angle",
+        "done: corners plus area give the minimum rectangle",
+    ],
 };
 
 export default module;
