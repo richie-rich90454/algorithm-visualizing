@@ -134,6 +134,7 @@ const module: AlgorithmModule = {
         "matching chars add the use-it plus skip-it options",
         "mismatches carry down the skip-it value only",
         "answer <- dp[n][m] with match positions from backtrace",
-    ],};
+    ],
+};
 
 export default module;
