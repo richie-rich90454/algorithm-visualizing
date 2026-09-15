@@ -3,6 +3,29 @@
  *
  * A sparse matrix threaded twice: every non-zero belongs to a row ring
  * and a column ring, so rows and columns both traverse in order.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A sparse matrix threaded twice: every non-zero belongs to a row ring and a column ring, so rows and columns both traverse in order.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(nonzeros)
+ *   Space: O(nonzeros)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Orthogonal List behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -110,6 +133,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty row and column header rings",
+        "insert entry (r, c, v): locate row ring r and column ring c",
+        "splice the new node into both rings in sorted order",
+        "repeat until every nonzero is threaded twice",
+        "row-major walk follows each row ring in order",
+        "column-major walk follows each column ring in order",
+        "done: matrix is threaded and both walks visit every nonzero",
+    ],
 };
 
 export default module;
