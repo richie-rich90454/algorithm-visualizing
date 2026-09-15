@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 1 and exactly two divisors).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -53,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Count numbers to ${n} divisible by ${d1} or ${d2}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const c1 = Math.trunc(n / d1);
@@ -120,5 +120,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 30, divisors: [2, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state the two divisor sets A and B below n",
+        "count |A| = ⌊n/d1⌋ and |B| = ⌊n/d2⌋",
+        "count the overlap |A ∩ B| = ⌊n/lcm⌋",
+        "combine |A ∪ B| = |A| + |B| − |A ∩ B|",
+        "done: union count = uni",
+    ],
 };
 export default module;
