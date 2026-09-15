@@ -1,6 +1,26 @@
 /**
- * reverse-delete-mst.ts - Reverse-Delete MST.
- * Deletes heaviest edges whose removal keeps the graph connected.
+ * reverse-delete-mst.ts – Reverse-Delete MST.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Reverse-Delete starts from the full graph and removes edges from heaviest
+ * to lightest. An edge is deleted when its endpoints stay connected without
+ * it; otherwise it is a bridge and must be kept. The edges that survive form
+ * a minimum spanning tree.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E^2) – each removal test runs a connectivity search
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The edge under test is YELLOW (comparing).
+ *   - A deleted edge flashes RED (swapped).
+ *   - A kept bridge is highlighted, final MST edges are GREEN (sorted).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -89,13 +109,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Reverse-Delete on ${verts.length} vertices, ${list.length} edges - heaviest edge examined first.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Reverse-Delete on ${verts.length} vertices, ${list.length} edges — heaviest edge examined first.`,
+            0,
+        ),
+        meta: { kept: list.length, removed: 0 },
+    };
     const order = list.map((_, i) => i).sort((x, y) => (list[y] as E3).w - (list[x] as E3).w);
     const kept = new Set<number>(list.map((_, i) => i));
     for (const idx of order) {
@@ -103,21 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const rest = [...kept].filter((i) => i !== idx).map((i) => list[i] as E3);
         if (connected(verts, rest)) {
             kept.delete(idx);
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map([[idx, "swapped"]])),
-                `Removed ${e.a}-${e.b} (${e.w}): endpoints stay connected without it.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map([[idx, "swapped"]])),
+                    `Removing ${e.a}–${e.b} (weight ${e.w}): endpoints stay connected without it.`,
+                    2,
+                ),
+                meta: { kept: kept.size, removed: list.length - kept.size },
+            };
         } else {
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map([[idx, "highlight"]])),
-                `Kept ${e.a}-${e.b} (${e.w}): it is a bridge, removal would disconnect the graph.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map([[idx, "highlight"]])),
+                    `Keeping ${e.a}–${e.b} (weight ${e.w}): it is a bridge, removal would disconnect the graph.`,
+                    3,
+                ),
+                meta: { kept: kept.size, removed: list.length - kept.size },
+            };
         }
     }
     const mst = [...kept].map((i) => list[i] as E3);
@@ -131,10 +160,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts, allV),
             ME(list, fin),
-            `Reverse-Delete MST weight ${weight}: ${mst.map((e) => `${e.a}-${e.b}(${e.w})`).join(", ")}.`,
-            2,
+            `Reverse-Delete MST weight ${weight}: ${mst.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
+            5,
         ),
-        meta: { weight },
+        meta: { weight, totalWeight: weight, kept: kept.size },
     };
 }
 
@@ -155,5 +184,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with every edge kept as a candidate",
+        "sort all edges by decreasing weight",
+        "for each edge u–v from heaviest to lightest: test it",
+        "if u and v stay connected without it: delete the edge",
+        "else keep the edge because it is a bridge",
+        "done: surviving edges form the MST with minimum total weight",
+    ],
 };
 export default module;
