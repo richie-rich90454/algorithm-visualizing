@@ -1,6 +1,29 @@
 /**
  * scapegoat-tree.ts - Scapegoat Tree
  * Rebuilds scapegoat subtree when unbalanced. Demo: BST insert + search/rank on <=8 keys.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Rebuilds scapegoat subtree when unbalanced. Demo: BST insert + search/rank on <=8 keys.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) amortized
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Scapegoat Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -89,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Scapegoat Tree: empty. Rebuilds scapegoat subtree when unbalanced.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} with BST comparisons, checking the alpha-height bound upward.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compared query ${q} against node ${ins[cur]} branching left or right by BST order.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -155,7 +178,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Search ${q} absent; rank would be ${rank}.`,
         codeLineNumber: 3,
         layout: "tree",
-        meta: { found: found >= 0, rank },
+        meta: { ops: step, found: found >= 0, rank },
     };
 }
 
@@ -167,5 +190,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty BST tracking sizes and heights",
+        "insert key with plain BST placement, counting depth",
+        "if depth exceeds the alpha-height bound: find the scapegoat ancestor",
+        "rebuild the scapegoat subtree into a perfectly balanced shape",
+        "repeat until all keys are inserted with bounded height",
+        "search compares keys down the balanced shape",
+        "done: height stays logarithmic and the query answer is reported",
+    ],
 };
 export default module;
