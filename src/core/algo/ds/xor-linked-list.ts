@@ -143,6 +143,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [10, 20, 30, 40] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with nodes storing prev-xor-next in a single field",
+        "head starts traversal with previous address zero",
+        "at each node: next equals prev xor the stored field",
+        "advance by shifting (prev, current) to (current, next)",
+        "every step names the current value and the computed next",
+        "only two pointers are ever held regardless of length",
+        "done: forward traversal visits every value using xor links",
+    ],
 };
 
 export default module;
