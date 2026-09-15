@@ -103,10 +103,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeGrid(piles),
         edges: [],
-        description: `Misère Nim [${piles.join(", ")}] (last stone LOSES) – nim-sum = ${nimSum}.`,
+        description: `Misere Nim [${piles.join(", ")}] (last stone LOSES) – nim-sum = ${nimSum}, singletons = ${onesCount}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { nimSum },
+        meta: { piles: [...piles], nimSum, ones: onesCount, allOnes, winning },
     };
     step += 1;
 
@@ -156,11 +156,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: paintVerdict(makeGrid(piles), winning),
             edges: [],
             description: winning
-                ? "Winning position for the player to move."
-                : "Losing position for the player to move.",
+                ? `Misere [${piles.join(", ")}] with ${onesCount} singletons (even) is winning for the player to move.`
+                : `Misere [${piles.join(", ")}] with ${onesCount} singletons (odd) is losing for the player to move.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: { nimSum, winning },
+            meta: { piles: [...piles], nimSum, ones: onesCount, winning },
         };
         step += 1;
 
@@ -308,10 +308,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: paintVerdict(makeGrid(piles), true),
                 edges: [],
-                description: "Winning position for the player to move.",
+                description: `Misere [${piles.join(", ")}] with nim-sum ${nimSum} is winning for the player to move.`,
                 codeLineNumber: 2,
                 layout: "grid",
-                meta: { nimSum, winning },
+                meta: { piles: [...piles], nimSum, winning },
             };
         }
     } else {
@@ -358,16 +358,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 }
 
-/** The Misère Nim module, registered with the engine. */
+/** The Misere Nim module, registered with the engine. */
 const module: AlgorithmModule = {
     id: "misere-nim",
     name: "Misère Nim",
     category: "game",
     complexity: { time: "O(p)", space: "O(1)" },
-    // [1, 2, 3] has nim-sum 0 and a pile > 1, so it is losing (P-position) in misère play too.
+    // [1, 2, 3] has nim-sum 0 and a pile > 1, so it is losing (P-position) in misere play too.
     defaultInput: { piles: [1, 2, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from piles [p0, p1, …] where taking the last stone loses",
+        "count singleton piles and compute xor nim-sum of all piles",
+        "if all piles ≤ 1: even singletons wins, odd singletons loses",
+        "else if xor ≠ 0: winning, mirror normal Nim toward zero xor",
+        "if zeroing leaves even singletons: adjust to leave odd singletons",
+        "execute the winning take and show the losing reply for opponent",
+        "winner hands the opponent the last stone to force their loss",
+    ],
 };
 
 export default module;
