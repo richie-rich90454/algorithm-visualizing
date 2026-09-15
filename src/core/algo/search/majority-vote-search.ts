@@ -71,8 +71,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – no majority exists.",
-            codeLineNumber: 1,
+            description: "Empty array holds no votes, so no majority exists here.",
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons },
         };
@@ -96,10 +96,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[i, "comparing"]])),
             edges: [],
-            description: `Vote ${v}: candidate ${candidate}, tally ${count}.`,
+            description: `Vote ${i + 1}: ${v} against candidate ${candidate} leaves tally ${count}.`,
             codeLineNumber: 1,
             layout: "array",
-            meta: { comparisons },
+            meta: { comparisons, candidate: candidate ?? "none", tally: count },
         };
         step += 1;
         if (step >= 10) break;
@@ -109,8 +109,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "No candidate emerged.",
-            codeLineNumber: 2,
+            description: "No candidate emerged from the vote.",
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons },
         };
@@ -128,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr, states),
             edges: [],
             description: `${candidate} occurs ${occurrences}/${arr.length} times – majority confirmed.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "array",
             meta: { comparisons, foundIndex: arr.indexOf(candidate) },
         };
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr),
             edges: [],
             description: `${candidate} occurs only ${occurrences}/${arr.length} times – no majority.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons },
         };
@@ -153,6 +153,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 2, 1, 2, 3, 2, 2] },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with candidate ← none and tally ← 0 over the array",
+        "for each vote: adopt it if tally = 0, else rise or fall the tally",
+        "candidate survives elimination; count its real occurrences",
+        "if count > n/2: confirm the candidate as the majority element",
+        "done: return majority value or report that none exists",
+    ],
 };
 
 export default module;
