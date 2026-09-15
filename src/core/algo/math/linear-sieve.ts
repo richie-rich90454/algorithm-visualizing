@@ -169,6 +169,13 @@ const module: AlgorithmModule = {
     defaultInput: { n: DEFAULT_N },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start the prime list with an empty factor table",
+        "take the next integer i as candidate",
+        "process i against the known primes",
+        "mark each i × prime exactly once",
+        "done: all primes to limit in linear time",
+    ],
 };
 
 export default module;
