@@ -1,6 +1,7 @@
 /**
  * move-to-front-transform.ts – Move-To-Front.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n·σ)", space: "O(σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,7 +33,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Move-to-front encode "${text}".`, 0);
     step += 1;
@@ -82,6 +83,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize alphabet list in sorted order",
+        "read next input character from text",
+        "output current index of character in list",
+        "move accessed character to front of list",
+        "repeat for each character in input",
+        "record output codes and evolving alphabet",
+        "report encoded index sequence",
+    ],
 };
 
 export default module;
