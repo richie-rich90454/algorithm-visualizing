@@ -212,5 +212,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize circulation network with lower and upper bounds",
+        "reduce lower bounds to residual caps and node imbalances",
+        "add super source and super sink for demand saturation",
+        "run max flow from super source to super sink",
+        "check whether all demand arcs are fully saturated",
+        "report feasibility verdict with maximum flow value",
+    ],
 };
 export default module;
