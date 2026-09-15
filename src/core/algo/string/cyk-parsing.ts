@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const accept = (T[0] as Set<string>[])[n - 1].has("S");
     yield F(show(n), accept ? `S ∈ T[0][${n - 1}]: ACCEPT.` : "S missing: REJECT.", 3, { accept });
     step += 1;
-    yield F(show(n), "Done.", 4, { accept });
+    yield F(show(n), accept ? `Parse complete: "S" derives the input: ACCEPT.` : "Parse complete: no S derivation: REJECT.", 4, { accept });
 }
 
 const module: AlgorithmModule = {
