@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Half-plane intersection of ${lines.length} lines.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { lines: lines.length },
     };
     step += 1;
 
@@ -144,9 +144,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: frameEdges,
             description: `Constraint L${idx} considered (angle ${deg}°) – kept (simplification keeps all lines in angular order).`,
-            codeLineNumber: 1,
+            codeLineNumber: 2,
             layout: "point",
-            meta: {},
+            meta: { line: idx, angle: deg },
         };
         step += 1;
     }
@@ -164,7 +164,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
         description: `Lines sorted by angle; the surviving lines bound the convex intersection region.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { kept: kept.size },
     };
@@ -188,6 +188,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all directed constraint lines",
+        "sort the lines by angle and drop near-duplicates",
+        "scan lines while keeping the feasible deque convex",
+        "cut the deque from the back and front as needed",
+        "done: surviving lines bound the convex feasible region",
+    ],
 };
 
 export default module;
