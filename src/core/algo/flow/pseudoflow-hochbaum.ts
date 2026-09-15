@@ -196,5 +196,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize network with source sink and edge capacities",
+        "saturate source arcs to build normalized pseudoflow",
+        "push excess through forest toward sink components",
+        "merge components along balancing arcs when needed",
+        "relabel gaps until forest collapses to optimum cut",
+        "report maximum flow equal to minimum cut value",
+    ],
 };
 export default module;
