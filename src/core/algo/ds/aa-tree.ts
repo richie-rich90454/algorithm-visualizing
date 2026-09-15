@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "AA Tree: empty. AA skew/split keep levels balanced.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} via comparison and attached as leaf node.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +115,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compare query ${q} against node ${ins[cur]} then go left or right.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -153,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             found >= 0
                 ? `Balance invariant holds. Search ${q} found; rank ${rank}.`
                 : `Search ${q} absent; rank would be ${rank}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { found: found >= 0, rank },
     };
@@ -167,5 +167,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty AA tree with level 1 sentinel",
+        "insert key via BST comparison going left if smaller else right",
+        "apply skew to remove left horizontal link via right rotation",
+        "apply split to fix consecutive right links via left rotation",
+        "compare query key against node and go left or right",
+        "compute rank as count of keys smaller than query",
+        "done: balanced AA tree holds keys and search answer with rank",
+    ],
 };
 export default module;
