@@ -1,8 +1,31 @@
 /**
- * pigeonhole-sort.ts – Pigeonhole Sort.
+ * pigeonhole-sort.ts – Pigeonhole Sort
  *
- * Drops each value into its pigeonhole, reads back.
- * Time: O(n + k), Space: O(k)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Pigeonhole sort drops each value into the hole labeled with that exact value, then reads holes back in order. It is counting sort without the counting step, perfect when every key maps to its own hole. The pigeonhole principle guarantees correctness: n items into matching holes come out ordered.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n + k)
+ *   Space: O(k)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -110,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -139,5 +162,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 1, 3, 2, 1],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with empty pigeonholes for each value",
+        "drop each value into its matching hole",
+        "read holes back in order from low to high",
+        "collect repeated values from each occupied hole",
+        "scan holes into final order",
+        "done: values are collected in sorted order",
+    ],
 };
 export default module;
