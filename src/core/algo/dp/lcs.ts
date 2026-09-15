@@ -181,6 +181,7 @@ const module: AlgorithmModule = {
         "matches extend the diagonal by one character",
         "mismatches carry the better of top or left neighbor",
         "answer <- dp[n][m] with one LCS backtraced via arrows",
-    ],};
+    ],
+};
 
 export default module;
