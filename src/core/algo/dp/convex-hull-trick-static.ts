@@ -1,7 +1,32 @@
 /**
- * Static Convex Hull Trick (min): lines added by decreasing slope,
- * queries in increasing x; pointer walk on the lower hull.
- * Time O((n+q) log n), Space O(n). Default queries -> [1,3,3].
+ * convex-hull-trick-static.ts - Convex Hull Trick (Static)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: drop last line while intersection(prev2, prev1) >= intersection(prev1, new).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O((n+q) log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -63,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No lines or no queries \u2013 nothing to answer.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -150,7 +175,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(table, marks),
         edges: [],
         description: `Traceback: minima [${answers.join(", ")}] read off the lower hull.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answers },
     };
@@ -171,6 +196,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up lines with decreasing slopes and sorted query xs",
+        "hull holds candidate lines for the lower envelope",
+        "drop last line while intersection(prev2, prev1) >= intersection(prev1, new)",
+        "add each line once, preserving convex lower hull order",
+        "sweep queries in order with a monotone pointer on the hull",
+        "answer each query from the current best line, advance while next wins",
+        "answer <- minima per query read off the lower hull positions",
+    ],};
 
 export default module;
