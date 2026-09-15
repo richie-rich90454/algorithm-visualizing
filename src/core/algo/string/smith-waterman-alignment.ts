@@ -1,6 +1,7 @@
 /**
  * smith-waterman-alignment.ts – Smith-Waterman.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm)", space: "O(nm)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -52,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const dp: number[][] = Array.from({ length: a.length + 1 }, () =>
         new Array(b.length + 1).fill(0),
@@ -76,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     yield F(grid(dp, -1), `Local align "${a}" vs "${b}" (match+2/mis-1/gap-2, floor 0).`, 0);
     step += 1;
-    yield F(grid(dp, 1), "First row/col are zeros (local alignment).", 1);
+    yield F(grid(dp, 1), `First row/col are zeros for local align of "${a}" vs "${b}".`, 1);
     step += 1;
     for (let r = 1; r <= Math.min(3, a.length); r += 1) {
         yield F(grid(dp, r + 1), `Row ${r}: [${(dp[r] as number[]).join(", ")}].`, 2);
@@ -127,6 +128,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "GATT", b: "GCAT" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize first row and column to zero scores",
+        "score cell as max of zero and three moves",
+        "fill table tracking maximum cell overall",
+        "trace back from maximum until zero reached",
+        "emit aligned substrings with gaps",
+        "compute optimal local score from traceback",
+        "report best local alignment and score",
+    ],
 };
 
 export default module;
