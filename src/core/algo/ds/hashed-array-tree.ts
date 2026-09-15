@@ -32,7 +32,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         st: EntityState = "comparing",
         msg: string,
         line: number,
-        meta: VisualFrame["meta"] = {},
+        meta: VisualFrame["meta"] = { operations: step },
     ) => ({
         stepNumber: step,
         entities: cells(arr, new Map(hl.map((i) => [i, st]))),
@@ -71,8 +71,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         arr.map((_, i) => i),
         "sorted",
         `Final [${arr.join(", ")}]; contains ${val}: ${ok}. Length ${arr.length} verified.`,
-        3,
-        { ok },
+        6,
+        { ok, operations: step, size: arr.length },
     );
 }
 
@@ -84,5 +84,14 @@ const module: AlgorithmModule = {
     defaultInput: { items: [4, 1, 7, 3, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize hashed array tree with top directory",
+        "map index to top and leaf positions by bit split",
+        "compare size against capacity to grow directory",
+        "insert value at leaf slot for logical index",
+        "read value by two-level dereference in O(1)",
+        "count stored elements for size",
+        "done: tree holds array values with indexed state",
+    ],
 };
 export default module;
