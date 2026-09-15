@@ -1,6 +1,7 @@
 /**
  * wu-manber-search.ts – Wu-Manber.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n + m) avg", space: "O(σ²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,9 +33,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Wu-Manber multi-search for [${pats.join(", ")}].`, 0, { comparisons: 0, hits: [] });
+    yield F(tx(text), `Wu-Manber multi-search for [${pats.join(", ")}].`, 0, {
+        comparisons: 0,
+        hits: [],
+    });
     step += 1;
     const m = Math.min(...pats.map((p) => p.length));
     yield F(tx(text), `Block shift table on min length ${m}.`, 1, { comparisons: 0 });
@@ -68,16 +72,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
     if (shown.length === 0) {
-        yield F(tx(text), "None of the patterns occurs in the text.", 3, { comparisons, hits: hits.map((h) => `${h.pat}@${h.pos}`) });
+        yield F(tx(text), "None of the patterns occurs in the text.", 3, {
+            comparisons,
+            hits: hits.map((h) => `${h.pat}@${h.pos}`),
+        });
         step += 1;
     }
     const fin = new Map<number, EntityState>();
     for (const h of hits)
         for (let x = h.pos; x < h.pos + h.pat.length; x += 1) fin.set(x, "sorted");
-    yield F(tx(text, fin), hits.length ? `${hits.length} total hit(s): ${hits.map((h) => `"${h.pat}"@${h.pos}`).join(", ")}.` : "None of the patterns occur in the text.", 4, {
-        comparisons,
-        hits: hits.map((h) => `${h.pat}@${h.pos}`),
-    });
+    yield F(
+        tx(text, fin),
+        hits.length
+            ? `${hits.length} total hit(s): ${hits.map((h) => `"${h.pat}"@${h.pos}`).join(", ")}.`
+            : "None of the patterns occur in the text.",
+        4,
+        {
+            comparisons,
+            hits: hits.map((h) => `${h.pat}@${h.pos}`),
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -88,6 +102,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", patterns: ["ab", "bc"] },
     visualType: "text",
     run,
+    pseudocode: [
+        "build block shift table over pattern set",
+        "determine minimum pattern length for windows",
+        "hash current block to obtain shift value",
+        "verify candidate patterns on zero shift",
+        "record hits for all patterns matching window",
+        "shift window by block table distance",
+        "report all pattern hits found",
+    ],
 };
 
 export default module;
