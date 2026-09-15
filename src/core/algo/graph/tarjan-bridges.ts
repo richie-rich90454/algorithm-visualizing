@@ -78,12 +78,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { bridges: bridges.length },
     });
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`);
+        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`, 1);
         step += 1;
 
         for (const edge of edges) {
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
             if (index.get(neighbor) === undefined) {
                 // Tree edge: recurse and pull the child's lowlink upward.
-                yield buildFrame(`Descending into ${neighbor}.`);
+                yield buildFrame(`Descending into ${neighbor}.`, 1);
                 step += 1;
                 yield* dfs(neighbor, v);
                 lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbor) ?? 0));
@@ -130,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     if (edge) {
                         edge.state = "swapped";
                     }
-                    yield buildFrame(`BRIDGE: edge ${v}–${neighbor} disconnects the graph.`);
+                    yield buildFrame(`BRIDGE: edge ${v}–${neighbor} disconnects the graph.`, 3);
                     step += 1;
                 }
             } else {
@@ -139,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 if (edge) {
                     edge.state = "active";
                 }
-                yield buildFrame(`Back edge from ${v} to ancestor ${neighbor}.`);
+                yield buildFrame(`Back edge from ${v} to ancestor ${neighbor}.`, 2);
                 step += 1;
             }
         }
@@ -147,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "visited";
         }
-        yield buildFrame(`Finished subtree of ${v}.`);
+        yield buildFrame(`Finished subtree of ${v}.`, 4);
         step += 1;
     }
 
@@ -166,7 +166,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             bridges.length === 0
                 ? "No bridges – the graph is edge-biconnected."
                 : `Found ${bridges.length} bridge(s): ${bridges.map(([a, b]) => `${a}–${b}`).join(", ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { bridges: bridges.length },
     };
@@ -190,6 +190,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up discovery index and lowlink for every vertex",
+        "visit v and descend each tree edge, skipping the parent",
+        "back edge to an ancestor: raise lowlink[v]",
+        "lowlink[child] > index[v]: the edge down is a bridge",
+        "finish each subtree and repeat from every unvisited vertex",
+        "done: every bridge such as D–E",
+    ],
 };
 
 export default module;
