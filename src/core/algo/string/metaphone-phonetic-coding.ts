@@ -1,6 +1,7 @@
 /**
  * metaphone-phonetic-coding.ts – Metaphone.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(1)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -80,14 +81,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(word), `Metaphone("${word}").`, 0);
     step += 1;
     yield F(tx(word, stAt([0, 1], "comparing")), "TH→0, drop initial vowels' kin.", 1);
     step += 1;
     const code = metaphone(word);
-    yield F(tx(word, stAt([2, 3], "comparing")), "Consonant skeleton rules.", 2, { code });
+    yield F(tx(word, stAt([2, 3], "comparing")), `Consonant skeleton rules for "${word}".`, 2, {
+        code,
+    });
     step += 1;
     yield F(
         tx(
@@ -113,6 +116,15 @@ const module: AlgorithmModule = {
     defaultInput: { word: "Thompson" },
     visualType: "text",
     run,
+    pseudocode: [
+        "normalize word to uppercase letters only",
+        "drop initial silent letters and vowel variants",
+        "map consonant groups to phonetic codes",
+        "collapse adjacent duplicate code letters",
+        "remove vowels except leading vowel sound",
+        "truncate or pad code to fixed length",
+        "report phonetic code for word",
+    ],
 };
 
 export default module;
