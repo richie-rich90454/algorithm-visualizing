@@ -213,6 +213,14 @@ const module: AlgorithmModule = {
     },
     visualType: "matrix",
     run,
+    pseudocode: [
+        "load the augmented binary matrix [A | b]",
+        "scan the column for a nonzero pivot row",
+        "swap the pivot row into place",
+        "lock in the pivot at (col, col)",
+        "XOR the pivot row out of every other row",
+        "done: row-echelon form over GF(2)",
+    ],
 };
 
 export default module;
