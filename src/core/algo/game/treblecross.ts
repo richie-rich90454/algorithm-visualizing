@@ -1,6 +1,34 @@
-// treblecross.ts – Treblecross: X's on a 1-D board; first to make 3 in a row wins.
-// Demo scans every empty cell for an immediate win, then plays one.
-// Default X at 2,3 threatens wins at 1 and 4 (computed, not hardcoded).
+/**
+ * treblecross.ts – Treblecross (first three-in-a-row wins)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Treblecross marks X on a 1-D strip; the first player to complete three
+ * consecutive X wins immediately. Simply: scan every empty square for an
+ * instant XXX and take it. Formally: the demo checks each empty cell with
+ * an exact three-window test, and the default X at 2 and 3 threatens wins
+ * at squares 1 and 4, so the winning reply is computed, never hardcoded.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) scan over the strip
+ *   Space: O(n) mark set
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Placed X marks highlight; empty squares stay idle.
+ *   - Threat squares that complete XXX flash YELLOW (comparing).
+ *   - The completed winning triple paints GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Misere-like inversion: making three loses in Dawson's Kayles but wins here.
+ *   - First to hold three consecutive marks wins at once.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function completesThree(marks: Set<number>, at: number, size: number): boolean {
@@ -53,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: boardCells(size, marks),
         edges: [],
-        description: `Treblecross on 1×${size} with X at [${[...marks].sort((a, b) => a - b).join(", ")}].`,
+        description: `Treblecross opens on 1x${size} strip with X marks at [${[...marks].sort((a, b) => a - b).join(", ")}] – first to make XXX wins.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { size, marks: [...marks] },
@@ -69,11 +97,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description:
             threats.length > 0
-                ? `Immediate winning squares: ${threats.join(", ")} (each completes XXX).`
-                : "No immediate win – no empty square completes three in a row.",
+                ? `Immediate winning squares on strip ${size}: cells ${threats.join(", ")} each complete three consecutive X.`
+                : `No immediate win on strip ${size} – no empty square completes three in a row.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: { size, threats },
+        meta: { size, marks: [...marks], threats },
     };
     step += 1;
     if (threats.length === 0) {
@@ -81,10 +109,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: boardCells(size, marks),
             edges: [],
-            description: "Position is quiet; the game continues without a forced win this move.",
+            description:
+                "Position is quiet with no forced triple; the game continues without a winning reply this move.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: { size, winning: false },
+            meta: { size, marks: [...marks], winning: false, winner: "undecided" },
         };
         return;
     }
@@ -95,10 +124,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: boardCells(size, after, new Set([play])),
         edges: [],
-        description: `Playing X at ${play}.`,
-        codeLineNumber: 2,
+        description: `Winning reply: play X at empty square ${play} to threaten the triple.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { size, play },
+        meta: { size, play, winning: true },
     };
     step += 1;
     const line = new Set<number>();
@@ -113,10 +142,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: boardCells(size, after, new Set(), line),
         edges: [],
-        description: `XXX complete at [${[...line].sort((a, b) => a - b).join(", ")}] – X wins.`,
-        codeLineNumber: 3,
+        description: `Triple XXX complete at squares [${[...line].sort((a, b) => a - b).join(", ")}] – the player playing ${play} wins.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { size, play, winning: true },
+        meta: { size, play, winning: true, winner: "mover" },
     };
 }
 
@@ -128,6 +157,14 @@ const module: AlgorithmModule = {
     defaultInput: { size: 7, marks: [2, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from a 1 x n strip with existing X marks placed",
+        "scan each empty square for completing three consecutive X",
+        "if no square completes XXX: quiet position, game continues",
+        "highlight every immediate winning square on the strip",
+        "play X on the first winning square to complete the triple",
+        "winner is the mover completing three in a row with that X",
+    ],
 };
 
 export default module;
