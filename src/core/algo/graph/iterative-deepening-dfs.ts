@@ -1,9 +1,34 @@
 /**
  * iterative-deepening-dfs.ts – Iterative Deepening DFS
  *
- * Depth-limited DFS rerun with limits 0,1,2,…: BFS-like shallowest-goal
- * guarantee with only O(d) stack memory. Limit ring is highlight.
- * Time: O(b^d) Space: O(d)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Iterative deepening reruns a depth-limited DFS with limits 0, 1, 2, and so
+ * on. Each probe explores only paths within the limit, so the first probe
+ * that reaches the target used the shallowest possible depth – the BFS
+ * optimality guarantee – while the stack never holds more than d vertices.
+ * The repeated shallow work looks wasteful but costs only a constant factor
+ * extra. Here the limit ring grows until E is found at depth 2 via A→C→E.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^d) – repeated probes cost a constant factor over BFS
+ *   Space: O(d) for the depth-limited stack
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The probe origin is PINK (highlight).
+ *   - The current path is YELLOW (comparing).
+ *   - The found target path turns GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal like BFS, memory-light like DFS: the default for huge spaces.
+ *   - Powers game-tree search (with alpha-beta) and route planning.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -98,11 +123,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     clr();
     if (found) {
         for (const p of found) setN(p, "path");
-        yield snap(`Found ${target} at depth ${found.length - 1} via ${found.join("→")}.`, 3, {
+        yield snap(`Found ${target} at depth ${found.length - 1} via ${found.join("→")}.`, 4, {
             depth: found.length - 1,
         });
     } else {
-        yield snap(`${target} unreachable from ${start} at any depth.`, 3, {});
+        yield snap(`${target} unreachable from ${start} at any depth.`, 4, {});
     }
 }
 
@@ -118,6 +143,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set limit ← 0 to seek the target from the start",
+        "run a depth-limited DFS probe from the start",
+        "visit each vertex with its depth and current path",
+        "target found: record the path, else raise the limit and repeat",
+        "done: shallowest path to the target, or unreachable",
+    ],
 };
 
 export default module;
