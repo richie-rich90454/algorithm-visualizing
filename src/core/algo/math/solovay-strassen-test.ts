@@ -66,7 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is degenerate (needs odd n >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -80,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Testing n=${n} against ${bases.length} bases.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let i = 0; i < bases.length; i += 1) {
@@ -151,5 +151,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 13, bases: [2, 5] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "pick random bases to test n",
+        "compare Euler a^((n−1)/2) against the Jacobi symbol",
+        "a matching base passes; a mismatch proves composite",
+        "surviving every base means probably prime",
+        "done: composite proof, or probable primality",
+    ],
 };
 export default module;
