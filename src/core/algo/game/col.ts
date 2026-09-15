@@ -1,6 +1,35 @@
-// col.ts – Col (partisan): paint a cell your color; neighbors must differ.
-// Enemy adjacency is fine, so on 1×4 the line L0, R1, L2, R3 fills the
-// board and the second player makes the last move. Legal by construction.
+/**
+ * col.ts – Col (partisan map-coloring game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Col is a partisan game on a graph. Left paints cells blue (L) and Right
+ * paints them red (R); same colors may never touch, while enemy adjacency is
+ * fine. Simply: grab cells your opponent cannot use against you. Formally:
+ * each move removes the painted cell for the opponent's color only where it
+ * touches, splitting the board into independent regions evaluated by
+ * combinatorial game values.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) for the illustrated line
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Empty cells are idle; Left claims paint GREEN (sorted).
+ *   - Right claims paint as highlighted; the just-painted cell flashes YELLOW.
+ *   - A full board names the player who made the last move as winner.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Partisan: Left and Right have different legal moves.
+ *   - The player unable to move loses (normal play).
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function colCells(board: string[], hot = -1): VisualEntity[] {
@@ -34,10 +63,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: colCells(board),
         edges: [],
-        description: `Col on 1×${size} – Left (L) moves first; same colors may never touch.`,
+        description: `Col on 1x${size} strip – Left (L) moves first; same colors may never touch.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { size },
+        meta: { size, player: "Left", winning: size > 0 },
     };
     step += 1;
     // ponytail: one illustrative legal line; full Col theory when analysis input exists.
@@ -55,10 +84,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: colCells(board, at),
             edges: [],
-            description: `${who === "L" ? "Left" : "Right"} paints cell ${at} ${who} (neighbor ${at > 0 ? board[at - 1] || "empty" : "none"} differs).`,
-            codeLineNumber: 1,
+            description: `${who === "L" ? "Left" : "Right"} paints empty cell ${at} with ${who} (neighbor ${at > 0 ? board[at - 1] || "empty" : "none"} differs, so the claim is legal).`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { size, at, who },
+            meta: { size, at, who, move: [at, who] },
         };
         step += 1;
     }
@@ -67,10 +96,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: colCells(board),
         edges: [],
-        description: `Board full after ${line.length} moves – ${winner} made the last move and wins this line.`,
-        codeLineNumber: 2,
+        description: `Strip 1x${size} is full after ${line.length} painted cells – ${winner} made the last legal paint and wins.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { size, winner },
+        meta: { size, winner, winning: true, moves: line.length },
     };
 }
 
@@ -82,6 +111,14 @@ const module: AlgorithmModule = {
     defaultInput: { size: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from an empty 1 x n strip with Left (L) to move first",
+        "a move paints an empty cell your color with no same-color neighbor",
+        "alternate Left and Right paints along the illustrated legal line",
+        "highlight each painted cell and check its neighbors stay legal",
+        "repeat paints until no empty cell admits a legal color",
+        "winner is the player making the last legal paint on the strip",
+    ],
 };
 
 export default module;
