@@ -197,6 +197,7 @@ const module: AlgorithmModule = {
         "each node combines child results per take-or-skip rule",
         "track choice flags to rebuild the selected set",
         "answer <- max(include[root], exclude[root]) with set listed",
-    ],};
+    ],
+};
 
 export default module;
