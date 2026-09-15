@@ -1,6 +1,32 @@
 /**
- * Unique paths with obstacles: dp[i][j] = dp[i-1][j] + dp[i][j-1] (0 on blocks).
- * Time O(m*n), Space O(m*n). Default 3x3 center block -> 2 paths.
+ * grid-paths-count-with-obstacles.ts - Grid Paths with Obstacles
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- 0 if blocked else dp[i-1][j] + dp[i][j-1].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(m\u00b7n)
+ *   Space: O(m\u00b7n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty grid \u2013 no paths.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -93,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${m - 1},${cols - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} obstacle-avoiding paths to the goal.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -113,6 +139,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp with dp[0][0] <- 1 unless blocked",
+        "dp[i][j] holds obstacle-avoiding paths to cell (i, j)",
+        "dp[i][j] <- 0 if blocked else dp[i-1][j] + dp[i][j-1]",
+        "fill rows top to bottom and columns left to right",
+        "blocked cells contribute zero and stop propagation",
+        "each free cell sums paths from top and left neighbors",
+        "answer <- dp[m-1][cols-1] with a sample path backtraced",
+    ],};
 
 export default module;
