@@ -13,6 +13,10 @@
  * where p[] holds the dimensions. Longer intervals are built from shorter
  * ones, hence "interval DP".
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -172,7 +176,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Minimum scalar multiplications = ${dp[0]?.[n - 1]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows: n, cols: n, minCost: dp[0]?.[n - 1] },
     };
@@ -188,6 +192,14 @@ const module: AlgorithmModule = {
     defaultInput: { dims: [30, 35, 15, 5, 10] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[i][i] <- 0 for single-matrix intervals",
+        "dp[i][j] holds min multiplications for chain i..j",
+        "dp[i][j] <- min over k of dp[i][k] + dp[k+1][j] + dims cost",
+        "expand intervals by increasing chain length",
+        "try every split k as the final multiplication point",
+        "add left, right, and merge costs per split choice",
+        "answer <- dp[0][n-1] with split tree from best-k picks",
+    ],};
 
 export default module;
