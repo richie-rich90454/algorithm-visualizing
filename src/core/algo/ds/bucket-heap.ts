@@ -109,6 +109,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [6, 2, 9, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty bucket heap with buckets per priority",
+        "insert key into bucket indexed by priority",
+        "track minimum occupied bucket pointer",
+        "extract minimum by scanning to first nonempty bucket",
+        "compare bucket minima to maintain global minimum",
+        "count items across buckets",
+        "done: bucket heap holds keys with minimum extracted",
+    ],
 };
 
 export default module;
