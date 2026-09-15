@@ -1,6 +1,35 @@
-// cram.ts – Cram: players alternate placing dominoes; last move wins.
-// One greedy line on 3×3: four dominoes fill 8 cells, the single leftover
-// cell strands the second player. The line is legal by construction.
+/**
+ * cram.ts – Cram (impartial domino-packing game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Cram is played on a board where both players place dominoes on two empty
+ * orthogonally adjacent cells. The player unable to move loses. Simply:
+ * keep splitting the board into regions your opponent cannot fill. Formally:
+ * the board is a disjunctive sum whose Grundy value decides the winner, and
+ * the illustrated 3x3 line fills 8 of 9 cells so the stranded single cell
+ * leaves the player to move with no domino fit.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) for the illustrated packing line
+ *   Space: O(n^2) board cells
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Empty cells are idle; placed dominoes paint GREEN (sorted).
+ *   - The just-placed domino flashes YELLOW (comparing).
+ *   - The stranded single cell shows why the player to move loses.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Impartial: both players share the same moves.
+ *   - Last move wins under normal play.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 type Domino = [string, string];
@@ -47,10 +76,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: cramCells(used, null),
         edges: [],
-        description: "Cram on 3×3 – empty board, first player to move.",
+        description: "Cram on empty 3x3 board with 9 free cells – First player to place a domino.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: { size: 3 },
+        meta: { size: 3, free: 9, player: "First" },
     };
     step += 1;
     let mover = "First";
@@ -69,10 +98,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: cramCells(partial, dom),
             edges: [],
-            description: `${mover} places domino D${i + 1} on ${dom[0]}–${dom[1]}.`,
-            codeLineNumber: 1,
+            description: `${mover} places domino D${i + 1} covering empty cells ${dom[0]} and ${dom[1]}.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { size: 3, domino: i + 1, cells: dom },
+            meta: { size: 3, domino: i + 1, cells: dom, mover },
         };
         step += 1;
         mover = mover === "First" ? "Second" : "First";
@@ -82,10 +111,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cramCells(used, null),
         edges: [],
         description:
-            "Only cell (2,2) is free – no domino fits, so the player to move (Second) loses this line.",
-        codeLineNumber: 2,
+            "Only cell (2,2) stays free with no empty neighbor – no domino fits, so Second to move loses this line.",
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { size: 3, winner: "First" },
+        meta: { size: 3, winner: "First", winning: true, free: 1 },
     };
 }
 
@@ -97,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { size: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from an empty 3 x 3 board with 9 free cells to fill",
+        "a move places one domino on two empty adjacent cells",
+        "place dominoes D1 through D4 along the illustrated legal line",
+        "highlight each new domino and count the remaining free cells",
+        "stop when only isolated cell (2,2) stays free with no fit",
+        "winner is First, since Second to move has no domino placement",
+    ],
 };
 
 export default module;
