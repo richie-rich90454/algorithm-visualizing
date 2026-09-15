@@ -1,6 +1,32 @@
 /**
- * Stock with Fee: cash/hold; buy pays fee: hold = max(hold, cash - p - fee).
- * Time O(n), Space O(1). Default [1,3,2,8,4,9] fee 2 -> 8.
+ * stock-with-transaction-fee.ts - Stock with Transaction Fee
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: hold <- max(hold, cash - price); cash <- max(cash, hold + price - fee).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No prices \u2013 zero profit.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -83,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([["0,0", "sorted"]])),
         edges: [],
         description: `Traceback: max profit with fee ${fee} = ${cash}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: cash },
     };
@@ -97,6 +123,14 @@ const module: AlgorithmModule = {
     defaultInput: { prices: [1, 3, 2, 8, 4, 9], fee: 2 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up hold <- -prices[0] and cash <- 0 as bases",
+        "hold is best owning stock, cash is best flat balance",
+        "hold <- max(hold, cash - price); cash <- max(cash, hold + price - fee)",
+        "scan days updating hold before cash per price",
+        "buys spend cash while sells deduct the fixed fee",
+        "fee applies once per completed round-trip trade",
+        "answer <- cash as max profit after all trading fees",
+    ],};
 
 export default module;
