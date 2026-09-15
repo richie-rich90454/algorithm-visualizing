@@ -167,6 +167,7 @@ const module: AlgorithmModule = {
         "fill intervals by increasing length from 2 to n",
         "combine left and right counts per operator truth table",
         "answer <- T[0][n-1] with parenthesization from split choices",
-    ],};
+    ],
+};
 
 export default module;
