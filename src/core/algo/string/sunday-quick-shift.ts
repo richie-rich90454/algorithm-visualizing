@@ -1,6 +1,7 @@
 /**
  * sunday-quick-shift.ts – Sunday Quick Search.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n/m) avg, O(nm) worst", space: "O(σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,18 +33,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Sunday search for "${pat}" in "${text}".`, 0, { comparisons: 0, matches: [] });
+    yield F(tx(text), `Sunday search for "${pat}" in "${text}".`, 0, {
+        comparisons: 0,
+        matches: [],
+    });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const shift = new Map<string, number>();
     for (let i = 0; i < m; i += 1) shift.set(pat[i] as string, m - i);
-    yield F(tx(text), `Shift table built over ${shift.size} distinct chars.`, 1, { comparisons: 0, shifts: shift.size });
+    yield F(tx(text), `Shift table built over ${shift.size} distinct chars.`, 1, {
+        comparisons: 0,
+        shifts: shift.size,
+    });
     step += 1;
     const matches: number[] = [];
     let comparisons = 0;
@@ -55,18 +65,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const cur = Array.from({ length: m }, (_, k) => i + k);
         if (j === m) {
             matches.push(i);
-            yield F(tx(text, stAt(cur, "path")), `Match: "${pat}" found at index ${i}.`, 2, { comparisons, matches: [...matches] });
+            yield F(tx(text, stAt(cur, "path")), `Match: "${pat}" found at index ${i}.`, 2, {
+                comparisons,
+                matches: [...matches],
+            });
             step += 1;
         } else {
             const s = new Map<number, EntityState>(
                 cur.map((p) => [p, "comparing"] as [number, EntityState]),
             );
             s.set(i + j, "swapped");
-            yield F(tx(text, s), `Mismatch: text[${i + j}]="${text[i + j]}" vs pattern[${j}]="${pat[j]}"; aligning text[${i + m}] next.`, 3, {
-                comparisons,
-                shifts: shift.size,
-                matches: [...matches],
-            });
+            yield F(
+                tx(text, s),
+                `Mismatch: text[${i + j}]="${text[i + j]}" vs pattern[${j}]="${pat[j]}"; aligning text[${i + m}] next.`,
+                3,
+                {
+                    comparisons,
+                    shifts: shift.size,
+                    matches: [...matches],
+                },
+            );
             step += 1;
         }
         if (step > 11) {
@@ -81,7 +99,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let k = s0; k < s0 + m; k += 1) fin.set(k, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -95,6 +115,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabcab", pattern: "abc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build shift table using character after window",
+        "align pattern at start of text",
+        "compare window left to right for match",
+        "record match when window equals pattern",
+        "shift by table of character past window",
+        "repeat until window exceeds text length",
+        "report all match positions found",
+    ],
 };
 
 export default module;
