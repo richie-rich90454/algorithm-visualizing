@@ -1,7 +1,8 @@
 /**
- * tree-vertex-cover-dp.ts – Minimum vertex cover on a tree
- * dp[u][0]=u out (children in), dp[u][1]=u in. Postorder DP.
- * Time O(n), Space O(n). current=comparing, done=sorted.
+ * tree-vertex-cover-dp.ts – Minimum vertex cover on a tree.
+ *
+ * dp[u][0] means u out (children in), dp[u][1] means u in. Postorder DP.
+ * Time O(n), Space O(n). Current uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -108,5 +109,12 @@ const module: AlgorithmModule = {
     defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes postorder from the tree root",
+        "force children in when current node stays out",
+        "post-order: combine child DP states for both choices",
+        "keep cheaper of in versus out per node",
+        "return minimum vertex cover size as the answer",
+    ],
 };
 export default module;
