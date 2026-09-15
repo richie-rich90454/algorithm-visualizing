@@ -145,6 +145,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [3, 1, 4, 2], lookup: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize fractal tree with buffered nodes",
+        "insert key into root buffer instead of descending",
+        "compare buffer fill against flush threshold",
+        "flush buffer by pushing messages to children",
+        "search by checking buffers along root to leaf path",
+        "count buffered messages for I/O analysis",
+        "done: tree holds keys with search answer and flushed buffers",
+    ],
 };
 
 export default module;
