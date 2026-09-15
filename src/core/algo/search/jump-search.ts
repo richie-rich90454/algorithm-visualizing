@@ -196,6 +196,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16, 18], target: 14 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with block size ← ⌊√n⌋ over the sorted array",
+        "set prev ← 0 and next ← block for the jumping window",
+        "while next < n and A[next] < target: probe block starts",
+        "if A[next] ≥ target: stop jumping, target is in [prev, next]",
+        "linear-scan each i in [prev, next]: compare A[i] with target",
+        "if A[i] = target: return i as the match",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
