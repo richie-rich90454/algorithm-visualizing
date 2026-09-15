@@ -219,5 +219,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize undirected graph with weighted edge capacities",
+        "compute pairwise minimum cut for every vertex pair",
+        "sort pairs by cut value for maximum spanning steps",
+        "add tree edge when endpoints sit in separate components",
+        "repeat until tree connects all vertices exactly",
+        "report Gomory Hu tree with all pairs min cut values",
+    ],
 };
 export default module;
