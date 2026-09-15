@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "array",
             meta: { keyPoints: pts.map(([x, h]) => `${x},${h}`) },
         };
@@ -128,6 +128,15 @@ const module: AlgorithmModule = {
     },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize buildings split at the median building",
+        "solve left half silhouette recursively",
+        "solve right half silhouette recursively",
+        "sweep x tracking both heights keeping max",
+        "emit key point whenever height changes",
+        "combine halves in linear merge time",
+        "done: full skyline reported in O(n log n)",
+    ],
 };
 
 export default module;
