@@ -1,8 +1,31 @@
 /**
- * strand-sort.ts – Strand Sort.
+ * strand-sort.ts – Strand Sort
  *
- * Pulls increasing strands, merges them into output.
- * Time: O(n²), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Strand sort repeatedly pulls increasing strands out of the input pool and merges each strand into the output. Each strand is already sorted, so merging stays cheap. It is a natural fit for linked lists, where pulling strands costs no extra memory.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -104,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -133,5 +156,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the input pool full and output empty",
+        "pull one increasing strand from the input pool",
+        "merge the strand into the sorted output",
+        "repeat until the input pool is empty",
+        "scan strands into final order",
+        "done: output holds all values sorted",
+    ],
 };
 export default module;
