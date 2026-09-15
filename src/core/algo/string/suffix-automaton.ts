@@ -50,7 +50,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const link: number[] = [-1];
     const next: Array<Map<string, number>> = [new Map()];
 
-    const buildFrame = (message: string): VisualFrame => {
+    const buildFrame = (message: string, codeLine = 2): VisualFrame => {
         // Build node entities for each automaton state.
         const entities: VisualEntity[] = len.map((_, i) => ({
             id: `state-${i}`,
@@ -85,15 +85,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges,
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: codeLine,
             layout: "graph",
             // stateCount tallies created states; +1 for the initial state 0.
-            meta: { states: stateCount + 1 },
+            meta: {
+                comparisons: stateCount,
+                shifts: 0,
+                states: stateCount + 1,
+                matches: stateCount,
+            },
         };
     };
 
     // Frame 0: the initial (empty-string) automaton.
-    yield buildFrame("Initial automaton – just the start state 0.");
+    yield buildFrame(`Initial automaton for "${text}" – just the start state 0.`, 0);
     step += 1;
 
     let last = 0;
@@ -144,11 +149,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         last = cur;
 
-        yield buildFrame(`Appended "${char}" – automaton now has ${stateCount + 1} state(s).`);
+        yield buildFrame(`Appended "${char}" – automaton now has ${stateCount + 1} state(s).`, 3);
         step += 1;
     }
 
-    yield buildFrame(`Suffix automaton of "${text}" complete – ${stateCount + 1} states.`);
+    yield buildFrame(`Suffix automaton of "${text}" complete – ${stateCount + 1} states.`, 6);
 }
 
 /** The Suffix Automaton module, registered with the engine. */
@@ -161,6 +166,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababa" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "create initial state for empty substring",
+        "extend automaton with next text character",
+        "clone state when transition length splits",
+        "link new state via suffix links chain",
+        "update last pointer to new terminal state",
+        "repeat extension for entire input string",
+        "report automaton states and transitions",
+    ],
 };
 
 export default module;
