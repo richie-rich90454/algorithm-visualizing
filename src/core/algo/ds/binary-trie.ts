@@ -45,7 +45,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Binary Trie: empty. One level per bit of fixed-width keys.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const shown: string[] = [];
@@ -56,7 +56,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(shown, new Map([[shown.length - 1, "comparing"]])),
             edges: [],
-            description: `Inserted "${w}".`,
+            description: `Inserted word "${w}" by walking characters and creating missing nodes.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: set.size },
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Search "${q}": ${hit ? "found" : "absent"}.`,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const miss = "__zz__";
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(shown, new Map()),
         edges: [],
         description: `Search "${miss}": ${mhit ? "found" : "absent"}. Trie compress invariant holds. "${q}" ${hit ? "found" : "not found"}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { hit },
     };
@@ -95,5 +95,14 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty binary trie with single root node",
+        "walk bits of key from most significant to least",
+        "create missing child 0 or 1 along the path",
+        "mark terminal node as end of inserted word",
+        "compare query bits against edges to find match",
+        "count stored keys in subtree",
+        "done: binary trie holds keys with lookup answer",
+    ],
 };
 export default module;
