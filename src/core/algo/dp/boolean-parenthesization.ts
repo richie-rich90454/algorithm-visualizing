@@ -1,6 +1,32 @@
 /**
- * Boolean Parenthesization: T/F tables split at each operator.
- * Time O(n^3), Space O(n^2). Default TFT with |& -> 2 true ways.
+ * boolean-parenthesization.ts - Boolean Parenthesization
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: T[i][j] <- sum over splits and ops of true combinations.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b3)
+ *   Space: O(n\u00b2)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No symbols \u2013 zero ways.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -119,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(T, new Map([[`0,${n - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} parenthesizations evaluate true.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -133,6 +159,14 @@ const module: AlgorithmModule = {
     defaultInput: { symbols: "TFT", ops: "|&" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up T[i][i] and F[i][i] from single symbol values",
+        "tables hold true-ways and false-ways per interval",
+        "T[i][j] <- sum over splits and ops of true combinations",
+        "F[i][j] <- sum over splits and ops of false combinations",
+        "fill intervals by increasing length from 2 to n",
+        "combine left and right counts per operator truth table",
+        "answer <- T[0][n-1] with parenthesization from split choices",
+    ],};
 
 export default module;
