@@ -235,6 +235,14 @@ const module: AlgorithmModule = {
     },
     visualType: "matrix",
     run,
+    pseudocode: [
+        "load the augmented matrix [A | b]",
+        "scan the column for the best pivot row",
+        "swap the pivot row into place",
+        "normalize the pivot row to leading 1",
+        "eliminate x_col from every other row",
+        "done: row-echelon form gives solution x",
+    ],
 };
 
 export default module;
