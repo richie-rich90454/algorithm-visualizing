@@ -1,6 +1,32 @@
 /**
- * Optimal Game Strategy: dp[l][r] = max(a[l] + min(dp[l+2][r], dp[l+1][r-1]),
- * a[r] + min(dp[l+1][r-1], dp[l][r-2])). Default [8,15,3,7] -> 22.
+ * optimal-game-strategy-pick-ends.ts - Optimal Game Strategy (Pick Ends)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[l][r] <- max(take left + min of replies, take right + min).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n\u00b2)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No coins \u2013 first player gets 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -86,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`0,${n - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: first player secures ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -100,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { nums: [8, 15, 3, 7] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[i][i] <- coins[i] for single-coin intervals",
+        "dp[l][r] holds max current player can secure from l..r",
+        "dp[l][r] <- max(take left + min of replies, take right + min)",
+        "fill intervals by increasing length from 1 to n",
+        "each pick leaves opponent the worse of two replies",
+        "min models optimal opponent minimizing our remainder",
+        "answer <- dp[0][n-1] with pick sequence reconstructed",
+    ],};
 
 export default module;
