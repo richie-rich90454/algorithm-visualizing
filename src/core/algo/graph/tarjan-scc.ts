@@ -75,16 +75,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Tarjan's algorithm – single DFS to find all SCCs.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { components: components.length },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { components: components.length },
     });
@@ -106,20 +106,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (node) {
             node.state = "comparing";
         }
-        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`);
+        yield buildFrame(`Visiting ${v} (index ${index.get(v)}).`, 1);
         step += 1;
 
         for (const neighbor of adjacency[v] ?? []) {
             if (index.get(neighbor) === undefined) {
                 // Tree edge: recurse, then update lowlink from the child.
-                yield buildFrame(`Descending into ${neighbor}.`);
+                yield buildFrame(`Descending into ${neighbor}.`, 1);
                 step += 1;
                 yield* dfs(neighbor);
                 lowlink.set(v, Math.min(lowlink.get(v) ?? 0, lowlink.get(neighbor) ?? 0));
             } else if (onStack.has(neighbor)) {
                 // Back edge to a vertex still on the stack: update lowlink.
                 lowlink.set(v, Math.min(lowlink.get(v) ?? 0, index.get(neighbor) ?? 0));
-                yield buildFrame(`Back edge from ${v} to ${neighbor}.`);
+                yield buildFrame(`Back edge from ${v} to ${neighbor}.`, 2);
                 step += 1;
             }
         }
@@ -144,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     memberNode.state = color;
                 }
             }
-            yield buildFrame(`Popped SCC #${components.length}: {${component.join(", ")}}.`);
+            yield buildFrame(`Popped SCC #${components.length}: {${component.join(", ")}}.`, 3);
             step += 1;
         }
     }
@@ -161,7 +161,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Tarjan complete – found ${components.length} strongly connected component(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { components: components.length },
     };
@@ -186,6 +186,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up index/lowlink clocks plus an empty DFS stack",
+        "visit v: stamp index/lowlink and push v onto the stack",
+        "back edge to a stacked vertex: lower lowlink[v]",
+        "lowlink[v] equals index[v]: pop one SCC off the stack",
+        "repeat from every unvisited vertex",
+        "done: all SCCs such as {A,B,C}, {D,E}, and {F}",
+    ],
 };
 
 export default module;
