@@ -1,6 +1,32 @@
 /**
- * Word Break (count): dp[i] = sum of dp[j] where s[j..i) is a word.
- * Time O(n^2), Space O(n). Default "catsanddog" -> 2 ways.
+ * word-break-count.ts - Word Break (Count)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- sum over words w ending at i of dp[i-len(w)].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 one (empty) segmentation.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -92,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...dp]], new Map([[`0,${n}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} segmentation(s) of "${s}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -106,6 +132,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "catsanddog", dict: ["cat", "cats", "and", "sand", "dog"] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[0] <- 1 as the empty-prefix base",
+        "dp[i] holds segmentations of prefix s[:i]",
+        "dp[i] <- sum over words w ending at i of dp[i-len(w)]",
+        "iterate end positions with dictionary words checked",
+        "each matching suffix extends counts from its start",
+        "accumulate segmentation counts across all word options",
+        "answer <- dp[n] as total segmentations of the string",
+    ],};
 
 export default module;
