@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Winding number of (${point[0]}, ${point[1]}) around the polygon.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { query: point },
     };
     step += 1;
 
@@ -171,6 +171,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygon edges and the query point",
+        "measure each edge angle contribution around q",
+        "accumulate the signed winding number",
+        "nonzero winding means the point is inside",
+        "done: the final winding decides inside or outside",
+    ],
 };
 
 export default module;
