@@ -77,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Verifying Fermat: ${a}^(${p}−1) ≡ 1 (mod ${p}).`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${a}^${k} mod ${p} = ${residue}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -132,6 +132,13 @@ const module: AlgorithmModule = {
     defaultInput: { a: 3, p: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state a^(p−1) ≡ 1 (mod p) to verify",
+        "multiply out a^k mod p step by step",
+        "record each residue a^k mod p",
+        "climb to the exponent p−1",
+        "done: residue 1 confirms Fermat, else composite",
+    ],
 };
 
 export default module;
