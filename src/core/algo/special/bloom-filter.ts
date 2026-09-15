@@ -149,6 +149,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["apple", "banana", "cherry"], m: 20, probe: "banana" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize m-bit array to all zeros with k hash functions",
+        "compute k hash positions for each key",
+        "for each key set its k bits to 1 in the array",
+        "probe key maps to k bit positions",
+        "if all k bits are set then possibly present",
+        "if any bit is clear then definitely not present",
+        "done: membership reported with false positives only",
+    ],
 };
 
 export default module;
