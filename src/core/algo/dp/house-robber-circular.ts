@@ -1,6 +1,32 @@
 /**
- * House Robber II (circular): max(rob(nums[0..n-2]), rob(nums[1..n-1])).
- * Time O(n), Space O(1). Default [2,3,2] -> 3.
+ * house-robber-circular.ts - House Robber (Circular)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- max(dp[i-1], dp[i-2] + nums[i]) per linear case.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -42,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No houses \u2013 loot 0.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -52,7 +78,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(nums, new Map([[0, "sorted"]])),
             edges: [],
             description: `Single house: loot ${nums[0]}.`,
-            codeLineNumber: 4,
+            codeLineNumber: 6,
             layout: "array",
             meta: { answer: nums[0] },
         };
@@ -117,7 +143,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(nums, done),
         edges: [],
         description: `Traceback: max(${caseA} skipping last, ${caseB} skipping first) = ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer },
     };
@@ -131,6 +157,14 @@ const module: AlgorithmModule = {
     defaultInput: { nums: [2, 3, 2] },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up circular street where first and last are adjacent",
+        "case A robs houses 0..n-2, case B robs houses 1..n-1",
+        "dp[i] <- max(dp[i-1], dp[i-2] + nums[i]) per linear case",
+        "run the linear recurrence separately for each case",
+        "each house picks skip versus take with neighbor guard",
+        "carry best values forward without touching both ends",
+        "answer <- max(caseA, caseB) with robbed houses listed",
+    ],};
 
 export default module;
