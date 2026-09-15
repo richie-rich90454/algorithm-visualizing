@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Christofides TSP on ${pts.length} Euclidean points.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { cities: pts.length },
     };
     if (pts.length < 3) {
         yield {
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: mst.map(([a, b], k) => edge(`mst-${k}`, a, b, "comparing")),
         description: `MST (${mst.length} edges) by Prim.`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
         meta: { mst: mst.map(([a, b]) => `${a}-${b}`) },
     };
@@ -139,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: mst.map(([a, b], k) => edge(`mst-${k}`, a, b, "comparing")),
         description: `Odd-degree vertices: [${odd.join(", ")}].`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
         meta: { odd },
     };
@@ -152,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ...match.map(([a, b], k) => edge(`mm-${k}`, a, b, "highlight")),
         ],
         description: `Min-weight perfect matching on ${odd.length} odds (${match.length} pairs).`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { matching: match.map(([a, b]) => `${a}-${b}`) },
     };
@@ -197,7 +197,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             .slice(0, -1)
             .map((v, k) => edge(`t-${k}`, v, tour[k + 1] as number, "comparing")),
         description: `Euler tour shortcut to Hamiltonian cycle [${tour.join("→")}].`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { tour },
     };
@@ -206,7 +206,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e, state: "sorted" as EntityState })),
         edges: tour.slice(0, -1).map((v, k) => edge(`t-${k}`, v, tour[k + 1] as number, "sorted")),
         description: `Tour length = ${length.toFixed(4)} (≤1.5× optimal).`,
-        codeLineNumber: 5,
+        codeLineNumber: 6,
         layout: "point",
         meta: { tour, length },
     };
@@ -227,6 +227,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the Euclidean point set",
+        "build a minimum spanning tree with Prim",
+        "collect the odd-degree vertices of the tree",
+        "find a minimum-weight perfect matching on the odd vertices",
+        "merge tree and matching into an Eulerian multigraph",
+        "shortcut the Euler tour into a Hamiltonian cycle",
+        "done: the tour length is at most 1.5x the optimum",
+    ],
 };
 
 export default module;
