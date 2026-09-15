@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: [],
         description: `CSR uses exactly ${rowPtr.length + col.length} cells – no zeros wasted.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length },
     };
@@ -169,6 +169,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize CSR with row pointer array and empty columns",
+        "sort edges by row then fill column indices in order",
+        "compare row boundaries to slice neighbor range",
+        "query neighbors of vertex by scanning column slice",
+        "count nonzeros for total edge storage",
+        "verify row pointers sum to edge count",
+        "done: CSR stores graph with neighbor query answer",
+    ],
 };
 
 export default module;
