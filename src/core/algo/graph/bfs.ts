@@ -94,17 +94,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             currentNode.state = "comparing";
         }
 
-        const buildFrame = (): VisualFrame => ({
+        const buildFrame = (message: string, line: number): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Dequeuing and visiting ${current} (queue: [${queue.join(", ")}]).`,
-            codeLineNumber: 2,
+            description: message,
+            codeLineNumber: line,
             layout: "graph",
             meta: { visits, queueSize: queue.length },
         });
 
-        yield buildFrame();
+        yield buildFrame(`Dequeuing and visiting ${current} (queue: [${queue.join(", ")}]).`, 1);
         step += 1;
 
         // Reset all edge states to idle before marking new active edges.
@@ -138,7 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             currentNode.state = "visited";
         }
 
-        yield buildFrame();
+        yield buildFrame(
+            `Expanded ${current} – enqueued its unvisited neighbors (queue: [${queue.join(", ")}]).`,
+            2,
+        );
         step += 1;
     }
 
@@ -166,6 +169,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "mark s visited, enqueue s",
+        "dequeue the oldest vertex u",
+        "mark and enqueue each unvisited neighbor of u",
+        "repeat until the queue is empty",
+        "done: vertices in level order, first visit is shortest",
+    ],
 };
 
 export default module;
