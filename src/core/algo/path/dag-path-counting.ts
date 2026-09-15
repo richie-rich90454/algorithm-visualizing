@@ -1,9 +1,35 @@
 /**
  * dag-path-counting.ts – Path Counting in a DAG
  *
- * In topological order, ways[v] = Σ ways[u] over incoming edges: each
- * path is extended exactly once. A→D admits 3 distinct paths.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Counts how many distinct directed paths connect a source to a target in a
+ * directed acyclic graph. Processing vertices in topological order guarantees
+ * every predecessor is finished first, so ways[v] equals the sum of ways[u]
+ * over all incoming edges u to v. On the demo graph from A to D the answer
+ * is 3 distinct paths.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) for one topological sort plus one DP pass
+ *   Space: O(V + E) for the ordering and the counts
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex being processed is YELLOW (comparing).
+ *   - Count propagation edges are BLUE (active).
+ *   - Finished vertices are GREEN (sorted).
+ *   - The target is CYAN (path) at the end.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Only valid on acyclic graphs; cycles would make counts infinite.
+ *   - Each path is extended exactly once, so no double counting occurs.
+ *   - The same ordering trick powers shortest and longest paths in DAGs.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeGraphEdges } from "../graph/graph-util";
@@ -65,7 +91,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (indegM.get(v) === 0) queue.push(v);
         }
     }
-    yield snap(`Topological order: ${topo.join("→")} – DP follows it.`, 0, {});
+    yield snap(
+        `Topological order from ${start}: ${topo.join(" → ")} so every predecessor comes first.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     const ways = new Map(labels.map((v) => [v, 0]));
     ways.set(start, 1);
@@ -75,16 +105,30 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ways.set(v, (ways.get(v) as number) + (ways.get(u) as number));
             setE(u, v, "active");
         }
-        yield snap(`ways[${u}]=${ways.get(u)}: push to successors.`, 1, {
-            ways: ways.get(u) as number,
-        });
+        yield snap(
+            `Vertex ${u} holds count ways=${ways.get(u)}: pushing its paths to each successor.`,
+            3,
+            {
+                ways: ways.get(u) as number,
+                settled: topo.indexOf(u) + 1,
+                visits: topo.indexOf(u) + 1,
+            },
+        );
         step += 1;
         setN(u, "sorted");
     }
     setN(target, "path");
-    yield snap(`${ways.get(target)} distinct directed paths from ${start} to ${target}.`, 2, {
-        paths: ways.get(target) as number,
-    });
+    yield snap(
+        `${ways.get(target)} distinct directed paths from ${start} to ${target} through the DAG.`,
+        6,
+        {
+            paths: ways.get(target) as number,
+            settled: topo.length,
+            visits: topo.length,
+            distance: ways.get(target) as number,
+            path: `${start}→${target}`,
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -99,6 +143,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute topological order of all vertices",
+        "ways[s] ← 1, ways[v] ← 0 for v not equal to s",
+        "process next vertex u in topological order",
+        "for each edge u→v: ways[v] ← ways[v] + ways[u]",
+        "mark u finished, its count never changes again",
+        "repeat until every vertex in order is processed",
+        "done: ways[t] holds the total path count",
+    ],
 };
 
 export default module;
