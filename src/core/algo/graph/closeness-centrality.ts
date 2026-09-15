@@ -1,9 +1,33 @@
 /**
  * closeness-centrality.ts – Closeness Centrality
  *
- * Closeness[v] = (n−1) / Σ dist(v,u): the inverse of average distance to
- * everyone else. Star: center A = 1.0, each leaf = 0.6.
- * Time: O(V·(V + E)) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Closeness centrality rewards vertices that reach everyone else in few
+ * hops: closeness[v] = (n−1) / total-distance(v), the inverse of the average
+ * distance to all others. The algorithm runs one breadth-first search from
+ * every vertex, sums the distances, and normalizes. On the star, center A
+ * reaches all three leaves in 1 hop (score 1.0) while each leaf needs 1 + 2
+ * + 2 = 5 hops (score 3/5 = 0.6).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V·(V + E)) – one BFS per vertex
+ *   Space: O(V) for distances and scores
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The BFS source is YELLOW (comparing); the rest are ORANGE (visited).
+ *   - The top scorer finishes GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Needs a connected graph; isolated vertices have infinite distance.
+ *   - Complements betweenness: reach speed versus bridge control.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -87,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const [v, c] of close) setN(v, c === mx ? "sorted" : "visited");
     yield snap(
         `Closeness: ${labels.map((v) => `${v}=${close.get(v)}`).join(", ")} – center A reaches all in 1 hop.`,
-        2,
+        4,
         { scores: labels.map((v) => `${v}:${close.get(v)}`), max: mx },
     );
 }
@@ -100,6 +124,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C", "D"], B: ["A"], C: ["A"], D: ["A"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up one BFS per vertex over the whole graph",
+        "BFS from s: total its distances, closeness[s] ← (n−1) / total",
+        "repeat for every vertex s",
+        "keep the vertex with the largest closeness value",
+        "done: center A scores 1.0, each leaf scores 0.6",
+    ],
 };
 
 export default module;
