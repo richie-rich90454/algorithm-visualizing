@@ -67,9 +67,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: [],
         description: `Rasterizing (${from})→(${to}) with integer error term.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { from, to },
     };
     step += 1;
     const per = Math.max(1, Math.ceil(pixels.length / 4));
@@ -82,9 +82,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges: [],
             description: `Pixel ${Math.min(k + per, pixels.length)}/${pixels.length}: (${chunk[chunk.length - 1]}) lit.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { pixel: Math.min(k + per, pixels.length), total: pixels.length },
         };
         step += 1;
     }
@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: pixels.map(([x, y], i) => node(`px-${i}`, x, y, "", "sorted")),
         edges: [],
         description: `Done: ${pixels.length} pixels, 8-connected staircase.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { pixels: pixels.map(([x, y]) => `${x},${y}`) },
     };
@@ -107,6 +107,13 @@ const module: AlgorithmModule = {
     defaultInput: { from: [0, 0], to: [5, 3] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start at pixel (x0,y0) with an integer error term of zero",
+        "at each step: light the current pixel",
+        "when the error drifts past threshold: step y and correct the error",
+        "advance x toward x1 and repeat the error test",
+        "done: lit pixels form the 8-connected staircase segment",
+    ],
 };
 
 export default module;
