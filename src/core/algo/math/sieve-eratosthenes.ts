@@ -172,6 +172,14 @@ const module: AlgorithmModule = {
     defaultInput: { n: DEFAULT_N },
     visualType: "grid",
     run,
+    pseudocode: [
+        "list 2..limit with every number marked prime",
+        "take the next unmarked number as prime",
+        "confirm p is prime and start crossing out",
+        "cross out each multiple of p from p² up",
+        "finish p and move to the next candidate",
+        "done: prime list with count",
+    ],
 };
 
 export default module;
