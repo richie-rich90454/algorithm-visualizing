@@ -45,9 +45,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: [],
         description: `Gabriel test over ${pts.length} points – checking each pair's diametral disk.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { points: pts.length },
     };
     step += 1;
     const pairs: Array<[number, number]> = [];
@@ -97,9 +97,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 w < 0
                     ? `Pair (${i},${j}): disk empty – edge kept.`
                     : `Pair (${i},${j}): blocked by point ${w}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { pair: [i, j], kept: kept.length },
         };
         step += 1;
     }
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             directed: false,
         })),
         description: `Gabriel graph: ${kept.length}/${pairs.length} edges kept.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { edges: kept.map(([a, b]) => `${a}-${b}`) },
     };
@@ -135,6 +135,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all point pairs as candidates",
+        "draw the diametral disk over each pair",
+        "drop the edge when a third point falls inside",
+        "keep the edge when the disk stays empty",
+        "done: kept edges form the Gabriel proximity graph",
+    ],
 };
 
 export default module;
