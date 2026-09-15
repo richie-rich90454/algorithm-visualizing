@@ -127,6 +127,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "aaabbbcddd" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize scanning of input text characters",
+        "count length of each run of equal characters",
+        "emit count plus character for every run",
+        "append encoding to the growing output",
+        "track output length versus input length",
+        "verify decoding reproduces the input",
+        "done: compressed string with size comparison",
+    ],
 };
 
 export default module;
