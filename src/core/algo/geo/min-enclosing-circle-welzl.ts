@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimum enclosing circle of ${points.length} points (Welzl).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { points: points.length },
     };
     step += 1;
 
@@ -161,9 +161,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: [],
             description: "No points – the enclosing circle is empty.",
-            codeLineNumber: 0,
+            codeLineNumber: 1,
             layout: "point",
-            meta: {},
+            meta: { count: points.length },
         };
         return;
     }
@@ -231,9 +231,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: `Welzl boundary set: 0 points – defined circle is empty (center (0.00, 0.00), radius 0.00).`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { boundary: 0 },
     };
     step += 1;
 
@@ -251,9 +251,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...entities.map((e) => ({ ...e })), ...circle1.nodes],
         edges: circle1.edges,
         description: `Welzl boundary set: 1 point (p-${b1}) – defined circle center (${p1[0].toFixed(2)}, ${p1[1].toFixed(2)}), radius 0.00.`,
-        codeLineNumber: 1,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { boundary: [b1] },
     };
     step += 1;
 
@@ -276,9 +276,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: [...entities.map((e) => ({ ...e })), ...drawn2.nodes],
             edges: drawn2.edges,
             description: `Welzl boundary set: 2 points (p-${b1}, p-${second}) – defined circle center (${circle2.x.toFixed(2)}, ${circle2.y.toFixed(2)}), radius ${circle2.r.toFixed(2)}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 5,
             layout: "point",
-            meta: {},
+            meta: { boundary: [b1, second], radius: circle2.r },
         };
         step += 1;
     }
@@ -300,7 +300,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...entities.map((e) => ({ ...e })), ...circleNodes],
         edges: circleEdges,
         description: `Minimum enclosing circle: center (${result.x.toFixed(2)}, ${result.y.toFixed(2)}), radius ${result.r.toFixed(2)}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 6,
         layout: "point",
         meta: { center: [result.x, result.y], radius: result.r },
     };
@@ -324,6 +324,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all points with an empty boundary set",
+        "with zero boundary points the circle is empty",
+        "with one boundary point the circle has radius zero",
+        "with two boundary points use their diametral circle",
+        "with three boundary points use their circumcircle",
+        "pull outside points onto the boundary and recurse",
+        "done: center plus radius enclose every point minimally",
+    ],
 };
 
 export default module;
