@@ -135,6 +135,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [10, 20, 30], insert: 15 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the chain of linked nodes in order",
+        "traverse from the head following next pointers",
+        "visit each node value in chain order",
+        "insert value at the front by pointing it at the old head",
+        "the old chain stays linked behind the new head",
+        "verify order by walking the updated chain once",
+        "done: chain order holds and the inserted value is at the front",
+    ],
 };
 
 export default module;
