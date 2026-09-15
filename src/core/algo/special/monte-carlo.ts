@@ -148,6 +148,15 @@ const module: AlgorithmModule = {
     defaultInput: { samples: 60 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize sample count with deterministic random seed",
+        "throw random points uniformly in the square",
+        "count points landing inside the quarter circle",
+        "estimate pi as four times inside over total",
+        "track running estimate as samples accumulate",
+        "compare estimate against true pi value",
+        "done: pi estimate reported from N samples",
+    ],
 };
 
 export default module;
