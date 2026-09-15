@@ -184,7 +184,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Game value under optimal play = ${rootValue}; root MAX picks the best-scoring move.`,
         codeLineNumber: 6,
         layout: "tree",
-        meta: { value: rootValue, optimal: rootValue, leaves: leaves.length, winner: "optimal play" },
+        meta: {
+            value: rootValue,
+            optimal: rootValue,
+            leaves: leaves.length,
+            winner: "optimal play",
+        },
     };
 }
 
