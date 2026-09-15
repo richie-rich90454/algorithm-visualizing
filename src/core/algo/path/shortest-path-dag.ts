@@ -82,19 +82,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Shortest path in a DAG from ${start} – processing in topological order.`,
+        description: `Shortest path in a DAG from ${start} to ${target} – distances set, sorting topologically.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: {},
     });
@@ -128,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    yield buildFrame(`Topological order: ${topo.join(" → ")}.`);
+    yield buildFrame(`Topological order: ${topo.join(" → ")} – predecessors come first.`, 1);
     step += 1;
 
     // ------------------------------------------------------------------
@@ -152,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(currentDist);
         }
-        yield buildFrame(`Processing ${current} (final distance ${currentDist}).`);
+        yield buildFrame(`Processing ${current} in topological order (final distance ${currentDist}).`, 3);
         step += 1;
 
         // Relax each outgoing edge exactly once.
@@ -177,7 +177,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (neighborNode) {
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbor}.`);
+            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 4);
             step += 1;
         }
 
@@ -216,9 +216,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             dist.get(target) === Infinity
                 ? `${target} is unreachable from ${start}.`
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { distance: dist.get(target) ?? Infinity },
+        meta: { settled: topo.length, visits: topo.length, distance: dist.get(target) ?? Infinity, path: path.join("→") },
     };
 }
 
@@ -252,6 +252,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← ∞ for v ≠ s",
+        "compute topological order via Kahn's algorithm",
+        "process next vertex u in topological order",
+        "for each edge u→v with weight w: relax edge",
+        "if dist[u]+w < dist[v]: update dist[v] via u",
+        "all predecessors done, so dist[u] is final",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
