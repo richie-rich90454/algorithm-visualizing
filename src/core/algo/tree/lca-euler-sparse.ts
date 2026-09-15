@@ -102,7 +102,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, tourLength: tour.length, query: [...query] },
     });
 
     // ------------------------------------------------------------------
@@ -224,7 +224,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `The LCA of ${u} and ${v} is ${lca} (min depth in tour range [${Math.min(lo, hi)}..${Math.max(lo, hi)}]).`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { lcaFound: lca.charCodeAt(0) },
+        meta: { lca, query: [u, v], tourLength: tour.length },
     };
 }
 
@@ -242,6 +242,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "run DFS to record Euler tour with depths",
+        "record first occurrence index for each node",
+        "build sparse table over tour depths for RMQ",
+        "query minimum depth between both occurrences",
+        "return min-depth node as the LCA answer",
+    ],
 };
 
 export default module;
