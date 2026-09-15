@@ -99,8 +99,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty skew heap.",
-        codeLineNumber: 1,
+        description: "Empty skew heap - insert keys then meld with child swaps.",
+        codeLineNumber: 0,
         layout: "tree",
         meta: { size: 0 },
     };
@@ -128,6 +128,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [5, 3, 8, 1, 9] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty meldable heap",
+        "insert key by melding a singleton heap with the root",
+        "meld: compare roots, attach larger under smaller, swap children",
+        "the child swap is unconditional, no balance data is kept",
+        "repeat until all keys share one heap-ordered tree",
+        "extract-min removes the root and melds its two children",
+        "done: minimum is reported and the heap still holds the rest",
+    ],
 };
 
 export default module;
