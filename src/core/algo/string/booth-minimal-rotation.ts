@@ -68,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the minimal rotation of "${text}" using the doubled string.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, best: 0 },
     };
     step += 1;
 
@@ -77,13 +77,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // round eliminates at least one candidate in O(n) total.
     let i = 0;
     let j = 1;
+    let comparisons = 0;
     let best = 0; // start of the best rotation found so far
 
     while (i < n && j < n) {
         let k = 0; // comparison offset within the rotations
         while (k < n && doubled[i + k] === doubled[j + k]) {
+            comparisons += 1;
             k += 1;
         }
+        comparisons += 1;
         if (k >= n) {
             break;
         }
@@ -112,10 +115,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(doubled, states),
             edges: [],
-            description: `Best minimal rotation so far starts at index ${best}.`,
+            description: `doubled[${i}+k] vs doubled[${j}+k] eliminated a candidate; best start ${best} ("${doubled.slice(best, best + n)}").`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { best },
+            meta: { comparisons, best },
         };
         step += 1;
     }
@@ -129,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimal rotation: "${minimal}" (starting at index ${best}).`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { best, minimalLen: minimal.length },
+        meta: { comparisons, best, minimalLen: minimal.length },
     };
 }
 
