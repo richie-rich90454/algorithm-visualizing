@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Skyline of ${bs.length} buildings by left-to-right sweep.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { buildings: bs.length },
     };
     if (bs.length === 0) {
         yield {
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: ents.map((e) => ({ ...e })),
         edges: bedges.map((e) => ({ ...e })),
         description: `Sweep events at x = [${xs.join(", ")}].`,
-        codeLineNumber: 1,
+        codeLineNumber: 3,
         layout: "point",
         meta: { events: xs },
     };
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: ents.map((e) => ({ ...e })),
             edges: bedges.map((e) => ({ ...e })),
             description: `Sweep x=${x}: max active height = ${h}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
             meta: { x, h },
         };
@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...ents.map((e) => ({ ...e })), ...knots],
         edges: [...bedges.map((e) => ({ ...e })), ...kedges],
         description: `Skyline keys: ${keys.map((k) => `(${k[0]},${k[1]})`).join(" ")}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { skyline: keys.map(([x, y]) => `${x},${y}`) },
     };
@@ -146,6 +146,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all building footprints",
+        "collect every left and right edge as sweep events",
+        "sweep x from left to right in order",
+        "track the tallest active building at each event",
+        "record a key point whenever the height changes",
+        "done: key points outline the skyline silhouette",
+    ],
 };
 
 export default module;
