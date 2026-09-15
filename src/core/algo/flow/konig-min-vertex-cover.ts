@@ -175,5 +175,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize bipartite graph with left and right sets",
+        "compute maximum matching with augmenting path search",
+        "run alternating BFS from all unmatched left vertices",
+        "collect reachable set Z through alternating edges",
+        "build cover from left outside Z plus right inside Z",
+        "report minimum vertex cover equal to matching size",
+    ],
 };
 export default module;
