@@ -1,8 +1,31 @@
 /**
- * cascade-merge-sort.ts – Cascade Merge Sort.
+ * cascade-merge-sort.ts – Cascade Merge Sort
  *
- * Cascades merges down a ladder of tapes.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Cascade merge sort is the tape-drive era external sort: runs are spread across many tapes and merged down a cascading ladder. Each pass merges runs from full tapes onto the emptiest tape, which becomes the output. It minimizes tape rewinds when memory cannot hold the data.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -100,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -129,5 +152,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 1, 5, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted tapes loaded for cascading",
+        "spread initial runs across the tapes",
+        "merge runs down the ladder, empty tape is output",
+        "repeat cascade passes until one run remains",
+        "scan runs into final order",
+        "done: single sorted run remains",
+    ],
 };
 export default module;
