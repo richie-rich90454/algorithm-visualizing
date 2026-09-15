@@ -1,8 +1,31 @@
 /**
- * bead-sort.ts – Bead Sort.
+ * bead-sort.ts – Bead Sort
  *
- * Gravity pulls beads down each abacus pole.
- * Time: O(n · max), Space: O(n · max)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Bead sort imagines each value as a row of beads on an abacus pole and lets gravity pull them down. Counting beads per level reads off the sorted order, because tall rows contribute beads to many levels. It only works on positive integers, but it makes non-comparison sorting physical.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n · max)
+ *   Space: O(n · max)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -107,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -136,5 +159,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 1, 3, 2, 5],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with beads threaded as rows on poles",
+        "drop one bead per unit of value down each pole",
+        "let gravity settle beads, count beads per level",
+        "read level counts bottom-up as sorted values",
+        "scan rows into final order",
+        "done: poles hold the sorted array",
+    ],
 };
 export default module;
