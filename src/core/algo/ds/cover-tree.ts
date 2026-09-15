@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Cover Tree: empty. Levels halve the cover radius.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: pts.length
             ? `Partition invariant holds. Nearest to (${q[0]},${q[1]}) is (${pts[bi]![0]},${pts[bi]![1]}).`
             : "No points indexed.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { nearest: pts[bi] ?? [] },
     };
@@ -134,5 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize cover tree with root at top level",
+        "insert point by descending levels comparing distances",
+        "assign point to cover set within expanding radius",
+        "create new level when point is far from all covers",
+        "search nearest by pruning covers using triangle inequality",
+        "compare distances to maintain best candidate",
+        "done: cover tree holds points with nearest query answer",
+    ],
 };
 export default module;
