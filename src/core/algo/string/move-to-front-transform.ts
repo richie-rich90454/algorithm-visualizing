@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { codes },
     );
     step += 1;
-    yield F(tx(text), "Done.", 4, { codes });
+    yield F(tx(text), `Move-to-front complete: codes [${codes.join(", ")}].`, 4, { codes });
 }
 
 const module: AlgorithmModule = {
