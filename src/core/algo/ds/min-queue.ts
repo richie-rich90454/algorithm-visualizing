@@ -118,6 +118,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["enq", 4], ["enq", 2], ["enq", 7], ["deq"], ["enq", 1]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize min queue with two stacks storing minima",
+        "enqueue by pushing onto input stack tracking minimum",
+        "compare new value against current stack minimum",
+        "dequeue by popping output stack refilling if empty",
+        "take minimum as smaller of two stack minima",
+        "count elements across both stacks",
+        "done: queue holds values with minimum query answer",
+    ],
 };
 
 export default module;
