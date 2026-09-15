@@ -1,6 +1,26 @@
 /**
- * minimum-bottleneck-spanning-tree.ts - Minimum Bottleneck Spanning Tree.
- * Kruskal MST also minimizes the largest edge; that maximum is the bottleneck.
+ * minimum-bottleneck-spanning-tree.ts – Minimum Bottleneck Spanning Tree.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A minimum bottleneck spanning tree minimizes the largest edge weight rather
+ * than the total weight. Every MST is also a minimum bottleneck tree, so this
+ * demo runs Kruskal's greedy scan and tracks the maximum edge accepted. That
+ * maximum is the smallest bottleneck any spanning tree can achieve.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log E) – dominated by sorting the edges
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The edge under test is YELLOW (comparing).
+ *   - An accepted edge turns GREEN (sorted).
+ *   - The final tree is GREEN (sorted) with the bottleneck noted.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -88,13 +108,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        ` bottleneck search on ${verts.length} vertices: Kruskal order doubles as bottleneck minimization.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Minimum bottleneck search on ${verts.length} vertices, ${list.length} edges — Kruskal order minimizes the largest edge.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0, bottleneck: 0 },
+    };
     const order = list.map((_, i) => i).sort((x, y) => (list[x] as E3).w - (list[y] as E3).w);
     const uf = UF();
     const mst: number[] = [];
@@ -105,13 +128,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (uf.union(e.a, e.b)) {
             mst.push(idx);
             bottleneck = Math.max(bottleneck, e.w);
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-                `Accepted ${e.a}-${e.b} (${e.w}); bottleneck so far ${bottleneck}.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
+                    `Adding ${e.a}–${e.b} (weight ${e.w}) to the MST; bottleneck so far ${bottleneck}.`,
+                    2,
+                ),
+                meta: {
+                    accepted: mst.length,
+                    totalWeight: mst.reduce((s, i) => s + (list[i] as E3).w, 0),
+                    bottleneck,
+                },
+            };
         }
     }
     const weight = mst.reduce((s, i) => s + (list[i] as E3).w, 0);
@@ -120,10 +150,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(mst.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `MBST weight ${weight}, bottleneck ${bottleneck}: every spanning tree needs an edge of at least ${bottleneck}.`,
-            2,
+            `Minimum bottleneck tree weight ${weight}, bottleneck ${bottleneck}: ${mst.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ")}.`,
+            5,
         ),
-        meta: { weight, bottleneck },
+        meta: { weight, totalWeight: weight, accepted: mst.length, bottleneck },
     };
 }
 
@@ -144,5 +174,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort all edges by increasing weight for Kruskal order",
+        "walk the sorted edges and track the largest edge used",
+        "if endpoints differ: add the edge to the tree set",
+        "skip the edge when it would form a cycle",
+        "update the bottleneck to the maximum edge accepted",
+        "done: tree edges give minimum bottleneck and total weight",
+    ],
 };
 export default module;
