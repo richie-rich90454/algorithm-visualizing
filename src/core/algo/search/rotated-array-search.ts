@@ -1,9 +1,38 @@
 /**
  * rotated-array-search.ts – Search in Rotated Sorted Array
  *
- * Binary search adapted for a rotated sorted array: each step decides
- * which half is sorted and whether the target lies inside it. The hit
- * is verified against a brute-force scan before going green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A sorted array was rotated at an unknown pivot, so it now holds two sorted
+ * runs back to back (for example [4, 5, 6, 7, 0, 1, 2]). The algorithm still
+ * runs in logarithmic time: at each step it checks which half around the
+ * middle is properly sorted, then asks whether the target can live inside
+ * that sorted half. If yes it discards the other half, otherwise it discards
+ * the sorted half. One half is always eliminated, so the interval shrinks
+ * just like ordinary binary search.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) worst/average – one half is discarded per step
+ *   Space: O(1) auxiliary – only lo, hi, and mid pointers
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The middle probe is YELLOW (comparing).
+ *   - The lo and hi interval ends are PINK (highlight).
+ *   - A hit turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires a rotated sorted array with distinct values for the clean
+ *     one-pass logic taught here.
+ *   - The classic interview follow-up to binary search: it proves the
+ *     "which half is sorted" insight.
+ *   - Teaches why sortedness of just one half is enough to keep halving.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -34,7 +63,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Searching rotated array for ${target}.`,
+        description: `Searching rotated sorted array of ${arr.length} elements for target ${target}.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, target },
@@ -45,8 +74,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – nothing to search.",
-            codeLineNumber: 1,
+            description: `Empty array holds nothing, so target ${target} is absent.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -72,10 +101,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ]),
             ),
             edges: [],
-            description: `lo=${lo} (${loVal}), mid=${mid} (${midVal}), hi=${hi} (${hiVal}).`,
+            description: `Interval [${lo}..${hi}]: A[mid=${mid}]=${midVal}; left edge ${loVal}, right edge ${hiVal}.`,
             codeLineNumber: 1,
             layout: "array",
-            meta: { comparisons, target },
+            meta: { comparisons, target, lo, hi, mid },
         };
         step += 1;
         if (midVal === target) break;
@@ -94,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[verified, "sorted"]])),
             edges: [],
-            description: `Found ${target} at index ${verified} after ${comparisons} comparisons.`,
+            description: `Found target ${target} at index ${verified} after ${comparisons} comparisons.`,
             codeLineNumber: 2,
             layout: "array",
             meta: { comparisons, target, foundIndex: verified },
@@ -104,8 +133,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: `${target} is not in the array.`,
-            codeLineNumber: 2,
+            description: `Target ${target} is absent after ${comparisons} rotated probes.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -120,6 +149,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [4, 5, 6, 7, 0, 1, 2], target: 0 },
     visualType: "array",
     run,
+    pseudocode: [
+        "set lo ← 0 and hi ← n-1 over the rotated sorted array",
+        "while lo ≤ hi: probe mid ← ⌊(lo+hi)/2⌋ and compare A[mid]",
+        "if A[mid] = target: return mid as the match",
+        "if left half A[lo..mid] is sorted: keep the half holding target",
+        "else right half is sorted: keep the half holding target",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
