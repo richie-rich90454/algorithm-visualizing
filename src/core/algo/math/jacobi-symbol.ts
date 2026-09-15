@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs odd n >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Compute (${x}|${y}) by reciprocity.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let s = 1;
@@ -114,5 +114,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 10, n: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state the symbol (a|n) to reduce",
+        "strip factors of 2, fixing the sign by n mod 8",
+        "flip by reciprocity and reduce a mod n",
+        "done: Jacobi symbol = out",
+        "done: accumulated sign gives the symbol",
+    ],
 };
 export default module;
