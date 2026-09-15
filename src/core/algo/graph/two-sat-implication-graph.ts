@@ -1,9 +1,33 @@
 /**
  * two-sat-implication-graph.ts – 2-SAT via Implication Graph
  *
- * Each clause (a∨b) becomes edges ¬a→b, ¬b→a; the formula is satisfiable
- * iff no variable shares an SCC with its negation. Here SAT: x0=F, x1=T.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Each clause (a∨b) is equivalent to two implications: ¬a→b and ¬b→a. Taken
+ * together they form the implication graph, and the formula is satisfiable
+ * exactly when no variable shares a strongly connected component with its
+ * negation (which would force x and ¬x both true). Kosaraju's two passes
+ * find the SCCs; processing them in reverse topological order yields an
+ * assignment. Here that gives x0=false, x1=true.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – linear implication graph plus Kosaraju
+ *   Space: O(V + E) for the graph, its reverse, and components
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Clause edges light up BLUE (active) as they are added.
+ *   - SCCs alternate GREEN/ORANGE; the final assignment repaints literals.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Linear-time solvable, unlike general SAT (NP-complete).
+ *   - The classic reduction of logic to reachability.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -63,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield snap(
         `Clause edges added: ${clauses.map(([a, b]) => `(¬${a}→${b}, ¬${b}→${a})`).join(" ")}.`,
         1,
-        {},
+        { clauses: clauses.length },
     );
     step += 1;
     const order: string[] = [];
@@ -74,7 +98,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         order.push(u);
     };
     for (const l of lits) if (!seen.has(l)) visit(l);
-    yield snap(`DFS finish order: ${order.join(", ")} – SCCs come from the reversed graph.`, 1, {});
+    yield snap(`DFS finish order: ${order.join(", ")} – SCCs come from the reversed graph.`, 2, {
+        ordered: order.length,
+    });
     step += 1;
     const rev: Record<string, string[]> = {};
     for (const l of lits) rev[l] = [];
@@ -116,7 +142,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         sat
             ? `Satisfiable: ${asg} (every clause has a true literal).`
             : "Unsatisfiable: a variable shares an SCC with its negation.",
-        3,
+        4,
         { sat },
     );
 }
@@ -135,6 +161,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "create a vertex for every literal and its negation",
+        "add clause edges ¬a→b and ¬b→a for each clause (a∨b)",
+        "find SCCs with Kosaraju: finish order, then reversed-graph sweep",
+        "assign variables in reverse topological order of SCCs",
+        "done: a satisfying assignment, or a variable trapped with its negation",
+    ],
 };
 
 export default module;
