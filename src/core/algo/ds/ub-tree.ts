@@ -1,6 +1,29 @@
 /**
  * ub-tree.ts - UB-Tree
  * Z-order values stored in a B-tree. Demo: index <=6 points, 1 nearest-neighbor query.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Z-order values stored in a B-tree. Demo: index <=6 points, 1 nearest-neighbor query.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) ops
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard UB-Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -54,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "UB-Tree: empty. Z-order values stored in a B-tree.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -62,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(pts.slice(0, i + 1), new Map([[i, "comparing"]])),
             edges: [],
-            description: `Indexed (${pts[i]![0]},${pts[i]![1]}).`,
+            description: `Inserted point (${pts[i]![0]},${pts[i]![1]}) by Z-value into the B-tree - ${i + 1} of ${pts.length} indexed.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { n: i + 1 },
@@ -83,10 +106,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(pts, new Map([[bi, "highlight"]])),
             edges: [],
-            description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
+            description: `Query (${q[0]},${q[1]}): scanned Z-neighbors, nearest is (${pts[bi]![0]},${pts[bi]![1]}) at d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -114,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : "No points indexed.",
         codeLineNumber: 3,
         layout: "tree",
-        meta: { nearest: pts[bi] ?? [] },
+        meta: { ops: step, nearest: pts[bi] ?? [] },
     };
 }
 
@@ -134,5 +157,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty B-tree over Z-order values",
+        "compute the Z-value by interleaving point coordinate bits",
+        "insert: place the Z-value with ordinary B-tree insertion",
+        "splits keep nearby points clustered on neighboring pages",
+        "query: scan Z-neighbors and refine by true distance",
+        "track the closest point and prune distant Z-ranges",
+        "done: Z-order indexes the points and the nearest neighbor is reported",
+    ],
 };
 export default module;
