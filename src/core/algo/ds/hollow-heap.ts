@@ -115,6 +115,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8], decrease: [8, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty hollow heap with null roots",
+        "insert key as new node and compare with minimum",
+        "decrease key by moving item to new node leaving hollow",
+        "link roots of equal rank during cleanup",
+        "extract minimum and hollow out old root",
+        "count full versus hollow nodes",
+        "done: heap holds keys with minimum identified",
+    ],
 };
 
 export default module;
