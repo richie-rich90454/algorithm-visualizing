@@ -158,5 +158,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize directed acyclic graph with given vertices",
+        "split each vertex into left copy and right copy nodes",
+        "compute maximum bipartite matching across split copies",
+        "chain matched pairs into vertex disjoint paths",
+        "cover size equals vertices minus matching size",
+        "report minimum path cover with maximum flow value",
+    ],
 };
 export default module;
