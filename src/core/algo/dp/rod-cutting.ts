@@ -1,6 +1,32 @@
 /**
- * Rod Cutting: dp[L] = max(price[c] + dp[L-c]).
- * Time O(n^2), Space O(n). Default: revenue 10 via 2 + 2.
+ * rod-cutting.ts - Rod Cutting
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[L] <- max over first cut c of price[c] + dp[L-c].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input \u2013 nothing to cut.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -99,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([[`0,${n}`, "sorted"]])),
         edges: [],
         description: `Traceback: max revenue ${dp[n]} via cuts [${parts.join(" + ")}].`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: dp[n] },
     };
@@ -113,6 +139,14 @@ const module: AlgorithmModule = {
     defaultInput: { prices: [1, 5, 8, 9], n: 4 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[0] <- 0 with no revenue for empty rod",
+        "dp[L] holds max revenue for rod length L",
+        "dp[L] <- max over first cut c of price[c] + dp[L-c]",
+        "iterate lengths from 1 to n building on shorter rods",
+        "try every feasible first-cut length per total",
+        "combine cut price with optimal remainder revenue",
+        "answer <- dp[n] with cut lengths reconstructed",
+    ],};
 
 export default module;
