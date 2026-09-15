@@ -1,8 +1,31 @@
 /**
- * aks-sorting-network.ts – AKS Sorting Network.
+ * aks-sorting-network.ts – AKS Sorting Network
  *
- * Asymptotically optimal halver network layers.
- * Time: O(n log n), Space: O(n log n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The AKS network is the theoretical breakthrough that sorts in O(n log n) depth with O(n log n) comparators. It stacks epsilon-halver layers that repeatedly split blocks into cleaner halves. It is far too constant-heavy for practice, but it settled the asymptotic question for sorting networks.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n log n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -94,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -123,5 +146,13 @@ const module: AlgorithmModule = {
     defaultInput: [8, 4, 6, 2, 7, 3, 5, 1],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted inputs on the network wires",
+        "build epsilon-halver layer for the current block size",
+        "compare and swap paired wires across the halver",
+        "repeat halver passes with shrinking separation",
+        "scan settled wires into final order",
+        "done: wires hold the sorted values",
+    ],
 };
 export default module;
