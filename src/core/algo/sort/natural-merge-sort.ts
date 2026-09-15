@@ -1,8 +1,31 @@
 /**
- * natural-merge-sort.ts – Natural Merge Sort.
+ * natural-merge-sort.ts – Natural Merge Sort
  *
- * Merges the runs nature already left sorted.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Natural merge sort skips the artificial splitting of textbook merge sort and exploits runs that already exist in the input. It scans once to find maximal increasing runs, then merges adjacent runs pairwise. Nearly sorted input collapses in almost linear time.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -111,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -140,5 +163,13 @@ const module: AlgorithmModule = {
     defaultInput: [1, 3, 2, 4, 6, 5],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with input runs yet to be detected",
+        "scan once to detect all natural sorted runs",
+        "merge adjacent runs pairwise into longer runs",
+        "repeat until a single run remains",
+        "scan runs into final order",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
