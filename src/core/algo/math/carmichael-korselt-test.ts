@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs odd n >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Korselt test on ${n}: factor it.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const fac: Array<[number, number]> = [];
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Factor ${p}^${e}${e > 1 ? " – repeated, fails squarefree" : ""}.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${p}-1 = ${p - 1} ${div ? "divides" : "does NOT divide"} ${n - 1}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
         if (step > 12) break;
@@ -123,5 +123,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 561 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state Korselt's test for the odd candidate n",
+        "factor n and record each prime power p^e",
+        "check squarefree and whether each p−1 divides n−1",
+        "done: n is Carmichael, or it is not",
+        "done: squarefree plus every p−1 | n−1 decides it",
+    ],
 };
 export default module;
