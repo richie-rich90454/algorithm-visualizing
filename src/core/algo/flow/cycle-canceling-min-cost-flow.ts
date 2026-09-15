@@ -161,5 +161,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize network with demands and per unit edge costs",
+        "build initial feasible flow along direct expensive edge",
+        "detect negative cost residual cycle with Bellman Ford",
+        "cancel cycle by pushing flow around it to lower cost",
+        "repeat until no negative residual cycle remains",
+        "report minimum cost flow value at optimal cost",
+    ],
 };
 export default module;
