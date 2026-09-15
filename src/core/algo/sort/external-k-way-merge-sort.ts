@@ -1,8 +1,31 @@
 /**
- * external-k-way-merge-sort.ts – External K-Way Merge Sort.
+ * external-k-way-merge-sort.ts – External K-Way Merge Sort
  *
- * Sorts memory runs, merges K at a time from disk.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * External k-way merge sort handles data larger than memory: it sorts memory-sized chunks into runs, then merges K runs at a time. Each merge pass streams runs from disk and writes longer runs back. It is the workhorse behind database and file-system sorting.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -110,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -139,5 +162,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 6, 2, 4, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with disk chunks awaiting run formation",
+        "sort each memory-sized chunk into a run",
+        "merge K runs at a time into longer runs",
+        "repeat merge passes until one run remains",
+        "scan runs into final order",
+        "done: single sorted run on disk",
+    ],
 };
 export default module;
