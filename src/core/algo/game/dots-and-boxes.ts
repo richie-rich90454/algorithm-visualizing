@@ -1,6 +1,35 @@
-// dots-and-boxes.ts – Dots and Boxes on 2×2 boxes (12 edges as grid cells).
-// Box (r,c) is claimed when its 4 border edges are drawn – checked in-code.
-// Line: five edge draws end with h10 completing box (0,0) for First.
+/**
+ * dots-and-boxes.ts – Dots and Boxes (2x2 opening tactic)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Dots and Boxes is played by drawing edges between dots; completing the
+ * fourth side of a box claims it and earns an extra move. Simply: avoid
+ * giving away the third side, then sweep chains of boxes. Formally: the
+ * endgame is a loony-box chain battle where the player in control sacrifices
+ * small chains to win the majority, and the illustrated 2x2 line shows five
+ * edge draws ending with First completing box (0,0).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(e) over the drawn edges
+ *   Space: O(e) edge and claim state
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Undrawn edges show dots; drawn edges paint GREEN (sorted).
+ *   - The just-drawn edge flashes YELLOW (comparing).
+ *   - Claimed boxes list their owner in the cell metadata.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Most claimed boxes wins; ties are possible on even boards.
+ *   - Claiming a box grants an extra move.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 const H = ["h00", "h01", "h10", "h11", "h20", "h21"];
@@ -60,10 +89,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: dotsCells(drawn, null, claimed),
         edges: [],
-        description: "Dots and Boxes 2×2 – empty lattice, First to draw.",
+        description: "Dots and Boxes on empty 2x2 lattice with 12 edges – First player to draw.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: { boxes: 2 },
+        meta: { boxes: 2, drawn: 0, claimed: [], player: "First" },
     };
     step += 1;
     for (const { edge, who } of line) {
@@ -83,11 +112,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: dotsCells(drawn, edge, claimed),
             edges: [],
             description: took
-                ? `${who} draws ${edge} and completes box (${took}) – claims it.`
-                : `${who} draws edge ${edge}.`,
-            codeLineNumber: 1,
+                ? `${who} draws edge ${edge} and completes box (${took}) with its fourth side – claims it and leads.`
+                : `${who} draws undrawn edge ${edge} without completing any of the 4 boxes.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { boxes: 2, edge, who, claimedBox: took ?? "" },
+            meta: { boxes: 2, edge, who, claimedBox: took ?? "", drawn: drawn.size },
         };
         step += 1;
     }
@@ -95,10 +124,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: dotsCells(drawn, null, claimed),
         edges: [],
-        description: `First leads ${[...claimed.values()].filter((w) => w === "First").length}–${[...claimed.values()].filter((w) => w === "Second").length} on claimed boxes; three boxes remain open.`,
-        codeLineNumber: 2,
+        description: `First leads ${[...claimed.values()].filter((w) => w === "First").length}-${[...claimed.values()].filter((w) => w === "Second").length} on claimed boxes after ${drawn.size} drawn edges; three boxes remain open.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { boxes: 2, claimed: [...claimed.entries()].map(([b, o]) => `${b}:${o}`) },
+        meta: {
+            boxes: 2,
+            claimed: [...claimed.entries()].map(([b, o]) => `${b}:${o}`),
+            drawn: drawn.size,
+            winner: "undecided",
+        },
     };
 }
 
@@ -110,6 +144,14 @@ const module: AlgorithmModule = {
     defaultInput: { boxes: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from an empty 2 x 2 dot lattice with 12 undrawn edges",
+        "a move draws one undrawn edge between two adjacent dots",
+        "if the edge completes a fourth side, claim that box and move again",
+        "highlight each drawn edge and name any box it completes",
+        "score the claimed boxes after the five-edge opening line",
+        "winner is the player holding most boxes when the lattice fills",
+    ],
 };
 
 export default module;
