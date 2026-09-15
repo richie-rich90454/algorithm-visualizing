@@ -1,9 +1,34 @@
 /**
  * chinese-postman-route-inspection.ts – Chinese Postman (Route Inspection)
  *
- * All-even degrees admit an Euler circuit covering every edge once: the
- * square tours A→B→C→D→A with cost 4 (Hierholzer).
- * Time: O(V + E) here Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The postman must walk every street at least once and return home as cheaply
+ * as possible. When every vertex has even degree, an Euler circuit already
+ * covers each edge exactly once (found here with Hierholzer's walk), so the
+ * tour is optimal with nothing repeated. With odd-degree vertices, the
+ * cheapest fix pairs them up along shortest paths and duplicates those
+ * edges. The even square A–B–C–D–A tours with cost 4 and no repeats.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) here – the Euler-circuit case needs one Hierholzer walk
+ *   Space: O(V + E) for the walk stack and edge bookkeeping
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Walked edges turn GREEN (path) step by step.
+ *   - The current endpoint is YELLOW (comparing).
+ *   - The finished tour is GREEN (sorted) end to end.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Even degrees are exactly what makes a circuit possible.
+ *   - The general case reduces to minimum-weight odd-vertex pairing.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -125,7 +150,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setN(b, "visited");
     }
     for (const v of circ) setN(v, "sorted");
-    yield snap(`Euler circuit ${circ.join("→")} covers every edge: postman cost ${cost}.`, 3, {
+    yield snap(`Euler circuit ${circ.join("→")} covers every edge: postman cost ${cost}.`, 4, {
         cost,
     });
 }
@@ -158,6 +183,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "collect the odd-degree vertices of the graph",
+        "no odd vertices: an Euler circuit exists with nothing repeated",
+        "walk unused edges Hierholzer-style, backtracking into the circuit",
+        "repeat until every edge is walked exactly once",
+        "done: Euler circuit with the minimum postman cost",
+    ],
 };
 
 export default module;
