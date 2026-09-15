@@ -44,7 +44,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: t,
+            codeLineNumber: Math.min(t, 6),
             layout: "grid",
             meta: { round: t, counts: [...counts] },
         };
@@ -91,6 +91,15 @@ const module: AlgorithmModule = {
     defaultInput: { rounds: 9, seed: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize win counts and pull counts for three arms",
+        "for round t <- 1 to rounds",
+        "if an arm is untried then pull it for optimism first",
+        "otherwise pull the arm with highest average plus bonus",
+        "observe reward and update wins and counts",
+        "track which arm was pulled most often",
+        "done: most-pulled arm matches the true best arm",
+    ],
 };
 
 export default module;
