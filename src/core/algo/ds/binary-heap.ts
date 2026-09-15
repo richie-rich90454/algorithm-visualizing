@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: [],
         description: `Max-heap array: [${heap.join(", ")}] – the root is the maximum.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { size: values.length },
     };
@@ -174,6 +174,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [5, 9, 4, 7, 3, 2] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize array holding raw input values",
+        "start heapify from last parent index down to root",
+        "compare node against left child 2*i+1 and right child 2*i+2",
+        "sift down largest child to restore parent dominance",
+        "repeat sift for each subtree root",
+        "track array state after each sift",
+        "done: max-heap array holds values with maximum at root",
+    ],
 };
 
 export default module;
