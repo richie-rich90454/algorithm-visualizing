@@ -83,6 +83,15 @@ const module: AlgorithmModule = {
     defaultInput: { children: [[2, 1], [0], [1], [0]], query: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize LOUDS bitvector for level-order trie",
+        "encode node degrees in unary per level",
+        "compare rank and select to navigate children",
+        "insert word by extending bitvector levels",
+        "search query by rank-select steps per character",
+        "count nodes via select operations",
+        "done: succinct trie holds keys with lookup answer",
+    ],
 };
 
 export default module;
