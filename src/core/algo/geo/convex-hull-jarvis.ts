@@ -103,9 +103,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [],
         description: "Jarvis march – wrapping the hull around the point set.",
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { count: points.length },
     };
     step += 1;
 
@@ -159,9 +159,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: [],
             description: `Marching: from ${current} to ${next}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { from: current, to: next },
         };
         step += 1;
 
@@ -198,7 +198,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges,
         description: `Convex hull: ${hull.join(" → ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { hull },
     };
@@ -231,6 +231,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the leftmost point of the set",
+        "from the current hull point pick the most counterclockwise next point",
+        "test every candidate with the cross-product turn check",
+        "march to the winner and repeat the scan",
+        "stop when the march returns to the start point",
+        "done: visited points form the convex hull in order",
+    ],
 };
 
 export default module;
