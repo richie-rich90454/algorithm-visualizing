@@ -90,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield emit(
             `Inserted line ${i + 1}/${lines.length}; ${vertices.length} vertices so far.`,
             1,
-            {},
+            { line: i + 1, vertices: vertices.length },
         );
         step += 1;
         if (step > 10) break;
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: done,
         edges: edges.map((e) => ({ ...e })),
         description: `Arrangement of ${lines.length} lines with ${vertices.length} vertices.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { vertices: vertices.map(([x, y]) => `${x},${y}`) },
     };
@@ -124,6 +124,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with an empty arrangement",
+        "insert lines one at a time",
+        "intersect each newcomer with every older line",
+        "record each crossing as an arrangement vertex",
+        "done: lines plus vertices form the full arrangement",
+    ],
 };
 
 export default module;
