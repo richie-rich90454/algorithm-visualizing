@@ -85,24 +85,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Z-algorithm on a tree – comparing downward label paths.",
+        description: `Z-algorithm on tree with ${ids.length} nodes – comparing downward label paths.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { comparisons: 0, matches: [] },
     };
     step += 1;
 
     const buildFrame = (
         message: string,
         states: Map<string, EntityState> = new Map(),
+        codeLine = 2,
     ): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n, state: states.get(n.id) ?? n.state })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: codeLine,
         layout: "tree",
-        meta: {},
+        meta: { comparisons: zValues.size, matches: [...zValues.values()] },
     });
 
     // Compute the label string along each root-to-node path.
@@ -152,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         states.set(`node-${id}`, "comparing");
 
-        yield buildFrame(`Z-value of node ${id} (path "${s}") = ${z}.`, states);
+        yield buildFrame(`Z-value of node "${id}" (path "${s}") = ${z}.`, states, 3);
         step += 1;
     }
 
@@ -160,7 +161,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ...buildFrame(
             `Z-values: ${ids.map((id) => `${id}=${zValues.get(id) ?? 0}`).join(", ")} (reference "${reference}").`,
         ),
-        meta: { reference, z: ids.map((id) => zValues.get(id) ?? 0) },
+        meta: {
+            comparisons: zValues.size,
+            shifts: 0,
+            matches: [...zValues.values()],
+            reference,
+            z: ids.map((id) => zValues.get(id) ?? 0),
+        },
     };
 }
 
@@ -178,6 +185,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize stack with root and empty path",
+        "extend downward path with node labels",
+        "reuse Z-box from ancestor when inside window",
+        "compare labels directly beyond cached box",
+        "update Z-box boundaries on longer match",
+        "record Z-value for current tree node",
+        "report Z-values for all nodes",
+    ],
 };
 
 export default module;
