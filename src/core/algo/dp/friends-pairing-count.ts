@@ -117,6 +117,7 @@ const module: AlgorithmModule = {
         "either friend i stays single or picks one of i-1 partners",
         "multiply pair subcase by the partner choices available",
         "answer <- f[n] as total single-or-pair arrangements",
-    ],};
+    ],
+};
 
 export default module;
