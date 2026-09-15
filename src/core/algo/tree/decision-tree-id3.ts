@@ -1,7 +1,10 @@
 /**
- * decision-tree-id3.ts – ID3 decision tree (entropy + information gain).
- * Splits on the max-gain attribute; pure branches become leaves.
- * Default tennis data splits first on Humidity (gain 0.595).
+ * decision-tree-id3.ts – ID3 decision tree using entropy and information gain.
+ *
+ * Splits on the maximum-gain attribute; pure branches become leaves.
+ * Default tennis data splits first on Humidity with gain 0.595.
+ *
+ * Time O(m*n*v), Space O(n). Split node uses highlight, leaves use sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -223,6 +226,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "collect training rows and target column Play",
+        "compute root entropy from class frequencies",
+        "compute information gain for every attribute",
+        "split on the attribute with maximum gain",
+        "recurse on impure branches, label pure branches as leaves",
+        "return the decision tree with root split and depth",
+    ],
 };
 
 export default module;
