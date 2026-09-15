@@ -175,6 +175,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 1, 3, 4, 5], update: [1, 3, 2], query: [0, 4] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty tree over the initial array",
+        "build sums bottom-up so each node covers its interval",
+        "range-add: stamp lazy tags on fully covered nodes and stop",
+        "partial overlaps descend after pushing pending tags to children",
+        "query pushes tags along the path so children read correctly",
+        "tags defer work until a query truly needs the children",
+        "done: range is added lazily and the query sum is reported",
+    ],
 };
 
 export default module;
