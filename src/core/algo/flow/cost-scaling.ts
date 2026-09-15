@@ -278,6 +278,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize zero flow with potentials and scaling factor",
+        "start next phase with current scaling factor epsilon",
+        "push flow along epsilon cheap residual paths only",
+        "augment bottleneck flow and update flow and cost totals",
+        "halve epsilon and repeat until epsilon below one",
+        "report minimum cost flow value and total cost",
+    ],
 };
 
 export default module;
