@@ -1,10 +1,36 @@
 /**
  * delta-stepping-parallel-sssp.ts – Delta-Stepping (Parallel SSSP)
  *
- * Buckets of width Δ group vertices by distance so each bucket relaxes in
- * parallel; light edges stay inside, heavy edges jump ahead. Δ=2 on the
- * demo graph settles A, B, C, D at 0, 2, 3, 4.
- * Time: O(E + V·(L/Δ)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Delta-Stepping buckets vertices by distance so whole buckets relax in
+ * parallel. With width delta, bucket k holds distances in [k*delta,
+ * (k+1)*delta). Light edges (weight at most delta) stay inside a bucket and
+ * are relaxed first; heavy edges jump ahead to later buckets. With delta 2
+ * the demo settles A, B, C, D at distances 0, 2, 3, 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E + V x (L / delta)) where L is the maximum edge weight
+ *   Space: O(V + E) for buckets and distance labels
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Bucket vertices under relaxation are YELLOW (comparing).
+ *   - Light-edge relaxations are BLUE (active).
+ *   - Heavy-edge jumps are PINK (highlight).
+ *   - Settled bucket vertices are GREEN (sorted).
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Bridges Dijkstra and Bellman-Ford for parallel machines.
+ *   - Small delta behaves like Dijkstra; large delta like Bellman-Ford.
+ *   - Requires non-negative edge weights.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -82,7 +108,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         (buckets.get(b) as Set<string>).add(v);
     };
     put(start);
-    yield snap(`Delta-stepping Δ=${delta} from ${start}: buckets hold [kΔ, (k+1)Δ).`, 0, { delta });
+    yield snap(
+        `Delta-stepping with width delta=${delta} from ${start}: bucket k holds distances [k*delta, (k+1)*delta).`,
+        0,
+        { delta, settled: 0, visits: 0 },
+    );
     step += 1;
     let guard = 0;
     for (;;) {
@@ -124,9 +154,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         for (const v of bucket) setN(v, "sorted");
         yield snap(
-            `Bucket ${b} [${b * delta}, ${(b + 1) * delta}): relax light edges in parallel, then heavy.`,
-            1,
-            { bucket: b },
+            `Bucket ${b} covering distances [${b * delta}, ${(b + 1) * delta}): relaxing light edges in parallel, then heavy edges.`,
+            3,
+            {
+                bucket: b,
+                settled: labels.length - [...buckets.values()].reduce((n, s) => n + s.size, 0),
+                visits: b + 1,
+            },
         );
         step += 1;
     }
@@ -141,10 +175,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     if (ok) for (const v of path) setN(v, "path");
     yield snap(
         ok
-            ? `Shortest ${start}→${target} = ${dist.get(target)} via ${path.join("→")}.`
-            : `${target} unreachable.`,
-        2,
-        { distance: ok ? (dist.get(target) as number) : -1 },
+            ? `Shortest path ${start} to ${target} costs ${dist.get(target)} via ${path.join(" → ")} with delta=${delta}.`
+            : `${target} is unreachable from ${start}.`,
+        6,
+        {
+            distance: ok ? (dist.get(target) as number) : -1,
+            path: ok ? path.join("→") : "",
+            settled: labels.length,
+            visits: labels.length,
+        },
     );
 }
 
@@ -172,6 +211,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, bucket vertices by floor(dist/delta)",
+        "take smallest nonempty bucket k for parallel work",
+        "relax light edges with weight at most delta first",
+        "relax heavy edges jumping to later buckets",
+        "settle bucket k once no light edge still improves",
+        "repeat until every bucket is empty",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
