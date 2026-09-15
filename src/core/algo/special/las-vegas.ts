@@ -76,10 +76,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Las Vegas quicksort – random pivots make worst-case inputs unlikely.`,
+        description: `Las Vegas quicksort on [${arr.join(", ")}] – random pivots avoid worst case.`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { n: arr.length },
     };
     step += 1;
 
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Random pivot ${pivot} chosen – moved to index ${hi} for partitioning.`,
             codeLineNumber: 2,
             layout: "array",
-            meta: {},
+            meta: { pivot, hi },
         };
         step += 1;
 
@@ -133,10 +133,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, partStates),
             edges: [],
-            description: `Partitioned around ${pivot} – it is now in its final position.`,
+            description: `Partitioned around ${pivot} – pivot settled at index ${i} of ${arr.length}.`,
             codeLineNumber: 3,
             layout: "array",
-            meta: {},
+            meta: { pivot, pos: i },
         };
         step += 1;
 
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, finalStates),
         edges: [],
-        description: `Sorted with high probability in O(n log n) expected time.`,
+        description: `Sorted [${arr.join(", ")}] in O(n log n) expected time.`,
         codeLineNumber: 4,
         layout: "array",
         meta: { sorted: true, values: [...arr] },
@@ -167,6 +167,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [7, 2, 9, 1, 5, 8, 3] },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize array copy with deterministic random seed",
+        "for each quicksort partition pick a random pivot",
+        "move pivot to the end for Lomuto partitioning",
+        "partition around pivot into final position",
+        "recurse left and right subarrays randomly",
+        "repeat until every segment is sorted",
+        "done: array sorted with expected O(n log n) time",
+    ],
 };
 
 export default module;
