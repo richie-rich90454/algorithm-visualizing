@@ -1,6 +1,29 @@
 /**
  * t-digest.ts - T-Digest
  * Clustered centroids estimate quantiles. Demo: stream <=6 values, report estimate.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Clustered centroids estimate quantiles. Demo: stream <=6 values, report estimate.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) update
+ *   Space: O(c)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard T-Digest behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -34,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "T-Digest: stream start. Clustered centroids estimate quantiles.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of vals) {
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Ingest ${v} (${seen.length} seen).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -58,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty stream: no estimate.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -73,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sorted ${s.join(", ")}; median candidate ${med}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     yield {
@@ -95,5 +118,14 @@ const module: AlgorithmModule = {
     defaultInput: { values: [7, 2, 9, 4, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty digest and no centroids",
+        "ingest value: place it into the nearest small centroid",
+        "merge centroids while respecting the size-versus-quantile bound",
+        "large middle clusters stay big, edge clusters stay small",
+        "estimate median, min, and max from centroid means",
+        "report counts seen so far alongside each estimate",
+        "done: centroids compress the stream and estimates verify",
+    ],
 };
 export default module;
