@@ -140,6 +140,7 @@ const module: AlgorithmModule = {
         "each matching suffix extends counts from its start",
         "accumulate segmentation counts across all word options",
         "answer <- dp[n] as total segmentations of the string",
-    ],};
+    ],
+};
 
 export default module;
