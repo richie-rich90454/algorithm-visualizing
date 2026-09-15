@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `The matrix costs O(V·E) cells – dense, but each edge column is self-contained.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { vertices: vertices.length, edges: edges.length },
     };
@@ -144,6 +144,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize incidence matrix with vertices by edges zeros",
+        "insert edge column with 1s at endpoint rows",
+        "compare column entries to find edge endpoints",
+        "query incident edges by scanning vertex row",
+        "count ones per row for vertex degree",
+        "verify each column has exactly two ones",
+        "done: matrix stores graph with incidence query answer",
+    ],
 };
 
 export default module;
