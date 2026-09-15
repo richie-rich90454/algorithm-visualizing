@@ -1,6 +1,32 @@
 /**
- * Coin Change (count ways): dp[a] += dp[a - coin] per coin.
- * Time O(n*amount), Space O(amount). Default: 4 ways.
+ * coin-change-count.ts - Coin Change (Count Ways)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[a] <- dp[a] + dp[a - coin] for each coin in order.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b7amount)
+ *   Space: O(amount)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input \u2013 nothing to count.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -82,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([[`0,${amount}`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} ways to make ${amount}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -96,6 +122,14 @@ const module: AlgorithmModule = {
     defaultInput: { coins: [1, 2, 5], amount: 5 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[0..amount] with dp[0] <- 1 and rest 0",
+        "dp[a] holds ways to make amount a with coins seen so far",
+        "dp[a] <- dp[a] + dp[a - coin] for each coin in order",
+        "iterate coins outer, amounts inner to avoid reorder duplicates",
+        "each coin extends all reachable larger amounts",
+        "accumulate combination counts without permuting coin order",
+        "answer <- dp[amount] as total combinations using all coins",
+    ],};
 
 export default module;
