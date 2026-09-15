@@ -1,6 +1,29 @@
 /**
  * vp-tree.ts - VP-Tree
  * Vantage points split by median distance. Demo: index <=6 points, 1 nearest-neighbor query.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Vantage points split by median distance. Demo: index <=6 points, 1 nearest-neighbor query.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) NN avg
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard VP-Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -54,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "VP-Tree: empty. Vantage points split by median distance.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -62,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(pts.slice(0, i + 1), new Map([[i, "comparing"]])),
             edges: [],
-            description: `Indexed (${pts[i]![0]},${pts[i]![1]}).`,
+            description: `Inserted point (${pts[i]![0]},${pts[i]![1]}) into its vantage ball partition - ${i + 1} of ${pts.length} indexed.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { n: i + 1 },
@@ -83,10 +106,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(pts, new Map([[bi, "highlight"]])),
             edges: [],
-            description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
+            description: `Query (${q[0]},${q[1]}): pruned rings by median distance, nearest is (${pts[bi]![0]},${pts[bi]![1]}) at d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -114,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : "No points indexed.",
         codeLineNumber: 3,
         layout: "tree",
-        meta: { nearest: pts[bi] ?? [] },
+        meta: { ops: step, nearest: pts[bi] ?? [] },
     };
 }
 
@@ -134,5 +157,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with no vantage point and unpartitioned points",
+        "pick a vantage point and compute distances to all others",
+        "split by the median distance into inside and outside sets",
+        "recurse on both sides with new vantage points",
+        "query: prune the side whose ring cannot beat the best distance",
+        "track the closest point seen across visited sides",
+        "done: metric balls partition the set and the nearest neighbor is reported",
+    ],
 };
 export default module;
