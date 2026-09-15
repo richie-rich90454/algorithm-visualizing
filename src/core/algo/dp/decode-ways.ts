@@ -121,6 +121,7 @@ const module: AlgorithmModule = {
         "single digit valid for 1..9, pair valid for 10..26",
         "add contributions of each valid chunk length separately",
         "answer <- dp[n] with decodings reconstructed from chunk picks",
-    ],};
+    ],
+};
 
 export default module;
