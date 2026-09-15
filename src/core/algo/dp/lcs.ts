@@ -13,6 +13,10 @@
  *
  * A backtrace from dp[n][m] recovers one optimal subsequence.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -153,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, backStates),
         edges: [],
         description: `LCS = "${lcs}" (length ${lcs.length}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows, cols, lcs },
     };
@@ -169,6 +173,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: "abcde", b: "ace" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp table (n+1) x (m+1) filled with 0",
+        "dp[i][j] holds LCS length of prefixes a[:i] and b[:j]",
+        "dp[i][j] <- dp[i-1][j-1] + 1 on match else max(up, left)",
+        "fill rows over a and columns over b in order",
+        "matches extend the diagonal by one character",
+        "mismatches carry the better of top or left neighbor",
+        "answer <- dp[n][m] with one LCS backtraced via arrows",
+    ],};
 
 export default module;
