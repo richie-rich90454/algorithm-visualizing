@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs odd m, R a power of two > m, 0 <= T < m*R).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `REDC(${T}) with m=${m}, R=${R}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -114,5 +114,12 @@ const module: AlgorithmModule = {
     defaultInput: { m: 13, R: 16, T: 100 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state REDC(T) with odd m and power-of-two R",
+        "precompute m′ = −m⁻¹ mod R",
+        "mask m1 = ((T mod R)·m′) mod R",
+        "lift t = (T + m1·m)/R exactly",
+        "done: subtract m if needed; residue = out",
+    ],
 };
 export default module;
