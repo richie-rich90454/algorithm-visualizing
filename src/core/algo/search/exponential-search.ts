@@ -209,6 +209,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16], target: 12 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with bound ← 1 doubling over the sorted array",
+        "if A[0] = target: return index 0 immediately",
+        "while bound < n and A[bound] < target: probe then bound ← bound×2",
+        "bracket the target in window [bound/2, min(bound, n-1)]",
+        "binary-search the window: mid ← ⌊(lo+hi)/2⌋ and compare A[mid]",
+        "if A[mid] = target: return mid as the match",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
