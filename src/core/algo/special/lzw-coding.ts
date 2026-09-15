@@ -80,7 +80,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "text",
             meta: { codes: codes.slice(0, line), roundTrip },
         };
@@ -109,6 +109,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "abababa" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize dictionary with single characters found",
+        "scan text tracking consumed prefix length",
+        "emit code for longest known phrase present",
+        "add phrase plus next char to dictionary",
+        "advance consumed pointer by phrase length",
+        "decode codes by replaying dictionary growth",
+        "done: code list with verified round-trip",
+    ],
 };
 
 export default module;
