@@ -1,9 +1,33 @@
 /**
  * two-pointer-pair-sum-search.ts – Two-Pointer Pair Sum
  *
- * Converging pointers on a sorted array: too-small sums advance left,
- * too-big sums retreat right. Verified by brute force; both indices
- * go green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds two numbers in a *sorted* array that add up to a target. A left
+ * pointer starts at the smallest element and a right pointer at the largest.
+ * If their sum is too small, only the left pointer can fix it (move right);
+ * if too big, only the right pointer can fix it (move left). The pointers
+ * converge monotonically, so each element is visited at most once.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) – each pointer moves inward at most n steps total
+ *   Space: O(1) auxiliary – only the two pointers
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Both pointers under test are YELLOW (comparing).
+ *   - The confirmed pair turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires a sorted array; on unsorted data sort first or use a hash set.
+ *   - Each step discards one element forever – the sortedness does the work.
+ *   - Generalizes to three-sum and closest-sum variants.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -45,8 +69,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Need at least two elements for a pair.",
-            codeLineNumber: 1,
+            description: "Need at least two elements to form a pair.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -108,8 +132,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: `No pair sums to ${target}.`,
-            codeLineNumber: 2,
+            description: `No pair in this sorted array sums to ${target} after ${comparisons} comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -124,6 +148,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 2, 3, 4, 5, 11], target: 15 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with left ← 0 and right ← n-1 over the sorted array",
+        "while left < right: compute sum ← A[left]+A[right]",
+        "if sum = target: return the pair (left, right) as the match",
+        "if sum < target: left ← left+1 to grow the sum",
+        "if sum > target: right ← right-1 to shrink the sum",
+        "done: pointers crossed, so report that no pair exists",
+    ],
 };
 
 export default module;
