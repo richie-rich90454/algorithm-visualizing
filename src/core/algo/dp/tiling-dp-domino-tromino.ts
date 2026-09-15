@@ -118,6 +118,7 @@ const module: AlgorithmModule = {
         "each width extends prior tilings plus gapped tromino pairs",
         "combine full and partial profile contributions per step",
         "answer <- dp[n] as tilings of the 2 x n board",
-    ],};
+    ],
+};
 
 export default module;
