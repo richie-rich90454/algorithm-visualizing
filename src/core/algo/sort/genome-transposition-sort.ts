@@ -1,8 +1,31 @@
 /**
- * genome-transposition-sort.ts – Genome Transposition Sort.
+ * genome-transposition-sort.ts – Genome Transposition Sort
  *
- * Cut-and-paste gene blocks toward sorted order.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Genome transposition sort models a different mutation: cutting a block of genes and pasting it elsewhere. Each step locates the wanted block and transposes it home. Comparing reversal versus transposition distance is a live research question in computational biology.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -97,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -126,5 +149,13 @@ const module: AlgorithmModule = {
     defaultInput: [3, 1, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with genome blocks awaiting transposition",
+        "locate the block that belongs at position i",
+        "cut and paste the block into position i",
+        "advance to the next position and repeat",
+        "scan blocks into final order",
+        "done: genome blocks are in order",
+    ],
 };
 export default module;
