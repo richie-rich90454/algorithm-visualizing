@@ -1,8 +1,31 @@
 /**
- * polyphase-merge-sort.ts – Polyphase Merge Sort.
+ * polyphase-merge-sort.ts – Polyphase Merge Sort
  *
- * Uneven tape distribution cuts dummy-run merges.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Polyphase merge distributes runs across tapes in Fibonacci proportions so that every merge pass stays busy with no idle tape. Dummy runs pad the counts to keep the pattern exact. It was the fastest tape sort of its era and remains a gem of applied number theory.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -111,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -140,5 +163,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 2, 6, 1, 4, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with runs stacked before tape distribution",
+        "distribute runs across tapes in Fibonacci counts",
+        "merge from full tapes onto the empty tape",
+        "repeat until a single run remains",
+        "scan tapes into final order",
+        "done: one sorted run remains",
+    ],
 };
 export default module;
