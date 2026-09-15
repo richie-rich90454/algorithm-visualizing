@@ -58,6 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     const n = text.length;
     const factors: Array<[number, number]> = [];
+    let comparisons = 0;
     let step = 0;
 
     // Frame 0: the untouched text.
@@ -68,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Duval's algorithm – factorizing "${text}" into Lyndon words.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, factors: 0 },
     };
     step += 1;
 
@@ -87,6 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 [j, "comparing"],
                 [k, "highlight"],
             ]);
+            comparisons += 1;
             yield {
                 stepNumber: step,
                 entities: makeText(text, states),
@@ -94,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Comparing text[${k}]="${a}" with text[${j}]="${b}".`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { factors: factors.length },
+                meta: { comparisons, factors: factors.length },
             };
             step += 1;
 
@@ -145,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Emitted factor ${factors.length}: "${text.slice(factors[factors.length - 1]?.[0], (factors[factors.length - 1]?.[1] ?? 0) + 1)}".`,
             codeLineNumber: 3,
             layout: "text",
-            meta: { factors: factors.length },
+            meta: { comparisons, factors: factors.length },
         };
         step += 1;
     }
@@ -159,7 +161,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lyndon factorization: ${factorStrings.join(" · ")}.`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { factors: factors.length },
+        meta: { comparisons, factors: factors.length },
     };
 }
 
