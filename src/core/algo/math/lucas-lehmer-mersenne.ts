@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${p} is degenerate (needs prime exponent >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -56,10 +56,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: [C(0, 0, `M=${m}`, m, "idle"), C(1, 0, "s0=4", 4, "comparing")],
         edges: [],
-        description: `s0 = 4.`,
+        description: `Seed s0 = 4 mod ${m}; iterate s = s^2-2.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let i = 1; i <= p - 2; i += 1) {
@@ -99,5 +99,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "form Mp = 2^p − 1 with seed s0 = 4",
+        "show the seed s0 = 4",
+        "iterate s ← s² − 2 mod Mp",
+        "a final zero means Mp is prime",
+        "done: Mp prime or composite",
+    ],
 };
 export default module;
