@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells([[...C]], states),
             edges: [],
-            description: `C[${i}] = ${total}.`,
+            description: `C[${i}] = sum(C[j]*C[${i}-1-j]) = ${total}.`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { n },
@@ -129,6 +129,7 @@ const module: AlgorithmModule = {
         "each split picks a root with left and right subcounts",
         "accumulate products across all root positions",
         "answer <- C[n] with structures reconstructed from split picks",
-    ],};
+    ],
+};
 
 export default module;
