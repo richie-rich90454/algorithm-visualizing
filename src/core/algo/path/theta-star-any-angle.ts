@@ -1,10 +1,34 @@
 /**
  * theta-star-any-angle.ts – Theta* (Any-Angle)
  *
- * Like A* but a node's parent can be any visible vertex: with line-of-sight
- * the path cuts corners instead of hugging grid edges. Open corridor gives
- * the straight shot (0,2)→(4,2), cost 4.
- * Time: O(E log V) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Theta* extends A* so a vertex parent can be any visible vertex, not just a
+ * grid neighbor. When the parent has line-of-sight to a successor, the path
+ * cuts straight across instead of hugging grid edges, removing zigzags. On
+ * the open corridor demo the result is the straight shot (0,2) to (4,2)
+ * with cost 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) with line-of-sight checks per expansion
+ *   Space: O(V) for costs, parents, and the open set
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The start cell is YELLOW (comparing), the goal PINK (highlight).
+ *   - Expanded cells are GREEN (sorted), reached cells ORANGE (visited).
+ *   - The smoothed any-angle route is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Paths look natural because headings are not locked to 45 degrees.
+ *   - Line-of-sight checks dominate the running time on large grids.
+ *   - Optimal for grids but not for arbitrary continuous obstacles.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "../graph/graph-util";
@@ -109,7 +133,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     setN(skk, "comparing");
     setN(gkk, "highlight");
-    yield snap(`Theta* from ${skk} to ${gkk}: any-angle parents with line-of-sight.`, 0, {});
+    yield snap(
+        `Theta* search from ${skk} to ${gkk}: any-angle parents allowed through line-of-sight checks.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     const g = new Map([[skk, 0]]);
     const parent = new Map<string, string | null>([[skk, skk]]);
@@ -124,9 +152,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         closed.add(cur);
         setN(cur, "sorted");
         if (cur === gkk) {
-            yield snap(`Goal ${gkk} expanded with cost ${(g.get(gkk) as number).toFixed(1)}.`, 1, {
-                cost: g.get(gkk) as number,
-            });
+            yield snap(
+                `Goal cell ${gkk} expanded with arrival cost ${(g.get(gkk) as number).toFixed(1)} via its smoothed parent.`,
+                4,
+                {
+                    cost: g.get(gkk) as number,
+                    settled: closed.size,
+                    visits: closed.size,
+                },
+            );
             step += 1;
             break;
         }
@@ -152,9 +186,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
         yield snap(
-            `Expand ${cur}${parent.get(cur) !== cur ? ` (parent ${parent.get(cur)})` : ""}: smoothing via line-of-sight.`,
-            1,
-            {},
+            `Expand cell ${cur} with parent ${parent.get(cur)}: smoothing each neighbor through line-of-sight when visible.`,
+            3,
+            { settled: closed.size, visits: closed.size },
         );
         step += 1;
     }
@@ -170,10 +204,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of path) setN(v, "path");
     yield snap(
         closed.has(gkk)
-            ? `Any-angle path ${path.join("→")} costs ${(g.get(gkk) as number).toFixed(1)} (straight line, no grid zigzag).`
-            : "Goal unreachable.",
-        2,
-        { cost: closed.has(gkk) ? (g.get(gkk) as number) : -1 },
+            ? `Any-angle path ${path.join(" → ")} costs ${(g.get(gkk) as number).toFixed(1)} as a straight line with no grid zigzag.`
+            : "Goal cell is unreachable on this grid.",
+        6,
+        {
+            cost: closed.has(gkk) ? (g.get(gkk) as number) : -1,
+            distance: closed.has(gkk) ? (g.get(gkk) as number) : -1,
+            path: path.join("→"),
+            settled: closed.size,
+            visits: closed.size,
+        },
     );
 }
 
@@ -185,6 +225,15 @@ const module: AlgorithmModule = {
     defaultInput: { size: 5, wall: 2, gap: [2, 2], start: [0, 2], goal: [4, 2] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "g[s] ← 0, open holds start with heuristic to goal",
+        "pop cell u with smallest f-score for expansion",
+        "for each grid neighbor v not yet closed",
+        "when parent(u) sees v: shortcut through parent(u)",
+        "otherwise relax v through u with unit cost",
+        "close u, repeat until goal cell is expanded",
+        "done: any-angle path follows parent pointers",
+    ],
 };
 
 export default module;
