@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Computing C(${n}, ${k}) mod ${P} with Lucas's theorem.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -137,7 +137,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `${n} in base ${P} = ${digitsN.join("")}; ${k} in base ${P} = ${digitsK.join("")}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -185,6 +185,13 @@ const module: AlgorithmModule = {
     defaultInput: { n: 10, k: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state C(n, k) mod p for prime p",
+        "expand n and k in base p",
+        "read off each digit pair (ni, ki)",
+        "multiply the small C(ni, ki) mod p",
+        "done: C(n, k) mod p = result",
+    ],
 };
 
 export default module;
