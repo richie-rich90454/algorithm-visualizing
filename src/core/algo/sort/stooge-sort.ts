@@ -1,8 +1,31 @@
 /**
- * stooge-sort.ts – Stooge Sort.
+ * stooge-sort.ts – Stooge Sort
  *
- * Recursively sorts overlapping two-thirds intervals.
- * Time: O(n^2.7), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Stooge sort swaps its ends if flipped, then recursively sorts the first two-thirds and the last two-thirds of the range. Its recurrence solves to about n to the 2.7, worse than bubble sort. Like slow sort, it is taught as a cautionary tale about plausible-looking recursion.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2.7)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -110,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -139,5 +162,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 1, 3, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the tiny array for stooge recursion",
+        "if ends are flipped: swap A[lo] and A[hi]",
+        "stooge sort the first two-thirds of the range",
+        "stooge sort the last two-thirds of the range",
+        "repeat until the range collapses",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
