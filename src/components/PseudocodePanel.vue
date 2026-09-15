@@ -58,7 +58,8 @@ const highlightedLine = computed(() => {
                     :key="index"
                     :class="{ active: index === highlightedLine }"
                 >
-                    <span class="line-no">{{ index + 1 }}</span>{{ line }}
+                    <span class="line-no">{{ index + 1 }}</span>
+                    {{ line }}
                 </li>
             </ol>
         </template>
