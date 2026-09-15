@@ -133,6 +133,7 @@ const module: AlgorithmModule = {
         "each move splits into break versus survive subcases",
         "accumulate coverage across egg counts per move round",
         "answer <- smallest m with F(eggs, m) >= floors target",
-    ],};
+    ],
+};
 
 export default module;
