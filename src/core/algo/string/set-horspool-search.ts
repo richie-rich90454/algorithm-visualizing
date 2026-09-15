@@ -40,13 +40,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber: code,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
 
-    yield F(tx(text), `Set Horspool over ${patterns.length} pattern(s).`, 0, { comparisons: 0, hits: [] });
+    yield F(tx(text), `Set Horspool over ${patterns.length} pattern(s).`, 0, {
+        comparisons: 0,
+        hits: [],
+    });
     step += 1;
     if (patterns.length === 0 || text.length === 0) {
-        yield F(tx(text), "Nothing to search – empty text or pattern set.", 1, { comparisons: 0, hits: [] });
+        yield F(tx(text), "Nothing to search – empty text or pattern set.", 1, {
+            comparisons: 0,
+            hits: [],
+        });
         return;
     }
     const m = Math.min(...patterns.map((p) => p.length));
@@ -62,7 +68,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
     const table = [...shift.entries()].map(([c, s]) => `${c}:${s}`).join(" ");
-    yield F(tx(text), `Shared shift table (min length ${m}): ${table || "(all full shifts)"}.`, 1, { comparisons: 0, shifts: shift.size });
+    yield F(tx(text), `Shared shift table (min length ${m}): ${table || "(all full shifts)"}.`, 1, {
+        comparisons: 0,
+        shifts: shift.size,
+    });
     step += 1;
 
     const hits: Array<{ pat: string; pos: number }> = [];
@@ -120,6 +129,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", patterns: ["ab", "bc"] },
     visualType: "text",
     run,
+    pseudocode: [
+        "build shared shift table over all patterns",
+        "align window using minimum pattern length",
+        "compare each pattern against current window",
+        "record every pattern matching at alignment",
+        "shift by shared table value of window end",
+        "repeat until window exceeds text bounds",
+        "report all pattern hits with positions",
+    ],
 };
 
 export default module;
