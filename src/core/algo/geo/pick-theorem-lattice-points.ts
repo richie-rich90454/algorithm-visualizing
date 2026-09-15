@@ -67,9 +67,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges,
         description: `Pick's theorem on a lattice ${pts.length}-gon.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { vertices: pts.length },
     };
     step += 1;
     let b = 0;
@@ -91,9 +91,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ),
             edges,
             description: `Edge ${i}→${(i + 1) % pts.length}: gcd=${g}, running B=${b}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { edge: i, boundary: b },
         };
         step += 1;
     }
@@ -103,9 +103,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, new Map(pts.map((_, i) => [i, "sorted"] as [number, EntityState]))),
         edges,
         description: `Shoelace area A=${area}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { area },
     };
     step += 1;
     const interior = area - b / 2 + 1;
@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, new Map(pts.map((_, i) => [i, "sorted"] as [number, EntityState]))),
         edges,
         description: `I = A − B/2 + 1 = ${area} − ${b}/2 + 1 = ${interior}. Total lattice points = ${interior + b}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { boundary: b, area, interior },
     };
@@ -134,6 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from lattice polygon vertices",
+        "sum gcd of edge steps for boundary points B",
+        "run the shoelace sum for doubled area 2A",
+        "halve it for the polygon area A",
+        "solve interior points as A minus B over 2 plus 1",
+        "done: interior plus boundary counts every lattice point",
+    ],
 };
 
 export default module;
