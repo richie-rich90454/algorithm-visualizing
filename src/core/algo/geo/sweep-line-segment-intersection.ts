@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sweep-line intersection over ${segments.length} segments.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { segments: segments.length },
     };
     step += 1;
 
@@ -202,7 +202,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entities.map((e) => ({ ...e })),
             edges: edges.map((e) => ({ ...e })),
             description: `Sweep line at x=${x} – ${active.length} segment(s) active.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { x },
         };
@@ -229,7 +229,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             intersections.length === 0
                 ? "No intersections found."
                 : `Intersections: ${intersections.map(([i, j]) => `s${i}∩s${j}`).join(", ")}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { intersections: intersections.length },
     };
@@ -260,6 +260,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all segments sorted by left endpoint",
+        "advance the sweep line to the next event x",
+        "insert and order active segments along the sweep",
+        "test neighbors for crossings at each step",
+        "record every intersection found between neighbors",
+        "done: recorded pairs list all segment intersections",
+    ],
 };
 
 export default module;
