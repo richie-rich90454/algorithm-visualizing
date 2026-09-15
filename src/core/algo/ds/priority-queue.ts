@@ -198,6 +198,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [5, 3, 8, 1, 9], extractCount: 2 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty binary min-heap",
+        "insert value: append at the end and bubble it up",
+        "while the parent is larger: swap with the parent",
+        "repeat until every key is heap ordered",
+        "extract-min: remove the root holding the minimum",
+        "move the last leaf to the root and sift it down",
+        "done: extracted minima are reported and the heap still holds the rest",
+    ],
 };
 
 export default module;
