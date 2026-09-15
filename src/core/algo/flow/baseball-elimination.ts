@@ -208,5 +208,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute maximum wins target team can still reach",
+        "check trivial elimination against rival win totals",
+        "build flow network with game nodes and team caps",
+        "run max flow to distribute remaining game wins",
+        "compare flow value against total games to decide",
+        "report elimination verdict with maximum flow value",
+    ],
 };
 export default module;
