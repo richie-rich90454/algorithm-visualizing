@@ -204,6 +204,7 @@ const module: AlgorithmModule = {
         "sweep queries in order with a monotone pointer on the hull",
         "answer each query from the current best line, advance while next wins",
         "answer <- minima per query read off the lower hull positions",
-    ],};
+    ],
+};
 
 export default module;
