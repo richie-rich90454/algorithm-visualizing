@@ -1,7 +1,8 @@
 /**
- * tree-reconstruction.ts – rebuild a binary tree from preorder + inorder.
- * preorder[0] is the root; its inorder slot splits left/right subtrees.
- * Recurse on both sides, then read postorder as a round-trip check.
+ * tree-reconstruction.ts – Rebuild a binary tree from preorder plus inorder.
+ *
+ * preorder[0] is the root; its inorder slot splits left and right subtrees.
+ * Recurses on both sides, then reads postorder as a round-trip check.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -140,7 +141,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
     }
     const done = pre.map((v) => node(v, parent.get(v) ?? null, "sorted"));
-    yield emit(done, `Rebuilt – postorder ${post.join(", ")} confirms the round-trip.`, 3, {
+    yield emit(done, `Rebuilt – postorder ${post.join(", ")} confirms the round-trip.`, 4, {
         postorder: post,
     });
 }
@@ -156,6 +157,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "read preorder and inorder traversals as setup",
+        "take preorder head as root splitting inorder",
+        "recurse left and right on split segments",
+        "reveal rebuilt nodes in preorder batches",
+        "return postorder of rebuilt tree as the answer",
+    ],
 };
 
 export default module;
