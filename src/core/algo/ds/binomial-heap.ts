@@ -124,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty binomial heap.",
+        description: "Empty binomial heap with no trees ready for inserts.",
         codeLineNumber: 1,
         layout: "tree",
         meta: { count: 0 },
@@ -154,6 +154,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [3, 7, 1, 9, 5] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty forest with no binomial trees",
+        "insert key as order-0 tree and merge like binary addition",
+        "link two trees of equal order by comparing roots",
+        "union forests by carrying over equal orders",
+        "extract minimum root and reverse its children into forest",
+        "count trees matching set bits of element count",
+        "done: forest holds keys with minimum root identified",
+    ],
 };
 
 export default module;
