@@ -95,10 +95,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Prim's algorithm starting from ${start} – growing the MST outward.`,
+        description: `Prim's algorithm starting from vertex ${start} – growing the MST outward.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { inTree: 0 },
+        meta: { inTree: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -143,8 +143,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
             description: parentVertex
-                ? `Added ${current} to the tree via edge ${parentVertex}–${current}.`
-                : `Started the tree at ${current}.`,
+                ? `Adding ${parentVertex}–${current} (weight ${edgeWeight(parentVertex, current)}) to the MST.`
+                : `Starting the tree at vertex ${current}.`,
             codeLineNumber: 2,
             layout: "graph",
             meta: { inTree: inTree.size },
@@ -170,7 +170,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Updated frontier keys around ${current}.`,
+            description: `Updated frontier keys around vertex ${current}.`,
             codeLineNumber: 3,
             layout: "graph",
             meta: { inTree: inTree.size },
@@ -188,7 +188,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Minimum spanning tree complete – ${inTree.size} vertices, total weight ${totalWeight}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { inTree: inTree.size, totalWeight },
     };
@@ -218,6 +218,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the start vertex with key 0 and no parent",
+        "scan outside vertices for the smallest key vertex",
+        "add the vertex to the tree through its cheapest edge",
+        "update keys of outside neighbors using the new vertex",
+        "mark the vertex finished and keep growing the tree",
+        "repeat until every vertex joins the tree or it disconnects",
+        "done: tree edges form the MST with minimum total weight",
+    ],
 };
 
 export default module;
