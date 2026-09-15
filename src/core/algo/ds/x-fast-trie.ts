@@ -4,6 +4,29 @@
  * One hash table per bit level stores every prefix present, each with a
  * descendant pointer. Predecessor search walks down while the query prefix
  * exists, then reports the extreme leaf below.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * One hash table per bit level stores every prefix present, each with a descendant pointer. Predecessor search walks down while the query prefix exists, then reports the extreme leaf below.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log log U)
+ *   Space: O(n log U)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard X-Fast Trie behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -126,6 +149,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [2, 5, 11], query: 6 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty hash tables for every bit level",
+        "insert key: store every binary prefix once per level",
+        "each prefix records the min and max key beneath it",
+        "longest-prefix search binary-searches levels by hash hit",
+        "descend from the deepest hit to the successor or predecessor",
+        "level hashing keeps every step at expected O(1)",
+        "done: prefixes index all keys and the query neighbor is reported",
+    ],
 };
 
 export default module;
