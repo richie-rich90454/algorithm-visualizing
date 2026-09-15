@@ -1,9 +1,33 @@
 /**
  * ear-decomposition.ts – Ear Decomposition
  *
- * A DFS tree plus each non-tree edge forms an "ear"; together they build
- * the graph path by path. Cycle A–B–C–D–A: spine [A,B,C,D], ear [D,A].
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * An ear decomposition builds a graph path by path: start with one cycle
+ * (or a single vertex), then repeatedly attach an "ear" – a path whose two
+ * endpoints already belong to the built part while its inner vertices are
+ * new. Here a depth-first search grows the spine (tree edges form the first
+ * long ear), and every non-tree edge starts a new ear. On the cycle
+ * A–B–C–D–A the spine A→B→C→D plus the closing edge D–A rebuilds the ring.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – one DFS plus one scan of non-tree edges
+ *   Space: O(V + E) for the tree set and ear lists
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - DFS tree edges under construction are BLUE (active), then GREEN.
+ *   - Each new ear flashes GREEN (path) with PINK (highlight) endpoints.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - A graph has an ear decomposition exactly when it is 2-edge-connected.
+ *   - Ears certify robustness: no single edge removal disconnects the part.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -110,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         step += 1;
         if (step > 12) break;
     }
-    yield snap(`Ear decomposition: spine + ${ears.length} ear(s) rebuild the whole graph.`, 3, {
+    yield snap(`Ear decomposition: spine + ${ears.length} ear(s) rebuild the whole graph.`, 4, {
         ears: ears.length,
     });
 }
@@ -126,6 +150,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "grow a DFS tree from the start vertex",
+        "tree edges form the first long ear",
+        "for each non-tree edge: attach it as a new ear by its endpoints",
+        "repeat until every edge belongs to the spine or an ear",
+        "done: spine plus ears rebuild the whole graph",
+    ],
 };
 
 export default module;
