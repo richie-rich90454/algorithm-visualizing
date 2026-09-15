@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(),
             edges: [],
-            description: `Incremented one counter per row for "${key}".`,
+            description: `Item ${step} of ${keys.length}: incremented one counter per row for "${key}".`,
             codeLineNumber: 2,
             layout: "grid",
             meta: { w: W, d: D },
@@ -139,6 +139,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["a", "b", "a", "c", "a", "b"], probe: "a" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize DxW counter table with all zeros",
+        "hash each key to one counter per row",
+        "for each stream key increment its D counters",
+        "probe key hashes to D counter positions",
+        "estimate equals the minimum of the D counters",
+        "estimated count never undercounts the truth",
+        "done: frequency estimate reported for the probe",
+    ],
 };
 
 export default module;
