@@ -1,9 +1,34 @@
 /**
  * dsatur-coloring.ts – Graph Coloring (DSATUR)
  *
- * Always colors the uncolored vertex with the most distinctly-colored
- * neighbors (saturation), breaking ties by degree. Hub graph: 3 colors.
- * Time: O(V²) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * DSATUR colors vertices one at a time, always picking the uncolored vertex
+ * with the most distinctly colored neighbors (its saturation), breaking
+ * ties by degree – the most constrained vertex first. The pick then takes
+ * the smallest color none of its neighbors uses. On the hub graph, A goes
+ * first (degree 3), then B and C force three colors while D reuses one:
+ * A=0, B=1, C=2, D=1.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V²) – each pick scans all uncolored vertices
+ *   Space: O(V) for colors and saturation counts
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex being colored is YELLOW (comparing).
+ *   - Already colored neighbors show GREEN (sorted).
+ *   - Finished colors map to distinct states.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Exact on many small graphs but heuristic in general (NP-hard problem).
+ *   - Beats plain greedy orderings by coloring constrained vertices early.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -90,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const k = Math.max(...color.values()) + 1;
     yield snap(
         `DSATUR colored with ${k} colors: ${labels.map((v) => `${v}=${color.get(v)}`).join(", ")}.`,
-        2,
+        4,
         { colors: k },
     );
 }
@@ -103,6 +128,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "leave every vertex uncolored",
+        "pick the uncolored vertex of max saturation (tie: max degree)",
+        "give it the smallest color its neighbors do not use",
+        "repeat until every vertex is colored",
+        "done: a proper coloring using few colors",
+    ],
 };
 
 export default module;
