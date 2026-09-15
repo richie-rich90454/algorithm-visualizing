@@ -1,6 +1,29 @@
 /**
  * tiered-vector.ts - Tiered Vector
  * Two-level blocks shift within one block. Demo: build seq + insert/delete, verify outcome.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Two-level blocks shift within one block. Demo: build seq + insert/delete, verify outcome.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(sqrt n) insert
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Tiered Vector behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -84,5 +107,14 @@ const module: AlgorithmModule = {
     defaultInput: { items: [4, 1, 7, 3, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the initial sequence packed in two-level blocks",
+        "insert value at the index by shifting inside one block",
+        "only the touched block moves, neighbors stay put",
+        "delete the first element and close the gap in its block",
+        "membership and length checks read the blocks directly",
+        "verify the final order matches the expected sequence",
+        "done: blocks spell the final vector and checks verify",
+    ],
 };
 export default module;
