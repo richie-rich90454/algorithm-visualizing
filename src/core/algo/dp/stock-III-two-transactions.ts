@@ -1,6 +1,32 @@
 /**
- * Stock III (<=2 transactions): track buy1/sell1/buy2/sell2 maxima.
- * Time O(n), Space O(1). Default [3,3,5,0,0,3,1,4] -> 6.
+ * stock-III-two-transactions.ts - Stock III (Two Transactions)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: sell2 <- max(sell2, buy2 + price) per day closing trade.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No prices \u2013 zero profit.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -86,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([["0,3", "sorted"]])),
         edges: [],
         description: `Traceback: max profit with \u22642 trades = ${sell2}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: sell2 },
     };
@@ -100,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { prices: [3, 3, 5, 0, 0, 3, 1, 4] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up buy1 <- -inf, sell1 <- 0, buy2 <- -inf, sell2 <- 0",
+        "states hold best balance with 0, 1, or 2 trades done",
+        "sell2 <- max(sell2, buy2 + price) per day closing trade",
+        "scan prices updating buy1, sell1, buy2, sell2 in order",
+        "each buy subtracts price, each sell adds price back",
+        "later states build only on earlier completed trades",
+        "answer <- sell2 as max profit with at most 2 trades",
+    ],};
 
 export default module;
