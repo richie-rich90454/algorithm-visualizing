@@ -278,6 +278,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize heights and excesses with source preflow setup",
+        "saturate all source edges to build the initial preflow",
+        "while an active vertex with excess remains outside sink",
+        "push excess to a lower neighbor when residual allows",
+        "relabel vertex higher when no push is possible",
+        "report maximum flow as excess drained into sink",
+    ],
 };
 
 export default module;
