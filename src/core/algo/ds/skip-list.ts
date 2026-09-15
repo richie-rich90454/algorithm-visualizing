@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Skip list with ${values.length} values over ${levels.length} levels.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
 
@@ -139,6 +139,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [3, 6, 7, 9, 12, 19, 17], search: 12 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with a bottom lane holding every value in order",
+        "higher express lanes skip ahead with random tower heights",
+        "search: move right while the next key does not overshoot",
+        "when it would overshoot: drop down one level and continue",
+        "insertions flip coins to decide each tower height",
+        "expected lane hops stay logarithmic in the size",
+        "done: lanes are linked and the search verdict is reported",
+    ],
 };
 
 export default module;
