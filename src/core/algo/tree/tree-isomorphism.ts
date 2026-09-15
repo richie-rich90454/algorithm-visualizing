@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, treeACount: treeA.ids?.length ?? 0, treeBCount: treeB.ids?.length ?? 0 },
     });
 
     // ------------------------------------------------------------------
@@ -158,6 +158,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "set up both rooted trees side by side",
+        "compute canonical code from sorted child codes",
+        "hash tree A root into nested parenthesis code",
+        "hash tree B root into nested parenthesis code",
+        "return whether root codes match as the answer",
+    ],
 };
 
 export default module;
