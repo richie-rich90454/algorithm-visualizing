@@ -127,7 +127,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(dist),
         edges: [],
-        description: "Initial distance matrix – 0 on the diagonal, edge weights elsewhere, infinity otherwise.",
+        description:
+            "Initial distance matrix – 0 on the diagonal, edge weights elsewhere, infinity otherwise.",
         codeLineNumber: 0,
         layout: "matrix",
         meta: { rows: n, cols: n, settled: 0, visits: 0 },
