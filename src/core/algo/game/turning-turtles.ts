@@ -83,11 +83,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description:
             toggle >= 0
-                ? `Winning move: flip head ${flip + 1} to T and toggle coin ${toggle + 1}, zeroing the xor.`
-                : `Winning move: flip head ${flip + 1} to T, zeroing the xor.`,
-        codeLineNumber: 1,
+                ? `Winning Turtles move on [${coins.map((h) => (h ? "H" : "T")).join(" ")}]: flip head ${flip + 1} to T and toggle coin ${toggle + 1}, zeroing xor ${x}.`
+                : `Winning Turtles move on [${coins.map((h) => (h ? "H" : "T")).join(" ")}]: flip head ${flip + 1} to T, zeroing xor ${x}.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { xor: x, flip, toggle },
+        meta: { coins: coins.map((h) => (h ? 1 : 0)), xor: x, flip, toggle, winning: true },
     };
     step += 1;
     const after = [...coins];
@@ -97,20 +97,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: turtleCells(after),
         edges: [],
-        description: `[${after.map((h) => (h ? "H" : "T")).join(" ")}] – head-xor = ${headXor(after)}, a P-position.`,
-        codeLineNumber: 2,
+        description: `After flip row [${after.map((h) => (h ? "H" : "T")).join(" ")}] – head-xor = ${headXor(after)}, a P-position.`,
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { coins: after.map((h) => (h ? 1 : 0)), xor: 0 },
+        meta: { coins: after.map((h) => (h ? 1 : 0)), xor: 0, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: turtleCells(after),
         edges: [],
-        description: "First player wins Turning Turtles with this flip.",
-        codeLineNumber: 3,
+        description: `First player wins Turning Turtles [${coins.map((h) => (h ? "H" : "T")).join(" ")}] by flipping head ${flip + 1}.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { winning: true },
+        meta: { coins: after.map((h) => (h ? 1 : 0)), xor: 0, flip, toggle, winning: true },
     };
 }
 
@@ -122,6 +122,14 @@ const module: AlgorithmModule = {
     defaultInput: { coins: [true, false, true, false] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "read coins H/T left to right, value is xor of head positions",
+        "if head-xor = 0: losing P-position for the player to move",
+        "else search head flip plus optional left toggle zeroing xor",
+        "flip chosen head to T and toggle the helper coin if needed",
+        "show resulting row with head-xor 0 for the opponent to face",
+        "winner is the player making the last flip on the row",
+    ],
 };
 
 export default module;
