@@ -181,6 +181,13 @@ const module: AlgorithmModule = {
     defaultInput: [8, 4, 1, 7, 3, 9, 2, 6],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with gap ← n / 1.3, swapped ← true",
+        "shrink gap ← gap / 1.3 and start a new pass",
+        "for i ← 0 to n-1-gap: compare A[i] and A[i+gap]",
+        "if A[i] > A[i+gap]: swap them",
+        "done: gap is 1 and a pass made no swaps",
+    ],
 };
 
 export default module;
