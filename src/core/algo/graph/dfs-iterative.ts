@@ -91,17 +91,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             currentNode.state = "comparing";
         }
 
-        const buildFrame = (): VisualFrame => ({
+        const buildFrame = (message: string, line: number): VisualFrame => ({
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Popping ${current} off the stack and visiting it.`,
-            codeLineNumber: 2,
+            description: message,
+            codeLineNumber: line,
             layout: "graph",
             meta: { visits, stackSize: stack.length },
         });
 
-        yield buildFrame();
+        yield buildFrame(`Popping ${current} off the stack and visiting it.`, 1);
         step += 1;
 
         // Reset all edge states to idle before marking new active edges.
@@ -134,7 +134,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             doneNode.state = "visited";
         }
 
-        yield buildFrame();
+        yield buildFrame(
+            `Pushed unvisited neighbors of ${current} (stack: [${stack.join(", ")}]).`,
+            2,
+        );
         step += 1;
     }
 
@@ -162,6 +165,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "push s onto the explicit stack",
+        "pop the top vertex u and visit it",
+        "push each unvisited neighbor of u",
+        "repeat until the stack is empty",
+        "done: vertices in depth-first order",
+    ],
 };
 
 export default module;
