@@ -195,6 +195,13 @@ const module: AlgorithmModule = {
     defaultInput: { values: [1, 2, 3, 4] },
     visualType: "array",
     run,
+    pseudocode: [
+        "pad the coefficients to a power-of-two length n",
+        "plan the butterfly stages over log n levels",
+        "apply the bit-reversal permutation",
+        "combine pairs with roots of unity mod p",
+        "done: exact integer transform mod p",
+    ],
 };
 
 export default module;
