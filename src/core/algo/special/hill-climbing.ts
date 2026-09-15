@@ -141,6 +141,15 @@ const module: AlgorithmModule = {
     defaultInput: { steps: 10 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize search at x=0 evaluating f(x)=-x^2+6x",
+        "examine neighbor candidates around current x",
+        "move to the neighbor with highest fitness",
+        "if no neighbor improves then mark peak reached",
+        "record visited fitness values over time",
+        "repeat until step limit or local peak",
+        "done: search finished at local maximum",
+    ],
 };
 
 export default module;
