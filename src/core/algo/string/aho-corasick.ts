@@ -110,7 +110,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
     }
 
-    const buildFrame = (message: string, currentNode = -1, matchCount = 0): VisualFrame => {
+    const buildFrame = (
+        message: string,
+        currentNode = -1,
+        matchCount = 0,
+        codeLine = 2,
+    ): VisualFrame => {
         const entities: VisualEntity[] = [];
         for (let i = 0; i < nodeCount; i += 1) {
             const parent = trieParent[i];
@@ -153,13 +158,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges,
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: codeLine,
             layout: "tree",
-            meta: { nodes: nodeCount, matches: matchCount },
+            meta: { comparisons: matchCount, shifts: 0, nodes: nodeCount, matches: matchCount },
         };
     };
 
-    yield buildFrame(`Trie built with ${patterns.length} pattern(s).`);
+    yield buildFrame(
+        `Trie built with ${patterns.length} pattern(s): ${patterns.map((p) => `"${p}"`).join(", ")}.`,
+        -1,
+        0,
+        1,
+    );
     step += 1;
 
     // ------------------------------------------------------------------
@@ -191,16 +201,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `At text[${i}]: ${matches.map((m) => `"${m.pattern}"@${m.index}`).join(", ")}`,
             node,
             matches.length,
+            matches.length === 0 ? 3 : 4,
         );
         step += 1;
     }
 
     yield buildFrame(
         matches.length === 0
-            ? "No pattern found in the text."
+            ? `No pattern ${patterns.map((p) => `"${p}"`).join(", ")} found in "${text}".`
             : `Found ${matches.length} match(es): ${matches.map((m) => `"${m.pattern}"@${m.index}`).join(", ")}.`,
         -1,
         matches.length,
+        6,
     );
 }
 
@@ -214,6 +226,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "abacababa", patterns: ["aba", "ab", "ba"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize trie root with empty children and failure links",
+        "insert each pattern into the trie marking terminal nodes",
+        "build failure links with breadth-first search",
+        "merge output lists along failure links",
+        "scan text following edges and failure fallbacks",
+        "record every pattern ending at current node",
+        "report all matches with start positions",
+    ],
 };
 
 export default module;
