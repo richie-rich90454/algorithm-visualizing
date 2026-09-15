@@ -1,7 +1,8 @@
 /**
- * optimal-bst.ts – optimal binary search tree (DP over intervals).
- * cost[i][j] = weight(i,j) + min over roots r of outer costs.
- * Classic keys [10,12,20] freqs [34,8,50] give min cost 142, root 20.
+ * optimal-bst.ts – Optimal binary search tree with DP over intervals.
+ *
+ * cost[i][j] equals weight plus minimum over roots of outer costs.
+ * Classic keys [10,12,20] with freqs [34,8,50] give min cost 142, root 20.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -165,7 +166,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             .map((k, i) => node(k, par.get(k) ?? null, freq[i] as number, finalStates[k])),
         treeEdges,
         `Optimal BST costs ${minCost} with root ${rkey}.`,
-        3,
+        4,
         { minCost, root: rkey },
     );
 }
@@ -178,6 +179,13 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["10", "12", "20"], freq: [34, 8, 50] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "set up sorted keys with search frequencies",
+        "initialize singleton interval cost to its frequency",
+        "try every root for each interval adding weight",
+        "rebuild optimal tree from chosen root splits",
+        "return minimum cost and root as the answer",
+    ],
 };
 
 export default module;
