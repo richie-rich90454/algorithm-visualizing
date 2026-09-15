@@ -146,7 +146,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(bestDist);
         }
-        yield buildFrame(`Scanning unsettled vertices, settling ${current} with final distance ${bestDist}.`, 1);
+        yield buildFrame(
+            `Scanning unsettled vertices, settling ${current} with final distance ${bestDist}.`,
+            1,
+        );
         step += 1;
 
         // Relax every outgoing edge.
@@ -172,14 +175,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 neighborNode.state = "visited";
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 3);
+            yield buildFrame(
+                `Relaxing edge ${current} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`,
+                3,
+            );
             step += 1;
         }
 
         if (node) {
             node.state = "sorted";
         }
-        yield buildFrame(`${current} settled with final distance ${bestDist}, continuing to next minimum.`, 5);
+        yield buildFrame(
+            `${current} settled with final distance ${bestDist}, continuing to next minimum.`,
+            5,
+        );
         step += 1;
     }
 
@@ -217,7 +226,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: settledCount, visits: settledCount, distance: dist.get(target) ?? Infinity, path: path.join("→") },
+        meta: {
+            settled: settledCount,
+            visits: settledCount,
+            distance: dist.get(target) ?? Infinity,
+            path: path.join("→"),
+        },
     };
 }
 
