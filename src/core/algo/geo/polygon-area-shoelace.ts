@@ -92,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Shoelace area of a ${n}-vertex polygon.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { vertices: n },
     };
     step += 1;
 
@@ -159,6 +159,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygon vertices in order",
+        "form each edge cross term x_i y_next minus x_next y_i",
+        "accumulate terms into the running sum",
+        "halve the absolute sum for the area",
+        "done: area plus orientation describe the polygon",
+    ],
 };
 
 export default module;
