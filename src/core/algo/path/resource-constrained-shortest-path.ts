@@ -1,9 +1,33 @@
 /**
  * resource-constrained-shortest-path.ts – Resource Constrained Shortest Path
  *
- * DP over (vertex, fuel): dp[v][f] = cheapest cost to reach v burning f.
- * Budget 3 kills A–B–D (fuel 4); winner A–C–D costs 5 on fuel 2.
- * Time: O(R·(V + E)) Space: O(R·V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the cheapest route that fits inside a resource budget such as fuel.
+ * Dynamic programming tracks dp[v][f], the cheapest cost to reach vertex v
+ * burning exactly f fuel. With budget 3 the thirsty route A to B to D needs
+ * 4 fuel and is rejected, while A to C to D costs 5 on only 2 fuel and wins.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(R x (V + E)) expanding one layer per fuel level
+ *   Space: O(R x V) for the cost table and parents
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex relaxed in the current fuel layer is YELLOW (comparing).
+ *   - Affordable relaxed edges are BLUE (active).
+ *   - The best feasible route is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Generalizes shortest paths with an extra knapsack-style dimension.
+ *   - The problem is NP-hard in general, polynomial for fixed budgets.
+ *   - Fuel layers make the resource trade-off visually explicit.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -79,9 +103,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         labels.map((v) => [v, new Array<string | null>(R + 1).fill(null)]),
     );
     (dp.get(start) as number[])[0] = 0;
-    yield snap(`Constrained shortest path: fuel budget ${R}, dp[vertex][fuel] = min cost.`, 0, {
-        budget: R,
-    });
+    yield snap(
+        `Constrained shortest path from ${start} to ${target}: fuel budget ${R}, table dp[vertex][fuel] holds minimum cost.`,
+        0,
+        {
+            budget: R,
+            settled: 0,
+            visits: 0,
+        },
+    );
     step += 1;
     for (let f = 0; f <= R; f += 1) {
         clr();
@@ -104,10 +134,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const bestT = Math.min(...(dp.get(target) as number[]));
         yield snap(
             any
-                ? `Fuel layer ${f}: relax all affordable edges.`
-                : `Fuel layer ${f}: nothing reachable.`,
-            1,
-            { fuel: f },
+                ? `Fuel layer ${f}: relaxing all affordable edges from vertices reachable on fuel ${f}.`
+                : `Fuel layer ${f}: no vertex is reachable on this fuel level.`,
+            3,
+            { fuel: f, settled: f + 1, visits: f + 1 },
         );
         step += 1;
         void bestT;
@@ -139,10 +169,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of path) setN(v, "path");
     yield snap(
         bc < Infinity
-            ? `Best feasible: ${path.join("→")} costs ${bc} on fuel ${bf} (≤ ${R}).`
-            : `No path fits fuel budget ${R}.`,
-        2,
-        { cost: bc < Infinity ? bc : -1 },
+            ? `Best feasible route ${path.join(" → ")} costs ${bc} on fuel ${bf} within budget ${R}.`
+            : `No path from ${start} to ${target} fits inside fuel budget ${R}.`,
+        6,
+        {
+            cost: bc < Infinity ? bc : -1,
+            distance: bc < Infinity ? bc : -1,
+            path: path.join("→"),
+            settled: labels.length,
+            visits: R + 1,
+        },
     );
 }
 
@@ -167,6 +203,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dp[s][0] ← 0, all other dp entries ← infinite",
+        "for fuel f ← 0 to budget R in order",
+        "for each vertex u reachable on fuel f",
+        "for each edge u→v needing fuel q: relax edge",
+        "if f+q ≤ R: dp[v][f+q] ← min cost via u",
+        "repeat until every fuel layer is expanded",
+        "done: cheapest feasible cost to t over all fuel",
+    ],
 };
 
 export default module;
