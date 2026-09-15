@@ -1,6 +1,7 @@
 /**
  * q-gram-filter-search.ts – Q-Gram Filter.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n·q)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -34,18 +35,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Q-gram filter (q=${q}) for "${pat}" in "${text}".`, 0, { comparisons: 0, matches: [] });
+    yield F(tx(text), `Q-gram filter (q=${q}) for "${pat}" in "${text}".`, 0, {
+        comparisons: 0,
+        matches: [],
+    });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const grams = (s: string): string[] =>
         Array.from({ length: Math.max(0, s.length - q + 1) }, (_, i) => s.slice(i, i + q));
     const pg = grams(pat);
-    yield F(tx(pat, stAt([0], "comparing")), `Pattern grams: [${pg.join(", ")}].`, 1, { comparisons: 0, pg });
+    yield F(tx(pat, stAt([0], "comparing")), `Pattern grams: [${pg.join(", ")}].`, 1, {
+        comparisons: 0,
+        pg,
+    });
     step += 1;
     const matches: number[] = [];
     let comparisons = 0;
@@ -71,10 +81,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             );
             step += 1;
         } else if (i < 3) {
-            yield F(tx(text, stAt([i], "comparing")), `Window ${i} "${w}": ${common} shared grams (need ${need}).`, 3, {
-                comparisons,
-                matches: [...matches],
-            });
+            yield F(
+                tx(text, stAt([i], "comparing")),
+                `Window ${i} "${w}": ${common} shared grams (need ${need}).`,
+                3,
+                {
+                    comparisons,
+                    matches: [...matches],
+                },
+            );
             step += 1;
         }
     }
@@ -82,7 +97,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + pat.length; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -96,6 +113,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc", q: 2 },
     visualType: "text",
     run,
+    pseudocode: [
+        "split pattern into overlapping q-grams",
+        "count required common grams from error bound",
+        "slide window across text extracting grams",
+        "count shared grams between window and pattern",
+        "verify windows meeting threshold by direct compare",
+        "record verified window as true match",
+        "report all match positions found",
+    ],
 };
 
 export default module;
