@@ -1,6 +1,35 @@
-// chomp.ts – Chomp: chomp a cookie plus everything below-right of it.
-// Top-left is poison; taking it loses. Tiny boards are solved by exhaustive
-// recursion in-code, so the shown winning move is exact, not memorised.
+/**
+ * chomp.ts – Chomp
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Chomp is played on a rectangular chocolate bar. A move picks a cookie and
+ * eats it plus everything below and to the right. The top-left cookie is
+ * poisoned, so the player forced to eat it loses (misere ending). Simply:
+ * always hand the opponent a P-position. Formally: the first player wins
+ * every board except 1x1 via a strategy-stealing argument, and tiny boards
+ * are solved here by exhaustive recursion to find the exact winning chomp.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(3^(r·c)) exhaustive search on tiny boards
+ *   Space: O(3^(r·c)) memo states
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each cookie is a cell; the poisoned cookie is marked P and painted RED.
+ *   - The winning chomp square flashes YELLOW (comparing).
+ *   - The remaining board is shown as a P-position for the opponent.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - First player wins all boards except 1x1.
+ *   - Taking the poison cookie loses immediately.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function norm(h: number[]): number[] {
@@ -89,10 +118,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: boardCells(heights, cols),
             edges: [],
-            description: "Only poison remains – the player to move loses.",
-            codeLineNumber: 1,
+            description:
+                "Only the poisoned cookie remains – the player to move must eat it and loses.",
+            codeLineNumber: 4,
             layout: "grid",
-            meta: { rows, cols, winning: false },
+            meta: { rows, cols, winning: false, winner: "second" },
         };
         return;
     }
@@ -101,10 +131,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: boardCells(heights, cols, `${mr},${mc}`),
         edges: [],
-        description: `Winning chomp at (${mr}, ${mc}) – removes it and everything below-right.`,
-        codeLineNumber: 1,
+        description: `Winning chomp at row ${mr} column ${mc} – removes it and everything below-right.`,
+        codeLineNumber: 2,
         layout: "grid",
-        meta: { rows, cols, move },
+        meta: { rows, cols, move, winning: true },
     };
     step += 1;
     heights = heights.map((v, i) => (i < mr ? v : Math.min(v, mc)));
@@ -112,20 +142,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: boardCells(heights, cols),
         edges: [],
-        description: `Board after the chomp – a P-position, so every reply has a winning response.`,
-        codeLineNumber: 2,
+        description: `Board after the chomp at (${mr}, ${mc}) – a P-position, so every reply has a winning response.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { rows, cols, heights: norm(heights) },
+        meta: { rows, cols, heights: norm(heights), winning: true, move },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: boardCells(heights, cols),
         edges: [],
-        description: `First player wins ${rows}×${cols} Chomp by chomping (${mr}, ${mc}) first.`,
-        codeLineNumber: 3,
+        description: `First player wins ${rows}x${cols} Chomp by chomping (${mr}, ${mc}) first.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { rows, cols, winning: true },
+        meta: { rows, cols, winning: true, winner: "first", move },
     };
 }
 
@@ -137,6 +167,15 @@ const module: AlgorithmModule = {
     defaultInput: { rows: 3, cols: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from an r x c chocolate bar with poison at top-left (0, 0)",
+        "solve tiny boards by recursion: a move wins if a reply loses",
+        "if only poison remains: losing P-position, player to move loses",
+        "else find a chomp square whose remainder is a P-position",
+        "highlight the winning chomp square and its below-right region",
+        "show the remaining board as a P-position for the opponent",
+        "winner is the first player except on 1x1 where second wins",
+    ],
 };
 
 export default module;
