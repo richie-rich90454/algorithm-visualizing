@@ -154,6 +154,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [-2, 1, -3, 4, -1, 2, 1, -5, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize best ending here and best overall",
+        "scan array values from left to right",
+        "restart at current value or extend prior run",
+        "update best overall when ending here exceeds it",
+        "remember start and end of best subarray",
+        "continue until every index is processed",
+        "done: maximum subarray sum with bounds reported",
+    ],
 };
 
 export default module;
