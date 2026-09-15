@@ -45,7 +45,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { objective: T[2]?.[4] ?? 0, basis: names.join(",") },
         };
@@ -86,6 +86,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize tableau with slack basis s1 and s2",
+        "pick entering variable with most negative cost",
+        "run ratio test to choose the leaving row",
+        "pivot to make entering basic and leaving leave",
+        "update costs and right-hand sides by elimination",
+        "repeat until all costs are nonnegative",
+        "done: optimal x y and objective z reported",
+    ],
 };
 
 export default module;
