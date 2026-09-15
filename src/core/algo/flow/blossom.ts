@@ -322,6 +322,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize empty matching on general graph vertices",
+        "search alternating forest from each unmatched root",
+        "augment matching along alternating path when found",
+        "shrink odd blossom cycle into a single super vertex",
+        "expand blossoms to lift path and repeat until optimal",
+        "report maximum matching size and blossoms shrunk",
+    ],
 };
 
 export default module;
