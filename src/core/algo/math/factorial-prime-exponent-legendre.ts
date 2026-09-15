@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 0, p >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Exponent of ${p} in ${n}! via Legendre.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let total = 0;
@@ -110,5 +110,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 25, p: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state Legendre's sum for prime p in n!",
+        "add floor(n/p) + floor(n/p²) + ... term by term",
+        "the running sum is v_p(n!)",
+        "cross-check by counting p directly in 1..n",
+        "done: exponent of p in n! confirmed",
+    ],
 };
 export default module;
