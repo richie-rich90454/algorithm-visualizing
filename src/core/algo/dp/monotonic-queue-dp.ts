@@ -174,6 +174,7 @@ const module: AlgorithmModule = {
         "drop indices outside the window before reading best",
         "pop worse backs before pushing current index",
         "answer <- dp[n-1] as min cost to reach the final cell",
-    ],};
+    ],
+};
 
 export default module;
