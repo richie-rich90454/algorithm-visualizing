@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(buffer, used),
         edges: [],
         description: `Final: ${used} elements in a capacity-${capacity} buffer.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { capacity, used },
     };
@@ -148,6 +148,15 @@ const module: AlgorithmModule = {
     defaultInput: { appends: [1, 2, 3, 4, 5, 6, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize backing buffer with small capacity",
+        "compare size against capacity before each append",
+        "if load exceeds threshold then double capacity",
+        "copy existing elements to new larger buffer",
+        "append new value at index size and grow size",
+        "count appends and resize operations",
+        "done: buffer holds values with final size and capacity",
+    ],
 };
 
 export default module;
