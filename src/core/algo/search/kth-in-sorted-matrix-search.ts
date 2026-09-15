@@ -1,9 +1,36 @@
 /**
  * kth-in-sorted-matrix-search.ts – Kth Smallest in Sorted Matrix
  *
- * Binary-searches the value range: count elements ≤ mid per row and
- * keep the half holding k. Cells carry metadata.row/col; the verified
- * answer goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the k-th smallest value in a matrix whose rows and columns are each
+ * sorted ascending. Instead of flattening and sorting, it binary-searches the
+ * *value range* from the matrix minimum to the maximum: for a midpoint mid it
+ * counts how many entries are ≤ mid, then keeps the half that must hold the
+ * k-th value. When the range collapses to a single number, that number is the
+ * answer, and one matching cell is highlighted.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(rows·cols·log(max−min)) here – one full count per range probe
+ *          (a staircase count from the corner would cost O(rows+cols) each)
+ *   Space: O(1) auxiliary – only lo, hi, and mid
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each range probe is all IDLE – the work is in the counted values.
+ *   - The confirmed k-th smallest cell turns GREEN (sorted) with
+ *     metadata.row and metadata.col for the grid layout.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires rows and columns sorted ascending; duplicates are allowed.
+ *   - Shows binary search applied to a value range rather than an index range.
+ *   - Counting, not comparing to neighbors, drives every decision.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -64,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(matrix),
         edges: [],
-        description: `K=${k} smallest in a row/column-sorted matrix.`,
+        description: `Hunting the ${k}-th smallest in a ${matrix.length} by ${(matrix[0] as number[]).length} row- and column-sorted matrix.`,
         codeLineNumber: 0,
         layout: "grid",
         meta: { comparisons, k },
@@ -75,8 +102,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(matrix),
             edges: [],
-            description: "Empty matrix – no k-th element exists.",
-            codeLineNumber: 1,
+            description: "Empty matrix holds no entries, so no k-th value exists here.",
+            codeLineNumber: 5,
             layout: "grid",
             meta: { comparisons, k },
         };
@@ -93,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(matrix),
             edges: [],
             description: `mid=${mid}: ${cnt} element(s) ≤ mid – k=${k} is ${cnt < k ? "above" : "at or below"}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 2,
             layout: "grid",
             meta: { comparisons, k, mid },
         };
@@ -117,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(matrix, states),
         edges: [],
         description: `${k}-th smallest is ${verified} (range narrowed to ${lo}).`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "grid",
         meta: { comparisons, k, answer: verified },
     };
@@ -138,6 +165,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with lo ← matrix minimum and hi ← matrix maximum",
+        "while lo < hi: keep probing the middle of the value range",
+        "mid ← ⌊(lo+hi)/2⌋; count elements ≤ mid across all rows",
+        "if count < k: lo ← mid+1 else hi ← mid",
+        "narrow until lo = hi, which must be the k-th smallest value",
+        "done: return value lo and highlight one matching cell",
+    ],
 };
 
 export default module;
