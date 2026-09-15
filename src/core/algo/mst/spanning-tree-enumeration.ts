@@ -1,6 +1,25 @@
 /**
- * spanning-tree-enumeration.ts - Spanning Tree Enumeration.
- * Enumerates every spanning tree of a tiny graph by subset filtering.
+ * spanning-tree-enumeration.ts – Spanning Tree Enumeration.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Enumeration lists every spanning tree of a tiny graph by testing each subset
+ * of V minus one edges for connectivity. Connected subsets are spanning trees;
+ * their weights are recorded so the lightest one stands out as the MST. The
+ * count also previews Kirchhoff's Matrix-Tree theorem on small inputs.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(2^E V) – every edge subset is tested, tiny graphs only
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each spanning tree under review is YELLOW (highlight).
+ *   - The lightest tree turns GREEN (sorted) in the final frame.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +68,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -89,13 +108,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Enumerating spanning trees of a ${verts.length}-node graph (${list.length} edges).`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Enumerating spanning trees of a ${verts.length}-vertex graph with ${list.length} edges — testing ${verts.length - 1}-edge subsets.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0, count: 0 },
+    };
     const need = verts.length - 1;
     const combos: number[][] = [];
     const rec = (s: number, cur: number[]): void => {
@@ -112,23 +134,33 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (!connected(verts, es)) continue;
         trees.push(c);
         const w = es.reduce((s, e) => s + e.w, 0);
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map(c.map((i) => [i, "highlight"] as [number, EntityState]))),
-            `Tree #${trees.length}: ${es.map((e) => `${e.a}-${e.b}(${e.w})`).join(", ")} weight ${w}.`,
-            1,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map(c.map((i) => [i, "highlight"] as [number, EntityState]))),
+                `Tree #${trees.length}: ${es.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")} has weight ${w}.`,
+                2,
+            ),
+            meta: { accepted: trees.length, totalWeight: w, count: trees.length },
+        };
     }
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map((trees[0] ?? []).map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Exactly ${trees.length} spanning trees (weights ${trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)).join(", ")}).`,
-            2,
+            `Exactly ${trees.length} spanning trees (weights ${trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)).join(", ")}); lightest total weight ${Math.min(...trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)))}.`,
+            5,
         ),
-        meta: { count: trees.length },
+        meta: {
+            count: trees.length,
+            accepted: (trees[0] ?? []).length,
+            totalWeight:
+                trees.length > 0
+                    ? Math.min(...trees.map((t) => t.reduce((s, i) => s + (list[i] as E3).w, 0)))
+                    : 0,
+        },
     };
 }
 
@@ -147,5 +179,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "list every subset of V minus one edges as candidates",
+        "skip each subset that is disconnected or has a cycle",
+        "record each connected subset as a spanning tree",
+        "compute the total weight of every spanning tree",
+        "track the lightest tree as the minimum spanning tree",
+        "done: enumerated trees show the MST with minimum total weight",
+    ],
 };
 export default module;
