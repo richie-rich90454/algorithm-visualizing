@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "array",
             meta: { x: Math.round(x * 10000) / 10000, fx: Math.round(f(x) * 10000) / 10000 },
         };
@@ -59,6 +59,15 @@ const module: AlgorithmModule = {
     defaultInput: { start: 0, lr: 0.4, steps: 8 },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize position x at start with learning rate lr",
+        "for step t <- 1 to steps",
+        "compute gradient f-prime <- 2(x-3)",
+        "move downhill x <- x - lr times gradient",
+        "evaluate objective f(x) <- (x-3)^2",
+        "approach optimum x=3 as steps continue",
+        "done: x converged near optimum 3",
+    ],
 };
 
 export default module;
