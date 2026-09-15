@@ -27,10 +27,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: stalkCells(edges),
         edges: [],
-        description: `Green Hackenbush stalk of ${edges} edge${edges === 1 ? "" : "s"} – a Nim heap of size ${edges}.`,
+        description: `Green Hackenbush stalk of ${edges} edge${edges === 1 ? "" : "s"} – a Nim heap of size ${edges}, winning unless empty.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { edges },
+        meta: { edges, heap: edges, winning: edges > 0 },
     };
     step += 1;
     if (edges === 0) {
@@ -59,41 +59,40 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: stalkCells(edges, 0),
         edges: [],
-        description:
-            "A cut at any edge removes it and everything above – the stalk can move to any smaller size.",
-        codeLineNumber: 1,
+        description: `Stalk ${edges} can move to any smaller size 0..${edges - 1}; highlighted cut at base edge 0.`,
+        codeLineNumber: 2,
         layout: "grid",
-        meta: { edges },
+        meta: { edges, heap: edges, cut: 0 },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: stalkCells(edges, 0),
         edges: [],
-        description: "Winning move: cut the base edge, removing the whole stalk at once.",
-        codeLineNumber: 2,
-        layout: "grid",
-        meta: { edges, cut: 0 },
-    };
-    step += 1;
-    yield {
-        stepNumber: step,
-        entities: stalkCells(0),
-        edges: [],
-        description: "Nothing remains – the opponent has no cut and loses.",
+        description: `Winning Hackenbush move: cut base edge 0 of stalk ${edges}, removing the whole stalk at once.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: { edges: 0 },
+        meta: { edges, cut: 0, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: stalkCells(0),
         edges: [],
-        description: `First player wins the ${edges}-edge stalk by taking it all.`,
+        description: "Empty stalk 0 remains – the opponent has no cut and loses the game.",
         codeLineNumber: 4,
         layout: "grid",
-        meta: { edges, winning: true },
+        meta: { edges: 0, heap: 0, winning: true },
+    };
+    step += 1;
+    yield {
+        stepNumber: step,
+        entities: stalkCells(0),
+        edges: [],
+        description: `First player wins the ${edges}-edge stalk by cutting it all to zero.`,
+        codeLineNumber: 5,
+        layout: "grid",
+        meta: { edges, heap: 0, winning: true, winner: "First" },
     };
 }
 
@@ -105,6 +104,14 @@ const module: AlgorithmModule = {
     defaultInput: { edges: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "model the stalk of n edges as a Nim heap of size n",
+        "if n = 0: empty stalk with no cut, losing P-position",
+        "any cut at edge i moves to a smaller stalk of size i",
+        "winning move is cutting the base edge, removing all n edges",
+        "show empty stalk 0 with no legal cut for the opponent",
+        "winner is first player on every nonzero stalk by taking all",
+    ],
 };
 
 export default module;
