@@ -196,6 +196,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize grid with rows and columns loaded",
+        "for left column boundary across the grid",
+        "for right column compress rows into 1D sums",
+        "run 1D Kadane over the compressed rows",
+        "remember best sum with its rectangle bounds",
+        "scan all column pairs for maximum",
+        "done: maximum submatrix sum with location",
+    ],
 };
 
 export default module;
