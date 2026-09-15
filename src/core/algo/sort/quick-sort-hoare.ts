@@ -195,6 +195,14 @@ const module: AlgorithmModule = {
     defaultInput: [9, 2, 6, 1, 8, 3, 7, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with range [lo..hi] and middle pivot",
+        "pick pivot ← middle element of the range",
+        "advance i right and j left toward each other",
+        "swap the out-of-place pair at i and j",
+        "recurse on [lo..j] and [j+1..hi] after pointers cross",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
