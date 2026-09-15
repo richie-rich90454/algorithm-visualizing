@@ -93,6 +93,15 @@ const module: AlgorithmModule = {
     defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty LRU cache with fixed capacity",
+        "request key and check order list for hit",
+        "on hit promote key to front as newest",
+        "compare size against capacity on miss",
+        "evict tail entry as least recently used",
+        "insert missed key at front of order",
+        "done: cache holds keys in recency order with hit count",
+    ],
 };
 
 export default module;
