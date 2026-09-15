@@ -1,9 +1,33 @@
 /**
  * girvan-newman-edge-betweenness.ts – Girvan–Newman Communities
  *
- * Repeatedly removes the edge with the highest betweenness: bridges between
- * groups carry all cross-traffic. First cut C–D splits the barbell in two.
- * Time: O(E²·V) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Communities are dense groups joined by few bridge edges, and bridges carry
+ * all traffic between groups – so they score the highest edge betweenness.
+ * Girvan–Newman exploits this: score every edge by betweenness (Brandes
+ * accumulation over all sources), remove the top scorer, and repeat.
+ * Removing edges splits the graph into its communities. On the barbell, the
+ * first cut C–D separates {A,B,C} from {D,E,F}.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E²·V) – a full betweenness scoring per removed edge
+ *   Space: O(V + E) for distances, path counts, and live edges
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The cut edge flashes RED (swapped).
+ *   - Each surviving community gets its own color.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Divisive (top-down) counterpart to agglomerative methods like Louvain.
+ *   - Recutting after each removal is what reveals nested structure.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -114,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield snap(
             `Cut ${a}–${b} with betweenness ${topV.toFixed(1)} – the bridge carries all cross-traffic.`,
             1,
-            {},
+            { cut: `${a}-${b}`, cuts: c + 1 },
         );
         step += 1;
     }
@@ -141,7 +165,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const [v, i] of comp) (parts[i as number] as string[]).push(v);
     yield snap(
         `After ${cuts} cut(s): ${parts.map((p) => `{${p.sort().join(",")}}`).join(" ")}.`,
-        2,
+        4,
         { communities: nc },
     );
 }
@@ -164,6 +188,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "mark every edge as live",
+        "score all live edges by betweenness and cut the top one",
+        "recompute scores on the surviving edges",
+        "repeat for the requested number of cuts",
+        "done: disconnected communities such as {A,B,C} and {D,E,F}",
+    ],
 };
 
 export default module;
