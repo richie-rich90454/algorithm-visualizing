@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs prime p >= 3).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -68,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Find the smallest primitive root mod ${p}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `p-1 = ${phi} = factors [${fac}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let g = 2; g < p; g += 1) {
@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `No root found – stopping honestly.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
 }
 const module: AlgorithmModule = {
@@ -151,5 +151,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 11 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "factor p−1 for the order tests",
+        "test each g: reject when g^((p−1)/q) ≡ 1",
+        "a g passing every factor is the smallest root",
+        "done: smallest primitive root, or none exists",
+        "done: first survivor wins by construction",
+    ],
 };
 export default module;
