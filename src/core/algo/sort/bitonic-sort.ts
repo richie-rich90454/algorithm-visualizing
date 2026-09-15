@@ -1,8 +1,31 @@
 /**
- * bitonic-sort.ts – Bitonic Sort.
+ * bitonic-sort.ts – Bitonic Sort
  *
- * Builds bitonic sequences, then merges them in parallel.
- * Time: O(log² n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Bitonic sort first builds bitonic sequences that rise then fall, then merges them with a fixed network of compare-and-swap wires. Each stage compares pairs at a power-of-two distance and orders them up or down according to the block direction. It is a favorite parallel sort because every comparator runs independently.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log² n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -109,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -138,5 +161,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 3, 7, 1, 5, 2, 8, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted wires in input order",
+        "compare each bitonic pair in the chosen direction",
+        "if out of order for this direction: swap the pair",
+        "double the bitonic block size and repeat",
+        "scan wires into final order",
+        "done: network output is sorted",
+    ],
 };
 export default module;
