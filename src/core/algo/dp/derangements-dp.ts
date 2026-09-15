@@ -1,6 +1,32 @@
 /**
- * Derangements: D[i] = (i-1) * (D[i-1] + D[i-2]), D[0] = 1, D[1] = 0.
- * Time O(n), Space O(n). Default n = 4 -> 9.
+ * derangements-dp.ts - Derangements (DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: D[i] <- (i-1) * (D[i-1] + D[i-2]).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Negative n \u2013 nothing to count.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -93,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...D]], new Map([[`0,${n}`, "sorted"]])),
         edges: [],
         description: `Traceback: D[${n}] = ${D[n]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: D[n] },
     };
@@ -107,6 +133,14 @@ const module: AlgorithmModule = {
     defaultInput: { n: 4 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up D[0] <- 1 and D[1] <- 0 as derangement bases",
+        "D[i] holds permutations of i items with none fixed",
+        "D[i] <- (i-1) * (D[i-1] + D[i-2])",
+        "iterate i from 2 up to n using two prior values",
+        "pick partner for item i then handle fixed-or-swapped cases",
+        "multiply the summed subcases by the partner choices",
+        "answer <- D[n] as derangement count with recurrence history",
+    ],};
 
 export default module;
