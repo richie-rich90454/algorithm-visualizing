@@ -1,6 +1,29 @@
 /**
  * xor-filter.ts - Xor Filter
  * Three-hash xor construction answers membership. Demo: add <=5 keys, query member + nonmember.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Three-hash xor construction answers membership. Demo: add <=5 keys, query member + nonmember.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) lookup
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Xor Filter behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -37,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Xor Filter: empty filter. Three-hash xor construction answers membership.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const k of keys) {
@@ -52,7 +75,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Add ${k} -> positions ${hs(k).join(", ")}.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -65,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query ${q}: ${hit ? "possibly present" : "definitely absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const miss = 999;
@@ -89,5 +112,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 17, 9], query: 17 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty table sized for three-hash construction",
+        "hash key into three candidate positions",
+        "construct so the xor of the three slots equals the fingerprint",
+        "peeling order guarantees construction succeeds when sized right",
+        "query xors the three slots and compares to the fingerprint",
+        "match means possibly present, mismatch means definitely absent",
+        "done: filter holds all keys and the query verdict is reported",
+    ],
 };
 export default module;
