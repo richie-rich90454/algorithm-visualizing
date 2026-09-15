@@ -68,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the minimal rotation of "${text}" using the doubled string.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: { comparisons: 0, best: 0 },
+        meta: { comparisons: 0, shifts: 0, best: 0, matches: [] },
     };
     step += 1;
 
@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `doubled[${i}+k] vs doubled[${j}+k] eliminated a candidate; best start ${best} ("${doubled.slice(best, best + n)}").`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { comparisons, best },
+            meta: { comparisons, shifts: 0, best, matches: [] },
         };
         step += 1;
     }
@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimal rotation: "${minimal}" (starting at index ${best}).`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { comparisons, best, minimalLen: minimal.length },
+        meta: { comparisons, shifts: 0, best, matches: [best], minimalLen: minimal.length },
     };
 }
 
@@ -146,6 +146,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "cbbbaaa" },
     visualType: "text",
     run,
+    pseudocode: [
+        "double text to s+s and initialize candidates i and j",
+        "set comparison offset k to zero for both rotations",
+        "compare characters at i+k and j+k while equal",
+        "eliminate larger candidate by jumping past k",
+        "advance smaller candidate and reset offset",
+        "repeat until one candidate exceeds text length",
+        "report minimal rotation and its start index",
+    ],
 };
 
 export default module;
