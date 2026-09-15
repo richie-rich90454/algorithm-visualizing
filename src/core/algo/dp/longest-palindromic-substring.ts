@@ -141,6 +141,7 @@ const module: AlgorithmModule = {
         "matching ends with palindromic core extend the best",
         "update best start and length on each longer confirmed span",
         "answer <- longest span s[start:start+maxLen] located",
-    ],};
+    ],
+};
 
 export default module;
