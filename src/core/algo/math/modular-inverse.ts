@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the inverse of ${a} modulo ${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Modulus m = ${m} is degenerate – no modular inverse exists.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -110,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `gcd(${a}, ${m}) ≠ 1 – no modular inverse exists.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -132,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${oldR} = ${quotient}·${r} + ${nextR} (x: ${oldX} → ${nextX}).`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
         oldR = r;
@@ -178,6 +178,13 @@ const module: AlgorithmModule = {
     defaultInput: { a: 3, m: 11 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state the goal: a⁻¹ mod m",
+        "no inverse exists unless gcd(a, m) = 1",
+        "run Euclid while tracking the x-coefficients",
+        "normalize a negative coefficient into 0..m−1",
+        "done: a·inverse ≡ 1 (mod m)",
+    ],
 };
 
 export default module;
