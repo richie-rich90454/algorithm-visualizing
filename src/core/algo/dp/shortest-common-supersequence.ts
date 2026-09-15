@@ -196,6 +196,7 @@ const module: AlgorithmModule = {
         "merge a and b around shared LCS characters in order",
         "append leftover characters from the longer prefix",
         "answer <- SCS string with length n + m - LCS length",
-    ],};
+    ],
+};
 
 export default module;
