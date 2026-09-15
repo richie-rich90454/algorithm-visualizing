@@ -103,6 +103,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [1, 2, 3, 4, 5], splitAt: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty finger tree with empty digits",
+        "push value onto front digit in O(1)",
+        "compare digit size against overflow threshold",
+        "split full digit and push middle to deeper level",
+        "search by unwinding digits from outermost inward",
+        "count elements across all levels",
+        "done: finger tree holds sequence with access answer",
+    ],
 };
 
 export default module;
