@@ -1,9 +1,37 @@
 /**
  * fibonacci-search.ts – Fibonacci Search
  *
- * Searches a sorted array using Fibonacci-number offsets instead of
- * halving, avoiding division. The final hit is verified against a
- * brute-force scan before it is marked green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Fibonacci search finds a target in a *sorted* array using Fibonacci numbers
+ * instead of halving. It first raises the smallest Fibonacci number F(k) that
+ * covers the array length, then probes at offset + F(k-2). Each comparison
+ * discards a Fibonacci-sized slice: if the probe is too small the search
+ * moves the offset forward, if too large it steps down two Fibonacci levels.
+ * No division is needed, only addition and subtraction, which is why the
+ * method was prized on hardware where division was expensive.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) worst/average – each step shrinks the range by a
+ *          Fibonacci ratio, just like golden-section search
+ *   Space: O(1) auxiliary – only a few Fibonacci counters and an offset
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The current probe index is YELLOW (comparing).
+ *   - The Fibonacci setup frame is all IDLE – it shows the starting range.
+ *   - A hit turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires a sorted array.
+ *   - Uses only addition and subtraction – no division or bit shifts.
+ *   - Excellent for teaching how number sequences can drive search ranges.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -34,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Fibonacci search for ${target} in ${arr.length} sorted elements.`,
+        description: `Searching for ${target} in ${arr.length} sorted elements using Fibonacci offsets.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, target },
@@ -45,8 +73,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – nothing to search.",
-            codeLineNumber: 1,
+            description: `Empty array holds no elements, so target ${target} cannot be found here.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -65,10 +93,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Smallest Fibonacci number ≥ n is ${fibM}. Probing from offset -1.`,
+        description: `Smallest Fibonacci number covering n=${arr.length} is F=${fibM}; probing starts at offset -1.`,
         codeLineNumber: 1,
         layout: "array",
-        meta: { comparisons, target },
+        meta: { comparisons, target, fibM },
     };
     step += 1;
     let offset = -1;
@@ -82,10 +110,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[i, "comparing"]])),
             edges: [],
-            description: `Probe index ${i} (value ${value}) against target ${target}.`,
+            description: `Probe index ${i} holds ${value} against target ${target} with offset ${offset}.`,
             codeLineNumber: 2,
             layout: "array",
-            meta: { comparisons, target },
+            meta: { comparisons, target, probe: i, offset, fibM },
         };
         step += 1;
         if (value < target) {
@@ -113,8 +141,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[verified, "sorted"]])),
             edges: [],
-            description: `Found ${target} at index ${verified} after ${comparisons} comparisons.`,
-            codeLineNumber: 3,
+            description: `Found target ${target} at index ${verified} after ${comparisons} comparisons.`,
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, target, foundIndex: verified },
         };
@@ -123,8 +151,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: `${target} is not in the array.`,
-            codeLineNumber: 3,
+            description: `Target ${target} is absent after ${comparisons} Fibonacci probes.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -139,6 +167,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 5, 7, 9, 11, 13], target: 9 },
     visualType: "array",
     run,
+    pseudocode: [
+        "set up Fibonacci numbers with smallest F(k) covering n; offset ← -1",
+        "build F(k) by repeated addition until F(k) ≥ n",
+        "probe i ← min(offset+F(k-2), n-1); compare A[i] with target",
+        "if A[i] < target: shift offset ← i and step down one level",
+        "if A[i] > target: step down two Fibonacci levels",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
