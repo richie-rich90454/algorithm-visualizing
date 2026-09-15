@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs e >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -56,7 +56,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Chain for ${e} starts [1].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (const [u, w, s] of steps) {
@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${s} = ${u} + ${w} (uses previous ${u}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
         if (s === e) break;
@@ -108,5 +108,12 @@ const module: AlgorithmModule = {
     defaultInput: { e: 15 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with chain [1] for exponent e",
+        "pick u from the chain and w ≤ u, append s ← u + w",
+        "done: e in the chain after length − 1 multiplications",
+        "every step reuses the previous element (star shape)",
+        "done: shortest star chain reaches a^e",
+    ],
 };
 export default module;
