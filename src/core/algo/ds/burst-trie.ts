@@ -45,7 +45,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Burst Trie: empty. Containers burst into trie nodes when full.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const shown: string[] = [];
@@ -56,7 +56,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(shown, new Map([[shown.length - 1, "comparing"]])),
             edges: [],
-            description: `Inserted "${w}".`,
+            description: `Inserted word "${w}" by walking characters and creating missing nodes.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: set.size },
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Search "${q}": ${hit ? "found" : "absent"}.`,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const miss = "__zz__";
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(shown, new Map()),
         edges: [],
         description: `Search "${miss}": ${mhit ? "found" : "absent"}. Trie compress invariant holds. "${q}" ${hit ? "found" : "not found"}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { hit },
     };
@@ -95,5 +95,14 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize burst trie with single container root",
+        "insert word by walking shared prefix characters",
+        "compare container size against burst threshold",
+        "burst full container into trie nodes by first character",
+        "search query by traversing trie then scanning container",
+        "count words stored across containers",
+        "done: burst trie holds words with lookup answer",
+    ],
 };
 export default module;
