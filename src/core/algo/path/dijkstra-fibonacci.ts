@@ -181,7 +181,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(d);
         }
-        yield buildFrame(`Extracted ${vertex} with smallest distance ${d}, settling it as final.`, 1);
+        yield buildFrame(
+            `Extracted ${vertex} with smallest distance ${d}, settling it as final.`,
+            1,
+        );
         step += 1;
 
         // Relax outgoing edges with the heap's cheap decrease-key.
@@ -208,7 +211,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 neighborNode.state = "visited";
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${vertex} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 3);
+            yield buildFrame(
+                `Relaxing edge ${vertex} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`,
+                3,
+            );
             step += 1;
         }
 
@@ -252,7 +258,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: settledCount, visits: settledCount, distance: dist.get(target) ?? Infinity, path: path.join("→") },
+        meta: {
+            settled: settledCount,
+            visits: settledCount,
+            distance: dist.get(target) ?? Infinity,
+            path: path.join("→"),
+        },
     };
 }
 
