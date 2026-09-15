@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n,k >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Circle of ${n}, step k=${k}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let idx = 0;
@@ -90,5 +90,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 7, k: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "seat n people in a circle with step k",
+        "remove every k-th living person",
+        "done: survivor = alive[0]",
+        "the circle closes after each removal",
+        "done: last remaining person survives",
+    ],
 };
 export default module;
