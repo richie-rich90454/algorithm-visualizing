@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs a permutation of 0..n-1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Rank [${perm}] among ${fact(n)} orders of ${n}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let rank = 0;
@@ -98,5 +98,12 @@ const module: AlgorithmModule = {
     defaultInput: { perm: [2, 0, 1] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "validate the permutation of 0..n−1",
+        "per slot: smaller unused digits × factorial weight",
+        "done: rank of perm among n! orders",
+        "weights are factorials (n−1)!, (n−2)!, ...",
+        "done: rank counts all smaller permutations",
+    ],
 };
 export default module;
