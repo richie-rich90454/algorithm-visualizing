@@ -1,6 +1,32 @@
 /**
- * Longest Palindromic Subsequence: dp[l][r] = 2 + dp[l+1][r-1] on match,
- * else max(dp[l+1][r], dp[l][r-1]). Default "bbbab" -> 4.
+ * longest-palindromic-subseq.ts - Longest Palindromic Subsequence
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[l][r] <- dp[l+1][r-1] + 2 on match else max(skip left, skip right).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n\u00b2)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 length 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -85,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`0,${n - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: LPS length of "${s}" = ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -99,6 +125,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "bbbab" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[i][i] <- 1 for single-character palindromes",
+        "dp[l][r] holds LPS length inside substring l..r",
+        "dp[l][r] <- dp[l+1][r-1] + 2 on match else max(skip left, skip right)",
+        "fill intervals by increasing substring length",
+        "matching ends wrap the best inner subsequence",
+        "mismatches drop the weaker of the two ends",
+        "answer <- dp[0][n-1] with subsequence backtraced",
+    ],};
 
 export default module;
