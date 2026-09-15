@@ -1,9 +1,33 @@
 /**
  * floyd-duplicate-search.ts – Floyd Duplicate Search
  *
- * Treats values as next-pointers and runs tortoise-and-hare to find the
- * cycle entry – the duplicated number. Verified by brute-force counting
- * before the duplicate goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the duplicated number in an array of n+1 values drawn from 1..n by
+ * treating each value as a next-pointer. The duplicate creates a cycle, so
+ * the tortoise-and-hare race first meets inside it, then walking one pointer
+ * from the start and one from the meeting point converges exactly on the
+ * cycle entry – the duplicated value.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) – two linear pointer walks
+ *   Space: O(1) auxiliary – only the two racing pointers
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The tortoise is YELLOW (comparing), the hare/entry pointer PINK.
+ *   - The confirmed duplicate turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires values in range with at least one duplicate for the theory.
+ *   - Never modifies the array, unlike sorting or marking approaches.
+ *   - The same two-phase pattern finds cycles in linked lists.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -50,8 +74,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – no duplicate exists.",
-            codeLineNumber: 1,
+            description: "Empty array holds no values, so no duplicate exists here.",
+            codeLineNumber: 4,
             layout: "array",
             meta: { moves },
         };
@@ -70,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ]),
         ),
         edges: [],
-        description: `Tortoise at ${slow}, hare at ${fast}.`,
+        description: `Opening race positions: tortoise at ${slow}, hare at ${fast}.`,
         codeLineNumber: 1,
         layout: "array",
         meta: { moves },
@@ -90,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ]),
             ),
             edges: [],
-            description: `Tortoise at ${slow}, hare at ${fast}.`,
+            description: `Racing on: tortoise at ${slow}, hare at ${fast} after ${moves} moves.`,
             codeLineNumber: 1,
             layout: "array",
             meta: { moves },
@@ -136,7 +160,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr, new Map([[idx, "sorted"]])),
             edges: [],
             description: `Duplicate ${verified} (cycle entry ${entry}) confirmed after ${moves} moves.`,
-            codeLineNumber: 3,
+            codeLineNumber: 4,
             layout: "array",
             meta: { moves, foundIndex: idx },
         };
@@ -145,8 +169,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "No duplicate found.",
-            codeLineNumber: 3,
+            description: `No value repeats, so no duplicate exists after ${moves} moves.`,
+            codeLineNumber: 4,
             layout: "array",
             meta: { moves },
         };
@@ -161,6 +185,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 4, 2, 2] },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with tortoise ← A[0] and hare ← A[A[0]] over the pointer array",
+        "while tortoise ≠ hare: advance tortoise by 1 and hare by 2",
+        "reset entry ← 0 and walk entry and meeting point forward together",
+        "when both pointers meet, that index is the cycle entry",
+        "done: return the cycle entry as the duplicated number",
+    ],
 };
 
 export default module;
