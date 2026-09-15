@@ -168,6 +168,7 @@ const module: AlgorithmModule = {
         "each item offers skip versus take transitions per sum",
         "takes require the remainder sum from the prior row",
         "answer <- reachable[n][target] with subset backtraced",
-    ],};
+    ],
+};
 
 export default module;
