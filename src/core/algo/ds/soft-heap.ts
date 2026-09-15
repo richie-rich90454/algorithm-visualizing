@@ -4,6 +4,29 @@
  * Approximate priority queue: controlled corruption raises some keys so
  * that extract-min runs in constant amortized time. On this tiny input
  * no key corrupts, and every extraction is exact.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Approximate priority queue: controlled corruption raises some keys so that extract-min runs in constant amortized time. On this tiny input no key corrupts, and every extraction is exact.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) amortized extract
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Soft Heap behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -119,6 +142,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1], error: 0.25 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty soft heap with a fixed error rate",
+        "insert keys into grouped lists with size-ranked structure",
+        "spend the corruption budget by raising selected keys",
+        "corrupted keys stay ordered enough for approximate extracts",
+        "extract-min returns the current minimum list head",
+        "on this small input no key corrupts so extracts are exact",
+        "done: keys drain in order and corruption counts are reported",
+    ],
 };
 
 export default module;
