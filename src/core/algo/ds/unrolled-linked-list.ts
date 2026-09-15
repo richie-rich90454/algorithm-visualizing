@@ -152,6 +152,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [1, 2, 3, 4, 5, 6, 7, 8], search: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with fixed-capacity blocks chained in order",
+        "search: walk blocks comparing the query against block contents",
+        "skip whole blocks whose ranges cannot contain the key",
+        "scan inside the candidate block element by element",
+        "inserts shift within one block or split a full block",
+        "block count and capacities stay balanced",
+        "done: blocks chain all values and the search verdict is reported",
+    ],
 };
 
 export default module;
