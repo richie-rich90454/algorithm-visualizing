@@ -1,6 +1,7 @@
 /**
  * two-way-string-matching.ts – Two-Way Matching.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n + m)", space: "O(1)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,13 +33,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Two-Way search for "${pat}" (O(1) space).`, 0, { comparisons: 0, matches: [] });
+    yield F(tx(text), `Two-Way search for "${pat}" (O(1) space).`, 0, {
+        comparisons: 0,
+        matches: [],
+    });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     const ell = 1;
@@ -95,7 +102,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -109,6 +118,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc" },
     visualType: "text",
     run,
+    pseudocode: [
+        "compute critical factorization splitting pattern",
+        "precompute period of left and right halves",
+        "compare right half first at current alignment",
+        "verify left half when right half matches",
+        "shift by period on mismatch to skip safely",
+        "record alignment when both halves match",
+        "report all match positions found",
+    ],
 };
 
 export default module;
