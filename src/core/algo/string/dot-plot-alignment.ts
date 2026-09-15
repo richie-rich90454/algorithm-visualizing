@@ -1,6 +1,7 @@
 /**
  * dot-plot-alignment.ts – Dot Plot.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm)", space: "O(nm)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -52,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const dot = (r: number, c: number): VisualEntity =>
         cell(r, c, a[r] === b[c] ? "•" : "·", a[r] === b[c] ? "comparing" : "idle");
@@ -103,6 +104,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "GATT", b: "GCAT" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "create grid with text axes for both strings",
+        "place dot where row and column characters match",
+        "highlight main diagonal for self similarity",
+        "count dots per diagonal to find repeats",
+        "trace continuous diagonals as aligned regions",
+        "filter short diagonals below threshold",
+        "report dot positions and longest diagonal",
+    ],
 };
 
 export default module;
