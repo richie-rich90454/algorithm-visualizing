@@ -1,7 +1,8 @@
 /**
- * mos-on-trees.ts – Mo's algorithm on trees (Euler tour + queries)
- * Flattens tree, sorts path queries into Mo order, answers distinctly.
- * Time O((n+q)√n), Space O(n). query nodes=comparing, lca=highlight.
+ * mos-on-trees.ts – Mo's algorithm on trees with Euler tour and queries.
+ *
+ * Flattens the tree, sorts path queries into Mo order, answers distinctly.
+ * Time O((n+q)sqrt(n)), Space O(n). Query nodes use comparing, LCA uses highlight.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -151,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const x of path) st.set(x, "sorted");
     }
     for (const id of ids) st.set(id, "sorted");
-    yield frame(`All queries answered – distinct counts [${answers.join(", ")}].`, 3, { answers });
+    yield frame(`All queries answered – distinct counts [${answers.join(", ")}].`, 4, { answers });
 }
 const module: AlgorithmModule = {
     id: "mos-on-trees",
@@ -169,5 +170,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "flatten tree with Euler tour and entry times",
+        "sort path queries into Mo block order",
+        "expand query path through LCA into node list",
+        "count distinct values on the current path",
+        "return distinct counts for every query",
+    ],
 };
 export default module;
