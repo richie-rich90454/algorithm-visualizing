@@ -146,7 +146,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     node.state = "comparing";
                     node.label = String(alt);
                 }
-                yield buildFrame(`Round ${round + 1}: relaxing edge ${from} → ${to} (weight ${weight}), improved distance to ${alt}.`, 2);
+                yield buildFrame(
+                    `Round ${round + 1}: relaxing edge ${from} → ${to} (weight ${weight}), improved distance to ${alt}.`,
+                    2,
+                );
                 step += 1;
             }
         }
@@ -204,7 +207,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
               : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: vertices.length, visits: edgeList.length, negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity, path: path.join("→") },
+        meta: {
+            settled: vertices.length,
+            visits: edgeList.length,
+            negativeCycle: hasNegativeCycle,
+            distance: dist.get(target) ?? Infinity,
+            path: path.join("→"),
+        },
     };
 }
 
