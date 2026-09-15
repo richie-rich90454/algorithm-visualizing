@@ -12,6 +12,10 @@
  *
  * This is the middle ground between the 0/1 and unbounded cases.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -122,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(dp),
             edges: [],
-            description: `Finished considering item ${i}.`,
+            description: `Item ${i} done: dp[${capacity}] = ${dp[capacity]} after considering item ${i}.`,
             codeLineNumber: 3,
             layout: "grid",
             meta: { capacity },
@@ -138,7 +142,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, finalStates),
         edges: [],
         description: `Maximum value = ${dp[capacity] ?? 0}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { capacity, maxValue: dp[capacity] ?? 0 },
     };
@@ -154,6 +158,14 @@ const module: AlgorithmModule = {
     defaultInput: { weights: [2, 3, 4], values: [3, 4, 5], counts: [2, 2, 2], capacity: 8 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[0..W] with dp[0] <- 0 and rest 0",
+        "dp[w] holds best value with limited copies per type",
+        "dp[w] <- max over k copies of dp[w - k*wt[i]] + k*val[i]",
+        "iterate item types outer, capacities with copy bounds inner",
+        "each type contributes at most count[i] copies total",
+        "bounded loop or monotone optimization enforces copy caps",
+        "answer <- dp[W] with copy counts reconstructed from picks",
+    ],};
 
 export default module;
