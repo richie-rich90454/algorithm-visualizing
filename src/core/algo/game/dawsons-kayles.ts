@@ -1,6 +1,33 @@
-// dawsons-kayles.ts – Dawson's Kayles: fell 2 adjacent pins, neighbors go too.
-// A move at i leaves segments of length max(0,i-1) and max(0,n-i-3).
-// Grundy computed in-code; default row of 7 has G=0 (P-position).
+/**
+ * dawsons-kayles.ts – Dawson's Kayles (knockdown with neighbor loss)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Dawson's Kayles fells 2 adjacent pins plus their immediate neighbors, so a
+ * move at i leaves segments of length max(0,i-1) and max(0,n-i-3). Simply:
+ * pick the pair whose leftover segments xor to 0. Formally: Grundy numbers
+ * are computed in code with that split rule, and the default row of 7 has
+ * G = 0, a P-position losing for the player to move.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) Grundy computation
+ *   Space: O(n) memo table
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Standing pins paint GREEN; felled and neighbor pins go idle.
+ *   - Each tried adjacent pair flashes YELLOW with its remainder xor.
+ *   - The verdict names the N-position or P-position status.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - G(n) = 0 marks a P-position; otherwise an N-position.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function dawson(n: number, memo: Map<number, number>): number {
@@ -46,10 +73,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: rowCells(n),
         edges: [],
-        description: `Dawson's Kayles row of ${n} pins – Grundy G(${n}) = ${g}.`,
+        description: `Dawson's Kayles row of ${n} pins with Grundy G(${n}) = ${g} – ${g !== 0 ? "winning N-position" : "losing P-position"} for the player to move.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { pins: n, grundy: g },
+        meta: { pins: n, grundy: g, winning: g !== 0, winner: g !== 0 ? "first" : "second" },
     };
     step += 1;
     const replies: number[] = [];
