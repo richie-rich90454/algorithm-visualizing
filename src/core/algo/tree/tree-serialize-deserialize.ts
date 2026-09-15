@@ -1,5 +1,6 @@
 /**
- * tree-serialize-deserialize.ts – level-order codec with "#" nulls.
+ * tree-serialize-deserialize.ts – Level-order codec with "#" null markers.
+ *
  * BFS writes each node (missing children as #), then a second BFS
  * rebuilds the tree; equality of the two strings is the round-trip.
  */
@@ -168,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         same
             ? `Deserialized back – strings match, round-trip holds.`
             : "Deserialized back – mismatch found.",
-        3,
+        4,
         { serialized, roundTrip: same },
     );
 }
@@ -184,6 +185,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start level-order walk from the tree root",
+        "write each level using # for missing children",
+        "join tokens into one serialized string",
+        "rebuild tree level by level from tokens",
+        "return serialized string and round-trip flag",
+    ],
 };
 
 export default module;
