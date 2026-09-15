@@ -1,6 +1,8 @@
 /**
- * expression-tree-evaluation.ts – build a tree from postfix, then
- * evaluate it postorder. (3 4 + 2 * 7 /) → ((3+4)*2)/7 = 2.
+ * expression-tree-evaluation.ts – Build a tree from postfix, then evaluate it.
+ *
+ * Evaluates postorder: (3 4 + 2 * 7 /) becomes ((3+4)*2)/7 = 2.
+ * Time O(n), Space O(n). Evaluated operators use comparing state.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -163,7 +165,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         Number.isNaN(result)
             ? "Division by zero – result is NaN."
             : `Expression evaluates to ${fmt(result)}.`,
-        2,
+        4,
         { value: Number.isNaN(result) ? "NaN" : result },
     );
 }
@@ -176,6 +178,13 @@ const module: AlgorithmModule = {
     defaultInput: { postfix: ["3", "4", "+", "2", "*", "7", "/"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build expression tree from postfix using a stack",
+        "evaluate leaf operands directly as numbers",
+        "post-order: evaluate operators from child values",
+        "combine left and right results with the operator",
+        "return root value as the expression answer",
+    ],
 };
 
 export default module;
