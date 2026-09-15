@@ -1,6 +1,33 @@
-// green-hackenbush-stalk.ts – Green Hackenbush stalk: a single bamboo column.
-// A cut removes that edge and everything above, so the stalk is a Nim heap:
-// any n > 0 is N, and cutting at the base (taking all) always wins.
+/**
+ * green-hackenbush-stalk.ts – Green Hackenbush Stalk (bamboo cutting game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A Green Hackenbush stalk is a single bamboo column; a cut removes that
+ * edge and everything above it. Simply: cut at the base and take the whole
+ * stalk. Formally: the stalk is a Nim heap where any n > 0 is an
+ * N-position, cutting at edge i moves to size i, and cutting the base edge
+ * moves to 0, the lone P-position.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) over the edges
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Stalk edges show as segments; the cut edge flashes YELLOW.
+ *   - The empty stalk shows zero edges for the stranded opponent.
+ *   - The verdict names the first-player win on every nonzero stalk.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Equivalent to a Nim heap of size n.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function stalkCells(edges: number, cut = -1): VisualEntity[] {
