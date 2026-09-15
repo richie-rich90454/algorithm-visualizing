@@ -85,7 +85,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let step = 0;
 
-    const buildFrame = (message: string, currentState: number): VisualFrame => {
+    const buildFrame = (
+        message: string,
+        currentState: number,
+        codeLine = 2,
+        matchCount = 0,
+    ): VisualFrame => {
         // States 0..m as nodes; accepting state m is green.
         const entities: VisualEntity[] = [];
         for (let s = 0; s <= m; s += 1) {
@@ -121,19 +126,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges,
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: codeLine,
             layout: "graph",
-            meta: { state: currentState },
+            meta: {
+                comparisons: currentState,
+                shifts: 0,
+                state: currentState,
+                matches: matchCount,
+            },
         };
     };
 
-    yield buildFrame(`Prefix-function automaton built for "${pattern}".`, 0);
+    yield buildFrame(`Prefix-function automaton built for "${pattern}".`, 0, 1, 0);
     step += 1;
 
     // An empty pattern is already "matched" everywhere and nowhere useful;
     // report it without searching.
     if (m === 0) {
-        yield buildFrame("Empty pattern – nothing to search for.", 0);
+        yield buildFrame(`Empty pattern "" – nothing to search for in "${text}".`, 0, 6, 0);
         step += 1;
         return;
     }
@@ -150,14 +160,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         if (state === m) {
             matches.push(i - m + 1);
-            yield buildFrame(`Pattern found at index ${i - m + 1}!`, state);
+            yield buildFrame(
+                `Pattern "${pattern}" found at index ${i - m + 1}!`,
+                state,
+                4,
+                matches.length,
+            );
             step += 1;
             // After a full match, the automaton's next state is pi[m-1]-ish;
             // follow the transition for the current char from state m is not
             // defined, so reset via the prefix function.
             state = pi[m - 1] ?? 0;
         } else {
-            yield buildFrame(`Read "${char}" – moved to state ${state}.`, state);
+            yield buildFrame(
+                `Read text[${i}]="${char}" – moved to state ${state}.`,
+                state,
+                3,
+                matches.length,
+            );
             step += 1;
         }
     }
@@ -167,6 +187,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ? `"${pattern}" does not occur in the text.`
             : `"${pattern}" occurs at ${matches.join(", ")}.`,
         state,
+        6,
+        matches.length,
     );
 }
 
@@ -180,6 +202,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute prefix function for all pattern prefixes",
+        "initialize automaton table for every state",
+        "add direct transition on matching next character",
+        "compute fallback transition via failure links",
+        "fill missing edges with fallback destinations",
+        "scan text following automaton transitions only",
+        "report match positions and final state",
+    ],
 };
 
 export default module;
