@@ -61,9 +61,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: paint(clusters),
         edges: [],
         description: `Start: ${clusters.length} singleton clusters, target k=${k}.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { clusters: clusters.length, target: k },
     };
     step += 1;
     while (clusters.length > k && step < 10) {
@@ -87,9 +87,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: paint(clusters),
             edges: [],
             description: `Merged at distance ${bd.toFixed(2)} → ${clusters.length} clusters.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { mergedAt: bd, clusters: clusters.length },
         };
         step += 1;
     }
@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: paint(clusters),
         edges: [],
         description: `Final ${clusters.length} clusters: ${clusters.map((c) => `[${c.join(",")}]`).join(" ")}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { clusters: clusters.map((c) => c.join(",")) },
     };
@@ -120,6 +120,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with every point as its own cluster",
+        "find the closest pair of clusters",
+        "merge that pair and record the linkage distance",
+        "repeat until k clusters remain",
+        "done: final clusters group nearby points together",
+    ],
 };
 
 export default module;
