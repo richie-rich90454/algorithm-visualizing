@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list),
-            `Steiner instance: terminals {${T.join(", ")}} among ${verts.length} vertices.`,
+            `Steiner instance: terminals {${T.join(", ")}} among ${verts.length} vertices, ${list.length} edges.`,
             0,
         ),
         meta: { accepted: 0, totalWeight: 0 },
@@ -130,10 +130,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list),
-            `Metric closure: terminal distance d(${T[0]},${T[1]}) = ${D[a][b]} (via the 0–1–2–3 chain, not the direct weight 10 edge).`,
+            `Metric closure: terminal distance d(${T[0]},${T[1]}) = ${D[a][b]} via the 0–1–2–3 chain, not the direct weight 10 edge 0–3.`,
             1,
         ),
-        meta: { accepted: 0 },
+        meta: { accepted: 0, totalWeight: 0 },
     };
     const path: string[] = [];
     let c = a;
@@ -157,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Terminal MST expands edge 0–3 into path ${path.join("–")} using edges 0–1(1), 1–2(1), 2–3(1).`,
             3,
         ),
-        meta: { accepted: 3 },
+        meta: { accepted: 3, totalWeight: 0 },
     };
     const used = new Set<number>([0, 1, 2]);
     yield {
@@ -168,14 +168,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Pruning pass: every leaf of the expanded tree is a terminal, so nothing is pruned.",
             4,
         ),
-        meta: { accepted: used.size },
+        meta: { accepted: used.size, totalWeight: 0 },
     };
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map([...used].map((i) => [i, "sorted"] as [number, EntityState]))),
-            "KMB Steiner tree weight 3, total weight 3 (edges 0–1, 1–2, 2–3): optimal here, within the 2-2/t bound.",
+            "KMB Steiner tree weight 3, total weight 3 (edges 0–1(1), 1–2(1), 2–3(1)): optimal here, within the 2-2/t bound.",
             5,
         ),
         meta: { weight: 3, totalWeight: 3, accepted: used.size },
