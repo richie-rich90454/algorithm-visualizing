@@ -28,7 +28,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         hot: number,
         desc: string,
         line: number,
-        meta: VisualFrame["meta"] = {},
+        meta: VisualFrame["meta"] = { step },
     ): VisualFrame => ({
         stepNumber: step,
         entities: nums.map((v, i) =>
@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate target – need 0 <= a <= b, b > 0.`,
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -102,5 +102,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 3, b: 5 },
     visualType: "array",
     run,
+    pseudocode: [
+        "bracket ta/tb between 0/1 and 1/0",
+        "take the mediant and step L or R by comparison",
+        "an exact mediant ends the search",
+        "done: path found, or cap reached honestly",
+        "done: target located by its L/R path",
+    ],
 };
 export default module;
