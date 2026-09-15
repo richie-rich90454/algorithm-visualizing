@@ -156,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: [],
         description: "All interleaved operations completed without data races.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { size: queue.length },
     };
@@ -178,6 +178,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize lock-free queue with dummy head and tail",
+        "enqueue value by linking new node after tail with CAS",
+        "compare tail pointer and help advance lagging tail",
+        "dequeue by moving head forward with CAS",
+        "retry CAS loop on contention with other threads",
+        "count successful enqueues and dequeues",
+        "done: queue holds remaining values in FIFO order",
+    ],
 };
 
 export default module;
