@@ -1,6 +1,7 @@
 /**
- * tree-edge-cover-dp.ts – minimum edge cover on a tree (two-state DP).
- * dp1[u]: u already covered by its parent edge. dp0[u]: u must be
+ * tree-edge-cover-dp.ts – Minimum edge cover on a tree with two-state DP.
+ *
+ * dp1[u] means u already covered by its parent edge; dp0[u] means u must be
  * covered by a child edge. Brute force cross-checks the DP answer.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -230,6 +231,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree and order nodes postorder",
+        "set leaf states with parent edge coverage",
+        "post-order: combine child DP states for dp0 and dp1",
+        "verify DP choice against brute force count",
+        "return minimum edge cover list as the answer",
+    ],
 };
 
 export default module;
