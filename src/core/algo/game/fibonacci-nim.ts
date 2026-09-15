@@ -1,6 +1,6 @@
-// fibonacci-nim.ts – Fibonacci Nim: first take may not empty the heap, then ≤2×.
-// P-positions are Fibonacci numbers (Zeckendorf). From 10 the unique win is
-// take 2 -> 8; the demo then follows the leave-a-Fibonacci strategy to 0.
+// fibonacci-nim.ts – Fibonacci Nim: first take may not empty the heap, then at most twice.
+// Simply, always leave a Fibonacci number; formally P-positions are Fibonacci
+// numbers (Zeckendorf). From 10 the unique win is take 2 -> 8, then keep leaving Fibonacci to 0.
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 const FIBS = [1, 2, 3, 5, 8, 13, 21, 34];
@@ -85,10 +85,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: heapCells(stones, take),
             edges: [],
-            description: `${mover} takes ${take} (limit ${limit}) -> ${stones - take} left.${!FIBS.includes(stones - take) || stones - take === 0 ? "" : " Leaves a Fibonacci number."}`,
-            codeLineNumber: 1,
+            description: `${mover} takes ${take} stones from heap ${stones} (limit ${limit}) -> ${stones - take} left.${!FIBS.includes(stones - take) || stones - take === 0 ? "" : " Leaves a Fibonacci number."}`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { stones, take, limit },
+            meta: { stones, take, limit, mover, left: stones - take },
         };
         step += 1;
         stones -= take;
@@ -112,10 +112,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     },
                 ],
                 edges: [],
-                description: `${mover} takes the last stone and wins.`,
-                codeLineNumber: 2,
+                description: `${mover} takes the last stone from heap ${start} and wins the game.`,
+                codeLineNumber: 5,
                 layout: "grid",
-                meta: { winner: mover },
+                meta: { stones: 0, winner: mover, winning: true, start },
             };
             return;
         }
@@ -125,10 +125,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: heapCells(stones, 0),
         edges: [],
-        description: stones === 0 ? "Heap empty." : `Stopped at ${stones} stones (demo cap).`,
-        codeLineNumber: 2,
+        description: stones === 0 ? "Heap empty after final take, game is over." : `Stopped Fibonacci demo at heap ${stones} stones (demo cap).`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { stones },
+        meta: { stones, start, winner: stones === 0 ? mover : undefined },
     };
 }
 
@@ -140,6 +140,14 @@ const module: AlgorithmModule = {
     defaultInput: { stones: 10 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with n stones, first take may not empty the heap",
+        "if n is a Fibonacci number: losing P-position with perfect play",
+        "else take n minus largest Fibonacci below n to leave Fibonacci",
+        "after each take set limit ← 2 × take for the next player",
+        "repeat legal takes within limits until the heap reaches zero",
+        "winner is the player taking the last stone from the heap",
+    ],
 };
 
 export default module;
