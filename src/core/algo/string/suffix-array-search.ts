@@ -1,6 +1,7 @@
 /**
  * suffix-array-search.ts – Suffix Array Search.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(m log n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,9 +33,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Binary-search "${pat}" over suffix array of "${text}".`, 0, { comparisons: 0, matches: [] });
+    yield F(tx(text), `Binary-search "${pat}" over suffix array of "${text}".`, 0, {
+        comparisons: 0,
+        matches: [],
+    });
     step += 1;
     const sa = Array.from({ length: text.length }, (_, i) => i).sort((a, b) =>
         text.slice(a) < text.slice(b) ? -1 : 1,
@@ -42,7 +46,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield F(tx(text), `SA = [${sa.join(", ")}].`, 1, { comparisons: 0, sa });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     let comparisons = 0;
@@ -68,7 +75,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + pat.length; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `"${pat}" at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         3,
         { comparisons, matches, sa },
     );
@@ -82,6 +91,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana", pattern: "ana" },
     visualType: "text",
     run,
+    pseudocode: [
+        "build suffix array of text in sorted order",
+        "set binary search bounds over suffix array",
+        "compare pattern with middle suffix string",
+        "narrow bounds based on lexicographic order",
+        "repeat until interval collapses to lower bound",
+        "collect consecutive matches around bound",
+        "report all match positions found",
+    ],
 };
 
 export default module;
