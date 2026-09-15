@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `DC3 suffix array of "${text}" – grouping suffixes by index mod 3.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, shifts: 0, matches: [] },
     };
     step += 1;
 
@@ -123,10 +123,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text, bStates),
         edges: [],
-        description: `Sorted the mod-1/mod-2 suffixes: [${groupB.join(", ")}].`,
+        description: `Sorted the mod-1/mod-2 suffixes of "${text}": [${groupB.join(", ")}].`,
         codeLineNumber: 2,
         layout: "text",
-        meta: {},
+        meta: { comparisons: groupB.length, shifts: 0, matches: [] },
     };
     step += 1;
 
@@ -169,7 +169,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Suffix array (DC3): [${suffixArray.join(", ")}] – ${suffixArray.map((i) => `"${text.slice(i)}"`).join(", ")}.`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { suffixArray },
+        meta: {
+            comparisons: suffixArray.length,
+            shifts: 0,
+            matches: [...suffixArray],
+            suffixArray,
+        },
     };
 }
 
@@ -183,6 +188,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "text",
     run,
+    pseudocode: [
+        "group suffixes by index modulo three",
+        "sort mod-one and mod-two groups recursively",
+        "sort mod-zero group using ranks of groups",
+        "merge all groups with linear comparison",
+        "assign final lexicographic order to suffixes",
+        "verify order by adjacent suffix compares",
+        "report complete suffix array",
+    ],
 };
 
 export default module;
