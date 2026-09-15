@@ -210,7 +210,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: current,
         edges: edges.map((e) => ({ ...e })),
         description: found ? `Found ${search} in the BST!` : `${search} is not in the tree.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { found },
     };
@@ -225,6 +225,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [8, 3, 10, 1, 6, 14], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty binary search tree with null root",
+        "compare insert key against node and go left if smaller else right",
+        "attach new leaf where child pointer is null",
+        "compare search key against node along guided path",
+        "move left on smaller and right on larger",
+        "count comparisons along search path",
+        "done: BST holds values with search found answer",
+    ],
 };
 
 export default module;
