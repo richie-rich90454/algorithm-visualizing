@@ -11,6 +11,10 @@
  *   dp[i][j] = dp[i-1][j-1]                    if a[i] == b[j]
  *            = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])   otherwise
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -142,7 +146,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Edit distance = ${distance}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows, cols, distance },
     };
@@ -158,6 +162,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: "kitten", b: "sitting" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp with dp[i][0] <- i and dp[0][j] <- j",
+        "dp[i][j] holds distance between prefixes a[:i] and b[:j]",
+        "dp[i][j] <- dp[i-1][j-1] on match else 1 + min(del, ins, sub)",
+        "fill rows over a and columns over b in order",
+        "each cell picks cheapest of delete, insert, or substitute",
+        "matches copy the diagonal with zero extra cost",
+        "answer <- dp[n][m] with edits reconstructed via backtrace",
+    ],};
 
 export default module;
