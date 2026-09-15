@@ -102,6 +102,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize Euler tour forest with isolated vertices",
+        "represent tree as balanced BST over tour sequence",
+        "link trees by splicing tour sequences together",
+        "cut edge by splitting tour at occurrence points",
+        "compare roots to answer connectivity query",
+        "count tour length for verification",
+        "done: forest holds connectivity with query answer",
+    ],
 };
 
 export default module;
