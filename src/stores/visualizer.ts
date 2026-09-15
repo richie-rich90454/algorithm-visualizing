@@ -16,7 +16,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { getAlgorithm, loadAlgorithmModule } from "@/core";
 import { StepEngine } from "@/core/engine";
-import type { VisualEntity } from "@/types";
+import type { AlgorithmModule, VisualEntity } from "@/types";
 
 /**
  * The visualizer store, written in Pinia's setup-store style.
@@ -42,6 +42,9 @@ export const useVisualizerStore = defineStore("visualizer", () => {
 
     /** True while an algorithm's code chunk is being fetched. */
     const isLoading = ref(false);
+
+    /** Full executable module of the loaded algorithm (has run + pseudocode). */
+    const loadedModule = ref<AlgorithmModule | null>(null);
 
     /** Monotonic token so rapid selections only apply the latest fetch. */
     let loadToken = 0;
@@ -111,6 +114,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
             isLoading.value = false;
             return;
         }
+        loadedModule.value = module;
         engine.load(module, module.defaultInput);
         isLoading.value = false;
     }
@@ -202,6 +206,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
         stepIndex,
         totalSteps,
         algorithm,
+        loadedModule,
         loadAlgorithm,
         nextStep,
         prevStep,
