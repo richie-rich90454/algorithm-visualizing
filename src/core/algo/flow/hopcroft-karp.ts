@@ -260,7 +260,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Maximum matching found – size ${matchingSize} after ${rounds} round(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { matching: matchingSize, rounds },
     };
@@ -287,6 +287,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize empty matching for left and right vertex sets",
+        "repeat BFS layering and DFS augmentation rounds",
+        "BFS builds layers along alternating paths to free vertices",
+        "DFS flips a maximal set of disjoint augmenting paths",
+        "stop when no augmenting path reaches a free vertex",
+        "report maximum matching size and total rounds",
+    ],
 };
 
 export default module;
