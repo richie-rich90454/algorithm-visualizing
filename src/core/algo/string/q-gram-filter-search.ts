@@ -36,19 +36,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Q-gram filter (q=${q}) for "${pat}" in "${text}".`, 0);
+    yield F(tx(text), `Q-gram filter (q=${q}) for "${pat}" in "${text}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
     const grams = (s: string): string[] =>
         Array.from({ length: Math.max(0, s.length - q + 1) }, (_, i) => s.slice(i, i + q));
     const pg = grams(pat);
-    yield F(tx(pat, stAt([0], "comparing")), `Pattern grams: [${pg.join(", ")}].`, 1, { pg });
+    yield F(tx(pat, stAt([0], "comparing")), `Pattern grams: [${pg.join(", ")}].`, 1, { comparisons: 0, pg });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     for (let i = 0; i + pat.length <= text.length && step < 10; i += 1) {
+        comparisons += 1;
         const w = text.slice(i, i + pat.length);
         const wg = new Set(grams(w));
         const common = pg.filter((g) => wg.has(g)).length;
@@ -63,13 +65,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         "path",
                     ),
                 ),
-                `Window ${i}: ${common} shared grams, verified.`,
+                `Window ${i} "${w}": ${common} shared grams, verified as "${pat}".`,
                 2,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         } else if (i < 3) {
-            yield F(tx(text, stAt([i], "comparing")), `Window ${i}: ${common} shared grams.`, 3, {
+            yield F(tx(text, stAt([i], "comparing")), `Window ${i} "${w}": ${common} shared grams (need ${need}).`, 3, {
+                comparisons,
                 matches: [...matches],
             });
             step += 1;
@@ -79,9 +82,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + pat.length; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         4,
-        { matches },
+        { comparisons, matches },
     );
 }
 
