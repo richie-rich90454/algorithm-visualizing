@@ -1,9 +1,32 @@
 /**
  * transitive-reduction.ts – Transitive Reduction (DAG)
  *
- * Drops every edge u→v that a longer path already covers: u→v is redundant
- * iff v is still reachable from u without it. A→B→C plus A→C loses A→C.
- * Time: O(V·(V + E)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The transitive reduction strips a DAG to its skeleton: drop every edge
+ * u→v whose endpoints stay connected by a longer path, keeping only edges
+ * no detour can replace. Each edge is tested by deleting it and checking
+ * whether v is still reachable from u. On A→B→C plus the shortcut A→C, the
+ * shortcut drops while A→B and B→C survive as essential.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V·(V + E)) – one reachability check per edge
+ *   Space: O(V + E) for the reachability sets
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The edge under test is YELLOW (comparing).
+ *   - Redundant edges flash RED (swapped); kept edges turn GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Unique for DAGs; the Hasse diagram of the reachability order.
+ *   - The inverse operation of transitive closure.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -93,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const [u, v] of dropped) setE(u, v, "swapped");
     yield snap(
         `Reduction keeps ${kept.map(([u, v]) => `${u}→${v}`).join(", ") || "∅"}; drops ${dropped.map(([u, v]) => `${u}→${v}`).join(", ") || "∅"}.`,
-        2,
+        4,
         { kept: kept.length },
     );
 }
@@ -106,6 +129,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "list every edge as a candidate",
+        "hide u→v: redundant iff v stays reachable from u without it",
+        "repeat the reachability test for every edge",
+        "collect the kept edges and the dropped shortcuts",
+        "done: the skeleton, e.g. A→B and B→C without A→C",
+    ],
 };
 
 export default module;
