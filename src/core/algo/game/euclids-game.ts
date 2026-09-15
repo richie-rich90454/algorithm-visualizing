@@ -1,6 +1,34 @@
-// euclids-game.ts – Euclid's Game: subtract a positive multiple of the smaller.
-// Position (a,b), a>=b: win if floor(a/b)>=2 or the forced reply loses.
-// Computed in-code; default (12,7) wins via (12,7)->(7,5)->(5,2)->(3,2)->(1,2)->(0,1).
+/**
+ * euclids-game.ts – Euclid's Game (subtract multiples)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Euclid's Game starts from a pair (a,b); a move subtracts a positive
+ * multiple of the smaller from the larger, and the player reaching zero
+ * wins. Simply: with quotient 2 or more you control the game, otherwise you
+ * are forced. Formally: position (a,b) with a >= b wins if floor(a/b) >= 2
+ * or the forced reply loses; the default (12,7) wins along the computed
+ * line to (0,1).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log min(a,b)) Euclid steps
+ *   Space: O(log min(a,b)) recursion
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The pair shows as two cells; the active pair flashes YELLOW.
+ *   - Each frame names the quotient, the multiple taken, and the next pair.
+ *   - The terminal (x,0) frame names the winner.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Quotient >= 2 is an immediate winning signal.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function euclidWin(a: number, b: number): boolean {
