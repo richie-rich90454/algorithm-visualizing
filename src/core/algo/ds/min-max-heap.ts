@@ -95,6 +95,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 9] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty min-max heap array",
+        "insert key at end alternating min and max levels",
+        "compare against parent and grandparent by level parity",
+        "bubble up swapping across two levels if needed",
+        "extract minimum from root and trickle down",
+        "restore level ordering after removal",
+        "done: heap holds keys with min and max available",
+    ],
 };
 
 export default module;
