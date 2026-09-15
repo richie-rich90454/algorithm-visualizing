@@ -199,7 +199,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Diameter is ${diameter.length - 1} edges along ${diameter.join(" → ")}.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { diameter: diameter.length - 1, path: [...diameter], endpoints: [diameter[0], diameter[diameter.length - 1]] },
+        meta: {
+            diameter: diameter.length - 1,
+            path: [...diameter],
+            endpoints: [diameter[0], diameter[diameter.length - 1]],
+        },
     };
 }
 
