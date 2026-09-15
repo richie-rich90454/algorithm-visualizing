@@ -1,7 +1,11 @@
 /**
- * binary-lifting-max-edge-query.ts – max edge on tree paths.
- * up[k][v] / mx[k][v] jump 2^k ancestors with the max edge seen.
- * D→C peaks at 5, E→D peaks at 7.
+ * binary-lifting-max-edge-query.ts – Max edge on tree paths.
+ *
+ * Precomputes up[k][v] and mx[k][v] to jump 2^k ancestors while tracking
+ * the maximum edge seen. Queries lift the deeper node then both together.
+ * Default: D to C peaks at 5, E to D peaks at 7.
+ *
+ * Time O((n+q) log n), Space O(n log n). Query nodes use comparing state.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -236,6 +240,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "root the tree at A and set depth, parent, and edge weight",
+        "build level 0 jumps up[0][v] with max edge to parent",
+        "build up[k][v] and max[k][v] by doubling smaller jumps",
+        "for query (a,b): lift deeper node up tracking max edge",
+        "return maximum edge weight on the a to b path as answer",
+    ],
 };
 
 export default module;
