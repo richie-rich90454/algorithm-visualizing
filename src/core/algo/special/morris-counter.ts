@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: seen,
+            codeLineNumber: Math.min(seen, 6),
             layout: "grid",
             meta: { counter: c, estimate: est, events: seen },
         };
@@ -90,6 +90,15 @@ const module: AlgorithmModule = {
     defaultInput: { events: 20, seed: 17 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize tiny counter c <- 0 for events total",
+        "for each event roll random with probability 2^-c",
+        "increment c only when the roll succeeds",
+        "estimate count as 2^c minus 1",
+        "sample progress at every fourth event",
+        "compare estimate against true events seen",
+        "done: approximate count from logarithmic bits",
+    ],
 };
 
 export default module;
