@@ -1,7 +1,8 @@
 /**
- * prufer-decode.ts – Tree from a Prüfer code
- * Smallest missing label joins the next code entry, iteratively.
- * Time O(n²) demo, Space O(n). placed=sorted, active=comparing.
+ * prufer-decode.ts – Rebuild a tree from a Prufer code.
+ *
+ * Smallest missing label joins the next code entry iteratively.
+ * Time O(n^2) demo, Space O(n). Placed nodes use sorted, active uses comparing.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -112,5 +113,12 @@ const module: AlgorithmModule = {
     defaultInput: { code: ["1", "3"], labels: ["1", "2", "3", "4"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "set up label set with degrees from code counts",
+        "compute degree of each label from code frequency",
+        "join smallest missing leaf with next code entry",
+        "join the final remaining pair of labels",
+        "return decoded edge list as the tree answer",
+    ],
 };
 export default module;
