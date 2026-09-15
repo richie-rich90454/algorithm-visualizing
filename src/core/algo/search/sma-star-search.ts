@@ -1,9 +1,34 @@
 /**
  * sma-star-search.ts – SMA* Search
  *
- * Simplified Memory-Bounded A*: best-first expansion with a fixed memory
- * cap, dropping the worst leaf when full. Tiny explicit graph; the goal
- * goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Simplified Memory-Bounded A* is best-first search under a fixed memory cap.
+ * It always expands the lowest-f leaf, and whenever memory is full it forgets
+ * the worst (highest-f) leaf – backing its f-value up to the parent so the
+ * forgotten branch can be regenerated later. With enough memory for the
+ * shallowest goal path it stays optimal; starved of memory it may fail.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^d) – forgotten leaves get regenerated when revisited
+ *   Space: O(memory) – bounded by the configured node budget
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The node being expanded is YELLOW (comparing).
+ *   - Forgotten worst leaves flash RED (swapped) with a running drop count.
+ *   - The goal turns GREEN (sorted) with its optimal cost.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal when memory fits the shallowest goal path; else incomplete.
+ *   - Backed-up f-values keep parents honest about forgotten children.
+ *   - The memory gauge in each description shows pressure building.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -73,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeNodes(new Map([[goal, "sorted"]])),
                 edges: [],
                 description: `Goal ${goal} reached with cost ${current.g}; dropped ${dropped} node(s).`,
-                codeLineNumber: 3,
+                codeLineNumber: 2,
                 layout: "graph",
                 meta: { memory, start, goal, cost: current.g },
             };
@@ -106,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeNodes(new Map([[worst.node, "swapped"]])),
                 edges: [],
                 description: `Memory full – forgetting worst leaf ${worst.node}.`,
-                codeLineNumber: 2,
+                codeLineNumber: 4,
                 layout: "graph",
                 meta: { memory, start, goal, dropped },
             };
@@ -118,8 +143,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(),
         edges: [],
-        description: `Goal ${goal} was not reached.`,
-        codeLineNumber: 4,
+        description: `Goal ${goal} is unreachable with memory ${memory} after dropping ${dropped} node(s).`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { memory, start, goal },
     };
@@ -133,6 +158,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G", memory: 3 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with open ← {start} and memory capped at M nodes",
+        "while open is nonempty: pop the leaf with smallest f",
+        "if popped leaf = goal: return its cost as optimal",
+        "else expand it and push each unexpanded neighbor",
+        "while memory is full: forget the worst (highest-f) leaf",
+        "done: return optimum or report that goal is unreachable",
+    ],
 };
 
 export default module;
