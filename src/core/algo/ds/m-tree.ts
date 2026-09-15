@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "M-Tree: empty. Routing objects with covering radii.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Query (${q[0]},${q[1]}): nearest (${pts[bi]![0]},${pts[bi]![1]}) d=${bd.toFixed(2)}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: pts.length
             ? `Partition invariant holds. Nearest to (${q[0]},${q[1]}) is (${pts[bi]![0]},${pts[bi]![1]}).`
             : "No points indexed.",
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { nearest: pts[bi] ?? [] },
     };
@@ -134,5 +134,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize M-tree with single routing entry",
+        "insert object by choosing closest routing entry",
+        "compare distances to covering radius for fit",
+        "split full node by promoting two routing objects",
+        "partition entries minimizing overlap of balls",
+        "search range by pruning entries with triangle inequality",
+        "done: metric tree holds objects with range answer",
+    ],
 };
 export default module;
