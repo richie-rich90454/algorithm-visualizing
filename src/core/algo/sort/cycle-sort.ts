@@ -1,8 +1,31 @@
 /**
- * cycle-sort.ts – Cycle Sort.
+ * cycle-sort.ts – Cycle Sort
  *
- * Rotates each element directly into its cycle slot.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Cycle sort finds where each element belongs by counting how many elements are smaller, then rotates whole permutation cycles directly home. Each element is written at most once, giving the minimum possible number of writes. It is the right choice when writes are expensive, such as flash memory.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -87,7 +110,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -116,5 +139,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 3, 2, 5, 1],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with every element awaiting its cycle slot",
+        "for start in 0..n-1: count smaller elements to find pos",
+        "rotate the cycle: place item at pos, carry displaced value",
+        "continue rotating until the cycle closes",
+        "scan cycles into final order",
+        "done: each element sits in its final slot",
+    ],
 };
 export default module;
