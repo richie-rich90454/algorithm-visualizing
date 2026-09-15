@@ -97,21 +97,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Bellman-Ford from ${start} – relaxing every edge V−1 times.`,
+        description: `Bellman-Ford from ${start} – distances set, relaxing every edge V-1 times.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { relaxed: 0 },
+        meta: { relaxed: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: {},
+        meta: { relaxed: 0, visits: 0 },
     });
 
     let relaxedAny = false;
@@ -146,15 +146,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     node.state = "comparing";
                     node.label = String(alt);
                 }
-                yield buildFrame(`Round ${round + 1}: improved ${to} to ${alt} via ${from}.`);
+                yield buildFrame(`Round ${round + 1}: relaxing edge ${from} → ${to} (weight ${weight}), improved distance to ${alt}.`, 2);
                 step += 1;
             }
         }
 
         yield buildFrame(
             relaxedAny
-                ? `Round ${round + 1} complete – distances improved.`
-                : `Round ${round + 1} complete – no changes.`,
+                ? `Round ${round + 1} complete – distances improved, continuing relaxation.`
+                : `Round ${round + 1} complete – no changes, distances stabilizing.`,
+            3,
         );
         step += 1;
     }
@@ -201,9 +202,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : dist.get(target) === Infinity
               ? `${target} is unreachable from ${start}.`
               : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity },
+        meta: { settled: vertices.length, visits: edgeList.length, negativeCycle: hasNegativeCycle, distance: dist.get(target) ?? Infinity, path: path.join("→") },
     };
 }
 
@@ -240,6 +241,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← ∞ for v ≠ s",
+        "repeat V-1 rounds over all edges",
+        "for each edge u→v with weight w: relax edge",
+        "if dist[u]+w < dist[v]: update dist[v] via u",
+        "end of round: k-edge paths now correct",
+        "one more pass: improvement means negative cycle",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
