@@ -34,11 +34,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Two-Way search for "${pat}" (O(1) space).`, 0);
+    yield F(tx(text), `Two-Way search for "${pat}" (O(1) space).`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
     const ell = 1;
@@ -46,14 +46,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         tx(text),
         `Critical factorization at ${ell}: "${pat.slice(0, ell)}" | "${pat.slice(ell)}".`,
         1,
+        { comparisons: 0 },
     );
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     let idx = text.indexOf(pat);
     while (idx >= 0) {
         matches.push(idx);
         idx = text.indexOf(pat, idx + 1);
     }
+    comparisons += Math.max(0, text.length - m + 1);
     for (const s0 of matches.slice(0, 3)) {
         yield F(
             tx(
@@ -63,9 +66,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     "comparing",
                 ),
             ),
-            `Right half matches at ${s0}; checking left.`,
+            `Right half "${pat.slice(ell)}" matches at ${s0}; checking left half.`,
             2,
-            { matches: [...matches] },
+            { comparisons, matches: [...matches] },
         );
         step += 1;
         if (step < 11) {
@@ -77,24 +80,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         "path",
                     ),
                 ),
-                `Full match at ${s0}.`,
+                `Full match: "${pat}" at index ${s0}.`,
                 3,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         }
     }
     if (matches.length === 0) {
-        yield F(tx(text), "No occurrence.", 3, { matches });
+        yield F(tx(text), `"${pat}" does not occur in the text.`, 3, { comparisons, matches });
         step += 1;
     }
     const fin = new Map<number, EntityState>();
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         4,
-        { matches },
+        { comparisons, matches },
     );
 }
 
