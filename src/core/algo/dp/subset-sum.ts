@@ -12,6 +12,10 @@
  * over items i and sums s. dp[i][s] is true iff a subset of the first i items
  * sums to s.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -140,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: solvable
             ? `Yes – a subset sums to ${target}.`
             : `No subset sums to ${target}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows, cols, solvable },
     };
@@ -156,6 +160,14 @@ const module: AlgorithmModule = {
     defaultInput: { numbers: [2, 3, 7, 8, 10], target: 11 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up reachable table with reachable[0][0] <- true",
+        "reachable[i][s] holds whether first i items reach sum s",
+        "reachable[i][s] <- reachable[i-1][s] or reachable[i-1][s-num]",
+        "iterate items outer and sums inner over the table",
+        "each item offers skip versus take transitions per sum",
+        "takes require the remainder sum from the prior row",
+        "answer <- reachable[n][target] with subset backtraced",
+    ],};
 
 export default module;
