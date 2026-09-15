@@ -68,9 +68,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: boundEdges.map((e) => ({ ...e })),
         description: `Gallery with n=${n} walls – Fisk bound ⌊n/3⌋=${Math.floor(n / 3)}.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { walls: n, bound: Math.floor(n / 3) },
     };
     step += 1;
     for (let k = 0; k < diagonals.length; k += 1) {
@@ -88,9 +88,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ...diagonals.slice(0, k + 1).map((e) => ({ ...e })),
             ],
             description: `Triangulating: diagonal ${k + 1}/${diagonals.length} (fan from vertex 0).`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { diagonal: k + 1, total: diagonals.length },
         };
         step += 1;
     }
@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e, i) => ({ ...e, state: stateOf(i) })),
         edges: [...boundEdges.map((e) => ({ ...e })), ...diagonals.map((e) => ({ ...e }))],
         description: `3-colored: sizes ${classes.map((c) => c.length).join("/")}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { coloring: classes.map((c) => c.join(",")) },
     };
@@ -122,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: [...boundEdges.map((e) => ({ ...e })), ...diagonals.map((e) => ({ ...e }))],
         description: `Guards on ${colorName[smallest]} class: vertices [${guards.join(", ")}] (${guards.length} ≤ ⌊${n}/3⌋).`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { guards },
     };
@@ -145,6 +145,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with an n-wall gallery polygon",
+        "triangulate the polygon with a fan from vertex 0",
+        "3-color the triangulation vertices so no edge shares a color",
+        "each color class guards every triangle at once",
+        "pick the smallest color class as the guard set",
+        "done: at most floor(n/3) guards watch the whole gallery",
+    ],
 };
 
 export default module;
