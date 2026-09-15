@@ -82,6 +82,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [1, 4, 2, 7, 5, 3], query: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty beap triangle with root at top",
+        "insert key at next free triangle position",
+        "compare key against parents and bubble upward",
+        "search by starting at top and moving down or right",
+        "compare against current cell to prune triangle region",
+        "count comparisons during insert and search",
+        "done: beap triangle holds keys with search answer",
+    ],
 };
 
 export default module;
