@@ -85,9 +85,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ),
         edges: fullEdges.map((e) => ({ ...e })),
         description: `Anchor endpoints 0 and ${line.length - 1}.`,
-        codeLineNumber: 1,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { vertices: line.length },
     };
     while (stack.length > 0) {
         const [s, e] = stack.pop() as [number, number];
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: snap(st),
             edges: fullEdges.map((x) => ({ ...x })),
             description: `Span [${s},${e}]: farthest v${idx} at d=${dmax.toFixed(3)} ${dmax > eps ? "> ε: keep & split" : "≤ ε: drop interior"}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
             meta: { span: [s, e], farthest: idx, dmax },
         };
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(st),
         edges: keptEdges,
         description: `Simplified ${line.length} → ${kept.length} vertices [${kept.join(", ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { kept },
     };
@@ -161,6 +161,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the full polyline with tolerance eps",
+        "anchor the first and last vertices as kept",
+        "find the farthest interior vertex from the chord",
+        "when it exceeds eps: keep it and split the span",
+        "otherwise drop every interior vertex of the span",
+        "done: kept vertices trace the simplified polyline",
+    ],
 };
 
 export default module;
