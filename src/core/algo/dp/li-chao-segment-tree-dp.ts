@@ -1,6 +1,32 @@
 /**
- * Li Chao segment tree (min) over discrete xs: insert lines, query points.
- * Time O(log C) per op, Space O(C). Default queries -> [1,3,3].
+ * li-chao-segment-tree-dp.ts - Li Chao Segment Tree (DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: insert line by comparing at mid then recursing to weaker side.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log C)
+ *   Space: O(C)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -58,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No lines or no queries \u2013 nothing to answer.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -160,7 +186,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([["0,0", "sorted"]])),
         edges: [],
         description: `Traceback: minima [${answers.join(", ")}] confirmed down root-to-leaf paths.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answers },
     };
@@ -181,6 +207,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up Li Chao tree over sorted xs with empty nodes",
+        "each node stores the line best at its segment midpoint",
+        "insert line by comparing at mid then recursing to weaker side",
+        "add all lines one by one into the segment structure",
+        "query each x down its root-to-leaf path for minima",
+        "collect minima across visited nodes per query point",
+        "answer <- minima per query confirmed along tree paths",
+    ],};
 
 export default module;
