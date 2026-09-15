@@ -1,8 +1,31 @@
 /**
- * gnome-sort.ts – Gnome Sort.
+ * gnome-sort.ts – Gnome Sort
  *
- * A gnome pot shuffles each element back to its spot.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Gnome sort is insertion sort told as a garden gnome shuffling flower pots: step forward while neighbors are ordered, swap and step back otherwise. The gnome walks to the end exactly when the array is sorted. Its charm is pedagogical, but it is really insertion sort in disguise.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -107,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -136,5 +159,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 4, 1, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with gnome at position 1",
+        "compare A[g-1] and A[g] at the gnome",
+        "if in order: step forward, else swap and step back",
+        "repeat until the gnome walks off the end",
+        "scan pots into final order",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
