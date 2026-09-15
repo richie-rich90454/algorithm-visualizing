@@ -270,6 +270,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize zero flow with residual costs and reverse edges",
+        "find cheapest augmenting path with Bellman Ford search",
+        "compute bottleneck capacity along the cheapest path",
+        "augment flow and accumulate path cost into total",
+        "repeat until sink is unreachable in residual graph",
+        "report maximum flow value at minimum total cost",
+    ],
 };
 
 export default module;
