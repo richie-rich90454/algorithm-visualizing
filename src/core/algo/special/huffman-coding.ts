@@ -153,6 +153,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "aabcccdddd" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "count character frequencies in the input text",
+        "build leaf nodes for each distinct character",
+        "repeatedly merge the two lowest-frequency nodes",
+        "assign 0/1 bits along left and right branches",
+        "emit variable-length prefix code per character",
+        "verify total bits beat fixed-length encoding",
+        "done: optimal prefix tree with encoded output",
+    ],
 };
 
 export default module;
