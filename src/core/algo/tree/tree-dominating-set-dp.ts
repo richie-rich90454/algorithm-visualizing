@@ -1,7 +1,8 @@
 /**
- * tree-dominating-set-dp.ts – Minimum dominating set (brute-force exact)
- * Tiny trees: tries subsets by size; first dominating set is optimal.
- * Time O(2^n) demo, Space O(n). candidate=comparing, answer=sorted.
+ * tree-dominating-set-dp.ts – Minimum dominating set with exact search.
+ *
+ * Tiny trees only: tries subsets by size; first dominating set is optimal.
+ * Time O(2^n) demo, Space O(n). Candidate uses comparing, answer uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -126,9 +127,16 @@ const module: AlgorithmModule = {
     id: "tree-dominating-set-dp",
     name: "Tree Dominating Set DP",
     category: "tree",
-    complexity: { time: "O(n)", space: "O(n)" },
+    complexity: { time: "O(2^n)", space: "O(n)" },
     defaultInput: { parentMap: { B: "A", C: "A", D: "A" }, ids: ["A", "B", "C", "D"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build closed neighborhoods for every node",
+        "try candidate subsets in growing size order",
+        "test whether every node touches the candidate",
+        "stop at first dominating subset found",
+        "return smallest dominating set as the answer",
+    ],
 };
 export default module;
