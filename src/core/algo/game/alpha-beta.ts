@@ -118,10 +118,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: [],
-        description: "Alpha-beta pruning on a depth-3 ternary game tree.",
+        description: `Alpha-beta pruning on depth-3 ternary tree with ${leaves.length} leaf scores, window α=-∞ β=+∞.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { leaves: leaves.length, depth: 3, alpha: "-inf", beta: "+inf" },
     };
     step += 1;
 
@@ -154,10 +154,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: [],
-            description: `${isMax ? "MAX" : "MIN"} node (α=${alpha}, β=${beta}).`,
+            description: `${isMax ? "MAX" : "MIN"} node ${nodeId} opens with window α=${alpha} β=${beta}.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { node: nodeId, isMax, alpha, beta },
         };
         step += 1;
 
@@ -182,10 +182,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         stepNumber: step,
                         entities: nodes.map((n) => ({ ...n })),
                         edges: [],
-                        description: `Pruned remaining children of ${nodeId} (α=${alpha} ≥ β=${beta}).`,
-                        codeLineNumber: 3,
+                        description: `Pruned remaining children of MAX ${nodeId} (α=${alpha} ≥ β=${beta}), opponent avoids this line.`,
+                        codeLineNumber: 4,
                         layout: "tree",
-                        meta: {},
+                        meta: { node: nodeId, alpha, beta, value },
                     };
                     step += 1;
                     break;
@@ -217,10 +217,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     stepNumber: step,
                     entities: nodes.map((n) => ({ ...n })),
                     edges: [],
-                    description: `Pruned remaining children of ${nodeId} (α=${alpha} ≥ β=${beta}).`,
-                    codeLineNumber: 3,
+                    description: `Pruned remaining children of MIN ${nodeId} (α=${alpha} ≥ β=${beta}), MAX avoids this line.`,
+                    codeLineNumber: 4,
                     layout: "tree",
-                    meta: {},
+                    meta: { node: nodeId, alpha, beta, value },
                 };
                 step += 1;
                 break;
@@ -254,10 +254,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: [],
-        description: `Game value = ${value}${pruningHappened ? `, with ${pruned.size} pruned node(s).` : ""}`,
-        codeLineNumber: 4,
+        description: `Game value = ${value}${pruningHappened ? `, with ${pruned.size} pruned node(s) skipped` : ", no pruning needed"}; optimal root move stands.`,
+        codeLineNumber: 6,
         layout: "tree",
-        meta: { value, pruned: pruned.size },
+        meta: { value, optimal: value, pruned: pruned.size, winner: "optimal play" },
     };
 }
 
@@ -273,6 +273,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build depth-3 ternary game tree with fixed leaf scores",
+        "set window α ← -∞ and β ← +∞ at the root MAX node",
+        "visit children left to right, updating α at MAX and β at MIN",
+        "back up best value found and tighten the window for siblings",
+        "if α ≥ β: prune remaining children, they cannot affect root",
+        "paint pruned subtrees red and evaluated nodes green with values",
+        "game value equals minimax value with fewer nodes evaluated",
+    ],
 };
 
 export default module;
