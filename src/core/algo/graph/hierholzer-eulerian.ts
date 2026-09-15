@@ -82,12 +82,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 1): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
         meta: { circuitLength: circuit.length },
     });
@@ -121,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     if (startNode) {
         startNode.state = "comparing";
     }
-    yield buildFrame(`Starting the circuit at ${start}.`);
+    yield buildFrame(`Starting the circuit at ${start}.`, 0);
     step += 1;
 
     while (stack.length > 0) {
@@ -187,6 +187,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "find a start vertex that still has unused edges",
+        "follow an unused edge forward, consuming it",
+        "stuck vertex: backtrack it into the circuit",
+        "repeat until every edge is consumed",
+        "done: Eulerian circuit using each edge exactly once",
+    ],
 };
 
 export default module;
