@@ -170,6 +170,7 @@ const module: AlgorithmModule = {
         "each cell picks cheapest of delete, insert, or substitute",
         "matches copy the diagonal with zero extra cost",
         "answer <- dp[n][m] with edits reconstructed via backtrace",
-    ],};
+    ],
+};
 
 export default module;
