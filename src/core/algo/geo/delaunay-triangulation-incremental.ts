@@ -111,9 +111,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: [],
         description: `Incremental Delaunay on ${pts.length} points – inserting one by one.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { points: pts.length },
     };
     step += 1;
     for (let i = 0; i < pts.length; i += 1) {
@@ -124,9 +124,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts, st),
             edges: [],
             description: `Inserted p-${i}; cavity retriangulated with empty-circle test.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { inserted: i },
         };
         step += 1;
     }
@@ -143,9 +143,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts, st),
             edges: triEdges(tris.slice(0, t + 1)),
             description: `Triangle ${t + 1}/${tris.length}: (${tri.join(", ")}) has an empty circumcircle.`,
-            codeLineNumber: 2,
+            codeLineNumber: 4,
             layout: "point",
-            meta: {},
+            meta: { triangle: t + 1, total: tris.length },
         };
         step += 1;
     }
@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, new Map(pts.map((_, i) => [i, "sorted"] as [number, EntityState]))),
         edges: triEdges(tris),
         description: `Delaunay triangulation complete: ${tris.length} triangles.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { triangles: tris.map((t) => t.join(",")) },
     };
@@ -176,6 +176,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the point set inside a big bounding triangle",
+        "insert points one at a time into the mesh",
+        "split the containing triangle open into a cavity",
+        "retriangulate while circumcircles stay empty",
+        "flip any edge that breaks the empty-circle rule",
+        "done: the triangulation maximizes the minimum angle",
+    ],
 };
 
 export default module;
