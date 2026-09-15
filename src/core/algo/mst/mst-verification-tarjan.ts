@@ -1,6 +1,25 @@
 /**
- * mst-verification-tarjan.ts - MST Verification (Tarjan).
- * Checks a candidate tree: every non-tree edge must be heaviest on its tree cycle.
+ * mst-verification-tarjan.ts – MST Verification (Tarjan).
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Verification checks a candidate tree without rebuilding it: every non-tree
+ * edge must be the heaviest edge on the cycle it forms with the tree. When
+ * every such cycle property holds, the candidate is minimum; a single lighter
+ * tree edge proves it is not. Tarjan's linear method formalizes this test.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E alpha(V)) – nearly linear path-max queries
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The non-tree edge under test is YELLOW (comparing).
+ *   - A passing edge turns GREEN (sorted); a failing edge is RED (swapped).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +68,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -69,13 +88,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     const inTree = new Set<number>(d.tree);
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(d.tree.map((i) => [i, "highlight"] as [number, EntityState]))),
-        `Verifying candidate tree of ${d.tree.length} edges against ${list.length - d.tree.length} non-tree edges.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(d.tree.map((i) => [i, "highlight"] as [number, EntityState]))),
+            `Verifying candidate tree ${d.tree.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ")} against ${list.length - d.tree.length} non-tree edges.`,
+            0,
+        ),
+        meta: { accepted: d.tree.length, totalWeight: 0 },
+    };
     const adj = new Map<string, Array<{ to: string; w: number }>>();
     for (const v of verts) adj.set(v, []);
     for (const i of d.tree) {
@@ -111,24 +133,30 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (inTree.has(i)) continue;
         const e = list[i] as E3;
         const m = pathMax(e.a, e.b);
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map([[i, "comparing"]])),
-            `Non-tree edge ${e.a}-${e.b} (${e.w}): heaviest tree-path edge is ${m}.`,
-            1,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map([[i, "comparing"]])),
+                `Non-tree edge ${e.a}–${e.b} (weight ${e.w}): heaviest tree-path edge is ${m}.`,
+                1,
+            ),
+            meta: { accepted: d.tree.length, totalWeight: 0 },
+        };
         const good = m <= e.w;
         ok = ok && good;
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map([[i, good ? "sorted" : "swapped"]])),
-            good
-                ? `${e.a}-${e.b} (${e.w}) >= path max ${m}: cycle property holds.`
-                : `${e.a}-${e.b} (${e.w}) < path max ${m}: NOT minimum.`,
-            2,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map([[i, good ? "sorted" : "swapped"]])),
+                good
+                    ? `Edge ${e.a}–${e.b} (weight ${e.w}) passes: ${e.w} >= path max ${m}, cycle property holds.`
+                    : `Edge ${e.a}–${e.b} (weight ${e.w}) fails: ${e.w} < path max ${m}, tree is not minimum.`,
+                3,
+            ),
+            meta: { accepted: d.tree.length, totalWeight: 0 },
+        };
     }
     const weight = d.tree.reduce((s, i) => s + (list[i] as E3).w, 0);
     yield {
@@ -140,11 +168,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 new Map(d.tree.map((i) => [i, ok ? "sorted" : "swapped"] as [number, EntityState])),
             ),
             ok
-                ? `Valid MST of weight ${weight}: every non-tree edge is heaviest on its cycle.`
-                : `Invalid: candidate weight ${weight} is not minimum.`,
-            3,
+                ? `Valid MST of weight ${weight}, total weight ${weight}: every non-tree edge is heaviest on its cycle.`
+                : `Invalid candidate of weight ${weight}, total weight ${weight}: a lighter tree edge exists.`,
+            5,
         ),
-        meta: { weight, valid: ok },
+        meta: { weight, totalWeight: weight, valid: ok, accepted: d.tree.length },
     };
 }
 
@@ -166,5 +194,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with the candidate tree and its total weight",
+        "for each non-tree edge u–v: walk the tree path",
+        "find the heaviest edge on the u–v tree path",
+        "check the cycle property against the non-tree edge",
+        "flag the candidate when any cycle property fails",
+        "done: valid candidates are the MST with minimum total weight",
+    ],
 };
 export default module;
