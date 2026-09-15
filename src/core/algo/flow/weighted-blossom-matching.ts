@@ -191,5 +191,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize general graph with weighted edge list",
+        "build greedy matching in descending weight order",
+        "detect odd blossom cycle blocking further gains",
+        "shrink blossom and expand with one cycle edge kept",
+        "verify optimum by exhaustive matching search",
+        "report maximum weight matching with total value",
+    ],
 };
 export default module;
