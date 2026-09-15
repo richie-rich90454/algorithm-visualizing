@@ -232,7 +232,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Maximum flow from ${source} to ${sink} is ${totalFlow} (${augmentations} augmentations).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { flow: totalFlow, augmentations },
     };
@@ -259,6 +259,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize zero flow and residual graph with reverse edges",
+        "while BFS finds a shortest augmenting path from s to t",
+        "compute bottleneck capacity along the shortest path",
+        "augment flow along the path and update residual capacities",
+        "continue until sink is unreachable in residual graph",
+        "report maximum flow value and augmentation count",
+    ],
 };
 
 export default module;
