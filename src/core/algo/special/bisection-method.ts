@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "array",
             meta: {
                 a: Math.round(a * 10000) / 10000,
@@ -80,6 +80,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: 1, b: 2, iters: 8 },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize interval [a, b] where f(a) and f(b) straddle zero",
+        "for iteration t <- 1 to iters",
+        "compute midpoint mid <- (a + b) / 2",
+        "keep the half whose endpoints still straddle zero",
+        "shrink the interval width by half each step",
+        "repeat until the interval is tiny",
+        "done: mid approximates the true root 1.5214",
+    ],
 };
 
 export default module;
