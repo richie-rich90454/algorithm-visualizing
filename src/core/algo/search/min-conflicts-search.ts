@@ -1,9 +1,34 @@
 /**
  * min-conflicts-search.ts – Min-Conflicts Search
  *
- * Starts from a seeded-LCG random assignment for X≠Y, Y≠Z, then
- * repeatedly repairs the conflicted variable with the least-conflicting
- * value. One cell per variable (metadata.variable).
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Repairs a complete (but conflicted) assignment instead of building one
+ * incrementally. It starts from a seeded random assignment for X≠Y, Y≠Z,
+ * then repeats: pick a random conflicted variable and reassign it the value
+ * that violates the fewest constraints. Conflicts usually melt away within a
+ * few repairs; if they do not, a restart would follow.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(iterations·n) – a few cheap repair rounds in practice
+ *   Space: O(n) – the single current assignment
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each repaired variable flashes YELLOW (comparing).
+ *   - A conflict-free assignment turns GREEN (sorted).
+ *   - Getting stuck ends all IDLE; one cell per variable.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Incomplete but famously effective – cracked million-queens problems.
+ *   - The seeded start keeps the demo deterministic and replayable.
+ *   - Random restarts are the standard escape from local minima.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -74,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(assign, done),
                 edges: [],
                 description: `Solved after ${repairs} repair(s): ${VARS.map((v) => `${v}=${assign.get(v)}`).join(", ")}.`,
-                codeLineNumber: 2,
+                codeLineNumber: 4,
                 layout: "grid",
                 meta: { repairs, solution: [...assign.entries()].map(([k, v]) => `${k}=${v}`) },
             };
@@ -98,7 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(assign, new Map([[variable, "comparing"]])),
             edges: [],
             description: `Repair ${repairs}: ${variable}→${bestVal} leaves ${bestCost} conflict(s).`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "grid",
             meta: { repairs },
         };
@@ -113,8 +138,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign, done),
             edges: [],
-            description: `Solved after ${repairs} repair(s).`,
-            codeLineNumber: 2,
+            description: `Solved after ${repairs} repair(s) on the final check.`,
+            codeLineNumber: 4,
             layout: "grid",
             meta: { repairs, solution: [...assign.entries()].map(([k, v]) => `${k}=${v}`) },
         };
@@ -123,8 +148,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(assign),
             edges: [],
-            description: `Stuck after ${repairs} repairs – restarting would follow.`,
-            codeLineNumber: 3,
+            description: `Stuck with ${bad.length} conflicted variable(s) after ${repairs} repairs; a restart would follow.`,
+            codeLineNumber: 5,
             layout: "grid",
             meta: { repairs },
         };
@@ -139,6 +164,14 @@ const module: AlgorithmModule = {
     defaultInput: { seed: 42 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with a seeded random assignment for every variable",
+        "while conflicted variables remain and repairs are left",
+        "pick a random conflicted variable to repair next",
+        "set it to the value minimizing violated constraints",
+        "if no conflicts remain: return the assignment as solved",
+        "done: return solution or report being stuck pending restart",
+    ],
 };
 
 export default module;
