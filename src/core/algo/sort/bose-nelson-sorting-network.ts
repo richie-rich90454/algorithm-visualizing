@@ -1,8 +1,31 @@
 /**
- * bose-nelson-sorting-network.ts – Bose-Nelson Sorting Network.
+ * bose-nelson-sorting-network.ts – Bose-Nelson Sorting Network
  *
- * Recursive comparators that sort any input of this size.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The Bose-Nelson network is a simple recursive construction for a fixed sorting network. It builds sorting wires by merging already-sorted halves with a regular comparator pattern. It uses more comparators than Batcher, but its construction is beautifully easy to teach.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -112,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -141,5 +164,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 3, 2, 1],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted values on the wires",
+        "list the next Bose-Nelson comparator pair",
+        "if the pair is out of order: swap the wires",
+        "advance through all comparator stages",
+        "scan wires into final order",
+        "done: network output is sorted",
+    ],
 };
 export default module;
