@@ -156,6 +156,7 @@ const module: AlgorithmModule = {
         "scan prior rotations to find the tallest valid base",
         "track maximum over all best[i] values seen",
         "answer <- max(best) with stack reconstructed via parent links",
-    ],};
+    ],
+};
 
 export default module;
