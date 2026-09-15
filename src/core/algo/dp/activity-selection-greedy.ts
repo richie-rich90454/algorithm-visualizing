@@ -148,6 +148,7 @@ const module: AlgorithmModule = {
         "else skip it as overlapping the last selected activity",
         "continue until all activities are classified take or skip",
         "answer <- count with selected set reconstructed from takes",
-    ],};
+    ],
+};
 
 export default module;
