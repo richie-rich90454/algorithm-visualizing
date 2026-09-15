@@ -143,6 +143,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [5, 3, 8], popCount: 2 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with an empty linked stack with head at null",
+        "push value: link a new node in front of the head",
+        "move head to the new node in O(1)",
+        "repeat until every value is chained newest-first",
+        "pop: detach the head and return its value (LIFO)",
+        "advance head to the next node down the chain",
+        "done: pops left in LIFO order and the final chain state holds",
+    ],
 };
 
 export default module;
