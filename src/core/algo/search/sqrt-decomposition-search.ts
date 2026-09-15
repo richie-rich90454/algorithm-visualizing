@@ -1,9 +1,34 @@
 /**
  * sqrt-decomposition-search.ts – Sqrt Decomposition Search
  *
- * Splits a sorted array into √n blocks: skip whole blocks whose last
- * element is below the target, then linear-scan the candidate block.
- * Verified with a brute-force scan.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Searches a *sorted* array by splitting it into blocks of about √n. It
+ * first compares the target against each block's last element, skipping
+ * whole blocks that end too low, then linear-scans inside the first block
+ * that could hold the target. Balancing √n blocks against √n elements per
+ * block keeps both phases at O(√n).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(√n) – at most √n block skips plus √n in-block checks
+ *   Space: O(1) auxiliary – only the block size and scan index
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Skipped and candidate blocks are PINK (highlight).
+ *   - Each in-block probe is YELLOW (comparing).
+ *   - A hit turns GREEN (sorted); a miss ends all IDLE.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires a sorted array; the block size ⌊√n⌋ is provably optimal.
+ *   - The simpler cousin of jump search, with explicit block structure.
+ *   - Shows how preprocessing an array into blocks buys sublinear search.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -47,8 +72,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – nothing to search.",
-            codeLineNumber: 1,
+            description: "Empty array holds nothing, so there is nothing to search.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -59,8 +84,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Block size √n ≈ ${block}. Skipping whole blocks first.`,
-        codeLineNumber: 1,
+        description: `Block size is ⌊√${arr.length}⌋ = ${block}; skipping whole blocks of ${target} first.`,
+        codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, target, block },
     };
@@ -93,8 +118,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, states),
             edges: [],
-            description: `Block ${b} ends at ${lastVal} < ${target} – skipping it.`,
-            codeLineNumber: 2,
+            description: `Block ${b} ends at ${lastVal} < ${target}, so discard the whole block.`,
+            codeLineNumber: 3,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -110,8 +135,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[i, "comparing"]])),
             edges: [],
-            description: `Linear scan: ${v} at ${i} is not ${target}.`,
-            codeLineNumber: 3,
+            description: `Scanning block ${candidate} [${start}..${end}]: ${v} at index ${i} is not ${target}.`,
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -124,7 +149,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr, new Map([[verified, "sorted"]])),
             edges: [],
             description: `Found ${target} at index ${verified} after ${comparisons} comparisons.`,
-            codeLineNumber: 4,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target, foundIndex: verified },
         };
@@ -133,8 +158,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: `${target} is not in the array.`,
-            codeLineNumber: 4,
+            description: `${target} is absent after ${comparisons} block-plus-scan comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -149,6 +174,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16, 18], target: 14 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with block ← ⌊√n⌋ over the sorted array",
+        "for each block: compare its last element with target",
+        "if block end ≥ target: stop skipping, target is inside",
+        "else discard the whole block and test the next one",
+        "linear-scan the surviving block and compare each element",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
