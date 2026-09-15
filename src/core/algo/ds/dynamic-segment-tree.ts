@@ -146,6 +146,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [7, 3, 10, 5] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize dynamic segment tree with null root",
+        "create child nodes on demand along update path",
+        "compare query range against node interval",
+        "update point by recursing to leaf and recomputing sums",
+        "query range by combining overlapping children",
+        "count created nodes for memory usage",
+        "done: tree holds array values with range query answer",
+    ],
 };
 
 export default module;
