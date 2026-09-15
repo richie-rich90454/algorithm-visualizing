@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: [],
             edges: [],
             description: "Degenerate input: positive width, height and radius required.",
-            codeLineNumber: 1,
+            codeLineNumber: 0,
             layout: "point",
             meta: { count: 0 },
         };
@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: pts.map((p, i) => node(`p-${i}`, p, "sorted", String(i))),
         edges: [],
         description: `Done: ${pts.length} blue-noise samples, min distance ≥ ${R}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { count: pts.length, radius: R },
     };
@@ -132,6 +132,13 @@ const module: AlgorithmModule = {
     defaultInput: { width: 4, height: 4, radius: 1.2 },
     visualType: "point",
     run,
+    pseudocode: [
+        "start from an active front of placed samples",
+        "propose random candidates around front points",
+        "keep candidates clear of every neighbor",
+        "retire exhausted fronts and grow new ones",
+        "done: accepted samples keep blue-noise spacing",
+    ],
 };
 
 export default module;
