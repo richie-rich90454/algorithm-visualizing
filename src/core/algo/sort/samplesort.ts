@@ -1,8 +1,31 @@
 /**
- * samplesort.ts – Samplesort.
+ * samplesort.ts – Samplesort
  *
- * Samples splitters, buckets, sorts each bucket.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Samplesort picks splitters from an oversampled subset, partitions keys into buckets between splitters, then sorts buckets independently. Oversampling makes buckets balanced with high probability. It is the parallel sorting backbone of many supercomputer libraries.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -117,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -146,5 +169,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 2, 5, 1, 4, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with an oversized sample awaiting splitters",
+        "pick splitters from the oversampled keys",
+        "partition keys into buckets divided by splitters",
+        "sort each bucket recursively",
+        "scan buckets into final order",
+        "done: buckets concatenate into sorted order",
+    ],
 };
 export default module;
