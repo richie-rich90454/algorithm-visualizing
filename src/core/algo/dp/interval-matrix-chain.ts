@@ -200,6 +200,7 @@ const module: AlgorithmModule = {
         "try every split k as the final multiplication point",
         "add left, right, and merge costs per split choice",
         "answer <- dp[0][n-1] with split tree from best-k picks",
-    ],};
+    ],
+};
 
 export default module;
