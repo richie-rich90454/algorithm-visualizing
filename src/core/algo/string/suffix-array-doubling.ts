@@ -85,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Computing the suffix array of "${text}".`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { rows: n, cols: n },
+        meta: { comparisons: 0, shifts: 0, rows: n, cols: n, matches: [] },
     };
     step += 1;
 
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Round k=${k}: suffix order is [${suffix.join(", ")}].`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: { rows: n, cols: n, k },
+            meta: { comparisons: k, shifts: 0, rows: n, cols: n, k, matches: [] },
         };
         step += 1;
 
@@ -148,7 +148,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Suffix array: [${suffix.join(", ")}] meaning suffixes ${suffix.map((i) => `"${text.slice(i)}"`).join(", ")}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows: n, cols: n, suffixArray: [...suffix] },
+        meta: {
+            comparisons: suffix.length,
+            shifts: 0,
+            rows: n,
+            cols: n,
+            suffixArray: [...suffix],
+            matches: [...suffix],
+        },
     };
 }
 
@@ -162,6 +169,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sort suffixes by first character rank",
+        "double prefix length doubling sort keys",
+        "re-rank suffixes by paired key order",
+        "repeat until all ranks become distinct",
+        "output order of suffix starting positions",
+        "verify lexicographic order of neighbors",
+        "report final suffix array",
+    ],
 };
 
 export default module;
