@@ -164,10 +164,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Prim's algorithm (heap) starting from vertex ${start}.`,
+        description: `Prim's algorithm (heap) on ${vertices.length} vertices, ${edgeList.length} edges starting from vertex ${start}.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { inTree: inTree.size, totalWeight: 0 },
+        meta: { inTree: inTree.size, accepted: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -216,7 +216,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Adding start vertex ${vertex} to the MST.`,
             codeLineNumber: 3,
             layout: "graph",
-            meta: { inTree: inTree.size },
+            meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight: 0 },
         };
         step += 1;
 
@@ -236,10 +236,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Updated frontier edges around vertex ${vertex}.`,
+            description: `Updated frontier edges around vertex ${vertex}: cheapest links into the tree refreshed.`,
             codeLineNumber: 4,
             layout: "graph",
-            meta: { inTree: inTree.size },
+            meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight: 0 },
         };
         step += 1;
     }
@@ -256,7 +256,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Minimum spanning tree complete – ${inTree.size} vertices, total weight ${totalWeight}.`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { inTree: inTree.size, totalWeight },
+        meta: { inTree: inTree.size, accepted: inTree.size - 1, totalWeight },
     };
 }
 
