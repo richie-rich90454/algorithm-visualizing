@@ -61,6 +61,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let step = 0;
     const matches: number[] = [];
+    let comparisons = 0;
 
     // Frame 0: the untouched text.
     yield {
@@ -70,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Searching for "${pattern}" in "${text}".`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -102,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Prefix function built: [${pi.join(", ")}].`,
         codeLineNumber: 1,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -120,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty pattern – nothing to search for.",
             codeLineNumber: 6,
             layout: "text",
-            meta: { matches: 0 },
+            meta: { comparisons, matches: 0 },
         };
         return;
     }
@@ -128,6 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (let i = 0; i < text.length; i += 1) {
         // While characters mismatch, fall back along the failure function.
         while (j > 0 && text[i] !== pattern[j]) {
+            comparisons += 1;
             j = pi[j - 1] ?? 0;
 
             // Show the mismatch and the fallback.
@@ -136,15 +138,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeText(text, failStates),
                 edges: [],
-                description: `Mismatch at text[${i}] – falling back to prefix length ${j}.`,
+                description: `Mismatch: text[${i}]="${text[i]}" breaks the run; falling back to prefix length ${j}.`,
                 codeLineNumber: 3,
                 layout: "text",
-                meta: { matches: matches.length },
+                meta: { comparisons, matches: matches.length },
             };
             step += 1;
         }
 
         // A matching character extends the current matched prefix.
+        comparisons += 1;
         if (text[i] === pattern[j]) {
             j += 1;
         }
@@ -158,10 +161,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(text, matchStates),
             edges: [],
-            description: `Matched prefix length ${j} ending at text[${i}].`,
+            description: `text[${i}]="${text[i]}" extends the run; matched prefix length ${j} ends at ${i}.`,
             codeLineNumber: 4,
             layout: "text",
-            meta: { matches: matches.length },
+            meta: { comparisons, matches: matches.length },
         };
         step += 1;
 
@@ -181,7 +184,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Pattern found at index ${start}!`,
                 codeLineNumber: 5,
                 layout: "text",
-                meta: { matches: matches.length },
+                meta: { comparisons, matches: matches.length },
             };
             step += 1;
 
@@ -208,7 +211,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `"${pattern}" occurs at ${matches.join(", ")}.`,
         codeLineNumber: 6,
         layout: "text",
-        meta: { matches: matches.length },
+        meta: { comparisons, matches: matches.length },
     };
 }
 
