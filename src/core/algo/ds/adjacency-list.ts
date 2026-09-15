@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `Memory usage is O(V + E) – the sparse-graph favorite.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { vertices: vertices.length },
     };
@@ -134,6 +134,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty adjacency list with one list per vertex",
+        "insert each edge by appending neighbor to source list",
+        "compare vertex degrees while scanning neighbor lists",
+        "look up neighbors of query vertex by reading its list",
+        "count total edges across all adjacency lists",
+        "verify symmetric entries for undirected edges",
+        "done: adjacency lists store graph and neighbor query answer",
+    ],
 };
 
 export default module;
