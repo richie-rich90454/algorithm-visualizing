@@ -167,21 +167,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `Dijkstra (heap) from ${start} to ${target} – popping the smallest distance.`,
+        description: `Dijkstra (heap) from ${start} to ${target} – distances set, pushing start with distance 0.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: { settled: 0 },
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: { settled: settledCount },
+        meta: { settled: settledCount, visits: settledCount },
     });
 
     while (heap.size > 0) {
@@ -208,7 +208,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.state = "comparing";
             node.label = String(d);
         }
-        yield buildFrame(`Popped ${vertex} (distance ${d}).`);
+        yield buildFrame(`Popped ${vertex} with smallest distance ${d}, settling it as final.`, 1);
         step += 1;
 
         // Relax every outgoing edge, pushing improved distances onto the heap.
@@ -236,14 +236,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 neighborNode.state = "visited";
                 neighborNode.label = String(dist.get(neighbor) ?? Infinity);
             }
-            yield buildFrame(`Relaxing edge ${vertex} → ${neighbor} (weight ${weight}).`);
+            yield buildFrame(`Relaxing edge ${vertex} → ${neighbor} (weight ${weight}), new distance ${dist.get(neighbor)}.`, 3);
             step += 1;
         }
 
         if (node) {
             node.state = "sorted";
         }
-        yield buildFrame(`${vertex} settled.`);
+        yield buildFrame(`${vertex} settled with final distance ${d}, continuing until heap is empty.`, 5);
         step += 1;
     }
 
@@ -278,9 +278,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             dist.get(target) === Infinity
                 ? `${target} is unreachable from ${start}.`
                 : `Shortest path ${start} → ${target}: ${path.join(" → ")} (cost ${dist.get(target)}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: settledCount, distance: dist.get(target) ?? Infinity },
+        meta: { settled: settledCount, visits: settledCount, distance: dist.get(target) ?? Infinity, path: path.join("→") },
     };
 }
 
@@ -317,6 +317,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, dist[v] ← ∞ for v ≠ s, push (0,s)",
+        "pop u with smallest distance (skip stale entries)",
+        "if u already settled then skip it",
+        "for each edge u→v with weight w: relax edge",
+        "if dist[u]+w < dist[v]: update dist[v], push (dist[v],v)",
+        "mark u settled, repeat until heap is empty",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
