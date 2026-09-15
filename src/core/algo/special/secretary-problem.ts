@@ -39,7 +39,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: { seen, bestSeen: best, hired },
         };
@@ -96,6 +96,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [3, 1, 7, 2, 8, 4, 6, 5] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "list eight candidates arriving in fixed order",
+        "observe first n over e candidates without hiring",
+        "remember best value seen during observation",
+        "hire the first later candidate beating the bar",
+        "stop at hire with no recall allowed",
+        "settle for last candidate when nobody beats bar",
+        "done: hired value compared against optimum",
+    ],
 };
 
 export default module;
