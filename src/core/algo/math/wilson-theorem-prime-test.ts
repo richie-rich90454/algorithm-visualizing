@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs p >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Wilson: p=${p} prime iff ${p - 1}! = ${p - 1} mod ${p}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let f = 1;
@@ -87,5 +87,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state Wilson: prime iff (p−1)! ≡ −1 mod p",
+        "accumulate k! mod p step by step",
+        "done: −1 means PRIME, else composite",
+        "factorials wrap modulo p each round",
+        "done: factorial residue decides primality",
+    ],
 };
 export default module;
