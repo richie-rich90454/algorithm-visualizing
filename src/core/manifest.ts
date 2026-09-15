@@ -27,29 +27,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 2],
-                ],
-                B: [
-                    ["D", 5],
-                    ["E", 3],
-                ],
-                C: [
-                    ["B", 1],
-                    ["D", 8],
-                ],
-                D: [
-                    ["E", 2],
-                    ["F", 6],
-                ],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 2],
+            ],
+            B: [
+                ["D", 5],
+                ["E", 3],
+            ],
+            C: [
+                ["B", 1],
+                ["D", 8],
+            ],
+            D: [
+                ["E", 2],
+                ["F", 6],
+            ],
+            E: [["F", 1]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -74,12 +74,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            intervals: [
-                [1, 3],
-                [2, 4],
-                [3, 5],
-            ],
-        },
+        intervals: [
+            [1, 3],
+            [2, 4],
+            [3, 5],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -104,9 +104,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(degree) edge check", space: "O(V + E)" },
         defaultInput: {
-            adjacency: { A: ["B", "C"], B: ["A", "D"], C: ["A", "D"], D: ["B", "C"] },
-            query: "B",
-        },
+        adjacency: { A: ["B", "C"], B: ["A", "D"], C: ["A", "D"], D: ["B", "C"] },
+        query: "B",
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -115,14 +115,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) edge check", space: "O(V²)" },
         defaultInput: {
-            matrix: [
-                [0, 1, 1, 0],
-                [1, 0, 0, 1],
-                [1, 0, 0, 1],
-                [0, 1, 1, 0],
-            ],
-            query: [1, 3],
-        },
+        matrix: [
+            [0, 1, 1, 0],
+            [1, 0, 0, 1],
+            [1, 0, 0, 1],
+            [0, 1, 1, 0],
+        ],
+        query: [1, 3],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -131,17 +131,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) edge test", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["A", "B"],
-                ["B", "C"],
-                ["A", "C"],
-            ],
-            queries: [
-                ["A", "B"],
-                ["A", "D"],
-                ["B", "C"],
-            ],
-        },
+        edges: [
+            ["A", "B"],
+            ["B", "C"],
+            ["A", "C"],
+        ],
+        queries: [
+            ["A", "B"],
+            ["A", "D"],
+            ["B", "C"],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -174,10 +174,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(b^(d/2))", space: "O(d)" },
         defaultInput: {
-            leaves: [
-                3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6,
-            ],
-        },
+        leaves: [3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -186,16 +184,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n⁴) brute force", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [2, 0],
-                [1, 1],
-                [3, 1],
-                [0, 2],
-                [2, 2],
-            ],
-            alpha: 1.5,
-        },
+        points: [
+            [0, 0],
+            [2, 0],
+            [1, 1],
+            [3, 1],
+            [0, 2],
+            [2, 2],
+        ],
+        alpha: 1.5,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -204,22 +202,22 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(L·V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            landmarks: ["A", "D"],
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        landmarks: ["A", "D"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -268,15 +266,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 2],
-                [2, 4],
-                [0, 3],
-                [1, 1.5],
-            ],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 2],
+            [2, 4],
+            [0, 3],
+            [1, 1.5],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -285,12 +283,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n\u00b2\u00b72^n)", space: "O(2^n)" },
         defaultInput: {
-            cost: [
-                [9, 2, 7],
-                [6, 4, 3],
-                [5, 8, 1],
-            ],
-        },
+        cost: [
+            [9, 2, 7],
+            [6, 4, 3],
+            [5, 8, 1],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -355,14 +353,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -395,12 +393,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            matrix: [
-                [2, 1, 1],
-                [1, 3, 2],
-                [1, 0, 0],
-            ],
-        },
+        matrix: [
+            [2, 1, 1],
+            [1, 3, 2],
+            [1, 0, 0],
+        ],
+    },
         visualType: "matrix" as LayoutType,
     },
     {
@@ -409,15 +407,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(T^2 G)", space: "O(T^2)" },
         defaultInput: {
-            teams: ["A", "B", "C"],
-            wins: [10, 9, 8],
-            remaining: [
-                [0, 2, 1],
-                [2, 0, 1],
-                [1, 1, 0],
-            ],
-            query: "C",
-        },
+        teams: ["A", "B", "C"],
+        wins: [10, 9, 8],
+        remaining: [
+            [0, 2, 1],
+            [2, 0, 1],
+            [1, 1, 0],
+        ],
+        query: "C",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -458,29 +456,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", -3],
-                    ["D", 2],
-                ],
-                C: [
-                    ["D", 6],
-                    ["E", 1],
-                ],
-                D: [
-                    ["E", -2],
-                    ["F", 3],
-                ],
-                E: [["F", 2]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 5],
+            ],
+            B: [
+                ["C", -3],
+                ["D", 2],
+            ],
+            C: [
+                ["D", 6],
+                ["E", 1],
+            ],
+            D: [
+                ["E", -2],
+                ["F", 3],
+            ],
+            E: [["F", 2]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -505,9 +503,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
-            start: "A",
-        },
+        graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -516,9 +514,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] },
-            start: "A",
-        },
+        graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -527,17 +525,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(b^(d/2))", space: "O(b^(d/2))" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "D"],
-                C: ["A", "E"],
-                D: ["B", "E", "F"],
-                E: ["C", "D", "F"],
-                F: ["D", "E"],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "D"],
+            C: ["A", "E"],
+            D: ["B", "E", "F"],
+            E: ["C", "D", "F"],
+            F: ["D", "E"],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -546,29 +544,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["A", 2],
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [
-                    ["A", 5],
-                    ["B", 1],
-                    ["D", 1],
-                ],
-                D: [
-                    ["B", 4],
-                    ["C", 1],
-                ],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["A", 2],
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [
+                ["A", 5],
+                ["B", 1],
+                ["D", 1],
+            ],
+            D: [
+                ["B", 4],
+                ["C", 1],
+            ],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -609,18 +607,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((n+q) log n)", space: "O(n log n)" },
         defaultInput: {
-            nodes: ["A", "B", "C", "D", "E"],
-            edges: [
-                ["A", "B", 3],
-                ["A", "C", 5],
-                ["B", "D", 2],
-                ["B", "E", 7],
-            ],
-            queries: [
-                ["D", "C"],
-                ["E", "D"],
-            ],
-        },
+        nodes: ["A", "B", "C", "D", "E"],
+        edges: [
+            ["A", "B", 3],
+            ["A", "C", 5],
+            ["B", "D", 2],
+            ["B", "E", 7],
+        ],
+        queries: [
+            ["D", "C"],
+            ["E", "D"],
+        ],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -685,17 +683,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            left: ["L0", "L1"],
-            right: ["R0", "R1"],
-            bLeft: [2, 1],
-            bRight: [1, 2],
-            edges: [
-                ["L0", "R0"],
-                ["L0", "R1"],
-                ["L1", "R0"],
-                ["L1", "R1"],
-            ],
-        },
+        left: ["L0", "L1"],
+        right: ["R0", "R1"],
+        bLeft: [2, 1],
+        bRight: [1, 2],
+        edges: [
+            ["L0", "R0"],
+            ["L0", "R1"],
+            ["L1", "R0"],
+            ["L1", "R1"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -704,9 +702,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
-            start: "A",
-        },
+        graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -723,31 +721,31 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(2^n·n²)", space: "O(2^n·n)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 10],
-                    ["C", 15],
-                    ["D", 20],
-                ],
-                B: [
-                    ["A", 10],
-                    ["C", 35],
-                    ["D", 25],
-                ],
-                C: [
-                    ["A", 15],
-                    ["B", 35],
-                    ["D", 30],
-                ],
-                D: [
-                    ["A", 20],
-                    ["B", 25],
-                    ["C", 30],
-                ],
-            },
-            vertices: ["A", "B", "C", "D"],
-            start: "A",
+        graph: {
+            A: [
+                ["B", 10],
+                ["C", 15],
+                ["D", 20],
+            ],
+            B: [
+                ["A", 10],
+                ["C", 35],
+                ["D", 25],
+            ],
+            C: [
+                ["A", 15],
+                ["B", 35],
+                ["D", 30],
+            ],
+            D: [
+                ["A", 20],
+                ["B", 25],
+                ["C", 30],
+            ],
         },
+        vertices: ["A", "B", "C", "D"],
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -780,14 +778,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -812,17 +810,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V³)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            edges: [
-                ["A", "B"],
-                ["A", "C"],
-                ["B", "C"],
-                ["C", "D"],
-                ["D", "E"],
-                ["D", "F"],
-                ["E", "F"],
-            ],
-        },
+        vertices: ["A", "B", "C", "D", "E", "F"],
+        edges: [
+            ["A", "B"],
+            ["A", "C"],
+            ["B", "C"],
+            ["C", "D"],
+            ["D", "E"],
+            ["D", "F"],
+            ["E", "F"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -863,19 +861,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "C", 1],
+            ["B", "D", 5],
+            ["C", "D", 8],
+            ["C", "E", 10],
+            ["D", "E", 2],
+            ["D", "F", 6],
+            ["E", "F", 3],
+        ],
+        vertices: ["A", "B", "C", "D", "E", "F"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -892,11 +890,11 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n\u00b2)", space: "O(n)" },
         defaultInput: {
-            boxes: [
-                [4, 6, 7],
-                [1, 2, 3],
-            ],
-        },
+        boxes: [
+            [4, 6, 7],
+            [1, 2, 3],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -913,17 +911,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "T", 2],
-                ["B", "T", 3],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "T", 2],
+            ["B", "T", 3],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -964,14 +962,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) query", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -1012,14 +1010,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
         defaultInput: {
-            total: 8,
-            ops: [
-                ["alloc", 2],
-                ["alloc", 1],
-                ["free", 0],
-                ["alloc", 4],
-            ],
-        },
+        total: 8,
+        ops: [
+            ["alloc", 2],
+            ["alloc", 1],
+            ["free", 0],
+            ["alloc", 4],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -1076,13 +1074,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
         defaultInput: {
-            events: [
-                ["a", 1],
-                ["b", 5],
-                ["c", 2],
-                ["d", 8],
-            ],
-        },
+        events: [
+            ["a", 1],
+            ["b", 5],
+            ["c", 2],
+            ["d", 8],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -1091,15 +1089,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E^2 log U)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1, 5],
-                [0, 2, 4],
-                [1, 2, 2],
-                [1, 3, 3],
-                [2, 3, 6],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1, 5],
+            [0, 2, 4],
+            [1, 2, 2],
+            [1, 3, 3],
+            [2, 3, 6],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1140,9 +1138,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V log V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -1151,26 +1149,26 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 1],
-                    ["D", 1],
-                ],
-                B: [
-                    ["A", 1],
-                    ["C", 1],
-                ],
-                C: [
-                    ["B", 1],
-                    ["D", 1],
-                ],
-                D: [
-                    ["C", 1],
-                    ["A", 1],
-                ],
-            },
-            start: "A",
+        graph: {
+            A: [
+                ["B", 1],
+                ["D", 1],
+            ],
+            B: [
+                ["A", 1],
+                ["C", 1],
+            ],
+            C: [
+                ["B", 1],
+                ["D", 1],
+            ],
+            D: [
+                ["C", 1],
+                ["A", 1],
+            ],
         },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1195,13 +1193,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [2, 0],
-                [2, 2],
-                [0, 2],
-            ],
-        },
+        points: [
+            [0, 0],
+            [2, 0],
+            [2, 2],
+            [0, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1226,11 +1224,11 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n² log n)", space: "O(n)" },
         defaultInput: {
-            circles: [
-                [0, 0, 1],
-                [1, 0, 1],
-            ],
-        },
+        circles: [
+            [0, 0, 1],
+            [1, 0, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1247,12 +1245,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1277,15 +1275,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [12, 30],
-                [40, 50],
-                [5, 1],
-                [12, 10],
-                [3, 4],
-            ],
-        },
+        points: [
+            [2, 3],
+            [12, 30],
+            [40, 50],
+            [5, 1],
+            [12, 10],
+            [3, 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1310,12 +1308,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
         defaultInput: {
-            segment: [
-                [-1, 2],
-                [6, 3],
-            ],
-            window: { minX: 0, minY: 0, maxX: 4, maxY: 4 },
-        },
+        segment: [
+            [-1, 2],
+            [6, 3],
+        ],
+        window: { minX: 0, minY: 0, maxX: 4, maxY: 4 },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1364,13 +1362,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
         defaultInput: {
-            ops: [
-                ["A", "enqueue", 1],
-                ["B", "enqueue", 2],
-                ["A", "enqueue", 3],
-                ["B", "dequeue", 0],
-            ],
-        },
+        ops: [
+            ["A", "enqueue", 1],
+            ["B", "enqueue", 2],
+            ["A", "enqueue", 3],
+            ["B", "dequeue", 0],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1411,21 +1409,21 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1434,18 +1432,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 3],
-                [1, 1],
-                [2, 2],
-                [4, 4],
-                [0, 0],
-                [1, 2],
-                [3, 1],
-                [3, 3],
-                [2, 4],
-            ],
-        },
+        points: [
+            [0, 3],
+            [1, 1],
+            [2, 2],
+            [4, 4],
+            [0, 0],
+            [1, 2],
+            [3, 1],
+            [3, 3],
+            [2, 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1454,18 +1452,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·h)", space: "O(h)" },
         defaultInput: {
-            points: [
-                [0, 3],
-                [1, 1],
-                [2, 2],
-                [4, 4],
-                [0, 0],
-                [1, 2],
-                [3, 1],
-                [3, 3],
-                [2, 4],
-            ],
-        },
+        points: [
+            [0, 3],
+            [1, 1],
+            [2, 2],
+            [4, 4],
+            [0, 0],
+            [1, 2],
+            [3, 1],
+            [3, 3],
+            [2, 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1474,18 +1472,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 3],
-                [1, 1],
-                [2, 2],
-                [4, 4],
-                [0, 0],
-                [1, 2],
-                [3, 1],
-                [3, 3],
-                [2, 4],
-            ],
-        },
+        points: [
+            [0, 3],
+            [1, 1],
+            [2, 2],
+            [4, 4],
+            [0, 0],
+            [1, 2],
+            [3, 1],
+            [3, 3],
+            [2, 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1494,13 +1492,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O((n+q) log n)", space: "O(n)" },
         defaultInput: {
-            lines: [
-                { m: 2, b: 1 },
-                { m: 1, b: 2 },
-                { m: -1, b: 5 },
-            ],
-            queries: [0, 1, 2],
-        },
+        lines: [
+            { m: 2, b: 1 },
+            { m: 1, b: 2 },
+            { m: -1, b: 5 },
+        ],
+        queries: [0, 1, 2],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -1509,17 +1507,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(k·n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 4],
-                [0, 4],
-                [1, 1],
-                [3, 1],
-                [2, 3],
-                [2, 2],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 4],
+            [0, 4],
+            [1, 1],
+            [3, 1],
+            [2, 3],
+            [2, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1528,18 +1526,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n+m)" },
         defaultInput: {
-            a: [
-                [0, 0],
-                [3, 0],
-                [3, 3],
-                [0, 3],
-            ],
-            b: [
-                [2, 2],
-                [5, 2],
-                [2, 5],
-            ],
-        },
+        a: [
+            [0, 0],
+            [3, 0],
+            [3, 3],
+            [0, 3],
+        ],
+        b: [
+            [2, 2],
+            [5, 2],
+            [2, 5],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1548,17 +1546,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V·E·log C)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3, 2],
-                ["S", "B", 2, 1],
-                ["A", "B", 1, 1],
-                ["A", "T", 2, 3],
-                ["B", "T", 3, 2],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3, 2],
+            ["S", "B", 2, 1],
+            ["A", "B", 1, 1],
+            ["A", "T", 2, 3],
+            ["B", "T", 3, 2],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1607,14 +1605,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -1647,15 +1645,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(degree) neighbors", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B"],
-                ["A", "C"],
-                ["B", "D"],
-                ["C", "D"],
-            ],
-            inspect: "A",
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B"],
+            ["A", "C"],
+            ["B", "D"],
+            ["C", "D"],
+        ],
+        inspect: "A",
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -1688,14 +1686,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E^2 U)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 2, 1],
-                [1, 2, 2, 1],
-                [0, 2, 2, 5],
-            ],
-            demand: 2,
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 2, 1],
+            [1, 2, 2, 1],
+            [0, 2, 2, 5],
+        ],
+        demand: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1728,22 +1726,22 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            blocked: ["C", "D"],
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        blocked: ["C", "D"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1752,26 +1750,26 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 3],
-                    ["C", 6],
-                ],
-                B: [
-                    ["C", 2],
-                    ["D", 4],
-                ],
-                C: [
-                    ["D", 1],
-                    ["E", 5],
-                ],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
+        graph: {
+            A: [
+                ["B", 3],
+                ["C", 6],
+            ],
+            B: [
+                ["C", 2],
+                ["D", 4],
+            ],
+            C: [
+                ["D", 1],
+                ["E", 5],
+            ],
+            D: [["E", 2]],
+            E: [],
         },
+        vertices: ["A", "B", "C", "D", "E"],
+        start: "A",
+        target: "E",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1780,13 +1778,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1],
-                [1, 2],
-                [0, 2],
-            ],
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1],
+            [1, 2],
+            [0, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1795,10 +1793,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["C", "D"], C: ["D"], D: [] },
-            start: "A",
-            target: "D",
-        },
+        graph: { A: ["B", "C"], B: ["C", "D"], C: ["D"], D: [] },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1807,26 +1805,26 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 3],
-                    ["C", 6],
-                ],
-                B: [
-                    ["C", 2],
-                    ["D", 4],
-                ],
-                C: [
-                    ["D", 1],
-                    ["E", 5],
-                ],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
+        graph: {
+            A: [
+                ["B", 3],
+                ["C", 6],
+            ],
+            B: [
+                ["C", 2],
+                ["D", 4],
+            ],
+            C: [
+                ["D", 1],
+                ["E", 5],
+            ],
+            D: [["E", 2]],
+            E: [],
         },
+        vertices: ["A", "B", "C", "D", "E"],
+        start: "A",
+        target: "E",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1851,17 +1849,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [1, 0],
-                [0, 1],
-                [5, 5],
-                [6, 5],
-                [9, 9],
-            ],
-            eps: 1.5,
-            minPts: 2,
-        },
+        points: [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+            [5, 5],
+            [6, 5],
+            [9, 9],
+        ],
+        eps: 1.5,
+        minPts: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1870,18 +1868,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(m·n·v)", space: "O(n)" },
         defaultInput: {
-            rows: [
-                { Outlook: "S", Humidity: "H", Play: "N" },
-                { Outlook: "S", Humidity: "H", Play: "N" },
-                { Outlook: "O", Humidity: "H", Play: "Y" },
-                { Outlook: "R", Humidity: "N", Play: "Y" },
-                { Outlook: "R", Humidity: "N", Play: "Y" },
-                { Outlook: "O", Humidity: "N", Play: "Y" },
-                { Outlook: "S", Humidity: "N", Play: "Y" },
-                { Outlook: "R", Humidity: "H", Play: "N" },
-            ],
-            target: "Play",
-        },
+        rows: [
+            { Outlook: "S", Humidity: "H", Play: "N" },
+            { Outlook: "S", Humidity: "H", Play: "N" },
+            { Outlook: "O", Humidity: "H", Play: "Y" },
+            { Outlook: "R", Humidity: "N", Play: "Y" },
+            { Outlook: "R", Humidity: "N", Play: "Y" },
+            { Outlook: "O", Humidity: "N", Play: "Y" },
+            { Outlook: "S", Humidity: "N", Play: "Y" },
+            { Outlook: "R", Humidity: "H", Play: "N" },
+        ],
+        target: "Play",
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -1898,8 +1896,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] },
-        },
+        graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1908,16 +1906,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-            bound: 2,
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+        bound: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1926,14 +1924,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²) avg, O(n⁴) brute force", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [0, 3],
-                [1, 1],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [0, 3],
+            [1, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1942,22 +1940,22 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E + V·(L/Δ))", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            delta: 2,
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        delta: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -1966,15 +1964,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) both ends", space: "O(n)" },
         defaultInput: {
-            ops: [
-                ["pushBack", 1],
-                ["pushBack", 2],
-                ["pushFront", 0],
-                ["pushBack", 3],
-                ["popFront", 0],
-                ["popBack", 0],
-            ],
-        },
+        ops: [
+            ["pushBack", 1],
+            ["pushBack", 2],
+            ["pushFront", 0],
+            ["pushBack", 3],
+            ["popFront", 0],
+            ["popBack", 0],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -1999,9 +1997,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
-            start: "A",
-        },
+        graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2010,9 +2008,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
-            start: "A",
-        },
+        graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2029,21 +2027,21 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(C·V + E)", space: "O(C·V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2068,29 +2066,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V log V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 2],
-                ],
-                B: [
-                    ["D", 5],
-                    ["E", 3],
-                ],
-                C: [
-                    ["B", 1],
-                    ["D", 8],
-                ],
-                D: [
-                    ["E", 2],
-                    ["F", 6],
-                ],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 2],
+            ],
+            B: [
+                ["D", 5],
+                ["E", 3],
+            ],
+            C: [
+                ["B", 1],
+                ["D", 8],
+            ],
+            D: [
+                ["E", 2],
+                ["F", 6],
+            ],
+            E: [["F", 1]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2099,29 +2097,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 2],
-                ],
-                B: [
-                    ["D", 5],
-                    ["E", 3],
-                ],
-                C: [
-                    ["B", 1],
-                    ["D", 8],
-                ],
-                D: [
-                    ["E", 2],
-                    ["F", 6],
-                ],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 2],
+            ],
+            B: [
+                ["D", 5],
+                ["E", 3],
+            ],
+            C: [
+                ["B", 1],
+                ["D", 8],
+            ],
+            D: [
+                ["E", 2],
+                ["F", 6],
+            ],
+            E: [["F", 1]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2130,29 +2128,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 2],
-                ],
-                B: [
-                    ["D", 5],
-                    ["E", 3],
-                ],
-                C: [
-                    ["B", 1],
-                    ["D", 8],
-                ],
-                D: [
-                    ["E", 2],
-                    ["F", 6],
-                ],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 2],
+            ],
+            B: [
+                ["D", 5],
+                ["E", 3],
+            ],
+            C: [
+                ["B", 1],
+                ["D", 8],
+            ],
+            D: [
+                ["E", 2],
+                ["F", 6],
+            ],
+            E: [["F", 1]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2161,19 +2159,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V²·E)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "C", 2],
-                ["B", "C", 3],
-                ["B", "T", 1],
-                ["C", "T", 4],
-            ],
-            vertices: ["S", "A", "B", "C", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "C", 2],
+            ["B", "C", 3],
+            ["B", "T", 1],
+            ["C", "T", 4],
+        ],
+        vertices: ["S", "A", "B", "C", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2294,15 +2292,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n) avg", space: "O(n)" },
         defaultInput: {
-            polyline: [
-                [0, 0],
-                [1, 0.2],
-                [2, 1.5],
-                [3, 0.2],
-                [4, 0],
-            ],
-            epsilon: 1.0,
-        },
+        polyline: [
+            [0, 0],
+            [1, 0.2],
+            [2, 1.5],
+            [3, 0.2],
+            [4, 0],
+        ],
+        epsilon: 1.0,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2311,13 +2309,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(2^n) worst", space: "O(n)" },
         defaultInput: {
-            clauses: [
-                [1, 2],
-                [-1, 3],
-                [-2, -3],
-                [1, -3],
-            ],
-        },
+        clauses: [
+            [1, 2],
+            [-1, 3],
+            [-2, -3],
+            [1, -3],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2334,14 +2332,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(α(n)) ops", space: "O(n)" },
         defaultInput: {
-            size: 6,
-            unions: [
-                [0, 1],
-                [2, 3],
-                [0, 2],
-                [4, 5],
-            ],
-        },
+        size: 6,
+        unions: [
+            [0, 1],
+            [2, 3],
+            [0, 2],
+            [4, 5],
+        ],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -2350,10 +2348,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            colors: { A: 1, B: 2, C: 1, D: 3 },
-        },
+        parentMap: { B: "A", C: "A", D: "B" },
+        ids: ["A", "B", "C", "D"],
+        colors: { A: 1, B: 2, C: 1, D: 3 },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -2362,9 +2360,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n + ops)" },
         defaultInput: {
-            n: 4,
-            ops: [["union", 0, 1], ["union", 2, 3], ["query", 0, 2], ["undo"], ["query", 2, 3]],
-        },
+        n: 4,
+        ops: [["union", 0, 1], ["union", 2, 3], ["query", 0, 2], ["undo"], ["query", 2, 3]],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2373,12 +2371,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m\u00b7n)", space: "O(m\u00b7n)" },
         defaultInput: {
-            dungeon: [
-                [-2, -3, 3],
-                [-5, -10, 1],
-                [10, 30, -5],
-            ],
-        },
+        dungeon: [
+            [-2, -3, 3],
+            [-5, -10, 1],
+            [10, 30, -5],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2411,9 +2409,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
-            start: "A",
-        },
+        graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2430,13 +2428,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(E) iterate", space: "O(E)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "D", 5],
-                ["C", "D", 8],
-            ],
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "D", 5],
+            ["C", "D", 8],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2453,15 +2451,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E V)", space: "O(V + E)" },
         defaultInput: {
-            root: "0",
-            vertices: ["0", "1", "2"],
-            edges: [
-                ["0", "1", 1],
-                ["0", "2", 5],
-                ["1", "2", 1],
-                ["2", "1", 4],
-            ],
-        },
+        root: "0",
+        vertices: ["0", "1", "2"],
+        edges: [
+            ["0", "1", 1],
+            ["0", "2", 5],
+            ["1", "2", 1],
+            ["2", "1", 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2470,17 +2468,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V·E²)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "T", 2],
-                ["B", "T", 3],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "T", 2],
+            ["B", "T", 3],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2529,19 +2527,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V^2 log V)", space: "O(V + E)" },
         defaultInput: {
-            root: "0",
-            capacity: 2,
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                ["0", "1", 1],
-                ["0", "2", 1],
-                ["0", "3", 10],
-                ["1", "2", 1],
-                ["2", "3", 1],
-                ["1", "3", 5],
-            ],
-            demand: [0, 1, 1, 1],
-        },
+        root: "0",
+        capacity: 2,
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            ["0", "1", 1],
+            ["0", "2", 1],
+            ["0", "3", 10],
+            ["1", "2", 1],
+            ["2", "3", 1],
+            ["1", "3", 5],
+        ],
+        demand: [0, 1, 1, 1],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2558,13 +2556,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [1, 0],
-                [0, 1],
-                [2, 0],
-            ],
-        },
+        points: [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+            [2, 0],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2589,12 +2587,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
         defaultInput: {
-            links: [
-                [1, 2],
-                [3, 4],
-            ],
-            query: [1, 2],
-        },
+        links: [
+            [1, 2],
+            [3, 4],
+        ],
+        query: [1, 2],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2675,13 +2673,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1"],
-            edges: [
-                [0, 1, 1, 2],
-                [1, 0, 0, 2],
-            ],
-            demand: [0, 0],
-        },
+        vertices: ["0", "1"],
+        edges: [
+            [0, 1, 1, 2],
+            [1, 0, 0, 2],
+        ],
+        demand: [0, 0],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2794,16 +2792,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(rows × cols)", space: "O(rows × cols)" },
         defaultInput: {
-            grid: [
-                [1, 1, 2, 2],
-                [1, 1, 2, 1],
-                [3, 1, 1, 1],
-                [3, 3, 3, 4],
-            ],
-            startRow: 1,
-            startCol: 1,
-            newColor: 9,
-        },
+        grid: [
+            [1, 1, 2, 2],
+            [1, 1, 2, 1],
+            [3, 1, 1, 1],
+            [3, 3, 3, 4],
+        ],
+        startRow: 1,
+        startCol: 1,
+        newColor: 9,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2812,16 +2810,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(rows × cols)", space: "O(rows × cols)" },
         defaultInput: {
-            grid: [
-                [1, 1, 2, 2],
-                [1, 1, 2, 1],
-                [3, 1, 1, 1],
-                [3, 3, 3, 4],
-            ],
-            startRow: 1,
-            startCol: 1,
-            newColor: 9,
-        },
+        grid: [
+            [1, 1, 2, 2],
+            [1, 1, 2, 1],
+            [3, 1, 1, 1],
+            [3, 3, 3, 4],
+        ],
+        startRow: 1,
+        startCol: 1,
+        newColor: 9,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2838,23 +2836,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V³)", space: "O(V²)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 3],
-                    ["C", 8],
-                ],
-                B: [
-                    ["C", 2],
-                    ["D", 7],
-                ],
-                C: [
-                    ["D", 1],
-                    ["A", -4],
-                ],
-                D: [["C", 5]],
-            },
-            vertices: ["A", "B", "C", "D"],
+        graph: {
+            A: [
+                ["B", 3],
+                ["C", 8],
+            ],
+            B: [
+                ["C", 2],
+                ["D", 7],
+            ],
+            C: [
+                ["D", 1],
+                ["A", -4],
+            ],
+            D: [["C", 5]],
         },
+        vertices: ["A", "B", "C", "D"],
+    },
         visualType: "matrix" as LayoutType,
     },
     {
@@ -2871,17 +2869,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "T", 2],
-                ["B", "T", 3],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "T", 2],
+            ["B", "T", 3],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2906,14 +2904,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(blocks)", space: "O(blocks)" },
         defaultInput: {
-            total: 10,
-            ops: [
-                ["alloc", 3],
-                ["alloc", 4],
-                ["free", 0],
-                ["alloc", 2],
-            ],
-        },
+        total: 10,
+        ops: [
+            ["alloc", 3],
+            ["alloc", 4],
+            ["free", 0],
+            ["alloc", 2],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -2946,15 +2944,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: ["B"],
-                B: ["C", "E"],
-                C: ["A", "F"],
-                D: ["C"],
-                E: ["D"],
-                F: ["F"],
-            },
+        graph: {
+            A: ["B"],
+            B: ["C", "E"],
+            C: ["A", "F"],
+            D: ["C"],
+            E: ["D"],
+            F: ["F"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2963,12 +2961,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [2, 0],
-                [1, 2],
-            ],
-        },
+        points: [
+            [0, 0],
+            [2, 0],
+            [1, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -2977,19 +2975,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2)", space: "O(V^2)" },
         defaultInput: {
-            men: ["m0", "m1", "m2"],
-            women: ["w0", "w1", "w2"],
-            menPref: [
-                ["w0", "w1", "w2"],
-                ["w1", "w0", "w2"],
-                ["w0", "w1", "w2"],
-            ],
-            womenPref: [
-                ["m1", "m0", "m2"],
-                ["m0", "m1", "m2"],
-                ["m0", "m1", "m2"],
-            ],
-        },
+        men: ["m0", "m1", "m2"],
+        women: ["w0", "w1", "w2"],
+        menPref: [
+            ["w0", "w1", "w2"],
+            ["w1", "w0", "w2"],
+            ["w0", "w1", "w2"],
+        ],
+        womenPref: [
+            ["m1", "m0", "m2"],
+            ["m0", "m1", "m2"],
+            ["m0", "m1", "m2"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3006,13 +3004,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            matrix: [
-                [2, 1, -1],
-                [-3, -1, 2],
-                [-2, 1, 2],
-            ],
-            b: [8, -11, -3],
-        },
+        matrix: [
+            [2, 1, -1],
+            [-3, -1, 2],
+            [-2, 1, 2],
+        ],
+        b: [8, -11, -3],
+    },
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3021,13 +3019,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            matrix: [
-                [1, 1, 0],
-                [0, 1, 1],
-                [1, 0, 1],
-            ],
-            b: [1, 0, 1],
-        },
+        matrix: [
+            [1, 1, 0],
+            [0, 1, 1],
+            [1, 0, 1],
+        ],
+        b: [1, 0, 1],
+    },
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3076,16 +3074,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E²·V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
-            cuts: 1,
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "C"],
+            C: ["A", "B", "D"],
+            D: ["C", "E", "F"],
+            E: ["D", "F"],
+            F: ["D", "E"],
         },
+        cuts: 1,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3094,19 +3092,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n+m)" },
         defaultInput: {
-            a: [
-                [0, 0],
-                [2, 0],
-                [2, 2],
-                [0, 2],
-            ],
-            b: [
-                [4, 1],
-                [5, 1],
-                [5, 2],
-                [4, 2],
-            ],
-        },
+        a: [
+            [0, 0],
+            [2, 0],
+            [2, 2],
+            [0, 2],
+        ],
+        b: [
+            [4, 1],
+            [5, 1],
+            [5, 2],
+            [4, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3139,17 +3137,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V·E)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 4],
-                ],
-                B: [["C", -1]],
-                C: [["D", 2]],
-                D: [],
-            },
-            start: "A",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 4],
+            ],
+            B: [["C", -1]],
+            C: [["D", 2]],
+            D: [],
         },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3166,14 +3164,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1, 3],
-                [1, 2, 2],
-                [2, 3, 4],
-                [0, 2, 1],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1, 3],
+            [1, 2, 2],
+            [2, 3, 4],
+            [0, 2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3197,9 +3195,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Center / Periphery (Eccentricity)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·(V + E))", space: "O(V)" },
-        defaultInput: {
-            graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] },
-        },
+        defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] } },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3256,14 +3252,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) point avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -3272,12 +3268,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m\u00b7n)", space: "O(m\u00b7n)" },
         defaultInput: {
-            obstacleGrid: [
-                [0, 0, 0],
-                [0, 1, 0],
-                [0, 0, 0],
-            ],
-        },
+        obstacleGrid: [
+            [0, 0, 0],
+            [0, 1, 0],
+            [0, 0, 0],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -3286,14 +3282,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            lines: [
-                [0, 0, 6, 0],
-                [6, 0, 6, 4],
-                [6, 4, 0, 4],
-                [0, 4, 0, 0],
-                [1, 1, 4, 3],
-            ],
-        },
+        lines: [
+            [0, 0, 6, 0],
+            [6, 0, 6, 4],
+            [6, 4, 0, 4],
+            [0, 4, 0, 0],
+            [1, 1, 4, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3302,9 +3298,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V!)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
-            start: "A",
-        },
+        graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3369,9 +3365,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -3388,14 +3384,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [0.5, 0],
-                [5, 0],
-                [5.5, 0],
-            ],
-            k: 2,
-        },
+        points: [
+            [0, 0],
+            [0.5, 0],
+            [5, 0],
+            [5.5, 0],
+        ],
+        k: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3404,8 +3400,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "D"], B: ["C"], C: ["A"], D: ["E"], E: ["A"] },
-        },
+        graph: { A: ["B", "D"], B: ["C"], C: ["A"], D: ["E"], E: ["A"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3414,14 +3410,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0.1, 0.1],
-                [0.9, 0.1],
-                [0.9, 0.9],
-                [0.1, 0.9],
-            ],
-            order: 2,
-        },
+        points: [
+            [0.1, 0.1],
+            [0.9, 0.1],
+            [0.9, 0.9],
+            [0.1, 0.9],
+        ],
+        order: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3470,17 +3466,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·√V)", space: "O(V + E)" },
         defaultInput: {
-            left: ["A", "B", "C"],
-            right: ["1", "2", "3"],
-            edges: [
-                ["A", "1"],
-                ["A", "2"],
-                ["B", "1"],
-                ["B", "3"],
-                ["C", "2"],
-                ["C", "3"],
-            ],
-        },
+        left: ["A", "B", "C"],
+        right: ["1", "2", "3"],
+        edges: [
+            ["A", "1"],
+            ["A", "2"],
+            ["B", "1"],
+            ["B", "3"],
+            ["C", "2"],
+            ["C", "3"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3529,12 +3525,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
         defaultInput: {
-            costs: [
-                [8, 4, 7],
-                [5, 2, 3],
-                [9, 4, 8],
-            ],
-        },
+        costs: [
+            [8, 4, 7],
+            [5, 2, 3],
+            [9, 4, 8],
+        ],
+    },
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3559,15 +3555,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(V) edge check", space: "O(V·E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B"],
-                ["A", "C"],
-                ["B", "D"],
-                ["C", "D"],
-            ],
-            inspect: 2,
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B"],
+            ["A", "C"],
+            ["B", "D"],
+            ["C", "D"],
+        ],
+        inspect: 2,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -3656,10 +3652,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["D"], C: ["E"], D: [], E: [] },
-            start: "A",
-            target: "E",
-        },
+        graph: { A: ["B", "C"], B: ["D"], C: ["E"], D: [], E: [] },
+        start: "A",
+        target: "E",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3684,23 +3680,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V·E log V)", space: "O(V²)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 3],
-                    ["C", 8],
-                ],
-                B: [
-                    ["C", 2],
-                    ["D", 7],
-                ],
-                C: [
-                    ["D", 1],
-                    ["A", -4],
-                ],
-                D: [["C", 5]],
-            },
-            vertices: ["A", "B", "C", "D"],
+        graph: {
+            A: [
+                ["B", 3],
+                ["C", 8],
+            ],
+            B: [
+                ["C", 2],
+                ["D", 7],
+            ],
+            C: [
+                ["D", 1],
+                ["A", -4],
+            ],
+            D: [["C", 5]],
         },
+        vertices: ["A", "B", "C", "D"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3749,14 +3745,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(sqrt n) range avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -3765,15 +3761,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(k·n·i)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [1, 0],
-                [0, 1],
-                [5, 5],
-                [6, 5],
-                [5, 6],
-            ],
-        },
+        points: [
+            [0, 0],
+            [1, 0],
+            [0, 1],
+            [5, 5],
+            [6, 5],
+            [5, 6],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3790,12 +3786,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(rows·cols²)", space: "O(rows)" },
         defaultInput: {
-            grid: [
-                [1, 2, -1],
-                [-3, 4, 2],
-                [1, -5, 3],
-            ],
-        },
+        grid: [
+            [1, 2, -1],
+            [-3, 4, 2],
+            [1, -5, 3],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -3812,15 +3808,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V + E) expected", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3829,13 +3825,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 3],
-                [1, 2, 2],
-                [0, 2, 1],
-            ],
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 3],
+            [1, 2, 2],
+            [0, 2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3844,14 +3840,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [["B", 4]],
-                B: [["C", 1]],
-                C: [["A", 1]],
-                D: [["C", 2]],
-            },
-            vertices: ["A", "B", "C", "D"],
+        graph: {
+            A: [["B", 4]],
+            B: [["C", 1]],
+            C: [["A", 1]],
+            D: [["C", 2]],
         },
+        vertices: ["A", "B", "C", "D"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3868,14 +3864,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -3884,13 +3880,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3907,15 +3903,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(T V^2)", space: "O(V^2)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                ["0", "1", 1],
-                ["1", "2", 1],
-                ["2", "3", 1],
-                ["0", "3", 10],
-            ],
-            terminals: ["0", "3"],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            ["0", "1", 1],
+            ["1", "2", 1],
+            ["2", "3", 1],
+            ["0", "3", 10],
+        ],
+        terminals: ["0", "3"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3964,14 +3960,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            left: ["a", "b"],
-            right: ["x", "y"],
-            edges: [
-                ["a", "x"],
-                ["a", "y"],
-                ["b", "x"],
-            ],
-        },
+        left: ["a", "b"],
+        right: ["x", "y"],
+        edges: [
+            ["a", "x"],
+            ["a", "y"],
+            ["b", "x"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3980,15 +3976,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: ["B"],
-                B: ["C", "E"],
-                C: ["A", "F"],
-                D: ["C"],
-                E: ["D"],
-                F: ["F"],
-            },
+        graph: {
+            A: ["B"],
+            B: ["C", "E"],
+            C: ["A", "F"],
+            D: ["C"],
+            E: ["D"],
+            F: ["F"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -3997,19 +3993,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "C", 1],
+            ["B", "D", 5],
+            ["C", "D", 8],
+            ["C", "E", 10],
+            ["D", "E", 2],
+            ["D", "F", 6],
+            ["E", "F", 3],
+        ],
+        vertices: ["A", "B", "C", "D", "E", "F"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4018,13 +4014,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n log(max−min))", space: "O(1)" },
         defaultInput: {
-            matrix: [
-                [1, 5, 9],
-                [10, 11, 13],
-                [12, 13, 15],
-            ],
-            k: 5,
-        },
+        matrix: [
+            [1, 5, 9],
+            [10, 11, 13],
+            [12, 13, 15],
+        ],
+        k: 5,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4033,15 +4029,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "C"],
+            C: ["A", "B", "D"],
+            D: ["C", "E", "F"],
+            E: ["D", "F"],
+            F: ["D", "E"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4050,13 +4046,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(1)" },
         defaultInput: {
-            points: [
-                [0, 1],
-                [1, 3],
-                [2, 7],
-            ],
-            at: 3,
-        },
+        points: [
+            [0, 1],
+            [1, 3],
+            [2, 7],
+        ],
+        at: 3,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4073,13 +4069,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n⁴)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4104,10 +4100,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(log V) / query", space: "O(V log V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            query: ["D", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        query: ["D", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4116,10 +4112,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(1) / query", space: "O(V log V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            query: ["D", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        query: ["D", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4128,13 +4124,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((V + Q)·α(V))", space: "O(V + Q)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            queries: [
-                ["D", "H"],
-                ["D", "E"],
-            ],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        queries: [
+            ["D", "H"],
+            ["D", "E"],
+        ],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4191,9 +4187,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
-            start: "A",
-        },
+        graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] },
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4218,13 +4214,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(log C)", space: "O(C)" },
         defaultInput: {
-            lines: [
-                { m: 2, b: 1 },
-                { m: 1, b: 2 },
-                { m: -1, b: 5 },
-            ],
-            queries: [0, 1, 2],
-        },
+        lines: [
+            { m: 2, b: 1 },
+            { m: 1, b: 2 },
+            { m: -1, b: 5 },
+        ],
+        queries: [0, 1, 2],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4241,12 +4237,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
         defaultInput: {
-            lines: [
-                { m: 1, b: 0 },
-                { m: -1, b: 4 },
-                { m: 0, b: 1 },
-            ],
-        },
+        lines: [
+            { m: 1, b: 0 },
+            { m: -1, b: 4 },
+            { m: 0, b: 1 },
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4255,13 +4251,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
         defaultInput: {
-            line: [
-                [0, 0],
-                [4, 2],
-            ],
-            center: [2, 1],
-            r: 2,
-        },
+        line: [
+            [0, 0],
+            [4, 2],
+        ],
+        center: [2, 1],
+        r: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4318,13 +4314,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
         defaultInput: {
-            links: [
-                [1, 2],
-                [2, 3],
-                [3, 4],
-            ],
-            weights: { "1-2": 5, "2-3": 2, "3-4": 7 },
-        },
+        links: [
+            [1, 2],
+            [2, 3],
+            [3, 4],
+        ],
+        weights: { "1-2": 5, "2-3": 2, "3-4": 7 },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4445,15 +4441,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "C"],
+            C: ["A", "B", "D"],
+            D: ["C", "E", "F"],
+            E: ["D", "F"],
+            F: ["D", "E"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4478,14 +4474,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) write amortized", space: "O(n)" },
         defaultInput: {
-            puts: [
-                ["a", 1],
-                ["b", 2],
-                ["c", 3],
-                ["d", 4],
-            ],
-            get: "c",
-        },
+        puts: [
+            ["a", 1],
+            ["b", 2],
+            ["c", 3],
+            ["d", 4],
+        ],
+        get: "c",
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4494,11 +4490,11 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
         defaultInput: {
-            matrix: [
-                [4, 2],
-                [2, 3],
-            ],
-        },
+        matrix: [
+            [4, 2],
+            [2, 3],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4555,14 +4551,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4587,13 +4583,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(rows·cols)", space: "O(rows·cols)" },
         defaultInput: {
-            field: [
-                [0, 0, 0],
-                [0, 1, 0],
-                [0, 0, 0],
-            ],
-            iso: 0.5,
-        },
+        field: [
+            [0, 0, 0],
+            [0, 1, 0],
+            [0, 0, 0],
+        ],
+        iso: 0.5,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4602,12 +4598,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(d³ log k)", space: "O(d²)" },
         defaultInput: {
-            matrix: [
-                [1, 1],
-                [1, 0],
-            ],
-            exponent: 7,
-        },
+        matrix: [
+            [1, 1],
+            [1, 0],
+        ],
+        exponent: 7,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4616,13 +4612,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V^2)" },
         defaultInput: {
-            vertices: ["A", "B", "C"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 1],
-                ["A", "C", 1],
-            ],
-        },
+        vertices: ["A", "B", "C"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 1],
+            ["A", "C", 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4631,13 +4627,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C"],
-            weights: [5, -3, 4],
-            arcs: [
-                ["A", "B"],
-                ["A", "C"],
-            ],
-        },
+        vertices: ["A", "B", "C"],
+        weights: [5, -3, 4],
+        arcs: [
+            ["A", "B"],
+            ["A", "C"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4646,15 +4642,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [1, 1],
-                [2, 2],
-                [0, 2],
-                [2, 0],
-                [3, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [1, 1],
+            [2, 2],
+            [0, 2],
+            [2, 0],
+            [3, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4663,13 +4659,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m\u00b7n)", space: "O(n)" },
         defaultInput: {
-            matrix: [
-                ["1", "0", "1", "0", "0"],
-                ["1", "0", "1", "1", "1"],
-                ["1", "1", "1", "1", "1"],
-                ["1", "0", "0", "1", "0"],
-            ],
-        },
+        matrix: [
+            ["1", "0", "1", "0", "0"],
+            ["1", "0", "1", "1", "1"],
+            ["1", "1", "1", "1", "1"],
+            ["1", "0", "0", "1", "0"],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4678,12 +4674,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m\u00b7n)", space: "O(m\u00b7n)" },
         defaultInput: {
-            matrix: [
-                ["1", "1", "0"],
-                ["1", "1", "1"],
-                ["0", "1", "1"],
-            ],
-        },
+        matrix: [
+            ["1", "1", "0"],
+            ["1", "1", "1"],
+            ["0", "1", "1"],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4692,13 +4688,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E^2 log V)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1],
-                [0, 2],
-                [1, 2],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1],
+            [0, 2],
+            [1, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4803,17 +4799,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(f·V·E)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3, 2],
-                ["S", "B", 2, 1],
-                ["A", "B", 1, 1],
-                ["A", "T", 2, 3],
-                ["B", "T", 3, 2],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3, 2],
+            ["S", "B", 2, 1],
+            ["A", "B", 1, 1],
+            ["A", "T", 2, 3],
+            ["B", "T", 3, 2],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4822,17 +4818,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "T", 2],
-                ["B", "T", 3],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "T", 2],
+            ["B", "T", 3],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4841,13 +4837,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E)", space: "O(V^2)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 1],
-                [1, 2, 1],
-                [0, 2, 1],
-            ],
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 1],
+            [1, 2, 1],
+            [0, 2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4856,14 +4852,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n) expected", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [2, 3],
-                [5, 1],
-                [1, 2],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [2, 3],
+            [5, 1],
+            [1, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4872,14 +4868,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [3, 1],
-                [1, 2],
-                [4, 3],
-                [2, 0],
-            ],
-        },
+        points: [
+            [0, 0],
+            [3, 1],
+            [1, 2],
+            [4, 3],
+            [2, 0],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4896,12 +4892,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m\u00b7n)", space: "O(m\u00b7n)" },
         defaultInput: {
-            grid: [
-                [1, 3, 1],
-                [1, 5, 1],
-                [4, 2, 1],
-            ],
-        },
+        grid: [
+            [1, 3, 1],
+            [1, 5, 1],
+            [4, 2, 1],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -4942,10 +4938,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
         defaultInput: {
-            leaves: [
-                3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6,
-            ],
-        },
+        leaves: [3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -4954,25 +4948,25 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 3],
-                ],
-                B: [
-                    ["A", 4],
-                    ["C", 1],
-                ],
-                C: [
-                    ["A", 3],
-                    ["B", 1],
-                    ["D", 2],
-                ],
-                D: [["C", 2]],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 3],
+            ],
+            B: [
+                ["A", 4],
+                ["C", 1],
+            ],
+            C: [
+                ["A", 3],
+                ["B", 1],
+                ["D", 2],
+            ],
+            D: [["C", 2]],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4981,15 +4975,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -4998,15 +4992,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(2^E V)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5039,12 +5033,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
         defaultInput: {
-            mod: 7,
-            rows: [
-                [2, 1, 5],
-                [1, 3, 6],
-            ],
-        },
+        mod: 7,
+        rows: [
+            [2, 1, 5],
+            [1, 3, 6],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -5133,11 +5127,11 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            left: { A: "B", B: "D", C: "E", D: null, E: null },
-            right: { A: "C", B: null, C: null, D: null, E: null },
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "C" },
+        ids: ["A", "B", "C", "D", "E"],
+        left: { A: "B", B: "D", C: "E", D: null, E: null },
+        right: { A: "C", B: null, C: null, D: null, E: null },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -5146,14 +5140,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((n+q)√n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            values: { A: 1, B: 2, C: 1, D: 3, E: 2 },
-            queries: [
-                ["D", "E"],
-                ["B", "C"],
-            ],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "C" },
+        ids: ["A", "B", "C", "D", "E"],
+        values: { A: 1, B: 2, C: 1, D: 3, E: 2 },
+        queries: [
+            ["D", "E"],
+            ["B", "C"],
+        ],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -5170,15 +5164,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5187,16 +5181,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E alpha(V))", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-            tree: [0, 1, 2],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+        tree: [0, 1, 2],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5205,9 +5199,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] },
-            sources: ["A", "E"],
-        },
+        graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] },
+        sources: ["A", "E"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5240,13 +5234,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E + V^2 log V)", space: "O(V^2)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 3],
-                [1, 2, 2],
-                [0, 2, 1],
-            ],
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 3],
+            [1, 2, 2],
+            [0, 2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5295,14 +5289,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 2, 1],
-                [1, 2, 2, 1],
-                [0, 2, 2, 5],
-            ],
-            demand: 2,
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 2, 1],
+            [1, 2, 2, 1],
+            [0, 2, 2, 5],
+        ],
+        demand: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5351,14 +5345,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -5375,14 +5369,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
         defaultInput: {
-            left: ["a", "b"],
-            arrivals: ["x", "y"],
-            edges: [
-                ["x", "a"],
-                ["y", "a"],
-                ["y", "b"],
-            ],
-        },
+        left: ["a", "b"],
+        arrivals: ["x", "y"],
+        edges: [
+            ["x", "a"],
+            ["y", "a"],
+            ["y", "b"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5415,12 +5409,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(nonzeros)", space: "O(nonzeros)" },
         defaultInput: {
-            entries: [
-                [0, 1, 5],
-                [1, 0, 3],
-                [2, 2, 7],
-            ],
-        },
+        entries: [
+            [0, 1, 5],
+            [1, 0, 3],
+            [2, 2, 7],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -5477,19 +5471,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(L·(V + E))", space: "O(L·V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2, 5],
-                    ["C", 4, 1],
-                    ["D", 6, 1],
-                ],
-                B: [["D", 2, 1]],
-                C: [["D", 1, 5]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2, 5],
+                ["C", 4, 1],
+                ["D", 6, 1],
+            ],
+            B: [["D", 2, 1]],
+            C: [["D", 1, 5]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5538,12 +5532,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(1)" },
         defaultInput: {
-            matrix: [
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9],
-            ],
-        },
+        matrix: [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -5560,13 +5554,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log versions) read", space: "O(writes)" },
         defaultInput: {
-            size: 3,
-            writes: [
-                [0, 0, 7],
-                [1, 1, 9],
-            ],
-            read: [1, 0],
-        },
+        size: 3,
+        writes: [
+            [0, 0, 7],
+            [1, 1, 9],
+        ],
+        read: [1, 0],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -5583,13 +5577,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(ops·log n)" },
         defaultInput: {
-            size: 5,
-            unions: [
-                [0, 1],
-                [2, 3],
-                [0, 2],
-            ],
-        },
+        size: 5,
+        unions: [
+            [0, 1],
+            [2, 3],
+            [0, 2],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -5598,12 +5592,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) per update", space: "O(n log n)" },
         defaultInput: {
-            array: [1, 2, 3, 4],
-            updates: [
-                [1, 9],
-                [2, 7],
-            ],
-        },
+        array: [1, 2, 3, 4],
+        updates: [
+            [1, 9],
+            [2, 7],
+        ],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -5620,12 +5614,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5658,14 +5652,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 4],
-                [0, 4],
-            ],
-            query: [3, 1],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 4],
+            [0, 4],
+        ],
+        query: [3, 1],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5674,15 +5668,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [2, 5],
-                [0, 3],
-            ],
-            point: [2, 1],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [2, 5],
+            [0, 3],
+        ],
+        point: [2, 1],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5691,15 +5685,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [2, 5],
-                [0, 3],
-            ],
-            point: [2, 1],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [2, 5],
+            [0, 3],
+        ],
+        point: [2, 1],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5708,12 +5702,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [1, 2],
-                [2, 1],
-                [3, 3],
-            ],
-        },
+        points: [
+            [1, 2],
+            [2, 1],
+            [3, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5762,13 +5756,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [0, 3],
-            ],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5777,13 +5771,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5792,14 +5786,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [4, 3],
-                [2, 2],
-                [0, 3],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [4, 3],
+            [2, 2],
+            [0, 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5856,20 +5850,20 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            start: "A",
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "C", 1],
+            ["B", "D", 5],
+            ["C", "D", 8],
+            ["C", "E", 10],
+            ["D", "E", 2],
+            ["D", "F", 6],
+            ["E", "F", 3],
+        ],
+        vertices: ["A", "B", "C", "D", "E", "F"],
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5878,20 +5872,20 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            start: "A",
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "C", 1],
+            ["B", "D", 5],
+            ["C", "D", 8],
+            ["C", "E", 10],
+            ["D", "E", 2],
+            ["D", "F", 6],
+            ["E", "F", 3],
+        ],
+        vertices: ["A", "B", "C", "D", "E", "F"],
+        start: "A",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5940,13 +5934,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["P1", "P2", "C"],
-            weights: [5, 4, -6],
-            arcs: [
-                ["P2", "P1"],
-                ["P1", "C"],
-            ],
-        },
+        vertices: ["P1", "P2", "C"],
+        weights: [5, 4, -6],
+        arcs: [
+            ["P2", "P1"],
+            ["P1", "C"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -5987,15 +5981,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1, 5],
-                [0, 2, 4],
-                [1, 2, 2],
-                [1, 3, 3],
-                [2, 3, 6],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1, 5],
+            [0, 2, 4],
+            [1, 2, 2],
+            [1, 3, 3],
+            [2, 3, 6],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6004,17 +5998,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V²·E)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "T", 2],
-                ["B", "T", 3],
-            ],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        edges: [
+            ["S", "A", 3],
+            ["S", "B", 2],
+            ["A", "B", 1],
+            ["A", "T", 2],
+            ["B", "T", 3],
+        ],
+        vertices: ["S", "A", "B", "T"],
+        source: "S",
+        sink: "T",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6031,14 +6025,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -6095,13 +6089,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(T V E^2)", space: "O(T(V + E))" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 1, 1],
-                [1, 2, 1, 1],
-            ],
-            demand: 2,
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 1, 1],
+            [1, 2, 1, 1],
+        ],
+        demand: 2,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6126,14 +6120,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -6206,12 +6200,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            rects: [
-                [0, 0, 2, 2],
-                [1, 1, 3, 3],
-                [2, 0, 4, 1],
-            ],
-        },
+        rects: [
+            [0, 0, 2, 2],
+            [1, 1, 3, 3],
+            [2, 0, 4, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6244,21 +6238,21 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E·(E log V))", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6275,9 +6269,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -6294,19 +6288,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(R·(V + E))", space: "O(R·V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2, 3],
-                    ["C", 4, 1],
-                ],
-                B: [["D", 2, 1]],
-                C: [["D", 1, 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            budget: 3,
+        graph: {
+            A: [
+                ["B", 2, 3],
+                ["C", 4, 1],
+            ],
+            B: [["D", 2, 1]],
+            C: [["D", 1, 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        budget: 3,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6323,15 +6317,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["C", "D", 3],
-                ["A", "C", 4],
-                ["A", "D", 8],
-            ],
-        },
+        vertices: ["A", "B", "C", "D"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["C", "D", 3],
+            ["A", "C", 4],
+            ["A", "D", 8],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6364,17 +6358,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(rows·cols)", space: "O(rows·cols)" },
         defaultInput: {
-            grid: [
-                ["a", "b", "a", "c"],
-                ["b", "a", "c", "a"],
-                ["a", "b", "a", "c"],
-                ["c", "a", "b", "a"],
-            ],
-            pattern: [
-                ["a", "c"],
-                ["c", "a"],
-            ],
-        },
+        grid: [
+            ["a", "b", "a", "c"],
+            ["b", "a", "c", "a"],
+            ["a", "b", "a", "c"],
+            ["c", "a", "b", "a"],
+        ],
+        pattern: [
+            ["a", "c"],
+            ["c", "a"],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -6399,15 +6393,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [5, 2],
-                [4, 4],
-                [0, 4],
-                [-1, 2],
-            ],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [5, 2],
+            [4, 4],
+            [0, 4],
+            [-1, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6432,13 +6426,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(1)" },
         defaultInput: {
-            matrix: [
-                [1, 4, 7, 10],
-                [2, 5, 8, 11],
-                [3, 6, 9, 12],
-            ],
-            target: 5,
-        },
+        matrix: [
+            [1, 4, 7, 10],
+            [2, 5, 8, 11],
+            [3, 6, 9, 12],
+        ],
+        target: 5,
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -6487,19 +6481,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E·V)", space: "O(V + E)" },
         defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        edges: [
+            ["A", "B", 4],
+            ["A", "C", 2],
+            ["B", "C", 1],
+            ["B", "D", 5],
+            ["C", "D", 8],
+            ["C", "E", 10],
+            ["D", "E", 2],
+            ["D", "F", 6],
+            ["E", "F", 3],
+        ],
+        vertices: ["A", "B", "C", "D", "E", "F"],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6508,21 +6502,21 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6643,26 +6637,26 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 3],
-                    ["C", 6],
-                ],
-                B: [
-                    ["C", 2],
-                    ["D", 4],
-                ],
-                C: [
-                    ["D", 1],
-                    ["E", 5],
-                ],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
+        graph: {
+            A: [
+                ["B", 3],
+                ["C", 6],
+            ],
+            B: [
+                ["C", 2],
+                ["D", 4],
+            ],
+            C: [
+                ["D", 1],
+                ["E", 5],
+            ],
+            D: [["E", 2]],
+            E: [],
         },
+        vertices: ["A", "B", "C", "D", "E"],
+        start: "A",
+        target: "E",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6671,15 +6665,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 4],
-                [0, 4],
-            ],
-            start: [0.5, 2],
-            goal: [3.5, 2],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 4],
+            [0, 4],
+        ],
+        start: [0.5, 2],
+        goal: [3.5, 2],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6728,12 +6722,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(2^n) worst", space: "O(m·n)" },
         defaultInput: {
-            objective: [3, 2],
-            constraints: [
-                [1, 1, 4],
-                [1, 2, 6],
-            ],
-        },
+        objective: [3, 2],
+        constraints: [
+            [1, 1, 4],
+            [1, 2, 6],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -6782,12 +6776,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            buildings: [
-                [1, 4, 3],
-                [2, 5, 5],
-                [6, 2, 7],
-            ],
-        },
+        buildings: [
+            [1, 4, 3],
+            [2, 5, 5],
+            [6, 2, 7],
+        ],
+    },
         visualType: "array" as LayoutType,
     },
     {
@@ -6796,12 +6790,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
         defaultInput: {
-            buildings: [
-                [0, 2, 3],
-                [1, 4, 2],
-                [3, 5, 4],
-            ],
-        },
+        buildings: [
+            [0, 2, 3],
+            [1, 4, 2],
+            [3, 5, 4],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6810,9 +6804,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(objects)" },
         defaultInput: {
-            slabSize: 4,
-            ops: [["alloc"], ["alloc"], ["free", 0], ["alloc"], ["alloc"], ["alloc"]],
-        },
+        slabSize: 4,
+        ops: [["alloc"], ["alloc"], ["free", 0], ["alloc"], ["alloc"], ["alloc"]],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -6909,13 +6903,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(2^E V)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["A", "B", "C"],
-            edges: [
-                ["A", "B", 1],
-                ["B", "C", 2],
-                ["A", "C", 3],
-            ],
-        },
+        vertices: ["A", "B", "C"],
+        edges: [
+            ["A", "B", 1],
+            ["B", "C", 2],
+            ["A", "C", 3],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -6940,29 +6934,29 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 4],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", -3],
-                    ["D", 2],
-                ],
-                C: [
-                    ["D", 6],
-                    ["E", 1],
-                ],
-                D: [
-                    ["E", -2],
-                    ["F", 3],
-                ],
-                E: [["F", 2]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
+        graph: {
+            A: [
+                ["B", 4],
+                ["C", 5],
+            ],
+            B: [
+                ["C", -3],
+                ["D", 2],
+            ],
+            C: [
+                ["D", 6],
+                ["E", 1],
+            ],
+            D: [
+                ["E", -2],
+                ["F", 3],
+            ],
+            E: [["F", 2]],
+            F: [],
         },
+        start: "A",
+        target: "F",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7099,13 +7093,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E + V^2 log V)", space: "O(V^2)" },
         defaultInput: {
-            vertices: ["0", "1", "2"],
-            edges: [
-                [0, 1, 3],
-                [1, 2, 2],
-                [0, 2, 1],
-            ],
-        },
+        vertices: ["0", "1", "2"],
+        edges: [
+            [0, 1, 3],
+            [1, 2, 2],
+            [0, 2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7210,13 +7204,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n)" },
         defaultInput: {
-            subject: [
-                [1, 1],
-                [5, 1],
-                [3, 5],
-            ],
-            window: { minX: 0, minY: 0, maxX: 4, maxY: 4 },
-        },
+        subject: [
+            [1, 1],
+            [5, 1],
+            [3, 5],
+        ],
+        window: { minX: 0, minY: 0, maxX: 4, maxY: 4 },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7225,17 +7219,17 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                ["0", "1", 1],
-                ["0", "2", 2],
-                ["1", "3", 2],
-                ["2", "3", 1],
-                ["1", "2", 1],
-            ],
-            source: "0",
-            sink: "3",
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            ["0", "1", 1],
+            ["0", "2", 2],
+            ["1", "3", 2],
+            ["2", "3", 1],
+            ["1", "2", 1],
+        ],
+        source: "0",
+        sink: "3",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7244,21 +7238,21 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O((n+k) log n)", space: "O(n)" },
         defaultInput: {
-            segments: [
-                [
-                    [0, 0],
-                    [6, 4],
-                ],
-                [
-                    [1, 3],
-                    [5, 1],
-                ],
-                [
-                    [2, 1],
-                    [7, 2],
-                ],
+        segments: [
+            [
+                [0, 0],
+                [6, 4],
             ],
-        },
+            [
+                [1, 3],
+                [5, 1],
+            ],
+            [
+                [2, 1],
+                [7, 2],
+            ],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7299,16 +7293,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C", "D"],
-                C: ["A", "B"],
-                D: ["B", "E", "G"],
-                E: ["D", "F"],
-                F: ["E", "G"],
-                G: ["D", "F"],
-            },
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "C", "D"],
+            C: ["A", "B"],
+            D: ["B", "E", "G"],
+            E: ["D", "F"],
+            F: ["E", "G"],
+            G: ["D", "F"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7317,14 +7311,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C", "D"],
-                C: ["A", "B"],
-                D: ["B", "E"],
-                E: ["D"],
-            },
+        graph: {
+            A: ["B", "C"],
+            B: ["A", "C", "D"],
+            C: ["A", "B"],
+            D: ["B", "E"],
+            E: ["D"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7333,15 +7327,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: ["B"],
-                B: ["C", "E"],
-                C: ["A", "F"],
-                D: ["C"],
-                E: ["D"],
-                F: ["F"],
-            },
+        graph: {
+            A: ["B"],
+            B: ["C", "E"],
+            C: ["A", "F"],
+            D: ["C"],
+            E: ["D"],
+            F: ["F"],
         },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7414,19 +7408,19 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [["D", 2]],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            depart: 0,
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [["D", 2]],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        depart: 0,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7451,8 +7445,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: ["B", "C"], B: ["D"], C: ["D"], D: ["E"], E: [] },
-        },
+        graph: { A: ["B", "C"], B: ["D"], C: ["D"], D: ["E"], E: [] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7461,8 +7455,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: { A: [], B: ["A"], C: ["A"], D: ["B", "C"], E: ["D"] },
-        },
+        graph: { A: [], B: ["A"], C: ["A"], D: ["B", "C"], E: ["D"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7495,13 +7489,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(S D)", space: "O(S D)" },
         defaultInput: {
-            supply: [3, 2],
-            demand: [2, 3],
-            cost: [
-                [1, 3],
-                [2, 1],
-            ],
-        },
+        supply: [3, 2],
+        demand: [2, 3],
+        cost: [
+            [1, 3],
+            [2, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7510,14 +7504,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            segments: [
-                [
-                    [0, 2],
-                    [4, 2],
-                ],
+        segments: [
+            [
+                [0, 2],
+                [4, 2],
             ],
-            query: [3, 3],
-        },
+        ],
+        query: [3, 3],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7542,9 +7536,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7553,10 +7547,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·k)", space: "O(n·k)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            costs: { A: [5, 1, 4], B: [2, 6, 3], C: [4, 2, 7], D: [1, 5, 2] },
-        },
+        parentMap: { B: "A", C: "A", D: "B" },
+        ids: ["A", "B", "C", "D"],
+        costs: { A: [5, 1, 4], B: [2, 6, 3], C: [4, 2, 7], D: [1, 5, 2] },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7565,16 +7559,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
         id: "tree-dominating-set-dp",
         name: "Tree Dominating Set DP",
         category: "tree" as AlgorithmCategory,
-        complexity: { time: "O(n)", space: "O(n)" },
+        complexity: { time: "O(2^n)", space: "O(n)" },
         defaultInput: { parentMap: { B: "A", C: "A", D: "A" }, ids: ["A", "B", "C", "D"] },
         visualType: "tree" as LayoutType,
     },
@@ -7584,10 +7578,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E" },
-            ids: ["A", "B", "C", "D", "E", "F", "G"],
-            weights: { A: 3, B: 2, C: 4, D: 5, E: 1, F: 2, G: 6 },
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E" },
+        ids: ["A", "B", "C", "D", "E", "F", "G"],
+        weights: { A: 3, B: 2, C: 4, D: 5, E: 1, F: 2, G: 6 },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7596,9 +7590,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7607,9 +7601,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-        },
+        parentMap: { B: "A", C: "A", D: "B" },
+        ids: ["A", "B", "C", "D"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7618,9 +7612,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
         defaultInput: {
-            t1: { parentMap: { B: "A", C: "B" }, ids: ["A", "B", "C"] },
-            t2: { parentMap: { Y: "X", Z: "Y" }, ids: ["X", "Y", "Z"] },
-        },
+        t1: { parentMap: { B: "A", C: "B" }, ids: ["A", "B", "C"] },
+        t2: { parentMap: { Y: "X", Z: "Y" }, ids: ["X", "Y", "Z"] },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7629,9 +7623,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7639,10 +7633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Hashing",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-        },
+        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7651,15 +7642,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            treeA: {
-                parentMap: { B: "A", C: "A", D: "B", E: "B" },
-                ids: ["A", "B", "C", "D", "E"],
-            },
-            treeB: {
-                parentMap: { X: "R", Y: "R", Z: "X", W: "X" },
-                ids: ["R", "X", "Y", "Z", "W"],
-            },
+        treeA: {
+            parentMap: { B: "A", C: "A", D: "B", E: "B" },
+            ids: ["A", "B", "C", "D", "E"],
         },
+        treeB: {
+            parentMap: { X: "R", Y: "R", Z: "X", W: "X" },
+            ids: ["R", "X", "Y", "Z", "W"],
+        },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7668,10 +7659,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            k: 1,
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "C" },
+        ids: ["A", "B", "C", "D", "E"],
+        k: 1,
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7680,12 +7671,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·W²)", space: "O(n·W)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            weight: { A: 2, B: 1, C: 3, D: 2 },
-            value: { A: 3, B: 2, C: 4, D: 2 },
-            capacity: 4,
-        },
+        parentMap: { B: "A", C: "A", D: "B" },
+        ids: ["A", "B", "C", "D"],
+        weight: { A: 2, B: 1, C: 3, D: 2 },
+        value: { A: 3, B: 2, C: 4, D: 2 },
+        capacity: 4,
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7694,10 +7685,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            values: { A: -5, B: 4, C: 3, D: 2, E: -1 },
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "C" },
+        ids: ["A", "B", "C", "D", "E"],
+        values: { A: -5, B: 4, C: 3, D: 2, E: -1 },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7705,10 +7696,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Maximum Matching DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-        },
+        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "C" }, ids: ["A", "B", "C", "D", "E"] },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7717,11 +7705,11 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-            weight: { A: 1, B: 2, C: 1, D: 1, E: 1 },
-            limit: 3,
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B" },
+        ids: ["A", "B", "C", "D", "E"],
+        weight: { A: 1, B: 2, C: 1, D: 1, E: 1 },
+        limit: 3,
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7730,9 +7718,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(2^m)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B" },
+        ids: ["A", "B", "C", "D", "E"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7741,9 +7729,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n)" },
         defaultInput: {
-            text: { parentMap: { B: "A", C: "A", D: "B" }, ids: ["A", "B", "C", "D"] },
-            pattern: { parentMap: { D: "B" }, ids: ["B", "D"] },
-        },
+        text: { parentMap: { B: "A", C: "A", D: "B" }, ids: ["A", "B", "C", "D"] },
+        pattern: { parentMap: { D: "B" }, ids: ["B", "D"] },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7752,9 +7740,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "B", D: "C" },
-            ids: ["A", "B", "C", "D"],
-        },
+        parentMap: { B: "A", C: "B", D: "C" },
+        ids: ["A", "B", "C", "D"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7763,9 +7751,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            preorder: ["3", "9", "20", "15", "7"],
-            inorder: ["9", "3", "15", "20", "7"],
-        },
+        preorder: ["3", "9", "20", "15", "7"],
+        inorder: ["9", "3", "15", "20", "7"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7774,9 +7762,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-        },
+        parentMap: { B: "A", C: "A", D: "B" },
+        ids: ["A", "B", "C", "D"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7793,10 +7781,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(t·h)", space: "O(n)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "F", H: "C" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            terminals: ["D", "E", "G"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "F", H: "C" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        terminals: ["D", "E", "G"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7804,10 +7792,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Traversals",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-        },
+        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7815,10 +7800,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Vertex Cover DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-        },
+        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7835,8 +7817,8 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(m·√m)", space: "O(V + E)" },
         defaultInput: {
-            graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] },
-        },
+        graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7885,12 +7867,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
         defaultInput: {
-            clauses: [
-                ["x0", "x1"],
-                ["nx0", "x1"],
-                ["nx0", "nx1"],
-            ],
-        },
+        clauses: [
+            ["x0", "x1"],
+            ["nx0", "x1"],
+            ["nx0", "nx1"],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -7931,14 +7913,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -7955,13 +7937,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(alpha n) amortized", space: "O(n + deletes)" },
         defaultInput: {
-            n: 3,
-            ops: [
-                ["union", 0, 1],
-                ["delete", 0],
-                ["union", 0, 2],
-            ],
-        },
+        n: 3,
+        ops: [
+            ["union", 0, 1],
+            ["delete", 0],
+            ["union", 0, 2],
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -7994,15 +7976,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1],
-                [0, 2],
-                [1, 3],
-                [2, 3],
-                [1, 2],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1],
+            [0, 2],
+            [1, 3],
+            [2, 3],
+            [1, 2],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8011,9 +7993,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V!·V)", space: "O(V)" },
         defaultInput: {
-            g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] },
-            g2: { X: ["Y", "Z"], Y: ["X", "Z"], Z: ["X", "Y"] },
-        },
+        g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] },
+        g2: { X: ["Y", "Z"], Y: ["X", "Z"], Z: ["X", "Y"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8022,10 +8004,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(k log k)", space: "O(k)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C" },
-            ids: ["A", "B", "C", "D", "E", "F"],
-            important: ["D", "E", "F"],
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C" },
+        ids: ["A", "B", "C", "D", "E", "F"],
+        important: ["D", "E", "F"],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -8034,14 +8016,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            polygon: [
-                [0, 0],
-                [4, 0],
-                [4, 4],
-                [0, 4],
-            ],
-            viewpoint: [2, 2],
-        },
+        polygon: [
+            [0, 0],
+            [4, 0],
+            [4, 4],
+            [0, 4],
+        ],
+        viewpoint: [2, 2],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8058,13 +8040,13 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            points: [
-                [0, 0],
-                [4, 0],
-                [2, 3],
-                [1, 1],
-            ],
-        },
+        points: [
+            [0, 0],
+            [4, 0],
+            [2, 3],
+            [1, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8073,14 +8055,14 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN avg", space: "O(n)" },
         defaultInput: {
-            points: [
-                [2, 3],
-                [5, 1],
-                [7, 6],
-                [1, 7],
-            ],
-            query: [4, 2],
-        },
+        points: [
+            [2, 3],
+            [5, 1],
+            [7, 6],
+            [1, 7],
+        ],
+        query: [4, 2],
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -8137,16 +8119,16 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V + E)" },
         defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [
-                [0, 1, 5],
-                [1, 2, 5],
-                [2, 3, 5],
-                [0, 3, 1],
-                [0, 2, 1],
-                [1, 3, 1],
-            ],
-        },
+        vertices: ["0", "1", "2", "3"],
+        edges: [
+            [0, 1, 5],
+            [1, 2, 5],
+            [2, 3, 5],
+            [0, 3, 1],
+            [0, 2, 1],
+            [1, 3, 1],
+        ],
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8155,12 +8137,12 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
         defaultInput: {
-            jobs: [
-                { s: 1, e: 3, w: 5 },
-                { s: 2, e: 5, w: 6 },
-                { s: 4, e: 6, w: 5 },
-            ],
-        },
+        jobs: [
+            { s: 1, e: 3, w: 5 },
+            { s: 2, e: 5, w: 6 },
+            { s: 4, e: 6, w: 5 },
+        ],
+    },
         visualType: "grid" as LayoutType,
     },
     {
@@ -8169,9 +8151,9 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V + E)" },
         defaultInput: {
-            g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] },
-            g2: { X: ["Y"], Y: ["X", "Z"], Z: ["Y"] },
-        },
+        g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] },
+        g2: { X: ["Y"], Y: ["X", "Z"], Z: ["Y"] },
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8180,18 +8162,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 5],
-                    ["C", 3],
-                ],
-                B: [["D", 2]],
-                C: [["D", 4]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 5],
+                ["C", 3],
+            ],
+            B: [["D", 2]],
+            C: [["D", 4]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8288,22 +8270,22 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(k·V·(E log V))", space: "O(k·V + E)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 2],
-                    ["C", 5],
-                ],
-                B: [
-                    ["C", 1],
-                    ["D", 4],
-                ],
-                C: [["D", 1]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
-            k: 3,
+        graph: {
+            A: [
+                ["B", 2],
+                ["C", 5],
+            ],
+            B: [
+                ["C", 1],
+                ["D", 4],
+            ],
+            C: [["D", 1]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+        k: 3,
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8320,10 +8302,10 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(V·depth)", space: "O(V)" },
         defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            labels: { A: "a", B: "b", C: "a", D: "b", E: "a", F: "c", G: "b", H: "a" },
-        },
+        parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
+        ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
+        labels: { A: "a", B: "b", C: "a", D: "b", E: "a", F: "c", G: "b", H: "a" },
+    },
         visualType: "tree" as LayoutType,
     },
     {
@@ -8332,18 +8314,18 @@ export const MANIFEST: AlgorithmMeta[] = [
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
         defaultInput: {
-            graph: {
-                A: [
-                    ["B", 0],
-                    ["C", 1],
-                ],
-                B: [["D", 1]],
-                C: [["D", 0]],
-                D: [],
-            },
-            start: "A",
-            target: "D",
+        graph: {
+            A: [
+                ["B", 0],
+                ["C", 1],
+            ],
+            B: [["D", 1]],
+            C: [["D", 0]],
+            D: [],
         },
+        start: "A",
+        target: "D",
+    },
         visualType: "graph" as LayoutType,
     },
     {
@@ -8396,13 +8378,12 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "batcher-odd-even-merge-sort": () => import("./algo/sort/batcher-odd-even-merge-sort"),
     "bead-sort": () => import("./algo/sort/bead-sort"),
     "beam-search": () => import("./algo/search/beam-search"),
-    beap: () => import("./algo/ds/beap"),
+    "beap": () => import("./algo/ds/beap"),
     "bellman-ford": () => import("./algo/path/bellman-ford"),
     "bertrand-postulate-check": () => import("./algo/math/bertrand-postulate-check"),
     "betweenness-centrality-brandes": () => import("./algo/graph/betweenness-centrality-brandes"),
-    bfs: () => import("./algo/graph/bfs"),
-    "biconnected-components-hopcroft-tarjan": () =>
-        import("./algo/graph/biconnected-components-hopcroft-tarjan"),
+    "bfs": () => import("./algo/graph/bfs"),
+    "biconnected-components-hopcroft-tarjan": () => import("./algo/graph/biconnected-components-hopcroft-tarjan"),
     "bidirectional-bfs": () => import("./algo/graph/bidirectional-bfs"),
     "bidirectional-dijkstra": () => import("./algo/path/bidirectional-dijkstra"),
     "bidirectional-selection-sort": () => import("./algo/sort/bidirectional-selection-sort"),
@@ -8423,16 +8404,16 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "bitmask-tsp": () => import("./algo/dp/bitmask-tsp"),
     "bitonic-array-search": () => import("./algo/search/bitonic-array-search"),
     "bitonic-sort": () => import("./algo/sort/bitonic-sort"),
-    bitset: () => import("./algo/ds/bitset"),
+    "bitset": () => import("./algo/ds/bitset"),
     "bk-tree": () => import("./algo/ds/bk-tree"),
     "block-sort": () => import("./algo/sort/block-sort"),
     "bloom-filter": () => import("./algo/special/bloom-filter"),
-    blossom: () => import("./algo/flow/blossom"),
+    "blossom": () => import("./algo/flow/blossom"),
     "bndm-dawg-matching": () => import("./algo/string/bndm-dawg-matching"),
     "bom-factor-oracle-matching": () => import("./algo/string/bom-factor-oracle-matching"),
     "boolean-parenthesization": () => import("./algo/dp/boolean-parenthesization"),
     "booth-minimal-rotation": () => import("./algo/string/booth-minimal-rotation"),
-    boruvka: () => import("./algo/mst/boruvka"),
+    "boruvka": () => import("./algo/mst/boruvka"),
     "bose-nelson-sorting-network": () => import("./algo/sort/bose-nelson-sorting-network"),
     "box-stacking": () => import("./algo/dp/box-stacking"),
     "boyer-moore": () => import("./algo/string/boyer-moore"),
@@ -8442,7 +8423,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "brodal-heap": () => import("./algo/ds/brodal-heap"),
     "bron-kerbosch-maximal-cliques": () => import("./algo/graph/bron-kerbosch-maximal-cliques"),
     "bsp-tree": () => import("./algo/ds/bsp-tree"),
-    bst: () => import("./algo/ds/bst"),
+    "bst": () => import("./algo/ds/bst"),
     "bubble-sort": () => import("./algo/sort/bubble-sort"),
     "bucket-heap": () => import("./algo/ds/bucket-heap"),
     "bucket-sort": () => import("./algo/sort/bucket-sort"),
@@ -8450,9 +8431,8 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "burrows-wheeler-transform": () => import("./algo/string/burrows-wheeler-transform"),
     "burst-balloons": () => import("./algo/dp/burst-balloons"),
     "burst-trie": () => import("./algo/ds/burst-trie"),
-    burstsort: () => import("./algo/sort/burstsort"),
-    "byte-pair-encoding-tokenization": () =>
-        import("./algo/string/byte-pair-encoding-tokenization"),
+    "burstsort": () => import("./algo/sort/burstsort"),
+    "byte-pair-encoding-tokenization": () => import("./algo/string/byte-pair-encoding-tokenization"),
     "cache-oblivious-btree": () => import("./algo/ds/cache-oblivious-btree"),
     "calendar-queue": () => import("./algo/ds/calendar-queue"),
     "capacity-scaling-max-flow": () => import("./algo/flow/capacity-scaling-max-flow"),
@@ -8461,18 +8441,15 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "cascade-merge-sort": () => import("./algo/sort/cascade-merge-sort"),
     "catalan-dp-counting": () => import("./algo/dp/catalan-dp-counting"),
     "centroid-decomposition": () => import("./algo/tree/centroid-decomposition"),
-    "chinese-postman-route-inspection": () =>
-        import("./algo/graph/chinese-postman-route-inspection"),
-    chomp: () => import("./algo/game/chomp"),
+    "chinese-postman-route-inspection": () => import("./algo/graph/chinese-postman-route-inspection"),
+    "chomp": () => import("./algo/game/chomp"),
     "chord-dht-lookup": () => import("./algo/special/chord-dht-lookup"),
     "christofides-euclidean-tsp": () => import("./algo/geo/christofides-euclidean-tsp"),
-    "circle-circle-intersection-points": () =>
-        import("./algo/geo/circle-circle-intersection-points"),
+    "circle-circle-intersection-points": () => import("./algo/geo/circle-circle-intersection-points"),
     "circle-sort": () => import("./algo/sort/circle-sort"),
     "circle-union-area-sweep": () => import("./algo/geo/circle-union-area-sweep"),
     "circular-linked-list": () => import("./algo/ds/circular-linked-list"),
-    "circumcenter-circle-through-3-points": () =>
-        import("./algo/geo/circumcenter-circle-through-3-points"),
+    "circumcenter-circle-through-3-points": () => import("./algo/geo/circumcenter-circle-through-3-points"),
     "clock-cache": () => import("./algo/ds/clock-cache"),
     "closeness-centrality": () => import("./algo/graph/closeness-centrality"),
     "closest-pair-of-points": () => import("./algo/geo/closest-pair-of-points"),
@@ -8481,7 +8458,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "cohen-sutherland-line-clipping": () => import("./algo/geo/cohen-sutherland-line-clipping"),
     "coin-change-count": () => import("./algo/dp/coin-change-count"),
     "coin-change-min-coins": () => import("./algo/dp/coin-change-min-coins"),
-    col: () => import("./algo/game/col"),
+    "col": () => import("./algo/game/col"),
     "column-sort": () => import("./algo/sort/column-sort"),
     "comb-sort": () => import("./algo/sort/comb-sort"),
     "concurrent-queue": () => import("./algo/ds/concurrent-queue"),
@@ -8503,10 +8480,10 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "counting-dp": () => import("./algo/dp/counting-dp"),
     "counting-sort": () => import("./algo/sort/counting-sort"),
     "cover-tree": () => import("./algo/ds/cover-tree"),
-    cram: () => import("./algo/game/cram"),
+    "cram": () => import("./algo/game/cram"),
     "crt-coprime": () => import("./algo/math/crt-coprime"),
     "crt-generalized": () => import("./algo/math/crt-generalized"),
-    csr: () => import("./algo/ds/csr"),
+    "csr": () => import("./algo/ds/csr"),
     "cube-sort": () => import("./algo/sort/cube-sort"),
     "cuckoo-filter": () => import("./algo/ds/cuckoo-filter"),
     "cuckoo-hashing": () => import("./algo/ds/cuckoo-hashing"),
@@ -8526,10 +8503,9 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "decode-ways": () => import("./algo/dp/decode-ways"),
     "degeneracy-ordering": () => import("./algo/graph/degeneracy-ordering"),
     "degree-constrained-mst-heuristic": () => import("./algo/mst/degree-constrained-mst-heuristic"),
-    "delaunay-triangulation-incremental": () =>
-        import("./algo/geo/delaunay-triangulation-incremental"),
+    "delaunay-triangulation-incremental": () => import("./algo/geo/delaunay-triangulation-incremental"),
     "delta-stepping-parallel-sssp": () => import("./algo/path/delta-stepping-parallel-sssp"),
-    deque: () => import("./algo/ds/deque"),
+    "deque": () => import("./algo/ds/deque"),
     "deque-sortable-permutations": () => import("./algo/sort/deque-sortable-permutations"),
     "derangements-dp": () => import("./algo/dp/derangements-dp"),
     "dfs-iterative": () => import("./algo/graph/dfs-iterative"),
@@ -8541,7 +8517,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "dijkstra-fibonacci": () => import("./algo/path/dijkstra-fibonacci"),
     "dijkstra-heap": () => import("./algo/path/dijkstra-heap"),
     "dijkstra-matrix": () => import("./algo/path/dijkstra-matrix"),
-    dinic: () => import("./algo/flow/dinic"),
+    "dinic": () => import("./algo/flow/dinic"),
     "discrete-root": () => import("./algo/math/discrete-root"),
     "disjoint-sparse-table": () => import("./algo/ds/disjoint-sparse-table"),
     "distinct-subsequences-count": () => import("./algo/dp/distinct-subsequences-count"),
@@ -8549,18 +8525,17 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "divide-conquer-dp": () => import("./algo/dp/divide-conquer-dp"),
     "divisor-sieve-sigma": () => import("./algo/math/divisor-sieve-sigma"),
     "dominators-lengauer-tarjan": () => import("./algo/graph/dominators-lengauer-tarjan"),
-    domineering: () => import("./algo/game/domineering"),
+    "domineering": () => import("./algo/game/domineering"),
     "dot-cross-product": () => import("./algo/geo/dot-cross-product"),
     "dot-plot-alignment": () => import("./algo/string/dot-plot-alignment"),
     "dots-and-boxes": () => import("./algo/game/dots-and-boxes"),
     "double-array-trie": () => import("./algo/ds/double-array-trie"),
     "doubly-connected-edge-list": () => import("./algo/ds/doubly-connected-edge-list"),
     "doubly-linked-list": () => import("./algo/ds/doubly-linked-list"),
-    "douglas-peucker-polyline-simplification": () =>
-        import("./algo/geo/douglas-peucker-polyline-simplification"),
+    "douglas-peucker-polyline-simplification": () => import("./algo/geo/douglas-peucker-polyline-simplification"),
     "dpll-sat-search": () => import("./algo/search/dpll-sat-search"),
     "dsatur-coloring": () => import("./algo/graph/dsatur-coloring"),
-    dsu: () => import("./algo/ds/dsu"),
+    "dsu": () => import("./algo/ds/dsu"),
     "dsu-on-tree": () => import("./algo/tree/dsu-on-tree"),
     "dsu-rollback": () => import("./algo/ds/dsu-rollback"),
     "dungeon-game": () => import("./algo/dp/dungeon-game"),
@@ -8573,7 +8548,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "edit-distance": () => import("./algo/dp/edit-distance"),
     "edmonds-arborescence": () => import("./algo/mst/edmonds-arborescence"),
     "edmonds-karp": () => import("./algo/flow/edmonds-karp"),
-    eertree: () => import("./algo/string/eertree"),
+    "eertree": () => import("./algo/string/eertree"),
     "egg-drop": () => import("./algo/dp/egg-drop"),
     "elgamal-encryption-toy": () => import("./algo/math/elgamal-encryption-toy"),
     "elias-gamma-coding": () => import("./algo/special/elias-gamma-coding"),
@@ -8585,14 +8560,13 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "euler-totient": () => import("./algo/math/euler-totient"),
     "euler-tour-tree": () => import("./algo/ds/euler-tour-tree"),
     "even-perfect-numbers-euler": () => import("./algo/math/even-perfect-numbers-euler"),
-    expectiminimax: () => import("./algo/game/expectiminimax"),
+    "expectiminimax": () => import("./algo/game/expectiminimax"),
     "exponential-search": () => import("./algo/search/exponential-search"),
     "expression-tree-evaluation": () => import("./algo/tree/expression-tree-evaluation"),
     "extended-euclid": () => import("./algo/math/extended-euclid"),
     "extendible-hashing": () => import("./algo/ds/extendible-hashing"),
     "external-k-way-merge-sort": () => import("./algo/sort/external-k-way-merge-sort"),
-    "factorial-prime-exponent-legendre": () =>
-        import("./algo/math/factorial-prime-exponent-legendre"),
+    "factorial-prime-exponent-legendre": () => import("./algo/math/factorial-prime-exponent-legendre"),
     "farey-sequence": () => import("./algo/math/farey-sequence"),
     "feasible-circulation-demands": () => import("./algo/flow/feasible-circulation-demands"),
     "fenwick-tree": () => import("./algo/ds/fenwick-tree"),
@@ -8641,8 +8615,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "gomory-hu-tree": () => import("./algo/flow/gomory-hu-tree"),
     "gossip-protocol": () => import("./algo/special/gossip-protocol"),
     "gradient-descent-1d": () => import("./algo/special/gradient-descent-1d"),
-    "graph-center-periphery-eccentricity": () =>
-        import("./algo/graph/graph-center-periphery-eccentricity"),
+    "graph-center-periphery-eccentricity": () => import("./algo/graph/graph-center-periphery-eccentricity"),
     "gray-code-generation": () => import("./algo/math/gray-code-generation"),
     "greedy-best-first-search": () => import("./algo/search/greedy-best-first-search"),
     "greedy-coloring-welsh-powell": () => import("./algo/graph/greedy-coloring-welsh-powell"),
@@ -8654,7 +8627,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "half-plane-intersection": () => import("./algo/geo/half-plane-intersection"),
     "hamiltonian-cycle-backtracking": () => import("./algo/graph/hamiltonian-cycle-backtracking"),
     "hamming-code-encode-decode": () => import("./algo/math/hamming-code-encode-decode"),
-    hamt: () => import("./algo/ds/hamt"),
+    "hamt": () => import("./algo/ds/hamt"),
     "hash-map-chaining": () => import("./algo/ds/hash-map-chaining"),
     "hash-map-open": () => import("./algo/ds/hash-map-open"),
     "hash-set": () => import("./algo/ds/hash-set"),
@@ -8662,8 +8635,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "heap-sort": () => import("./algo/sort/heap-sort"),
     "heavy-light-decomposition": () => import("./algo/tree/heavy-light-decomposition"),
     "hensel-lifting-root": () => import("./algo/math/hensel-lifting-root"),
-    "hierarchical-agglomerative-clustering": () =>
-        import("./algo/geo/hierarchical-agglomerative-clustering"),
+    "hierarchical-agglomerative-clustering": () => import("./algo/geo/hierarchical-agglomerative-clustering"),
     "hierholzer-eulerian": () => import("./algo/graph/hierholzer-eulerian"),
     "hilbert-curve-point-ordering": () => import("./algo/geo/hilbert-curve-point-ordering"),
     "hill-climbing": () => import("./algo/special/hill-climbing"),
@@ -8677,13 +8649,12 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "house-robber-circular": () => import("./algo/dp/house-robber-circular"),
     "house-robber-linear": () => import("./algo/dp/house-robber-linear"),
     "huffman-coding": () => import("./algo/special/huffman-coding"),
-    hungarian: () => import("./algo/flow/hungarian"),
-    hyperloglog: () => import("./algo/special/hyperloglog"),
+    "hungarian": () => import("./algo/flow/hungarian"),
+    "hyperloglog": () => import("./algo/special/hyperloglog"),
     "ida-star-search": () => import("./algo/search/ida-star-search"),
     "incidence-matrix": () => import("./algo/ds/incidence-matrix"),
     "inclusion-exclusion-counting": () => import("./algo/math/inclusion-exclusion-counting"),
-    "incremental-2d-linear-programming": () =>
-        import("./algo/geo/incremental-2d-linear-programming"),
+    "incremental-2d-linear-programming": () => import("./algo/geo/incremental-2d-linear-programming"),
     "insertion-sort": () => import("./algo/sort/insertion-sort"),
     "integer-sqrt-newton": () => import("./algo/math/integer-sqrt-newton"),
     "interleaving-string": () => import("./algo/dp/interleaving-string"),
@@ -8691,11 +8662,11 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "interval-heap": () => import("./algo/ds/interval-heap"),
     "interval-matrix-chain": () => import("./algo/dp/interval-matrix-chain"),
     "interval-tree": () => import("./algo/ds/interval-tree"),
-    introsort: () => import("./algo/sort/introsort"),
+    "introsort": () => import("./algo/sort/introsort"),
     "iterative-deepening-dfs": () => import("./algo/graph/iterative-deepening-dfs"),
     "jacobi-symbol": () => import("./algo/math/jacobi-symbol"),
     "jaro-winkler-similarity": () => import("./algo/string/jaro-winkler-similarity"),
-    johnson: () => import("./algo/path/johnson"),
+    "johnson": () => import("./algo/path/johnson"),
     "josephus-problem": () => import("./algo/math/josephus-problem"),
     "jump-game-min-jumps": () => import("./algo/dp/jump-game-min-jumps"),
     "jump-point-search": () => import("./algo/path/jump-point-search"),
@@ -8703,14 +8674,13 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "k-core-decomposition": () => import("./algo/graph/k-core-decomposition"),
     "k-d-tree": () => import("./algo/ds/k-d-tree"),
     "k-means-lloyd": () => import("./algo/geo/k-means-lloyd"),
-    kadane: () => import("./algo/special/kadane"),
+    "kadane": () => import("./algo/special/kadane"),
     "kadane-2d": () => import("./algo/special/kadane-2d"),
     "karatsuba-multiplication": () => import("./algo/math/karatsuba-multiplication"),
-    "karger-klein-tarjan-randomized-mst": () =>
-        import("./algo/mst/karger-klein-tarjan-randomized-mst"),
+    "karger-klein-tarjan-randomized-mst": () => import("./algo/mst/karger-klein-tarjan-randomized-mst"),
     "karger-random-contraction": () => import("./algo/flow/karger-random-contraction"),
     "karp-minimum-mean-cycle": () => import("./algo/path/karp-minimum-mean-cycle"),
-    kayles: () => import("./algo/game/kayles"),
+    "kayles": () => import("./algo/game/kayles"),
     "kdb-tree": () => import("./algo/ds/kdb-tree"),
     "kernel-of-polygon": () => import("./algo/geo/kernel-of-polygon"),
     "kll-sketch": () => import("./algo/ds/kll-sketch"),
@@ -8722,7 +8692,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "knuth-optimization": () => import("./algo/dp/knuth-optimization"),
     "konig-min-vertex-cover": () => import("./algo/flow/konig-min-vertex-cover"),
     "kosaraju-scc": () => import("./algo/graph/kosaraju-scc"),
-    kruskal: () => import("./algo/mst/kruskal"),
+    "kruskal": () => import("./algo/mst/kruskal"),
     "kth-in-sorted-matrix-search": () => import("./algo/search/kth-in-sorted-matrix-search"),
     "label-propagation-communities": () => import("./algo/graph/label-propagation-communities"),
     "lagrange-interpolation": () => import("./algo/math/lagrange-interpolation"),
@@ -8735,7 +8705,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "lca-tarjan-offline": () => import("./algo/tree/lca-tarjan-offline"),
     "lcp-kasai": () => import("./algo/string/lcp-kasai"),
     "lcp-rmq-queries": () => import("./algo/string/lcp-rmq-queries"),
-    lcs: () => import("./algo/dp/lcs"),
+    "lcs": () => import("./algo/dp/lcs"),
     "leftist-heap": () => import("./algo/ds/leftist-heap"),
     "legendre-symbol-euler-criterion": () => import("./algo/math/legendre-symbol-euler-criterion"),
     "levenshtein-automaton-search": () => import("./algo/string/levenshtein-automaton-search"),
@@ -8754,7 +8724,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "linear-sieve": () => import("./algo/math/linear-sieve"),
     "link-cut-tree": () => import("./algo/ds/link-cut-tree"),
     "linked-hash-map": () => import("./algo/ds/linked-hash-map"),
-    lis: () => import("./algo/dp/lis"),
+    "lis": () => import("./algo/dp/lis"),
     "ll1-table-parsing": () => import("./algo/string/ll1-table-parsing"),
     "lock-free-queue-michael-scott": () => import("./algo/ds/lock-free-queue-michael-scott"),
     "lock-free-stack": () => import("./algo/ds/lock-free-stack"),
@@ -8780,13 +8750,12 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "lzw-coding": () => import("./algo/special/lzw-coding"),
     "m-tree": () => import("./algo/ds/m-tree"),
     "majority-vote-search": () => import("./algo/search/majority-vote-search"),
-    manacher: () => import("./algo/string/manacher"),
+    "manacher": () => import("./algo/string/manacher"),
     "marching-squares-isocontour": () => import("./algo/geo/marching-squares-isocontour"),
     "matrix-exponentiation": () => import("./algo/math/matrix-exponentiation"),
     "matrix-tree-theorem-counting": () => import("./algo/mst/matrix-tree-theorem-counting"),
     "max-closure-directed-graph": () => import("./algo/flow/max-closure-directed-graph"),
-    "max-collinear-points-line-through-most": () =>
-        import("./algo/geo/max-collinear-points-line-through-most"),
+    "max-collinear-points-line-through-most": () => import("./algo/geo/max-collinear-points-line-through-most"),
     "maximal-rectangle-binary-matrix": () => import("./algo/dp/maximal-rectangle-binary-matrix"),
     "maximal-square": () => import("./algo/dp/maximal-square"),
     "maximum-density-subgraph": () => import("./algo/flow/maximum-density-subgraph"),
@@ -8813,15 +8782,14 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "min-stack": () => import("./algo/ds/min-stack"),
     "minhash-lsh": () => import("./algo/special/minhash-lsh"),
     "minhash-sketch": () => import("./algo/ds/minhash-sketch"),
-    minimax: () => import("./algo/game/minimax"),
+    "minimax": () => import("./algo/game/minimax"),
     "minimax-path-mst": () => import("./algo/path/minimax-path-mst"),
     "minimum-bottleneck-spanning-tree": () => import("./algo/mst/minimum-bottleneck-spanning-tree"),
     "minimum-diameter-spanning-tree": () => import("./algo/mst/minimum-diameter-spanning-tree"),
     "misere-nim": () => import("./algo/game/misere-nim"),
     "misra-gries-summary": () => import("./algo/special/misra-gries-summary"),
     "mobius-inversion": () => import("./algo/math/mobius-inversion"),
-    "modular-gaussian-elimination-mod-p": () =>
-        import("./algo/math/modular-gaussian-elimination-mod-p"),
+    "modular-gaussian-elimination-mod-p": () => import("./algo/math/modular-gaussian-elimination-mod-p"),
     "modular-inverse": () => import("./algo/math/modular-inverse"),
     "modular-tetration-tower-euler": () => import("./algo/math/modular-tetration-tower-euler"),
     "monkey-sort": () => import("./algo/sort/monkey-sort"),
@@ -8849,14 +8817,13 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "nelder-mead-simplex": () => import("./algo/special/nelder-mead-simplex"),
     "network-simplex": () => import("./algo/flow/network-simplex"),
     "newton-raphson-root": () => import("./algo/special/newton-raphson-root"),
-    nim: () => import("./algo/game/nim"),
-    nimble: () => import("./algo/game/nimble"),
+    "nim": () => import("./algo/game/nim"),
+    "nimble": () => import("./algo/game/nimble"),
     "node-kayles": () => import("./algo/game/node-kayles"),
-    ntt: () => import("./algo/math/ntt"),
-    octree: () => import("./algo/ds/octree"),
+    "ntt": () => import("./algo/math/ntt"),
+    "octree": () => import("./algo/ds/octree"),
     "odd-even-transposition-sort": () => import("./algo/sort/odd-even-transposition-sort"),
-    "online-bipartite-matching-ranking": () =>
-        import("./algo/flow/online-bipartite-matching-ranking"),
+    "online-bipartite-matching-ranking": () => import("./algo/flow/online-bipartite-matching-ranking"),
     "optimal-bst": () => import("./algo/tree/optimal-bst"),
     "optimal-game-strategy-pick-ends": () => import("./algo/dp/optimal-game-strategy-pick-ends"),
     "order-statistic-tree": () => import("./algo/ds/order-statistic-tree"),
@@ -8895,8 +8862,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "pollard-rho-discrete-log": () => import("./algo/math/pollard-rho-discrete-log"),
     "polygon-area-shoelace": () => import("./algo/geo/polygon-area-shoelace"),
     "polygon-centroid": () => import("./algo/geo/polygon-centroid"),
-    "polygon-triangulation-ear-clipping": () =>
-        import("./algo/geo/polygon-triangulation-ear-clipping"),
+    "polygon-triangulation-ear-clipping": () => import("./algo/geo/polygon-triangulation-ear-clipping"),
     "polynomial-inversion": () => import("./algo/math/polynomial-inversion"),
     "polynomial-log-exp": () => import("./algo/math/polynomial-log-exp"),
     "polynomial-long-division": () => import("./algo/math/polynomial-long-division"),
@@ -8918,7 +8884,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "pseudoflow-hochbaum": () => import("./algo/flow/pseudoflow-hochbaum"),
     "push-relabel": () => import("./algo/flow/push-relabel"),
     "q-gram-filter-search": () => import("./algo/string/q-gram-filter-search"),
-    quadtree: () => import("./algo/ds/quadtree"),
+    "quadtree": () => import("./algo/ds/quadtree"),
     "quake-heap": () => import("./algo/ds/quake-heap"),
     "queue-array": () => import("./algo/ds/queue-array"),
     "queue-linked": () => import("./algo/ds/queue-linked"),
@@ -8926,7 +8892,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "quick-sort-hoare": () => import("./algo/sort/quick-sort-hoare"),
     "quick-sort-lomuto": () => import("./algo/sort/quick-sort-lomuto"),
     "quickest-flow-time-expanded": () => import("./algo/flow/quickest-flow-time-expanded"),
-    quickselect: () => import("./algo/search/quickselect"),
+    "quickselect": () => import("./algo/search/quickselect"),
     "quotient-filter": () => import("./algo/ds/quotient-filter"),
     "r-tree": () => import("./algo/ds/r-tree"),
     "rabin-karp-double": () => import("./algo/string/rabin-karp-double"),
@@ -8937,8 +8903,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "range-tree-2d": () => import("./algo/ds/range-tree-2d"),
     "rank-select-bitvector": () => import("./algo/ds/rank-select-bitvector"),
     "rbfs-search": () => import("./algo/search/rbfs-search"),
-    "rectangle-union-klee-measure-sweep": () =>
-        import("./algo/geo/rectangle-union-klee-measure-sweep"),
+    "rectangle-union-klee-measure-sweep": () => import("./algo/geo/rectangle-union-klee-measure-sweep"),
     "red-black-tree": () => import("./algo/ds/red-black-tree"),
     "regex-matching-dp": () => import("./algo/dp/regex-matching-dp"),
     "rendezvous-hashing": () => import("./algo/ds/rendezvous-hashing"),
@@ -8946,22 +8911,21 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "replacement-selection-sort": () => import("./algo/sort/replacement-selection-sort"),
     "rerooting-dp": () => import("./algo/tree/rerooting-dp"),
     "reservoir-sampling": () => import("./algo/special/reservoir-sampling"),
-    "resource-constrained-shortest-path": () =>
-        import("./algo/path/resource-constrained-shortest-path"),
+    "resource-constrained-shortest-path": () => import("./algo/path/resource-constrained-shortest-path"),
     "retrograde-analysis": () => import("./algo/game/retrograde-analysis"),
     "reverse-delete-mst": () => import("./algo/mst/reverse-delete-mst"),
     "roaring-bitmap": () => import("./algo/ds/roaring-bitmap"),
     "robin-hood-hashing": () => import("./algo/ds/robin-hood-hashing"),
     "rod-cutting": () => import("./algo/dp/rod-cutting"),
     "rolling-hash-2d": () => import("./algo/string/rolling-hash-2d"),
-    rope: () => import("./algo/ds/rope"),
+    "rope": () => import("./algo/ds/rope"),
     "rotated-array-search": () => import("./algo/search/rotated-array-search"),
     "rotating-calipers": () => import("./algo/geo/rotating-calipers"),
     "run-length-encoding": () => import("./algo/special/run-length-encoding"),
     "runs-via-lyndon": () => import("./algo/string/runs-via-lyndon"),
     "saddleback-search": () => import("./algo/search/saddleback-search"),
     "sam-occurrence-queries": () => import("./algo/string/sam-occurrence-queries"),
-    samplesort: () => import("./algo/sort/samplesort"),
+    "samplesort": () => import("./algo/sort/samplesort"),
     "scapegoat-tree": () => import("./algo/ds/scapegoat-tree"),
     "scc-condensation-graph": () => import("./algo/graph/scc-condensation-graph"),
     "schwartz-zippel-identity": () => import("./algo/special/schwartz-zippel-identity"),
@@ -9002,7 +8966,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "sma-star-search": () => import("./algo/search/sma-star-search"),
     "smith-waterman-alignment": () => import("./algo/string/smith-waterman-alignment"),
     "smooth-sort": () => import("./algo/sort/smooth-sort"),
-    snort: () => import("./algo/game/snort"),
+    "snort": () => import("./algo/game/snort"),
     "soft-heap": () => import("./algo/ds/soft-heap"),
     "solovay-strassen-test": () => import("./algo/math/solovay-strassen-test"),
     "sorted-linked-list": () => import("./algo/ds/sorted-linked-list"),
@@ -9011,11 +8975,11 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "spanning-tree-enumeration": () => import("./algo/mst/spanning-tree-enumeration"),
     "sparse-set": () => import("./algo/ds/sparse-set"),
     "sparse-table": () => import("./algo/ds/sparse-table"),
-    spfa: () => import("./algo/path/spfa"),
+    "spfa": () => import("./algo/path/spfa"),
     "splay-sort": () => import("./algo/sort/splay-sort"),
     "splay-tree": () => import("./algo/ds/splay-tree"),
     "sprague-grundy": () => import("./algo/game/sprague-grundy"),
-    sprouts: () => import("./algo/game/sprouts"),
+    "sprouts": () => import("./algo/game/sprouts"),
     "sqrt-decomposition-array": () => import("./algo/ds/sqrt-decomposition-array"),
     "sqrt-decomposition-search": () => import("./algo/search/sqrt-decomposition-search"),
     "stack-array": () => import("./algo/ds/stack-array"),
@@ -9023,7 +8987,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "stack-permutation-sort": () => import("./algo/sort/stack-permutation-sort"),
     "staircase-nim": () => import("./algo/game/staircase-nim"),
     "static-array": () => import("./algo/ds/static-array"),
-    steque: () => import("./algo/ds/steque"),
+    "steque": () => import("./algo/ds/steque"),
     "stern-brocot-tree": () => import("./algo/math/stern-brocot-tree"),
     "stock-III-two-transactions": () => import("./algo/dp/stock-III-two-transactions"),
     "stock-with-cooldown": () => import("./algo/dp/stock-with-cooldown"),
@@ -9041,8 +9005,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "suffix-tree-ukkonen": () => import("./algo/string/suffix-tree-ukkonen"),
     "suffix-trie": () => import("./algo/ds/suffix-trie"),
     "sunday-quick-shift": () => import("./algo/string/sunday-quick-shift"),
-    "sutherland-hodgman-polygon-clipping": () =>
-        import("./algo/geo/sutherland-hodgman-polygon-clipping"),
+    "sutherland-hodgman-polygon-clipping": () => import("./algo/geo/sutherland-hodgman-polygon-clipping"),
     "suurballe-edge-disjoint-pair": () => import("./algo/flow/suurballe-edge-disjoint-pair"),
     "sweep-line-segment-intersection": () => import("./algo/geo/sweep-line-segment-intersection"),
     "t-digest": () => import("./algo/ds/t-digest"),
@@ -9060,8 +9023,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "tiered-vector": () => import("./algo/ds/tiered-vector"),
     "tiling-dp-domino-tromino": () => import("./algo/dp/tiling-dp-domino-tromino"),
     "tim-sort": () => import("./algo/sort/tim-sort"),
-    "time-dependent-fifo-shortest-path": () =>
-        import("./algo/path/time-dependent-fifo-shortest-path"),
+    "time-dependent-fifo-shortest-path": () => import("./algo/path/time-dependent-fifo-shortest-path"),
     "tonelli-shanks": () => import("./algo/math/tonelli-shanks"),
     "top-tree": () => import("./algo/ds/top-tree"),
     "topological-sort-dfs": () => import("./algo/graph/topological-sort-dfs"),
@@ -9071,8 +9033,8 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "transitive-reduction": () => import("./algo/graph/transitive-reduction"),
     "transportation-problem": () => import("./algo/flow/transportation-problem"),
     "trapezoidal-map-point-location": () => import("./algo/geo/trapezoidal-map-point-location"),
-    treap: () => import("./algo/ds/treap"),
-    treblecross: () => import("./algo/game/treblecross"),
+    "treap": () => import("./algo/ds/treap"),
+    "treblecross": () => import("./algo/game/treblecross"),
     "tree-center": () => import("./algo/tree/tree-center"),
     "tree-coloring-dp": () => import("./algo/tree/tree-coloring-dp"),
     "tree-diameter": () => import("./algo/tree/tree-diameter"),
@@ -9100,7 +9062,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "tree-vertex-cover-dp": () => import("./algo/tree/tree-vertex-cover-dp"),
     "trial-division-factorization": () => import("./algo/math/trial-division-factorization"),
     "triangle-counting": () => import("./algo/graph/triangle-counting"),
-    trie: () => import("./algo/ds/trie"),
+    "trie": () => import("./algo/ds/trie"),
     "turning-turtles": () => import("./algo/game/turning-turtles"),
     "twin-prime-sieve": () => import("./algo/math/twin-prime-sieve"),
     "two-pointer-pair-sum-search": () => import("./algo/search/two-pointer-pair-sum-search"),
@@ -9120,7 +9082,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "vf2-isomorphism": () => import("./algo/graph/vf2-isomorphism"),
     "virtual-tree": () => import("./algo/tree/virtual-tree"),
     "visibility-polygon": () => import("./algo/geo/visibility-polygon"),
-    vlist: () => import("./algo/ds/vlist"),
+    "vlist": () => import("./algo/ds/vlist"),
     "voronoi-diagram-fortune": () => import("./algo/geo/voronoi-diagram-fortune"),
     "vp-tree": () => import("./algo/ds/vp-tree"),
     "walksat-search": () => import("./algo/search/walksat-search"),
@@ -9139,7 +9101,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "word-break-count": () => import("./algo/dp/word-break-count"),
     "work-stealing-deque-chase-lev": () => import("./algo/ds/work-stealing-deque-chase-lev"),
     "wu-manber-search": () => import("./algo/string/wu-manber-search"),
-    wythoff: () => import("./algo/game/wythoff"),
+    "wythoff": () => import("./algo/game/wythoff"),
     "x-fast-trie": () => import("./algo/ds/x-fast-trie"),
     "xor-filter": () => import("./algo/ds/xor-filter"),
     "xor-linked-list": () => import("./algo/ds/xor-linked-list"),
