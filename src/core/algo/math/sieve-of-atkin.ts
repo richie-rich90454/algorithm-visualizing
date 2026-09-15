@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs limit >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Atkin to ${limit}: 2 and 3 are prime by rule.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (const [rule, ks] of hits) {
@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Rule ${rule} flips [${uniq}${ks.length > 8 ? ", ..." : ""}].`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -129,5 +129,12 @@ const module: AlgorithmModule = {
     defaultInput: { limit: 30 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "seed 2 and 3 as prime by rule",
+        "flip candidates by the three quadratic rules",
+        "clear squares of primes",
+        "collect the survivors still marked",
+        "done: primes to limit with count",
+    ],
 };
 export default module;
