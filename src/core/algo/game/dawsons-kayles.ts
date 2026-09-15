@@ -65,10 +65,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: rowCells(n, gone, new Set([demo, demo + 1])),
             edges: [],
-            description: `Try felling ${demo} and ${demo + 1}: remainder xors to ${replies[demo]} (an N-position for the opponent).`,
-            codeLineNumber: 1,
+            description: `Try Dawson felling pins ${demo} and ${demo + 1} on row ${n}: remainder segments xor to ${replies[demo]}.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { pins: n, tried: [demo, demo + 1], xor: replies[demo] },
+            meta: { pins: n, grundy: g, tried: [demo, demo + 1], xor: replies[demo] },
         };
         step += 1;
     }
@@ -78,9 +78,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: rowCells(n),
         edges: [],
         description: winning
-            ? "A reply leaves xor 0 – an N-position, so the player to move wins."
-            : `All ${replies.length} legal fellings leave non-zero xor – a P-position, losing with perfect play.`,
-        codeLineNumber: 2,
+            ? `Dawson row ${n} has a felling leaving xor 0 – an N-position, so the player to move wins.`
+            : `All ${replies.length} legal fellings on row ${n} leave nonzero xor – a P-position, losing with perfect play.`,
+        codeLineNumber: 4,
         layout: "grid",
         meta: { pins: n, grundy: g, winning },
     };
@@ -90,11 +90,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: rowCells(n),
         edges: [],
         description: winning
-            ? `Dawson's Kayles(${n}) is winning for the player to move (G = ${g}).`
-            : `Dawson's Kayles(${n}) is losing for the player to move (G = 0).`,
-        codeLineNumber: 3,
+            ? `Dawson's Kayles(${n}) with Grundy G = ${g} is winning for the player to move.`
+            : `Dawson's Kayles(${n}) with Grundy G = 0 is losing for the player to move.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { pins: n, winning },
+        meta: { pins: n, grundy: g, winning, winner: winning ? "first" : "second" },
     };
 }
 
@@ -106,6 +106,14 @@ const module: AlgorithmModule = {
     defaultInput: { pins: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from a row of n pins with Dawson Grundy G(n)",
+        "for each adjacent pair show split segments and their xor",
+        "if some felling leaves xor 0: winning N-position to play",
+        "else every felling leaves nonzero xor: losing P-position",
+        "play the zero-xor felling when it exists for the demo",
+        "winner is first player unless G(n) = 0 where second wins",
+    ],
 };
 
 export default module;
