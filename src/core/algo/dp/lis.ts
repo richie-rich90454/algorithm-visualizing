@@ -193,6 +193,7 @@ const module: AlgorithmModule = {
         "extend only strictly increasing predecessor values",
         "track global best length and its ending index",
         "answer <- max(dp) with subsequence reconstructed via parents",
-    ],};
+    ],
+};
 
 export default module;
