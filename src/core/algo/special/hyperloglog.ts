@@ -57,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: {
                 estimate: Math.round(estimate() * 100) / 100,
@@ -96,6 +96,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["a", "b", "c", "d", "e", "f"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize eight registers to zero",
+        "hash each key to pick a register index",
+        "compute leading-zero run for the remaining bits",
+        "store the maximum run seen per register",
+        "combine registers by harmonic mean of powers",
+        "apply linear counting for small cardinalities",
+        "done: distinct-count estimate versus true count",
+    ],
 };
 
 export default module;
