@@ -45,7 +45,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Adaptive Radix Tree: empty. Node fanout adapts 4/16/48/256.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const shown: string[] = [];
@@ -56,7 +56,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(shown, new Map([[shown.length - 1, "comparing"]])),
             edges: [],
-            description: `Inserted "${w}".`,
+            description: `Inserted word "${w}" by walking characters and creating missing nodes.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: set.size },
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Search "${q}": ${hit ? "found" : "absent"}.`,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const miss = "__zz__";
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(shown, new Map()),
         edges: [],
         description: `Search "${miss}": ${mhit ? "found" : "absent"}. Trie compress invariant holds. "${q}" ${hit ? "found" : "not found"}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { hit },
     };
@@ -95,5 +95,14 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty adaptive radix tree with small Node4 root",
+        "hash key bytes and walk one byte per level down the path",
+        "insert missing child node and grow Node4 to Node16 or Node256",
+        "compare query bytes against edges to find matching leaf",
+        "compress single-child paths into shared prefixes",
+        "count stored keys during traversal",
+        "done: compact radix tree holds keys and lookup answer",
+    ],
 };
 export default module;
