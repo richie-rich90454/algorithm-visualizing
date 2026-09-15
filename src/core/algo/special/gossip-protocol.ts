@@ -39,7 +39,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "grid",
             meta: { informed: known.size, total: n },
         };
@@ -74,6 +74,15 @@ const module: AlgorithmModule = {
     defaultInput: { nodes: 5, rounds: 6, seed: 31 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize n nodes with only node 0 informed",
+        "for round r <- 1 to rounds",
+        "each informed node pushes rumor to a random peer",
+        "newly reached peers join the informed set",
+        "track informed count out of total n",
+        "stop early when all nodes know the rumor",
+        "done: coverage reported with logarithmic spread",
+    ],
 };
 
 export default module;
