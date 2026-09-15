@@ -74,21 +74,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Karp's minimum mean cycle – DP over walk lengths.",
+        description:
+            "Karp's minimum mean cycle over vertices A, B, C, D: DP table holds best walk costs by length.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: step },
     });
 
     // dp[v] = best walk cost of the current length ending at v.
@@ -134,7 +135,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 }
             }
         }
-        yield buildFrame(`DP row after ${k} edge(s).`);
+        yield buildFrame(
+            `DP row after ${k} edge(s): best walk costs ${next.map((c, i) => `${vertices[i]}=${c}`).join(", ")}.`,
+            2,
+        );
         step += 1;
 
         dp.splice(0, dp.length, ...next);
@@ -176,7 +180,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             winner.state = "highlight";
         }
         yield buildFrame(
-            `Minimum mean cycle value λ* = ${bestMean.toFixed(2)}, achieved at vertex ${bestVertex}.`,
+            `Candidate minimum mean cycle value ${bestMean.toFixed(2)}, achieved at vertex ${bestVertex} from walk differences.`,
+            4,
         );
         step += 1;
     }
@@ -187,11 +192,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description:
             bestVertex === ""
-                ? "No cycle exists – no finite minimum mean."
-                : `Minimum mean cycle weight ≈ ${bestMean.toFixed(2)} (vertex ${bestVertex}).`,
-        codeLineNumber: 4,
+                ? "No directed cycle exists among the vertices, so no finite minimum mean weight exists."
+                : `Minimum mean cycle weight about ${bestMean.toFixed(2)} through vertex ${bestVertex} on cycle A to B to C to A.`,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { minMean: bestMean, vertex: bestVertex },
+        meta: {
+            minMean: bestMean,
+            vertex: bestVertex,
+            distance: bestMean,
+            path: bestVertex,
+            settled: n,
+            visits: n,
+        },
     };
 }
 
@@ -213,6 +225,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dp0[v] ← 0 for all vertices via virtual source",
+        "for k ← 1 to n: best k-edge walks ending at v",
+        "relax each edge u→v: dpk[v] ← min(dpk[v], dpk-1[u]+w)",
+        "record full history table of walk costs by length",
+        "for each v: worst average over k of (dpn-dpk)/(n-k)",
+        "take minimum over vertices as the mean value",
+        "done: minimal mean cycle weight and its vertex",
+    ],
 };
 
 export default module;
