@@ -215,6 +215,15 @@ const module: AlgorithmModule = {
     defaultInput: { piles: [3, 4, 5] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "xor ← pile[0] ⊕ pile[1] ⊕ … ⊕ pile[p-1] (nim-sum over all piles)",
+        "for each pile i: show pile[i] binary contribution to running xor",
+        "if xor = 0: losing P-position, every move makes xor nonzero",
+        "else find pile i with (pile[i] ⊕ xor) < pile[i] to adjust",
+        "reduce pile i to pile[i] ⊕ xor, zeroing the total nim-sum",
+        "show resulting piles with nim-sum 0 for the opponent to face",
+        "winner is the player taking the last stone from nonzero xor",
+    ],
 };
 
 export default module;
