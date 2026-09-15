@@ -146,7 +146,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (node) {
                 node.state = "swapped";
             }
-            yield buildFrame(`Root ${v} is an articulation point with ${childCount} DFS children.`, 3);
+            yield buildFrame(
+                `Root ${v} is an articulation point with ${childCount} DFS children.`,
+                3,
+            );
             step += 1;
         }
 
