@@ -1,7 +1,8 @@
 /**
- * virtual-tree.ts – Virtual tree on important nodes + LCAs
+ * virtual-tree.ts – Virtual tree on important nodes plus LCAs.
+ *
  * Keeps only important nodes and their LCAs, rewiring stacked edges.
- * Time O(k log k), Space O(k). important=comparing, lca=highlight.
+ * Time O(k log k), Space O(k). Important uses comparing, LCA uses highlight.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -170,5 +171,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "mark important nodes in the original tree",
+        "sort important nodes by Euler entry time",
+        "add LCAs of neighbors to the augmented set",
+        "sort augmented set then rewire with a stack",
+        "push nodes stacking parent over child edges",
+        "return compressed virtual edges as the answer",
+    ],
 };
 export default module;
