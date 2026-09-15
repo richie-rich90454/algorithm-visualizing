@@ -51,10 +51,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step++,
         entities: base.map((e) => ({ ...e })),
         edges: seg.map((e) => ({ ...e })),
-        description: "Query point q and segment ab.",
+        description: `Query (${q}) against segment (${a})–(${b}).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { query: `(${q})`, segment: [`(${a})`, `(${b})`] },
     };
     if (len2 === 0) {
         const d = Math.hypot(q[0] - a[0], q[1] - a[1]);
@@ -75,7 +75,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: seg.map((e) => ({ ...e })),
         description: `Edge vector ab = (${abx}, ${aby}), |ab|² = ${len2}.`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
         meta: { len2 },
     };
@@ -84,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: seg.map((e) => ({ ...e })),
         description: `Raw projection t = ${rawT.toFixed(3)}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
         meta: { rawT },
     };
@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: withC,
         edges: seg.map((e) => ({ ...e })),
         description: `Clamped t = ${tc.toFixed(3)}; closest c = (${c[0].toFixed(2)}, ${c[1].toFixed(2)}).`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { t: tc },
     };
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: withC.map((e) => ({ ...e })),
         edges: edges2,
         description: `Perpendicular qc shown (interior: ${rawT >= 0 && rawT <= 1}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { distance: d },
     };
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: done,
         edges: edges2.map((e) => ({ ...e, state: "sorted" as EntityState })),
         description: `Distance = ${d.toFixed(4)} (t=${tc.toFixed(3)}).`,
-        codeLineNumber: 5,
+        codeLineNumber: 6,
         layout: "point",
         meta: { distance: d, t: tc, closest: c },
     };
@@ -143,6 +143,15 @@ const module: AlgorithmModule = {
     defaultInput: { point: [1, 1], a: [0, 0], b: [4, 0] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from query q and segment ab",
+        "when a equals b: distance is the length of qa",
+        "build edge vector ab and its squared length",
+        "project q onto the line for raw parameter t",
+        "clamp t into range 0 to 1 for the segment",
+        "read closest point c back from clamped t",
+        "done: distance from q to c is the answer",
+    ],
 };
 
 export default module;
