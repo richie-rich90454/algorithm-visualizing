@@ -1,8 +1,31 @@
 /**
- * burstsort.ts – Burstsort.
+ * burstsort.ts – Burstsort
  *
- * Bursts strings into trie buckets by leading digit.
- * Time: O(n · w), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Burstsort sorts strings by bursting a trie: keys sharing a prefix share a bucket until the bucket overflows, then it bursts into deeper trie nodes. Each bucket is small enough to sort fast with classic methods. It beats quicksort on large string sets by exploiting common prefixes.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n · w)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -92,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -121,5 +144,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 1, 4, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted keys queued for the trie",
+        "burst keys into trie buckets by leading bytes",
+        "sort keys inside each bucket",
+        "traverse buckets in order to collect output",
+        "scan collected keys into final order",
+        "done: keys are in sorted order",
+    ],
 };
 export default module;
