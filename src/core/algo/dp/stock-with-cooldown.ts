@@ -1,6 +1,32 @@
 /**
- * Stock with Cooldown: hold/cash states, cash uses prev-cash (1-day gap).
- * Time O(n), Space O(1). Default [1,2,3,0,2] -> 3.
+ * stock-with-cooldown.ts - Stock with Cooldown
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: hold <- max(hold, prevCash - price); cash <- max(cash, hold + price).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No prices \u2013 zero profit.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -86,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([["0,1", "sorted"]])),
         edges: [],
         description: `Traceback: max profit with cooldown = ${cash}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: cash },
     };
@@ -100,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { prices: [1, 2, 3, 0, 2] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up hold <- -inf and cash <- 0 before day one",
+        "hold is best owning stock, cash is best flat after cooldown",
+        "hold <- max(hold, prevCash - price); cash <- max(cash, hold + price)",
+        "scan days keeping previous cash for the cooldown delay",
+        "buys use cash from two days back honoring the rest day",
+        "sells convert held value into realized cash balance",
+        "answer <- cash as max profit honoring the cooldown rule",
+    ],};
 
 export default module;
