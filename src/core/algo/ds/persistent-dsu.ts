@@ -123,6 +123,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with version 0 where every element is its own parent",
+        "union (a, b) in the newest version: find both roots with path copying",
+        "record a fresh parent array copying the changed entry only",
+        "repeat until every union has its own retained version",
+        "find in any version follows that version's parent pointers",
+        "old versions stay readable because nothing is mutated in place",
+        "done: version history is retained and connectivity answers hold",
+    ],
 };
 
 export default module;
