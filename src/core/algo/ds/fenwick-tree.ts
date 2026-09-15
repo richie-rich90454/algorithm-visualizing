@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(tree.slice(1), states),
             edges: [],
             description: `Point update: added ${delta} to tree[${idx}].`,
-            codeLineNumber: 4,
+            codeLineNumber: 6,
             layout: "grid",
             meta: { n },
         };
@@ -158,6 +158,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 1, 3, 4, 5, 1], update: [3, 2] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize BIT array of zeros with size n plus 1",
+        "build tree by adding each value with i plus lowbit(i)",
+        "compare running sum while stepping with lowbit",
+        "query prefix sum by accumulating i minus lowbit(i)",
+        "update point by propagating delta upward",
+        "count steps as O(log n) per query and update",
+        "done: BIT holds array with prefix sum answer",
+    ],
 };
 
 export default module;
