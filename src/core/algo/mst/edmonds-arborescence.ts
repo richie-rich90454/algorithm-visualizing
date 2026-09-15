@@ -1,6 +1,26 @@
 /**
- * edmonds-arborescence.ts - Edmonds Arborescence.
- * Minimum directed spanning tree rooted at r via min incoming edges plus cycle contraction.
+ * edmonds-arborescence.ts – Edmonds Arborescence.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Edmonds' algorithm finds the minimum directed spanning tree (arborescence)
+ * rooted at r. It picks the cheapest incoming edge for every vertex, then
+ * checks for directed cycles. Each cycle is contracted into a single node
+ * with adjusted edge weights, and the search repeats until no cycle remains.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E V) – each contraction removes at least one vertex
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The cheapest incoming edge under review is YELLOW (comparing).
+ *   - Candidate picks are highlighted, final tree edges are GREEN (sorted).
+ *   - Directed edges carry arrowheads toward the target vertex.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -68,15 +88,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list, new Map(), true),
-        `Edmonds rooted at ${d.root}: pick the cheapest incoming edge per vertex.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list, new Map(), true),
+            `Edmonds rooted at vertex ${d.root}: pick the cheapest incoming edge per vertex.`,
+            0,
+        ),
+        meta: { picked: 0, totalWeight: 0 },
+    };
     const pick = new Map<string, number>();
-    let k = 1;
     for (const v of verts) {
         if (v === d.root) continue;
         let best = -1;
@@ -86,13 +108,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         if (best >= 0) pick.set(v, best);
         const e = list[best] as E3;
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map([[best, "comparing"]]), true),
-            `Cheapest edge into ${v} is ${e.a}->${v} (${e.w}).`,
-            k++,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map([[best, "comparing"]]), true),
+                `Cheapest edge into vertex ${v} is ${e.a}–${v} (weight ${e.w}).`,
+                2,
+            ),
+            meta: { picked: pick.size },
+        };
     }
     const seen = new Set<string>();
     let cyc = false;
@@ -106,19 +131,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         if (c !== undefined && c !== d.root && seen.has(c)) cyc = true;
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            list,
-            new Map([...pick.values()].map((i) => [i, "highlight"] as [number, EntityState])),
-            true,
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                list,
+                new Map([...pick.values()].map((i) => [i, "highlight"] as [number, EntityState])),
+                true,
+            ),
+            cyc
+                ? "A directed cycle was found among the picks — it would be contracted and the search repeated."
+                : "No directed cycle among the picks — they already form the optimum arborescence.",
+            4,
         ),
-        cyc
-            ? "A directed cycle was found among the picks - it would be contracted and the search repeated."
-            : "No directed cycle among the picks - they already form the optimum arborescence.",
-        k++,
-    );
+        meta: { picked: pick.size },
+    };
     const chosen = [...pick.values()].map((i) => list[i] as E3);
     const weight = chosen.reduce((s, e) => s + e.w, 0);
     const fin = new Map<number, EntityState>();
@@ -128,10 +156,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, fin, true),
-            `Optimum arborescence weight ${weight}: ${chosen.map((e) => `${e.a}->${e.b}(${e.w})`).join(", ")}.`,
-            k++,
+            `Optimum arborescence weight ${weight}: ${chosen.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
+            6,
         ),
-        meta: { weight },
+        meta: { weight, totalWeight: weight, picked: pick.size },
     };
 }
 
@@ -152,5 +180,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with the root vertex and all directed edges",
+        "for each vertex except the root: list incoming edges",
+        "pick the cheapest incoming edge for each vertex",
+        "check the picks for a directed cycle",
+        "if a cycle exists: contract it and repeat the search",
+        "else expand any contracted cycles into full edges",
+        "done: chosen edges form the optimum arborescence weight",
+    ],
 };
 export default module;
