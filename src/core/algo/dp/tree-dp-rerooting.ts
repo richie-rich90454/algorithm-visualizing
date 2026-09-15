@@ -193,6 +193,7 @@ const module: AlgorithmModule = {
         "second pass pushes parent contributions to children",
         "each reroot shifts sums by subtree versus rest counts",
         "answer <- per-node totals with every root value reported",
-    ],};
+    ],
+};
 
 export default module;
