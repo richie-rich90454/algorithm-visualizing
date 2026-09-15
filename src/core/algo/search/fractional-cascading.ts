@@ -1,9 +1,35 @@
 /**
  * fractional-cascading.ts – Fractional Cascading
  *
- * Binary search the first sorted list, then follow a bridge pointer
- * into the second list instead of searching it from scratch. Verified
- * with a brute-force scan before going green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Speeds up searching the same target across several sorted lists. It binary-
+ * searches only the first list, then follows a precomputed bridge pointer
+ * into the second list and walks a few steps instead of searching it from
+ * scratch. With many lists this turns k·log n work into log n + k. The demo
+ * uses two lists (A and B) so the bridge step is plainly visible.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n + k) – one binary search plus a short walk per extra list
+ *   Space: O(n) – the augmented lists with bridge pointers (shown inline)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Binary-search probes in A are YELLOW (comparing).
+ *   - The bridge landing (peak in A plus entry in B) is PINK/YELLOW.
+ *   - The confirmed hit turns GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires every list sorted ascending; the classic computational-
+ *     geometry trick for layered range queries.
+ *   - The bridge is the whole idea: one search result positions the next.
+ *   - Both lists render as one bar strip tagged A: or B: in each label.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -47,8 +73,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(labels),
             edges: [],
-            description: "Both lists are empty – nothing to search.",
-            codeLineNumber: 1,
+            description: "Both lists are empty, so there is nothing to search.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -121,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(labels, new Map([[verified, "sorted"]])),
             edges: [],
-            description: `Found ${target} after ${comparisons} comparisons.`,
+            description: `Found ${target} at combined index ${verified} after ${comparisons} comparisons.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, target, foundIndex: verified },
@@ -131,8 +157,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(labels),
             edges: [],
-            description: `${target} is in neither list.`,
-            codeLineNumber: 4,
+            description: `${target} sits in neither list after ${comparisons} comparisons.`,
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, target },
         };
@@ -147,6 +173,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: [1, 3, 5, 7, 9], b: [2, 4, 6, 8, 10], target: 6 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with lists A and B sorted and target in hand",
+        "while lo ≤ hi: binary-search A for the lower bound of target",
+        "follow the bridge pointer from position pos in A into B",
+        "walk B forward a few steps comparing each entry with target",
+        "if target found in A or B: return its position as the match",
+        "done: return found position or report target in neither list",
+    ],
 };
 
 export default module;
