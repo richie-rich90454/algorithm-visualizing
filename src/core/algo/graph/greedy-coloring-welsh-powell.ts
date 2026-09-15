@@ -1,9 +1,33 @@
 /**
  * greedy-coloring-welsh-powell.ts – Greedy Coloring (Welsh–Powell)
  *
- * Orders vertices by descending degree, then gives each the smallest free
- * color. Hub A first: A=0, B=1, C=2, D=1 – 3 colors, optimal here.
- * Time: O(V²) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Welsh–Powell colors high-degree vertices first: sort all vertices by
+ * descending degree, then walk the order giving each vertex the smallest
+ * color none of its already-colored neighbors uses. Big hubs commit early,
+ * which keeps the color count low on many real graphs. Hub A (degree 3)
+ * goes first here: A=0, then B=1, C=2, and D reuses 1 – 3 colors, optimal
+ * for this graph.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V²) – sorting plus a neighbor scan per vertex
+ *   Space: O(V) for the order and colors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex taking a color is YELLOW (comparing).
+ *   - Finished vertices stay GREEN (sorted) until the final palette lands.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Fast heuristic for an NP-hard problem; not always optimal.
+ *   - Degree order beats arbitrary order on dense, uneven graphs.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -83,7 +107,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const k = Math.max(...color.values()) + 1;
     yield snap(
         `Colored with ${k} colors: ${order.map((v) => `${v}=${color.get(v)}`).join(", ")}.`,
-        2,
+        4,
         { colors: k },
     );
 }
@@ -96,6 +120,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort vertices by descending degree into the Welsh–Powell order",
+        "give each vertex the smallest color its neighbors do not use",
+        "repeat until every vertex is colored",
+        "count the distinct colors used",
+        "done: a proper coloring such as A=0, B=1, C=2, D=1",
+    ],
 };
 
 export default module;
