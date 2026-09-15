@@ -168,6 +168,7 @@ const module: AlgorithmModule = {
         "heads advance the streak while tails reset progress",
         "each flip costs one plus expected remaining flips",
         "answer <- E[0] as expected flips from a fresh start",
-    ],};
+    ],
+};
 
 export default module;
