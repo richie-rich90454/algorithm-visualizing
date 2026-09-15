@@ -1,10 +1,33 @@
 /**
  * weisfeiler-leman-refinement.ts – Weisfeiler–Lehman Refinement
  *
- * 1-WL recolors each vertex by (own color, sorted neighbor colors) until
- * stable. Triangle (all deg-2) vs path (deg 1,2,1): histograms differ, so
- * the graphs are non-isomorphic.
- * Time: O(k·(V + E)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The 1-dimensional Weisfeiler–Lehman test colors graphs to tell them apart:
+ * round 0 colors by degree, then each round recolors every vertex by its own
+ * color plus the sorted multiset of neighbor colors, until stable. Graphs
+ * with different color histograms cannot be isomorphic. The triangle (all
+ * degree 2) stays uniform while the path splits hub Y from leaves X and Z,
+ * so the histograms diverge and the graphs are non-isomorphic.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k·(V + E)) – k refinement rounds over all edges
+ *   Space: O(V + E) for colors and signatures
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Each distinct color maps to its own node state per round.
+ *   - Diverging histograms announce the verdict in the final frame.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Incomplete: some non-isomorphic pairs (e.g. regular graphs) tie.
+ *   - The engine behind modern graph neural network expressiveness theory.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -103,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         h1 === h2
             ? "1-WL cannot distinguish these graphs (possibly isomorphic)."
             : "Histograms differ → the triangle and the path are non-isomorphic.",
-        2,
+        4,
         {
             g1: l1.map((v) => `${v}:${c1.get(v)}`),
             g2: l2.map((v) => `${v}:${c2.get(v)}`),
@@ -123,6 +146,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "round 0: color every vertex by its degree",
+        "recolor each vertex by its own color plus sorted neighbor colors",
+        "repeat rounds until the coloring stabilizes",
+        "compare the color histograms of the two graphs",
+        "done: differing histograms prove non-isomorphism",
+    ],
 };
 
 export default module;
