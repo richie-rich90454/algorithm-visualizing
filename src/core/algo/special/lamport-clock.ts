@@ -39,7 +39,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "grid",
             meta: { clocks: [...clock] },
         };
@@ -78,6 +78,15 @@ const module: AlgorithmModule = {
     defaultInput: { processes: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize three processes with logical time 0",
+        "tick clock by 1 on every internal event",
+        "attach current stamp to every sent message",
+        "on receive take max(local, message) plus 1",
+        "process scripted sends and receives in order",
+        "verify send to receive stamps always rise",
+        "done: causal order preserved in final clocks",
+    ],
 };
 
 export default module;
