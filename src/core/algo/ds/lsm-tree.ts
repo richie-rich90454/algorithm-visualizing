@@ -180,6 +180,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize LSM with empty memtable and sorted runs",
+        "insert key into memtable comparing sort order",
+        "flush full memtable to disk as new sorted run",
+        "compact overlapping runs by merging sorted lists",
+        "search from memtable down through runs by recency",
+        "compare keys across levels to find newest version",
+        "done: LSM holds keys with search answer",
+    ],
 };
 
 export default module;
