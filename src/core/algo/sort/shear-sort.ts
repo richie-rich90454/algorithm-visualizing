@@ -1,8 +1,31 @@
 /**
- * shear-sort.ts – Shear Sort.
+ * shear-sort.ts – Shear Sort
  *
- * Alternates row and column sorts on a mesh grid.
- * Time: O(n log n), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Shear sort lays values on a mesh and alternates sorting rows in opposite directions with sorting columns top to bottom. After enough shear phases the mesh is fully ordered in snake order. It shows how local sorting steps can produce global order on parallel grids.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -110,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -139,5 +162,13 @@ const module: AlgorithmModule = {
     defaultInput: [7, 3, 5, 1, 6, 2, 4, 8],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the mesh in row-major order",
+        "sort rows alternately left-right and right-left",
+        "sort every column top to bottom",
+        "repeat shear phases until the mesh settles",
+        "scan the mesh into final order",
+        "done: mesh rows and columns are sorted",
+    ],
 };
 export default module;
