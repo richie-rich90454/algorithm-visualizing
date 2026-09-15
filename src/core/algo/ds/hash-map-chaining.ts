@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(),
         edges: [],
         description: `Average chain length = load factor α = ${keys.length}/${buckets} ≈ ${(keys.length / buckets).toFixed(1)} – lookups are ~O(1).`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { buckets, keys: keys.length },
     };
@@ -124,6 +124,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["cat", "dog", "car", "cow", "bat"], buckets: 3, probe: "dog" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize buckets array with empty chains",
+        "hash key to bucket index by modulo bucket count",
+        "insert key by appending to chain at bucket",
+        "compare chain entries during probe for match",
+        "lookup probe key by scanning its chain",
+        "compute load factor as keys divided by buckets",
+        "done: map holds keys with probe answer and load factor",
+    ],
 };
 
 export default module;
