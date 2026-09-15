@@ -205,7 +205,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Tarjan offline LCA complete – answered ${answers.size} query/queries.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { answered: answers.size, answers: [...answers.entries()].map(([i, lca]) => `Q${i}=${lca}`) },
+        meta: {
+            answered: answers.size,
+            answers: [...answers.entries()].map(([i, lca]) => `Q${i}=${lca}`),
+        },
     };
 }
 
