@@ -134,6 +134,7 @@ const module: AlgorithmModule = {
         "each pick leaves opponent the worse of two replies",
         "min models optimal opponent minimizing our remainder",
         "answer <- dp[0][n-1] with pick sequence reconstructed",
-    ],};
+    ],
+};
 
 export default module;
