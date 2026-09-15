@@ -38,7 +38,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 0 <= n <= 12).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `U_n(${P},${Q}): seeds U_0 = 0, U_1 = 1.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const U = [0, 1];
@@ -61,7 +61,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Seed U_${k} = ${U[k]}.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `U_${k} = ${P}x${U[k - 1]} - ${Q}x${U[k - 2]} = ${U[k]}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -98,5 +98,12 @@ const module: AlgorithmModule = {
     defaultInput: { P: 3, Q: 1, n: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "set seeds U_0 = 0, U_1 = 1 for U_n(P,Q)",
+        "show each seed term",
+        "extend with U_k = P·U_{k−1} − Q·U_{k−2}",
+        "collect every term up to n",
+        "done: full Lucas sequence U",
+    ],
 };
 export default module;
