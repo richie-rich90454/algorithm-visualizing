@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "B-tree root node (order 3 – up to 5 keys per node).",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
 
@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Comparing ${search} with key ${keys[i]}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
         if (search === keys[i]) {
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: found
             ? `Found ${search} in the node – descending into children only if needed.`
             : `${search} not in this node – follow the appropriate child pointer.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { found },
     };
@@ -112,6 +112,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 12, 20], search: 20 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty B-tree with single node root",
+        "search node keys and descend to matching child",
+        "insert key into node in sorted order",
+        "if node is full then split around median key",
+        "promote median to parent and create sibling node",
+        "compare keys to guide each level of descent",
+        "done: balanced B-tree holds keys with minimal height",
+    ],
 };
 
 export default module;
