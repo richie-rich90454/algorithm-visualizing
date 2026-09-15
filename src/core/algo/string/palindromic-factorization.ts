@@ -1,6 +1,7 @@
 /**
  * palindromic-factorization.ts – Palindromic Factorization.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n²)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -31,7 +32,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `Minimum palindromic partition of "${text}".`, 0);
     step += 1;
@@ -45,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 text[i] === text[j] &&
                 (len === 2 || ((isPal[i + 1] as boolean[])[j - 1] as boolean));
         }
-    yield F(tx(text), "Palindromic radius table ready.", 1);
+    yield F(tx(text), `Palindromic radius table ready for text "t".`, 1);
     step += 1;
     const dp = new Array<number>(n + 1).fill(Infinity);
     const cut = new Array<number>(n + 1).fill(-1);
@@ -97,7 +98,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { parts },
     );
     step += 1;
-    yield F(tx(text), `Partition complete: ${parts.length} part(s): ${parts.join(" | ")}.`, 4, { parts });
+    yield F(tx(text), `Partition complete: ${parts.length} part(s): ${parts.join(" | ")}.`, 4, {
+        parts,
+    });
 }
 
 const module: AlgorithmModule = {
@@ -108,6 +111,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababa" },
     visualType: "text",
     run,
+    pseudocode: [
+        "precompute palindrome radius for all centers",
+        "initialize minimum cuts table with infinities",
+        "extend palindromes ending at each position",
+        "update minimum partition count on palindrome found",
+        "record cut position for optimal reconstruction",
+        "trace cuts backward to recover factors",
+        "report minimum partition and factors",
+    ],
 };
 
 export default module;
