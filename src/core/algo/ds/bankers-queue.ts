@@ -86,6 +86,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["snoc", 1], ["snoc", 2], ["tail"], ["snoc", 3]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize persistent queue with empty front and rear lists",
+        "enqueue value by pushing onto rear list in O(1)",
+        "check if front is empty then rotate rear to rebuild front",
+        "dequeue value by popping head of front list",
+        "compare front and rear lengths to trigger rotation",
+        "share structure across versions for persistence",
+        "done: queue holds remaining values in FIFO order",
+    ],
 };
 
 export default module;
