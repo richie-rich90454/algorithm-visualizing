@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate fraction – need num >= 0, den > 0.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -107,5 +107,12 @@ const module: AlgorithmModule = {
     defaultInput: { num: 7, den: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "run Euclid on num/den for partial quotients [a0; a1, ...]",
+        "build each convergent p/q from the recurrence",
+        "done: final convergent equals num/den",
+        "each convergent is the best approximation so far",
+        "done: full convergent chain for num/den",
+    ],
 };
 export default module;
