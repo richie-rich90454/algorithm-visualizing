@@ -1,6 +1,7 @@
 /**
  * lr0-shift-reduce-parsing.ts – LR(0) Parsing.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(
         s.split("").map((c, i) => cell(0, i, c, "idle")),
@@ -68,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             .split("")
             .map((x, i) => cell(2, i, x, "idle")),
     ];
-    yield F(snap(), "Empty stack, full input.", 1);
+    yield F(snap(), 'Empty stack "[]", full input at start.', 1);
     step += 1;
     let guard = 0;
     while (p < s.length && guard < 3) {
@@ -78,17 +79,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         yield F(snap(), `Shift "${stack[stack.length - 1]}".`, 2);
         step += 1;
     }
-    yield F(snap(), "Reduce S→a / S→aS up the stack.", 3);
+    yield F(snap(), `Reduce "S→a" / "S→aS" up the stack.`, 3);
     step += 1;
     const accept = stack.length === s.length && stack.every((x) => x === "a");
     yield F(
         [cell(3, 0, accept ? "ACCEPT" : "REJECT", accept ? "path" : "swapped")],
-        accept ? "Reduced to S: ACCEPT." : "REJECT.",
+        accept ? `Reduced to "S": ACCEPT.` : "REJECT.",
         4,
         { accept },
     );
     step += 1;
-    yield F([cell(3, 0, accept ? "ACCEPT" : "REJECT", "sorted")], accept ? "LR(0) complete: reduced to start symbol: ACCEPT." : "LR(0) complete: no reduction: REJECT.", 5, { accept });
+    yield F(
+        [cell(3, 0, accept ? "ACCEPT" : "REJECT", "sorted")],
+        accept
+            ? "LR(0) complete: reduced to start symbol: ACCEPT."
+            : "LR(0) complete: no reduction: REJECT.",
+        5,
+        { accept },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -99,6 +107,15 @@ const module: AlgorithmModule = {
     defaultInput: { input: "aaa" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "build canonical collection of LR zero items",
+        "push start state onto parsing stack",
+        "shift input symbol onto stack on action shift",
+        "reduce completed production popping right side",
+        "goto next state after reduction push",
+        "repeat until accept or error action reached",
+        "report acceptance and reduction sequence",
+    ],
 };
 
 export default module;
