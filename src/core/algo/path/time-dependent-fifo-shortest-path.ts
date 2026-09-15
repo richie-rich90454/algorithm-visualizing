@@ -1,10 +1,35 @@
 /**
  * time-dependent-fifo-shortest-path.ts – Time-Dependent FIFO Shortest Path
  *
- * Waiting never helps when arrival functions are FIFO (departing later
- * cannot arrive earlier): earliest-arrival Dijkstra works. Depart t=0:
- * A→B→D arrives t=4, beating A→C→D at t=6.
- * Time: O(E log V) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Routes with travel times that depend on departure moment, under the FIFO
+ * rule that leaving later can never arrive earlier, so waiting never helps.
+ * A Dijkstra-like pass settles vertices by earliest arrival time: departing
+ * A at t=0, the route A to B to D arrives at t=4 and beats A to C to D at
+ * t=6.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) with a heap ordered by arrival time
+ *   Space: O(V + E) for arrival labels and predecessors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The start vertex is YELLOW (comparing) at departure time.
+ *   - Settled vertices are GREEN (sorted) with final arrival times.
+ *   - Relaxed departure edges are BLUE (active).
+ *   - The earliest-arrival route is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - FIFO is the key assumption; without it the problem gets much harder.
+ *   - Models rush-hour traffic where congestion respects departure order.
+ *   - Reduces to plain Dijkstra when travel times are constant.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -78,9 +103,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     best.set(start, t0);
     const done = new Set<string>();
     setN(start, "comparing");
-    yield snap(`Time-dependent FIFO from ${start} at t=${t0}: earliest arrival first.`, 0, {
-        depart: t0,
-    });
+    yield snap(
+        `Time-dependent FIFO search from ${start} departing at t=${t0}: expanding vertices in earliest arrival order.`,
+        0,
+        {
+            depart: t0,
+            settled: 0,
+            visits: 0,
+        },
+    );
     step += 1;
     while (done.size < labels.length) {
         let u: string | null = null;
@@ -104,7 +135,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
         setN(u, "sorted");
-        yield snap(`Settle ${u} at t=${bt}: relax departures from here.`, 1, { time: bt });
+        yield snap(
+            `Settle vertex ${u} at arrival time t=${bt}: relaxing each departure edge from here.`,
+            3,
+            { time: bt, settled: done.size, visits: done.size },
+        );
         step += 1;
     }
     const path: string[] = [];
@@ -118,10 +153,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     if (ok) for (const v of path) setN(v, "path");
     yield snap(
         ok
-            ? `Earliest arrival at ${target}: t=${best.get(target)} via ${path.join("→")}.`
-            : `${target} unreachable.`,
-        2,
-        { arrival: ok ? (best.get(target) as number) : -1 },
+            ? `Earliest arrival at ${target} is t=${best.get(target)} via ${path.join(" → ")} departing at t=${t0}.`
+            : `${target} is unreachable from ${start}.`,
+        6,
+        {
+            arrival: ok ? (best.get(target) as number) : -1,
+            distance: ok ? (best.get(target) as number) : -1,
+            path: ok ? path.join("→") : "",
+            settled: done.size,
+            visits: done.size,
+        },
     );
 }
 
@@ -146,6 +187,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "earliest[s] ← departure time t0, others infinite",
+        "pop unsettled u with smallest arrival time",
+        "for each edge u→v compute arrival from u at t",
+        "if arrival beats best[v]: update best[v] via u",
+        "settle u, its arrival time is now final",
+        "repeat until target settles or all are reached",
+        "done: earliest-arrival path via predecessors",
+    ],
 };
 
 export default module;
