@@ -1,9 +1,33 @@
 /**
  * shortest-cycle-girth-bfs.ts – Shortest Cycle / Girth (BFS)
  *
- * BFS from each source; a cross edge u–v joining two visited branches
- * closes a cycle of length dist[u]+dist[v]+1. Triangle+tail: girth 3.
- * Time: O(V·(V + E)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The girth is the length of the shortest cycle in the graph (infinite when
+ * acyclic). The algorithm runs BFS from every source: BFS layers give
+ * distances, and any non-tree edge u–v joining two visited branches closes
+ * a cycle of length dist[u]+dist[v]+1. The minimum over all sources is the
+ * girth. On the triangle-plus-tail, the triangle edges close length-3
+ * cycles, so the girth is 3.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V·(V + E)) – one BFS per source
+ *   Space: O(V + E) for distances, parents, and the queue
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The BFS source is PINK (highlight).
+ *   - The closing edge of the best cycle turns GREEN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Generalizes unweighted shortest paths to shortest closed walks.
+ *   - A tree (or forest) reports infinite girth: no cycle to close.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -109,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         girth < Infinity
             ? `Girth = ${girth}: the triangle closes at ${witness}.`
             : "Acyclic – girth is infinite.",
-        2,
+        4,
         { girth: girth < Infinity ? girth : -1, witness: witness || "none" },
     );
 }
@@ -122,6 +146,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up one BFS per source vertex",
+        "BFS from s: each cross edge u–v closes dist[u]+dist[v]+1",
+        "keep the shortest cycle seen through s",
+        "repeat for every source and keep the global minimum",
+        "done: the girth and its witness edge",
+    ],
 };
 
 export default module;
