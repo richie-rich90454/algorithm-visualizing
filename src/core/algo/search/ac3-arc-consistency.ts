@@ -1,9 +1,34 @@
 /**
  * ac3-arc-consistency.ts – AC-3 Arc Consistency
  *
- * Enforces arc consistency on X≠Y, Y≠Z with Y pinned to {1}: values
- * without support are revised away until the queue drains. One cell
- * per variable (metadata.variable).
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Shrinks variable domains before (or during) search by enforcing arc
+ * consistency on X≠Y and Y≠Z with Y pinned to {1}. AC-3 queues every directed
+ * arc and revises each one: any value in Xi with no supporting value in Xj
+ * is deleted. Deletions re-queue neighboring arcs, since a neighbor may have
+ * relied on a deleted value. An emptied domain proves unsatisfiability.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(e·d³) worst – e arcs, each revision scanning value pairs
+ *   Space: O(e) – the arc queue plus the domains
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The revised variable is YELLOW (comparing), its supporter PINK.
+ *   - Wiped-out variables flash RED (swapped); consistent arcs stay PINK.
+ *   - Arc-consistent domains end GREEN (sorted); one cell per variable.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Sound but incomplete: consistency never decides satisfiability alone.
+ *   - Detects failure early – an empty domain stops search before it starts.
+ *   - The preprocessing partner to backtracking search.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -61,8 +86,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(domains),
             edges: [],
-            description: "Empty domain on arrival – unsatisfiable.",
-            codeLineNumber: 4,
+            description: "Empty domain on arrival, so the CSP is unsatisfiable.",
+            codeLineNumber: 3,
             layout: "grid",
             meta: { revisions },
         };
@@ -101,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     entities: makeCells(domains, new Map([[xi, "swapped"]])),
                     edges: [],
                     description: `${xi} wiped out – the CSP is unsatisfiable.`,
-                    codeLineNumber: 2,
+                    codeLineNumber: 3,
                     layout: "grid",
                     meta: { revisions },
                 };
@@ -116,7 +141,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(domains, new Map([[xi, "highlight"]])),
                 edges: [],
                 description: `Arc ${xi}→${xj} already consistent – no change.`,
-                codeLineNumber: 3,
+                codeLineNumber: 4,
                 layout: "grid",
                 meta: { revisions },
             };
@@ -145,6 +170,14 @@ const module: AlgorithmModule = {
     defaultInput: { domains: { X: [1, 2], Y: [1], Z: [1, 2] } },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with all domains and a queue holding every directed arc",
+        "pop arc (Xi, Xj) and drop values in Xi with no support in Xj",
+        "if Xi lost a value: re-queue every neighbor arc pointing at Xi",
+        "if a revision empties Xi: halt and report unsatisfiable",
+        "if the arc was already consistent: leave it and continue",
+        "done: return arc-consistent domains with revision count",
+    ],
 };
 
 export default module;
