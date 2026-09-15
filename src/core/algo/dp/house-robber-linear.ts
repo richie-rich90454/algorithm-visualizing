@@ -1,6 +1,32 @@
 /**
- * House Robber (linear): dp[i] = max(dp[i-1], dp[i-2] + nums[i]).
- * Time O(n), Space O(n). Default [2,7,9,3,1] -> 12.
+ * house-robber-linear.ts - House Robber (Linear)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- max(dp[i-1], dp[i-2] + nums[i]).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -31,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No houses \u2013 loot 0.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -69,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(dp, done),
         edges: [],
         description: `Traceback: max loot = ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer },
     };
@@ -83,6 +109,14 @@ const module: AlgorithmModule = {
     defaultInput: { nums: [2, 7, 9, 3, 1] },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up dp[0] <- nums[0] for the single-house base",
+        "dp[i] holds max loot over houses 0..i",
+        "dp[i] <- max(dp[i-1], dp[i-2] + nums[i])",
+        "iterate houses left to right honoring adjacency",
+        "each house picks skip versus take with neighbor guard",
+        "carry the better loot total forward each step",
+        "answer <- dp[n-1] with robbed houses reconstructed",
+    ],};
 
 export default module;
