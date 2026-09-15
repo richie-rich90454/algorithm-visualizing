@@ -1,9 +1,32 @@
 /**
  * transitive-closure.ts – Transitive Closure (Warshall)
  *
- * Warshall's rule: if i reaches k and k reaches j, link i→j. Chain
- * A→B→C gains the shortcut A→C – reachability made explicit.
- * Time: O(V³) Space: O(V²)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The transitive closure makes reachability explicit: add edge i→j whenever
+ * a path from i to j exists. Warshall's rule drives it: with intermediate
+ * vertex k fixed, link i→j whenever i reaches k and k reaches j, then move
+ * to the next k. On the chain A→B→C, round B adds the shortcut A→C, so all
+ * reachability pairs read off directly.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V³) – one inner update per (i, k, j) triple
+ *   Space: O(V²) for the reachability sets
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The intermediate vertex k is PINK (highlight).
+ *   - Reachability edges light up BLUE (active) as they appear.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The reachability dual of Floyd–Warshall (same triple loop, no weights).
+ *   - Bitsets speed the inner loop by a factor of the word size.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -76,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     const all: string[] = [];
     for (const i of labels) for (const j of reach.get(i) as Set<string>) all.push(`${i}→${j}`);
-    yield snap(`Closure complete: reachable pairs ${all.sort().join(", ")}.`, 2, {
+    yield snap(`Closure complete: reachable pairs ${all.sort().join(", ")}.`, 4, {
         pairs: all.length,
     });
 }
@@ -89,6 +112,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["C"], C: [] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "reach[i] ← the direct neighbors of i",
+        "via k: link i→j whenever i reaches k and k reaches j",
+        "repeat for every intermediate vertex k",
+        "collect all reachable pairs i→j",
+        "done: full reachability such as A→B, A→C, B→C",
+    ],
 };
 
 export default module;
