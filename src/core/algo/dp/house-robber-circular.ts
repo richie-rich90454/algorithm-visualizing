@@ -165,6 +165,7 @@ const module: AlgorithmModule = {
         "each house picks skip versus take with neighbor guard",
         "carry best values forward without touching both ends",
         "answer <- max(caseA, caseB) with robbed houses listed",
-    ],};
+    ],
+};
 
 export default module;
