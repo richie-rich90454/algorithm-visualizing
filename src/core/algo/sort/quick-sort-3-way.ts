@@ -220,6 +220,14 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 5, 1, 5, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with range [lo..hi] and pivot ← A[hi]",
+        "pick pivot value A[hi] for this partition",
+        "for i in [lo..gt]: compare A[i] with pivot",
+        "move smaller left, larger right, equal stays center",
+        "recurse only on the smaller and larger sides",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
