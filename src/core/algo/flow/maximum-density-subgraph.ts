@@ -143,5 +143,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize graph with vertices and unweighted edges",
+        "build Goldberg closure network for density probe lambda",
+        "evaluate candidate sets by edges over vertices ratio",
+        "adjust lambda probe until no set beats best density",
+        "confirm optimum by exhaustive search on small graph",
+        "report maximum density with densest vertex set",
+    ],
 };
 export default module;
