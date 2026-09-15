@@ -35,7 +35,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     yield {
@@ -87,5 +87,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize merge sort tree over input array",
+        "build node by merging sorted child vectors",
+        "compare query range against node interval",
+        "count numbers below k with binary search in node",
+        "combine counts from overlapping children",
+        "verify build sizes sum across levels",
+        "done: tree holds sorted vectors with query count answer",
+    ],
 };
 export default module;
