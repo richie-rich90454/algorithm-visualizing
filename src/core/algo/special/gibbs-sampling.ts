@@ -41,7 +41,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: t,
+            codeLineNumber: Math.min(t, 6),
             layout: "grid",
             meta: { sweep: t, x, y, meanX: t > 0 ? Math.round((cx / t) * 100) / 100 : 0 },
         };
@@ -72,6 +72,15 @@ const module: AlgorithmModule = {
     defaultInput: { sweeps: 10, seed: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize binary state (X,Y) <- (0,0)",
+        "for sweep t <- 1 to sweeps",
+        "resample X from conditional P(X|Y)",
+        "resample Y from conditional P(Y|X)",
+        "accumulate running mean of X samples",
+        "track convergence of empirical marginal",
+        "done: empirical P(X=1) approximates the truth",
+    ],
 };
 
 export default module;
