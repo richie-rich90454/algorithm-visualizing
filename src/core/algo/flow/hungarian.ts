@@ -297,6 +297,14 @@ const module: AlgorithmModule = {
     },
     visualType: "matrix",
     run,
+    pseudocode: [
+        "initialize cost matrix for rows assigned to columns",
+        "subtract row minima then column minima to create zeros",
+        "subtract row minimum from each row to expose zeros",
+        "subtract column minimum from each column to expose zeros",
+        "greedily assign rows to zero cells with free columns",
+        "report optimal assignment and minimum total cost",
+    ],
 };
 
 export default module;
