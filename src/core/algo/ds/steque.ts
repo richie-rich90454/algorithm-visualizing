@@ -4,6 +4,29 @@
  * Push, pop, and enqueue – but no general dequeue mix: the front half
  * behaves like a stack while the back half only grows. All three
  * operations run in worst-case O(1).
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Push, pop, and enqueue – but no general dequeue mix: the front half behaves like a stack while the back half only grows. All three operations run in worst-case O(1).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Steque behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -83,6 +106,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["push", 1], ["push", 2], ["enqueue", 3], ["pop"], ["enqueue", 4]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty steque of front stack plus back list",
+        "push value: place it on top of the front stack",
+        "enqueue value: append it to the back list end",
+        "pop: take from the front stack, or shift the back if empty",
+        "front stays LIFO while the back only grows at the tail",
+        "track total size across both halves",
+        "done: operations interleave correctly and the final steque holds",
+    ],
 };
 
 export default module;
