@@ -1,6 +1,32 @@
 /**
- * SOS DP: F[mask] = sum of a[sub] over sub ⊆ mask, one bit at a time.
- * Time O(n*2^n), Space O(2^n). Default [1..8]: F[7] = 36.
+ * sos-dp-sum-over-subsets.ts - SOS DP (Sum Over Subsets)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: F[mask] <- F[mask] + F[mask ^ (1<<b)] when bit b set.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b72^n)
+ *   Space: O(2^n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty array \u2013 nothing to sum.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -58,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Length ${size} is not a power of two \u2013 SOS needs 2^n entries.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -94,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...F]], new Map([[`0,${size - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: F[${size - 1}] = ${F[size - 1]} (sum over all subsets).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: F[size - 1] },
     };
@@ -108,6 +134,14 @@ const module: AlgorithmModule = {
     defaultInput: { arr: [1, 2, 3, 4, 5, 6, 7, 8] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up F as a copy of array a over 2^n masks",
+        "F[mask] holds partial subset sums for processed bits",
+        "F[mask] <- F[mask] + F[mask ^ (1<<b)] when bit b set",
+        "iterate bits outer and masks inner in order",
+        "each bit folds subset contributions missing that bit",
+        "in-place updates reuse the same array per bit layer",
+        "answer <- F[full] as sum over all subsets with stages shown",
+    ],};
 
 export default module;
