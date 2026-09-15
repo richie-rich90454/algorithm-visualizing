@@ -105,7 +105,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest common prefix of suffixes of "${a}" and "${b}".`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { rows, cols },
+        meta: { comparisons: 0, shifts: 0, rows, cols, matches: [] },
     };
     step += 1;
 
@@ -133,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `lcp[${i}][${j}] for "${a[i]}" vs "${b[j]}" = ${lcp[i]?.[j]}.`,
                 codeLineNumber: 2,
                 layout: "grid",
-                meta: { rows, cols, bestLen },
+                meta: { comparisons: bestLen, shifts: 0, rows, cols, bestLen, matches: [bestLen] },
             };
             step += 1;
         }
@@ -153,10 +153,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(lcp, winningStates),
         edges: [],
-        description: `Longest common prefix between suffix pairs has length ${bestLen}.`,
+        description: `Longest common prefix between suffix pairs of "${a}" and "${b}" has length ${bestLen}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows, cols, bestLen },
+        meta: { comparisons: bestLen, shifts: 0, rows, cols, bestLen, matches: [bestLen] },
     };
 }
 
@@ -170,6 +170,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: "ababca", b: "abacab" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "create table for suffix pair prefix lengths",
+        "initialize last row and column to zero",
+        "compare characters from ends toward starts",
+        "extend diagonal value by one on character match",
+        "take zero on mismatch ending common prefix",
+        "track maximum length across all cells",
+        "report longest prefix length and pair",
+    ],
 };
 
 export default module;
