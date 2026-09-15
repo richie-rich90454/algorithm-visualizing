@@ -1,6 +1,7 @@
 /**
  * bndm-dawg-matching.ts – BNDM.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(nm) worst, O(n/m) avg", space: "O(m·σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -32,13 +33,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `BNDM backward scan for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            matches: [],
+        });
         return;
     }
     yield F(tx(text), `Suffix-automaton masks for m=${m}.`, 1, { comparisons: 0 });
@@ -92,7 +96,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
+        matches.length
+            ? `"${pat}" found at ${matches.join(", ")}.`
+            : `${pat}" does not occur in the text."`,
         4,
         { comparisons, matches },
     );
@@ -106,6 +112,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "cab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize bit masks for pattern suffix automaton",
+        "set active state to all ones for backward scan",
+        "scan window backward updating state with masks",
+        "fall back when state becomes zero with no factor",
+        "record last prefix position as shift anchor",
+        "shift window by m minus anchor or full length",
+        "report all match positions found",
+    ],
 };
 
 export default module;
