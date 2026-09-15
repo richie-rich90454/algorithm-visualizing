@@ -134,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(values),
         edges: [],
         description: "Monotonic queue processed every element in O(n) total.",
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { window: k },
     };
@@ -149,6 +149,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [2, 5, 3, 7, 1, 8, 4], window: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty monotonic deque for sliding window",
+        "remove indices outside current window from front",
+        "compare incoming value against back values",
+        "pop smaller back elements to preserve monotonicity",
+        "push incoming index to back of deque",
+        "read window optimum from front of deque",
+        "done: deque holds window candidates with optimum answer",
+    ],
 };
 
 export default module;
