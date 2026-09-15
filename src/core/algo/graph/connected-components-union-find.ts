@@ -1,9 +1,34 @@
 /**
  * connected-components-union-find.ts – Connected Components (Union-Find)
  *
- * Disjoint-set union merges each edge's endpoints with path compression;
- * vertices sharing a root form one component. Here: 3 components.
- * Time: O(E α(V)) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A connected component is a maximal group of vertices joined by paths. The
+ * union-find approach starts with every vertex in its own singleton set,
+ * then unions the endpoints of each edge (with path compression keeping the
+ * trees flat). Vertices sharing a root representative belong to one
+ * component. Here edge A–B merges {A,B}, edge C–D merges {C,D}, and E stands
+ * alone: 3 components after 2 merges.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E·α(V)) – nearly linear thanks to path compression
+ *   Space: O(V) for parent pointers
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex under inspection is YELLOW (comparing).
+ *   - Merged edges turn BLUE (active).
+ *   - Each finished component gets its own color.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - α(V), the inverse Ackermann function, is below 5 for any real input.
+ *   - Union-find also powers Kruskal's algorithm and dynamic connectivity.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -106,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         parts.push(`{${members.join(",")}}`);
         ci += 1;
     }
-    yield snap(`${comps.size} components: ${parts.join(" ")} after ${merges} merges.`, 2, {
+    yield snap(`${comps.size} components: ${parts.join(" ")} after ${merges} merges.`, 4, {
         components: comps.size,
         merges,
     });
@@ -120,6 +145,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["A"], C: ["D"], D: ["C"], E: [] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "make every vertex its own singleton set",
+        "for each edge (u, v): union the sets of u and v",
+        "all edges scanned: read each vertex's root representative",
+        "group vertices that share a root into components",
+        "done: every component listed with its member vertices",
+    ],
 };
 
 export default module;
