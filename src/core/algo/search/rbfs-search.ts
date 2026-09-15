@@ -1,8 +1,34 @@
 /**
  * rbfs-search.ts – Recursive Best-First Search
  *
- * Recurses down the best child while tracking each sibling's f-value
- * as the backtrack limit. Tiny explicit graph; the goal goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Recursive best-first search is A* in linear space. It recurses down the
+ * most promising child while remembering each sibling's f-value as the
+ * backtrack limit for that subtree. When every child of the current node
+ * exceeds the limit, the recursion unwinds – forgetting the subtree except
+ * for its best f-value – and the parent tries the next-best alternative.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(b^d) – forgotten subtrees get re-expanded after backtracking
+ *   Space: O(d) – only the current path plus sibling limits
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The child recursed into is YELLOW (comparing), its parent PINK.
+ *   - Backtracked nodes flash PINK (highlight) with the blown limit.
+ *   - The goal turns GREEN (sorted) with its optimal cost and path.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Optimal and complete with an admissible heuristic, like A* and IDA*.
+ *   - The limit-inheritance rule is the whole lesson: min(limit, sibling f).
+ *   - Harder to trace than IDA*, but it never repeats whole rounds.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -75,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeNodes(new Map([[goal, "sorted"]])),
                 edges: [],
                 description: `Goal ${goal} reached with cost ${top.g}. Path: ${path.join("→")}.`,
-                codeLineNumber: 3,
+                codeLineNumber: 4,
                 layout: "graph",
                 meta: { calls, start, goal, cost: top.g },
             };
@@ -135,8 +161,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(),
         edges: [],
-        description: `Goal ${goal} was not reached.`,
-        codeLineNumber: 4,
+        description: `Goal ${goal} is unreachable after ${calls} recursive call(s).`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { calls, start, goal },
     };
@@ -150,6 +176,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with limit ← ∞ at the start node and path ← [start]",
+        "recurse into the child with smallest f = g+cost+h",
+        "pass each child limit ← min(parent limit, best sibling f)",
+        "if every child exceeds the limit: backtrack with best f kept",
+        "if the popped node = goal: return its cost and path",
+        "done: return optimum or report that goal is unreachable",
+    ],
 };
 
 export default module;
