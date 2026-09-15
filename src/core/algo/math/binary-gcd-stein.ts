@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate – need non-negative inputs, not both zero.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Binary gcd(${a}, ${b}).`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let shift = 0;
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Odd step ${guard + 1}: (${a}, ${b}).`,
                 codeLineNumber: 2,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             step += 1;
         }
@@ -125,5 +125,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 48, b: 36 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "handle zeros, then state binary gcd(a, b)",
+        "strip the common power of two: 2^shift",
+        "halve evens and subtract odd pairs until equal",
+        "restore the power: gcd = odd part × 2^shift",
+        "done: gcd verified by construction",
+    ],
 };
 export default module;
