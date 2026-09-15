@@ -160,6 +160,7 @@ const module: AlgorithmModule = {
         "each job picks skip versus take-with-compatible prefix",
         "binary search finds p(j) over sorted end times",
         "answer <- dp[n-1] with chosen jobs reconstructed",
-    ],};
+    ],
+};
 
 export default module;
