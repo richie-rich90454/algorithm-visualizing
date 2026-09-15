@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 4, B >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Factor ${n} with smoothness bound B=${B}, base a=2.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let a = 2;
@@ -129,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Bound exhausted with no split – stopping honestly.`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
 }
 const module: AlgorithmModule = {
@@ -140,5 +140,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 91, B: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "pick smoothness bound B and base a = 2",
+        "climb the B-smooth chain, testing gcd(a−1, n)",
+        "a nontrivial gcd splits n = d × cofactor",
+        "verify the split, or stop honestly at an exhausted bound",
+        "done: factor pair, or bound exhausted",
+    ],
 };
 export default module;
