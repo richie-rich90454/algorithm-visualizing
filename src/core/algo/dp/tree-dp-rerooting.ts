@@ -10,6 +10,10 @@
  * from it to all other vertices. The rerooting formula reuses the down-pass
  * values so each new root answer is computed in O(1).
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -81,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Rerooting DP – sum of distances from every possible root.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -92,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step },
     });
 
     // Down pass: subtree size and internal distance sums.
@@ -162,7 +166,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: "Rerooting complete – each node shows the sum of distances to all others.",
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { answers: [...answer.values()] },
     };
@@ -181,6 +185,14 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
-};
+    pseudocode: [
+        "set up down[v] <- subtree distance sums via post-order",
+        "down[v] holds distances to nodes inside its subtree",
+        "up[child] <- full answer of parent adjusted across edge",
+        "first pass gathers subtree sizes and down sums",
+        "second pass pushes parent contributions to children",
+        "each reroot shifts sums by subtree versus rest counts",
+        "answer <- per-node totals with every root value reported",
+    ],};
 
 export default module;
