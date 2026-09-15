@@ -1,8 +1,34 @@
 /**
  * beam-search.ts – Beam Search
  *
- * Level-by-level expansion that keeps only the top-w nodes by heuristic
- * at each level. Runs on a tiny explicit graph; the goal goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Searches level by level like breadth-first search, but keeps only the top
+ * w candidates (the beam width) by heuristic at each level and prunes the
+ * rest. A wide beam behaves like best-first search; a beam of width 1 is
+ * pure hill climbing. Pruning keeps memory tiny but can discard the branch
+ * that actually leads to the goal.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(w·b·d) – w survivors times branching factor times depth
+ *   Space: O(w) – only the current beam plus its candidates
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Fresh candidates are YELLOW (comparing).
+ *   - Survivors kept for the next level are PINK (highlight).
+ *   - The goal turns GREEN (sorted) when it survives the beam.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Incomplete and suboptimal – pruning is a gamble, width tunes the odds.
+ *   - The workhorse behind machine-translation decoders with wide beams.
+ *   - Compare with greedy best-first: both chase h, only the beam is capped.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -99,8 +125,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeNodes(beamStates),
             edges: [],
-            description: `Level ${level} beam keeps: ${beam.join(", ")}.`,
-            codeLineNumber: 1,
+            description: `Level ${level} beam keeps the best ${width}: ${beam.join(", ")}.`,
+            codeLineNumber: 4,
             layout: "graph",
             meta: { level, start, goal, width },
         };
@@ -110,8 +136,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeNodes(),
         edges: [],
-        description: `Goal ${goal} was pruned from the beam.`,
-        codeLineNumber: 3,
+        description: `Goal ${goal} was pruned from the beam after ${level} level(s).`,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { level, start, goal, width },
     };
@@ -125,6 +151,14 @@ const module: AlgorithmModule = {
     defaultInput: { start: "A", goal: "G", width: 2 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with beam ← {start} and width ← w as the survivor limit",
+        "collect every unvisited neighbor of the beam as candidates",
+        "sort candidates by heuristic h and keep only the best w",
+        "if goal is among the survivors: return it as found",
+        "else advance one level with the survivors as the new beam",
+        "done: return goal or report that it was pruned away",
+    ],
 };
 
 export default module;
