@@ -1,9 +1,35 @@
 /**
  * zero-one-bfs.ts – 0-1 BFS
  *
- * Weights in {0,1}: a deque replaces the heap – 0-edges to the front,
- * 1-edges to the back. A→D costs 1.
- * Time: O(V + E) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds shortest paths when every edge weight is 0 or 1, without a heap. A
+ * double-ended queue replaces the priority queue: relaxing a 0-weight edge
+ * pushes the vertex to the front, while a 1-weight edge pushes to the back,
+ * so the deque stays ordered by distance. On the demo both candidate routes
+ * from A to D cost 1.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) with deque operations in O(1)
+ *   Space: O(V) for distances and the deque
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex popped from the deque is YELLOW (comparing).
+ *   - Relaxed edges are BLUE (active), improved vertices ORANGE (visited).
+ *   - Settled vertices are GREEN (sorted).
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Only valid for weights 0 and 1; Dial's buckets generalize it.
+ *   - Zero edges act as free shortcuts that jump the queue.
+ *   - A clean example of matching the data structure to the weights.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -70,7 +96,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const prev = new Map<string, string | null>(labels.map((v) => [v, null]));
     dist.set(start, 0);
     const deque = [start];
-    yield snap(`0-1 BFS from ${start}: 0-edges jump the queue, 1-edges queue up.`, 0, {});
+    yield snap(
+        `0-1 BFS setup from ${start}: distances set with ${start}=0, weight 0 edges jump to the front of the deque.`,
+        0,
+        { settled: 0, visits: 0 },
+    );
     step += 1;
     while (deque.length > 0) {
         const u = deque.shift() as string;
@@ -88,9 +118,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         }
         setN(u, "sorted");
-        yield snap(`Pop ${u} at distance ${dist.get(u)} (deque: [${deque.join(", ")}]).`, 1, {
-            distance: dist.get(u) as number,
-        });
+        yield snap(
+            `Pop vertex ${u} at distance ${dist.get(u)} from the deque front (remaining deque holds [${deque.join(", ") || "empty"}]).`,
+            3,
+            {
+                distance: dist.get(u) as number,
+                settled: labels.filter((v) => (dist.get(v) as number) < Infinity).length,
+                visits: step,
+            },
+        );
         step += 1;
     }
     const path: string[] = [];
@@ -108,10 +144,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         ok
-            ? `Shortest ${start}→${target} = ${dist.get(target)} via ${path.join("→")}.`
-            : `${target} unreachable.`,
-        2,
-        { distance: ok ? (dist.get(target) as number) : -1 },
+            ? `Shortest path ${start} to ${target} costs ${dist.get(target)} via ${path.join(" → ")} using 0 and 1 weights.`
+            : `${target} is unreachable from ${start}.`,
+        6,
+        {
+            distance: ok ? (dist.get(target) as number) : -1,
+            path: ok ? path.join("→") : "",
+            settled: labels.length,
+            visits: labels.length,
+        },
     );
 }
 
@@ -135,6 +176,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "dist[s] ← 0, deque holds only source s",
+        "pop front vertex u with smallest distance",
+        "for each edge u→v with weight w in {0,1}",
+        "if dist[u]+w < dist[v]: update dist[v] via u",
+        "push v front when w = 0, else push v back",
+        "repeat until the deque is empty",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
