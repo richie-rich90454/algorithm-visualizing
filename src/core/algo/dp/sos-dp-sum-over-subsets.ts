@@ -142,6 +142,7 @@ const module: AlgorithmModule = {
         "each bit folds subset contributions missing that bit",
         "in-place updates reuse the same array per bit layer",
         "answer <- F[full] as sum over all subsets with stages shown",
-    ],};
+    ],
+};
 
 export default module;
