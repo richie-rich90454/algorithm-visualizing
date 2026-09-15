@@ -40,7 +40,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "array",
             meta: { cur, best, bestFit: f(best) },
         };
@@ -70,6 +70,15 @@ const module: AlgorithmModule = {
     defaultInput: { start: 8, iters: 6, tenure: 2 },
     visualType: "array",
     run,
+    pseudocode: [
+        "initialize search at start x with empty tabu list",
+        "for step t <- 1 to iters",
+        "evaluate neighbors excluding tabu unless aspirated",
+        "move to best allowed neighbor candidate",
+        "push prior position with fixed tenure length",
+        "track best solution found across all steps",
+        "done: minimum x reported near optimum 2",
+    ],
 };
 
 export default module;
