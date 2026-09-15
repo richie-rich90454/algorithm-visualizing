@@ -1,8 +1,31 @@
 /**
- * pancake-sort.ts – Pancake Sort.
+ * pancake-sort.ts – Pancake Sort
  *
- * Flips prefixes like a spatula to place each pancake.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Pancake sort flips prefixes like a spatula: find the largest unsorted pancake, flip it to the top, then flip the whole stack to seat it at the bottom. Each pancake lands in at most two flips. It turns sorting into a fun prefix-reversal puzzle with real genome applications.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -112,7 +135,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -141,5 +164,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the stack of unsorted pancakes",
+        "find the largest pancake in the first size slots",
+        "flip its prefix to bring it to the front",
+        "flip the whole unsorted prefix to seat it at the end",
+        "shrink the stack and repeat",
+        "done: stack is sorted smallest on top",
+    ],
 };
 export default module;
