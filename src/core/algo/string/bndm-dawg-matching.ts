@@ -34,16 +34,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `BNDM backward scan for "${pat}".`, 0);
+    yield F(tx(text), `BNDM backward scan for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
-    yield F(tx(text), `Suffix-automaton masks for m=${m}.`, 1);
+    yield F(tx(text), `Suffix-automaton masks for m=${m}.`, 1, { comparisons: 0 });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     let pos = 0;
     while (pos <= text.length - m) {
         let D = ~0,
@@ -53,10 +54,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             let s = 0;
             for (let i = 0; i < m; i += 1) if (pat[m - 1 - i] === text[pos + j]) s |= 1 << i;
             D = (D << 1) & s;
+            comparisons += m;
             if (D === 0) break;
             if ((D & (1 << (m - 1))) !== 0) last = j;
             j -= 1;
         }
+        comparisons += m;
         let ok = last >= 0 && text.slice(pos, pos + m) === pat;
         if (ok) {
             matches.push(pos);
@@ -68,17 +71,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         "path",
                     ),
                 ),
-                `Match at ${pos}.`,
+                `Match: "${pat}" found at index ${pos}.`,
                 2,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         } else {
             yield F(
                 tx(text, stAt([pos], "comparing")),
-                `Window ${pos} scanned backward, no match.`,
+                `Window ${pos}: text[${pos}]="${text[pos]}" rules out "${pat}" here.`,
                 3,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         }
@@ -89,9 +92,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         4,
-        { matches },
+        { comparisons, matches },
     );
 }
 
