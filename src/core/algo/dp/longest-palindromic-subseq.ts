@@ -133,6 +133,7 @@ const module: AlgorithmModule = {
         "matching ends wrap the best inner subsequence",
         "mismatches drop the weaker of the two ends",
         "answer <- dp[0][n-1] with subsequence backtraced",
-    ],};
+    ],
+};
 
 export default module;
