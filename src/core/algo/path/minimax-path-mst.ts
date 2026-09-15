@@ -1,9 +1,34 @@
 /**
  * minimax-path-mst.ts – Minimax Path via MST
  *
- * The minimax edge on the best path equals the minimax edge on the MST
- * path (bottleneck property). Kruskal MST: BC1, CD2, AC3; A→D max-edge 3.
- * Time: O(E log E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The minimax path minimizes the largest edge along the route, which models
+ * the best bottleneck connection. A minimum spanning tree preserves minimax
+ * distances: the minimax edge on the best path equals the minimax edge on
+ * the tree path. Kruskal builds the MST from edges B to C (1), C to D (2),
+ * A to C (3), then a tree walk from A to D has maximum edge 3.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log E) dominated by sorting edges for Kruskal
+ *   Space: O(V + E) for the tree and union-find structure
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - MST edges under construction are CYAN (path).
+ *   - Finished MST edges are GREEN (sorted).
+ *   - The minimax route vertices are CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The bottleneck property makes one MST answer every minimax query.
+ *   - Also called the widest-path problem on maximum-capacity networks.
+ *   - Works on undirected graphs with arbitrary non-negative weights.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -91,9 +116,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         return r;
     };
     const mst: Array<{ u: string; v: string; w: number }> = [];
-    yield snap(`Kruskal: scan ${allE.length} edges lightest-first for the MST.`, 0, {
-        edges: allE.length,
-    });
+    yield snap(
+        `Kruskal setup: scanning ${allE.length} undirected edges lightest-first to build the MST.`,
+        0,
+        {
+            edges: allE.length,
+            settled: 0,
+            visits: 0,
+        },
+    );
     step += 1;
     for (const e of allE) {
         const ru = find(e.u);
@@ -103,7 +134,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             mst.push(e);
             setE(e.u, e.v, "path");
             setE(e.v, e.u, "path");
-            yield snap(`MST takes ${e.u}–${e.v} (weight ${e.w}).`, 1, { mstEdges: mst.length });
+            yield snap(
+                `MST takes edge ${e.u} to ${e.v} with weight ${e.w} joining two components.`,
+                2,
+                { mstEdges: mst.length, settled: mst.length, visits: mst.length },
+            );
             step += 1;
         }
         if (mst.length === labels.length - 1) break;
@@ -143,9 +178,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setE(e.v, e.u, "sorted");
     }
     for (const v of path) setN(v, "path");
-    yield snap(`Minimax ${start}→${target} on the MST: ${path.join("→")} with max edge ${mm}.`, 2, {
-        minimax: mm,
-    });
+    yield snap(
+        `Minimax path ${start} to ${target} on the MST: ${path.join(" → ")} with bottleneck max edge ${mm}.`,
+        6,
+        {
+            minimax: mm,
+            distance: mm,
+            path: path.join("→"),
+            settled: labels.length,
+            visits: labels.length,
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -175,6 +218,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "sort all undirected edges by weight ascending",
+        "make single-vertex sets for each vertex",
+        "take next lightest edge u-v joining components",
+        "add u-v to MST and union their two sets",
+        "repeat until MST holds V-1 edges total",
+        "walk MST from s to t tracking maximum edge",
+        "done: tree path minimizes the largest edge",
+    ],
 };
 
 export default module;
