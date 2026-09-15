@@ -1,6 +1,7 @@
 /**
  * soundex-phonetic-coding.ts – Soundex.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(1)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -71,14 +72,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(word), `Soundex("${word}").`, 0);
     step += 1;
     yield F(tx(word, stAt([0], "comparing")), `Keep first letter "${word[0]}".`, 1);
     step += 1;
     const code = soundex(word);
-    yield F(tx(word, stAt([1, 2], "comparing")), "Map consonants, drop vowels/H/W.", 2, { code });
+    yield F(
+        tx(word, stAt([1, 2], "comparing")),
+        `Map consonants of "${word}", drop vowels/H/W.`,
+        2,
+        { code },
+    );
     step += 1;
     yield F(
         tx(
@@ -104,6 +110,15 @@ const module: AlgorithmModule = {
     defaultInput: { word: "Euler" },
     visualType: "text",
     run,
+    pseudocode: [
+        "retain first letter of input word uppercase",
+        "map consonants to digit codes by groups",
+        "collapse adjacent equal digit codes",
+        "remove vowels and H W separators",
+        "pad with zeros or truncate to four chars",
+        "verify code format letter plus three digits",
+        "report four-character Soundex code",
+    ],
 };
 
 export default module;
