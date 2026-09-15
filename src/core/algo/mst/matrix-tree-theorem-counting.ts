@@ -1,6 +1,26 @@
 /**
- * matrix-tree-theorem-counting.ts - Matrix-Tree Theorem Counting.
- * Number of spanning trees equals any cofactor of the Laplacian (Bareiss determinant).
+ * matrix-tree-theorem-counting.ts – Matrix-Tree Theorem Counting.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Kirchhoff's Matrix-Tree theorem counts spanning trees without listing them:
+ * build the Laplacian L = D - A (degree minus adjacency), delete any one row
+ * and column, and take the determinant of the remaining minor. That cofactor
+ * equals the number of spanning trees. The demo uses fraction-free Bareiss
+ * elimination for exact integer arithmetic.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V^3) – determinant of a (V-1) by (V-1) minor
+ *   Space: O(V^2) for the Laplacian matrix
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Graph edges stay idle while the matrix work proceeds in captions.
+ *   - The final frame highlights every edge of the counted graph.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -68,13 +88,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Counting spanning trees of K3 via Kirchhoff: Laplacian L = D - A.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Counting spanning trees of the triangle A–B–C via Kirchhoff: Laplacian L = D - A.`,
+            0,
+        ),
+        meta: { count: 0, totalWeight: 0 },
+    };
     const n = verts.length;
     const idx = new Map(verts.map((v, i) => [v, i]));
     const L: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
@@ -86,40 +109,49 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         L[a]![b]! -= 1;
         L[b]![a]! -= 1;
     }
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Laplacian rows: [${(L[0] as number[]).join(",")}] / [${(L[1] as number[]).join(",")}] / [${(L[2] as number[]).join(",")}].`,
-        1,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Laplacian rows from edges A–B(1), B–C(1), A–C(1): [${(L[0] as number[]).join(",")}] / [${(L[1] as number[]).join(",")}] / [${(L[2] as number[]).join(",")}].`,
+            1,
+        ),
+        meta: { count: 0 },
+    };
     const M: number[][] = L.slice(0, n - 1).map((r) => (r as number[]).slice(0, n - 1));
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Delete last row/column: 2x2 minor [[${(M[0] as number[]).join(",")}], [${(M[1] as number[]).join(",")}]].`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Delete the last row and column: 2x2 minor [[${(M[0] as number[]).join(",")}], [${(M[1] as number[]).join(",")}]].`,
+            2,
+        ),
+        meta: { count: 0 },
+    };
     const det =
         (M[0] as number[])[0]! * (M[1] as number[])[1]! -
         (M[0] as number[])[1]! * (M[1] as number[])[0]!;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Bareiss elimination done: cofactor determinant = ${det}.`,
-        3,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Bareiss elimination finished: cofactor determinant = ${det} from edges A–B, B–C, A–C.`,
+            3,
+        ),
+        meta: { count: det },
+    };
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map(list.map((_, i) => [i, "sorted"] as [number, EntityState]))),
-            `K3 has exactly ${det} spanning trees (Cayley: 3^(3-2) = 3).`,
-            4,
+            `Triangle graph has exactly ${det} spanning trees, total weight ${det} (Cayley: 3^(3-2) = 3).`,
+            5,
         ),
-        meta: { count: det },
+        meta: { count: det, totalWeight: det },
     };
 }
 
