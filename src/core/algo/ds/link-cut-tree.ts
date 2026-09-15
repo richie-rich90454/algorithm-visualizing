@@ -103,6 +103,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize link-cut forest with isolated preferred paths",
+        "expose path by splaying and switching preferred children",
+        "compare depths to find path parent",
+        "link trees by attaching root as path child",
+        "cut edge by exposing then detaching child",
+        "query path aggregate over exposed splay",
+        "done: forest holds trees with path query answer",
+    ],
 };
 
 export default module;
