@@ -71,10 +71,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: snap(-1),
         edges: [],
-        description: `MCTS-UCT over arms A/B/C (true means ${means.join("/")}) – ${total} fixed simulations, seed 12345.`,
+        description: `MCTS-UCT over arms A/B/C (true means ${means.join("/")}) – ${total} fixed simulations with UCT c=1.4, seed 12345.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: { sims: total },
+        meta: { sims: total, arms: [...names], means: [...means], c },
     };
     step += 1;
     const c = 1.4;
