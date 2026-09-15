@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 2 <= p <= 13).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `${mp} mod ${d} = ${r}${r === 0 ? " – composite" : ""}.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             step += 1;
         }
@@ -114,5 +114,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "form the Mersenne number Mp = 2^p − 1",
+        "trial-divide Mp by small factors",
+        "prime Mp yields 2^(p−1)·Mp, else stop here",
+        "verify by summing all the divisors",
+        "done: perfect number confirmed, or none for this p",
+    ],
 };
 export default module;
