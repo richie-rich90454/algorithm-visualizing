@@ -71,10 +71,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: base.map((e) => ({ ...e })),
         edges: tri.map((e) => ({ ...e })),
-        description: "Triangle – circumcenter is the bisector intersection.",
-        codeLineNumber: 0,
+        description: `Triangle (${pts[0]})–(${pts[1]})–(${pts[2]}) – circumcenter is the bisector intersection.`,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { triangle: pts.map((p) => `(${p[0]},${p[1]})`).join(" ") },
     };
     step += 1;
     const mid = (a: [number, number], b: [number, number]): [number, number] => [
@@ -89,10 +89,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ...mids.map(([x, y], i) => node(`m-${i}`, x, y, "mid", "active")),
         ],
         edges: tri.map((e) => ({ ...e })),
-        description: "Edge midpoints anchor the perpendicular bisectors.",
-        codeLineNumber: 1,
+        description: `Midpoints (${mids[0]}) and (${mids[1]}) anchor the perpendicular bisectors.`,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { midpoints: mids.map((m) => `(${m[0]},${m[1]})`).join(" ") },
     };
     step += 1;
     const bis: VisualEntity[] = [
@@ -124,9 +124,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: bis,
         edges: bEdges,
         description: `Bisectors meet at (${cx},${cy}).`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { center: [cx, cy] },
     };
     step += 1;
     const ring = 8;
@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: [...bEdges, ...cEdges],
         description: `Circle through all three, r=${r.toFixed(2)}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { center: [cx, cy], radius: r },
     };
@@ -174,6 +174,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from three non-collinear points",
+        "mark the midpoint of two triangle edges",
+        "raise a perpendicular bisector from each midpoint",
+        "intersect the two bisectors at the circumcenter",
+        "done: the circle through all three points has radius r",
+    ],
 };
 
 export default module;
