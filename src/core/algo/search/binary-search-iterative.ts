@@ -146,7 +146,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(arr),
         edges: [],
         description: `${target} is not in the array after ${comparisons} comparisons.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "array",
         meta: { comparisons, target },
     };
@@ -162,6 +162,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 5, 7, 9, 11, 13, 15], target: 7 },
     visualType: "array",
     run,
+    pseudocode: [
+        "set lo ← 0 and hi ← n-1 over the sorted array",
+        "while lo ≤ hi: keep searching the live interval",
+        "mid ← ⌊(lo+hi)/2⌋; compare A[mid] with target",
+        "if A[mid] = target: return mid as the match",
+        "if A[mid] < target: lo ← mid+1 else hi ← mid-1",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
