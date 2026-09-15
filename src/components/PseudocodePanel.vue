@@ -1,14 +1,11 @@
 <script setup lang="ts">
 /**
- * PseudocodePanel.vue – Displays the current frame's step description.
+ * PseudocodePanel.vue – Textbook pseudocode with per-step highlighting.
  *
- * A placeholder panel for a future full pseudocode view. For now it shows the
- * algorithm's name plus the current step description, and highlights the line
- * corresponding to `codeLineNumber` when the algorithm supplies one.
- *
- * The mock pseudocode list is intentionally short: when an algorithm sets a
- * `codeLineNumber`, the matching mock line is highlighted so the learner can
- * correlate the visual step with an abstract line of logic.
+ * Shows the loaded module's `pseudocode` lines and highlights the line
+ * matching the current frame's `codeLineNumber`, so learners correlate each
+ * visual step with the abstract logic. When a module has no pseudocode yet,
+ * falls back to a short generic outline (never blank).
  */
 
 import { computed } from "vue";
@@ -18,10 +15,10 @@ import { useVisualizerStore } from "@/stores/visualizer";
 const store = useVisualizerStore();
 
 /** Reactive store values so the panel updates on every step. */
-const { currentFrame, algorithm } = storeToRefs(store);
+const { currentFrame, algorithm, loadedModule } = storeToRefs(store);
 
-/** Mock pseudocode lines; line 0 is highlighted by default. */
-const mockLines = [
+/** Generic outline used only when a module omits pseudocode. */
+const fallbackLines = [
     "Start the algorithm with the given input",
     "Inspect the current element (highlighted)",
     "Compare / update according to the algorithm rule",
@@ -30,8 +27,18 @@ const mockLines = [
     "Finish: show the final state",
 ];
 
-/** The currently highlighted mock line, driven by the frame's code line. */
-const highlightedLine = computed(() => currentFrame.value?.codeLineNumber ?? 0);
+/** Real pseudocode when available, otherwise the generic outline. */
+const lines = computed(() => {
+    const pc = loadedModule.value?.pseudocode;
+    return pc && pc.length > 0 ? pc : fallbackLines;
+});
+
+/** The currently highlighted line, clamped into range. */
+const highlightedLine = computed(() => {
+    const n = currentFrame.value?.codeLineNumber ?? 0;
+    if (n < 0) return 0;
+    return n >= lines.value.length ? lines.value.length - 1 : n;
+});
 </script>
 
 <template>
@@ -47,11 +54,11 @@ const highlightedLine = computed(() => currentFrame.value?.codeLineNumber ?? 0);
 
             <ol class="mock-lines">
                 <li
-                    v-for="(line, index) in mockLines"
+                    v-for="(line, index) in lines"
                     :key="index"
                     :class="{ active: index === highlightedLine }"
                 >
-                    {{ line }}
+                    <span class="line-no">{{ index + 1 }}</span>{{ line }}
                 </li>
             </ol>
         </template>
@@ -80,16 +87,30 @@ const highlightedLine = computed(() => currentFrame.value?.codeLineNumber ?? 0);
 }
 
 .mock-lines {
-    list-style-position: inside;
+    list-style: none;
     margin: 0;
     padding: 0;
     font-size: 13px;
     line-height: 1.6;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.mock-lines li {
+    display: flex;
+    gap: 8px;
+    padding: 2px 4px;
+    border-radius: var(--radius);
+}
+
+.line-no {
+    flex-shrink: 0;
+    min-width: 20px;
+    text-align: right;
+    color: var(--color-text-secondary);
+    user-select: none;
 }
 
 .mock-lines li.active {
     background: var(--state-highlight-bg);
-    border-radius: var(--radius);
-    padding-left: var(--spacing-1);
 }
 </style>
