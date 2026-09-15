@@ -1,6 +1,32 @@
 /**
- * Longest Palindromic Substring: dp[l][r] true if s[l]==s[r] and inner pal.
- * Time O(n^2), Space O(n^2). Default "babad" -> "bab" (len 3).
+ * longest-palindromic-substring.ts - Longest Palindromic Substring
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: P[l][r] <- s[l] == s[r] and (short gap or P[l+1][r-1]).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n\u00b2)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 no palindrome.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -93,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${start},${start + maxLen - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: longest palindromic substring "${answer}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -107,6 +133,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "babad" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up singles as palindromes with best start 0 length 1",
+        "table P[l][r] holds whether substring l..r is a palindrome",
+        "P[l][r] <- s[l] == s[r] and (short gap or P[l+1][r-1])",
+        "expand by length, checking inner substring results",
+        "matching ends with palindromic core extend the best",
+        "update best start and length on each longer confirmed span",
+        "answer <- longest span s[start:start+maxLen] located",
+    ],};
 
 export default module;
