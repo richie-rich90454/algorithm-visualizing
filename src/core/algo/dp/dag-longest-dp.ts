@@ -163,7 +163,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (edge) {
                 edge.state = "active";
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbor}: alt ${alt}, dist ${dist.get(neighbor)}.`);
+            yield buildFrame(
+                `Relaxing ${current} → ${neighbor}: alt ${alt}, dist ${dist.get(neighbor)}.`,
+            );
             step += 1;
         }
 
@@ -247,6 +249,7 @@ const module: AlgorithmModule = {
         "finalize each reachable vertex then relax outgoing edges",
         "track parent pointers on each strict improvement",
         "answer <- dist[target] with path reconstructed via parents",
-    ],};
+    ],
+};
 
 export default module;
