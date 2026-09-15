@@ -99,6 +99,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [5, 3, 8, 1, 9] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with a fixed-size array holding the initial values",
+        "capacity never changes so no resizing can occur",
+        "access index: read the slot directly in O(1)",
+        "write index: store the new value directly in O(1)",
+        "out-of-range indexes are rejected, never wrapped",
+        "every slot keeps its position for the whole demo",
+        "done: array state holds with access and write verified",
+    ],
 };
 
 export default module;
