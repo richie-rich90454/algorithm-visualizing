@@ -146,6 +146,7 @@ const module: AlgorithmModule = {
         "try each k as the last balloon burst in the interval",
         "combine side results with the last-burst reward",
         "answer <- dp[0][n-1] with burst order from best-k choices",
-    ],};
+    ],
+};
 
 export default module;
