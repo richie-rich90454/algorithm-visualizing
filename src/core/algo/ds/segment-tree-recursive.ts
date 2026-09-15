@@ -172,6 +172,15 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 1, 3, 4, 5], query: [1, 3] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the raw array and no tree nodes",
+        "build recursively: leaf holds one element, parent sums children",
+        "query range: return the node sum when fully covered",
+        "skip nodes fully outside and recurse into partial overlaps",
+        "at most O(log n) canonical nodes cover any interval",
+        "combine their aggregates into one range sum",
+        "done: recursion visits few nodes and the range answer is reported",
+    ],
 };
 
 export default module;
