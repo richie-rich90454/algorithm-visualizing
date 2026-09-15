@@ -102,7 +102,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { code },
     );
     step += 1;
-    yield F(tx(word), "Done.", 4, { code });
+    yield F(tx(word), `Metaphone complete: "${word}" codes to "${code}".`, 4, { code });
 }
 
 const module: AlgorithmModule = {
