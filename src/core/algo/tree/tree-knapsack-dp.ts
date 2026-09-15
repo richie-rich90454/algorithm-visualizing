@@ -1,7 +1,8 @@
 /**
- * tree-knapsack-dp.ts – Tree knapsack (pick nodes, capacity W)
+ * tree-knapsack-dp.ts – Tree knapsack picking nodes under capacity W.
+ *
  * Merges children knapsacks postorder; each node taken at most once.
- * Time O(n·W²), Space O(n·W). current=comparing, done=sorted.
+ * Time O(n*W^2), Space O(n*W). Current uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -122,5 +123,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes postorder under capacity W",
+        "merge each child knapsack into current table",
+        "consider taking current node weight and value",
+        "keep best value for every capacity limit",
+        "return best root value as the knapsack answer",
+    ],
 };
 export default module;
