@@ -134,6 +134,7 @@ const module: AlgorithmModule = {
         "buys use cash from two days back honoring the rest day",
         "sells convert held value into realized cash balance",
         "answer <- cash as max profit honoring the cooldown rule",
-    ],};
+    ],
+};
 
 export default module;
