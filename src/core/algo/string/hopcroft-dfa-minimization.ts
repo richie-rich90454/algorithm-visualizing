@@ -1,6 +1,7 @@
 /**
  * hopcroft-dfa-minimization.ts – Hopcroft Minimization.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n log n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -49,7 +50,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const delta: Record<number, Record<string, number>> = {
         0: { a: 1, b: 0 },
@@ -122,6 +123,15 @@ const module: AlgorithmModule = {
     defaultInput: {},
     visualType: "grid",
     run,
+    pseudocode: [
+        "partition states into accepting and non-accepting blocks",
+        "initialize worklist with smaller initial block",
+        "split blocks by predecessor behavior on each symbol",
+        "replace split blocks and update worklist",
+        "repeat until worklist empties with stable partition",
+        "merge equivalent states within each block",
+        "report minimized automaton blocks",
+    ],
 };
 
 export default module;
