@@ -154,6 +154,7 @@ const module: AlgorithmModule = {
         "each cell branches on place-right, place-down, or fill",
         "propagate counts into next-column mask configurations",
         "answer <- dp[cols][0] as tilings with empty overhang",
-    ],};
+    ],
+};
 
 export default module;
