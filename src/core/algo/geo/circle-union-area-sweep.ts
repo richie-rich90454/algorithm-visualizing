@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Union area of ${circles.length} circle(s) by angular sweep.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { circles: circles.length },
     };
     if (circles.length === 0 || circles.some((c) => c[2] <= 0)) {
         yield {
@@ -116,7 +116,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: ents.map((e, k) => ({ ...e, state: st.get(k) ?? e.state })),
             edges: [],
             description: `Circle ${i}: uncovered-arc contribution = ${(per[i] as number).toFixed(4)}.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { circle: i, contrib: per[i] },
         };
@@ -127,16 +127,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: ents.map((e) => ({ ...e, state: "sorted" as EntityState })),
         edges: [],
         description: "Pairwise lens subtracted via uncovered arcs.",
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
-        meta: {},
+        meta: { area },
     };
     yield {
         stepNumber: step++,
         entities: ents.map((e) => ({ ...e, state: "sorted" as EntityState })),
         edges: [],
         description: `Union area = ${area.toFixed(4)}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { area },
     };
@@ -155,6 +155,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the list of circles",
+        "for each circle: list angular intervals covered by others",
+        "subtract covered arcs to get each uncovered arc",
+        "integrate each uncovered arc for its area share",
+        "sum every circle share into the running total",
+        "done: the total equals the union area of all circles",
+    ],
 };
 
 export default module;
