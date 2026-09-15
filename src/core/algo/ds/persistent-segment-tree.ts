@@ -203,6 +203,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with version 0 built over the initial array",
+        "update (index, value): copy only nodes on the root-to-leaf path",
+        "recompute sums on the copied path, share every other subtree",
+        "repeat to create one root per update version",
+        "query a version over a range using its own root",
+        "unchanged versions keep answering with their original values",
+        "done: all versions share structure and query answers are reported",
+    ],
 };
 
 export default module;
