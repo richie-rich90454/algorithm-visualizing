@@ -1,6 +1,29 @@
 /**
  * sparse-table.ts - Sparse Table
  * Powers-of-two intervals answer idempotent RMQ. Demo: build on <=6 items, 1 range query verified.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Powers-of-two intervals answer idempotent RMQ. Demo: build on <=6 items, 1 range query verified.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) RMQ
+ *   Space: O(n log n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Sparse Table behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -35,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -65,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     yield {
@@ -87,5 +110,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the raw array and no preprocessed intervals",
+        "precompute interval aggregates for every power-of-two length",
+        "each longer interval combines two overlapping halves",
+        "query range: pick the largest power of two fitting inside",
+        "cover the range with two overlapping precomputed blocks",
+        "idempotent operations combine the two blocks in O(1)",
+        "done: table is built and the range min and sum verify",
+    ],
 };
 export default module;
