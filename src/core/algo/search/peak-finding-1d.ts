@@ -1,9 +1,33 @@
 /**
  * peak-finding-1d.ts – 1D Peak Finding
  *
- * Binary-searches an unsorted array for a peak (an element ≥ both
- * neighbors) by climbing toward the larger neighbor. Verified with a
- * brute-force scan before going green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A peak is an element at least as large as both neighbors (edges compare
+ * against negative infinity, so the ends can be peaks too). The algorithm
+ * binary-searches for one: compare A[mid] with A[mid+1] and climb toward
+ * the larger side. The larger side must contain a peak, so half the array
+ * is discarded each step. Any peak is acceptable – the array can hold many.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) – the interval halves on every comparison
+ *   Space: O(1) auxiliary – only lo, hi, and mid pointers
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The mid element is YELLOW (comparing), its right neighbor PINK.
+ *   - The confirmed peak turns GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Works on any unsorted array – no sortedness promise is needed.
+ *   - Always succeeds: every finite array holds at least one peak.
+ *   - The 2D version generalizes the same climb-toward-larger idea.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -35,7 +59,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Hunting a peak in ${arr.length} elements.`,
+        description: `Hunting a peak among ${arr.length} unsorted elements; edges count as peaks.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons },
@@ -46,8 +70,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – no peak exists.",
-            codeLineNumber: 1,
+            description: "Empty array holds no elements, so no peak exists here.",
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons },
         };
@@ -71,10 +95,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ]),
             ),
             edges: [],
-            description: `Compare ${a} at ${mid} with ${b} at ${mid + 1}; climb toward the larger.`,
+            description: `Compare A[${mid}]=${a} with A[${mid + 1}]=${b}; climb toward the larger neighbor.`,
             codeLineNumber: 1,
             layout: "array",
-            meta: { comparisons },
+            meta: { comparisons, lo, hi, mid },
         };
         step += 1;
         if (a < b) lo = mid + 1;
@@ -93,10 +117,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, new Map([[verified, "sorted"]])),
         edges: [],
-        description: `Peak ${arr[verified]} at index ${verified} after ${comparisons} comparisons.`,
-        codeLineNumber: 2,
+        description: `Peak ${arr[verified]} at index ${verified} beats both neighbors after ${comparisons} comparisons.`,
+        codeLineNumber: 4,
         layout: "array",
-        meta: { comparisons, foundIndex: verified },
+        meta: { comparisons, foundIndex: verified, peak: verified },
     };
 }
 
@@ -108,6 +132,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [1, 3, 7, 9, 5, 2] },
     visualType: "array",
     run,
+    pseudocode: [
+        "set lo ← 0 and hi ← n-1 over the unsorted array",
+        "while lo < hi: compare A[mid] with A[mid+1]",
+        "if A[mid] < A[mid+1]: lo ← mid+1 else hi ← mid",
+        "peak ← lo; confirm it beats both neighbors",
+        "done: return peak index and its value",
+    ],
 };
 
 export default module;
