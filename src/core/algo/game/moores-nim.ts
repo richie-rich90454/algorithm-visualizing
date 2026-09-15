@@ -1,6 +1,33 @@
-// moores-nim.ts – Moore's Nim_k: remove stones from at most k piles per move.
-// P-position iff every binary digit sums to 0 mod (k+1). Solved by brute
-// force on the tiny default; the shown move is verified, not memorised.
+/**
+ * moores-nim.ts – Moore's Nim_k (remove from at most k piles)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Moore's Nim_k lets a move remove stones from at most k piles. Simply: make
+ * every binary digit sum a multiple of k+1. Formally: a position is a
+ * P-position iff every binary column sums to 0 mod (k+1), and the demo finds
+ * the winning take by brute force on the tiny default, verified in code
+ * rather than hardcoded.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(m^p) brute-force search on the tiny demo
+ *   Space: O(p) piles
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Piles show as stone columns; touched piles flash YELLOW.
+ *   - Each frame names the digit sums mod (k+1) and the piles taken from.
+ *   - The resulting zero-sum piles show the P-position handed over.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - k = 1 recovers normal Nim; larger k widens the winning takes.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function bitSums(piles: number[], mod: number): number[] {
