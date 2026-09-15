@@ -34,11 +34,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Shift-Or exact search for "${pat}".`, 0);
+    yield F(tx(text), `Shift-Or exact search for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
     const mask = new Map<string, number>();
@@ -47,13 +47,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < m; i += 1) if (pat[i] !== ch) bits |= 1 << i;
         mask.set(ch, bits);
     }
-    yield F(tx(text), `Bitmasks built for m=${m}.`, 1);
+    yield F(tx(text), `Bitmasks built for m=${m}.`, 1, { comparisons: 0 });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     let D = ~0;
     const all = (1 << m) - 1;
     for (let i = 0; i < text.length; i += 1) {
         D = ((D << 1) | 1) & (mask.get(text[i] as string) ?? all) & ((1 << m) - 1 || -1);
+        comparisons += 1;
         const hit = (D & (1 << (m - 1))) === 0;
         if (hit) matches.push(i - m + 1);
         if (i < 6 || hit) {
@@ -61,10 +63,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             yield F(
                 tx(text, s),
                 hit
-                    ? `Match ending at ${i} (start ${i - m + 1}).`
-                    : `State D updated at text[${i}].`,
+                    ? `Match: "${pat}" ends at ${i} (starts at ${i - m + 1}).`
+                    : `text[${i}]="${text[i]}" folds into bit state D.`,
                 2,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         }
@@ -74,9 +76,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let k = s0; k < s0 + m; k += 1) fin.set(k, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         3,
-        { matches },
+        { comparisons, matches },
     );
 }
 
