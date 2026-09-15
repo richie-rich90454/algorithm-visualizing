@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Counting spanning trees of the triangle A–B–C via Kirchhoff: Laplacian L = D - A.`,
             0,
         ),
-        meta: { count: 0, totalWeight: 0 },
+        meta: { count: 0, accepted: 0, totalWeight: 0 },
     };
     const n = verts.length;
     const idx = new Map(verts.map((v, i) => [v, i]));
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Laplacian rows from edges A–B(1), B–C(1), A–C(1): [${(L[0] as number[]).join(",")}] / [${(L[1] as number[]).join(",")}] / [${(L[2] as number[]).join(",")}].`,
             1,
         ),
-        meta: { count: 0 },
+        meta: { count: 0, accepted: 0, totalWeight: 0 },
     };
     const M: number[][] = L.slice(0, n - 1).map((r) => (r as number[]).slice(0, n - 1));
     yield {
@@ -128,7 +128,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Delete the last row and column: 2x2 minor [[${(M[0] as number[]).join(",")}], [${(M[1] as number[]).join(",")}]].`,
             2,
         ),
-        meta: { count: 0 },
+        meta: { count: 0, accepted: 0, totalWeight: 0 },
     };
     const det =
         (M[0] as number[])[0]! * (M[1] as number[])[1]! -
@@ -141,7 +141,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Bareiss elimination finished: cofactor determinant = ${det} from edges A–B, B–C, A–C.`,
             3,
         ),
-        meta: { count: det },
+        meta: { count: det, accepted: 0, totalWeight: 0 },
     };
     yield {
         ...FR(
@@ -151,7 +151,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Triangle graph has exactly ${det} spanning trees, total weight ${det} (Cayley: 3^(3-2) = 3).`,
             5,
         ),
-        meta: { count: det, totalWeight: det },
+        meta: { count: det, totalWeight: det, accepted: list.length },
     };
 }
 
@@ -170,5 +170,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "build the Laplacian matrix L from degrees and adjacency",
+        "delete the last row and column to form the minor",
+        "run fraction-free elimination on the minor matrix",
+        "take the determinant of the reduced minor matrix",
+        "read the cofactor as the spanning tree count",
+        "done: cofactor equals the total number of spanning trees",
+    ],
 };
 export default module;
