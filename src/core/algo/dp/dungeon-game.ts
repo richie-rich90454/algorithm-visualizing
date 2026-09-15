@@ -147,6 +147,7 @@ const module: AlgorithmModule = {
         "each cell prepares for the cheaper of right or down exits",
         "clamp values to at least 1 HP to stay alive",
         "answer <- need[0][0] with path following min-need moves",
-    ],};
+    ],
+};
 
 export default module;
