@@ -66,6 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const n = text.length;
     const m = pattern.length;
     const matches: number[] = [];
+    let comparisons = 0;
     let step = 0;
 
     // Frame 0: the untouched text.
@@ -76,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Rabin-Karp: searching for "${pattern}" with a rolling hash.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -89,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty pattern – nothing to search for.",
             codeLineNumber: 4,
             layout: "text",
-            meta: { matches: 0 },
+            meta: { comparisons, matches: 0 },
         };
         return;
     }
@@ -120,20 +121,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let k = i; k < i + m; k += 1) {
             states.set(k, "highlight");
         }
+        comparisons += 1;
         yield {
             stepNumber: step,
             entities: makeText(text, states),
             edges: [],
-            description: `Window [${i}..${i + m - 1}] has hash ${windowHash}.`,
+            description: `Window [${i}..${i + m - 1}] "${text.slice(i, i + m)}" hashes to ${windowHash} (want ${patternHash}).`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { matches: matches.length },
+            meta: { comparisons, matches: matches.length },
         };
         step += 1;
 
         // Hash match → verify with a direct comparison.
         if (windowHash === patternHash) {
             const slice = text.slice(i, i + m);
+            comparisons += m;
             if (slice === pattern) {
                 matches.push(i);
                 const foundStates = new Map<number, EntityState>();
@@ -147,7 +150,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     description: `Hash matched and verified – pattern at index ${i}!`,
                     codeLineNumber: 3,
                     layout: "text",
-                    meta: { matches: matches.length },
+                    meta: { comparisons, matches: matches.length },
                 };
                 step += 1;
             }
@@ -179,7 +182,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `"${pattern}" occurs at ${matches.join(", ")}.`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { matches: matches.length },
+        meta: { comparisons, matches: matches.length },
     };
 }
 
