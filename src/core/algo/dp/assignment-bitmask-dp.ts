@@ -1,6 +1,32 @@
 /**
- * Assignment (bitmask): dp[mask] = min cost giving first popcount(mask) jobs.
- * Time O(n^2*2^n), Space O(2^n). Default 3x3 -> min cost 9.
+ * assignment-bitmask-dp.ts - Assignment (Bitmask DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[mask] <- min over j in mask of dp[mask ^ (1<<j)] + cost[k-1][j].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2\u00b72^n)
+ *   Space: O(2^n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty cost matrix \u2013 cost 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -106,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(show(), new Map([[`0,${size - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: min assignment cost = ${answer}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer },
     };
@@ -126,6 +152,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up n x n cost matrix, dp[mask] <- infinity, dp[0] <- 0",
+        "mask over jobs holds which jobs are taken so far",
+        "dp[mask] <- min over j in mask of dp[mask ^ (1<<j)] + cost[k-1][j]",
+        "iterate masks grouped by popcount k = worker index",
+        "fill dp for all masks with k bits before moving to k+1",
+        "track best cost per mask across worker assignments",
+        "answer <- dp[(1<<n)-1] with assignment reconstructed via parent",
+    ],};
 
 export default module;
