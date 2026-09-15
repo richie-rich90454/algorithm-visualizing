@@ -92,10 +92,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: entities.map((e) => ({ ...e })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Rotating calipers – finding the polygon diameter.",
+        description: `Polygon (${polygon.length} vertices) – rotating calipers hunt the diameter.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { vertices: polygon.length },
     };
     step += 1;
 
@@ -107,9 +107,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             edges: edges.map((e) => ({ ...e })),
             description:
                 n === 0 ? "No vertices – no diameter." : "A single vertex has no diameter.",
-            codeLineNumber: 0,
+            codeLineNumber: 2,
             layout: "point",
-            meta: {},
+            meta: { vertices: n },
         };
         return;
     }
@@ -144,9 +144,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: entities.map((e) => ({ ...e })),
                 edges: edges.map((e) => ({ ...e })),
                 description: `Caliper rotation step: antipodal pair (${i}, ${j}) at distance ${d.toFixed(2)}.`,
-                codeLineNumber: 1,
+                codeLineNumber: 3,
                 layout: "point",
-                meta: {},
+                meta: { pair: [i, j], best: bestDist },
             };
             step += 1;
         }
@@ -176,7 +176,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: entities.map((e) => ({ ...e })),
         edges: [...edges.map((e) => ({ ...e })), diameterEdge],
         description: `Diameter: vertices ${bestPair[0]} and ${bestPair[1]} at distance ${bestDist.toFixed(2)}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "point",
         meta: { bestPair, bestDist },
     };
@@ -201,6 +201,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the convex polygon vertices",
+        "point calipers at the first antipodal pair",
+        "rotate to the next antipodal pair",
+        "measure each pair distance against the best",
+        "keep the farthest pair seen so far",
+        "done: the winning pair plus distance give the diameter",
+    ],
 };
 
 export default module;
