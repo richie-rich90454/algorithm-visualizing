@@ -1,6 +1,29 @@
 /**
  * sqrt-decomposition-array.ts - Sqrt Decomposition
  * Block sums answer ranges; updates fix one block. Demo: build on <=6 items, 1 range query verified.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Block sums answer ranges; updates fix one block. Demo: build on <=6 items, 1 range query verified.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(sqrt n) query
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Sqrt Decomposition behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -35,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: BUILT,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     if (!arr.length) {
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: no query.",
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -65,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query [${l}, ${rr}] = [${slice.join(", ")}].`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     yield {
@@ -87,5 +110,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the raw array and no block aggregates",
+        "cut the array into blocks of about square-root size",
+        "store one sum per block plus the raw elements",
+        "query range: scan partial edge blocks element by element",
+        "take whole covered blocks from their stored sums",
+        "updates fix one element plus its single block sum",
+        "done: block sums answer the range and the totals verify",
+    ],
 };
 export default module;
