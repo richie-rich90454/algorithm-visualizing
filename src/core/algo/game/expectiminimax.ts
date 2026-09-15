@@ -48,10 +48,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: skeleton,
         edges: [],
-        description: "Expectiminimax tree: MAX root, two chance nodes, four utility leaves.",
+        description: `Expectiminimax tree: MAX root over chance C1 and C2 with leaf utilities {${leaves.join(", ")}}.`,
         codeLineNumber: 0,
         layout: "tree",
-        meta: { leaves },
+        meta: { leaves: [...leaves], nodes: 7 },
     };
     step += 1;
     yield {
@@ -60,10 +60,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             n.id.startsWith("l") ? { ...n, state: "highlight" as EntityState } : n,
         ),
         edges: [],
-        description: `Leaf utilities revealed: C1 <- {${leaves[0]}, ${leaves[1]}}, C2 <- {${leaves[2]}, ${leaves[3]}}.`,
+        description: `Leaf utilities revealed: chance C1 holds {${leaves[0]}, ${leaves[1]}}, chance C2 holds {${leaves[2]}, ${leaves[3]}}.`,
         codeLineNumber: 1,
         layout: "tree",
-        meta: { leaves },
+        meta: { leaves: [...leaves], c1: [leaves[0], leaves[1]], c2: [leaves[2], leaves[3]] },
     };
     step += 1;
     yield {
@@ -74,10 +74,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : n,
         ),
         edges: [],
-        description: `Chance C1: ½×${leaves[0]} + ½×${leaves[1]} = ${ev1}.`,
-        codeLineNumber: 2,
+        description: `Chance node C1 averages leaves: ½×${leaves[0]} + ½×${leaves[1]} = EV ${ev1}.`,
+        codeLineNumber: 3,
         layout: "tree",
-        meta: { ev1 },
+        meta: { ev1, ev2, leaves: [...leaves] },
     };
     step += 1;
     yield {
@@ -88,10 +88,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : n,
         ),
         edges: [],
-        description: `Chance C2: ½×${leaves[2]} + ½×${leaves[3]} = ${ev2}.`,
-        codeLineNumber: 2,
+        description: `Chance node C2 averages leaves: ½×${leaves[2]} + ½×${leaves[3]} = EV ${ev2}.`,
+        codeLineNumber: 3,
         layout: "tree",
-        meta: { ev2 },
+        meta: { ev1, ev2, leaves: [...leaves] },
     };
     step += 1;
     yield {
@@ -104,10 +104,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                   : n,
         ),
         edges: [],
-        description: `MAX picks max(${ev1}, ${ev2}) = ${best} via ${pick}.`,
-        codeLineNumber: 3,
+        description: `MAX root picks max(EV ${ev1}, EV ${ev2}) = ${best} via chance ${pick}.`,
+        codeLineNumber: 5,
         layout: "tree",
-        meta: { ev1, ev2, pick, value: best },
+        meta: { ev1, ev2, pick, value: best, winning: true },
     };
     step += 1;
     yield {
@@ -118,10 +118,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : n,
         ),
         edges: [],
-        description: `Expectiminimax value of the position is ${best}.`,
-        codeLineNumber: 4,
+        description: `Expectiminimax value ${best} selects optimal move ${pick} for MAX.`,
+        codeLineNumber: 6,
         layout: "tree",
-        meta: { value: best },
+        meta: { value: best, optimal: best, pick, ev1, ev2 },
     };
 }
 
@@ -133,6 +133,15 @@ const module: AlgorithmModule = {
     defaultInput: { leaves: [10, 0, 8, 4] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build MAX root with chance nodes C1 and C2 and utility leaves",
+        "reveal leaf utilities under each chance node for scoring",
+        "compute EV(C1) ← average of its leaf utilities",
+        "compute EV(C2) ← average of its leaf utilities",
+        "MAX picks max(EV(C1), EV(C2)) as the best chance to take",
+        "highlight the chosen chance branch and back up its value",
+        "optimal move is the chance with higher expected value for MAX",
+    ],
 };
 
 export default module;
