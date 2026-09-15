@@ -1,9 +1,33 @@
 /**
  * replacement-paths.ts – Replacement Paths
  *
- * For each edge of the shortest path, the best route that avoids it: the
- * detour quality of every hop. A–B–C–D edges each detour at cost 6.
- * Time: O(E·(E log V)) naive Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * For every edge on the shortest path, this finds the best route that avoids
+ * that edge, which measures how vulnerable each hop is. The demo shortest
+ * path A to B to C to D is recomputed with each of its edges forbidden in
+ * turn; every detour here costs 6, showing uniform backup quality.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E x (E log V)) naive with one Dijkstra per edge
+ *   Space: O(V + E) for distances and predecessors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The base shortest path is CYAN (path).
+ *   - The forbidden edge flashes ORANGE (swapped).
+ *   - Each detour is YELLOW (comparing).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Quantifies the detour cost of losing any single road.
+ *   - A missing detour means that edge is a bridge for this query.
+ *   - Advanced methods beat the naive rerun, but this shows the idea.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -109,9 +133,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     for (const v of base.path) setN(v, "path");
     yield snap(
-        `Shortest path: ${base.path.join("→")} (cost ${base.cost}). Avoid each edge in turn.`,
+        `Shortest base path from ${start} to ${target}: ${base.path.join(" → ")} with cost ${base.cost}. Avoiding each edge in turn.`,
         0,
-        { cost: base.cost },
+        { cost: base.cost, settled: base.path.length, visits: base.path.length },
     );
     step += 1;
     const reps: Array<{ edge: string; cost: number; path: string[] }> = [];
@@ -124,18 +148,36 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (alt) {
             reps.push({ edge: `${a}→${b}`, cost: alt.cost, path: alt.path });
             for (const v of alt.path) setN(v, "comparing");
-            yield snap(`Without ${a}→${b}: detour ${alt.path.join("→")} costs ${alt.cost}.`, 1, {
-                detour: alt.cost,
-            });
+            yield snap(
+                `Without edge ${a} to ${b} of the base path: detour ${alt.path.join(" → ")} costs ${alt.cost}.`,
+                3,
+                {
+                    detour: alt.cost,
+                    settled: i + 1,
+                    visits: i + 1,
+                },
+            );
         } else {
-            yield snap(`Without ${a}→${b}: no route – ${target} disconnected.`, 1, { detour: -1 });
+            yield snap(
+                `Without edge ${a} to ${b}: no detour exists and ${target} is disconnected.`,
+                3,
+                { detour: -1, settled: i + 1, visits: i + 1 },
+            );
         }
         step += 1;
     }
-    yield snap(`Replacement costs: ${reps.map((r) => `${r.edge}↦${r.cost}`).join(", ")}.`, 2, {
-        replacements: reps.map((r) => `${r.edge}↦${r.cost}`),
-        baseCost: base.cost,
-    });
+    yield snap(
+        `Replacement costs from ${start} to ${target}: ${reps.map((r) => `${r.edge} needs ${r.cost}`).join(", ")}.`,
+        6,
+        {
+            replacements: reps.map((r) => `${r.edge}↦${r.cost}`),
+            baseCost: base.cost,
+            settled: base.path.length,
+            visits: reps.length,
+            distance: base.cost,
+            path: base.path.join("→"),
+        },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -161,6 +203,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute shortest path P from s to t via Dijkstra",
+        "for each edge e on path P in order",
+        "forbid e and rerun Dijkstra from source s",
+        "record detour cost or mark target disconnected",
+        "restore e before testing the next edge",
+        "repeat until every edge of P is tested",
+        "done: table of best avoidance cost per edge",
+    ],
 };
 
 export default module;
