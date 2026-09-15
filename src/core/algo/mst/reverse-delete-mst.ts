@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Reverse-Delete on ${verts.length} vertices, ${list.length} edges — heaviest edge examined first.`,
             0,
         ),
-        meta: { kept: list.length, removed: 0 },
+        meta: { kept: list.length, removed: 0, accepted: list.length, totalWeight: 0 },
     };
     const order = list.map((_, i) => i).sort((x, y) => (list[y] as E3).w - (list[x] as E3).w);
     const kept = new Set<number>(list.map((_, i) => i));
@@ -132,9 +132,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     N(verts),
                     ME(list, new Map([[idx, "swapped"]])),
                     `Removing ${e.a}–${e.b} (weight ${e.w}): endpoints stay connected without it.`,
-                    2,
+                    3,
                 ),
-                meta: { kept: kept.size, removed: list.length - kept.size },
+                meta: {
+                    kept: kept.size,
+                    removed: list.length - kept.size,
+                    accepted: kept.size,
+                    totalWeight: 0,
+                },
             };
         } else {
             yield {
@@ -143,9 +148,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     N(verts),
                     ME(list, new Map([[idx, "highlight"]])),
                     `Keeping ${e.a}–${e.b} (weight ${e.w}): it is a bridge, removal would disconnect the graph.`,
-                    3,
+                    4,
                 ),
-                meta: { kept: kept.size, removed: list.length - kept.size },
+                meta: {
+                    kept: kept.size,
+                    removed: list.length - kept.size,
+                    accepted: kept.size,
+                    totalWeight: 0,
+                },
             };
         }
     }
@@ -160,10 +170,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts, allV),
             ME(list, fin),
-            `Reverse-Delete MST weight ${weight}: ${mst.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
+            `Reverse-Delete MST weight ${weight}, total weight ${weight}: ${mst.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ")}.`,
             5,
         ),
-        meta: { weight, totalWeight: weight, kept: kept.size },
+        meta: { weight, totalWeight: weight, kept: kept.size, accepted: kept.size },
     };
 }
 
