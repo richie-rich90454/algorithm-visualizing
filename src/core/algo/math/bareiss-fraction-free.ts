@@ -203,6 +203,14 @@ const module: AlgorithmModule = {
     },
     visualType: "matrix",
     run,
+    pseudocode: [
+        "load the integer matrix A for fraction-free elimination",
+        "use the previous pivot as the exact divisor",
+        "a zero pivot stops the run with determinant zero",
+        "pick the pivot A[k][k]",
+        "rewrite the lower-right block: (a·pivot − row·col) / prev",
+        "done: the last diagonal entry is det(A)",
+    ],
 };
 
 export default module;
