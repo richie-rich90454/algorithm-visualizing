@@ -101,6 +101,15 @@ const module: AlgorithmModule = {
     defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c", "c"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize LFU cache with empty frequency lists",
+        "request key and check map for hit",
+        "on hit increment frequency and move to next list",
+        "compare frequencies to track minimum frequency",
+        "on miss evict least-frequent least-recent entry",
+        "insert missed key with frequency 1",
+        "done: cache holds keys with hit count and frequencies",
+    ],
 };
 
 export default module;
