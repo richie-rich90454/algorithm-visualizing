@@ -1,9 +1,35 @@
 /**
  * bipartite-check-two-coloring.ts – Bipartite Check (Two-Coloring)
  *
- * BFS paints each vertex the opposite color of its parent; an edge joining
- * equal colors proves an odd cycle. Even square here → bipartite.
- * Time: O(V + E) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A graph is bipartite when its vertices split into two groups with every
+ * edge crossing between groups – equivalently, when it contains no odd
+ * cycle. The test paints the graph with two colors by breadth-first search:
+ * the start gets color 0 and every neighbor takes the opposite color of its
+ * parent. If an edge ever joins two equally colored vertices, an odd cycle
+ * exists and the graph is not bipartite. The even square A–B–C–D colors
+ * cleanly, so it passes.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – one BFS pass over all vertices and edges
+ *   Space: O(V) for colors and the queue
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex being expanded is YELLOW (comparing).
+ *   - Newly colored neighbors are ORANGE (visited), then GREEN/ORANGE by color.
+ *   - A conflicting edge flashes RED (swapped).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Two-colorability, odd-cycle freedom, and bipartiteness are equivalent.
+ *   - Disconnected graphs need one BFS per component.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -79,7 +105,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 ok = false;
                 bad = `${cur}–${nb}`;
                 setE(cur, nb, "swapped");
-                yield snap(`Conflict on edge ${bad}: both ends color ${cc} – odd cycle.`, 2, {});
+                yield snap(`Conflict on edge ${bad}: both ends color ${cc} – odd cycle.`, 2, {
+                    edge: bad,
+                });
                 step += 1;
                 break;
             }
@@ -92,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ok
             ? `Bipartite: color-0 {${labels.filter((v) => color.get(v) === 0).join(",")}} color-1 {${labels.filter((v) => color.get(v) === 1).join(",")}}.`
             : `Not bipartite – odd cycle at ${bad}.`,
-        3,
+        4,
         { bipartite: ok },
     );
 }
@@ -108,6 +136,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "color start 0 and enqueue start",
+        "dequeue u; paint each uncolored neighbor the opposite color",
+        "edge joining equal colors proves an odd cycle: not bipartite",
+        "repeat until the queue is empty",
+        "done: two color classes, or the conflicting odd-cycle edge",
+    ],
 };
 
 export default module;
