@@ -184,6 +184,15 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["cat", "car", "cup", "dog"], search: "car" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty ternary trie with no character nodes",
+        "insert word: compare each character with the node splitter",
+        "go left on smaller, right on larger, middle on equal",
+        "advance to the next character only on middle moves",
+        "mark the terminal node when the whole word is consumed",
+        "search follows the same three-way comparisons",
+        "done: words are stored by character splits and the search verdict holds",
+    ],
 };
 
 export default module;
