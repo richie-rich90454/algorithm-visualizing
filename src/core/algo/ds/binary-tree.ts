@@ -118,7 +118,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Pre-order traversal complete – visited all ${visited.size} nodes.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { visited: visited.size },
     };
@@ -133,6 +133,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [8, 3, 10, 1, 6, 9, 14] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty binary tree with null root",
+        "insert key via level order to keep tree complete",
+        "compare keys to guide traversal order",
+        "visit nodes in preorder to list structure",
+        "count nodes and measure height",
+        "search for query key by full traversal",
+        "done: binary tree holds values with traversal and search answer",
+    ],
 };
 
 export default module;
