@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { step, timer },
     });
 
     const dfs = function* (node: string): Generator<VisualFrame, void, unknown> {
@@ -162,6 +162,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start DFS at root with timer set to zero",
+        "record entry time tin when entering node",
+        "recurse into each child then return",
+        "record exit time tout covering subtree interval",
+        "return all tin and tout intervals as the answer",
+    ],
 };
 
 export default module;
