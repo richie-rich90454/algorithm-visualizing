@@ -64,9 +64,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: corners(),
         edges: outlines(),
         description: `Klee sweep over ${rects.length} rectangles – collecting x-events.`,
-        codeLineNumber: 0,
+        codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { rectangles: rects.length },
     };
     step += 1;
     const xs = [...new Set(rects.flatMap(([x0, , x1]) => [x0, x1]))].sort((a, b) => a - b);
@@ -100,9 +100,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: corners(st),
             edges: outlines(),
             description: `Slab [${x0}, ${x1}]: covered y=${covered}, running area=${area}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { slab: [x0, x1], covered, area },
         };
         step += 1;
     }
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ),
         edges: outlines(),
         description: `Union area = ${area}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { area },
     };
@@ -137,6 +137,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from all rectangle x events",
+        "sweep x from left to right slab by slab",
+        "measure covered y length inside each slab",
+        "multiply slab width by covered y for slab area",
+        "done: summed slabs equal the union area",
+    ],
 };
 
 export default module;
