@@ -28,7 +28,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: [],
             edges: [],
-            description: "No keys – nothing is stored.",
+            description: "No keys provided so structure stays empty with zero count.",
             codeLineNumber: 0,
             layout: "grid",
             meta: { keys: 0 },
@@ -97,6 +97,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [1, 2, 3, 4, 5, 6, 7], query: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty cache-oblivious tree over key range",
+        "insert key via recursive van Emde Boas layout division",
+        "compare key against separators to choose subtree",
+        "split full cluster and promote separator upward",
+        "search by recursing through layout levels",
+        "count block transfers across levels",
+        "done: tree holds keys with search answer and optimal I/O",
+    ],
 };
 
 export default module;
