@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate parameters – nothing to solve.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -70,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solve ${g}^x = ${h} mod ${p}; group order ${q} = 2 x 5.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const congruences: Array<[number, number]> = [];
@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `No subgroup solution mod ${qi} – stopping honestly.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             return;
         }
@@ -151,5 +151,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 11, g: 2, h: 9 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state g^x = h mod p with smooth group order",
+        "solve each subgroup piece x ≡ xi (mod qi)",
+        "CRT-merge the pieces into x mod q",
+        "verify g^x ≡ h mod p",
+        "done: discrete log x, or an honest stop",
+    ],
 };
 export default module;
