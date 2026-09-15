@@ -76,10 +76,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(a, b, "idle"),
         edges: [],
-        description: `Wythoff's game with piles (${a}, ${b}).`,
+        description: `Wythoff piles (${a}, ${b}); moves trim one pile or take equally from both piles.`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { a, b, min: Math.min(a, b), max: Math.max(a, b) },
     };
     step += 1;
 
@@ -293,6 +293,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: 8, b: 13 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start from ordered piles (a, b) with single or diagonal takes",
+        "list cold pairs (floor(n·φ), floor(n·φ²)) for n = 0..5",
+        "if (a, b) matches a cold pair: losing P-position to move",
+        "else search reachable cold pairs via legal single or diagonal take",
+        "play the winning move to the nearest reachable cold pair",
+        "show cold piles for the opponent with no escape to cold",
+        "winner is first player except from cold pairs where second wins",
+    ],
 };
 
 export default module;
