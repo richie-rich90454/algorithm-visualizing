@@ -1,6 +1,7 @@
 /**
  * subset-construction.ts – Subset Construction.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(2^n)", space: "O(2^n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -64,9 +65,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F([cell(0, 0, re, "idle")], `Subset construction for /${re}/.`, 0);
+    yield F([cell(0, 0, re, "idle")], `Subset construction for regex "${re}".`, 0);
     step += 1;
     const eps = new Map<number, number[]>([
         [1, [2]],
@@ -141,6 +142,15 @@ const module: AlgorithmModule = {
     defaultInput: { regex: "a(b|c)" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "compute epsilon closure of start state set",
+        "map new state sets to DFA state numbers",
+        "compute move on each alphabet symbol",
+        "close result under epsilon transitions",
+        "add unseen sets to worklist queue",
+        "repeat until worklist empties completely",
+        "report DFA states and transition table",
+    ],
 };
 
 export default module;
