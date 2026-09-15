@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { accept: ok },
     );
     step += 1;
-    yield F([cell(3, 0, ok ? "ACCEPT" : "REJECT", "sorted")], "Done.", 4, { accept: ok });
+    yield F([cell(3, 0, ok ? "ACCEPT" : "REJECT", "sorted")], ok ? "LL(1) complete: input consumed: ACCEPT." : "LL(1) complete: parse error: REJECT.", 4, { accept: ok });
 }
 
 const module: AlgorithmModule = {
