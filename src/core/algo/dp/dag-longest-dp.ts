@@ -11,6 +11,10 @@
  * The longest path problem is NP-hard in general graphs, but a DAG's
  * topological order makes it a simple DP.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -81,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `DAG longest path from ${start} using topological DP.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -92,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "graph",
-        meta: {},
+        meta: { step },
     });
 
     // Topological order.
@@ -159,7 +163,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (edge) {
                 edge.state = "active";
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbor} (max).`);
+            yield buildFrame(`Relaxing ${current} → ${neighbor}: alt ${alt}, dist ${dist.get(neighbor)}.`);
             step += 1;
         }
 
@@ -199,7 +203,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             targetDist === -Infinity
                 ? `${target} unreachable from ${start}.`
                 : `Longest path ${start} → ${target}: ${path.join(" → ")} (cost ${targetDist}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { distance: targetDist },
     };
@@ -235,6 +239,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
-};
+    pseudocode: [
+        "set up graph, indegrees, and dist[v] <- negative infinity",
+        "base dist[start] <- 0 before topological processing",
+        "dist[v] <- max over in-edges u->v of dist[u] + w(u, v)",
+        "process vertices in topological order from sources onward",
+        "finalize each reachable vertex then relax outgoing edges",
+        "track parent pointers on each strict improvement",
+        "answer <- dist[target] with path reconstructed via parents",
+    ],};
 
 export default module;
