@@ -66,7 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: rows,
+            codeLineNumber: Math.min(rows, 6),
             layout: "grid",
             meta: {
                 agree,
@@ -104,6 +104,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: [1, 2, 3, 4], b: [3, 4, 5, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize sets A and B with true Jaccard noted",
+        "compute six (ax+b mod 7) min-hash signatures",
+        "for each hash compare minima for agreement",
+        "estimate similarity by agreement fraction",
+        "check two bands of three rows for LSH hit",
+        "flag candidate pair when a band matches",
+        "done: estimate versus truth with candidate verdict",
+    ],
 };
 
 export default module;
