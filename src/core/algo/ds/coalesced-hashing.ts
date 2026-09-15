@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Coalesced Hashing: empty table. Overflow chains share the table via cellar links.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const k of keys) {
@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Insert ${k} -> slot ${j} (h=${h(k)}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -74,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: table stays empty.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -90,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lookup ${q}: ${hit ? `found at slot ${j}` : "absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const n = table.filter((v) => v !== null).length;
@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(table.map((v) => (v === null ? "." : v))),
         edges: [],
         description: `Final: ${n} entries; lookup ${q} ${hit ? "hit" : "miss"} verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { hit, n },
     };
@@ -113,5 +113,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [12, 5, 21, 8], query: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize table with primary area plus cellar overflow",
+        "hash key to home address by modulo table size",
+        "compare home slot and follow cellar links on collision",
+        "insert by chaining overflow into free cellar slot",
+        "probe chain comparing each key for lookup",
+        "count probes along the coalesced chain",
+        "done: table holds keys with lookup answer and probe count",
+    ],
 };
 export default module;
