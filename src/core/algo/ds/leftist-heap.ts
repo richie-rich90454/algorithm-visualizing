@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty leftist heap.",
+        description: "Empty leftist heap with null root ready for merges.",
         codeLineNumber: 1,
         layout: "tree",
         meta: { size: 0 },
@@ -126,6 +126,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [5, 3, 8, 1, 9, 4] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty leftist heap with null root",
+        "merge heaps by comparing roots and recursing right",
+        "compare null-path lengths to keep left heavier",
+        "swap children when right path exceeds left",
+        "insert key by merging singleton heap",
+        "extract minimum by merging left and right subtrees",
+        "done: heap holds keys with minimum at root",
+    ],
 };
 
 export default module;
