@@ -3,6 +3,29 @@
  *
  * Fixed-size object caching: each slab serves one object size, so
  * kernel-style alloc/free never fragments and hot objects stay cached.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Fixed-size object caching: each slab serves one object size, so kernel-style alloc/free never fragments and hot objects stay cached.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1)
+ *   Space: O(objects)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Slab Allocator behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -125,6 +148,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with one empty slab of fixed-size slots",
+        "alloc: scan slabs for the first free slot and mark it used",
+        "if every slot is used: append a fresh empty slab",
+        "free: mark the slot unused so the next alloc can reuse it",
+        "repeat the alloc and free mix from the operation list",
+        "used counts track occupancy across all slabs",
+        "done: slabs show final occupancy and reuse is demonstrated",
+    ],
 };
 
 export default module;
