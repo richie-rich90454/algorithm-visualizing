@@ -14,6 +14,10 @@
  *
  * The example problem is the classic "optimal binary search tree" cost.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -189,7 +193,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Optimal BST cost = ${dp[0]?.[n - 1]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows: n, cols: n, minCost: dp[0]?.[n - 1] },
     };
@@ -205,6 +209,14 @@ const module: AlgorithmModule = {
     defaultInput: { freq: [4, 2, 6, 3] },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[i][i] <- freq[i] with opt[i][i] <- i",
+        "dp[i][j] holds min weighted search cost over keys i..j",
+        "dp[i][j] <- min over k of dp[i][k-1] + dp[k+1][j] + sum(i, j)",
+        "expand intervals with k searched only in opt range",
+        "opt[i][j-1] <= opt[i][j] <= opt[i+1][j] narrows splits",
+        "quadrangle inequality keeps the search window monotone",
+        "answer <- dp[0][n-1] with BST shape from opt choices",
+    ],};
 
 export default module;
