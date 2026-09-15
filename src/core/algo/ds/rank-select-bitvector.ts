@@ -4,6 +4,29 @@
  * Succinct bitvector: block popcounts plus superblock totals answer
  * rank (ones below i) in O(1), and select (position of the k-th one)
  * scans blocks with the totals as a runway.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Succinct bitvector: block popcounts plus superblock totals answer rank (ones below i) in O(1), and select (position of the k-th one) scans blocks with the totals as a runway.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) rank
+ *   Space: n + o(n) bits
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Rank-Select Bitvector behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -86,6 +109,15 @@ const module: AlgorithmModule = {
     defaultInput: { bits: [1, 0, 1, 1, 0, 0, 1, 0], rankAt: 5, selectK: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the raw bitvector and no auxiliary tables",
+        "cut the bits into fixed blocks and count ones per block",
+        "build superblock totals over groups of blocks",
+        "rank(pos): add the superblock total plus the in-block scan",
+        "select(k): jump to the block holding the kth one, then scan bits",
+        "both operations touch only a few counters plus one short scan",
+        "done: rank count and select position are reported",
+    ],
 };
 
 export default module;
