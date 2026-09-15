@@ -84,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { answer: best, pos },
     );
     step += 1;
-    yield F(tx(text, fin), `Done.`, 4, { answer: best, pos });
+    yield F(tx(text, fin), best ? `Search complete: shortest unique "${best}" at ${pos}.` : "Search complete: no unique substring.", 4, { answer: best, pos });
 }
 
 const module: AlgorithmModule = {
