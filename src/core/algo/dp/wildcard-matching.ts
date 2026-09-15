@@ -1,6 +1,32 @@
 /**
- * Wildcard Matching: '?' matches one char, '*' matches any sequence.
- * Time O(n*m), Space O(n*m). Default "aa"/"a*" -> match.
+ * wildcard-matching.ts - Wildcard Matching
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- star spans any run else char or ? match.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b7m)
+ *   Space: O(n\u00b7m)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: match ? "Both empty \u2013 match." : "Empty pattern \u2013 no match.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -101,7 +127,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${n},${m}`, "sorted"]])),
         edges: [],
         description: match ? `"${s}" matches "${p}".` : `"${s}" does not match "${p}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { match },
     };
@@ -115,6 +141,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "aa", p: "a*" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp with first row seeded through leading stars",
+        "dp[i][j] holds whether s[:i] matches p[:j]",
+        "dp[i][j] <- star spans any run else char or ? match",
+        "fill rows over s and columns over p in order",
+        "stars combine empty, consume-one, and match-empty moves",
+        "question marks match exactly one arbitrary character",
+        "answer <- dp[n][m] with match result confirmed",
+    ],};
 
 export default module;
