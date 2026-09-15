@@ -1,7 +1,8 @@
 /**
- * tree-edit-distance.ts – Ordered tree edit on root-to-leaf paths
+ * tree-edit-distance.ts – Ordered tree edit on root-to-leaf paths.
+ *
  * Default trees are chains, so Levenshtein on label paths is exact.
- * Time O(n·m), Space O(n·m). current row=comparing, done=sorted.
+ * Time O(n*m), Space O(n*m). Current row uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -62,12 +63,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 });
         return e;
     };
-    const frame = (d: string, meta: VisualFrame["meta"], which: string[]): VisualFrame => ({
+    const frame = (
+        d: string,
+        meta: VisualFrame["meta"],
+        which: string[],
+        line = 2,
+    ): VisualFrame => ({
         stepNumber: step,
         entities: build(p1, t1.ids, st),
         edges: bedges(p1),
         description: d,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "tree",
         meta: { ...meta, path2: which },
     });
@@ -91,6 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Edit distance between paths [${A.join("→") || "∅"}] and [${B.join("→") || "∅"}].`,
         {},
         B,
+        0,
     );
     step += 1;
     const dp: number[][] = Array.from({ length: A.length + 1 }, (_, i) =>
@@ -116,6 +123,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         `Tree edit distance is ${ans} (rename cost 1, insert/delete 1).`,
         { distance: ans },
         B,
+        4,
     );
 }
 const module: AlgorithmModule = {
@@ -129,5 +137,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "extract root-to-leaf label paths from both trees",
+        "initialize edit table with insert and delete costs",
+        "fill table with rename, insert, and delete minima",
+        "track current row against second tree path",
+        "return bottom-right cell as the distance answer",
+    ],
 };
 export default module;
