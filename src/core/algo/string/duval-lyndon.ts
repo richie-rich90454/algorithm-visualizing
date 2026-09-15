@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Duval's algorithm – factorizing "${text}" into Lyndon words.`,
         codeLineNumber: 0,
         layout: "text",
-        meta: { comparisons: 0, factors: 0 },
+        meta: { comparisons: 0, shifts: 0, factors: 0, matches: [] },
     };
     step += 1;
 
@@ -96,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Comparing text[${k}]="${a}" with text[${j}]="${b}".`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { comparisons, factors: factors.length },
+                meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
             };
             step += 1;
 
@@ -147,7 +147,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Emitted factor ${factors.length}: "${text.slice(factors[factors.length - 1]?.[0], (factors[factors.length - 1]?.[1] ?? 0) + 1)}".`,
             codeLineNumber: 3,
             layout: "text",
-            meta: { comparisons, factors: factors.length },
+            meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
         };
         step += 1;
     }
@@ -158,10 +158,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text),
         edges: [],
-        description: `Lyndon factorization: ${factorStrings.join(" · ")}.`,
+        description: `Lyndon factorization: "${factorStrings.join(" | ")}".`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { comparisons, factors: factors.length },
+        meta: { comparisons, shifts: 0, factors: factors.length, matches: factors.map(([s, e]) => `${s}-${e}`) },
     };
 }
 
@@ -175,6 +175,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "text",
     run,
+    pseudocode: [
+        "initialize factor start i at beginning of text",
+        "set pointers j and k for Lyndon comparison",
+        "compare characters while maintaining order",
+        "advance on equal characters extending run",
+        "emit factor when smaller character breaks order",
+        "reset pointers past emitted factor boundary",
+        "report list of Lyndon factors",
+    ],
 };
 
 export default module;
