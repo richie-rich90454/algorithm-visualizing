@@ -1,6 +1,32 @@
 /**
- * Broken-profile (plug) DP: domino tilings of an MxN board via column masks.
- * Time O(N*2^M*M), Space O(N*2^M). Default 2x3 -> 3 tilings.
+ * profile-plug-dp-broken-profile.ts - Broken Profile (Plug DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[col][next] <- sum over valid fillings from (col, mask).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(N\u00b72^M\u00b7M)
+ *   Space: O(N\u00b72^M)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     : "Board too tall for this demo.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -106,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${cols},0`, "sorted"]])),
         edges: [],
         description: `Traceback: ${answer} domino tilings of ${rows}x${cols}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { ...gridMeta, answer },
     };
@@ -120,6 +146,14 @@ const module: AlgorithmModule = {
     defaultInput: { rows: 2, cols: 3 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp[col][mask] <- 0 with dp[0][0] <- 1",
+        "mask holds plug overhang into the next column",
+        "dp[col][next] <- sum over valid fillings from (col, mask)",
+        "process columns left to right expanding plug states",
+        "each cell branches on place-right, place-down, or fill",
+        "propagate counts into next-column mask configurations",
+        "answer <- dp[cols][0] as tilings with empty overhang",
+    ],};
 
 export default module;
