@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs non-negative inputs).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -56,7 +56,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Multiply ${a} x ${b}, split at 10^${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Halves (${a1}|${a0}) x (${b1}|${b0}).`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const z0 = a0 * b0;
@@ -116,5 +116,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 12, b: 34 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "split a and b at 10^m into high and low halves",
+        "name the halves (a1|a0) and (b1|b0)",
+        "multiply z0 = a0·b0 and z2 = a1·b1",
+        "form z1 = (a1+a0)(b1+b0) − z2 − z0",
+        "done: z2·10^2m + z1·10^m + z0 = out",
+    ],
 };
 export default module;
