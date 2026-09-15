@@ -100,6 +100,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize free list with one large free block",
+        "request allocation and scan list for first fit",
+        "compare block size against request size",
+        "split larger block and return remainder to list",
+        "free block by pushing back onto free list",
+        "coalesce adjacent free blocks to reduce fragments",
+        "done: memory holds allocations with free list state",
+    ],
 };
 
 export default module;
