@@ -1,6 +1,7 @@
 /**
  * lcp-rmq-queries.ts – LCP RMQ Queries.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n log n) prep, O(1) query", space: "O(n log n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -33,7 +34,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `LCP of suffixes ${a} and ${b} in "${text}".`, 0);
     step += 1;
@@ -95,6 +96,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana", a: 1, b: 3 },
     visualType: "text",
     run,
+    pseudocode: [
+        "build suffix array and LCP array for text",
+        "precompute sparse table over LCP intervals",
+        "map query positions to ranks in suffix array",
+        "query minimum over LCP range between ranks",
+        "return range minimum as longest common prefix",
+        "verify by direct substring comparison",
+        "report LCP length and matched substring",
+    ],
 };
 
 export default module;
