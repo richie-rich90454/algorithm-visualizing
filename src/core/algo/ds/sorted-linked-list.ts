@@ -137,6 +137,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [5, 10, 20, 30], insert: 15 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the values already chained in sorted order",
+        "scan from the head comparing each node against the new key",
+        "stop at the first node larger than the key",
+        "splice the new node before that position",
+        "equal keys keep their original relative order (stable)",
+        "verify by walking the chain to confirm sorted order",
+        "done: chain stays sorted with the key at its ranked position",
+    ],
 };
 
 export default module;
