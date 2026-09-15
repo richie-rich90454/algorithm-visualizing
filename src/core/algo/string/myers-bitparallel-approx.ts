@@ -1,6 +1,7 @@
 /**
  * myers-bitparallel-approx.ts – Myers Bit-Parallel Approx.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O((n·m)/w)", space: "O(σ)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -45,12 +46,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(text), `Approx search "${pat}" with k=${k} (bit-parallel).`, 0, { comparisons: 0, matches: [] });
+    yield F(tx(text), `Approx search "${pat}" with k=${k} (bit-parallel).`, 0, {
+        comparisons: 0,
+        matches: [],
+    });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, { matches: [] });
         return;
     }
     yield F(tx(text), `Peq bitmasks ready for m=${pat.length}.`, 1, { comparisons: 0 });
@@ -76,10 +80,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             );
             step += 1;
         } else if (i < 3) {
-            yield F(tx(text, stAt([i], "comparing")), `Window ${i} "${text.slice(i, i + pat.length)}" rejected (d=${d} over k=${k}).`, 3, {
-                comparisons,
-                matches: [...matches],
-            });
+            yield F(
+                tx(text, stAt([i], "comparing")),
+                `Window ${i} "${text.slice(i, i + pat.length)}" rejected (d=${d} over k=${k}).`,
+                3,
+                {
+                    comparisons,
+                    matches: [...matches],
+                },
+            );
             step += 1;
         }
         if (step > 11) break;
@@ -102,6 +111,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcab", pattern: "abc", k: 1 },
     visualType: "text",
     run,
+    pseudocode: [
+        "precompute equality bitmasks for pattern alphabet",
+        "initialize bit vectors for edit distance zero",
+        "update vectors with bit-parallel edit operations",
+        "derive current distance from horizontal delta",
+        "record match when distance within threshold k",
+        "advance window by one text character",
+        "report approximate match positions",
+    ],
 };
 
 export default module;
