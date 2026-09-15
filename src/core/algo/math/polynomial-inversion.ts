@@ -87,7 +87,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Inverting the polynomial A(x) = ${coeffs.join(" + ")}… (mod x^${coeffs.length}).`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -161,6 +161,13 @@ const module: AlgorithmModule = {
     defaultInput: { coeffs: [1, 1, 0, 1] },
     visualType: "array",
     run,
+    pseudocode: [
+        "state A(x); demand B(x) with A·B ≡ 1",
+        "start from the scalar inverse of the constant term",
+        "double the precision each Newton round",
+        "correct with B ← B(2 − AB), truncated",
+        "done: inverse verified, or blocked constant term",
+    ],
 };
 
 export default module;
