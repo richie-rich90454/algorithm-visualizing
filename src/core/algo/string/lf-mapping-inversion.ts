@@ -1,6 +1,7 @@
 /**
  * lf-mapping-inversion.ts – LF-Mapping Inversion.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(
         bwt.split("").map((c, i) => cell(0, i, c, "idle")),
@@ -116,6 +117,15 @@ const module: AlgorithmModule = {
     defaultInput: { bwt: "annb$aa" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "extract first column by sorting BWT characters",
+        "compute LF-mapping from last to first column",
+        "start from primary row for reconstruction",
+        "follow LF links prepending each character",
+        "repeat until original length restored",
+        "verify result by reapplying forward transform",
+        "report reconstructed original string",
+    ],
 };
 
 export default module;
