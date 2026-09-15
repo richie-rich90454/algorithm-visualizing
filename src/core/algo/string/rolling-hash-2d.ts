@@ -104,10 +104,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(grid),
         edges: [],
-        description: `2D rolling hash – searching for a ${pr}×${pc} pattern.`,
+        description: `2D rolling hash – searching for a ${pr}×${pc} pattern "${pattern.map((row) => row.join("")).join("/")}".`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { rows, cols },
+        meta: { comparisons: 0, shifts: 0, rows, cols, matches: [] },
     };
     step += 1;
 
@@ -179,10 +179,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeCells(grid, states),
                 edges: [],
-                description: `Window at (${r},${c}) – checking the pattern hash.`,
+                description: `Window at (${r},${c}) – checking pattern "${pattern.map((row) => row.join("")).join("/")}" hash.`,
                 codeLineNumber: 2,
                 layout: "grid",
-                meta: { rows, cols, matches: matches.length },
+                meta: { comparisons: step, shifts: 0, rows, cols, matches: matches.length },
             };
             step += 1;
 
@@ -219,11 +219,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: [],
         description:
             matches.length === 0
-                ? "Pattern not found in the grid."
+                ? `"2x2 pattern" not found in the 4x4 grid.`
                 : `Pattern found at ${matches.map(([r, c]) => `(${r},${c})`).join(", ")}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: { rows, cols, matches: matches.length },
+        meta: { comparisons: step, shifts: 0, rows, cols, matches: matches.length },
     };
 }
 
@@ -248,6 +248,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "build two-dimensional prefix hash for grid",
+        "compute hash of pattern submatrix target",
+        "slide window over all valid grid positions",
+        "compare window hash with pattern hash value",
+        "verify characters on hash collision exactly",
+        "record verified top-left coordinates",
+        "report all match coordinates found",
+    ],
 };
 
 export default module;
