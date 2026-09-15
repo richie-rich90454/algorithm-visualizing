@@ -1,7 +1,33 @@
-// kayles.ts – Kayles: knock down 1 pin or 2 adjacent pins; last move wins.
-// Simply, split the row into dead segments; formally Grundy numbers are
-// memoized in-code and a move wins exactly when it leaves xor 0.
-// Default row of 8 has G=1, winning move removes pins 3 and 4.
+/**
+ * kayles.ts – Kayles (bowling-pin impartial game)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Kayles is played on a row of pins; a move knocks down 1 pin or 2 adjacent
+ * pins, splitting the row into independent segments. Simply: leave segments
+ * whose Grundy xor is 0. Formally: Grundy numbers are memoized in code and a
+ * move wins exactly when the xor of the resulting segments is 0; the default
+ * row of 8 has G = 1 with the winning move removing pins 3 and 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) Grundy computation
+ *   Space: O(n) memo table
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Standing pins paint GREEN (sorted); knocked pins go idle.
+ *   - The winning knockdown flashes YELLOW (comparing).
+ *   - The remaining segments show the zero-xor P-position.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Last move wins; G(n) = 0 marks a P-position.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function grundy(n: number, memo: Map<number, number>): number {
@@ -45,10 +71,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: rowCells(present),
         edges: [],
-        description: `Kayles row of ${n} pins – Grundy G(${n}) = ${g}.`,
+        description: `Kayles row of ${n} pins with Grundy G(${n}) = ${g} – ${g !== 0 ? "winning N-position" : "losing P-position"} for the player to move.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { pins: n, grundy: g },
+        meta: { pins: n, grundy: g, winning: g !== 0, winner: g !== 0 ? "first" : "second" },
     };
     step += 1;
     const singles: number[] = [];
