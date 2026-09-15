@@ -1,8 +1,31 @@
 /**
- * tree-sort.ts – Tree Sort.
+ * tree-sort.ts – Tree Sort
  *
- * Inserts into a BST, reads back in order.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Tree sort inserts every value into a binary search tree, then reads the tree back with an in-order walk. The walk visits keys in ascending order by the search-tree invariant. It makes the link between searching and sorting unmistakable.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -140,7 +163,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -169,5 +192,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 1, 4, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with an empty binary search tree",
+        "insert the next value into the search tree",
+        "walk left subtree, node, then right subtree",
+        "collect the in-order walk into the output",
+        "scan collected values into final order",
+        "done: in-order walk is sorted",
+    ],
 };
 export default module;
