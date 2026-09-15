@@ -1,9 +1,33 @@
 /**
  * hits-hubs-authorities.ts – HITS Hubs and Authorities
  *
- * auth(v)=Σ hub(u), hub(v)=Σ auth(w) with L2 normalization each round.
- * A→B,A→C,B→C: best authority C, best hub A.
- * Time: O(k·(V + E)) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * HITS scores every page two ways: an authority is cited by good hubs, and
+ * a hub cites good authorities. Each round sets auth(v) to the hub scores
+ * of its in-neighbors and hub(v) to the authority scores of its
+ * out-neighbors, then normalizes both vectors to unit length. Scores settle
+ * after a few rounds. On A→B, A→C, B→C, C collects the most authority and A
+ * the most hub weight.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k·(V + E)) – k power-iteration rounds over all edges
+ *   Space: O(V) for the hub and authority vectors
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The current authority leader is YELLOW (comparing).
+ *   - Final authority top is GREEN (sorted); hub top is PINK (highlight).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Query-dependent: scores come from a focused subgraph, unlike PageRank.
+ *   - Normalization each round keeps the values from blowing up.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -95,8 +119,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     setN(topH, "highlight");
     yield snap(
         `Top authority ${topA} (${auth.get(topA)}), top hub ${topH} (${hub.get(topH)}).`,
-        2,
-        {},
+        4,
+        { topAuthority: topA, topHub: topH },
     );
 }
 
@@ -108,6 +132,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] }, iterations: 3 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "hub[v] ← 1 and auth[v] ← 1 for every vertex",
+        "auth[v] ← hub of in-neighbors; hub[v] ← auth of out-neighbors; normalize",
+        "repeat the update for k rounds",
+        "read the top authority and the top hub",
+        "done: best authority C, best hub A",
+    ],
 };
 
 export default module;
