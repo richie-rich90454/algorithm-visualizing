@@ -78,7 +78,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { accept },
     );
     step += 1;
-    yield F([cell(9, 0, accept ? "ACCEPT" : "REJECT", "sorted")], "Done.", 4, { accept });
+    yield F([cell(9, 0, accept ? "ACCEPT" : "REJECT", "sorted")], accept ? "Earley complete: S-derivation found: ACCEPT." : "Earley complete: no parse: REJECT.", 4, { accept });
 }
 
 const module: AlgorithmModule = {
