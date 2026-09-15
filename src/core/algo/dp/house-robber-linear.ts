@@ -117,6 +117,7 @@ const module: AlgorithmModule = {
         "each house picks skip versus take with neighbor guard",
         "carry the better loot total forward each step",
         "answer <- dp[n-1] with robbed houses reconstructed",
-    ],};
+    ],
+};
 
 export default module;
