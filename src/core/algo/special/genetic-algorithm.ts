@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: gen,
+            codeLineNumber: Math.min(gen, 6),
             layout: "grid",
             meta: { generation: gen, best, bestFit: fit(best) },
         };
@@ -88,6 +88,15 @@ const module: AlgorithmModule = {
     defaultInput: { popSize: 6, generations: 4, seed: 42 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize random 4-bit population of size n",
+        "evaluate fitness 49-(x-7)^2 for every individual",
+        "keep the elite best individual unchanged",
+        "select parents by tournament and crossover bits",
+        "mutate random bits with small probability",
+        "repeat for each generation g",
+        "done: best x reported near optimum 7 fitness 49",
+    ],
 };
 
 export default module;
