@@ -201,6 +201,14 @@ const module: AlgorithmModule = {
     defaultInput: [5, 2, 9, 1, 6, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with prefix A[0] trivially sorted",
+        "key ← A[i], the next element to insert",
+        "while j >= 0: compare key with A[j]",
+        "if A[j] > key: shift A[j] right by one",
+        "drop key into its home slot, prefix grows",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
