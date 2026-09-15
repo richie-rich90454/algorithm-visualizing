@@ -3,6 +3,29 @@
  *
  * LIFO from two FIFOs: pushes rotate the active queue so the newest
  * element always sits at the front – pop is then a plain dequeue.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * LIFO from two FIFOs: pushes rotate the active queue so the newest element always sits at the front – pop is then a plain dequeue.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) push, O(1) pop
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Two-Queue Stack behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -87,6 +110,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["push", 1], ["push", 2], ["pop"], ["push", 3]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with two empty FIFO queues",
+        "push value: enqueue it onto the active queue",
+        "rotate the queues so the newest value reaches the front",
+        "pop: dequeue from the active queue (LIFO order emerges)",
+        "the standby queue buffers during each rotation",
+        "alternate roles so one queue is always active",
+        "done: pops leave in LIFO order and the queues hold the rest",
+    ],
 };
 
 export default module;
