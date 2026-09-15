@@ -152,7 +152,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 node.state = "unvisited";
             }
         }
-        yield buildFrame(`Peeled leaves [${leaves.join(", ")}] cleared – ${remaining.size} nodes remain.`);
+        yield buildFrame(
+            `Peeled leaves [${leaves.join(", ")}] cleared – ${remaining.size} nodes remain.`,
+        );
         step += 1;
     }
 
