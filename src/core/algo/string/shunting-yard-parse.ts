@@ -1,6 +1,7 @@
 /**
  * shunting-yard-parse.ts – Shunting-Yard.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const prec = new Map([
         ["+", 1],
@@ -73,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         if (s.length === 0) s.push(cell(1, 0, "∅", "idle"));
         return s;
     };
-    yield F(snap(), "Empty output, empty operator stack.", 1);
+    yield F(snap(), 'Empty output "[]", empty operator stack "[]" at start.', 1);
     step += 1;
     for (const tok of expr.split("")) {
         if (/[0-9]/.test(tok)) out.push(tok);
@@ -114,6 +115,15 @@ const module: AlgorithmModule = {
     defaultInput: { expr: "3+4*2" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "read next token from input expression",
+        "output numbers directly to output queue",
+        "push operators respecting precedence rules",
+        "pop higher precedence operators to output",
+        "handle parentheses by stack push and pop",
+        "drain remaining operators to output queue",
+        "report reverse Polish notation output",
+    ],
 };
 
 export default module;
