@@ -143,6 +143,15 @@ const module: AlgorithmModule = {
     defaultInput: { enqueues: [5, 3, 8], dequeueCount: 2 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with an empty linked queue with null front and rear",
+        "enqueue value: link a new node after the rear node",
+        "move the rear pointer to the new tail node",
+        "repeat until every value is chained in arrival order",
+        "dequeue: detach the front node and return its value (FIFO)",
+        "advance front, clearing both pointers when the last node leaves",
+        "done: dequeued values left in FIFO order and the chain state holds",
+    ],
 };
 
 export default module;
