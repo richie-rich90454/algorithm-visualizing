@@ -162,6 +162,7 @@ const module: AlgorithmModule = {
         "each row solves a histogram max-rectangle subproblem",
         "track global best across all processed rows",
         "answer <- max area with rows and bounds reconstructed",
-    ],};
+    ],
+};
 
 export default module;
