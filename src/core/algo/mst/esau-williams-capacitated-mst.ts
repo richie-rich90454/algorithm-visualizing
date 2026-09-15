@@ -1,6 +1,26 @@
 /**
- * esau-williams-capacitated-mst.ts - Esau-Williams Capacitated MST.
- * Savings heuristic for the capacitated MST: merge subtrees while capacity allows.
+ * esau-williams-capacitated-mst.ts – Esau-Williams Capacitated MST.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The capacitated MST connects every terminal to a central root without
+ * overloading any subtree beyond a fixed capacity. Esau-Williams starts with
+ * every terminal wired straight to the root, then repeatedly merges pairs of
+ * subtrees with the largest positive saving, as long as the combined demand
+ * fits within capacity.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V^2 log V) – sorting all pairwise savings dominates
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Direct root links are highlighted, merges turn CYAN-ish (highlight).
+ *   - Final capacitated tree edges are GREEN (sorted).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +69,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -75,27 +95,33 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     const dem = new Map<string, number>(verts.map((v, i) => [v, d.demand[i] as number]));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Capacitated MST: root ${d.root}, capacity ${d.capacity}, unit demands at 1, 2, 3.`,
-        0,
-    );
-    yield FR(
-        step++,
-        N(verts),
-        ME(
-            list,
-            new Map([
-                [0, "highlight"],
-                [1, "highlight"],
-                [2, "highlight"],
-            ]),
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Capacitated MST: root ${d.root}, capacity ${d.capacity}, unit demands at vertices 1, 2, 3.`,
+            0,
         ),
-        "Start: every terminal attached straight to the root (loads all 1).",
-        1,
-    );
+        meta: { links: 0, cost: 0 },
+    };
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(
+                list,
+                new Map([
+                    [0, "highlight"],
+                    [1, "highlight"],
+                    [2, "highlight"],
+                ]),
+            ),
+            "Start: every terminal attached straight to the root (each subtree load is 1).",
+            1,
+        ),
+        meta: { links: 2 },
+    };
     const c = (a: string, b: string): number => {
         let best = Infinity;
         for (const e of list)
@@ -111,13 +137,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             pairs.push({ i, j, s: c(i, d.root) + c(j, d.root) - c(i, j) });
         }
     pairs.sort((p, q) => q.s - p.s);
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Savings order: ${pairs.map((p) => `${p.i}-${p.j}(${p.s})`).join(", ")}.`,
-        2,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Savings order: ${pairs.map((p) => `${p.i}–${p.j}(${p.s})`).join(", ")}.`,
+            2,
+        ),
+        meta: { links: links.length },
+    };
     const comp = new Map<string, string>(terms.map((v) => [v, v]));
     const load = new Map<string, number>(terms.map((v) => [v, dem.get(v) as number]));
     const find = (x: string): string => {
@@ -133,13 +162,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const rj = find(p.j);
         if (ri === rj) continue;
         if ((load.get(ri) as number) + (load.get(rj) as number) > d.capacity) {
-            yield FR(
-                step++,
-                N(verts),
-                ME(list),
-                `Skip merge ${p.i}-${p.j}: combined load would exceed capacity ${d.capacity}.`,
-                3,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list),
+                    `Skipping merge ${p.i}–${p.j} (saving ${p.s}): combined load would exceed capacity ${d.capacity}.`,
+                    4,
+                ),
+                meta: { links: links.length },
+            };
             continue;
         }
         comp.set(ri, rj);
@@ -148,13 +180,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             (e) => (e.a === p.i && e.b === p.j) || (e.a === p.j && e.b === p.i),
         );
         links.push(li);
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map(links.map((i) => [i, "highlight"] as [number, EntityState]))),
-            `Merged ${p.i} into ${p.j}'s subtree (load ${load.get(rj)}): saving ${p.s}.`,
-            3,
-        );
+        const linkEdge = li >= 0 ? (list[li] as E3) : undefined;
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map(links.map((i) => [i, "highlight"] as [number, EntityState]))),
+                linkEdge
+                    ? `Merging ${p.i} into the ${p.j} subtree via edge ${linkEdge.a}–${linkEdge.b} (weight ${linkEdge.w}), load ${load.get(rj)}: saving ${p.s}.`
+                    : `Merging ${p.i} into ${p.j} subtree (load ${load.get(rj)}): saving ${p.s}.`,
+                4,
+            ),
+            meta: { links: links.length },
+        };
         if (step > 12) break;
     }
     const cost = links.reduce((s, i) => s + (list[i] as E3).w, 0);
@@ -163,10 +201,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(links.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Heuristic CMST cost ${cost}: subtrees {1} and {2,3}, loads 1 and 2 within capacity.`,
-            4,
+            `Heuristic CMST cost ${cost}, total weight ${cost}: subtrees respect capacity ${d.capacity}.`,
+            5,
         ),
-        meta: { cost },
+        meta: { cost, totalWeight: cost, links: links.length },
     };
 }
 
@@ -191,5 +229,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "attach every terminal straight to the root",
+        "compute the saving of joining each terminal pair",
+        "sort all pairwise savings from largest to smallest",
+        "for each pair in savings order: consider merging",
+        "merge the pair when the combined load fits capacity",
+        "done: merged links form the heuristic CMST total weight",
+    ],
 };
 export default module;
