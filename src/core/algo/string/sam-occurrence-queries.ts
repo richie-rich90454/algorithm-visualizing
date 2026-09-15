@@ -1,6 +1,7 @@
 /**
  * sam-occurrence-queries.ts – SAM Occurrences.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n) build, O(m) query", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -33,14 +34,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(text), `SAM walk for "${pat}" over "${text}".`, 0, { comparisons: 0, count: 0 });
     step += 1;
-    yield F(tx(text), `SAM built online in O(n) (${text.length} extensions).`, 1, { comparisons: 0 });
+    yield F(tx(text), `SAM built online in O(n) (${text.length} extensions).`, 1, {
+        comparisons: 0,
+    });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, count: 0 });
+        yield F(tx(text), `Empty pattern "" - nothing to search for.`, 5, {
+            comparisons: 0,
+            count: 0,
+        });
         return;
     }
     let comparisons = 0;
@@ -75,7 +81,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { comparisons, count, matches },
     );
     step += 1;
-    yield F(tx(text, fin), `SAM query complete: "${pat}" occurs ${count}x.`, 4, { comparisons, count, matches });
+    yield F(tx(text, fin), `SAM query complete: "${pat}" occurs ${count}x.`, 4, {
+        comparisons,
+        count,
+        matches,
+    });
 }
 
 const module: AlgorithmModule = {
@@ -86,6 +96,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababa", pattern: "aba" },
     visualType: "text",
     run,
+    pseudocode: [
+        "extend suffix automaton with next text character",
+        "follow suffix links cloning when necessary",
+        "walk pattern through automaton transitions",
+        "count end positions from terminal state occurrences",
+        "propagate occurrence counts via suffix order",
+        "record match count and example positions",
+        "report total occurrences of pattern",
+    ],
 };
 
 export default module;
