@@ -13,6 +13,10 @@
  *
  * This visualization computes the expected flips via a DP over "heads streak".
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -140,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(E, finalStates),
         edges: [],
         description: `Expected flips = ${E[0].toFixed(2)}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { target, expected: E[0] },
     };
@@ -156,6 +160,14 @@ const module: AlgorithmModule = {
     defaultInput: { target: 3 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up E[target] <- 0 as absorbing streak state",
+        "E[k] holds expected flips to reach streak from k heads",
+        "E[k] <- 1 + 0.5*E[k+1] + 0.5*E[0] per flip outcome",
+        "solve backward from near-target states toward zero",
+        "heads advance the streak while tails reset progress",
+        "each flip costs one plus expected remaining flips",
+        "answer <- E[0] as expected flips from a fresh start",
+    ],};
 
 export default module;
