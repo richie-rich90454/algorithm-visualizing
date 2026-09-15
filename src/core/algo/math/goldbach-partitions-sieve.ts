@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs even n >= 4).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -54,7 +54,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Primes to ${n}: [${primes}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const parts: Array<[number, number]> = [];
@@ -71,7 +71,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     description: `${n} - ${p} = ${q}, prime – partition ${parts.length}.`,
                     codeLineNumber: 1,
                     layout: "grid",
-                    meta: {},
+                    meta: { step },
                 };
                 step += 1;
             }
@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `${n} - ${p} = ${q}, composite – skip.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             step += 1;
         }
@@ -110,5 +110,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 20 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sieve the primes up to n",
+        "for each prime p test q = n − p for primality",
+        "done: every n = p + q partition listed",
+        "a prime q records one more partition",
+        "done: count partitions with every pair shown",
+    ],
 };
 export default module;
