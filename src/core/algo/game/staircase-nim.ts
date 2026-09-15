@@ -87,10 +87,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: pileCells(piles, chosen),
         edges: [],
-        description: `Winning move: shift ${(piles[chosen] ?? 0) - target} stone${(piles[chosen] ?? 0) - target > 1 ? "s" : ""} from pile ${chosen + 1} down (pile ${chosen + 1}: ${piles[chosen] ?? 0} -> ${target}).`,
-        codeLineNumber: 1,
+        description: `Winning Staircase move: shift ${(piles[chosen] ?? 0) - target} stone${(piles[chosen] ?? 0) - target > 1 ? "s" : ""} from odd pile ${chosen + 1} down (pile ${chosen + 1}: ${piles[chosen] ?? 0} -> ${target}).`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { piles, chosen, target },
+        meta: { piles: [...piles], xor: x, chosen, target, winning: true },
     };
     step += 1;
     const after = [...piles];
@@ -101,20 +101,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: pileCells(after),
         edges: [],
-        description: `After the shift [${after.join(", ")}] – odd-position xor = ${x2}, a P-position.`,
-        codeLineNumber: 2,
+        description: `After the shift piles [${after.join(", ")}] – odd-position xor = ${x2}, a P-position.`,
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { piles: after, xor: x2 },
+        meta: { piles: [...after], xor: x2, winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: pileCells(after),
         edges: [],
-        description: `First player wins Staircase Nim [${piles.join(", ")}] with this shift.`,
-        codeLineNumber: 3,
+        description: `First player wins Staircase Nim [${piles.join(", ")}] by shifting pile ${chosen + 1} to ${target}.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { piles: after, winning: true },
+        meta: { piles: [...after], xor: x2, chosen, target, winning: true },
     };
 }
 
@@ -126,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { piles: [2, 1, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "stack piles [p0, p1, …] as stairs, only odd positions matter",
+        "xor ← p0 ⊕ p2 ⊕ p4 ⊕ … over odd-position piles only",
+        "if xor = 0: losing P-position for the player to move",
+        "else find odd pile i with (pile[i] ⊕ xor) < pile[i]",
+        "shift stones from pile i down one step to reach target size",
+        "winner empties odd piles first and wins the staircase",
+    ],
 };
 
 export default module;
