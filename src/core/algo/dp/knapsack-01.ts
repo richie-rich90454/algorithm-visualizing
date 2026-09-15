@@ -12,6 +12,10 @@
  *
  * over items i and capacities w.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -140,7 +144,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Maximum value = ${maxValue}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows, cols, maxValue },
     };
@@ -156,6 +160,14 @@ const module: AlgorithmModule = {
     defaultInput: { weights: [2, 3, 4, 5], values: [3, 4, 5, 6], capacity: 5 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp table (n+1) x (W+1) filled with 0",
+        "dp[i][w] holds best value using first i items under w",
+        "dp[i][w] <- max(skip, take) = max(dp[i-1][w], dp[i-1][w-wt[i]] + val[i])",
+        "iterate items outer and capacities inner in order",
+        "skip when item weight exceeds current capacity w",
+        "otherwise keep the better of skipping or taking item i",
+        "answer <- dp[n][W] with chosen items backtraced",
+    ],};
 
 export default module;
