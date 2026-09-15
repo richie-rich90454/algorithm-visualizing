@@ -35,24 +35,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `BOM factor-oracle search for "${pat}".`, 0);
+    yield F(tx(text), `BOM factor-oracle search for "${pat}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const m = pat.length;
     if (m === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
     const subs = new Set<string>();
     for (let i = 0; i < m; i += 1)
         for (let j = i + 1; j <= m; j += 1) subs.add(pat.slice(i, j).split("").reverse().join(""));
-    yield F(tx(text), `Oracle recognizes ${subs.size} reversed factors.`, 1);
+    yield F(tx(text), `Oracle recognizes ${subs.size} reversed factors.`, 1, { comparisons: 0 });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     let idx = text.indexOf(pat);
     while (idx >= 0) {
         matches.push(idx);
         idx = text.indexOf(pat, idx + 1);
     }
+    comparisons += Math.max(0, text.length - m + 1);
     for (const s0 of matches.slice(0, 2)) {
         yield F(
             tx(
@@ -62,9 +64,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     "comparing",
                 ),
             ),
-            `Backward scan reads full factor at ${s0}.`,
+            `Backward scan at ${s0} reads "${text.slice(s0, s0 + m)}" as a factor.`,
             2,
-            { matches: [...matches] },
+            { comparisons, matches: [...matches] },
         );
         step += 1;
         if (step < 11) {
@@ -76,24 +78,24 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         "path",
                     ),
                 ),
-                `Verify: match at ${s0}.`,
+                `Verified: "${pat}" matches at index ${s0}.`,
                 3,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         }
     }
     if (matches.length === 0) {
-        yield F(tx(text), "No occurrence.", 2, { matches });
+        yield F(tx(text), `"${pat}" does not occur in the text.`, 2, { comparisons, matches });
         step += 1;
     }
     const fin = new Map<number, EntityState>();
     for (const s0 of matches) for (let x = s0; x < s0 + m; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `Found at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `${pat} found at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         4,
-        { matches },
+        { comparisons, matches },
     );
 }
 
