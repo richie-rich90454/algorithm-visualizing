@@ -57,6 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const text = task.text ?? "babadcdabab";
 
     let step = 0;
+    let comparisons = 0;
 
     // Frame 0: the untouched text.
     yield {
@@ -66,7 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the longest palindromic substring of "${text}".`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons },
     };
     step += 1;
 
@@ -91,8 +92,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             i + (arm[i] ?? 0) + 1 < n &&
             padded[i - (arm[i] ?? 0) - 1] === padded[i + (arm[i] ?? 0) + 1]
         ) {
+            comparisons += 1;
             arm[i] = (arm[i] ?? 0) + 1;
         }
+        comparisons += 1;
 
         // Extend the window when this palindrome reaches beyond `right`.
         if (i + (arm[i] ?? 0) > right) {
@@ -114,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Center ${i}: palindrome radius ${arm[i]} (centered on "${padded[i]}").`,
             codeLineNumber: 2,
             layout: "text",
-            meta: {},
+            meta: { comparisons },
         };
         step += 1;
     }
@@ -151,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Longest palindromic substring: "${longest}".`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { longestLen: longest.length },
+        meta: { comparisons, longestLen: longest.length },
     };
 }
 
