@@ -185,6 +185,13 @@ const module: AlgorithmModule = {
     defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with runs of length 1, width ← 1",
+        "double width each round and merge adjacent run pairs",
+        "compare run fronts, take the smaller into output",
+        "merged slice [lo..hi] is now sorted",
+        "done: single run covers the whole array",
+    ],
 };
 
 export default module;
