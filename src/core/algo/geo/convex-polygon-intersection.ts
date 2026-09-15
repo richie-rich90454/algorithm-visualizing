@@ -101,7 +101,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Intersect ${A.length}-gon A with ${B.length}-gon B (Sutherland–Hodgman).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { sidesA: A.length, sidesB: B.length },
     };
     if (A.length < 3 || B.length < 3) {
         yield {
@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: base.map((e) => ({ ...e })),
             edges: edges.map((e) => ({ ...e })),
             description: "Degenerate input: both polygons need ≥3 vertices.",
-            codeLineNumber: 1,
+            codeLineNumber: 2,
             layout: "point",
             meta: { area: 0 },
         };
@@ -126,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             ],
             edges: edges.map((e) => ({ ...e })),
             description: `Clip by A-edge ${i}: ${current.length} vertices survive.`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { edge: i, count: current.length },
         };
@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             final.length === 0
                 ? "Disjoint polygons: empty intersection."
                 : `Intersection: ${final.length} vertices, area = ${ar.toFixed(4)}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 5,
         layout: "point",
         meta: { area: ar, vertices: final.map(([x, y]) => `${x},${y}`) },
     };
@@ -180,6 +180,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygons A and B",
+        "clip the candidate list against each edge of A in turn",
+        "keep vertices inside the current edge half-plane",
+        "add crossing points where edges pierce the boundary",
+        "carry survivors forward to the next clipping edge",
+        "done: remaining vertices outline the overlap polygon",
+    ],
 };
 
 export default module;
