@@ -63,7 +63,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: idx,
+            codeLineNumber: Math.max(0, Math.min(idx, 6)),
             layout: "grid",
             meta: { counters: entries.map(([key, v]) => `${key}=${v}`).join(","), index: idx },
         };
@@ -103,6 +103,15 @@ const module: AlgorithmModule = {
     defaultInput: { stream: ["a", "b", "a", "c", "a", "b", "a", "d"], k: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize k counters as empty table",
+        "for each stream item in order",
+        "if item counted then increment its counter",
+        "else if space then start a new counter",
+        "else decrement every counter by one",
+        "collect survivors as heavy-hitter candidates",
+        "done: candidates include true frequent items",
+    ],
 };
 
 export default module;
