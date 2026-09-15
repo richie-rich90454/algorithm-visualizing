@@ -157,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeGrid(tree1.slice(1), tree2.slice(1)),
         edges: [],
         description: `Range sum [${ql}, ${qr}] = ${sum}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { n, sum },
     };
@@ -172,6 +172,15 @@ const module: AlgorithmModule = {
     defaultInput: { n: 6, update: [2, 4, 3], query: [1, 5] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize two BITs for range add and range sum",
+        "add delta to BIT1 and delta times index to BIT2",
+        "compare range bounds to split into prefix queries",
+        "query prefix by combining both BIT results",
+        "subtract prefixes to answer arbitrary range sum",
+        "count BIT steps as O(log n) per operation",
+        "done: structure holds array with range sum answer",
+    ],
 };
 
 export default module;
