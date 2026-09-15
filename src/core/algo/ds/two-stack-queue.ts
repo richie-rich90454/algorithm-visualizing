@@ -4,6 +4,29 @@
  * Amortized FIFO from two LIFOs: pushes pile onto the in-stack, and a
  * pop drains it into the out-stack only when the out-stack runs dry –
  * so each element moves at most twice.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Amortized FIFO from two LIFOs: pushes pile onto the in-stack, and a pop drains it into the out-stack only when the out-stack runs dry – so each element moves at most twice.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) amortized
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Two-Stack Queue behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -94,6 +117,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["enq", 1], ["enq", 2], ["deq"], ["enq", 3], ["deq"]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with empty in-stack and out-stack",
+        "enqueue value: push it onto the in-stack",
+        "dequeue: if the out-stack is empty, pour the in-stack over",
+        "pouring reverses order so the oldest value tops the out-stack",
+        "pop the out-stack top to emit FIFO order",
+        "each element moves between stacks at most once amortized",
+        "done: dequeues leave in FIFO order and both stacks hold state",
+    ],
 };
 
 export default module;
