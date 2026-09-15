@@ -1,6 +1,35 @@
-// go-atari-capture.ts – Go atari: a group with one liberty is captured by
-// filling it. Default 3×3: black center with white on three sides has a
-// single liberty at (2,1); White fills it and removes the stone.
+/**
+ * go-atari-capture.ts – Go Atari Capture (single-liberty tactic)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * In Go, a connected group with one empty neighbor (liberty) is in atari
+ * and is captured by filling that liberty. Simply: shrink the group to one
+ * liberty, then fill it. Formally: liberties are the empty orthogonal
+ * neighbors of the group flood fill, and the default 3x3 shows black center
+ * with white on three sides holding a single liberty at (2,1) that White
+ * fills to remove the stone.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) flood fill over the board
+ *   Space: O(n^2) board state
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Black stones paint GREEN (sorted); White stones highlight.
+ *   - The group in atari and the target liberty flash YELLOW (comparing).
+ *   - The capture frame shows the removed stone and White territory.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Zero liberties means immediate capture and removal.
+ *   - Filling the last liberty is the winning tactical move.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function goCells(board: string[][], hot: string | null = null): VisualEntity[] {
@@ -73,20 +102,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: goCells(board, "1,1"),
         edges: [],
-        description: `Black at (1,1) has ${libs} libert${libs === 1 ? "y" : "ies"} – in atari.`,
+        description: `Black group at (1,1) has ${libs} libert${libs === 1 ? "y" : "ies"} on the 3x3 board – in atari and losing with perfect defense.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { liberties: libs },
+        meta: { liberties: libs, group: [1, 1], winning: true, winner: "White" },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: goCells(board, "2,1"),
         edges: [],
-        description: "White's only productive move is filling the last liberty at (2,1).",
-        codeLineNumber: 1,
+        description: "White's only productive reply is filling the last empty liberty at (2,1).",
+        codeLineNumber: 2,
         layout: "grid",
-        meta: { liberties: libs, play: [2, 1] },
+        meta: { liberties: libs, play: [2, 1], mover: "White" },
     };
     step += 1;
     board[2] = [".", "W", "."];
@@ -95,10 +124,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: goCells(board, "1,1"),
         edges: [],
-        description: `After W(2,1) the black group has ${libsAfter} liberties – it is captured and removed.`,
-        codeLineNumber: 2,
+        description: `After White plays (2,1) the black group at (1,1) has ${libsAfter} liberties – it is captured and removed.`,
+        codeLineNumber: 3,
         layout: "grid",
-        meta: { liberties: libsAfter },
+        meta: { liberties: libsAfter, captured: 0, mover: "White" },
     };
     step += 1;
     board[1] = ["W", ".", "W"];
@@ -106,20 +135,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: goCells(board),
         edges: [],
-        description: "Black removed; White holds the center territory.",
-        codeLineNumber: 3,
+        description: "Black stone removed from (1,1); White now holds the center territory.",
+        codeLineNumber: 4,
         layout: "grid",
-        meta: { captured: 1 },
+        meta: { captured: 1, winner: "White", winning: true },
     };
     step += 1;
     yield {
         stepNumber: step,
         entities: goCells(board),
         edges: [],
-        description: "Atari capture complete: reduce to one liberty, then fill it.",
-        codeLineNumber: 4,
+        description:
+            "Atari capture complete: White reduced Black to one liberty, then filled it to win the fight.",
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { captured: 1 },
+        meta: { captured: 1, winner: "White", winning: true },
     };
 }
 
@@ -131,6 +161,14 @@ const module: AlgorithmModule = {
     defaultInput: { size: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from the 3 x 3 board with Black center under White surround",
+        "count liberties of the Black group by flood fill of neighbors",
+        "if liberties = 1: the group is in atari and can be captured",
+        "White fills the last liberty at (2,1) to reach zero liberties",
+        "remove the captured Black stone and show White territory",
+        "winner is White, who filled the final liberty of the fight",
+    ],
 };
 
 export default module;
