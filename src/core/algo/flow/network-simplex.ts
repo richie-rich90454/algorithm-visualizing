@@ -159,5 +159,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize network with demands and spanning tree basis",
+        "compute node potentials so basic arcs price to zero",
+        "price non tree arcs with reduced cost formula",
+        "pivot entering arc and push flow around tree cycle",
+        "repeat until no negative reduced cost remains",
+        "report optimal flow value at minimum total cost",
+    ],
 };
 export default module;
