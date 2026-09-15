@@ -142,6 +142,13 @@ const module: AlgorithmModule = {
     defaultInput: { n: 12 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state φ(n): count the numbers below n coprime to it",
+        "test each k = 1..n with gcd(k, n)",
+        "classify k as coprime or sharing a factor",
+        "tally the coprime values",
+        "done: φ(n) = count",
+    ],
 };
 
 export default module;
