@@ -152,5 +152,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize weighted graph with all vertices active",
+        "grow maximum adjacency ordering across active vertices",
+        "measure cut of the phase from last added vertex",
+        "contract last pair and repeat until one node left",
+        "track lightest phase cut as global optimum value",
+        "report global minimum cut with best partition",
+    ],
 };
 export default module;
