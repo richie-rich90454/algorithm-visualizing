@@ -1,6 +1,29 @@
 /**
  * order-statistic-tree.ts - Order-Statistic Tree
  * Subtree sizes give select/rank. Demo: BST insert + search/rank on <=8 keys.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Subtree sizes give select/rank. Demo: BST insert + search/rank on <=8 keys.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) ops
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Order-Statistic Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -89,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Order-Statistic Tree: empty. Subtree sizes give select/rank.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} with BST comparisons and refreshed subtree sizes on its path.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compared query ${q} against node ${ins[cur]} branching left or right by BST order.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -155,7 +178,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Search ${q} absent; rank would be ${rank}.`,
         codeLineNumber: 3,
         layout: "tree",
-        meta: { found: found >= 0, rank },
+        meta: { ops: step, found: found >= 0, rank },
     };
 }
 
@@ -167,5 +190,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty BST with size fields set to 1",
+        "insert key: walk down comparing keys, create a leaf",
+        "update size fields on the path back to the root",
+        "repeat until all keys are inserted and sizes are correct",
+        "search key: compare and branch left or right",
+        "rank and select use left-subtree sizes to skip whole subtrees",
+        "done: tree holds all keys and the query answer is reported",
+    ],
 };
 export default module;
