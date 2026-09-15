@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs a >= 1, n >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -67,7 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `gcd(${a}, ${n}) = ${g} != 1 – no order exists.`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Order of ${a} mod ${n}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     let tmp = phi;
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Order divides ${phi} = factors [${fac}]; try shrinking.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (const q of fac) {
@@ -165,5 +165,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 2, n: 11 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "require gcd(a, n) = 1, start from φ(n) and its factors",
+        "for each factor try ord/factor: shrink on 1, keep on miss",
+        "done: ord_n(a) = ord",
+        "the survivor still satisfies a^ord ≡ 1",
+        "done: ord is minimal and divides φ(n)",
+    ],
 };
 export default module;
