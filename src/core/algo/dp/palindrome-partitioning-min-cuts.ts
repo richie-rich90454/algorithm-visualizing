@@ -152,6 +152,7 @@ const module: AlgorithmModule = {
         "each palindrome suffix j+1..i enables one more cut",
         "keep the minimum cuts across valid suffix splits",
         "answer <- cuts[n-1] with cut positions reconstructed",
-    ],};
+    ],
+};
 
 export default module;
