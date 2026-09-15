@@ -133,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: message,
             codeLineNumber: codeLine,
             layout: "array",
-            meta: {},
+            meta: { swapped: [a, b] },
         };
         step += 1;
     };
@@ -304,7 +304,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Maximum ${String(rootVal)} extracted – index ${head} is final.`,
             codeLineNumber: 4,
             layout: "array",
-            meta: {},
+            meta: { extracted: head },
         };
         step += 1;
 
@@ -348,6 +348,15 @@ const module: AlgorithmModule = {
     defaultInput: [8, 3, 6, 1, 7, 2, 5, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with empty forest of Leonardo heaps",
+        "fuse heaps or start a new single-element heap",
+        "sift or trinkle: swap root with larger child or stepson",
+        "grow the forest across the whole prefix",
+        "extract each maximum to its final index",
+        "split heaps and restore roots while shrinking",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
