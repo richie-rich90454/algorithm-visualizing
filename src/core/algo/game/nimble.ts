@@ -1,6 +1,33 @@
-// nimble.ts – Nimble: coins on a strip; a move slides one coin left any amount.
-// Position value = xor of coin squares (0-indexed). Default coins at 1,4,6
-// xor to 3; winning move slides the coin from 6 back to 5 (computed).
+/**
+ * nimble.ts – Nimble (coin-sliding game on a strip)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Nimble places coins on a strip; a move slides one coin left any number of
+ * squares. Simply: treat each coin square like a Nim heap and zero the xor.
+ * Formally: the position value is the xor of occupied squares (0-indexed),
+ * and the default coins at 1, 4, 6 xor to 3, so the winning move slides the
+ * coin from 6 back to 5, computed in code.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(c) over the coins
+ *   Space: O(c) coin set
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Coins show as marked squares; the sliding coin flashes YELLOW.
+ *   - Each frame names the coin squares and the running xor value.
+ *   - The zero-xor landing shows the P-position handed over.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Xor 0 marks a P-position; sliding onto occupied squares needs care.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 function stripCells(coins: Set<number>, size: number, hot = -1): VisualEntity[] {
