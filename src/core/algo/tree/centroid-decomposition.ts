@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: message,
         codeLineNumber: 2,
         layout: "tree",
-        meta: { removed: removed.size },
+        meta: { removed: removed.size, order: [...decomposition] },
     });
 
     // ------------------------------------------------------------------
@@ -200,6 +200,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with the full tree as one active component",
+        "compute subtree sizes inside the active component",
+        "find centroid whose removal halves every piece",
+        "remove centroid and recurse on each remaining piece",
+        "return centroid removal order as the decomposition",
+    ],
 };
 
 export default module;
