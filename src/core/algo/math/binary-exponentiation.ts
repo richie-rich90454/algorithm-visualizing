@@ -152,6 +152,14 @@ const module: AlgorithmModule = {
     defaultInput: { base: 3, exponent: 13 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "write the exponent in binary; result ← 1, factor ← base",
+        "scan the bits from least to most significant",
+        "bit 1: result ← result × factor",
+        "bit 0: leave result unchanged",
+        "square the factor for the next bit",
+        "done: result = base^exponent",
+    ],
 };
 
 export default module;
