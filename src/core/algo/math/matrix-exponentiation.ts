@@ -201,6 +201,13 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "set result ← I and factor ← matrix; read exponent bits",
+        "scan the exponent bits low to high",
+        "on a 1 bit: result ← result × factor",
+        "square the factor matrix each round",
+        "done: matrix^exponent with answer on top",
+    ],
 };
 
 export default module;
