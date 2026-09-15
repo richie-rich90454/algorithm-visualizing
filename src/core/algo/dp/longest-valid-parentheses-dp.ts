@@ -138,6 +138,7 @@ const module: AlgorithmModule = {
         "add inner run plus any run adjoining the matched open",
         "opens contribute zero while extending closings only",
         "answer <- max(dp) with longest run positions reported",
-    ],};
+    ],
+};
 
 export default module;
