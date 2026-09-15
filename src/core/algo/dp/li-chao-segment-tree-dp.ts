@@ -215,6 +215,7 @@ const module: AlgorithmModule = {
         "query each x down its root-to-leaf path for minima",
         "collect minima across visited nodes per query point",
         "answer <- minima per query confirmed along tree paths",
-    ],};
+    ],
+};
 
 export default module;
