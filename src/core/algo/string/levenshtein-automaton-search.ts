@@ -1,6 +1,7 @@
 /**
  * levenshtein-automaton-search.ts – Levenshtein Automaton.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n·m)", space: "O(m)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -46,11 +47,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(pat), `Levenshtein automaton for "${pat}" (k=${k}) over ${words.length} words.`, 0, { comparisons: 0, hits: [] });
+    yield F(tx(pat), `Levenshtein automaton for "${pat}" (k=${k}) over ${words.length} words.`, 0, {
+        comparisons: 0,
+        hits: [],
+    });
     step += 1;
-    yield F(tx(pat), "Trie of dictionary + parametric vectors.", 1, { comparisons: 0 });
+    yield F(tx(pat), `Trie of ${words.length} words for "${pat}" with parametric vectors.`, 1, {
+        comparisons: 0,
+    });
     step += 1;
     const hits: Array<{ w: string; d: number }> = [];
     let comparisons = 0;
@@ -70,12 +76,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield F(
         tx(pat),
-        hits.length ? `Accepted: ${hits.map((h) => h.w).join(", ")}.` : "Nothing within k.",
+        hits.length ? `Accepted: "${hits.map((h) => h.w).join(", ")}".` : "Nothing within k.",
         3,
         { comparisons, hits: hits.map((h) => `${h.w}:${h.d}`) },
     );
     step += 1;
-    yield F(tx(pat), `Automaton complete: ${hits.length} word(s) within k=${k}.`, 4, { comparisons, hits: hits.map((h) => `${h.w}:${h.d}`) });
+    yield F(tx(pat), `Automaton complete: ${hits.length} word(s) within k=${k}.`, 4, {
+        comparisons,
+        hits: hits.map((h) => `${h.w}:${h.d}`),
+    });
 }
 
 const module: AlgorithmModule = {
@@ -86,6 +95,15 @@ const module: AlgorithmModule = {
     defaultInput: { pattern: "apple", words: ["apple", "apply", "ape"], k: 1 },
     visualType: "text",
     run,
+    pseudocode: [
+        "build trie of dictionary words for traversal",
+        "initialize parametric edit vector at zero distance",
+        "expand automaton state on each character",
+        "prune branches exceeding distance threshold k",
+        "accept words with final distance within k",
+        "collect all accepted words and distances",
+        "report matching words within bound",
+    ],
 };
 
 export default module;
