@@ -47,16 +47,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Approx search "${pat}" with k=${k} (bit-parallel).`, 0);
+    yield F(tx(text), `Approx search "${pat}" with k=${k} (bit-parallel).`, 0, { comparisons: 0, matches: [] });
     step += 1;
     if (pat.length === 0) {
         yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
         return;
     }
-    yield F(tx(text), `Peq bitmasks ready for m=${pat.length}.`, 1);
+    yield F(tx(text), `Peq bitmasks ready for m=${pat.length}.`, 1, { comparisons: 0 });
     step += 1;
     const matches: number[] = [];
+    let comparisons = 0;
     for (let i = 0; i + pat.length <= text.length; i += 1) {
+        comparisons += 1;
         const d = edit(text.slice(i, i + pat.length), pat);
         if (d <= k) {
             matches.push(i);
@@ -68,13 +70,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                         "path",
                     ),
                 ),
-                `Window ${i} within k (d=${d}).`,
+                `Window ${i} "${text.slice(i, i + pat.length)}" within k (d=${d}).`,
                 2,
-                { matches: [...matches] },
+                { comparisons, matches: [...matches] },
             );
             step += 1;
         } else if (i < 3) {
-            yield F(tx(text, stAt([i], "comparing")), `Window ${i} rejected (d=${d}).`, 3, {
+            yield F(tx(text, stAt([i], "comparing")), `Window ${i} "${text.slice(i, i + pat.length)}" rejected (d=${d} over k=${k}).`, 3, {
+                comparisons,
                 matches: [...matches],
             });
             step += 1;
@@ -87,7 +90,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         tx(text, fin),
         matches.length ? `Approx hits at ${matches.join(", ")}.` : "No hit within k.",
         4,
-        { matches, k },
+        { comparisons, matches, k },
     );
 }
 
