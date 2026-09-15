@@ -37,7 +37,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 4 bits and 1 <= error <= 7).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -48,7 +48,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Data [${data}] into positions 3,5,6,7.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const [d1, d2, d3, d4] = [
@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Parities p1=${p1}, p2=${p2}, p3=${p3} (even parity).`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -94,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Noise flips position ${err}: [${rx}].`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const s1 = (rx[0] as number) ^ (rx[2] as number) ^ (rx[4] as number) ^ (rx[6] as number);
@@ -121,5 +121,12 @@ const module: AlgorithmModule = {
     defaultInput: { data: [1, 0, 1, 1], error: 6 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "place the 4 data bits in positions 3, 5, 6, 7",
+        "compute even parities p1, p2, p3",
+        "emit the 7-bit codeword",
+        "flip one position to inject noise",
+        "done: syndrome locates the error; word matches",
+    ],
 };
 export default module;
