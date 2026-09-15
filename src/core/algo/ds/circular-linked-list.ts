@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Full cycle complete – the last node points back to ${values[0]}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "graph",
         meta: { size: values.length },
     };
@@ -114,6 +114,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [7, 3, 9, 1] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize empty circular list with tail pointing to itself",
+        "insert value by linking new node after tail",
+        "compare traversal key against node values in order",
+        "advance around circle back to head to show wrap",
+        "delete node by bypassing it in the ring",
+        "count nodes visited during full circle",
+        "done: circular list holds values with traversal answer",
+    ],
 };
 
 export default module;
