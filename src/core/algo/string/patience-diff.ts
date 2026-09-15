@@ -1,6 +1,7 @@
 /**
  * patience-diff.ts – Patience Diff.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n log n) avg", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -33,9 +34,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
-    yield F(tx(a.join("")), "Patience diff: unique lines as anchors.", 0);
+    yield F(tx(a.join("")), 'Patience diff: unique lines "a" as anchors.', 0);
     step += 1;
     const cb = new Map(b.map((x, i) => [x, i] as [string, number]));
     const seq: number[] = [];
@@ -103,6 +104,15 @@ const module: AlgorithmModule = {
     defaultInput: { a: ["a", "b", "c"], b: ["a", "c", "b"] },
     visualType: "text",
     run,
+    pseudocode: [
+        "find unique common lines as anchor points",
+        "sort anchors by position in both files",
+        "extract longest increasing subsequence of anchors",
+        "recursively diff regions between anchors",
+        "emit equal delete and insert operations",
+        "concatenate scripts from all regions",
+        "report unified diff operations",
+    ],
 };
 
 export default module;
