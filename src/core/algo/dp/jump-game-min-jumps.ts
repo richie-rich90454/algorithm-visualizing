@@ -120,6 +120,7 @@ const module: AlgorithmModule = {
         "each closure increments jumps and opens a new window",
         "track window bounds to count the fewest jumps used",
         "answer <- jumps to reach the end with jump points listed",
-    ],};
+    ],
+};
 
 export default module;
