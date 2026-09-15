@@ -46,10 +46,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: pairCells(x, y, false),
         edges: [],
-        description: `Euclid's game from (${x}, ${y}) – player to move ${euclidWin(x, y) ? "wins" : "loses"} with perfect play.`,
+        description: `Euclid position (${x}, ${y}) with quotient ${y === 0 ? "–" : Math.floor(x / y)} – player to move ${euclidWin(x, y) ? "wins" : "loses"} with perfect play.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { a: x, b: y },
+        meta: { a: x, b: y, winning: euclidWin(x, y) },
     };
     step += 1;
     let mover = "First";
@@ -74,10 +74,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: pairCells(x, y, true),
             edges: [],
-            description: `${mover} plays (${x}, ${y}) -> subtract ${k}×${y} -> (${y}, ${nx}).${quo >= 2 ? " Quotient ≥ 2 controls the game." : ""}`,
-            codeLineNumber: 1,
+            description: `${mover} plays Euclid (${x}, ${y}) with quotient ${quo} -> subtract ${k}×${y} -> (${y}, ${nx}).${quo >= 2 ? " Quotient ≥ 2 controls the game." : " Forced reply."}`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { a: x, b: y, k, next: [y, nx] },
+            meta: { a: x, b: y, k, quo, rem, next: [y, nx], mover },
         };
         step += 1;
         x = y;
@@ -93,10 +93,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: pairCells(x, y, false),
         edges: [],
-        description: `Reached (${x}, ${y}) – ${mover} has no move and loses, so ${mover === "First" ? "Second" : "First"} wins.`,
-        codeLineNumber: 2,
+        description: `Reached Euclid (${x}, ${y}) – ${mover} has no move and loses, so ${mover === "First" ? "Second" : "First"} wins the pair.`,
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { a: x, b: y },
+        meta: { a: x, b: y, winner: mover === "First" ? "Second" : "First", terminal: true },
     };
 }
 
@@ -108,6 +108,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: 12, b: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "order Euclid position (a, b) so a ≥ b with subtraction moves",
+        "if floor(a/b) ≥ 2: winning, the player controls the forced reply",
+        "else only one legal multiple exists, play forced subtract 1 × b",
+        "move to (b, a - k×b) and swap to keep the larger value first",
+        "repeat quotient and remainder steps until (x, 0) is reached",
+        "winner is the player not to move from (x, 0); other wins",
+    ],
 };
 
 export default module;
