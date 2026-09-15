@@ -1,6 +1,7 @@
 /**
  * ll1-table-parsing.ts – LL(1) Parsing.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(n)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const toks = (s + "$").split("");
     yield F(
@@ -85,12 +86,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         } else if (top === "E" && look === "a") {
             stack.push("G");
             stack.push("a");
-            yield F(snap(), "Expand E→aG.", 2);
+            yield F(snap(), `Expand "E→aG".`, 2);
             step += 1;
         } else if (top === "G" && look === "+") {
             stack.push("E");
             stack.push("+");
-            yield F(snap(), "Expand G→+E.", 2);
+            yield F(snap(), `Expand "G→+E".`, 2);
             step += 1;
         } else if (top === "G" && look === "$") {
             yield F(snap(), "Expand G→ε.", 2);
@@ -103,12 +104,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     ok = ok && p === toks.length;
     yield F(
         [cell(3, 0, ok ? "ACCEPT" : "REJECT", ok ? "path" : "swapped")],
-        ok ? "Input consumed: ACCEPT." : "Error: REJECT.",
+        ok ? "Input consumed: ACCEPT." : `Error on "${s}": REJECT.`,
         3,
         { accept: ok },
     );
     step += 1;
-    yield F([cell(3, 0, ok ? "ACCEPT" : "REJECT", "sorted")], ok ? "LL(1) complete: input consumed: ACCEPT." : "LL(1) complete: parse error: REJECT.", 4, { accept: ok });
+    yield F(
+        [cell(3, 0, ok ? "ACCEPT" : "REJECT", "sorted")],
+        ok ? "LL(1) complete: input consumed: ACCEPT." : "LL(1) complete: parse error: REJECT.",
+        4,
+        { accept: ok },
+    );
 }
 
 const module: AlgorithmModule = {
@@ -119,6 +125,15 @@ const module: AlgorithmModule = {
     defaultInput: { input: "a+a" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "compute first and follow sets for grammar symbols",
+        "build parsing table from productions and lookahead",
+        "push start symbol onto parsing stack",
+        "expand nonterminal using table entry for lookahead",
+        "match terminal against current input symbol",
+        "advance input on successful terminal match",
+        "report acceptance and derivation steps",
+    ],
 };
 
 export default module;
