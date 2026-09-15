@@ -77,9 +77,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [node("c", cx, cy, "c", "highlight")],
         edges: [],
         description: `Midpoint circle c=(${cx},${cy}) r=${r}: walking octant x≤y.`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { center: [cx, cy], radius: r },
     };
     step += 1;
     const per = Math.max(1, Math.ceil(oct.length / 3));
@@ -98,9 +98,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: ents,
             edges: [],
             description: `Octant step ${Math.min(k + per, oct.length)}/${oct.length}: (${done[done.length - 1]}) mirrored ×8.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { octantStep: Math.min(k + per, oct.length), total: oct.length },
         };
         step += 1;
     }
@@ -112,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: [],
         description: `Done: ${pixels.length} pixels on the circle.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "point",
         meta: { pixels: pixels.map(([x, y]) => `${x},${y}`) },
     };
@@ -126,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { center: [0, 0], radius: 3 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start at the top of the circle with decision value zero",
+        "light the current octant pixel",
+        "test the midpoint to pick east or southeast next",
+        "update the decision value for the chosen step",
+        "mirror each octant pixel across all eight octants",
+        "done: mirrored pixels rasterize the full circle",
+    ],
 };
 
 export default module;
