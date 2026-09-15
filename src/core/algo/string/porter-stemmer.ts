@@ -1,6 +1,7 @@
 /**
  * porter-stemmer.ts – Porter Stemmer.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n)", space: "O(1)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -43,7 +44,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     yield F(tx(word), `Porter stem("${word}").`, 0);
     step += 1;
@@ -76,6 +77,15 @@ const module: AlgorithmModule = {
     defaultInput: { word: "caresses" },
     visualType: "text",
     run,
+    pseudocode: [
+        "strip plural endings like sses and ies",
+        "remove past participles ed and ing with vowel check",
+        "map double consonants and terminal y rules",
+        "apply step mappings forational and tional endings",
+        "reduce ive ness and ful suffixes by measure",
+        "clean final e and double l conditions",
+        "report stemmed word form",
+    ],
 };
 
 export default module;
