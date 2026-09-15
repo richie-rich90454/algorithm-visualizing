@@ -205,7 +205,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Tarjan offline LCA complete – answered ${answers.size} query/queries.`,
         codeLineNumber: 4,
         layout: "tree",
-        meta: { answered: answers.size },
+        meta: { answered: answers.size, answers: [...answers.entries()].map(([i, lca]) => `Q${i}=${lca}`) },
     };
 }
 
@@ -226,6 +226,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "bucket every query at both endpoint nodes",
+        "DFS with union-find tracking subtree ancestors",
+        "union finished child set into parent set",
+        "answer queries whose other endpoint already finished",
+        "return all LCA answers for the batch",
+    ],
 };
 
 export default module;
