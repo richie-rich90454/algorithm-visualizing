@@ -9,6 +9,10 @@
  * |a| + |b| − |LCS(a, b)|, and it can be reconstructed with a DP table very
  * similar to LCS, preferring to keep shared characters once.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -168,7 +172,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, backStates),
         edges: [],
         description: `SCS = "${scs}" (length ${scs.length}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { rows, cols, scs },
     };
@@ -184,6 +188,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: "abac", b: "cab" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up LCS table over a and b with zero borders",
+        "dp[i][j] holds LCS length of prefixes a[:i], b[:j]",
+        "dp[i][j] <- diagonal + 1 on match else max(up, left)",
+        "fill table then backtrace to recover one LCS string",
+        "merge a and b around shared LCS characters in order",
+        "append leftover characters from the longer prefix",
+        "answer <- SCS string with length n + m - LCS length",
+    ],};
 
 export default module;
