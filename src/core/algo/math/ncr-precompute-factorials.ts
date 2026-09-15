@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 0 <= k <= n < mod).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -66,7 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Compute C(${n},${k}) mod ${mod} via factorials.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Seed 0! = 1, 1! = 1, 2! = ${f[2]} mod ${mod}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -86,7 +86,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Factorial table mod ${mod} up to ${n}!.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const denom = ((f[k] as number) * (f[n - k] as number)) % mod;
@@ -100,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `${n}! = ${f[n]}, denom ${k}!${n - k}! = ${denom} mod ${mod}.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const ans = ((f[n] as number) * modPow(denom, mod - 2, mod)) % mod;
@@ -122,5 +122,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 5, k: 2, mod: 13 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "build the factorial table 0!..n! mod p",
+        "divide out k!·(n−k)! via modular inverse",
+        "done: C(n,k) = ans mod p",
+        "each entry extends the last: f[i] = f[i−1]·i",
+        "done: one Fermat inverse handles the denominator",
+    ],
 };
 export default module;
