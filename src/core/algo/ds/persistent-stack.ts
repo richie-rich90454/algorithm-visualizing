@@ -4,6 +4,29 @@
  * Immutable versions branch by sharing: pushing creates one new node
  * pointing at the old top, so every past version stays intact and
  * readable through its own root.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Immutable versions branch by sharing: pushing creates one new node pointing at the old top, so every past version stays intact and readable through its own root.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) per version
+ *   Space: O(versions)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Persistent Stack behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -109,6 +132,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [1, 2, 3], branchFrom: 1 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty stack as version 0",
+        "push value: allocate one node pointing at the previous top",
+        "record the new top as the next version, old tops unchanged",
+        "repeat until every push has its own version",
+        "branch: push onto any old version to fork its history",
+        "each version reads by following parent pointers to the void",
+        "done: every version stack is retained and readable",
+    ],
 };
 
 export default module;
