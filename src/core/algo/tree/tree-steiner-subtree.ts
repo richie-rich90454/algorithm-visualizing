@@ -1,6 +1,7 @@
 /**
- * tree-steiner-subtree.ts – minimal subtree spanning given terminals.
- * Union the root-ward paths of all terminals; prune the rest.
+ * tree-steiner-subtree.ts – Minimal subtree spanning given terminals.
+ *
+ * Unions the root-ward paths of all terminals; prunes the rest.
  * Terminals D,E,G keep 7 nodes and drop leaf H.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -151,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         fstates,
         hot,
         `Steiner subtree keeps ${kept.size} nodes and ${hot.size} edges for ${terminals.length} terminals.`,
-        3,
+        4,
         { terminals, steinerNodes: [...kept], steinerEdges: hot.size },
     );
 }
@@ -168,6 +169,13 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "mark terminal nodes to be connected",
+        "union root-ward path of each terminal",
+        "prune branches serving no terminal path",
+        "collect kept nodes and Steiner edges",
+        "return minimal spanning subtree as the answer",
+    ],
 };
 
 export default module;
