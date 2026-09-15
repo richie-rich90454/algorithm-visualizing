@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solving x ≡ [${remainders.join(", ")}] (mod [${moduli.join(", ")}]) with possibly non-coprime moduli.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -173,6 +173,13 @@ const module: AlgorithmModule = {
     defaultInput: { remainders: [2, 4, 1], moduli: [4, 6, 3] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state congruences with possibly shared factors",
+        "take the next pair and check compatibility via gcd",
+        "an incompatible pair means no solution exists",
+        "merge a compatible pair into one congruence",
+        "done: merged x (mod M), or no solution",
+    ],
 };
 
 export default module;
