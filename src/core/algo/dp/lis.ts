@@ -12,6 +12,10 @@
  *
  * The answer is the maximum dp value.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -90,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Longest increasing subsequence – DP over ending positions.",
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -129,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, doneStates),
             edges: [],
-            description: `dp[${i}] = ${dp[i]}.`,
+            description: `dp[${i}] = 1 + best predecessor = ${dp[i]}.`,
             codeLineNumber: 3,
             layout: "array",
             meta: { dp: [...dp] },
@@ -165,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(arr, finalStates),
         edges: [],
         description: `LIS length = ${lisLen} (${lisVals.join(", ")}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { lisLen, dp: [...dp] },
     };
@@ -181,6 +185,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [3, 1, 4, 1, 5, 9, 2, 6] },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up dp[i] <- 1 for subsequences of length one",
+        "dp[i] holds LIS length ending exactly at index i",
+        "dp[i] <- 1 + max over j < i with arr[j] < arr[i] of dp[j]",
+        "scan i left to right checking all prior positions j",
+        "extend only strictly increasing predecessor values",
+        "track global best length and its ending index",
+        "answer <- max(dp) with subsequence reconstructed via parents",
+    ],};
 
 export default module;
