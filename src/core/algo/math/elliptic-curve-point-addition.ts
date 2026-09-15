@@ -49,7 +49,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Point off curve – degenerate input.`,
             codeLineNumber: 0,
             layout: "point",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -60,7 +60,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Curve y^2 = x^3+2x+2 over F_17; P = (${px},${py}).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Q = (${qx},${qy}) – draw the chord P-Q.`,
         codeLineNumber: 1,
         layout: "point",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     if (px === qx && (py + qy) % p === 0) {
@@ -163,5 +163,12 @@ const module: AlgorithmModule = {
     defaultInput: { px: 5, py: 1, qx: 6, qy: 3 },
     visualType: "point",
     run,
+    pseudocode: [
+        "check P on y^2 = x^3+2x+2 over F_17",
+        "draw the chord (or tangent) through P and Q",
+        "vertical lines sum to infinity; else take slope λ",
+        "reflect: x_R = λ²−Px−Qx, y_R = λ(Px−x_R)−Py",
+        "done: P + Q = R on the curve, or infinity",
+    ],
 };
 export default module;
