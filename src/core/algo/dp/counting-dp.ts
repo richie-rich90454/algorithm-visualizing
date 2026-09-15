@@ -13,6 +13,10 @@
  * which is Fibonacci. This visualization counts the ways and shows the DP
  * array filling.
  *
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
@@ -117,7 +121,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(ways, finalStates),
         edges: [],
         description: `There are ${ways[steps] ?? 0} ways to climb ${steps} stairs.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { steps, answer: ways[steps] ?? 0 },
     };
@@ -133,6 +137,14 @@ const module: AlgorithmModule = {
     defaultInput: { steps: 10 },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up ways[0] <- 1 and ways[1] <- 1 for stair base cases",
+        "ways[i] holds distinct climbs reaching step i",
+        "ways[i] <- ways[i-1] + ways[i-2] for 1-or-2 steps",
+        "iterate steps from 2 up to the target stair count",
+        "each step extends climbs ending one or two below",
+        "accumulate counts from both predecessor positions",
+        "answer <- ways[steps] as total climbs using steps 1 and 2",
+    ],};
 
 export default module;
