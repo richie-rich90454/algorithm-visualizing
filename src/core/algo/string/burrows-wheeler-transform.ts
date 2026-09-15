@@ -1,6 +1,7 @@
 /**
  * burrows-wheeler-transform.ts – Burrows-Wheeler.
- * Tiny deterministic default; 5-15 frames.
+ * Educational visualization with deterministic default input.
+ * See run() yields for step-by-step frames with American English descriptions.
  *  time: "O(n log n)", space: "O(n²)"
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -52,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber,
         layout: "grid",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
     const rots = Array.from({ length: s.length }, (_, i) => s.slice(i) + s.slice(0, i));
     yield F(
@@ -66,7 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         .sort((x, y) => ((rots[x] as string) < (rots[y] as string) ? -1 : 1));
     yield F(
         order.slice(0, 4).map((o, i) => cell(i, 0, rots[o] as string, "comparing")),
-        "Sorting rotations lexicographically.",
+        'Sorting rotations lexicographically by first character "a".',
         1,
     );
     step += 1;
@@ -75,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const primary = order.indexOf(0);
     yield F(
         sorted.map((r, i) => cell(i, 0, r, "sorted")),
-        `Sorted matrix; last column = BWT.`,
+        `Sorted matrix of "${s}"; last column = BWT "${bwt}".`,
         2,
         { bwt },
     );
@@ -103,6 +104,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "list all rotations of input string with indices",
+        "sort rotations lexicographically to build matrix",
+        "take last column as transformed string",
+        "record primary index of original rotation",
+        "output transformed string and primary index",
+        "verify inversion restores original input",
+        "report BWT string and primary row",
+    ],
 };
 
 export default module;
