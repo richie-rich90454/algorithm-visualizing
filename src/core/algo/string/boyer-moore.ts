@@ -108,7 +108,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(text),
             edges: [],
-            description: "Empty pattern – nothing to search for.",
+            description: `Empty pattern "" – nothing to search for in "${text}".`,
             codeLineNumber: 6,
             layout: "text",
             meta: { comparisons, matches: 0 },
@@ -255,6 +255,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababcabababcab", pattern: "abcab" },
     visualType: "text",
     run,
+    pseudocode: [
+        "align pattern at text start and build bad-character table",
+        "compute good-suffix shifts from prefix function",
+        "compare pattern right to left at current shift",
+        "extend match leftward while characters are equal",
+        "record match when all characters align at shift",
+        "shift by bad-character and good-suffix rules on mismatch",
+        "report all match positions found",
+    ],
 };
 
 export default module;
