@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${n} is degenerate (needs n >= 2).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -55,7 +55,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Count primes to ${n}; a = pi(n^(1/3)) = ${a}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -65,7 +65,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Small primes to ${n}: [${primes}].`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const memo = new Map<string, number>();
@@ -137,5 +137,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 30 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "sieve small primes; set a = pi(n^(1/3))",
+        "count phi(n, a): survivors of the first a primes",
+        "add the P2 correction over the remaining primes",
+        "combine pi(n) = phi + a − 1 − correction",
+        "done: prime count pi = total",
+    ],
 };
 export default module;
