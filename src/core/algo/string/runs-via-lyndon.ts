@@ -40,7 +40,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description,
         codeLineNumber: code,
         layout: "text",
-        meta,
+        meta: { comparisons: 0, matches: [], ...meta },
     });
 
     yield F(tx(text), `Enumerating maximal runs in "${text}" via Lyndon anchors.`, 0);
@@ -155,6 +155,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana" },
     visualType: "text",
     run,
+    pseudocode: [
+        "factor text into Lyndon words with Duval method",
+        "use factor boundaries as run anchors",
+        "extend left and right with comparison checks",
+        "verify maximal periodic interval around anchor",
+        "record run with start end and period",
+        "deduplicate overlapping run reports",
+        "report all maximal runs found",
+    ],
 };
 
 export default module;
