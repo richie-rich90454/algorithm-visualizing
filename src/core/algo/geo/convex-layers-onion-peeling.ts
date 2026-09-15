@@ -83,7 +83,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts),
             edges: [],
             description: "One point – a single one-point layer.",
-            codeLineNumber: 0,
+            codeLineNumber: 1,
             layout: "point",
             meta: { layers: ["0"] },
         };
@@ -94,9 +94,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts),
         edges: [],
         description: `Onion peeling on ${pts.length} points – extracting hulls.`,
-        codeLineNumber: 0,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { points: pts.length },
     };
     step += 1;
     let rest = pts.map((_, i) => i);
@@ -126,9 +126,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: nodes(pts, new Map(states)),
             edges,
             description: `Layer ${li + 1}: hull [${h.join(", ")}] peeled off.`,
-            codeLineNumber: 1,
+            codeLineNumber: 3,
             layout: "point",
-            meta: {},
+            meta: { layer: li + 1, hull: h },
         };
         step += 1;
         rest = rest.filter((i) => !h.includes(i));
@@ -138,7 +138,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes(pts, new Map(states)),
         edges: [],
         description: `Onion peeling complete: ${layers.length} layers.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { layers: layers.map((l) => l.join(",")) },
     };
@@ -163,6 +163,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the full point set",
+        "compute the convex hull of the remaining points",
+        "peel that hull off as one layer and remove its points",
+        "repeat hulling on whatever points remain",
+        "done: nested layers rank points from edge to core",
+    ],
 };
 
 export default module;
