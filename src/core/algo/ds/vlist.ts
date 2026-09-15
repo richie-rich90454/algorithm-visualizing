@@ -4,6 +4,29 @@
  * Persistent list of exponentially sized blocks: the newest block
  * doubles (up to a cap), so indexing skips whole blocks and traversal
  * stays cache-friendly while every version shares its tail.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Persistent list of exponentially sized blocks: the newest block doubles (up to a cap), so indexing skips whole blocks and traversal stays cache-friendly while every version shares its tail.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) cons average
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard VList behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -96,6 +119,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [1, 2, 3, 4, 5], index: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with no blocks and an empty persistent list",
+        "cons value: prepend into the head block while it has room",
+        "when the head is full: start a fresh block doubling in size",
+        "older blocks never change so old versions stay readable",
+        "index: skip whole blocks from the front, then index inside",
+        "block sizes shrink geometrically toward the tail",
+        "done: blocks hold all values and the indexed answer is reported",
+    ],
 };
 
 export default module;
