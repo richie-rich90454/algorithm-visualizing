@@ -194,7 +194,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: buildNodes(heap, d, -1, true),
         edges: buildEdges(heap.length, d),
         description: `Extracted min ${min} – sifted down to [${heap.join(", ")}], a valid ${d}-ary min-heap.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { size: heap.length, degree: d, extractedMin: min },
     };
@@ -209,6 +209,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [5, 9, 4, 7, 3, 2, 8], degree: 4 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize array holding raw values with arity d",
+        "start heapify from last parent down to root",
+        "compare node against its d children at d*i+1 to d*i+d",
+        "swap with largest child if heap order violated",
+        "sift down repeatedly to restore d-ary heap property",
+        "track array after each sift operation",
+        "done: d-ary heap array holds values with maximum at root",
+    ],
 };
 
 export default module;
