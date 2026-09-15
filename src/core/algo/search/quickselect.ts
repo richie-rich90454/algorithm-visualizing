@@ -1,9 +1,35 @@
 /**
  * quickselect.ts – Quickselect
  *
- * Finds the k-th smallest element with Lomuto partitioning, recursing
- * only into the side containing k. Verified against a sorted copy
- * before the answer goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Quickselect finds the k-th smallest element without fully sorting. It picks
+ * the last element as pivot, partitions with the Lomuto scheme so smaller
+ * values move left, then recurses only into the side holding k. If the pivot
+ * lands exactly on k-1 the search ends. On average each round discards a
+ * constant fraction of the array, which is why the average cost is linear
+ * even though the worst case is quadratic.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) average, O(n²) worst (unlucky pivots every round)
+ *   Space: O(1) auxiliary – in place partitioning, iterative here
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The pivot is YELLOW (comparing) while its interval partitions.
+ *   - The settled pivot index is PINK (highlight).
+ *   - The confirmed k-th element turns GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The selection twin of quicksort: same partition, one-sided recursion.
+ *   - Finds medians and order statistics without paying for a full sort.
+ *   - Randomized pivots give linear expected time in production code.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -37,7 +63,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Quickselect: ${k}-th smallest of ${arr.length} elements.`,
+        description: `Quickselect hunts the ${k}-th smallest among ${arr.length} unsorted elements.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, k },
@@ -48,8 +74,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – no k-th element exists.",
-            codeLineNumber: 1,
+            description: "Empty array holds no elements, so no k-th value exists here.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, k },
         };
@@ -63,10 +89,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[hi, "comparing"]])),
             edges: [],
-            description: `Partition [${lo}..${hi}] around pivot ${pivot}.`,
+            description: `Partitioning interval [${lo}..${hi}] around pivot ${pivot} at index ${hi}.`,
             codeLineNumber: 1,
             layout: "array",
-            meta: { comparisons, k },
+            meta: { comparisons, k, lo, hi, pivot },
         };
         step += 1;
         let store = lo;
@@ -86,10 +112,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map([[store, "highlight"]])),
             edges: [],
-            description: `Pivot ${pivot} settles at index ${store}.`,
-            codeLineNumber: 2,
+            description: `Pivot ${pivot} settles at index ${store}; seeking rank ${k}, so keep the side holding it.`,
+            codeLineNumber: 3,
             layout: "array",
-            meta: { comparisons, k },
+            meta: { comparisons, k, pivotIndex: store },
         };
         step += 1;
         if (store === k - 1) break;
@@ -102,10 +128,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, new Map([[foundIndex, "sorted"]])),
         edges: [],
-        description: `${k}-th smallest is ${verified} (index ${foundIndex}) after ${comparisons} comparisons.`,
-        codeLineNumber: 3,
+        description: `${k}-th smallest is ${verified} at index ${foundIndex} after ${comparisons} comparisons.`,
+        codeLineNumber: 5,
         layout: "array",
-        meta: { comparisons, k, foundIndex },
+        meta: { comparisons, k, foundIndex, answer: verified },
     };
 }
 
@@ -117,6 +143,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [7, 2, 9, 1, 5, 6], k: 3 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with lo ← 0 and hi ← n-1 seeking rank k",
+        "pick pivot ← A[hi] and partition [lo..hi] by Lomuto rule",
+        "sweep i in [lo..hi): move values smaller than pivot left",
+        "place pivot at store; if store = k-1 return A[store]",
+        "if store > k-1: hi ← store-1 else lo ← store+1 and repeat",
+        "done: return k-th smallest value and its index",
+    ],
 };
 
 export default module;
