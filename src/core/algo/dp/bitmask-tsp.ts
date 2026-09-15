@@ -280,6 +280,7 @@ const module: AlgorithmModule = {
         "extend each reachable state to every unvisited city u",
         "close each full tour with return edge to start city",
         "answer <- min over v of dp[full][v] + cost[v][start] plus tour path",
-    ],};
+    ],
+};
 
 export default module;
