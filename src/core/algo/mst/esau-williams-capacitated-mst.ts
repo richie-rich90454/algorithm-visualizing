@@ -100,10 +100,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list),
-            `Capacitated MST: root ${d.root}, capacity ${d.capacity}, unit demands at vertices 1, 2, 3.`,
+            `Capacitated MST on ${verts.length} vertices: root ${d.root}, capacity ${d.capacity}, demands [${verts.map((v) => dem.get(v) ?? 0).join(", ")}].`,
             0,
         ),
-        meta: { links: 0, cost: 0 },
+        meta: { links: 0, accepted: 0, totalWeight: 0, cost: 0 },
     };
     yield {
         ...FR(
@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Start: every terminal attached straight to the root (each subtree load is 1).",
             1,
         ),
-        meta: { links: 2 },
+        meta: { links: 2, accepted: 2, totalWeight: 0 },
     };
     const c = (a: string, b: string): number => {
         let best = Infinity;
@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Savings order: ${pairs.map((p) => `${p.i}–${p.j}(${p.s})`).join(", ")}.`,
             2,
         ),
-        meta: { links: links.length },
+        meta: { links: 2, accepted: 2, totalWeight: 0 },
     };
     const comp = new Map<string, string>(terms.map((v) => [v, v]));
     const load = new Map<string, number>(terms.map((v) => [v, dem.get(v) as number]));
@@ -168,9 +168,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     N(verts),
                     ME(list),
                     `Skipping merge ${p.i}–${p.j} (saving ${p.s}): combined load would exceed capacity ${d.capacity}.`,
-                    4,
+                    3,
                 ),
-                meta: { links: links.length },
+                meta: { links: links.length, accepted: links.length, totalWeight: 0 },
             };
             continue;
         }
@@ -191,7 +191,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     : `Merging ${p.i} into ${p.j} subtree (load ${load.get(rj)}): saving ${p.s}.`,
                 4,
             ),
-            meta: { links: links.length },
+            meta: { links: links.length, accepted: links.length, totalWeight: 0 },
         };
         if (step > 12) break;
     }
@@ -204,7 +204,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             `Heuristic CMST cost ${cost}, total weight ${cost}: subtrees respect capacity ${d.capacity}.`,
             5,
         ),
-        meta: { cost, totalWeight: cost, links: links.length },
+        meta: { cost, totalWeight: cost, links: links.length, accepted: links.length },
     };
 }
 
