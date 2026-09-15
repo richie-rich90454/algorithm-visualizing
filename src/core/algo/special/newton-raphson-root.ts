@@ -30,7 +30,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: line,
+            codeLineNumber: Math.min(line, 6),
             layout: "grid",
             meta: {
                 x: Math.round(x * 100000) / 100000,
@@ -57,6 +57,15 @@ const module: AlgorithmModule = {
     defaultInput: { start: 1, iters: 5 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize guess x with iteration budget iters",
+        "for iteration t <- 1 to iters",
+        "evaluate function r <- x^2 minus 2",
+        "follow tangent crossing to update x",
+        "record iterate history for display",
+        "watch residual shrink quadratically",
+        "done: x approximates sqrt(2) at 1.414214",
+    ],
 };
 
 export default module;
