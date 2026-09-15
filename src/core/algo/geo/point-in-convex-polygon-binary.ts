@@ -79,7 +79,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Test q=(${q[0]},${q[1]}) against convex ${poly.length}-gon by binary fan search.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { query: q, vertices: poly.length },
     };
     if (poly.length < 3) {
         yield {
@@ -109,9 +109,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: [...outline.map((e) => ({ ...e })), ...fan],
         description: `Fan from p0: wedge (${p0})→(${p1}) and (${p0})→(${plast}).`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { fan: [`(${p0})`, `(${p1})`, `(${plast})`] },
     };
     const c1 = cross(p0, p1, q),
         c2 = cross(p0, plast, q);
@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base.map((e) => ({ ...e })),
         edges: [...outline.map((e) => ({ ...e })), ...fan],
         description: `Wedge test: cross01=${c1.toFixed(2)} (≥0?) cross0n=${c2.toFixed(2)} (≤0?).`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
         meta: { c1, c2 },
     };
@@ -159,7 +159,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 },
             ],
             description: `Binary step: sector [${lo},${hi}], mid=${mid} cross=${cm.toFixed(2)}.`,
-            codeLineNumber: 3,
+            codeLineNumber: 4,
             layout: "point",
             meta: { lo, hi, mid },
         };
@@ -192,7 +192,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         description: `Sector triangle (0,${sec[1]},${sec[2]}): ${res.inside ? "INSIDE ✓" : "OUTSIDE"}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { inside: res.inside, sector: sec },
     };
@@ -204,7 +204,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: outline.map((e) => ({ ...e, state: "sorted" as EntityState })),
         description: `Verdict: q is ${res.inside ? "INSIDE" : "OUTSIDE"} the convex polygon.`,
-        codeLineNumber: 5,
+        codeLineNumber: 6,
         layout: "point",
         meta: { inside: res.inside },
     };
@@ -226,6 +226,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from a convex polygon and query q",
+        "fan out from vertex 0 to frame the wedge",
+        "test q against both wedge boundary rays",
+        "outside the wedge means outside the polygon",
+        "binary search the wedge for the sector of q",
+        "test q inside the sector triangle",
+        "done: the verdict tells whether q is inside",
+    ],
 };
 
 export default module;
