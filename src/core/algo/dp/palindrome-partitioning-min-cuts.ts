@@ -1,6 +1,32 @@
 /**
- * Min cuts for palindromic partition: cuts[i] = min cuts[j-1]+1.
- * Time O(n^2), Space O(n^2). Default "aab" -> 1 cut.
+ * palindrome-partitioning-min-cuts.ts - Palindrome Partitioning (Min Cuts)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: cuts[i] <- 0 on full palindrome else 1 + min cuts[j+1].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b2)
+ *   Space: O(n\u00b2)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 zero cuts.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -104,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...cuts]], new Map([[`0,${n - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: "${s}" needs ${cuts[n - 1]} cut(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: cuts[n - 1] },
     };
@@ -118,6 +144,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "aab" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up palindrome table with singles marked true",
+        "expand table for longer spans via inner-substring checks",
+        "cuts[i] <- 0 on full palindrome else 1 + min cuts[j+1]",
+        "iterate end i with split positions j before it",
+        "each palindrome suffix j+1..i enables one more cut",
+        "keep the minimum cuts across valid suffix splits",
+        "answer <- cuts[n-1] with cut positions reconstructed",
+    ],};
 
 export default module;
