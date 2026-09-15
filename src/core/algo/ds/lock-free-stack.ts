@@ -85,6 +85,15 @@ const module: AlgorithmModule = {
     defaultInput: { ops: [["push", 1], ["push", 2], ["pop"], ["push", 3]] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize Treiber stack with null top pointer",
+        "push value by CAS-linking node as new top",
+        "compare top pointer to detect contention",
+        "pop by CAS-advancing top to next node",
+        "retry CAS loop on concurrent interference",
+        "count pushes and pops for verification",
+        "done: stack holds remaining values in LIFO order",
+    ],
 };
 
 export default module;
