@@ -1,6 +1,7 @@
 /**
- * threaded-binary-tree.ts – inorder-threaded binary tree.
- * Every null child link is replaced by a "thread" to the inorder
+ * threaded-binary-tree.ts – Inorder-threaded binary tree.
+ *
+ * Every null child link is replaced by a thread to the inorder
  * predecessor (left) or successor (right), so traversal needs no stack.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -156,7 +157,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         states,
         threads.length,
         `Threaded – all ${threads.length} null links replaced; inorder walk needs no stack.`,
-        3,
+        4,
         { threads: threads.length, inorder },
     );
 }
@@ -169,6 +170,13 @@ const module: AlgorithmModule = {
     defaultInput: { values: ["4", "2", "6", "1", "3", "5", "7"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "build complete binary tree from level order values",
+        "compute inorder order of all tree nodes",
+        "replace each null left link with predecessor thread",
+        "replace each null right link with successor thread",
+        "return threaded tree with stack-free walk as answer",
+    ],
 };
 
 export default module;
