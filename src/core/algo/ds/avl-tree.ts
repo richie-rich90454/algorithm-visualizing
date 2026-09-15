@@ -174,7 +174,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty AVL tree.",
+        description: "Empty AVL tree with no nodes and height zero ready for inserts.",
         codeLineNumber: 1,
         layout: "tree",
         meta: { size: 0 },
@@ -199,6 +199,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [10, 20, 30, 40, 50, 25] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty AVL tree with height 0 at every null child",
+        "insert key via BST comparison going left if smaller else right",
+        "update height and balance factor height(left) minus height(right)",
+        "if balance is +2 with left-heavy child then rotate right",
+        "if balance is -2 with right-heavy child then rotate left",
+        "handle left-right and right-left with double rotation",
+        "done: height-balanced tree holds inserts with O(log n) height",
+    ],
 };
 
 export default module;
