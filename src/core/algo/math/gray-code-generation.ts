@@ -30,7 +30,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs 1 <= bits <= 6).`,
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -43,7 +43,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `${bits}-bit Gray code has ${codes.length} values.`,
         codeLineNumber: 0,
         layout: "array",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     for (let i = 0; i < codes.length; i += 1) {
@@ -80,5 +80,12 @@ const module: AlgorithmModule = {
     defaultInput: { bits: 3 },
     visualType: "array",
     run,
+    pseudocode: [
+        "plan 2^bits values for the Gray sequence",
+        "encode G(i) = i xor (i >> 1): one bit flips",
+        "done: full Gray sequence of 2^bits codes",
+        "adjacent codes always differ by exactly one bit",
+        "done: sequence runs 0 to 2^bits − 1",
+    ],
 };
 export default module;
