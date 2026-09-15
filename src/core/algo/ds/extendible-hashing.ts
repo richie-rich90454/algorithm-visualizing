@@ -45,7 +45,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Extendible Hashing: empty table. Directory doubles when a bucket overflows.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const k of keys) {
@@ -61,7 +61,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Insert ${k} -> slot ${j} (h=${h(k)}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: table stays empty.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lookup ${q}: ${hit ? `found at slot ${j}` : "absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const n = table.filter((v) => v !== null).length;
@@ -98,7 +98,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(table.map((v) => (v === null ? "." : v))),
         edges: [],
         description: `Final: ${n} entries; lookup ${q} ${hit ? "hit" : "miss"} verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { hit, n },
     };
@@ -112,5 +112,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [12, 5, 21, 8], query: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize directory with global depth 1 and two buckets",
+        "hash key and use low depth bits as directory index",
+        "compare bucket local depth against global depth",
+        "insert key into target bucket in sorted order",
+        "if bucket full then split and grow local depth",
+        "if local depth exceeds global then double directory",
+        "done: directory and buckets hold keys with lookup answer",
+    ],
 };
 export default module;
