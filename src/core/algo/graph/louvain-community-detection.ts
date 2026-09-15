@@ -95,11 +95,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (const t of tot.values()) pen += (t * t) / (4 * m * m);
         return s / (2 * m) - pen;
     };
-    yield snap(
-        `Louvain phase 1: ${labels.length} singleton communities, Q=${q().toFixed(3)}.`,
-        0,
-        { modularity: Math.round(q() * 1000) / 1000 },
-    );
+    yield snap(`Louvain phase 1: ${labels.length} singleton communities, Q=${q().toFixed(3)}.`, 0, {
+        modularity: Math.round(q() * 1000) / 1000,
+    });
     step += 1;
     let moved = true;
     let guard = 0;
