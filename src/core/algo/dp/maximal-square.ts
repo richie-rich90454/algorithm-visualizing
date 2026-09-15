@@ -1,6 +1,32 @@
 /**
- * Maximal Square: dp[i][j] = 1 + min(neighbors) on '1' cells.
- * Time O(m*n), Space O(m*n). Default -> area 4.
+ * maximal-square.ts - Maximal Square
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- 0 on zero else 1 + min(top, left, diagonal).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(m\u00b7n)
+ *   Space: O(m\u00b7n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty matrix \u2013 area 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -98,7 +124,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp),
         edges: [],
         description: `Traceback: max side ${side}, area ${side * side}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: side * side },
     };
@@ -118,6 +144,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp table with zeros for side lengths",
+        "dp[i][j] holds largest square side ending at (i, j)",
+        "dp[i][j] <- 0 on zero else 1 + min(top, left, diagonal)",
+        "fill rows top to bottom and columns left to right",
+        "each one-cell extends the smallest neighboring square",
+        "track best side seen across the whole matrix",
+        "answer <- best side with area side*side and bounds located",
+    ],};
 
 export default module;
