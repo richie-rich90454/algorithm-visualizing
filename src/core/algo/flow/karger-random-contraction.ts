@@ -150,5 +150,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize graph with weighted edges and fixed seed",
+        "contract random edge until two supernodes remain",
+        "measure surviving cut weight for this trial run",
+        "repeat independent trials and track best cut found",
+        "verify best trial against brute force optimum value",
+        "report minimum cut value with trial statistics",
+    ],
 };
 export default module;
