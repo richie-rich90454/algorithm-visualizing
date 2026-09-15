@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Max collinear subset of ${pts.length} points by slope hashing.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { points: pts.length },
     };
     if (pts.length < 2) {
         yield {
@@ -117,7 +117,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             })),
             edges: [],
             description: `Anchor ${a}: best slope group = ${top} (+1 anchor = ${top + 1}).`,
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { anchor: a, best: top + 1 },
         };
@@ -140,7 +140,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: lineEdges.map((e) => ({ ...e })),
         description: `Best line holds ${best.count} points: [${best.members.join(", ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { count: best.count },
     };
@@ -152,7 +152,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         })),
         edges: lineEdges.map((e) => ({ ...e })),
         description: `Max collinear count = ${best.count}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { count: best.count, members: best.members },
     };
@@ -175,6 +175,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from the full point set",
+        "anchor each point and hash slopes to the rest",
+        "count duplicates plus the best slope group",
+        "track the anchor with the largest group",
+        "collect every member of the winning line",
+        "done: the biggest collinear subset and its count",
+    ],
 };
 
 export default module;
