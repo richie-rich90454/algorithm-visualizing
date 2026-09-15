@@ -1,8 +1,34 @@
 /**
  * first-missing-positive-search.ts – First Missing Positive
  *
- * Cyclically places each value v at index v−1, then the first index
- * holding the wrong value reveals the answer. Verified by brute force.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the smallest positive integer absent from an unsorted array in linear
+ * time and constant space. It cyclically places each value v at its home
+ * index v−1 (when v fits inside the array), swapping until every placeable
+ * value sits where it belongs. A final scan then reports the first index
+ * whose content is wrong – that index plus one is the missing positive.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) – each element is swapped into place at most once
+ *   Space: O(1) auxiliary – the array itself is the hash table
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The displaced element is YELLOW (comparing), its home RED (swapped).
+ *   - Skipped elements (home or out of range) are PINK (highlight).
+ *   - The index exposing the answer turns GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Works on any unsorted array, including negatives and duplicates.
+ *   - The answer always lies in [1, n+1] – a pigeonhole guarantee.
+ *   - The classic "array as its own hash table" interview problem.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -44,8 +70,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, new Map<number, EntityState>()),
             edges: [],
-            description: "Empty array – the first missing positive is 1.",
-            codeLineNumber: 3,
+            description: "Empty array holds no positives, so the first missing positive is 1.",
+            codeLineNumber: 4,
             layout: "array",
             meta: { swaps, missing: 1 },
         };
@@ -82,8 +108,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeBars(arr, new Map([[i, "highlight"]])),
                 edges: [],
-                description: `${v} at ${i} is already home or out of range – skipping.`,
-                codeLineNumber: 1,
+                description: `${v} at index ${i} is already home or out of range, so move on.`,
+                codeLineNumber: 2,
                 layout: "array",
                 meta: { swaps },
             };
@@ -107,7 +133,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: atHome ? makeBars(arr, new Map([[missing - 1, "sorted"]])) : makeBars(arr),
         edges: [],
         description: `First missing positive is ${missing} after ${swaps} swap(s).`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "array",
         meta: { swaps, missing },
     };
@@ -121,6 +147,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [3, 4, -1, 1] },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the full unsorted array and swaps ← 0",
+        "for each i: if 1 ≤ A[i] ≤ n and A[A[i]-1] ≠ A[i], swap it home",
+        "recheck index i after each swap; skip values already home or out of range",
+        "scan for the first i with A[i] ≠ i+1; that reveals the gap",
+        "done: return i+1 as the first missing positive",
+    ],
 };
 
 export default module;
