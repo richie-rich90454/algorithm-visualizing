@@ -1,8 +1,31 @@
 /**
- * library-sort.ts – Library Sort.
+ * library-sort.ts – Library Sort
  *
- * Gapped insertion sort like shelving library books.
- * Time: O(n log n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Library sort shelves books with gaps, like a library leaving space on each shelf for new arrivals. Each book binary-searches its gap slot and shifts only within its shelf, so inserts stay cheap. Rebalancing squeezes out gaps when shelves fill, keeping the whole collection nearly sorted.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -113,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -142,5 +165,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 3, 4, 1, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the first book shelved with gaps",
+        "binary search a gap slot for the next book",
+        "shelve the book into its gap, shifting as needed",
+        "rebalance shelves when gaps run low",
+        "scan shelves into final order",
+        "done: books are shelved in order",
+    ],
 };
 export default module;
