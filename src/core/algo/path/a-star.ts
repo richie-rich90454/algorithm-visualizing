@@ -93,26 +93,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 
     let step = 0;
+    let expandedCount = 0;
 
     yield {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `A* from ${start} to ${target} – prioritizing f(n) = g(n) + h(n).`,
+        description: `A* from ${start} to ${target} – g-scores set, prioritizing f(n) = g(n) + h(n).`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: {},
+        meta: { settled: expandedCount, visits: expandedCount },
     });
 
     // g-cost and bookkeeping.
@@ -171,10 +172,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: nodes.map((n) => ({ ...n })),
                 edges: edges.map((e) => ({ ...e })),
-                description: `A* found the path ${path.join(" → ")} (cost ${gScore.get(target)}).`,
-                codeLineNumber: 4,
+                description: `A* found shortest path ${path.join(" → ")} with cost ${gScore.get(target)}.`,
+                codeLineNumber: 6,
                 layout: "graph",
-                meta: { distance: gScore.get(target) ?? Infinity },
+                meta: { settled: expandedCount, visits: expandedCount, distance: gScore.get(target) ?? Infinity, path: path.join("→") },
             };
             return;
         }
@@ -182,6 +183,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         // Expand the best vertex.
         open.delete(current);
         closed.add(current);
+        expandedCount += 1;
 
         const node = nodeById.get(`node-${current}`);
         if (node) {
@@ -189,7 +191,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             node.label = String(gScore.get(current) ?? Infinity);
         }
         yield buildFrame(
-            `Expanding ${current} (g=${gScore.get(current)}, h=${heuristic[current] ?? 0}).`,
+            `Expanding ${current} with smallest f-score (g=${gScore.get(current)}, h=${heuristic[current] ?? 0}, f=${fScore.get(current)}).`,
+            1,
         );
         step += 1;
 
@@ -220,23 +223,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             if (neighborNode) {
                 neighborNode.state = "visited";
             }
-            yield buildFrame(`Relaxing ${current} → ${neighbor}.`);
+            yield buildFrame(`Relaxing edge ${current} → ${neighbor} (weight ${weight}), new g-score ${gScore.get(neighbor)}.`, 3);
             step += 1;
         }
 
         if (node) {
             node.state = "sorted";
         }
+        yield buildFrame(`${current} closed with final g-score ${gScore.get(current)}, continuing search.`, 5);
+        step += 1;
     }
 
     yield {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: `${target} is unreachable from ${start}.`,
-        codeLineNumber: 4,
+        description: `${target} is unreachable from ${start} after expanding ${expandedCount} vertices.`,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { distance: Infinity },
+        meta: { settled: expandedCount, visits: expandedCount, distance: Infinity },
     };
 }
 
@@ -273,6 +278,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "g[s] ← 0, f[s] ← h(s), open ← {s}",
+        "pop u from open with smallest f-score",
+        "if u is target: reconstruct path via predecessors",
+        "for each edge u→v with weight w: relax edge",
+        "if g[u]+w < g[v]: update g[v], f[v] ← g[v]+h(v)",
+        "close u, repeat until open is empty",
+        "done: shortest path to t or unreachable",
+    ],
 };
 
 export default module;
