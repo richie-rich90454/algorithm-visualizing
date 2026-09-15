@@ -1,6 +1,32 @@
 /**
- * Regex Matching ('.' and '*'): dp[i][j] with star = zero-or-more of p[j-2].
- * Time O(n*m), Space O(n*m). Default "aab"/"c*a*b" -> match.
+ * regex-matching-dp.ts - Regex Matching (DP)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i][j] <- literal or dot plus star zero-or-more rules.
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n\u00b7m)
+ *   Space: O(n\u00b7m)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -48,7 +74,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: match ? "Both empty \u2013 match." : "Empty pattern \u2013 no match.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -94,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(dp, new Map([[`${n},${m}`, "sorted"]])),
         edges: [],
         description: match ? `"${s}" matches "${p}".` : `"${s}" does not match "${p}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { match },
     };
@@ -108,6 +134,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "aab", p: "c*a*b" },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up dp with empty-row seeded over x* star pairs",
+        "dp[i][j] holds whether s[:i] matches p[:j]",
+        "dp[i][j] <- literal or dot plus star zero-or-more rules",
+        "fill rows over s and columns over p in order",
+        "stars combine zero-use (two back) with extended use",
+        "dots match any single character like literals",
+        "answer <- dp[n][m] with match result confirmed",
+    ],};
 
 export default module;
