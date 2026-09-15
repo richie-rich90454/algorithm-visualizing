@@ -109,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Borůvka's algorithm – every component picks its cheapest edge each round.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: { rounds: 0, chosen: 0 },
+        meta: { rounds: 0, chosen: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -192,8 +192,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Round ${rounds} complete – merged components along the cheapest edges.`,
-            codeLineNumber: 3,
+            description: `Round ${rounds} complete – merged components along the cheapest outgoing edges.`,
+            codeLineNumber: 4,
             layout: "graph",
             meta: { rounds, chosen: chosen.size },
         };
@@ -207,7 +207,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: `Minimum spanning tree complete – ${chosen.size} edges, total weight ${totalWeight}, in ${rounds} round(s).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "graph",
         meta: { rounds, chosen: chosen.size, totalWeight },
     };
@@ -236,6 +236,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start with every vertex as its own component",
+        "for each component find its cheapest outgoing edge",
+        "scan every edge u–v connecting different components",
+        "record the cheapest outgoing edge per component",
+        "add all chosen edges at once and merge components",
+        "done: chosen edges form the MST with minimum total weight",
+    ],
 };
 
 export default module;
