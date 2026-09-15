@@ -163,6 +163,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: ["cat", "car", "dog"], lookup: "car" },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize double-array with base and check arrays",
+        "insert word by assigning base offsets for children",
+        "compare check values to resolve collisions",
+        "relocate subtree when base slot is occupied",
+        "search query by walking base plus character transitions",
+        "count stored words at terminal states",
+        "done: double array holds keys with lookup answer",
+    ],
 };
 
 export default module;
