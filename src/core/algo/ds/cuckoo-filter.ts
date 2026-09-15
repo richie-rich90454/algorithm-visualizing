@@ -38,7 +38,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Cuckoo Filter: empty filter. Fingerprints relocate like cuckoo hashing; deletes supported.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const k of keys) {
@@ -53,7 +53,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Add ${k} -> positions ${hs(k).join(", ")}.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -66,7 +66,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Query ${q}: ${hit ? "possibly present" : "definitely absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const miss = 999;
@@ -76,7 +76,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(bits),
         edges: [],
         description: `Query ${miss}: ${mhit ? "possibly present (fp)" : "definitely absent"}. Member ${q} test ${hit ? "passed" : "FAILED (check hashes)"} verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { hit },
     };
@@ -90,5 +90,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 17, 9], query: 17 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize cuckoo filter table with empty fingerprints",
+        "hash key to fingerprint plus two candidate buckets",
+        "insert fingerprint into either empty bucket slot",
+        "displace existing fingerprint to alternate bucket if full",
+        "compare fingerprints in both buckets for lookup",
+        "count stored fingerprints for load factor",
+        "done: filter holds fingerprints with membership answer",
+    ],
 };
 export default module;
