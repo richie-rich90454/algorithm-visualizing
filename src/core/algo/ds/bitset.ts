@@ -35,7 +35,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Bitset: empty. One bit per value; AND/OR are word-parallel.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const v of vals) {
@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Add ${v} (size ${set.size}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -59,7 +59,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty set.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -72,7 +72,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Contains ${q}: ${hit}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     const miss = 999;
@@ -82,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(arr, new Map()),
         edges: [],
         description: `Contains ${miss}: ${mhit}. Final size ${set.size}; query ${q} ${hit ? "present" : "absent"} verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { hit, size: set.size },
     };
@@ -96,5 +96,14 @@ const module: AlgorithmModule = {
     defaultInput: { values: [3, 1, 4, 6], query: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty bitset with all bits cleared",
+        "hash value to bit index by modulo capacity",
+        "set bit to 1 to add value to the set",
+        "compare query bit against stored bits for membership",
+        "clear bit to 0 to remove value",
+        "count set bits for cardinality",
+        "done: bitset holds values with membership answer",
+    ],
 };
 export default module;
