@@ -4,6 +4,29 @@
  * Deletions break plain DSU, so elements are versioned: deleting x
  * retires its node and creates a fresh singleton that future unions
  * adopt, while path compression keeps finds fast.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Deletions break plain DSU, so elements are versioned: deleting x retires its node and creates a fresh singleton that future unions adopt, while path compression keeps finds fast.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(alpha n) amortized
+ *   Space: O(n + deletes)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Union-Find Deletions behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -101,6 +124,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with versioned nodes where each element maps to itself",
+        "union (a, b): find live roots and attach one under the other",
+        "delete element: retire its node and issue a fresh singleton",
+        "future unions use the fresh node, history keeps the retired one",
+        "find follows parent pointers with path compression",
+        "live mappings always point at current representative nodes",
+        "done: live components are counted and reported",
+    ],
 };
 
 export default module;
