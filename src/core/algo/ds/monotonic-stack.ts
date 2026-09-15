@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Monotonic stack – finding the next smaller element for each value.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
 
@@ -120,7 +120,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(values),
         edges: [],
         description: "Monotonic stack processed all elements in O(n).",
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { stack: [...stack], size: stack.length },
     };
@@ -135,6 +135,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [4, 5, 2, 10, 8] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty stack holding candidate indices",
+        "scan array left to right comparing stack top",
+        "pop larger elements recording next smaller answer",
+        "compare incoming value to maintain increasing order",
+        "push current index onto stack",
+        "count pushes and pops as O(n) total",
+        "done: stack processed array with next-smaller answers",
+    ],
 };
 
 export default module;
