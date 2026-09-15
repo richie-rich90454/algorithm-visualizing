@@ -48,20 +48,22 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(pat), `Levenshtein automaton for "${pat}" (k=${k}) over ${words.length} words.`, 0);
+    yield F(tx(pat), `Levenshtein automaton for "${pat}" (k=${k}) over ${words.length} words.`, 0, { comparisons: 0, hits: [] });
     step += 1;
-    yield F(tx(pat), "Trie of dictionary + parametric vectors.", 1);
+    yield F(tx(pat), "Trie of dictionary + parametric vectors.", 1, { comparisons: 0 });
     step += 1;
     const hits: Array<{ w: string; d: number }> = [];
+    let comparisons = 0;
     for (const w of words) {
         const d = lev(pat, w);
+        comparisons += pat.length * w.length;
         if (d <= k) hits.push({ w, d });
         if (step < 10) {
             yield F(
                 tx(w, stAt([0], d <= k ? "path" : "swapped")),
                 `"${w}": d=${d} ${d <= k ? "ACCEPT" : "reject"}.`,
                 2,
-                { hits: hits.map((h) => `${h.w}:${h.d}`) },
+                { comparisons, hits: hits.map((h) => `${h.w}:${h.d}`) },
             );
             step += 1;
         }
@@ -70,10 +72,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         tx(pat),
         hits.length ? `Accepted: ${hits.map((h) => h.w).join(", ")}.` : "Nothing within k.",
         3,
-        { hits: hits.map((h) => `${h.w}:${h.d}`) },
+        { comparisons, hits: hits.map((h) => `${h.w}:${h.d}`) },
     );
     step += 1;
-    yield F(tx(pat), "Done.", 4, { hits: hits.map((h) => `${h.w}:${h.d}`) });
+    yield F(tx(pat), `Automaton complete: ${hits.length} word(s) within k=${k}.`, 4, { comparisons, hits: hits.map((h) => `${h.w}:${h.d}`) });
 }
 
 const module: AlgorithmModule = {
