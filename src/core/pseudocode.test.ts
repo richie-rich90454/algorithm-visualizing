@@ -37,14 +37,16 @@ describe("educational quality", () => {
     it("every frame has a valid codeLineNumber, description, and layout", () => {
         const bad: string[] = [];
         for (const [file, mod] of Object.entries(mods)) {
-            const m = (mod as {
-                default: {
-                    id: string;
-                    run: (input: unknown) => Generator<Record<string, unknown>>;
-                    defaultInput: unknown;
-                    pseudocode?: string[];
-                };
-            }).default;
+            const m = (
+                mod as {
+                    default: {
+                        id: string;
+                        run: (input: unknown) => Generator<Record<string, unknown>>;
+                        defaultInput: unknown;
+                        pseudocode?: string[];
+                    };
+                }
+            ).default;
             const pcLen = m.pseudocode?.length ?? 0;
             let frames = 0;
             try {
