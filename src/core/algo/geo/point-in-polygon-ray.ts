@@ -95,7 +95,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Is (${point[0]}, ${point[1]}) inside the polygon?`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { query: point },
     };
     step += 1;
 
@@ -163,6 +163,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from polygon edges and the query point",
+        "cast a horizontal ray rightward from the point",
+        "count each edge crossing along the ray",
+        "toggle the inside state on every crossing",
+        "done: odd crossings mean inside, even mean outside",
+    ],
 };
 
 export default module;
