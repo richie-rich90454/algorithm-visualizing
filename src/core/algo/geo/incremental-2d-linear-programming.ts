@@ -47,7 +47,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Max (${c})·p over the triangle – start optimum at origin.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { objective: c },
     };
     step += 1;
     for (let k = 0; k < cons.length; k += 1) {
@@ -75,9 +75,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: [...ents, node(`o-${k}`, opt[0], opt[1], "opt", "highlight")],
             edges: [],
             description: `Constraint ${k + 1}/3 (${cons[k]!.label}): optimum (${opt}) value ${score(opt)}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 2,
             layout: "point",
-            meta: {},
+            meta: { constraint: k + 1, optimum: opt },
         };
         step += 1;
     }
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         ],
         edges: loop,
         description: `Optimum (${opt}) with value ${score(opt)} – on the feasible boundary.`,
-        codeLineNumber: 2,
+        codeLineNumber: 4,
         layout: "point",
         meta: { optimum: opt, value: score(opt) },
     };
@@ -117,6 +117,13 @@ const module: AlgorithmModule = {
     defaultInput: { objective: [1, 1], bounds: { x: 6, y: 3 } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start at the origin as the first optimum",
+        "add one linear constraint at a time",
+        "when the optimum still satisfies it: keep going",
+        "otherwise slide the optimum along the new boundary",
+        "done: the optimum maximizes the objective over the triangle",
+    ],
 };
 
 export default module;
