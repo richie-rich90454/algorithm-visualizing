@@ -106,7 +106,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Empty min stack (bottom row = stack, top row = running minimum).",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
 
@@ -136,7 +136,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeGrid(stack, mins),
             edges: [],
             description: `Popped – getMin is now ${mins.length > 0 ? mins[mins.length - 1] : "undefined"}.`,
-            codeLineNumber: 3,
+            codeLineNumber: 6,
             layout: "grid",
             meta: {
                 stack: [...stack],
@@ -157,6 +157,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [5, 3, 8, 2] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty stack with auxiliary minimum stack",
+        "push value and compare against current minimum",
+        "push onto min stack when new minimum found",
+        "pop value and pop min stack if tops match",
+        "read minimum from top of min stack in O(1)",
+        "count elements in both stacks",
+        "done: stack holds values with minimum answer",
+    ],
 };
 
 export default module;
