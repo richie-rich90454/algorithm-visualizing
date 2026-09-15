@@ -182,6 +182,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [2, 5, 8, 11, 14, 17, 20, 23], target: 17 },
     visualType: "array",
     run,
+    pseudocode: [
+        "set lo ← 0 and hi ← n-1 over the sorted array",
+        "while lo ≤ hi: keep searching the live interval",
+        "m1 ← lo+(hi-lo)/3; m2 ← hi-(hi-lo)/3; compare both with target",
+        "if target = A[m1]: return m1 as the match",
+        "if target = A[m2]: return m2 else shrink to the surviving third",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
