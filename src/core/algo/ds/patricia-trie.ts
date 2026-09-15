@@ -1,6 +1,29 @@
 /**
  * patricia-trie.ts - Patricia Trie
  * Compressed edges skip single-child chains. Demo: insert <=6 words, search 1 hit + 1 miss.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Compressed edges skip single-child chains. Demo: insert <=6 words, search 1 hit + 1 miss.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k) ops
+ *   Space: O(n k)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Patricia Trie behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Patricia Trie: empty. Compressed edges skip single-child chains.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const shown: string[] = [];
@@ -71,7 +94,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Search "${q}": ${hit ? "found" : "absent"}.`,
         codeLineNumber: 2,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const miss = "__zz__";
@@ -95,5 +118,14 @@ const module: AlgorithmModule = {
     defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty compressed trie holding no words",
+        "insert word: walk compressed edges matching the longest prefix",
+        "split the edge where the word and the edge label first differ",
+        "repeat until every word ends at a marked terminal node",
+        "search query: follow compressed edges character by character",
+        "a missing edge or label mismatch means the word is absent",
+        "done: compressed paths hold all words and the query answer is reported",
+    ],
 };
 export default module;
