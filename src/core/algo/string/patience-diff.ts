@@ -92,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield F(tx(a.join("")), `LCS length ${lcsLen}; script:${ops.join(" ")}.`, 3, { ops });
     step += 1;
-    yield F(tx(b.join("")), "Done.", 4, { ops });
+    yield F(tx(b.join("")), `Diff complete: ${ops.length} ops:${ops.join(" ")}.`, 4, { ops });
 }
 
 const module: AlgorithmModule = {
