@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding the square root of ${n} modulo ${p}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -160,7 +160,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `p−1 = 2^${s}·${q}; found non-residue z = ${z}.`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -187,7 +187,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `t^(2^${i}) ≡ 1 → updated x = ${x}.`,
             codeLineNumber: 5,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -213,6 +213,15 @@ const module: AlgorithmModule = {
     defaultInput: { n: 5, p: 41 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state √n mod p with inputs n, p",
+        "zero has root zero",
+        "mod 2 the answer is n itself",
+        "a non-residue has no square root: stop",
+        "split p−1 = 2^s·q and find a non-residue z",
+        "lift x while t^(2^i) disagrees with 1",
+        "done: roots ±x with x² ≡ n",
+    ],
 };
 
 export default module;
