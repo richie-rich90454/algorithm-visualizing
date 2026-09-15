@@ -137,6 +137,13 @@ const module: AlgorithmModule = {
     defaultInput: { a: 48, b: 36 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the pair (a, b)",
+        "while b ≠ 0 keep reducing the pair",
+        "compute r ← a mod b from the current pair",
+        "replace (a, b) ← (b, r)",
+        "done: b = 0, so return a as the GCD",
+    ],
 };
 
 export default module;
