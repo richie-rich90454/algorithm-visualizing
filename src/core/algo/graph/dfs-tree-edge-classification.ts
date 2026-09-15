@@ -1,10 +1,34 @@
 /**
  * dfs-tree-edge-classification.ts – DFS Tree / Edge Classification
  *
- * Directed DFS labels each edge: tree (discovery), back (to ancestor),
- * forward (to finished descendant), cross (across subtrees). A→B→C plus
- * A→C: two tree edges, one forward edge.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * One directed depth-first search labels every edge by the state of its
+ * target when crossed: a tree edge discovers a fresh vertex, a back edge
+ * reaches an ancestor still on the stack (a cycle!), a forward edge jumps
+ * to an already-finished descendant, and a cross edge links two finished
+ * subtrees. On A→B→C plus A→C, the walk A→B→C plants two tree edges and
+ * the shortcut A→C lands on a finished descendant: one forward edge.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) – one DFS with constant work per edge
+ *   Space: O(V + E) for colors, timestamps, and the four edge lists
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Discovery (tree) edges are GREEN (path).
+ *   - Forward edges are BLUE (active); back edges flash RED (swapped).
+ *   - Cross edges are PINK (highlight).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Undirected graphs only ever produce tree and back edges.
+ *   - A directed graph is acyclic exactly when no back edge appears.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -121,6 +145,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] }, start: "A" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "color every vertex white; start directed DFS from the start",
+        "white target: tree edge, recurse into the fresh vertex",
+        "finished descendant with a later timestamp: forward edge",
+        "gray target: back edge; finished non-descendant: cross edge",
+        "done: every edge filed as tree, back, forward, or cross",
+    ],
 };
 
 export default module;
