@@ -190,6 +190,13 @@ const module: AlgorithmModule = {
     defaultInput: [4, 2, 2, 8, 3, 3, 1, 6],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with empty count array of size k (value range)",
+        "for each x in A: count[x-min] += 1",
+        "turn counts into starting positions by prefix sums",
+        "for x in A backwards: place x at count[x-min], advance it",
+        "done: output holds the sorted values",
+    ],
 };
 
 export default module;
