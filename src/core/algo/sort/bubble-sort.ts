@@ -162,7 +162,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(arr, passStates),
             edges: [],
             description: `Pass ${i + 1} complete – ${String(arr[n - 1 - i])} is now in place.`,
-            codeLineNumber: 1,
+            codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
         };
@@ -181,7 +181,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(arr, sortedStates),
         edges: [],
         description: `Array sorted in ${comparisons} comparisons and ${swaps} swaps.`,
-        codeLineNumber: 5,
+        codeLineNumber: 6,
         layout: "array",
         meta: { comparisons, swaps },
     };
@@ -197,6 +197,15 @@ const module: AlgorithmModule = {
     defaultInput: [4, 2, 7, 1, 9, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "repeat for pass i ← 0 to n-2 (shrinking unsorted region)",
+        "swapped ← false for this pass",
+        "for j ← 0 to n-2-i: compare A[j] and A[j+1]",
+        "if A[j] > A[j+1]: swap them, swapped ← true",
+        "largest of region settles at n-1-i (mark sorted)",
+        "if no swap this pass: stop early — array is sorted",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
