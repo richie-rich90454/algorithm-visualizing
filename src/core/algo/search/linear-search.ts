@@ -147,6 +147,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [5, 3, 8, 1, 9, 2, 7, 4], target: 7 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with i ← 0 at the left edge of the array",
+        "for i ← 0 to n-1: compare A[i] with target",
+        "if A[i] = target: return index i as the match",
+        "if loop ends with no match: report target absent",
+        "done: return found index or not-present result",
+    ],
 };
 
 export default module;
