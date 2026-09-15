@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: desc,
-            codeLineNumber: idx,
+            codeLineNumber: Math.max(0, Math.min(idx, 6)),
             layout: "grid",
             meta: { fifo: ff, lru: fl, opt: fo },
         };
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         }
         yield frame(
             i,
-            `Ref ${p}: ${hit[0] ? "FIFO hit" : "FIFO FAULT"} / ${hit[1] ? "LRU hit" : "LRU FAULT"} / ${hit[2] ? "OPT hit" : "OPT FAULT"}.`,
+            `Ref ${i} (page ${p}): ${hit[0] ? "FIFO hit" : "FIFO FAULT"} / ${hit[1] ? "LRU hit" : "LRU FAULT"} / ${hit[2] ? "OPT hit" : "OPT FAULT"}.`,
             hit,
         );
         step += 1;
@@ -131,6 +131,15 @@ const module: AlgorithmModule = {
     defaultInput: { refs: [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5], frames: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize FIFO LRU OPT caches with frame budget",
+        "for each page reference in the stream",
+        "score hit or fault for all three policies",
+        "evict FIFO oldest LRU oldest OPT farthest future",
+        "tally cumulative faults per algorithm",
+        "compare clairvoyant OPT against practical LRU",
+        "done: final fault counts with OPT winning",
+    ],
 };
 
 export default module;
