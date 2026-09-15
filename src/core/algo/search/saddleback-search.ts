@@ -1,9 +1,34 @@
 /**
  * saddleback-search.ts – Saddleback Search
  *
- * Searches a row- and column-sorted matrix from the top-right corner:
- * move left when the cell is too big, down when too small. The verified
- * hit goes green with metadata.row/col.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Searches a row- and column-sorted matrix in linear time by starting at the
+ * top-right corner, the saddle point of the ordering. If the current cell is
+ * too big, everything below it is even bigger, so move left; if too small,
+ * everything to its left is even smaller, so move down. Each step eliminates
+ * a full row or column, and walking off the edge proves the target absent.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(rows + cols) – one row or column discarded per comparison
+ *   Space: O(1) auxiliary – only the current row and column
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The cell under test is YELLOW (comparing).
+ *   - The confirmed hit turns GREEN (sorted) with metadata.row/col.
+ *   - A miss ends all IDLE after the walk leaves the grid.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires rows and columns sorted ascending; also called staircase search.
+ *   - Eliminates a row or column per step – no backtracking, ever.
+ *   - Starting from the bottom-left corner works symmetrically.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -63,8 +88,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(matrix),
             edges: [],
-            description: "Empty matrix – nothing to search.",
-            codeLineNumber: 1,
+            description: "Empty matrix holds no cells, so there is nothing to search.",
+            codeLineNumber: 5,
             layout: "grid",
             meta: { comparisons, target },
         };
@@ -82,7 +107,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 entities: makeCells(matrix, new Map([[`${r},${c}`, "sorted"]])),
                 edges: [],
                 description: `Found ${target} at (${r},${c}) after ${comparisons} comparisons.`,
-                codeLineNumber: 3,
+                codeLineNumber: 2,
                 layout: "grid",
                 meta: { comparisons, target, found: [r, c] },
             };
@@ -94,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeCells(matrix, new Map([[`${r},${c}`, "comparing"]])),
             edges: [],
             description: `${value} at (${r},${c}) is too ${value > target ? "big – moving left" : "small – moving down"}.`,
-            codeLineNumber: value > target ? 1 : 2,
+            codeLineNumber: value > target ? 3 : 4,
             layout: "grid",
             meta: { comparisons, target },
         };
@@ -107,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(matrix),
         edges: [],
         description: `${target} is not in the matrix – walked off the edge.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "grid",
         meta: { comparisons, target },
     };
@@ -128,6 +153,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start at the top-right corner with row ← 0 and col ← cols-1",
+        "while inside the grid: compare the current cell with target",
+        "if cell = target: return its (row, col) as the match",
+        "if cell > target: col ← col-1 to discard the whole column",
+        "if cell < target: row ← row+1 to discard the whole row",
+        "done: walked off the edge, so report target absent",
+    ],
 };
 
 export default module;
