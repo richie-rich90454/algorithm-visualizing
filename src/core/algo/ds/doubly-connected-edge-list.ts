@@ -73,6 +73,15 @@ const module: AlgorithmModule = {
     defaultInput: { vertices: ["A", "B", "C"] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty DCEL with vertex and half-edge records",
+        "insert edge as twin half-edges with next pointers",
+        "compare angles to sort edges around each vertex",
+        "traverse face by following next pointers in cycle",
+        "count vertices edges and faces for Euler check",
+        "query incident edges of a vertex",
+        "done: DCEL stores subdivision with face traversal answer",
+    ],
 };
 
 export default module;
