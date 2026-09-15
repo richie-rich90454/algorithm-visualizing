@@ -1,9 +1,35 @@
 /**
  * betweenness-centrality-brandes.ts – Betweenness Centrality (Brandes)
  *
- * Brandes accumulates pair-dependencies from one BFS/DFS per source over
- * unweighted graphs. Path A–B–C–D: B and C each sit on 2 shortest paths.
- * Time: O(V·E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Betweenness centrality measures how often a vertex sits on shortest paths
+ * between other pairs: a bridge vertex that every route must cross scores
+ * high, while a leaf scores zero. Brandes' algorithm computes it with one
+ * breadth-first search per source vertex. Each BFS builds a shortest-path
+ * DAG (layers plus predecessor lists and path counts), then pushes
+ * dependency scores back from the farthest layer to the source. On the path
+ * A–B–C–D, B and C each sit on 2 shortest paths, so they outscore A and D.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V·E) – one BFS per source over an unweighted graph
+ *   Space: O(V + E) for distances, predecessors, and path counts
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The current source vertex is PINK (highlight).
+ *   - All other vertices are ORANGE (visited) while its DAG is processed.
+ *   - Final scores peak on bridge vertices, painted YELLOW (comparing).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The standard centrality for finding brokers and bottlenecks.
+ *   - Scores are halved on undirected graphs (each pair counted twice).
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -52,7 +78,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         return;
     }
     const cb = new Map(labels.map((v) => [v, 0]));
-    yield snap("Brandes: one BFS per source, uniqueness via shortest-path DAG.", 0, {});
+    yield snap("Brandes: one BFS per source, uniqueness via shortest-path DAG.", 0, {
+        sources: labels.length,
+    });
     step += 1;
     for (const s of labels) {
         const stack: string[] = [];
@@ -102,7 +130,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const [v, c] of cb) setN(v, c === mx ? "comparing" : "visited");
     yield snap(
         `Betweenness (undirected): ${labels.map((v) => `${v}=${cb.get(v)}`).join(", ")}.`,
-        2,
+        4,
         { scores: labels.map((v) => `${v}:${cb.get(v)}`), count: labels.length },
     );
 }
@@ -115,6 +143,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "cb[v] ← 0 for all v; handle one source s at a time",
+        "BFS from s to build layers, then push dependencies back through the DAG",
+        "add the accumulated dependency of each vertex into cb",
+        "halve every score on undirected graphs",
+        "done: bridge vertices like B and C score highest",
+    ],
 };
 
 export default module;
