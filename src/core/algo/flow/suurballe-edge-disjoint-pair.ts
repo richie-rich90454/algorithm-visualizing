@@ -223,5 +223,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize directed graph with source sink and lengths",
+        "run Dijkstra to find first shortest path P1",
+        "reweight edges with potentials and reverse P1 arcs",
+        "run Dijkstra again for second residual path P2",
+        "cancel opposite arcs and combine into disjoint pair",
+        "report disjoint pair with minimum total length",
+    ],
 };
 export default module;
