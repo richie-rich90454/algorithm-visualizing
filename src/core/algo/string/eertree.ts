@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // `last` is the longest palindromic suffix of the current prefix.
     let last = oddRoot;
 
-    const buildFrame = (message: string): VisualFrame => {
+    const buildFrame = (message: string, codeLine = 2): VisualFrame => {
         const entities: VisualEntity[] = [];
         for (let i = 0; i < nodeCount; i += 1) {
             entities.push({
@@ -115,13 +115,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges,
             description: message,
-            codeLineNumber: 2,
+            codeLineNumber: codeLine,
             layout: "graph",
-            meta: { palindromes: nodeCount - 2 },
+            meta: {
+                comparisons: nodeCount,
+                shifts: 0,
+                palindromes: nodeCount - 2,
+                matches: nodeCount - 2,
+            },
         };
     };
 
-    yield buildFrame(`Eertree of "${text}" – roots for odd/even palindromes created.`);
+    yield buildFrame(`Eertree of "${text}" – roots for odd/even palindromes created.`, 0);
     step += 1;
 
     // Extend the tree character by character.
@@ -143,7 +148,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         const existing = children[cur]?.get(char);
         if (existing !== undefined) {
             last = existing;
-            yield buildFrame(`Character "${char}" – reused existing palindrome node ${last}.`);
+            yield buildFrame(
+                `Character "${char}" at pos ${pos} – reused existing palindrome node ${last}.`,
+                3,
+            );
             step += 1;
             continue;
         }
@@ -174,12 +182,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         last = newNode;
         yield buildFrame(
-            `Character "${char}" – new palindrome node ${newNode} (length ${newLen}).`,
+            `Character "${char}" at pos ${pos} – new palindrome node ${newNode} (length ${newLen}).`,
+            4,
         );
         step += 1;
     }
 
-    yield buildFrame(`Eertree complete – ${nodeCount - 2} distinct palindrome(s).`);
+    yield buildFrame(`Eertree complete – ${nodeCount - 2} distinct palindrome(s) in "${text}".`, 6);
 }
 
 /** The Eertree module, registered with the engine. */
@@ -192,6 +201,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "ababa" },
     visualType: "graph",
     run,
+    pseudocode: [
+        "create odd and even root nodes for palindromes",
+        "set longest suffix palindrome to even root",
+        "find extendable suffix by checking mirror characters",
+        "reuse existing node when transition already exists",
+        "create new node and link longest palindromic suffix",
+        "update longest suffix to new palindrome node",
+        "report all distinct palindromes found",
+    ],
 };
 
 export default module;
