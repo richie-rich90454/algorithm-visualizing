@@ -88,7 +88,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         { accept },
     );
     step += 1;
-    yield F([cell(3, 0, accept ? "ACCEPT" : "REJECT", "sorted")], "Done.", 5, { accept });
+    yield F([cell(3, 0, accept ? "ACCEPT" : "REJECT", "sorted")], accept ? "LR(0) complete: reduced to start symbol: ACCEPT." : "LR(0) complete: no reduction: REJECT.", 5, { accept });
 }
 
 const module: AlgorithmModule = {
