@@ -171,7 +171,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             for (const edge of edges) {
                 edge.state = "idle";
             }
-            yield buildFrame(`Dijkstra from ${source} – settling ${current} with reweighted distance ${best}.`, 4);
+            yield buildFrame(
+                `Dijkstra from ${source} – settling ${current} with reweighted distance ${best}.`,
+                4,
+            );
             step += 1;
 
             for (const [neighbor, weight] of graph[current] ?? []) {
@@ -217,7 +220,12 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             : `All-pairs shortest paths computed with ${vertices.length} Dijkstra runs – table holds every distance.`,
         codeLineNumber: 6,
         layout: "graph",
-        meta: { settled: vertices.length, visits: vertices.length, negativeCycle: hasNegativeCycle, sources: vertices.length },
+        meta: {
+            settled: vertices.length,
+            visits: vertices.length,
+            negativeCycle: hasNegativeCycle,
+            sources: vertices.length,
+        },
     };
 }
 
