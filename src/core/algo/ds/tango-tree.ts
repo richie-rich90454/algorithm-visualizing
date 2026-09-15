@@ -1,6 +1,29 @@
 /**
  * tango-tree.ts - Tango Tree
  * Preferred-path auxiliary trees, O(log log n) competitive. Demo: BST insert + search/rank on <=8 keys.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Preferred-path auxiliary trees, O(log log n) competitive. Demo: BST insert + search/rank on <=8 keys.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n log log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Tango Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -89,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Tango Tree: empty. Preferred-path auxiliary trees, O(log log n) competitive.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} into its preferred-path auxiliary tree with BST comparisons.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compared query ${q} against node ${ins[cur]} marking the preferred path downward.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -155,7 +178,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Search ${q} absent; rank would be ${rank}.`,
         codeLineNumber: 3,
         layout: "tree",
-        meta: { found: found >= 0, rank },
+        meta: { ops: step, found: found >= 0, rank },
     };
 }
 
@@ -167,5 +190,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty tango tree with no preferred paths",
+        "insert keys building preferred-path auxiliary trees",
+        "search marks the touched path as preferred for next time",
+        "restructure auxiliary trees to match new preferences",
+        "recently searched keys stay in shallow auxiliary trees",
+        "competitive ratio tracks the offline optimal logarithmically",
+        "done: preferred paths adapt and the search answer is reported",
+    ],
 };
 export default module;
