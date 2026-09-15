@@ -92,7 +92,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Solving x ≡ [${remainders.join(", ")}] (mod [${moduli.join(", ")}]).`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -153,6 +153,13 @@ const module: AlgorithmModule = {
     defaultInput: { remainders: [2, 3, 2], moduli: [3, 5, 7] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state remainders with pairwise-coprime moduli",
+        "form M ← product of moduli and each Mi ← M/mi",
+        "add term ri·Mi·(Mi⁻¹ mod mi) to the total",
+        "reduce the total modulo M",
+        "done: x ≡ solution (mod M)",
+    ],
 };
 
 export default module;
