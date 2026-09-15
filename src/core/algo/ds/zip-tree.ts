@@ -1,6 +1,29 @@
 /**
  * zip-tree.ts - Zip Tree
  * Insert unzips by rank, delete zips back. Demo: BST insert + search/rank on <=8 keys.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Insert unzips by rank, delete zips back. Demo: BST insert + search/rank on <=8 keys.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) expected
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Nodes are circles; edges show parent links.
+ *    - The active node is YELLOW (comparing).
+ *    - Finished nodes are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Zip Tree behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -89,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Zip Tree: empty. Insert unzips by rank, delete zips back.",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} by BST order then unzipped the path by random rank.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +138,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compared query ${q} against node ${ins[cur]} branching left or right by BST order.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -155,7 +178,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `Search ${q} absent; rank would be ${rank}.`,
         codeLineNumber: 3,
         layout: "tree",
-        meta: { found: found >= 0, rank },
+        meta: { ops: step, found: found >= 0, rank },
     };
 }
 
@@ -167,5 +190,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty zip tree with random node ranks",
+        "insert key with plain BST placement by key",
+        "unzip the search path by rank: smaller ranks hang left and right",
+        "higher-rank nodes stay closer to the root like a heap",
+        "search compares keys exactly like a BST",
+        "delete zips the two rank-ordered spines back together",
+        "done: rank-heap order holds and the query answer is reported",
+    ],
 };
 export default module;
