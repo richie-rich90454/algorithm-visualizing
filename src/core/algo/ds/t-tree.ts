@@ -4,6 +4,29 @@
  * Main-memory index nodes: each node holds a sorted array of keys instead
  * of one key, balancing search speed with storage density. Full nodes
  * split; search walks one node array at a time.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Main-memory index nodes: each node holds a sorted array of keys instead of one key, balancing search speed with storage density. Full nodes split; search walks one node array at a time.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard T-Tree behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -111,6 +134,15 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 2, 8, 1, 9, 4], query: 8 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with one empty node capped at a few sorted keys",
+        "insert key into the last node keeping it sorted",
+        "when the node is full: start a fresh node for the key",
+        "nodes chain in key order like a B-tree with arrays",
+        "search scans nodes in order comparing within each array",
+        "report the node and slot where the query key sits",
+        "done: nodes hold all keys sorted and the query verdict is reported",
+    ],
 };
 
 export default module;
