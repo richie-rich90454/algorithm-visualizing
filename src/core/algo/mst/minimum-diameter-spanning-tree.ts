@@ -1,6 +1,25 @@
 /**
- * minimum-diameter-spanning-tree.ts - Minimum Diameter Spanning Tree.
- * Brute-force over all spanning trees of a tiny graph, keeping the smallest diameter.
+ * minimum-diameter-spanning-tree.ts – Minimum Diameter Spanning Tree.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The diameter of a tree is its longest pairwise distance. This demo finds the
+ * spanning tree with the smallest diameter by brute force over every subset of
+ * V minus one edges on a tiny graph, skipping disconnected subsets and keeping
+ * the connected tree with the smallest longest path.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(2^E V) – every edge subset is tested on tiny inputs
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The subset under test is YELLOW (highlight) or RED (swapped).
+ *   - The winning tree turns GREEN (sorted).
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +68,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -89,13 +108,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Minimum-diameter spanning tree over ${list.length} edges: enumerating 3-edge subsets.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Minimum diameter search on ${verts.length} vertices, ${list.length} edges — enumerating ${verts.length - 1}-edge subsets.`,
+            0,
+        ),
+        meta: { accepted: 0, totalWeight: 0 },
+    };
     const diam = (idxs: number[]): number => {
         const dist = new Map<string, number>();
         let best = 0;
@@ -133,14 +155,18 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     rec2(0, []);
     for (const c of allCombos) {
         const es = c.map((i) => list[i] as E3);
+        const names = es.map((e) => `${e.a}–${e.b}(${e.w})`).join(", ");
         if (!connected(verts, es)) {
-            yield FR(
-                step++,
-                N(verts),
-                ME(list, new Map(c.map((i) => [i, "swapped"] as [number, EntityState]))),
-                `Subset [${c.join(",")}] is disconnected - not a spanning tree.`,
-                1,
-            );
+            yield {
+                ...FR(
+                    step++,
+                    N(verts),
+                    ME(list, new Map(c.map((i) => [i, "swapped"] as [number, EntityState]))),
+                    `Subset ${names} is disconnected — not a spanning tree.`,
+                    1,
+                ),
+                meta: { accepted: bestS.length, totalWeight: 0 },
+            };
             continue;
         }
         const dl = diam(c);
@@ -148,13 +174,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             bestD = dl;
             bestS = [...c];
         }
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map(c.map((i) => [i, "highlight"] as [number, EntityState]))),
-            `Tree [${c.join(",")}] diameter ${dl}${dl === 6 ? " - new best" : ""}.`,
-            1,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map(c.map((i) => [i, "highlight"] as [number, EntityState]))),
+                `Tree ${names} has diameter ${dl}${c.every((v, k) => v === bestS[k]) ? " — new best" : ""}.`,
+                2,
+            ),
+            meta: { accepted: bestS.length, totalWeight: 0 },
+        };
         if (step > 13) break;
     }
     const weight = bestS.reduce((s, i) => s + (list[i] as E3).w, 0);
@@ -163,10 +192,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(list, new Map(bestS.map((i) => [i, "sorted"] as [number, EntityState]))),
-            `Minimum diameter ${bestD}: tree A-B(1), B-C(2), C-D(3), weight ${weight}.`,
-            2,
+            `Minimum diameter ${bestD}, total weight ${weight}: tree ${bestS.map((i) => `${(list[i] as E3).a}–${(list[i] as E3).b}(${(list[i] as E3).w})`).join(", ")}.`,
+            5,
         ),
-        meta: { diameter: bestD, weight },
+        meta: { diameter: bestD, weight, totalWeight: weight, accepted: bestS.length },
     };
 }
 
@@ -187,5 +216,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "list every subset of V minus one edges as candidates",
+        "skip each subset that is disconnected or has a cycle",
+        "compute the diameter as the longest shortest path",
+        "keep the connected tree with the smallest diameter",
+        "compare weights when diameters tie for clarity",
+        "done: best tree gives minimum diameter and total weight",
+    ],
 };
 export default module;
