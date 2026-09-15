@@ -129,5 +129,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize undirected graph with edge capacities",
+        "enumerate cuts to find global minimum cut value",
+        "record each singleton cut against optimum value",
+        "fold all minimum cuts into compact cactus cycles",
+        "verify every cactus cut matches optimum weight",
+        "report cactus with minimum cut value and cut count",
+    ],
 };
 export default module;
