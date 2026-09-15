@@ -34,7 +34,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "MinHash Sketch: stream start. Min hashes estimate Jaccard similarity.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const v of vals) {
@@ -46,7 +46,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Ingest ${v} (${seen.length} seen).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
     }
@@ -58,7 +58,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty stream: no estimate.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { operations: step },
         };
         return;
     }
@@ -73,7 +73,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Sorted ${s.join(", ")}; median candidate ${med}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     yield {
@@ -81,7 +81,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: cells(s, new Map([[0, "sorted"]])),
         edges: [],
         description: `Estimate: min ${mn}, median~${med}, max ${mx} over ${s.length} values verified.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { median: med, n: s.length },
     };
@@ -95,5 +95,14 @@ const module: AlgorithmModule = {
     defaultInput: { values: [7, 2, 9, 4, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize MinHash with k hash functions and infinite signatures",
+        "hash each set element with all k functions",
+        "compare hashes and keep minimum per function",
+        "update signature vector with smaller values",
+        "estimate Jaccard by fraction of equal signature entries",
+        "count agreements across k positions",
+        "done: sketch holds signatures with similarity estimate",
+    ],
 };
 export default module;
