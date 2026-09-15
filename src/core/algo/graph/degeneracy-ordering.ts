@@ -1,10 +1,33 @@
 /**
  * degeneracy-ordering.ts – Degeneracy Ordering
  *
- * Repeatedly removes a minimum-degree vertex, appending it to the order:
- * every vertex has few later-neighbors, so greedy coloring needs only d+1
- * colors. Diamond+leaf: degeneracy 2.
- * Time: O(V + E) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The degeneracy d of a graph is the smallest number such that every
+ * subgraph has a vertex of degree at most d. The ordering peels the graph
+ * like an onion: repeatedly remove a minimum-degree vertex and append it to
+ * the order. Because each vertex has few neighbors later in the order,
+ * greedy coloring along it needs only d+1 colors. On the diamond-plus-leaf
+ * graph the peel order witnesses degeneracy 2.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V + E) with bucketed degree lists
+ *   Space: O(V + E) for degrees and the surviving set
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The peeled vertex flashes RED (swapped).
+ *   - Survivors waiting for their turn are ORANGE (visited).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Degeneracy bounds the chromatic number: χ ≤ d+1.
+ *   - Forests have degeneracy 1; planar graphs at most 5.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -77,7 +100,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         `Order ${order.join("→")} witnesses degeneracy ${degen}: greedy colors with ${degen + 1}.`,
-        2,
+        4,
         { degeneracy: degen },
     );
 }
@@ -92,6 +115,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute every degree; all vertices start alive",
+        "peel a minimum-degree vertex and append it to the order",
+        "lower the degrees of its surviving neighbors",
+        "track the largest minimum degree seen as the degeneracy",
+        "done: peel order plus the degeneracy number",
+    ],
 };
 
 export default module;
