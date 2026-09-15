@@ -1,10 +1,36 @@
 /**
  * alt-landmark-routing.ts – ALT Landmark Routing
  *
- * Landmarks precompute distances; triangle inequality turns them into an
- * admissible A* heuristic h(v) = max |d(L,v) − d(L,t)|. Landmarks A, D
- * guide A→D = 4 with tighter bounds than straight Dijkstra.
- * Time: O(E log V) query Space: O(L·V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * ALT (A*, Landmarks, Triangle inequality) precomputes distances from a few
+ * landmark vertices, then uses the triangle inequality to build an admissible
+ * A* heuristic at query time: h(v) = max over landmarks L of
+ * |d(L,v) - d(L,t)|. The demo uses landmarks A and D to guide the search
+ * from A to D, expanding far fewer vertices than plain Dijkstra while still
+ * returning the optimal cost of 4.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(E log V) per query after preprocessing
+ *   Space: O(L x V + E) for the landmark distance table
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The landmark being displayed is PINK (highlight).
+ *   - The vertex being expanded is YELLOW (comparing).
+ *   - The target is PINK (highlight) while the search runs.
+ *   - The final shortest path is CYAN (path).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The landmark heuristic is always admissible, so the result is optimal.
+ *   - Better landmark placement gives tighter bounds and faster queries.
+ *   - Preprocessing cost pays off when many queries run on one graph.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphNodes, makeWeightedEdges } from "../graph/graph-util";
@@ -95,15 +121,17 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const fromL = new Map(landmarks.map((l) => [l, dij(l)]));
     yield snap(`ALT preprocess: distances from landmark(s) ${landmarks.join(", ")}.`, 0, {
         landmarks: landmarks.length,
+        settled: 0,
+        visits: 0,
     });
     step += 1;
     for (const l of landmarks) {
         clr();
         setN(l, "highlight");
         yield snap(
-            `Landmark ${l}: ${labels.map((v) => `${v}=${(fromL.get(l) as Map<string, number>).get(v)}`).join(", ")}.`,
+            `Landmark ${l}: distances ${labels.map((v) => `${v}=${(fromL.get(l) as Map<string, number>).get(v)}`).join(", ")}.`,
             1,
-            {},
+            { settled: 0, visits: 0 },
         );
         step += 1;
     }
@@ -131,9 +159,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         setN(u, "comparing");
         setN(target, "highlight");
         if (u === target) {
-            yield snap(`Goal ${target} expanded after ${expanded} expansions: g=${g.get(u)}.`, 2, {
-                expanded,
-            });
+            yield snap(
+                `Goal ${target} expanded after ${expanded} expansions: distance g=${g.get(u)}.`,
+                5,
+                {
+                    settled: expanded,
+                    visits: expanded,
+                },
+            );
             step += 1;
             break;
         }
@@ -145,7 +178,11 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 setE(u, t, "active");
             }
         }
-        yield snap(`Expand ${u}: g=${g.get(u)}, h=${h(u)} (landmark bound).`, 2, { expanded });
+        yield snap(
+            `Expand ${u}: settled with distance g=${g.get(u)}, heuristic h=${h(u)} from landmark bounds.`,
+            3,
+            { settled: expanded, visits: expanded },
+        );
         step += 1;
     }
     const path: string[] = [];
@@ -157,9 +194,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     clr();
     for (const v of path) setN(v, "path");
     yield snap(
-        `ALT: shortest ${start}→${target} = ${g.get(target)} via ${path.join("→")} in ${expanded} expansions.`,
-        3,
-        { distance: g.get(target) as number },
+        `ALT: shortest path ${start} to ${target} costs ${g.get(target)} via ${path.join(" → ")} in ${expanded} expansions.`,
+        6,
+        {
+            distance: g.get(target) as number,
+            path: path.join("→"),
+            settled: expanded,
+            visits: expanded,
+        },
     );
 }
 
@@ -187,6 +229,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "precompute dist from each landmark L via Dijkstra",
+        "h(v) ← max over L of |d(L,v) - d(L,t)|",
+        "g[s] ← 0, open holds (h(s),s) with f ← g+h",
+        "pop u with smallest f-score, settle u as final",
+        "for each edge u→v: relax when g[u]+w < g[v]",
+        "close u, repeat until target is expanded",
+        "done: reconstruct path to t via predecessors",
+    ],
 };
 
 export default module;
