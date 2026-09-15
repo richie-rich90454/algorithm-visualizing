@@ -1,6 +1,29 @@
 /**
  * robin-hood-hashing.ts - Robin Hood Hashing
  * Rich keys give way to poor ones (probe balancing). Demo: hash <=6 keys into table, lookup hit/miss.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Rich keys give way to poor ones (probe balancing). Demo: hash <=6 keys into table, lookup hit/miss.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log n) expected
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Robin Hood Hashing behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -46,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             "Robin Hood Hashing: empty table. Rich keys give way to poor ones (probe balancing).",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const k of keys) {
@@ -62,7 +85,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Insert ${k} -> slot ${j} (h=${h(k)}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -74,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: table stays empty.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -90,7 +113,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lookup ${q}: ${hit ? `found at slot ${j}` : "absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const n = table.filter((v) => v !== null).length;
@@ -113,5 +136,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [12, 5, 21, 8], query: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty table with a hash function and probe order",
+        "hash key to its home slot and start probing forward",
+        "insert: if the resident is richer (shorter probe), swap with it",
+        "the evicted rich key continues probing with a longer distance",
+        "repeat until every key sits with a balanced probe distance",
+        "lookup stops at an empty slot or when the probe exceeds the record",
+        "done: table is balanced and the lookup answer is reported",
+    ],
 };
 export default module;
