@@ -1,6 +1,32 @@
 /**
- * Decode Ways: dp[i] = (s[i-1] != '0' ? dp[i-1] : 0) + (valid pair ? dp[i-2] : 0).
- * Time O(n), Space O(n). Default "226" -> 3.
+ * decode-ways.ts - Decode Ways
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[i] <- (valid 1-digit) * dp[i-1] + (valid 2-digit) * dp[i-2].
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Updated entries flash BLUE (active).
+   - The optimal choices are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -31,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty string \u2013 one (empty) decoding.",
             codeLineNumber: 0,
             layout: "array",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -73,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(dp, done),
         edges: [],
         description: `Traceback: ${dp[n]} decodings of "${s}".`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "array",
         meta: { answer: dp[n] },
     };
@@ -87,6 +113,14 @@ const module: AlgorithmModule = {
     defaultInput: { s: "226" },
     visualType: "array",
     run,
-};
+    pseudocode: [
+        "set up string s of length n with dp[0] <- 1",
+        "dp[i] holds decodings of prefix ending at position i",
+        "dp[i] <- (valid 1-digit) * dp[i-1] + (valid 2-digit) * dp[i-2]",
+        "iterate positions from 1 to n checking one and two chars",
+        "single digit valid for 1..9, pair valid for 10..26",
+        "add contributions of each valid chunk length separately",
+        "answer <- dp[n] with decodings reconstructed from chunk picks",
+    ],};
 
 export default module;
