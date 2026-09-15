@@ -1,8 +1,31 @@
 /**
- * slow-sort.ts – Slow Sort.
+ * slow-sort.ts – Slow Sort
  *
- * Multiply-and-surrender recursion, slow by design.
- * Time: O(n^(log n)), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Slow sort is the deliberately pessimistic cousin of merge sort: sort the halves, compare the maxima, and repeat until the range collapses. Its recurrence solves to roughly n raised to log n, far worse than quadratic. It teaches recurrence analysis by being hilariously inefficient.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^(log n))
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -108,7 +131,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -137,5 +160,13 @@ const module: AlgorithmModule = {
     defaultInput: [3, 1, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the tiny array for slow recursion",
+        "recursively slow sort the left half",
+        "recursively slow sort the right half",
+        "compare the middle max with the end max and swap",
+        "repeat until the range collapses",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
