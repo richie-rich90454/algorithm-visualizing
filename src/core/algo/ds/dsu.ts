@@ -154,6 +154,15 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize DSU with each element as its own set",
+        "find representative with path compression",
+        "compare roots of pair to test same set",
+        "union sets by rank attaching smaller under larger",
+        "compress path on every find for speed",
+        "count remaining sets from distinct roots",
+        "done: DSU holds sets with union results",
+    ],
 };
 
 export default module;
