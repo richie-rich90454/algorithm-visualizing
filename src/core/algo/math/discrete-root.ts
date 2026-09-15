@@ -102,7 +102,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Finding x with x^${k} ≡ ${a} (mod ${p}).`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
 
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate input (k = ${k}, p = ${p}) – need k ≥ 1 and prime p ≥ 3.`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -134,7 +134,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `gcd(${k}, ${p - 1}) = ${gcd} – the map x ↦ x^${k} is a bijection mod ${p}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
 
@@ -145,7 +145,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Exponent inverse: ${k}⁻¹ mod ${p - 1} = ${kInv}. Computing ${a}^${kInv} mod ${p}.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
 
@@ -162,7 +162,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     description: `exp ${exp} is odd: result = ${result}·${base} mod ${p} = ${next}.`,
                     codeLineNumber: 2,
                     layout: "grid",
-                    meta: {},
+                    meta: { step },
                 };
                 result = next;
             } else {
@@ -173,7 +173,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     description: `exp ${exp} is even: square base ${base} → ${(base * base) % p} mod ${p}.`,
                     codeLineNumber: 2,
                     layout: "grid",
-                    meta: {},
+                    meta: { step },
                 };
             }
             base = (base * base) % p;
@@ -218,7 +218,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Tried x = ${x} – no match yet.`,
             codeLineNumber: 4,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -245,6 +245,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: 3, k: 7, p: 31 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state x^k ≡ a (mod p) with inputs k, p",
+        "reject degenerate inputs with k < 1 or p < 3",
+        "coprime case: invert k mod p−1 and raise a to it",
+        "otherwise brute-force x = 0, 1, ... for a match",
+        "each miss rules out one candidate x",
+        "done: the k-th root, or proof none exists",
+    ],
 };
 
 export default module;
