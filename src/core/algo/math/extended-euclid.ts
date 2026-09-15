@@ -164,6 +164,13 @@ const module: AlgorithmModule = {
     defaultInput: { a: 48, b: 36 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with (a, b) plus identity coefficient rows",
+        "divide each round: quotient ← oldR div r",
+        "record oldR = quotient·r + remainder with x, y",
+        "shift the rows down for the next round",
+        "done: gcd with a·x + b·y = gcd",
+    ],
 };
 
 export default module;
