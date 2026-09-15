@@ -34,27 +34,29 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         layout: "text",
         meta,
     });
-    yield F(tx(text), `Binary-search "${pat}" over suffix array of "${text}".`, 0);
+    yield F(tx(text), `Binary-search "${pat}" over suffix array of "${text}".`, 0, { comparisons: 0, matches: [] });
     step += 1;
     const sa = Array.from({ length: text.length }, (_, i) => i).sort((a, b) =>
         text.slice(a) < text.slice(b) ? -1 : 1,
     );
-    yield F(tx(text), `SA = [${sa.join(", ")}].`, 1, { sa });
+    yield F(tx(text), `SA = [${sa.join(", ")}].`, 1, { comparisons: 0, sa });
     step += 1;
     if (pat.length === 0) {
-        yield F(tx(text), "Empty pattern – nothing to search.", 5, { matches: [] });
+        yield F(tx(text), "Empty pattern – nothing to search.", 5, { comparisons: 0, matches: [] });
         return;
     }
+    let comparisons = 0;
     let lo = 0,
         hi = sa.length;
     while (lo < hi) {
         const mid = (lo + hi) >> 1;
         const suf = text.slice(sa[mid] as number);
+        comparisons += 1;
         yield F(
             tx(text, stAt([sa[mid] as number], "comparing")),
-            `Compare "${pat}" vs suffix "${suf}".`,
+            `Compare "${pat}" vs suffix "${suf}" (bisection at ${mid}).`,
             2,
-            { sa },
+            { comparisons, sa },
         );
         step += 1;
         if (suf < pat) lo = mid + 1;
@@ -66,9 +68,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const s0 of matches) for (let x = s0; x < s0 + pat.length; x += 1) fin.set(x, "sorted");
     yield F(
         tx(text, fin),
-        matches.length ? `"${pat}" at ${matches.join(", ")}.` : "No occurrence.",
+        matches.length ? `"${pat}" at ${matches.join(", ")}.` : `"${pat}" does not occur in the text.",
         3,
-        { matches, sa },
+        { comparisons, matches, sa },
     );
 }
 
