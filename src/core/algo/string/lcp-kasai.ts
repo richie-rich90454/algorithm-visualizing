@@ -69,10 +69,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeText(text),
         edges: [],
-        description: `Computing the LCP array of the suffix array [${suffixArray.join(", ")}].`,
+        description: `Computing LCP array of "${text}" with suffix array [${suffixArray.join(", ")}].`,
         codeLineNumber: 0,
         layout: "text",
-        meta: { comparisons: 0 },
+        meta: { comparisons: 0, shifts: 0, matches: [] },
     };
     step += 1;
 
@@ -111,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `LCP of suffix ${i} ("${text.slice(i)}") and suffix ${prev} ("${text.slice(prev)}") is ${h}.`,
                 codeLineNumber: 2,
                 layout: "text",
-                meta: { comparisons, maxLcp: Math.max(0, ...lcp) },
+                meta: { comparisons, shifts: 0, matches: [], maxLcp: Math.max(0, ...lcp) },
             };
             step += 1;
 
@@ -131,7 +131,13 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `LCP array: [${lcp.join(", ")}].`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { comparisons, maxLcp: Math.max(0, ...lcp), lcp: [...lcp] },
+        meta: {
+            comparisons,
+            shifts: 0,
+            matches: [...lcp],
+            maxLcp: Math.max(0, ...lcp),
+            lcp: [...lcp],
+        },
     };
 }
 
@@ -145,6 +151,15 @@ const module: AlgorithmModule = {
     defaultInput: { text: "banana", suffixArray: [5, 3, 1, 0, 4, 2] },
     visualType: "text",
     run,
+    pseudocode: [
+        "build rank array inverting suffix array order",
+        "initialize shared prefix length h to zero",
+        "compare suffixes extending previous match length",
+        "record longest common prefix for current rank",
+        "decrement h preserving overlap for next suffix",
+        "repeat for all suffixes in text order",
+        "report full LCP array",
+    ],
 };
 
 export default module;
