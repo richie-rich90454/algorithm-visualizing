@@ -73,21 +73,21 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description:
-            "Johnson's algorithm – re-weighting edges before running Dijkstra from every vertex.",
+            "Johnson's algorithm – potentials start at 0, re-weighting edges before Dijkstra runs.",
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     };
     step += 1;
 
-    const buildFrame = (message: string): VisualFrame => ({
+    const buildFrame = (message: string, line = 2): VisualFrame => ({
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
         description: message,
-        codeLineNumber: 2,
+        codeLineNumber: line,
         layout: "graph",
-        meta: {},
+        meta: { settled: 0, visits: 0 },
     });
 
     // ------------------------------------------------------------------
@@ -130,7 +130,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield buildFrame(
         hasNegativeCycle
             ? "Negative cycle detected – Johnson's algorithm cannot proceed."
-            : `Potentials computed – re-weighting edges so all weights are non-negative.`,
+            : `Potentials computed via Bellman-Ford – reweighted edges are now non-negative.`,
+        2,
     );
     step += 1;
 
@@ -170,7 +171,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             for (const edge of edges) {
                 edge.state = "idle";
             }
-            yield buildFrame(`Dijkstra from ${source} – settling ${current}.`);
+            yield buildFrame(`Dijkstra from ${source} – settling ${current} with reweighted distance ${best}.`, 4);
             step += 1;
 
             for (const [neighbor, weight] of graph[current] ?? []) {
@@ -213,10 +214,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edges.map((e) => ({ ...e })),
         description: hasNegativeCycle
             ? "All-pairs computation aborted due to a negative cycle."
-            : `All-pairs shortest paths computed (${vertices.length} Dijkstra runs).`,
-        codeLineNumber: 4,
+            : `All-pairs shortest paths computed with ${vertices.length} Dijkstra runs – table holds every distance.`,
+        codeLineNumber: 6,
         layout: "graph",
-        meta: { negativeCycle: hasNegativeCycle, sources: vertices.length },
+        meta: { settled: vertices.length, visits: vertices.length, negativeCycle: hasNegativeCycle, sources: vertices.length },
     };
 }
 
@@ -247,6 +248,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "add virtual source, potentials h[v] ← 0",
+        "run Bellman-Ford to compute potentials h",
+        "if negative cycle found then abort early",
+        "reweight w'(u,v) ← w + h[u] - h[v] ≥ 0",
+        "for each source s: run Dijkstra on reweighted graph",
+        "restore true distances d ← d' - h[s] + h[v]",
+        "done: table holds all-pairs shortest distances",
+    ],
 };
 
 export default module;
