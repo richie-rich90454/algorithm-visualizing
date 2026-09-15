@@ -62,7 +62,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs mod >= 2, tower >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -78,7 +78,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Compute ${a}^(${b}^${c}) mod ${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const top = b ** c;
@@ -134,5 +134,12 @@ const module: AlgorithmModule = {
     defaultInput: { a: 2, b: 3, c: 2, mod: 7 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state the tower a^(b^c) mod m",
+        "evaluate the top exponent b^c directly",
+        "shrink it with φ(m) via Euler's theorem",
+        "raise a to the reduced exponent mod m",
+        "done: tower residue = out, cross-checked",
+    ],
 };
 export default module;
