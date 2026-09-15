@@ -156,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             N([...d.left, ...d.right]),
             ME(show, new Map(), true),
             `Augment ${i - 1}: ${p.join(">")} (running total grows toward ${f.value}).`,
-            i,
+            Math.min(i, 4),
         );
         i += 1;
         if (step > 11) break;
@@ -167,7 +167,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             N([...d.left, ...d.right]),
             ME(show, new Map(show.map((_, k) => [k, "sorted"] as [number, EntityState])), true),
             `Maximum b-matching size ${f.value}: L0 takes R0+R1, L1 takes R1.`,
-            i + 1,
+            5,
         ),
         meta: { matching: f.value },
     };
@@ -192,5 +192,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize bipartite graph with left and right capacities",
+        "build flow network with source and sink capacity arcs",
+        "find augmenting path in residual capacity network",
+        "augment one unit and update residual capacities",
+        "repeat until no augmenting path remains available",
+        "report maximum b matching size as max flow value",
+    ],
 };
 export default module;
