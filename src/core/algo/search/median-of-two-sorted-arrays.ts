@@ -1,9 +1,34 @@
 /**
  * median-of-two-sorted-arrays.ts – Median of Two Sorted Arrays
  *
- * Binary-searches the partition point in the shorter array so both
- * halves split the combined data evenly. Verified by brute-force merge
- * before the median bars go green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Finds the median of two sorted arrays without merging them. It binary-
+ * searches a partition point i in the shorter array (with a complementary
+ * cut j in the longer one) so that every element left of the cuts is ≤ every
+ * element right of them. Once maxLeft ≤ minRight holds, the median falls out
+ * directly: the middle value for odd totals, the average of the two middle
+ * values for even totals.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(log(min(n, m))) – binary search over the shorter array
+ *   Space: O(1) auxiliary – only the partition indices and edge values
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The merged array is shown for context; probes are all IDLE.
+ *   - The one or two median positions turn GREEN (sorted) at the end.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Requires both inputs sorted ascending; either may be empty (not both).
+ *   - The classic "binary search on the answer's structure" interview problem.
+ *   - Edge partitions use infinities so empty sides compare cleanly.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -46,8 +71,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(merged),
             edges: [],
-            description: "Both arrays are empty – no median exists.",
-            codeLineNumber: 1,
+            description: "Both arrays are empty, so no median exists here.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons },
         };
@@ -72,9 +97,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: makeBars(merged),
             edges: [],
             description: `Partition i=${i}, j=${j}: maxLeft=${Math.max(l1, l2)}, minRight=${Math.min(r1, r2)}.`,
-            codeLineNumber: 1,
+            codeLineNumber: 2,
             layout: "array",
-            meta: { comparisons },
+            meta: { comparisons, i, j },
         };
         step += 1;
         if (l1 <= r2 && l2 <= r1) {
@@ -105,9 +130,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeBars(merged, states),
         edges: [],
         description: `Partition locked (cut ${cut}) – median is ${median}.`,
-        codeLineNumber: 2,
+        codeLineNumber: 5,
         layout: "array",
-        meta: { comparisons, median },
+        meta: { comparisons, median, cut },
     };
 }
 
@@ -119,6 +144,14 @@ const module: AlgorithmModule = {
     defaultInput: { a: [1, 2, 3, 4], b: [5, 6, 7, 8] },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with lo ← 0 and hi ← m over the shorter array",
+        "while lo ≤ hi: cut shorter at i and longer at j to split evenly",
+        "compare maxLeft ← max(A[i-1], B[j-1]) with minRight ← min(A[i], B[j])",
+        "if maxLeft ≤ minRight: the partition is correct, stop searching",
+        "if A[i-1] > B[j]: hi ← i-1 else lo ← i+1 and repeat",
+        "done: return middle value (or average of two) as the median",
+    ],
 };
 
 export default module;
