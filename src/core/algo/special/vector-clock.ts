@@ -42,7 +42,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities,
             edges: [],
             description: `${desc} ${note}`,
-            codeLineNumber: step,
+            codeLineNumber: Math.min(step, 6),
             layout: "grid",
             meta: { vectors: V.map((v) => v.join(".")) },
         };
@@ -89,6 +89,15 @@ const module: AlgorithmModule = {
     defaultInput: { processes: 3 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize all process vectors to [0,0,0]",
+        "tick local entry on internal work events",
+        "attach full vector to every sent message",
+        "on receive merge by element max then tick",
+        "run scripted send receive and solo events",
+        "compare vectors to judge causal order",
+        "done: causal versus concurrent verdict reported",
+    ],
 };
 
 export default module;
