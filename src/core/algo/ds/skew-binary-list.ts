@@ -4,6 +4,29 @@
  * Persistent list of skew-binary-sized chunks: cons is O(1) (a singleton
  * chunk or a merge of the two smallest), while indexing walks chunks
  * from the front in logarithmic time.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Persistent list of skew-binary-sized chunks: cons is O(1) (a singleton chunk or a merge of the two smallest), while indexing walks chunks from the front in logarithmic time.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(1) cons, O(log n) index
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Skew Binary List behavior with textbook operation costs.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -103,6 +126,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [1, 2, 3, 4], index: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with no chunks and an empty skew representation",
+        "cons value: if the two smallest chunks match, merge all three",
+        "otherwise start a new singleton chunk at the front",
+        "chunk sizes always follow skew-binary numbers",
+        "index: skip whole chunks from the front, then index inside",
+        "cons stays O(1) while random access walks few chunks",
+        "done: chunks hold all values and the indexed answer is reported",
+    ],
 };
 
 export default module;
