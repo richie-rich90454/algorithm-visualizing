@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells(deque),
         edges: [],
         description: `Final deque: [${deque.join(", ")}].`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { size: deque.length },
     };
@@ -143,6 +143,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty deque with no front or back",
+        "push value to front in O(1) and update head",
+        "push value to back in O(1) and update tail",
+        "pop value from front and compare remaining size",
+        "pop value from back for double-ended use",
+        "count elements from front to back",
+        "done: deque holds remaining values in order",
+    ],
 };
 
 export default module;
