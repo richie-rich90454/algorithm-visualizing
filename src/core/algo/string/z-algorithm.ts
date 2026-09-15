@@ -67,6 +67,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     let step = 0;
     const matches: number[] = [];
+    let comparisons = 0;
 
     // Frame 0: the untouched combined string.
     yield {
@@ -76,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Z-algorithm on "${combined}" (pattern + $ + text).`,
         codeLineNumber: 0,
         layout: "text",
-        meta: {},
+        meta: { comparisons: 0, matches: 0 },
     };
     step += 1;
 
@@ -90,7 +91,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty pattern – nothing to search for.",
             codeLineNumber: 4,
             layout: "text",
-            meta: { matches: 0 },
+            meta: { comparisons, matches: 0 },
         };
         return;
     }
@@ -110,8 +111,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
         // Extend Z[i] by direct character comparison.
         while (i + (z[i] ?? 0) < n && combined[z[i] ?? 0] === combined[i + (z[i] ?? 0)]) {
+            comparisons += 1;
             z[i] = (z[i] ?? 0) + 1;
         }
+        comparisons += 1;
 
         // Update the window when the match extends beyond r.
         if (i + (z[i] ?? 0) - 1 > r) {
@@ -130,10 +133,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeText(combined, states),
             edges: [],
-            description: `Z[${i}] = ${z[i]} – window [${l}, ${r}].`,
+            description: `Z[${i}] = ${z[i]} ("${combined.slice(i, i + (z[i] ?? 0))}"); window [${l}, ${r}].`,
             codeLineNumber: 2,
             layout: "text",
-            meta: { matches: matches.length },
+            meta: { comparisons, matches: matches.length },
         };
         step += 1;
 
@@ -166,7 +169,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 : `"${pattern}" occurs at ${matches.join(", ")}.`,
         codeLineNumber: 4,
         layout: "text",
-        meta: { matches: matches.length },
+        meta: { comparisons, matches: matches.length },
     };
 }
 
