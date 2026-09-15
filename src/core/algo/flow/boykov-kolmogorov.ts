@@ -323,6 +323,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize zero flow with source tree and sink tree",
+        "grow source tree forward and sink tree backward",
+        "check whether the two search trees meet at a vertex",
+        "augment bottleneck flow along the meeting path",
+        "rebuild trees locally and repeat until trees cannot meet",
+        "report maximum flow value and total augmentations",
+    ],
 };
 
 export default module;
