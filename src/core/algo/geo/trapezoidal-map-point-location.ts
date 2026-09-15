@@ -64,7 +64,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Trapezoidal map of ${allSegs.length} segment(s); locate q=(${query[0]},${query[1]}).`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { segments: allSegs.length, query },
     };
     if (allSegs.length === 0) {
         yield {
@@ -84,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE(),
         description: `Slab boundaries at x = [${xs.join(", ")}].`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
         meta: { xs },
     };
@@ -103,7 +103,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE(),
         description: `Query x=${query[0]} falls in slab [${lo}, ${hi}].`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
         meta: { slab },
     };
@@ -119,7 +119,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE(),
         description: `${spanning.length} segment(s) span the slab; sorted by y at x=${query[0]}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { count: spanning.length },
     };
@@ -139,7 +139,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: aboveSeg
             ? `Face between y=${(spanning[below] as { y: number } | undefined)?.y ?? "-∞"} and segment s${aboveSeg.i} (y=${aboveSeg.y.toFixed(2)}).`
             : `Query above all ${spanning.length} segment(s): unbounded top face.`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { below, above: aboveSeg?.i ?? null },
     };
@@ -150,7 +150,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: snap(),
         edges: snapE(),
         description: `Located: q is ${aboveSeg ? `below segment s${aboveSeg.i}` : "in the top unbounded face"}.`,
-        codeLineNumber: 5,
+        codeLineNumber: 6,
         layout: "point",
         meta: { face: aboveSeg ? `below-s${aboveSeg.i}` : "top-unbounded" },
     };
@@ -172,6 +172,15 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from segments plus query point q",
+        "collect every segment endpoint as slab walls",
+        "find the vertical slab holding q",
+        "gather segments spanning that slab",
+        "sort spanning segments by height at q",
+        "walk the order to find the face of q",
+        "done: the reported face locates q in the map",
+    ],
 };
 
 export default module;
