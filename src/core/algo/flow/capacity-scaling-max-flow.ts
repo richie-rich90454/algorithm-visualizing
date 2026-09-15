@@ -127,8 +127,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             step++,
             N(verts),
             ME(show, new Map(), true),
-            `Delta=${delta}: pushed ${pushed} (total ${total}).`,
-            4 - delta,
+            `Delta=${delta}: pushed ${pushed} along S->1->3 and S->2->3 (total ${total}).`,
+            delta >= 4 ? 1 : delta >= 2 ? 2 : 3,
         );
         delta = Math.floor(delta / 2);
     }
@@ -161,5 +161,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize network with capacities and scaling factor",
+        "start delta phase with large bottleneck threshold",
+        "augment only along paths with capacity at least delta",
+        "halve delta and repeat with smaller threshold value",
+        "continue until delta reaches one for exact optimum",
+        "report maximum flow value across scaling phases",
+    ],
 };
 export default module;
