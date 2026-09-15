@@ -142,6 +142,7 @@ const module: AlgorithmModule = {
         "each pair extends the chain sharing its difference",
         "track best length across all differences and ends",
         "answer <- max length with sequence backtraced via links",
-    ],};
+    ],
+};
 
 export default module;
