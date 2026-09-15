@@ -57,7 +57,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs prime p, 1 <= m < p).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -69,7 +69,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `ElGamal mod ${p}: encrypt message ${m}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -129,5 +129,12 @@ const module: AlgorithmModule = {
     defaultInput: { p: 11, g: 2, x: 3, m: 5, k: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "publish p, g and the public key h = g^x mod p",
+        "mask with c1 = g^k mod p",
+        "hide the message: c2 = m·h^k mod p",
+        "recover m = c2·(c1^x)⁻¹ mod p",
+        "done: decrypted text matches the message",
+    ],
 };
 export default module;
