@@ -150,6 +150,15 @@ const module: AlgorithmModule = {
     defaultInput: { iterations: 15 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize random point with high temperature T",
+        "propose a neighboring move with energy delta",
+        "accept improvements always and others by chance",
+        "cool temperature by schedule each iteration",
+        "remember best energy and position seen",
+        "track convergence as T approaches zero",
+        "done: best energy and position reported",
+    ],
 };
 
 export default module;
