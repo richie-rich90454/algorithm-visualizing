@@ -36,7 +36,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs n >= 1).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -52,7 +52,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Seek prime p with ${n} < p < ${2 * n}.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const cands: number[] = [];
@@ -64,7 +64,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Candidates ${n + 1}..${2 * n - 1}.`,
         codeLineNumber: 1,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const w = cands.find(isPrime) as number;
@@ -77,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `${w} mod ${d} = ${r} – not divisible.`,
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         step += 1;
     }
@@ -99,5 +99,12 @@ const module: AlgorithmModule = {
     defaultInput: { n: 10 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "state the claim: some prime p has n < p < 2n",
+        "list the candidates n+1..2n−1",
+        "trial-divide each candidate by d = 2, 3, ...",
+        "the first candidate with no divisor is the witness",
+        "done: postulate holds at n with witness p",
+    ],
 };
 export default module;
