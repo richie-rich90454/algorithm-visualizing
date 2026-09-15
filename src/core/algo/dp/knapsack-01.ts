@@ -168,6 +168,7 @@ const module: AlgorithmModule = {
         "skip when item weight exceeds current capacity w",
         "otherwise keep the better of skipping or taking item i",
         "answer <- dp[n][W] with chosen items backtraced",
-    ],};
+    ],
+};
 
 export default module;
