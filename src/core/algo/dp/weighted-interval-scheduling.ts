@@ -1,6 +1,32 @@
 /**
- * Weighted Interval Scheduling: dp[j] = max(dp[j-1], w[j] + dp[p(j)]).
- * Time O(n log n), Space O(n). Default -> optimal weight 10.
+ * weighted-interval-scheduling.ts - Weighted Interval Scheduling
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Textbook dynamic programming: dp[j] <- max(dp[j-1], weight[j] + dp[p(j)]).
+ *
+ * Why DP works: optimal substructure lets larger answers build on smaller
+ * ones, and overlapping subproblems mean each state is solved once and reused.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n log n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+   - The cell being computed is YELLOW (comparing).
+   - Source cells for the transition are BLUE (active).
+   - The optimal value and path are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - States build in dependency order so every transition reads final values.
+ *   - The recurrence above is the single idea to memorize.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -56,7 +82,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "No jobs \u2013 weight 0.",
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -106,7 +132,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: makeCells([[...dp]], new Map([[`0,${n - 1}`, "sorted"]])),
         edges: [],
         description: `Traceback: optimal weight = ${dp[n - 1]}.`,
-        codeLineNumber: 4,
+        codeLineNumber: 6,
         layout: "grid",
         meta: { answer: dp[n - 1] },
     };
@@ -126,6 +152,14 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
-};
+    pseudocode: [
+        "set up jobs sorted by end time with p(j) computed",
+        "p(j) holds last job compatible with job j",
+        "dp[j] <- max(dp[j-1], weight[j] + dp[p(j)])",
+        "iterate jobs in end-time order from first to last",
+        "each job picks skip versus take-with-compatible prefix",
+        "binary search finds p(j) over sorted end times",
+        "answer <- dp[n-1] with chosen jobs reconstructed",
+    ],};
 
 export default module;
