@@ -1,9 +1,33 @@
 /**
  * graph-center-periphery-eccentricity.ts – Center / Periphery (Eccentricity)
  *
- * ecc[v] = max distance to anyone; radius = min ecc (center), diameter =
- * max ecc (periphery). Path A–B–C–D–E: center C, periphery A and E.
- * Time: O(V·(V + E)) Space: O(V)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * The eccentricity ecc[v] is the farthest distance from v to anyone – the
+ * worst-case trip starting at v. The smallest eccentricity is the radius,
+ * achieved by the center vertices; the largest is the diameter, achieved by
+ * the periphery. One breadth-first search per vertex fills the table. On
+ * the path A–B–C–D–E, C reaches everyone within 2 hops (radius 2, the
+ * center) while A and E need 4 hops (diameter 4, the periphery).
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V·(V + E)) – one BFS per vertex
+ *   Space: O(V) for distances and eccentricities
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The BFS source is YELLOW (comparing).
+ *   - Center vertices finish GREEN (sorted); periphery PINK (highlight).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Radius ≤ diameter ≤ 2·radius always holds.
+ *   - The center minimizes the worst-case distance: the 1-center problem.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -85,7 +109,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     for (const v of labels) if (!center.includes(v) && !periph.includes(v)) setN(v, "visited");
     yield snap(
         `Radius ${radius} (center {${center.join(",")}}), diameter ${diameter} (periphery {${periph.join(",")}}).`,
-        2,
+        4,
         { radius, diameter },
     );
 }
@@ -98,6 +122,13 @@ const module: AlgorithmModule = {
     defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] } },
     visualType: "graph",
     run,
+    pseudocode: [
+        "set up one BFS per vertex over the whole graph",
+        "BFS from s: ecc[s] ← the farthest reachable distance",
+        "repeat for every vertex s",
+        "radius ← min ecc (center); diameter ← max ecc (periphery)",
+        "done: center {C} at radius 2, periphery {A,E} at diameter 4",
+    ],
 };
 
 export default module;
