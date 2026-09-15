@@ -132,6 +132,15 @@ const module: AlgorithmModule = {
     defaultInput: { pushes: [5, 3, 8], popCount: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty array stack with top at index 0",
+        "push value: write it at top and increment top",
+        "repeat until every pushed value sits in arrival order",
+        "pop: decrement top and read the exposed value (LIFO)",
+        "each pop returns the most recently pushed survivor",
+        "track size as top after every operation",
+        "done: pops left in LIFO order and the final stack state holds",
+    ],
 };
 
 export default module;
