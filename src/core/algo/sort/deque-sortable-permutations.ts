@@ -1,8 +1,31 @@
 /**
- * deque-sortable-permutations.ts – Deque Sortable Permutations.
+ * deque-sortable-permutations.ts – Deque Sortable Permutations
  *
- * Routes each element to either deque end.
- * Time: O(n), Space: O(n)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * This module explores which permutations a double-ended queue can sort by pushing to either end and reading end to end. Each element chooses the front or back slot that keeps the deque closest to sorted order. It connects sorting to deque automata and permutation patterns studied in combinatorics.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n)
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -103,7 +126,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -132,5 +155,13 @@ const module: AlgorithmModule = {
     defaultInput: [3, 1, 2],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with input queued before the deque",
+        "push the next element to the back of the deque",
+        "choose front or back placement per element",
+        "read the deque end-to-end toward sorted order",
+        "scan deque output into final order",
+        "done: deque holds a sorted permutation",
+    ],
 };
 export default module;
