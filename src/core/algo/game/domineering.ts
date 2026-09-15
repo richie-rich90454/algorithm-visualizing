@@ -1,6 +1,35 @@
-// domineering.ts – Domineering: Left places vertical dominoes, Right horizontal.
-// One line on 4×4 strands Right: after L(0,0-1,0), R(0,1-0,2), L(2,0-3,0),
-// R(1,1-1,2), L(2,2-3,2), no horizontal pair stays free. Verified below.
+/**
+ * domineering.ts – Domineering (partisan domino placement)
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Domineering is played on a checkerboard. Left places only vertical
+ * dominoes (V) and Right places only horizontal dominoes (H). The player
+ * unable to place loses. Simply: fill the orientations your opponent needs.
+ * Formally: the board splits into independent regions with combinatorial
+ * game values, and the illustrated 4x4 line strands Right because every
+ * free cell's horizontal neighbor is taken.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n^2) for the illustrated placement line
+ *   Space: O(n^2) board cells
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Empty cells are idle; Left vertical dominoes paint GREEN (sorted).
+ *   - Right horizontal dominoes paint as highlighted.
+ *   - The just-placed domino flashes YELLOW (comparing).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Partisan: vertical moves belong to Left, horizontal to Right.
+ *   - Left moves first; the player with no placement loses.
+ */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
 type Domino = [string, string];
@@ -52,10 +81,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: domCells(used, null),
         edges: [],
         description:
-            "Domineering on 4×4 – Left (V, vertical) moves first, Right (H, horizontal) replies.",
+            "Domineering on empty 4x4 board – Left (V, vertical) moves first, Right (H, horizontal) replies.",
         codeLineNumber: 0,
         layout: "grid",
-        meta: { size: 4 },
+        meta: { size: 4, player: "Left" },
     };
     step += 1;
     const replay = new Map<string, string>();
@@ -70,10 +99,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: domCells(new Map(replay), entry.dom),
             edges: [],
-            description: `${entry.who === "V" ? "Left" : "Right"} places ${entry.who === "V" ? "vertical" : "horizontal"} domino on ${entry.dom[0]}–${entry.dom[1]}.`,
-            codeLineNumber: 1,
+            description: `${entry.who === "V" ? "Left" : "Right"} places ${entry.who === "V" ? "vertical V" : "horizontal H"} domino covering cells ${entry.dom[0]} and ${entry.dom[1]}.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { size: 4, domino: i + 1, who: entry.who },
+            meta: { size: 4, domino: i + 1, who: entry.who, cells: entry.dom },
         };
         step += 1;
     }
@@ -82,10 +111,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: domCells(used, null),
         edges: [],
         description:
-            "Every free cell's horizontal neighbor is taken – Right has no reply and loses this line.",
-        codeLineNumber: 2,
+            "Every free cell's horizontal neighbor is taken, so Right has no H placement and loses this line.",
+        codeLineNumber: 5,
         layout: "grid",
-        meta: { size: 4, winner: "Left" },
+        meta: { size: 4, winner: "Left", winning: true },
     };
 }
 
@@ -97,6 +126,14 @@ const module: AlgorithmModule = {
     defaultInput: { size: 4 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start from an empty 4 x 4 board with Left (vertical) to move",
+        "Left may place only vertical dominoes, Right only horizontal ones",
+        "alternate V and H placements along the illustrated legal line",
+        "highlight each new domino and the cells it now blocks",
+        "stop when no two empty horizontal neighbors remain for Right",
+        "winner is Left, since Right to move has no legal H placement",
+    ],
 };
 
 export default module;
