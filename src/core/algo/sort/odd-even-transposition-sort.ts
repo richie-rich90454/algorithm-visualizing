@@ -1,8 +1,31 @@
 /**
- * odd-even-transposition-sort.ts – Odd-Even Transposition Sort.
+ * odd-even-transposition-sort.ts – Odd-Even Transposition Sort
  *
- * Brick sort alternates odd and even neighbor swaps.
- * Time: O(n²), Space: O(1)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Odd-even transposition sort is bubble sort for parallel hardware: even phases compare all even-indexed pairs at once, odd phases compare all odd-indexed pairs. This brick-wall pattern needs at most n phases. It is the simplest sorting network that students can simulate by hand.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n²)
+ *   Space: O(1)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The element under inspection is YELLOW (comparing).
+ *   - Elements that move or swap flash RED (swapped).
+ *   - Newly placed or grouped elements are PINK (highlight).
+ *   - Finished elements turn GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - In place on the visualized array; the animation shows positions directly.
+ *   - Frame budget is capped so classroom playback stays short and readable.
+ *   - Best studied next to a general-purpose sort to compare trade-offs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): VisualEntity[] {
@@ -99,7 +122,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr, h),
             edges: [],
-            description: "Scanning elements into place.",
+            description: `Scanning position ${step % Math.max(arr.length, 1)} holding value ${arr[step % Math.max(arr.length, 1)]} into place.`,
             codeLineNumber: 4,
             layout: "array",
             meta: { comparisons, swaps },
@@ -128,5 +151,13 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 4, 2, 3],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the brick wall of unsorted bars",
+        "compare all even-indexed adjacent pairs",
+        "compare all odd-indexed adjacent pairs",
+        "swap any flipped pair within the phase",
+        "repeat both phases until a full pass is clean",
+        "done: array is fully sorted",
+    ],
 };
 export default module;
