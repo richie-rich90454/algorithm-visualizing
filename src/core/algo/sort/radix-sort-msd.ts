@@ -235,6 +235,13 @@ const module: AlgorithmModule = {
     defaultInput: [170, 45, 75, 90, 802, 24, 2, 66],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted array at the top digit place",
+        "split off negatives, they sort by descending magnitude",
+        "bucket slice [lo..hi] by its current digit",
+        "recurse into each bucket on the next digit",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
