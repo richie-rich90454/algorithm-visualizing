@@ -98,8 +98,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty pairing heap.",
-        codeLineNumber: 1,
+        description: "Empty pairing heap - insert keys to build the meldable heap.",
+        codeLineNumber: 0,
         layout: "tree",
         meta: { size: 0 },
     };
@@ -135,6 +135,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [5, 3, 8, 1, 9] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty meldable heap",
+        "insert key: meld a singleton tree with the current root",
+        "meld: attach the larger root as a child of the smaller root",
+        "repeat until all keys share one heap-ordered tree",
+        "extract-min: remove the root holding the minimum",
+        "pair up the root children and meld the pairs left to right",
+        "done: minimum is reported and the heap still holds the rest",
+    ],
 };
 
 export default module;
