@@ -42,7 +42,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Two circles: center distance d=${d.toFixed(2)}.`,
         codeLineNumber: 0,
         layout: "point",
-        meta: {},
+        meta: { centerDistance: d },
     };
     step += 1;
     if (d < 1e-9) {
@@ -63,9 +63,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base(),
         edges: [],
         description: `Base point at a=${a.toFixed(2)} along the center line.`,
-        codeLineNumber: 1,
+        codeLineNumber: 2,
         layout: "point",
-        meta: {},
+        meta: { basePoint: a },
     };
     step += 1;
     const h2 = r0 * r0 - a * a;
@@ -75,7 +75,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: base(),
             edges: [],
             description: "Circles are separate or contained – no intersection.",
-            codeLineNumber: 2,
+            codeLineNumber: 3,
             layout: "point",
             meta: { points: [] },
         };
@@ -93,9 +93,9 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: base(),
         edges: [],
         description: `Height h=${h.toFixed(2)} across the center line.`,
-        codeLineNumber: 2,
+        codeLineNumber: 3,
         layout: "point",
-        meta: {},
+        meta: { height: h },
     };
     step += 1;
     const pts = h < 1e-9 ? [p] : [p, q];
@@ -104,7 +104,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...base(), ...pts.map((s, i) => ptNode(`x-${i}`, s, `X${i}(${s})`, "sorted"))],
         edges: [],
         description: h < 1e-9 ? `Tangent at (${p}).` : `Two intersections: (${p}) and (${q}).`,
-        codeLineNumber: 3,
+        codeLineNumber: 4,
         layout: "point",
         meta: { points: pts.map(([x, y]) => `${x},${y}`) },
     };
@@ -114,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         entities: [...base(), ...pts.map((s, i) => ptNode(`x-${i}`, s, `X${i}(${s})`, "sorted"))],
         edges: [],
         description: `Verified: |X−C0|=${Math.hypot(pts[0][0] - c0[0], pts[0][1] - c0[1]).toFixed(2)} (r0=${r0}).`,
-        codeLineNumber: 4,
+        codeLineNumber: 5,
         layout: "point",
         meta: { points: pts.map(([x, y]) => `${x},${y}`) },
     };
@@ -128,6 +128,14 @@ const module: AlgorithmModule = {
     defaultInput: { c0: [0, 0], r0: 3, c1: [4, 0], r1: 3 },
     visualType: "graph",
     run,
+    pseudocode: [
+        "start from two centers and radii, measure center distance d",
+        "when concentric: zero or infinitely many crossings",
+        "walk distance a along the center line to the base point",
+        "when a falls outside both radii: the circles miss",
+        "rise height h perpendicular to the center line",
+        "done: base plus or minus h gives one tangent or two crossings",
+    ],
 };
 
 export default module;
