@@ -125,7 +125,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             999,
             path,
         ),
-        "Done.",
+        `Complete: ${matches.length} hit(s) with distance at most k=${k}.`,
         4,
         { matches, k },
     );
