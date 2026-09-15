@@ -207,6 +207,13 @@ const module: AlgorithmModule = {
     defaultInput: [170, 45, 75, 90, 802, 24, 2, 66],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted array, find digit count d",
+        "for place ← 0 to d-1: bucket by current digit",
+        "for each x: drop x into bucket digit(x, place)",
+        "reassemble buckets 0..9 in order (stable)",
+        "done: array is ordered by all digit places",
+    ],
 };
 
 export default module;
