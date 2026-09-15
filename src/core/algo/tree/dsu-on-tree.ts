@@ -1,7 +1,8 @@
 /**
- * dsu-on-tree.ts – DSU on tree (small-to-large subtree colors)
- * Counts distinct colors per subtree, merging small sets into big ones.
- * Time O(n log n), Space O(n). States: active=comparing, done=sorted.
+ * dsu-on-tree.ts – DSU on tree with small-to-large subtree color merging.
+ *
+ * Counts distinct colors per subtree, merging small sets into large ones.
+ * Time O(n log n), Space O(n). Active node uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -127,5 +128,12 @@ const module: AlgorithmModule = {
     },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes in postorder so children come first",
+        "find the big child with the largest color set",
+        "merge small child sets into the big child set",
+        "record distinct color count for current node",
+        "return distinct color counts for every subtree",
+    ],
 };
 export default module;
