@@ -107,10 +107,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "Second best MST – starting with Kruskal's MST.",
+        description: `Second best MST on ${vertices.length} vertices, ${edgeList.length} edges – starting with Kruskal's MST.`,
         codeLineNumber: 0,
         layout: "graph",
-        meta: {},
+        meta: { mstEdges: 0, accepted: 0, totalWeight: 0 },
     };
     step += 1;
 
@@ -142,10 +142,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: nodes.map((n) => ({ ...n })),
         edges: edges.map((e) => ({ ...e })),
-        description: "MST found with Kruskal's algorithm (cyan edges).",
-        codeLineNumber: 2,
+        description: `Kruskal MST (cyan): ${mstEdges.map((i) => `${edgeList[i]?.[0]}–${edgeList[i]?.[1]}(${edgeList[i]?.[2]})`).join(", ")}.`,
+        codeLineNumber: 0,
         layout: "graph",
-        meta: { mstEdges: mstEdges.length },
+        meta: {
+            mstEdges: mstEdges.length,
+            accepted: mstEdges.length,
+            totalWeight: mstEdges.reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+        },
     };
     step += 1;
 
@@ -249,10 +253,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes.map((n) => ({ ...n })),
             edges: edges.map((e) => ({ ...e })),
-            description: `Testing non-tree edge ${u}–${v} (weight ${weight}).`,
-            codeLineNumber: 3,
+            description: `Testing non-tree edge ${u}–${v} (weight ${weight}): walk its MST path for the heaviest edge.`,
+            codeLineNumber: 2,
             layout: "graph",
-            meta: { mstEdges: mstEdges.length },
+            meta: {
+                mstEdges: mstEdges.length,
+                accepted: mstEdges.length,
+                totalWeight: mstEdges.reduce((s, i) => s + (edgeList[i]?.[2] ?? 0), 0),
+            },
         };
         step += 1;
         if (edge) {
@@ -281,10 +289,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description:
             secondBestWeight === Infinity
                 ? `No second-best tree exists (only one spanning tree).`
-                : `Second best MST: weight ${mstWeight + secondBestWeight} (MST was ${mstWeight}).`,
-        codeLineNumber: 4,
+                : `Second best MST weight ${mstWeight + secondBestWeight} (MST was ${mstWeight}): add ${edgeList[secondBestSwap!.add]?.[0]}–${edgeList[secondBestSwap!.add]?.[1]}(${edgeList[secondBestSwap!.add]?.[2]}), remove ${edgeList[secondBestSwap!.remove]?.[0]}–${edgeList[secondBestSwap!.remove]?.[1]}(${edgeList[secondBestSwap!.remove]?.[2]}).`,
+        codeLineNumber: 5,
         layout: "graph",
-        meta: { mstWeight, secondBestWeight: mstWeight + secondBestWeight },
+        meta: {
+            mstWeight,
+            secondBestWeight:
+                secondBestWeight === Infinity ? mstWeight : mstWeight + secondBestWeight,
+            totalWeight: secondBestWeight === Infinity ? mstWeight : mstWeight + secondBestWeight,
+            accepted: mstEdges.length,
+        },
     };
 }
 
@@ -311,6 +325,14 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute the MST with Kruskal and record its total weight",
+        "build adjacency for the MST to walk tree paths quickly",
+        "for each non-tree edge u–v: examine the MST path",
+        "find the heaviest edge on the u–v path in the MST",
+        "keep the swap that raises the weight the least",
+        "done: best swap gives the second-best MST total weight",
+    ],
 };
 
 export default module;
