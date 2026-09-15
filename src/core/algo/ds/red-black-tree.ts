@@ -177,8 +177,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty red-black tree.",
-        codeLineNumber: 1,
+        description: "Empty red-black tree - inserts recolor and rotate to restore balance.",
+        codeLineNumber: 0,
         layout: "tree",
         meta: { size: 0 },
     };
@@ -207,6 +207,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [7, 3, 18, 10, 22, 8, 11] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with an empty red-black tree with black leaves",
+        "insert key as a red node using plain BST placement",
+        "while a red parent has a red child: recolor or rotate",
+        "rotations are left, right, plus left-right and right-left cases",
+        "recolor the root black to restore the black-height rule",
+        "search follows BST comparisons down to the key or a leaf",
+        "done: red-black invariants hold and the tree state is reported",
+    ],
 };
 
 export default module;
