@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Cartesian Tree: empty. Heap by value, inorder by position; built in O(n).",
         codeLineNumber: 0,
         layout: "tree",
-        meta: {},
+        meta: { operations: step },
     };
     step += 1;
     for (const v of keys.slice(0, 8)) {
@@ -99,7 +99,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Inserted ${v}.`,
+            description: `Inserted key ${v} via comparison and attached as leaf node.`,
             codeLineNumber: 1,
             layout: "tree",
             meta: { size: ins.length },
@@ -115,10 +115,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: nodes(ins, par, st),
             edges: [],
-            description: `Search ${q} at ${ins[cur]}.`,
+            description: `Compare query ${q} against node ${ins[cur]} then go left or right.`,
             codeLineNumber: 2,
             layout: "tree",
-            meta: {},
+            meta: { operations: step },
         };
         step += 1;
         if (ins[cur] === q) {
@@ -153,7 +153,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             found >= 0
                 ? `Heap+inorder verified. Search ${q} found; rank ${rank}.`
                 : `Search ${q} absent; rank would be ${rank}.`,
-        codeLineNumber: 3,
+        codeLineNumber: 6,
         layout: "tree",
         meta: { found: found >= 0, rank },
     };
@@ -167,5 +167,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "initialize empty Cartesian tree with stack for construction",
+        "scan array left to right maintaining heap order",
+        "compare incoming value against stack top",
+        "pop larger elements until heap property holds",
+        "attach popped subtree as left child of new node",
+        "push new node as right child of stack top",
+        "done: Cartesian tree holds array with heap and inorder properties",
+    ],
 };
 export default module;
