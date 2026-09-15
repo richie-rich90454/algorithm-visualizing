@@ -1,6 +1,29 @@
 /**
  * rendezvous-hashing.ts - Rendezvous Hashing
  * Highest-weight node wins per key (HRW). Demo: hash <=6 keys into table, lookup hit/miss.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Highest-weight node wins per key (HRW). Demo: hash <=6 keys into table, lookup hit/miss.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) pick
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Rendezvous Hashing behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -45,7 +68,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: "Rendezvous Hashing: empty table. Highest-weight node wins per key (HRW).",
         codeLineNumber: 0,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     for (const k of keys) {
@@ -61,7 +84,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Insert ${k} -> slot ${j} (h=${h(k)}).`,
             codeLineNumber: 1,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         step += 1;
     }
@@ -73,7 +96,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: "Empty input: table stays empty.",
             codeLineNumber: 2,
             layout: "grid",
-            meta: {},
+            meta: { ops: step },
         };
         return;
     }
@@ -89,7 +112,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `Lookup ${q}: ${hit ? `found at slot ${j}` : "absent"}.`,
         codeLineNumber: 2,
         layout: "grid",
-        meta: {},
+        meta: { ops: step },
     };
     step += 1;
     const n = table.filter((v) => v !== null).length;
@@ -112,5 +135,14 @@ const module: AlgorithmModule = {
     defaultInput: { keys: [12, 5, 21, 8], query: 21 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty node table and no assignments",
+        "hash key against every node to get one weight per node",
+        "assign the key to the highest-weight node (HRW rule)",
+        "repeat until every key has a winning node",
+        "lookup recomputes the weights and checks the winner slot",
+        "minimal disruption: only keys from removed nodes move",
+        "done: assignments are stable and the lookup answer is reported",
+    ],
 };
 export default module;
