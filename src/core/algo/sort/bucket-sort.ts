@@ -207,6 +207,13 @@ const module: AlgorithmModule = {
     defaultInput: [0.42, 0.32, 0.67, 0.1, 0.55, 0.83, 0.24, 0.71],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with n empty buckets covering [0, 1)",
+        "for each x in A: drop x into bucket floor(x * n)",
+        "sort each bucket with insertion sort",
+        "concatenate buckets 0..n-1 back into A",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
