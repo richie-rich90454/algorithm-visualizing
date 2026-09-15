@@ -42,7 +42,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             description: `Degenerate (needs square matrix).`,
             codeLineNumber: 0,
             layout: "grid",
-            meta: {},
+            meta: { step },
         };
         return;
     }
@@ -61,7 +61,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `${tag}: ${desc}`,
         codeLineNumber: line,
         layout: "grid",
-        meta: {},
+        meta: { step },
     });
     yield show(A, "A", `Decompose ${n}x${n} matrix.`, 0);
     step += 1;
@@ -77,7 +77,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 description: `Zero pivot at ${k} – needs row swap, stopping honestly.`,
                 codeLineNumber: 1,
                 layout: "grid",
-                meta: {},
+                meta: { step },
             };
             return;
         }
@@ -97,7 +97,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `L = [${L.map((r) => `[${r}]`).join(", ")}].`,
         codeLineNumber: 3,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     yield {
@@ -107,7 +107,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         description: `U = [${U.map((r) => `[${r}]`).join(", ")}].`,
         codeLineNumber: 4,
         layout: "grid",
-        meta: {},
+        meta: { step },
     };
     step += 1;
     const prod = A.map((row, r) =>
@@ -136,5 +136,13 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "copy A into U and start L as identity",
+        "a zero pivot needs a row swap: stop here",
+        "eliminate below the diagonal in column k",
+        "read out the unit-lower matrix L",
+        "read out the upper matrix U",
+        "done: L·U matches A",
+    ],
 };
 export default module;
