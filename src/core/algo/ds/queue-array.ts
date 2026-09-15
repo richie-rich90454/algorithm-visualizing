@@ -120,6 +120,15 @@ const module: AlgorithmModule = {
     defaultInput: { enqueues: [5, 3, 8], dequeueCount: 2 },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with an empty array queue where front equals rear",
+        "enqueue value: write it at the rear and advance rear",
+        "if the array is full: allocate a larger array and copy over",
+        "repeat until every value is queued in order",
+        "dequeue: read the front slot and advance front (FIFO)",
+        "remaining slots keep their arrival order",
+        "done: dequeued values left in FIFO order and the queue state holds",
+    ],
 };
 
 export default module;
