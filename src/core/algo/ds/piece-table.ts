@@ -1,6 +1,29 @@
 /**
  * piece-table.ts - Piece Table
  * Edits append pieces; original buffer untouched. Demo: build seq + insert/delete, verify outcome.
+ 
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Edits append pieces; original buffer untouched. Demo: build seq + insert/delete, verify outcome.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) insert
+ *   Space: O(n)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *    - Cells form rows or columns of values.
+ *    - The touched cell is YELLOW (comparing).
+ *    - Finished cells are GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Standard Piece Table behavior with textbook operation costs.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -84,5 +107,14 @@ const module: AlgorithmModule = {
     defaultInput: { items: [4, 1, 7, 3, 6] },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start with the original buffer plus an empty add buffer",
+        "describe the text as a list of pieces pointing into buffers",
+        "insert: append text to the add buffer and splice in a new piece",
+        "delete: drop or trim pieces, never touch the original buffer",
+        "repeat edits, pieces always spell the current sequence",
+        "verify by reading the pieces back in order",
+        "done: piece list spells the edited text and checks pass",
+    ],
 };
 export default module;
