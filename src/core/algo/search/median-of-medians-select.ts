@@ -1,9 +1,35 @@
 /**
  * median-of-medians-select.ts – Median of Medians Select
  *
- * Deterministic linear-time selection: split into groups of five, take
- * each group's median, use the median of medians as pivot, then recurse
- * into the side holding k. Verified against a sorted copy.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Deterministic linear-time selection for the k-th smallest element. Split
+ * the array into groups of five, take each group's median, then take the
+ * median of those medians as a guaranteed-good pivot. Partitioning around
+ * it discards at least 30 percent of the array, so the recursion stays
+ * linear. The visualization groups, pivots, partitions, then reports the
+ * k-th value.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(n) worst – the pivot guarantees proportional shrinkage
+ *   Space: O(n) here – group copies and filtered partitions
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - Group members are PINK (highlight) while medians are computed.
+ *   - The median-of-medians pivot is YELLOW (comparing).
+ *   - The settled pivot slot is PINK; the answer turns GREEN (sorted).
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - The classic proof that selection can be worst-case linear.
+ *   - Group size five is the smallest that keeps the recurrence linear.
+ *   - Used in theory-heavy courses to contrast with randomized quickselect.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -44,7 +70,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr),
         edges: [],
-        description: `Median-of-medians: ${k}-th smallest of ${arr.length} elements.`,
+        description: `Median-of-medians hunts the ${k}-th smallest among ${arr.length} unsorted elements.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { comparisons, k },
@@ -55,8 +81,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeBars(arr),
             edges: [],
-            description: "Empty array – no k-th element exists.",
-            codeLineNumber: 1,
+            description: "Empty array holds no elements, so no k-th value exists here.",
+            codeLineNumber: 5,
             layout: "array",
             meta: { comparisons, k },
         };
@@ -74,10 +100,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, groupStates),
         edges: [],
-        description: `${groups.length} groups of five – group medians are ${medians.join(", ")}.`,
+        description: `Split into ${groups.length} groups of five; group medians are ${medians.join(", ")}.`,
         codeLineNumber: 1,
         layout: "array",
-        meta: { comparisons, k },
+        meta: { comparisons, k, medians },
     };
     step += 1;
     const pivot = median(medians);
@@ -85,7 +111,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, new Map([[arr.indexOf(pivot), "comparing"]])),
         edges: [],
-        description: `Median of medians is ${pivot} – partitioning around it.`,
+        description: `Median of medians is ${pivot}; partitioning the array around it.`,
         codeLineNumber: 2,
         layout: "array",
         meta: { comparisons, k, pivot },
@@ -104,10 +130,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, new Map([[pivotIndex, "highlight"]])),
         edges: [],
-        description: `Partitioned: ${less.length} smaller, ${equal.length} equal – k=${k} is in the ${side}.`,
+        description: `Partitioned into ${less.length} smaller and ${equal.length} equal; rank ${k} falls in the ${side} part.`,
         codeLineNumber: 3,
         layout: "array",
-        meta: { comparisons, k },
+        meta: { comparisons, k, pivot, pivotIndex },
     };
     step += 1;
     const verified = [...arr].sort((a, b) => a - b)[k - 1] as number;
@@ -116,10 +142,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(arr, new Map([[foundIndex, "sorted"]])),
         edges: [],
-        description: `${k}-th smallest is ${verified} (index ${foundIndex}).`,
-        codeLineNumber: 4,
+        description: `${k}-th smallest is ${verified} at index ${foundIndex} after ${comparisons} comparisons.`,
+        codeLineNumber: 5,
         layout: "array",
-        meta: { comparisons, k, foundIndex },
+        meta: { comparisons, k, foundIndex, answer: verified },
     };
 }
 
@@ -131,6 +157,14 @@ const module: AlgorithmModule = {
     defaultInput: { array: [9, 3, 7, 1, 5, 8, 2, 6, 4], k: 5 },
     visualType: "array",
     run,
+    pseudocode: [
+        "start with the full unsorted array seeking rank k",
+        "split into groups of five and record each group median",
+        "pivot ← median of the group medians",
+        "partition into smaller, equal, and larger than pivot",
+        "recurse only into the part holding rank k",
+        "done: return k-th smallest value and its index",
+    ],
 };
 
 export default module;
