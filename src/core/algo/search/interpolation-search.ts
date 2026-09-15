@@ -190,6 +190,13 @@ const module: AlgorithmModule = {
     defaultInput: { array: [10, 20, 30, 40, 50, 60, 70, 80], target: 60 },
     visualType: "array",
     run,
+    pseudocode: [
+        "set lo ← 0 and hi ← n-1 over the sorted uniform array",
+        "while lo ≤ hi and target is inside A[lo]..A[hi]",
+        "pos ← lo+⌊((target-A[lo])×(hi-lo))/(A[hi]-A[lo])⌋; compare A[pos]",
+        "if A[pos] = target: return pos else shrink lo ← pos+1 or hi ← pos-1",
+        "done: return found index or report target absent",
+    ],
 };
 
 export default module;
