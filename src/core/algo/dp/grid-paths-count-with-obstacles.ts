@@ -147,6 +147,7 @@ const module: AlgorithmModule = {
         "blocked cells contribute zero and stop propagation",
         "each free cell sums paths from top and left neighbors",
         "answer <- dp[m-1][cols-1] with a sample path backtraced",
-    ],};
+    ],
+};
 
 export default module;
