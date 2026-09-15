@@ -89,7 +89,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     step += 1;
     yield F(
         dots.map(([r, c]) => dot(r, c)),
-        "Done.",
+        `Dot plot complete: ${dots.length} dots mark every match.`,
         4,
         { dots: dots.length },
     );
