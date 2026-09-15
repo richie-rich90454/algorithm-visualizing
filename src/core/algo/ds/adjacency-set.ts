@@ -128,6 +128,15 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "initialize empty adjacency sets with one hash set per vertex",
+        "insert edge (u, v) by adding v to set of u",
+        "hash neighbor values to keep sets deduplicated",
+        "answer edge query by set membership test in O(1)",
+        "compare set sizes to find highest degree vertex",
+        "count entries across sets for total edges",
+        "done: adjacency sets store graph and membership answer",
+    ],
 };
 
 export default module;
