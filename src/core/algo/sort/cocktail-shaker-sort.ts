@@ -190,7 +190,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                     stepNumber: step,
                     entities: makeBars(arr, swapStates),
                     edges: [],
-                    description: `Backward: swapped ${b} and ${a}.`,
+                    description: `Backward: swapped ${a} and ${b} at positions ${i}-${i + 1}.`,
                     codeLineNumber: 6,
                     layout: "array",
                     meta: { comparisons, swaps },
@@ -241,6 +241,17 @@ const module: AlgorithmModule = {
     defaultInput: [5, 1, 8, 3, 7, 2, 6, 4],
     visualType: "array",
     run,
+    pseudocode: [
+        "start with unsorted region [left..right], left ← 0, right ← n-1",
+        "set left ← 0 and right ← n-1 for the shaker bounds",
+        "forward pass: for i ← left to right-1: compare A[i] and A[i+1]",
+        "if A[i] > A[i+1]: swap them",
+        "largest settles at right, shrink right by one",
+        "backward pass: for i ← right down to left: compare A[i] and A[i+1]",
+        "if A[i] > A[i+1]: swap them",
+        "smallest settles at left, grow left by one",
+        "done: array is fully sorted",
+    ],
 };
 
 export default module;
