@@ -1,9 +1,34 @@
 /**
  * label-propagation-communities.ts – Label Propagation Communities
  *
- * Every vertex adopts its neighbors' most frequent label until stable –
- * dense groups collapse onto one label. Barbell splits {A,B,C} | {D,E,F}.
- * Time: O(k·(V + E)) Space: O(V + E)
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Communities are groups with dense inside links and sparse outside links.
+ * Label propagation finds them with almost no machinery: every vertex
+ * starts with a unique label, then each vertex repeatedly adopts the most
+ * frequent label among its neighbors. Dense groups quickly collapse onto
+ * one shared label while sparse bridges fail to convert either side. On
+ * the barbell the halves settle into {A,B,C} and {D,E,F}.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(k·(V + E)) – k sweep rounds over all edges
+ *   Space: O(V + E) for labels and adjacency
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The vertex adopting a label is YELLOW (comparing).
+ *   - Neighbors carrying the adopted label show GREEN (sorted).
+ *   - Each final community gets its own color.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Nearly linear and parameter-free, but ties make it nondeterministic.
+ *   - A fast first pass before heavier methods like Louvain.
  */
 import type { AlgorithmModule, EntityState, VisualFrame } from "@/types";
 import { makeGraphEdges, makeGraphNodes } from "./graph-util";
@@ -104,7 +129,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
     yield snap(
         `Communities: ${[...groups.values()].map((m) => `{${m.sort().join(",")}}`).join(" ")}.`,
-        3,
+        4,
         { communities: groups.size },
     );
 }
@@ -126,6 +151,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "give every vertex its own unique label",
+        "each vertex adopts its neighbors' most frequent label",
+        "repeat full sweeps until no vertex changes label",
+        "group vertices that share a label into communities",
+        "done: communities such as {A,B,C} and {D,E,F}",
+    ],
 };
 
 export default module;
