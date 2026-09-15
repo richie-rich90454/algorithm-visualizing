@@ -1,7 +1,8 @@
 /**
- * tree-hashing.ts – Subtree hashing (sorted child-hash combine)
- * hash(u) = 1 + sorted child hashes mixed with a prime.
- * Time O(n log deg), Space O(n). current=comparing, done=sorted.
+ * tree-hashing.ts – Subtree hashing with sorted child-hash combine.
+ *
+ * hash(u) equals 1 plus sorted child hashes mixed with a prime.
+ * Time O(n log deg), Space O(n). Current uses comparing, done uses sorted.
  */
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";
 
@@ -103,5 +104,12 @@ const module: AlgorithmModule = {
     defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
     visualType: "tree",
     run,
+    pseudocode: [
+        "order nodes in postorder from the root",
+        "sort child hashes to canonicalize order",
+        "combine sorted child hashes with prime mixing",
+        "assign leaf hash constant to childless nodes",
+        "return root hash as the tree fingerprint",
+    ],
 };
 export default module;
