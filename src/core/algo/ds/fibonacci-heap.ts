@@ -93,7 +93,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             },
         ],
         edges: [],
-        description: "Empty Fibonacci heap.",
+        description: "Empty Fibonacci heap with no root trees ready for lazy inserts.",
         codeLineNumber: 1,
         layout: "graph",
         meta: { roots: 0, nodes: 0 },
@@ -124,6 +124,15 @@ const module: AlgorithmModule = {
     defaultInput: { inserts: [7, 3, 9, 5, 2] },
     visualType: "graph",
     run,
+    pseudocode: [
+        "initialize empty Fibonacci heap with empty root list",
+        "insert key as singleton tree in root list in O(1)",
+        "compare new key against minimum pointer",
+        "extract minimum and consolidate equal-degree trees",
+        "link trees by comparing roots during consolidation",
+        "decrease key with cascading cuts if needed",
+        "done: heap holds keys with minimum identified",
+    ],
 };
 
 export default module;
