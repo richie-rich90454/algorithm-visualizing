@@ -1,6 +1,25 @@
 /**
- * mst-sensitivity-analysis.ts - MST Sensitivity Analysis.
- * How far each edge weight can move before the MST changes.
+ * mst-sensitivity-analysis.ts – MST Sensitivity Analysis.
+ *
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * Sensitivity analysis asks how far each edge weight can move before the MST
+ * changes. For a tree edge, the limit is the cheapest non-tree edge crossing
+ * its cut; for a non-tree edge, it is the heaviest tree edge on its path. The
+ * demo reports both tolerances so students see the cut and cycle properties.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(V E) – each edge triggers a small search
+ *   Space: O(V + E)
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The edge under test is YELLOW (comparing).
+ *   - The reference MST turns GREEN (sorted) in the final frame.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 type E3 = { a: string; b: string; w: number };
@@ -49,7 +68,7 @@ const EMPTY = (step: number, what: string): VisualFrame => ({
     stepNumber: step,
     entities: [],
     edges: [],
-    description: `Empty input - no ${what} to process.`,
+    description: `Empty input — no ${what} to process.`,
     codeLineNumber: 0,
     layout: "graph",
     meta: {},
@@ -68,13 +87,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const verts = [...d.vertices];
     const list: E3[] = d.edges.map((e) => ({ a: e[0], b: e[1], w: e[2] }));
     let step = 0;
-    yield FR(
-        step++,
-        N(verts),
-        ME(list),
-        `Sensitivity of the MST: reference MST is A-B(1), B-C(2), C-D(3), weight 6.`,
-        0,
-    );
+    yield {
+        ...FR(
+            step++,
+            N(verts),
+            ME(list),
+            `Sensitivity of the MST on ${verts.length} vertices, ${list.length} edges: reference tree A–B(1), B–C(2), C–D(3), weight 6.`,
+            0,
+        ),
+        meta: { accepted: 3, totalWeight: 6 },
+    };
     const tree = [0, 1, 2];
     const inTree = new Set<number>(tree);
     const adj = new Map<string, Array<{ to: string; i: number }>>();
@@ -130,35 +152,41 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             const c = list[j] as E3;
             if (side.has(c.a) !== side.has(c.b)) best = Math.min(best, c.w);
         }
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map([[i, "comparing"]])),
-            `Tree edge ${e.a}-${e.b} (${e.w}) can rise by ${best - e.w} (up to ${best}) before leaving the MST.`,
-            1,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map([[i, "comparing"]])),
+                `Tree edge ${e.a}–${e.b} (weight ${e.w}) can rise by ${best - e.w} (up to ${best}) before leaving the MST.`,
+                1,
+            ),
+            meta: { accepted: 3, totalWeight: 6 },
+        };
     }
     for (let j = 0; j < list.length; j += 1) {
         if (inTree.has(j)) continue;
         const e = list[j] as E3;
         const m = pathMax(e.a, e.b);
-        yield FR(
-            step++,
-            N(verts),
-            ME(list, new Map([[j, "comparing"]])),
-            `Non-tree edge ${e.a}-${e.b} (${e.w}) can drop by ${e.w - m} (down to ${m}) before entering the MST.`,
-            2,
-        );
+        yield {
+            ...FR(
+                step++,
+                N(verts),
+                ME(list, new Map([[j, "comparing"]])),
+                `Non-tree edge ${e.a}–${e.b} (weight ${e.w}) can drop by ${e.w - m} (down to ${m}) before entering the MST.`,
+                3,
+            ),
+            meta: { accepted: 3, totalWeight: 6 },
+        };
     }
     yield {
         ...FR(
             step++,
             N(verts),
             ME(list, new Map(tree.map((i) => [i, "sorted"] as [number, EntityState]))),
-            "Tolerances: A-B +3, B-C +2, C-D +5; A-C -2, A-D -5. MST weight stays 6 inside these ranges.",
-            3,
+            `Tolerances: A–B +3, B–C +2, C–D +5; A–C -2, A–D -5. MST weight stays 6 inside these ranges.`,
+            5,
         ),
-        meta: { weight: 6 },
+        meta: { weight: 6, totalWeight: 6, accepted: tree.length },
     };
 }
 
@@ -179,5 +207,13 @@ const module: AlgorithmModule = {
     },
     visualType: "graph",
     run,
+    pseudocode: [
+        "compute the MST and record its total weight",
+        "for each tree edge: find the cheapest crossing cut edge",
+        "record how far the tree edge can rise before swapping",
+        "for each non-tree edge: find the max edge on its path",
+        "record how far the non-tree edge can drop before swapping",
+        "done: tolerances bracket the MST total weight stability",
+    ],
 };
 export default module;
