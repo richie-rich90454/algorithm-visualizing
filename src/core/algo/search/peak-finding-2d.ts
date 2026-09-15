@@ -1,9 +1,36 @@
 /**
  * peak-finding-2d.ts – 2D Peak Finding
  *
- * Greedy hill climbing on a grid: from the current cell step to the
- * largest neighbor until no neighbor is larger. Cells carry
- * metadata.row/col and the peak goes green.
+ * ---------------------------------------------------------------------------
+ * What it does
+ * ---------------------------------------------------------------------------
+ * A 2D peak is a cell at least as large as its four orthogonal neighbors
+ * (up, down, left, right). This visualization teaches greedy hill climbing:
+ * start at the top-left corner, look at all four neighbors, and step to the
+ * largest one whenever it beats the current cell. Because every move goes
+ * strictly uphill, the walk cannot cycle and must end at a peak. Real
+ * divide-and-conquer 2D peak finding is faster, but hill climbing shows the
+ * landscape intuition that optimization builds on.
+ *
+ * ---------------------------------------------------------------------------
+ * Complexity
+ * ---------------------------------------------------------------------------
+ *   Time:  O(nm) worst – the climb can visit many cells on a large grid
+ *   Space: O(1) auxiliary – only the current row, column, and best neighbor
+ *
+ * ---------------------------------------------------------------------------
+ * Visualization mapping
+ * ---------------------------------------------------------------------------
+ *   - The cell stepped to is YELLOW (comparing).
+ *   - The confirmed peak turns GREEN (sorted).
+ *   - Cells carry metadata.row and metadata.col for the grid layout.
+ *
+ * ---------------------------------------------------------------------------
+ * Properties
+ * ---------------------------------------------------------------------------
+ *   - Works on any grid – no sortedness promise is needed.
+ *   - Always succeeds: every finite grid holds at least one 2D peak.
+ *   - American spelling throughout: neighbor, climbing, optimized.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
@@ -51,10 +78,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeCells(matrix),
         edges: [],
-        description: `Hill climbing on a ${rows}×${cols} grid from the top-left.`,
+        description: `Hill climbing on a ${rows} by ${cols} grid starting at top-left cell 1.`,
         codeLineNumber: 0,
         layout: "grid",
-        meta: { comparisons },
+        meta: { comparisons, rows, cols },
     };
     step += 1;
     if (rows === 0 || cols === 0) {
@@ -62,8 +89,8 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(matrix),
             edges: [],
-            description: "Empty grid – no peak exists.",
-            codeLineNumber: 1,
+            description: "Empty grid holds no cells, so no peak exists here.",
+            codeLineNumber: 4,
             layout: "grid",
             meta: { comparisons },
         };
@@ -97,10 +124,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
                 stepNumber: step,
                 entities: makeCells(matrix, new Map([[`${r},${c}`, "sorted"]])),
                 edges: [],
-                description: `Peak ${cur} at (${r},${c}) – no neighbor is larger.`,
-                codeLineNumber: 2,
+                description: `Peak ${cur} at row ${r} column ${c} beats all four neighbors after ${comparisons} checks.`,
+                codeLineNumber: 4,
                 layout: "grid",
-                meta: { comparisons, peak: [r, c] },
+                meta: { comparisons, peak: [r, c], value: cur },
             };
             return;
         }
@@ -110,10 +137,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(matrix, new Map([[`${r},${c}`, "comparing"]])),
             edges: [],
-            description: `Climbing to ${best} at (${r},${c}).`,
-            codeLineNumber: 1,
+            description: `Climbing uphill to ${best} at row ${r} column ${c} for the next round.`,
+            codeLineNumber: 2,
             layout: "grid",
-            meta: { comparisons },
+            meta: { comparisons, row: r, col: c },
         };
         step += 1;
     }
@@ -133,6 +160,13 @@ const module: AlgorithmModule = {
     },
     visualType: "grid",
     run,
+    pseudocode: [
+        "start at cell (0, 0) on the rows by cols grid",
+        "examine the four orthogonal neighbors of the current cell",
+        "find the largest neighbor and count the comparisons",
+        "if no neighbor beats current: it is a 2D peak",
+        "done: return peak coordinates and its value",
+    ],
 };
 
 export default module;
