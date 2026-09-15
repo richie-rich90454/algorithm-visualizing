@@ -124,6 +124,15 @@ const module: AlgorithmModule = {
     defaultInput: { values: [8, 3, 10, 1, 6, 14], access: 6 },
     visualType: "tree",
     run,
+    pseudocode: [
+        "start with a plain BST holding the initial values",
+        "access key: search down to the node as usual",
+        "splay the node upward with zig, zig-zig, and zig-zag rotations",
+        "each step halves the access path length amortized",
+        "repeat until the accessed node becomes the root",
+        "frequently used keys therefore linger near the root",
+        "done: accessed key sits at the root and the shape is reported",
+    ],
 };
 
 export default module;
