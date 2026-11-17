@@ -36,12 +36,12 @@ bun run format   # format with oxfmt
 
 ## Keyboard Shortcuts
 
-| Key | Action |
-| --- | --- |
-| `Space` | Toggle play/pause |
-| `ArrowLeft` | Step backward |
-| `ArrowRight` | Step forward |
-| `R` | Reset to first step |
+| Key          | Action              |
+| ------------ | ------------------- |
+| `Space`      | Toggle play/pause   |
+| `ArrowLeft`  | Step backward       |
+| `ArrowRight` | Step forward        |
+| `R`          | Reset to first step |
 
 ## How It Works
 
