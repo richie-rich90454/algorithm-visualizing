@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Fibonacci Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Fibonacci heap is a forest of heap-ordered trees that postpones work: insertions and decrease-key just add or cut nodes, and consolidation happens only during extract-min. When a node loses two children it is cascade-cut from its parent. This laziness gives O(1) amortized insert and decrease-key.",
+        "invariants": [
+            "Each tree is min-heap ordered, so its root is its minimum.",
+            "A node that has lost one child is marked; losing a second triggers a cut.",
+            "Consolidation leaves at most one tree of each degree."
+        ],
+        "correctness": "Linking two equal-degree trees by comparing roots preserves heap order and reduces duplicate degrees. Cascading cuts keep the potential of trees plus marks bounded, which pays for the work. Extract-min consolidates the forest so the minimum root can be removed safely, and the remaining trees still store all other keys.",
+        "complexityRationale": "Insert, decrease-key, and meld are O(1) amortized because they are lazy; extract-min is O(log n) amortized because consolidation touches at most log n degrees. One node per key gives O(n) space.",
+        "uses": [
+            "Dijkstra and Prim with many decrease-key calls",
+            "Minimum spanning tree algorithms",
+            "Network optimization and shortest paths"
+        ],
+        "references": [
+            "Michael L. Fredman and Robert E. Tarjan, \"Fibonacci Heaps and Their Uses in Improved Network Optimization Algorithms\", JACM 1987",
+            "CLRS, Introduction to Algorithms, Chapter 20"
+        ],
+        "workedExample": "Insert 7, 3, 9, 5, 2 as singleton root trees; the min pointer targets 2. Extract-min removes 2 and links equal-degree trees, leaving a small forest. Decrease-key of 9 to 1 cuts it from its parent and moves it to the root list, updating the min pointer."
+    },
     id: "fibonacci-heap",
     name: "Fibonacci Heap",
     category: "data-structures",

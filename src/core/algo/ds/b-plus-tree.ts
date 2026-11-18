@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The B+ Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A B+ tree keeps all actual records in linked leaf nodes and uses internal nodes only for routing keys. Because leaves are chained in sorted order, a range query finds the starting leaf once and then walks the chain. The high fanout keeps the tree shallow, which is why databases use it for indexes.",
+        "invariants": [
+            "All keys are stored in leaves; internal nodes hold only separator keys.",
+            "Leaves are linked in ascending key order.",
+            "All leaves sit at the same depth."
+        ],
+        "correctness": "Routing compares the search key with separators to choose the child interval that must contain it, so descent reaches the unique leaf that can hold the key. Splitting an overflowing leaf and promoting its middle key preserves the search intervals and equal depths. A range query starting at that leaf follows next pointers and returns keys in sorted order.",
+        "complexityRationale": "With high fanout the height is O(log n), so point search and insertion cost O(log n). A range query adds O(k) to walk k result keys, giving O(log n + k). Storing each key once in a leaf uses O(n) space.",
+        "uses": [
+            "Database and filesystem indexes",
+            "Range scans and ordered iteration",
+            "Key-value stores such as MySQL InnoDB"
+        ],
+        "references": [
+            "R. Bayer and E. McCreight, \"Organization and Maintenance of Large Ordered Indexes\", 1972",
+            "CLRS, Introduction to Algorithms, Chapter 18"
+        ],
+        "workedExample": "With routing key 9 and leaves 3, 5, 9, 12, 18, 21, searching for 12 compares with 9, goes to the right leaf group, and finds 12. A range scan for keys 9 through 18 starts at the leaf containing 9 and follows leaf links through 12 and 18, returning them in order."
+    },
     id: "b-plus-tree",
     name: "B+ Tree",
     category: "data-structures",

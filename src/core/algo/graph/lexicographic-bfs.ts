@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Lexicographic BFS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Lexicographic BFS orders vertices by the lexicographic order of their neighborhood sequences, which is useful in chordal graph recognition and perfect graph theory. Instead of a plain queue it repeatedly picks the unvisited vertex with the largest label and appends a bit to each remaining label according to whether that vertex is a neighbor.",
+        "invariants": [
+            "Labels encode the adjacency pattern to already-selected vertices.",
+            "The next selected vertex is the unvisited one with the largest label.",
+            "Two vertices share a label prefix exactly when their neighborhoods to the selected set agree."
+        ],
+        "correctness": "Appending a one or zero for adjacency to the chosen vertex extends labels in a way that preserves lexicographic ordering of neighborhood sequences. Always taking the largest label therefore reproduces the lexicographic ordering, and the resulting order satisfies the properties needed by perfect elimination ordering algorithms.",
+        "complexityRationale": "With proper partitioned-set data structures the ordering takes O(V + E); the simple label-string version shown is slower but uses O(V) space for labels and the visited set.",
+        "uses": [
+            "Chordal graph recognition and perfect elimination orderings",
+            "Algorithms for perfect graphs",
+            "Canonical labeling heuristics in graph isomorphism"
+        ],
+        "references": [
+            "Rose, Tarjan, and Lueker, Algorithmic Aspects of Vertex Elimination on Graphs (1976)",
+            "Golumbic, Algorithmic Graph Theory and Perfect Graphs"
+        ],
+        "workedExample": "Vertices start with empty labels; the largest label is chosen first and every remaining vertex gets a bit appended for whether it neighbors the choice. Repeating until all vertices are selected gives an ordering such as A, B, D, C, E that reflects their neighborhood patterns."
+    },
     id: "lexicographic-bfs",
     name: "Lexicographic BFS",
     category: "graph",

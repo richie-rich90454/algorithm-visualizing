@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Konig's theorem says that in a bipartite graph the size of a maximum matching equals the size of a minimum vertex cover. Having found a maximum matching, an alternating search from all unmatched left vertices identifies which vertices form one minimum cover: take left vertices not reached and right vertices reached.",
+        "invariants": [
+            "The matching found is maximum before the cover is derived.",
+            "Alternating paths start at unmatched left vertices and alternate unmatched and matched edges.",
+            "The constructed set covers every edge of the graph."
+        ],
+        "correctness": "Every edge between a reached left vertex and an unreached right vertex would extend an alternating path to an unmatched right vertex, contradicting maximality, so no such edge exists. Therefore the left vertices not reached plus the right vertices reached cover all edges. Their count equals the matching size by Konig's theorem, so the cover is minimum.",
+        "complexityRationale": "Finding the matching costs O(V E) with augmenting paths and the alternating BFS costs O(V + E), giving O(V E) overall. Matching, colors, and adjacency use O(V + E) space.",
+        "uses": [
+            "Minimum vertex cover in bipartite graphs",
+            "Hitting set and covering reductions in scheduling",
+            "Finding minimum test covers in software engineering"
+        ],
+        "references": [
+            "Konig, Uber Graphen und ihre Anwendung auf Determinantentheorie und Mengenlehre (1931)",
+            "Kleinberg and Tardos, Algorithm Design, matching chapter"
+        ],
+        "workedExample": "Bipartite graph with edges a-x, a-y, b-x. A maximum matching is a-y and b-x of size 2. With both left vertices matched, the alternating search reaches nothing, so the cover is all left vertices {a,b}, which touches every edge and has size 2, equal to the matching."
+    },
     id: "konig-min-vertex-cover",
     name: "Konig Min Vertex Cover",
     category: "flow",

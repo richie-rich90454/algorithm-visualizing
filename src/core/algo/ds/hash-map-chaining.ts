@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hash Map (chaining) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A hash map with separate chaining keeps an array of buckets, each holding a small linked list of all keys that hash to it. The hash function spreads keys across buckets, so with a good load factor each chain is short and lookups are constant time on average. Collisions are resolved by appending to the chain.",
+        "invariants": [
+            "Every key is stored in the bucket given by hash(key) mod m.",
+            "A key appears at most once in its chain.",
+            "The load factor is the number of keys divided by the bucket count."
+        ],
+        "correctness": "Because a key's bucket is determined solely by its hash, lookup scans only the correct chain and finds the key exactly when it was inserted. Insertion appends to that chain, updating an existing key instead of duplicating it. Deletion removes the node without disturbing other chains.",
+        "complexityRationale": "With n keys in m buckets and uniform hashing, expected chain length is the load factor n/m, so operations are O(1 + n/m). Storage is O(n + m) for keys and buckets.",
+        "uses": [
+            "General-purpose dictionaries",
+            "Symbol tables and caches",
+            "Counting occurrences of words or events"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 11",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 3.4"
+        ],
+        "workedExample": "With three buckets and words cat, dog, car, cow, bat, hashing mod 3 places several in one bucket. Probing dog computes its bucket, scans the short chain, and finds it. The load factor is 5/3, so chains average under two entries."
+    },
     id: "hash-map-chaining",
     name: "Hash Map (Chaining)",
     category: "data-structures",

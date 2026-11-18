@@ -259,6 +259,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Cost Scaling module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cost scaling solves minimum-cost flow in polynomial time by working in phases with a cost-accuracy parameter epsilon. Each phase keeps flow approximately optimal within epsilon by pushing only along arcs with near-zero reduced cost, then halves epsilon. When epsilon drops below one, approximate optimality becomes exact optimality.",
+        "invariants": [
+            "Throughout a phase the flow is epsilon-optimal: no negative cycle has total cost below -epsilon.",
+            "Node potentials keep reduced costs of admissible arcs nonnegative.",
+            "Total flow sent toward the required value never decreases."
+        ],
+        "correctness": "An epsilon-optimal flow has no cycle that can reduce cost by more than epsilon, so as epsilon halves the flow approaches the true optimum. Standard push-relabel-style analysis shows an epsilon/2-optimal flow can be restored in polynomial work per phase, and at epsilon below one integral costs force zero negative cycles, which is the optimality condition for min-cost flow.",
+        "complexityRationale": "There are O(log C) phases for the largest cost magnitude C, each costing O(V E) with suitable data structures, for O(V E log C) time. Potentials, residual arcs, and flow state use O(V + E) space.",
+        "uses": [
+            "Large-scale min-cost flow where successive shortest paths is too slow",
+            "Freight and logistics cost minimization",
+            "Network interdiction and pricing problems with integer costs"
+        ],
+        "references": [
+            "Goldberg and Tarjan, Solving Minimum Cost Flow Problems by Successive Approximation (1990)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, cost-scaling chapter"
+        ],
+        "workedExample": "With S-A cap 3 cost 2, S-B cap 2 cost 1, A-B cap 1 cost 1, A-T cap 2 cost 3, B-T cap 3 cost 2, the goal is flow 5. Early phases send along the cheapest reduced-cost routes: 2 units S-B-B-T at cost 3 each, 2 units S-A-A-T at cost 5 each, and 1 unit S-A-A-B-B-T at cost 5. Total cost is 21, the minimum for flow 5."
+    },
     id: "cost-scaling",
     name: "Cost Scaling",
     category: "flow",

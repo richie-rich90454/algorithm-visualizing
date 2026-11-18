@@ -237,6 +237,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dijkstra (Matrix) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dijkstra finds shortest paths from one source when all edge weights are nonnegative. It maintains a settled set whose distances are final. Each iteration picks the unsettled vertex with smallest tentative distance, settles it, and relaxes its outgoing edges. The matrix variant scans the whole unsettled set for the minimum, costing O(V^2), which suits dense graphs.",
+        "invariants": [
+            "Settled vertices have their final shortest distance.",
+            "Every unsettled vertex's key is the shortest distance using only settled vertices as intermediates.",
+            "Relaxation only decreases tentative distances."
+        ],
+        "correctness": "The unsettled vertex with the smallest tentative distance cannot be improved by a path through another unsettled vertex, since that path would be at least as long. So its distance is final. Relaxing its edges maintains the invariant, and by induction all settled distances are shortest.",
+        "complexityRationale": "V iterations scan O(V) vertices and relax outgoing edges, dominated by O(V^2); the distance and predecessor arrays use O(V) space.",
+        "uses": [
+            "Shortest paths on dense graphs",
+            "Network routing with nonnegative link costs",
+            "A baseline before switching to a heap-based implementation"
+        ],
+        "references": [
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, single-source shortest paths"
+        ],
+        "workedExample": "Starting at A with dist A 0 and others infinite, scan to settle C at 2, then B at 3 via C, then D and E, and finally F. Each settled vertex relaxes its neighbors, and the predecessor chain from F gives the shortest route to F of cost 6."
+    },
     id: "dijkstra-matrix",
     name: "Dijkstra (Matrix)",
     category: "shortest-path",

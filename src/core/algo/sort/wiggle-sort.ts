@@ -153,6 +153,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Wiggle sort arranges values so they alternate low and high, dipping and peaking across the array. This lesson ranks values into small and large halves and interleaves them, settling equal neighbors into sorted slots.",
+        "invariants": [
+            "Small-half values occupy the even positions and large-half values the odd positions.",
+            "The relative order inside each half is preserved by the interleaving."
+        ],
+        "correctness": "Because every small-half value is no larger than every large-half value, placing them alternately guarantees each interior element lies between its neighbors' extremes, satisfying the wiggle condition.",
+        "complexityRationale": "Rank splitting and interleaving each scan the array once, so O(n) time; in-place ranking uses O(1) extra space, while the visualization keeps a rank array of O(n).",
+        "uses": [
+            "Reordering data for alternating layouts",
+            "Preprocessing for zigzag scanning in codecs",
+            "Teaching stable partition and interleaving"
+        ],
+        "references": [
+            "LeetCode 280, Wiggle Sort, problem and editorial",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2 (partitioning)"
+        ],
+        "workedExample": "For [3, 1, 2], rank order is 1, 2, 3; place the small half first at even slots and the large half at odd slots to get [1, 3, 2], which dips then peaks."
+    },
     id: "wiggle-sort",
     name: "Wiggle Sort",
     category: "sorting",

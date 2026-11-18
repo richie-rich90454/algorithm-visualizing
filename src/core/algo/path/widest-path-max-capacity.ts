@@ -161,6 +161,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The widest path maximizes the bottleneck capacity along a route, which models the heaviest truck a bridge network can carry or the best throughput of a link chain. Like Dijkstra with a max-heap, each vertex tracks the best bottleneck seen so far, and expansion always chooses the largest one.",
+        "invariants": [
+            "width[v] is the maximum bottleneck capacity of any path found to v.",
+            "The frontier always expands the unsettled vertex with largest width.",
+            "When the target is settled, its width is optimal."
+        ],
+        "correctness": "The width of a path is the minimum edge capacity on it, and extending a path can only lower its width. Therefore expanding the largest-width vertex first is analogous to Dijkstra: any alternate route to it passes through a vertex of no greater width, so its width is final, giving the widest path when the target is settled.",
+        "complexityRationale": "A max-heap frontier gives O(E log V) time, with O(V + E) space for widths, predecessors, and adjacency.",
+        "uses": [
+            "Finding maximum-bandwidth routes in communication networks",
+            "Heavy-load routing and bridge capacity planning",
+            "A max-min variant of Dijkstra"
+        ],
+        "references": [
+            "Hu, On the Shortest Route and the Widest Route (1961)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, shortest paths"
+        ],
+        "workedExample": "From A to D, the route via C has bottleneck min(3,4) = 3 while the route via B has min(5,2) = 2. Expanding the larger-width frontier first settles C and reports the widest path with bottleneck 3."
+    },
     id: "widest-path-max-capacity",
     name: "Widest Path (Max Capacity)",
     category: "shortest-path",

@@ -191,6 +191,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sensitivity analysis asks how far an edge weight can change before the minimum spanning tree changes. For a tree edge the limit is determined by the cheapest non-tree edge crossing its cut; for a non-tree edge it is the heaviest tree edge on the path it would form. These tolerances bracket how stable the MST is.",
+        "invariants": [
+            "Removing a tree edge defines a cut that some non-tree edge must cross.",
+            "Adding a non-tree edge creates a unique cycle with the tree.",
+            "A weight change within tolerance leaves the MST unchanged."
+        ],
+        "correctness": "A tree edge stays in the MST as long as it is no heavier than the cheapest edge crossing its cut, giving its upward tolerance. A non-tree edge can enter only when it becomes lighter than the heaviest edge on its tree path, giving its downward tolerance. These cycle and cut properties are exactly the MST optimality conditions.",
+        "complexityRationale": "Each of the E edges triggers a small cut or path search costing O(V + E), giving O(V E) time and O(V + E) space for the tree and adjacency.",
+        "uses": [
+            "Robustness analysis of network designs under changing costs",
+            "Reoptimization after a single edge weight update",
+            "Teaching the cut and cycle properties of MSTs"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, MST chapter",
+            "Ahuja, Magnanti, and Orlin, Network Flows, sensitivity analysis"
+        ],
+        "workedExample": "If tree edge B-C of weight 2 has a crossing non-tree edge of weight 4, B-C can rise by 2 before it should be swapped out. Conversely a non-tree edge of weight 8 whose tree path contains an edge of weight 3 cannot enter unless its weight drops below 3."
+    },
     id: "mst-sensitivity-analysis",
     name: "MST Sensitivity Analysis",
     category: "mst",

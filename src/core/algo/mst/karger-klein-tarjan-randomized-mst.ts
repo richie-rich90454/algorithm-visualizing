@@ -186,6 +186,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Karger-Klein-Tarjan computes a minimum spanning tree in linear expected time. It runs a few Boruvka rounds to shrink the graph, randomly samples about half the remaining edges, recursively finds an MST of the sample, and then discards edges that are provably too heavy to appear in the full MST before recursing on the contracted survivors.",
+        "invariants": [
+            "Boruvka rounds reduce the vertex count by a constant factor.",
+            "The sample MST certifies which unsampled edges can be discarded safely.",
+            "Contracting components of the sample forest preserves the remaining MST problem."
+        ],
+        "correctness": "The sampling lemma shows that with high probability the sampled MST's heaviest edge bounds the cost of edges that could matter, letting the algorithm discard heavy edges without losing any true MST edge. Contracting the sample MST components is safe by the cut property, so the recursively computed result combines into a full MST.",
+        "complexityRationale": "Each recursion level does linear work in the current graph and shrinks it by a constant factor, giving O(V + E) expected time and O(V + E) space for the sampled and contracted graphs.",
+        "uses": [
+            "Linear-time minimum spanning tree in theory and large data",
+            "A showcase of random sampling in graph algorithms",
+            "Preprocessing for massive undirected networks"
+        ],
+        "references": [
+            "Karger, Klein, and Tarjan, A Randomized Linear-Time Algorithm to Find Minimum Spanning Trees (1995)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, MST chapter"
+        ],
+        "workedExample": "A few Boruvka rounds merge the sample graph to four vertices. Sampling half the edges and solving that small instance identifies light edges worth keeping; heavier edges are discarded, and the final recursive solve on the contracted graph yields the full tree."
+    },
     id: "karger-klein-tarjan-randomized-mst",
     name: "Karger-Klein-Tarjan Randomized MST",
     category: "mst",

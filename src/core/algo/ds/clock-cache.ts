@@ -79,6 +79,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "CLOCK cache approximates LRU with a single rotating hand and one reference bit per frame. A hit sets the bit; when space is needed the hand sweeps, clearing bits it sees and evicting the first frame whose bit is already clear. This gives second-chance behavior without maintaining a full recency list.",
+        "invariants": [
+            "Each frame holds at most one key and a reference bit.",
+            "The hand advances only during a search for a victim.",
+            "A frame with reference bit 1 has been used since the last sweep."
+        ],
+        "correctness": "Clearing a bit on the first pass and evicting on a later pass guarantees a recently used frame gets a second chance before eviction. Because the hand eventually visits every frame, it always finds a victim when all bits are clear. Hits are found by scanning frames, so lookup correctness is independent of replacement.",
+        "complexityRationale": "A hit is found by a constant-capacity scan, O(capacity), and eviction sweeps at most a full circle before finding a clear bit, amortized O(1) per miss. Space is O(capacity) frames.",
+        "uses": [
+            "Operating-system page replacement",
+            "Database buffer pools",
+            "Lightweight caches where LRU lists are too costly"
+        ],
+        "references": [
+            "F. Corbato, \"A Paging Experiment with the Multics System\", 1969",
+            "Alan Jay Smith, survey of cache memory design and evaluation, 1982"
+        ],
+        "workedExample": "With capacity 3 and accesses a, b, c, a, d: frames fill with a, b, c and bits are set after use. Accessing a sets its bit. Inserting d starts the hand, clears bits on first-chance frames, and evicts the first frame whose bit is already 0, typically b, leaving a, c, d."
+    },
     id: "clock-cache",
     name: "Clock Cache",
     category: "data-structures",

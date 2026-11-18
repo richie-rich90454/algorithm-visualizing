@@ -73,6 +73,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Gray code lists all 2^n binary strings so that consecutive codes differ in exactly one bit. The reflected binary construction builds the list for n from the list for n-1 by prefixing zeros to the original order and ones to the reverse order. A compact formula encodes index i as i XOR (i shifted right by one).",
+        "invariants": [
+            "The sequence contains all 2^n distinct codes exactly once.",
+            "Every adjacent pair differs in a single bit position.",
+            "Encoding i as i xor (i >> 1) is a bijection on n-bit values."
+        ],
+        "correctness": "In the reflected construction the two halves each preserve the one-bit property by induction, and the boundary between them differs only in the new leading bit, so the whole list is a Gray code. The XOR formula is equivalent to this reflected order, which follows because consecutive integers change at the position one less than their lowest set bit.",
+        "complexityRationale": "Generating each of the 2^n codes takes constant time, so time is O(2^n). Storing the full sequence also requires O(2^n) space.",
+        "uses": [
+            "Rotary and optical encoders that change one sensor bit at a time",
+            "Reducing switching activity in low-power digital circuits",
+            "Gray-code based heuristics in optimization"
+        ],
+        "references": [
+            "Gray, Pulse code communication (1947)",
+            "Knuth, The Art of Computer Programming, Vol. 4, Section 7.2.1.1"
+        ],
+        "workedExample": "For bits = 3 the codes are 000, 001, 011, 010, 110, 111, 101, 100. Each step flips exactly one bit, including the wrap from 100 back to 000."
+    },
     id: "gray-code-generation",
     name: "Gray Code Generation",
     category: "math",

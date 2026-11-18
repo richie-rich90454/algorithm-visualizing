@@ -285,6 +285,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Wythoff module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Wythoff's game uses two piles: a move removes stones from one pile or the same number from both. Its losing positions are the Wythoff pairs, given by floor(n times phi) and floor(n times phi squared), where phi is the golden ratio. These cold pairs form a Beatty sequence partition of the positive integers.",
+        "invariants": [
+            "The cold pairs are (floor(n*phi), floor(n*phi^2)) for n at least zero.",
+            "A cold pair has no legal move to another cold pair.",
+            "Every non-cold position has a move to some cold pair."
+        ],
+        "correctness": "Beatty's theorem shows the two sequences partition the positive integers, so every pair of pile sizes is either cold or can be reduced to a cold pair by lowering one pile or both equally. Because no move connects two cold pairs, they are exactly the P-positions, and the golden-ratio formula classifies any position in constant time.",
+        "complexityRationale": "Checking a position computes a few golden-ratio products, O(1) time and O(1) space.",
+        "uses": [
+            "A striking appearance of the golden ratio in game theory",
+            "Teaching Beatty sequences and complementary sequences",
+            "A two-pile Nim variant with a closed-form solution"
+        ],
+        "references": [
+            "Wythoff, A Modification of the Game of Nim (1907)",
+            "Beatty, Problem 3173, American Mathematical Monthly (1926)"
+        ],
+        "workedExample": "Piles (8,13) match the cold pair for n=5 because floor(5*phi) is 8 and floor(5*phi squared) is 13. Since it is a P-position, every legal single-pile or diagonal take leaves a winning position for the opponent, so the player to move loses."
+    },
     id: "wythoff",
     name: "Wythoff's Game",
     category: "game",

@@ -155,6 +155,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Louvain finds communities by greedily maximizing modularity, which rewards dense internal links beyond chance expectation. Phase one moves each vertex to the neighboring community giving the largest modularity gain until no move helps. Phase two aggregates communities into super-vertices and repeats.",
+        "invariants": [
+            "Modularity never decreases after an accepted move.",
+            "Phase one ends when no single vertex move improves modularity.",
+            "Aggregation preserves modularity so phase two optimizes the same objective."
+        ],
+        "correctness": "Each accepted move increases modularity, and phase one terminates because modularity is bounded above. Aggregation is modularity-preserving, so repeating the two phases is a valid coordinate ascent on modularity. The final partition is a local maximum, which is the guarantee Louvain provides.",
+        "complexityRationale": "Few passes over V and E are typical, giving about O(V log V) time in practice, with O(V + E) space for communities, degrees, and adjacency.",
+        "uses": [
+            "Community detection in large social and information networks",
+            "Segmenting graphs in biological and citation data",
+            "A fast modularity-optimization baseline"
+        ],
+        "references": [
+            "Blondel et al., Fast Unfolding of Communities in Large Networks (2008)",
+            "Newman and Girvan, Finding and Evaluating Community Structure in Networks (2004)"
+        ],
+        "workedExample": "On the barbell graph, phase one evaluates moves and finds that grouping A, B, C raises modularity, as does grouping D, E, F, while moving across the bridge lowers it. The algorithm stops with those two communities at high modularity."
+    },
     id: "louvain-community-detection",
     name: "Louvain Community Detection",
     category: "graph",

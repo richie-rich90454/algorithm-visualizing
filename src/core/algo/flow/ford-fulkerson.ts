@@ -258,6 +258,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Ford-Fulkerson module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Ford-Fulkerson is the foundational max-flow method. It repeatedly finds any path from source to sink with spare capacity in the residual graph, pushes the bottleneck amount along it, and updates residual capacities including reverse edges so earlier choices can be undone. When no augmenting path remains, the flow is maximum.",
+        "invariants": [
+            "Every edge carries a nonnegative flow no larger than its capacity.",
+            "Flow conservation holds at every vertex except source and sink.",
+            "The flow value increases after every augmentation."
+        ],
+        "correctness": "Each augmentation preserves feasibility because the bottleneck is the minimum residual capacity on the path. The residual reverse edges let later augmentations cancel earlier flow, so no greedy choice is permanent. When the sink is unreachable in the residual graph, the reachable set forms a cut whose capacity equals the flow value, proving maximality by the max-flow min-cut theorem.",
+        "complexityRationale": "With integer capacities the number of augmentations is at most the flow value f, and each path search costs O(E), giving O(E f). Storage for capacities, flows, and the residual graph is O(V + E).",
+        "uses": [
+            "Foundational max-flow teaching and prototyping",
+            "Throughput and connectivity analysis in networks",
+            "Reducing matching, cut, and feasibility problems to flow"
+        ],
+        "references": [
+            "Ford and Fulkerson, Maximal Flow through a Network (1956)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow chapter"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-T 2, B-T 3. Push 2 along S-A-T and 3 along S-B-T, saturating both sink arcs for a total of 5. The source out-capacity is also 5, so no larger flow is possible and the algorithm stops."
+    },
     id: "ford-fulkerson",
     name: "Ford-Fulkerson",
     category: "flow",

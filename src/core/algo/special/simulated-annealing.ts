@@ -143,6 +143,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Simulated Annealing module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Simulated annealing is a probabilistic optimizer inspired by slowly cooling metal. It explores by proposing random neighboring solutions and always accepting improvements, while accepting worse moves with probability exp(-delta/T), where delta is the energy increase and T is a temperature that decreases over time. Hot early stages escape local minima; cold late stages refine the best solution.",
+        "invariants": [
+            "Improving moves are always accepted.",
+            "Worse moves are accepted with probability in (0,1) that shrinks as T falls.",
+            "The all-time best energy and position are remembered and never worsen."
+        ],
+        "correctness": "Simulated annealing is a metaheuristic without a general optimality guarantee. Theoretically, cooling slowly enough makes the chain converge to the global optimum, while practical geometric cooling is faster but only approximate. Keeping the best-found solution guarantees the reported answer is at least as good as any state visited.",
+        "complexityRationale": "Each iteration proposes one neighbor, evaluates its energy and makes a random comparison, constant work, so t iterations cost O(t). Only the current point, best point and a few scalars are stored, O(1) space.",
+        "uses": [
+            "Combinatorial optimization such as traveling salesman and scheduling",
+            "VLSI placement and routing",
+            "Protein folding and image reconstruction",
+            "Hyperparameter search and engineering layout optimization"
+        ],
+        "references": [
+            "Kirkpatrick, Gelatt and Vecchi, Optimization by Simulated Annealing, Science, 1983",
+            "Cerny, Thermodynamical Approach to the Traveling Salesman Problem, Journal of Optimization Theory and Applications, 1985"
+        ],
+        "workedExample": "Minimize energy(x)=(x-5)^2+3sin(2x) from a random point with T=10. A proposal raising energy by delta=2 is accepted with probability exp(-2/10) about 0.82 when hot, letting the search escape a shallow well. After 15 iterations with T multiplied by 0.9 each step, the best energy found is reported near the global basin."
+    },
     id: "simulated-annealing",
     name: "Simulated Annealing",
     category: "math",

@@ -97,6 +97,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Elias gamma coding encodes a positive integer by writing floor(log2 n) zero bits followed by the ordinary binary form of n. The count of leading zeros tells the decoder how long the following binary chunk is, so the code is self-delimiting and needs no separators. Small integers get short codes, making it useful when values cluster near one.",
+        "invariants": [
+            "Each code begins with exactly floor(log2 n) zeros followed by the (floor(log2 n)+1)-bit binary of n.",
+            "The codes are prefix-free, so a concatenated stream decodes unambiguously.",
+            "Decoding the concatenated codes recovers the original list of numbers."
+        ],
+        "correctness": "The binary representation of n has exactly floor(log2 n)+1 bits, so counting leading zeros tells the decoder precisely how many bits to read next. Because no valid code is a prefix of another, parsing a concatenated stream is unique. The demo verifies the round trip explicitly.",
+        "complexityRationale": "Encoding a value n writes 2·floor(log2 n)+1 bits, so a list of n values with largest magnitude M takes O(n log M) time and produces O(n log M) bits. Storage is just the output bit stream.",
+        "uses": [
+            "Compressing integer sequences in search-engine inverted indexes",
+            "Encoding gaps in posting lists and delta arrays",
+            "Prefix codes for small-integer alphabets",
+            "Lossless compression in information retrieval"
+        ],
+        "references": [
+            "Elias, Universal Codeword Sets and Representations of the Integers, IEEE Transactions on Information Theory, 1975",
+            "Cover and Thomas, Elements of Information Theory, Chapter 5"
+        ],
+        "workedExample": "To encode 4, whose binary '100' has three bits, write two zeros then '100' to get '00100'; 5 becomes '00101'. The stream for [1,2,3,4,5] is '1|010|011|00100|00101'. Decoding '00' means read three bits, which reconstructs 4, and so on back to the full list."
+    },
     id: "elias-gamma-coding",
     name: "Elias Gamma Coding",
     category: "string",

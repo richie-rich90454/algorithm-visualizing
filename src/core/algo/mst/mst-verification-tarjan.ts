@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "MST verification checks a candidate tree without rebuilding the minimum spanning tree. For every non-tree edge, the cycle property requires that edge to be the heaviest on the cycle it forms with the tree. If all such checks pass, the candidate is minimum.",
+        "invariants": [
+            "Adding a non-tree edge to the tree creates exactly one cycle.",
+            "A candidate is optimal only if every non-tree edge is heaviest on its cycle.",
+            "A single violation proves the candidate is not an MST."
+        ],
+        "correctness": "If a non-tree edge is lighter than some tree edge on its cycle, swapping them lowers total weight, so the candidate is not minimum. Conversely, when every non-tree edge is the heaviest on its cycle, the tree satisfies the cycle property that characterizes minimum spanning trees, so it is optimal.",
+        "complexityRationale": "Naive path-max queries cost O(E V), while Tarjan's offline method brings verification to O(E alpha(V)); the demo uses O(V + E) space for the tree and edge lists.",
+        "uses": [
+            "Checking a proposed MST cheaply",
+            "Validating results of distributed or approximated MST algorithms",
+            "A direct application of the MST cycle property"
+        ],
+        "references": [
+            "Tarjan, Applications of Union and Find Algorithms (1979)",
+            "Dixon, Tarjan, and Weiss, A Linear-Time Algorithm to Find Minimum Spanning Trees (1992)"
+        ],
+        "workedExample": "For the sample graph with candidate tree edges A-B 1, B-C 2, C-D 3, non-tree edge A-C of weight 4 forms a cycle whose heaviest edge is itself, so it passes. Edge A-D of weight 8 also passes; no lighter non-tree edge beats a tree edge, so the candidate is verified as the MST."
+    },
     id: "mst-verification-tarjan",
     name: "MST Verification (Tarjan)",
     category: "mst",

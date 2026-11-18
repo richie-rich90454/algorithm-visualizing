@@ -143,6 +143,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The union area of overlapping circles is determined entirely by their boundary arcs. Each circle is cut where it meets another circle; between consecutive cuts an arc is either wholly covered by other circles or wholly exposed. Summing the signed contributions of the exposed arcs gives the union area.",
+        "invariants": [
+            "Coverage of a boundary point can change only at a pairwise circle intersection.",
+            "Between consecutive cut angles on a circle the covered state is constant.",
+            "An exposed arc contributes its sector area minus the triangle under its chord."
+        ],
+        "correctness": "Because coverage changes only when crossing another circle's boundary, sorting the cut angles partitions each circle into arcs of uniform coverage. Testing a single midpoint decides whether an arc is on the union boundary. Green's theorem converts the closed boundary integral into enclosed area, so summing exactly the exposed arcs gives the union area with overlaps counted once.",
+        "complexityRationale": "There are O(n^2) pairwise intersections to compute and sorting them around each circle costs O(n^2 log n) overall. The arc walks are linear in the number of cuts, so total time is O(n^2 log n) with O(n^2) space for the cut lists.",
+        "uses": [
+            "Estimating the coverage of overlapping radio or sensor ranges",
+            "Computing merged areas in CAD and GIS",
+            "Providing exact answers to check Monte Carlo area estimates"
+        ],
+        "references": [
+            "Green's theorem, standard vector calculus text",
+            "O'Rourke, Computational Geometry in C, Chapter 6"
+        ],
+        "workedExample": "Two unit circles at (0,0) and (1,0) meet at (0.5, 0.866) and (0.5, -0.866). The arcs facing the other circle are covered and discarded. The lens overlap area is about 1.228, so the union area is 2*pi - 1.228, roughly 5.055."
+    },
+
     id: "circle-union-area-sweep",
     name: "Circle Union Area Sweep",
     category: "geometry",

@@ -88,6 +88,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Freivalds' algorithm checks a claimed matrix product far faster than recomputing it. Instead of multiplying A and B, pick a random 0/1 vector r and test whether A(Br) equals Cr. If the product is wrong, a random r exposes the error with probability at least one half; repeating k independent trials drives the chance of missing it down to 2^-k.",
+        "invariants": [
+            "A correct product passes every trial: AB=C implies A(Br)=Cr for all r.",
+            "A wrong product fails precisely those trials whose r lies outside a certain proper subspace.",
+            "Each trial uses an independent random 0/1 vector."
+        ],
+        "correctness": "If AB differs from C, then D=AB-C is a nonzero matrix with a nonzero row, so the set of vectors r with Dr=0 is a proper subspace containing at most half of all 0/1 vectors. A random r therefore catches the error with probability at least 1/2, and k independent trials give error probability at most 2^-k. A correct product is never rejected.",
+        "complexityRationale": "Each trial computes two matrix-vector products, O(n^2) each, so k trials cost O(k·n^2), much better than the O(n^3) of direct multiplication when k is small. Storing one vector and the intermediate results uses O(n) space.",
+        "uses": [
+            "Verifying large matrix products in scientific computing",
+            "Checking linear-algebra kernels and numerical libraries",
+            "Validating outsourced or distributed computations",
+            "Randomized verification of polynomial identities"
+        ],
+        "references": [
+            "Freivalds, Fast Probabilistic Algorithms for Verification of Polynomial Identities, 1977",
+            "Motwani and Raghavan, Randomized Algorithms, Chapter 7"
+        ],
+        "workedExample": "For A=[[1,2],[3,4]], B=[[5,6],[7,8]] and claimed C=[[19,22],[43,50]], take r=[1,0]. Then Br=[5,7], A(Br)=[19,43] and Cr=[19,43], a match. A wrong C would fail on about half of the four possible 0/1 vectors, so three trials leave at most a 1/8 chance of a false verdict."
+    },
     id: "freivalds-check",
     name: "Freivalds' Check",
     category: "math",

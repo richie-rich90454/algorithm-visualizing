@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Activity selection chooses the largest set of non-overlapping activities from a list of start and finish times. Sorting by finish time and always taking the next activity that starts after the last chosen one finishes yields an optimal set. The earliest-finishing choice leaves the most room for everything that follows.",
+        "invariants": [
+            "The last chosen finish time never decreases.",
+            "Every selected activity starts at or after that finish time, so no two selected activities overlap.",
+            "After processing a prefix, no feasible solution uses fewer activities than the greedy count for that prefix."
+        ],
+        "correctness": "Consider the activity with the earliest finish time; any optimal solution can be modified to include it by swapping in that activity without reducing the count. Once it is chosen, the problem reduces to activities starting after its finish time, and the same argument applies recursively. Therefore the greedy sequence is optimal by induction.",
+        "complexityRationale": "Sorting the activities by finish time costs O(n log n), and the single compatibility scan is O(n), so time is O(n log n). Storing the sorted list and the selected set uses O(n) space.",
+        "uses": [
+            "Scheduling talks or meetings in one room",
+            "Selecting non-overlapping tasks on a single machine",
+            "A canonical example of greedy exchange arguments"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 16.1",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 4"
+        ],
+        "workedExample": "For intervals [1,3], [2,4], [3,5] sorted by finish time, take [1,3] first. [2,4] overlaps, so skip it; [3,5] starts at 3 and is taken. The optimal set has two activities."
+    },
     id: "activity-selection-greedy",
     name: "Activity Selection (Greedy)",
     category: "dynamic-programming",

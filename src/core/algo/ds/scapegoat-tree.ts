@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A scapegoat tree is a BST that tolerates temporary imbalance but rebuilds the first subtree that becomes too deep into a perfectly balanced one. The guarantee is amortized: occasional costly rebuilds are paid for by many cheap insertions.",
+        "invariants": [
+            "After insertion, a node at depth d has size at most a fixed fraction of its parent unless a rebuild is triggered.",
+            "All keys remain in sorted order.",
+            "A rebuild preserves the key set while balancing the subtree."
+        ],
+        "correctness": "A node deep violation implies an ancestor scapegoat also violates the bound, and rebuilding that ancestor creates a balanced subtree of height O(log n). Rebuilds preserve in-order sequence so BST order holds, and the amortized argument charges each rebuild to the insertions accumulated since the last one.",
+        "complexityRationale": "Insert and search are O(log n) amortized because rebuilds, though O(n) each, are infrequent. The tree stores one node per key, O(n) space.",
+        "uses": [
+            "Balanced ordered maps without extra per-node fields",
+            "Simple online dictionaries",
+            "Educational alternative to AVL and red-black trees"
+        ],
+        "references": [
+            "Galil and Park, Scapegoat Trees, SODA 1993 and ACM Transactions on Algorithms 1994",
+            "Andersson, A Note on Updating a Scapegoat Tree, 2008"
+        ],
+        "workedExample": "Insert 5, 3, 7, 2, 6; adding 2 makes the path to 2 too deep, so the subtree under 3 is rebuilt into a balanced shape. Search for 6 then descends a short path to find it."
+    },
     id: "scapegoat-tree",
     name: "Scapegoat Tree",
     category: "data-structures",

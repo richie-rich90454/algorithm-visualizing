@@ -211,6 +211,27 @@ function dist2(a: [number, number], b: [number, number]): number {
 
 /** The Convex Hull (Jarvis) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Jarvis march, or gift wrapping, walks around the outside of the point set. Starting at the leftmost point, it repeatedly picks the next hull vertex as the point making the smallest counterclockwise turn from the current edge, exactly as if wrapping a string tightly around the points.",
+        "invariants": [
+            "The current point is a hull vertex.",
+            "The chosen next point is the most counterclockwise candidate from the current edge.",
+            "Hull vertices are visited in counterclockwise order until the start is reached."
+        ],
+        "correctness": "From a hull vertex, the next hull vertex is precisely the point for which all other points lie to the right of the directed edge, which is equivalent to maximizing the counterclockwise turn. Choosing it therefore follows the true boundary. Because the hull is convex and finite, repeating the step returns to the start after visiting every hull vertex exactly once.",
+        "complexityRationale": "Each of the h hull vertices requires scanning all n points to find the best turn, giving O(n*h) time. Only the current vertex and a candidate are retained, so space is O(h) for the output hull.",
+        "uses": [
+            "Computing a hull cheaply when the expected hull is small",
+            "Teaching the geometry of orientation tests",
+            "Finding the boundary of a small set in a large data stream"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 1",
+            "Jarvis, On the Identification of the Convex Hull of a Finite Set of Points, 1973"
+        ],
+        "workedExample": "For points (0,0), (2,0), (2,2), (0,2), (1,1), start at the leftmost (0,0). The most counterclockwise choice is (2,0), then (2,2), then (0,2), which returns to (0,0). The interior point (1,1) is never chosen, giving four hull vertices."
+    },
+
     id: "convex-hull-jarvis",
     name: "Convex Hull (Jarvis)",
     category: "geometry",

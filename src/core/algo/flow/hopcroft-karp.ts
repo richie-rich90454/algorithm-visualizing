@@ -268,6 +268,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hopcroft-Karp module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hopcroft-Karp speeds up bipartite matching by augmenting along many shortest paths at once. A breadth-first search layers the graph through alternating unmatched and matched edges until it reaches free right vertices, then a depth-first search finds a maximal set of vertex-disjoint shortest augmenting paths and flips them together.",
+        "invariants": [
+            "The matching remains valid after each phase of simultaneous flips.",
+            "All augmenting paths found in one phase have the same shortest length.",
+            "The length of the shortest augmenting path strictly increases between phases."
+        ],
+        "correctness": "Flipping a set of vertex-disjoint augmenting paths increases matching size by the size of the set while preserving validity. Because every shortest augmenting path is explored in the layered graph, no path of that length remains after the phase, forcing the next shortest path to be longer. When no augmenting path reaches a free vertex, Berge's theorem implies the matching is maximum.",
+        "complexityRationale": "There are O(sqrt(V)) phases and each BFS plus DFS pass costs O(E), giving O(E sqrt(V)) time. The layers, matching arrays, and adjacency use O(V + E) space.",
+        "uses": [
+            "Maximum bipartite matching at scale",
+            "Assigning workers to jobs or students to projects",
+            "A fast engine for matching-based reductions in vision and scheduling"
+        ],
+        "references": [
+            "Hopcroft and Karp, An n^{5/2} Algorithm for Maximum Matchings in Bipartite Graphs (1973)",
+            "Kleinberg and Tardos, Algorithm Design, matching chapter"
+        ],
+        "workedExample": "Left A,B,C and right 1,2,3 with edges A-1, A-2, B-1, B-3, C-2, C-3. One BFS-DFS phase finds the disjoint shortest paths A-2, B-1, and C-3 and flips all three. The matching of size 3 saturates the right side, so it is maximum."
+    },
     id: "hopcroft-karp",
     name: "Hopcroft-Karp Matching",
     category: "flow",

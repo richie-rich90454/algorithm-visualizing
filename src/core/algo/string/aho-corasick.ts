@@ -218,6 +218,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Aho-Corasick module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Build a trie of all patterns, then add failure links that point from each node to the longest proper suffix that is also a trie node. Scanning the text follows transitions and failure links so every pattern ending at each position is reported.",
+        "invariants": [
+            "After reading text prefix ending at i, the current state represents the longest trie string that is a suffix of that prefix.",
+            "Following failure links enumerates all shorter pattern suffixes."
+        ],
+        "correctness": "The state invariant holds because a transition extends the current match when possible and failure links move to the next longest candidate suffix. Every pattern ending at a text position is a suffix of the prefix, so it appears on the failure chain and is reported.",
+        "complexityRationale": "Construction takes O(total pattern length) and scanning takes O(text length) with precomputed transitions; space is O(total pattern length times alphabet) for the transition table.",
+        "uses": [
+            "Multi-pattern search and content filtering",
+            "Virus and intrusion signature scanning",
+            "Spell checking and keyword extraction"
+        ],
+        "references": [
+            "Aho and Corasick, Efficient String Matching, 1975",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "Patterns he, she, hers in text shexhers. Trie states follow s-h-e and report she; failure from she to he reports he at the same position. Later, the h-e-r-s path reports hers."
+    },
     id: "aho-corasick",
     name: "Aho-Corasick",
     category: "string",

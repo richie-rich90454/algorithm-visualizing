@@ -118,6 +118,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest palindromic subsequence is the longest subsequence that reads the same forward and backward. Interval DP stores dp[l][r] for the substring between l and r. If the ends match they wrap the best inner subsequence, adding two; otherwise the better of dropping the left or right end is taken.",
+        "invariants": [
+            "dp[l][r] is the LPS length within s[l..r].",
+            "Single characters have length one.",
+            "Intervals are filled by increasing length so inner values are final."
+        ],
+        "correctness": "If the two ends match, an optimal palindrome can use both, giving dp[l+1][r-1] plus two; if not, at most one end can be used, giving the max of the two shorter intervals. These cases are exhaustive, so the recurrence is correct by induction over interval length.",
+        "complexityRationale": "There are O(n^2) intervals with constant work each, costing O(n^2) time and O(n^2) space for the table.",
+        "uses": [
+            "Sequence analysis where order is preserved but gaps are allowed",
+            "A building block for palindrome partitioning",
+            "Bioinformatics motif detection"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5"
+        ],
+        "workedExample": "For s = bbbab the interval DP finds a palindromic subsequence bbbb of length 4, formed by choosing four of the b positions; dp[0][4] reports 4."
+    },
     id: "longest-palindromic-subseq",
     name: "Longest Palindromic Subsequence",
     category: "dynamic-programming",

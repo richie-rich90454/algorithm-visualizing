@@ -104,6 +104,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Rooted subtree pattern matching asks whether a pattern tree appears as a subtree of a larger text tree. The demo tries each text node as a candidate root and compares children in order, recursively checking that labels and structure agree.",
+        "invariants": [
+            "A candidate root is accepted only if labels match at every compared node.",
+            "Children are compared in left-to-right order, so sibling order matters.",
+            "A successful candidate has a full structural match of the pattern."
+        ],
+        "correctness": "Trying every text node ensures any occurrence is considered. The recursive ordered comparison succeeds exactly when there is a bijection between pattern and matched subtree nodes preserving labels and child order, which is the definition of an ordered rooted subtree match. Hence a reported match is genuine and every genuine match is found.",
+        "complexityRationale": "Checking each of n candidate roots against a pattern of size m costs O(n*m) time in the straightforward comparison, with O(n + m) space for the two trees.",
+        "uses": [
+            "Finding repeating subtrees in abstract syntax trees",
+            "Searching structured queries in XML documents",
+            "Locating known shapes in hierarchical data"
+        ],
+        "references": [
+            "Aho, Sagiv, Szymanski, and Ullman, Finding and Identifying Trees in Linear Time, 1981",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "If the text tree has root A with children B and C, and the pattern is a root labeled B with no children, the candidate node B matches and is reported. A node with an extra child would fail the structural check."
+    },
+
     id: "tree-pattern-matching",
     name: "Tree Pattern Matching",
     category: "tree",

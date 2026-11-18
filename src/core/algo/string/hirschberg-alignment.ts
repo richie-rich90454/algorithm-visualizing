@@ -187,6 +187,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hirschberg computes an optimal global alignment with only linear space. It splits the first string at the midpoint, computes forward scores to that row and backward scores from the end, and finds the column where their sum is largest; that column is where the optimal alignment crosses the middle.",
+        "invariants": [
+            "The forward row gives the best score from the start to each column of the midpoint.",
+            "The backward row gives the best score from each column to the end; their sum at column j is the best score of any alignment crossing the middle at j."
+        ],
+        "correctness": "Any global alignment crosses the middle row at exactly one column, and the optimal sub-alignments on either side are independent given that crossing point. Choosing the maximizing column and recursing on the two halves reconstructs an optimal alignment while linear-space score passes replace a quadratic table.",
+        "complexityRationale": "Each recursion level does two linear-space passes over the remaining strings and halves the first string, so total work is O(nm) with O(min(n,m)) space for the score rows and recursion stack.",
+        "uses": [
+            "Aligning long DNA or protein sequences when memory is limited",
+            "Global alignment in genome assemblers",
+            "Needleman-Wunsch tasks on inputs too large for a quadratic table"
+        ],
+        "references": [
+            "Hirschberg, A Linear Space Algorithm for Computing Maximal Common Subsequences, 1975",
+            "Durbin et al., Biological Sequence Analysis, Chapter 2"
+        ],
+        "workedExample": "For a=\"GATT\", b=\"GCAT\" with match +1, mismatch -1, gap -2, the midpoint split falls after \"GA\". Forward and backward scores are added column by column, the best crossing column is chosen, and each half is aligned recursively to produce the optimal alignment and score."
+    },
     id: "hirschberg-alignment",
     name: "Hirschberg",
     category: "string",

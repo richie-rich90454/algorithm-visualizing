@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cram is the impartial version of Domineering: both players place dominoes on any two adjacent empty cells. The player who cannot place a domino loses. Placing a domino splits the board into independent empty regions, so the winner is determined by the combined Grundy values of those regions.",
+        "invariants": [
+            "Every domino occupies exactly two orthogonally adjacent empty cells.",
+            "Regions separated by dominoes are independent subgames.",
+            "A player with no adjacent empty pair loses."
+        ],
+        "correctness": "By the Sprague-Grundy theorem each region has a Grundy number and the whole position has the xor of those numbers. A move is winning exactly when it leaves xor zero. The illustrated 3x3 packing places four dominoes covering eight cells, leaving the center stranded with no adjacent empty partner, so the next player has no move and loses.",
+        "complexityRationale": "The demo follows one placement line over a size by size board, costing O(n^2) time and O(n^2) board storage. General Cram solving is exponential because the state is an arbitrary subset of occupied cells.",
+        "uses": [
+            "Teaching impartial game decomposition into regions",
+            "Studying polyomino packing games",
+            "A compact example for Grundy-value visualization"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Guy, Unsolved Problems in Combinatorial Games"
+        ],
+        "workedExample": "On a 3x3 board four dominoes are placed along the illustrated line, covering eight of the nine cells. The only free cell is the center (2,2), which has no free orthogonal neighbor. The player to move cannot place a fifth domino and loses, so the player who placed the fourth domino wins."
+    },
     id: "cram",
     name: "Cram",
     category: "game",

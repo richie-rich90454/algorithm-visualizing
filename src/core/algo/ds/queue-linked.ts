@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Queue (linked) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A linked queue keeps both a head and a tail pointer. Enqueue appends a node after the tail and dequeue removes the head; tracking the tail explicitly makes both operations constant time with no resizing.",
+        "invariants": [
+            "Nodes are chained in arrival order from head to tail.",
+            "Head is the oldest surviving element and tail the newest.",
+            "Empty-queue transitions clear both pointers consistently."
+        ],
+        "correctness": "Appending at the tail places new items behind all existing ones, and removing at the head returns the item that waited longest, giving FIFO order. Updating head and tail on empty transitions keeps the chain consistent after the last node leaves.",
+        "complexityRationale": "Both operations relink a constant number of pointers, O(1). Each element occupies one node, O(n) space, with no resizing cost.",
+        "uses": [
+            "Breadth-first search",
+            "Task and job queues",
+            "Event loops where queue length varies widely"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.2"
+        ],
+        "workedExample": "Enqueue 5, 3, 8 builds head to 5 to 3 to 8 at the tail; dequeue returns 5 then 3 by detaching the head, leaving 8 as both head and tail."
+    },
     id: "queue-linked",
     name: "Queue (Linked)",
     category: "data-structures",

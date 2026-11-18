@@ -173,6 +173,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Z-Algorithm on Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This generalizes the string Z-algorithm to a tree: for each node it computes a Z-value, the length of the longest prefix of the root-to-node label path that matches a reference path. The string idea of reusing a matched window becomes reusing matched prefixes along downward paths.",
+        "invariants": [
+            "Each node's path string is the sequence of labels from the root to it.",
+            "A node's Z-value is the length of the common prefix of its path string with the reference string."
+        ],
+        "correctness": "By computing each path string exactly and comparing it character by character with the reference, the Z-value is the longest matching prefix by definition. Highlighting the top z nodes of the path marks exactly the matched portion, so the visualization faithfully represents the generalized Z-values.",
+        "complexityRationale": "Building path strings and comparing each to the reference costs O(depth) per node, giving O(V·depth) time for V nodes; storing paths and values uses O(V) space in this educational form.",
+        "uses": [
+            "Teaching how string algorithms generalize to trees",
+            "Matching root-to-node label paths",
+            "Prefix-sharing queries in labeled trees"
+        ],
+        "references": [
+            "Main and Lorentz, An O(n) Algorithm for Finding All Repetitions in a String, 1984",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences, Z-algorithm chapter"
+        ],
+        "workedExample": "In the default 8-node tree, root-to-node paths spell strings such as \"a\", \"ab\", and \"aba\"; comparing each with the longest path's label string yields Z-values that count shared leading labels, for example Z=2 for a node whose path begins \"ab\" when the reference also begins \"ab\"."
+    },
     id: "z-algorithm-on-tree",
     name: "Z-Algorithm on Tree",
     category: "string",

@@ -184,6 +184,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Baby-Step Giant-Step module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Baby-step giant-step solves the discrete logarithm a^x = b (mod p) by splitting the exponent as x = m*q + r. It tabulates the small baby powers a^r, then takes giant leaps by multiplying b by a^(-m) until a value lands in the table. This meet-in-the-middle trick replaces a brute-force scan of p exponents with work proportional to the square root.",
+        "invariants": [
+            "The baby table stores residue a^r together with r for 0 <= r < m.",
+            "After q giant steps the target is b*a^(-m*q), which equals a^r exactly when a solution with that quotient exists.",
+            "A match recovers the exponent as x = q*m + r."
+        ],
+        "correctness": "Because x = q*m + r, the equation a^x = b implies b*a^(-q*m) = a^r. Hence a match between a giant-step value and the baby table is equivalent to a valid exponent, and the paired q and r reconstruct it. With m = ceil(sqrt(p)), q and r together cover every exponent in the group.",
+        "complexityRationale": "The table holds m = ceil(sqrt(p)) baby steps and at most m giant steps are tried, so both time and space are O(sqrt(p)). Each step is one modular multiplication, treated as constant for the small primes shown.",
+        "uses": [
+            "Solving discrete logarithms in small groups",
+            "Estimating the strength of Diffie-Hellman parameters",
+            "Demonstrating the meet-in-the-middle technique"
+        ],
+        "references": [
+            "Shanks, Five mathematical problems (1971)",
+            "Menezes, Oorschot and Vanstone, Handbook of Applied Cryptography, Chapter 3"
+        ],
+        "workedExample": "Solve 2^x = 5 (mod 29) with m = 6. Baby steps 2^r mod 29 are 1, 2, 4, 8, 16, 3. Since 2^-6 = 5, giant steps 5*5^q first hit a table value 16 at q = 3, which is baby step r = 4. Thus x = 3*6 + 4 = 22."
+    },
     id: "baby-step-giant-step",
     name: "Baby-Step Giant-Step",
     category: "math",

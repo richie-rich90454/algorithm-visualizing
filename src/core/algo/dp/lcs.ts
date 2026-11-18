@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The LCS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest common subsequence finds the longest sequence of characters appearing in both strings in the same order, though not necessarily contiguously. The DP compares prefixes: matching characters extend the diagonal by one, and mismatches carry the better of skipping a character from either string. A backtrace recovers one optimal subsequence.",
+        "invariants": [
+            "dp[i][j] is the LCS length of a[:i] and b[:j].",
+            "dp[0][j] and dp[i][0] are zero for empty prefixes.",
+            "Each cell depends only on top, left, and diagonal neighbors."
+        ],
+        "correctness": "If the final characters match, an optimal subsequence can use them, giving dp[i-1][j-1] plus one; otherwise it must skip one of them, giving the max of the two adjacent cells. These cases cover every subsequence, so the recurrence is correct by induction. Backtracking through the chosen predecessor reconstructs a sequence of that length.",
+        "complexityRationale": "Filling an n by m table with constant work per cell is O(n*m) time. The table uses O(n*m) space, reducible to O(m) if only the length is needed.",
+        "uses": [
+            "Diff tools and version control merge detection",
+            "Bioinformatics sequence alignment",
+            "Measuring similarity between documents or strings"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5"
+        ],
+        "workedExample": "For a = abcde and b = ace, matches at a, c, and e extend the diagonal, so dp[5][3] = 3. Backtracing yields the subsequence ace."
+    },
     id: "lcs",
     name: "Longest Common Subsequence",
     category: "dynamic-programming",

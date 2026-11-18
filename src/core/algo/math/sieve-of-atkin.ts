@@ -122,6 +122,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The sieve of Atkin marks candidates using quadratic forms rather than sieving multiples like Eratosthenes. It flips a boolean for numbers satisfying one of three modular quadratic conditions, then clears multiples of prime squares. The remaining marked numbers are prime, and the method can be implemented in O(n) operations with careful bookkeeping.",
+        "invariants": [
+            "A number is flipped only if it satisfies one of the three quadratic residue rules.",
+            "Multiples of the square of any prime are cleared.",
+            "The surviving marked values are exactly the primes up to the limit."
+        ],
+        "correctness": "The quadratic rules characterize primes in certain residue classes modulo 60: a prime satisfying the rule is flipped an odd number of times, while composites are flipped evenly or later cleared by a prime square. Removing square multiples eliminates the composite survivors. The remaining flag therefore coincides with primality.",
+        "complexityRationale": "The quadratic sweeps touch O(n) candidate positions and square-clearing adds a harmonic sum that stays linear with optimized indexing, giving O(n) time. The boolean array uses O(n) space.",
+        "uses": [
+            "Fast prime generation for large limits",
+            "Comparison of sieve algorithms in number theory",
+            "Precomputing prime tables in computational software"
+        ],
+        "references": [
+            "Atkin and Bernstein, Prime generators (2003-2004)",
+            "Crandall and Pomerance, Prime Numbers, Section 3.2"
+        ],
+        "workedExample": "Seed 2 and 3 as prime, flip candidates satisfying the three quadratic rules up to 30, then clear multiples of 25 and 9 where applicable. The marked survivors are 2, 3, 5, 7, 11, 13, 17, 19, 23, 29."
+    },
     id: "sieve-of-atkin",
     name: "Sieve of Atkin",
     category: "math",

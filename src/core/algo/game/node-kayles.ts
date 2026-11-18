@@ -157,6 +157,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Node Kayles is played on a graph: a move chooses a vertex and removes it together with all its neighbors. The player unable to move loses. Positions are solved by recursion over the remaining vertex set, usually represented as a bitmask with memoization.",
+        "invariants": [
+            "A move deletes the chosen vertex and its entire closed neighborhood.",
+            "The game ends when no vertex remains.",
+            "A position is winning if some choice leaves a losing position."
+        ],
+        "correctness": "The recursion explores exactly the legal moves, each producing a smaller vertex set, so it terminates. Labeling a position winning when it has a move to a losing position is the definition of normal-play outcomes on a finite game, so the computed winner and highlighted winning move are correct.",
+        "complexityRationale": "There are at most 2^n vertex subsets and each state examines up to n choices, giving O(2^n) time and O(2^n) memo table space.",
+        "uses": [
+            "A graph-based impartial game for teaching game search",
+            "Modeling domination and independent-set style conflicts",
+            "A test case for bitmask memoization"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Garey and Johnson, Computers and Intractability, Node Kayles problem"
+        ],
+        "workedExample": "On the path P5 the winning move picks the center vertex v2. Removing v2 and its neighbors v1 and v3 leaves two isolated single vertices, which together form a losing position for the opponent because each remaining move simply removes one isolated vertex."
+    },
     id: "node-kayles",
     name: "Node Kayles",
     category: "game",

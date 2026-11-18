@@ -123,6 +123,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A linear congruence a*x = b (mod m) is solved like a linear equation but in modular arithmetic. Let g = gcd(a, m); solutions exist only when g divides b. Dividing through by g reduces the problem to a congruence with a coprime coefficient, whose inverse gives one solution, and the full solution set is that value plus multiples of m/g.",
+        "invariants": [
+            "The gcd g divides b exactly when a solution exists.",
+            "After reduction the coefficient a/g is invertible modulo m/g.",
+            "All solutions are congruent modulo m/g, giving exactly g classes modulo m."
+        ],
+        "correctness": "Writing a = g*a' and m = g*m' with coprime a', the congruence is equivalent to a'*x = b/g (mod m'). Since a' is invertible, x is uniquely determined modulo m', and lifting back yields g distinct classes modulo m. If g does not divide b, no integer combination can satisfy the equation, so no solution exists.",
+        "complexityRationale": "An extended Euclid call computes g and the inverse in O(log m) time, and listing the g solutions is O(g). Only a few integer variables are kept, so space is O(1).",
+        "uses": [
+            "Solving modular equations in cryptography",
+            "Computing inverses for affine ciphers",
+            "Stepping stones to the Chinese Remainder Theorem"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 4",
+            "Cormen et al., Introduction to Algorithms, Section 31.2"
+        ],
+        "workedExample": "Solve 4x = 8 (mod 12). Here g = gcd(4,12) = 4 and 4 divides 8, so divide to get x = 2 (mod 3). The solutions modulo 12 are 2, 5, 8, 11, and each satisfies the original congruence."
+    },
     id: "linear-congruence-solver",
     name: "Linear Congruence Solver",
     category: "math",

@@ -221,6 +221,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Contraction Hierarchies accelerate road-network queries with preprocessing. Vertices are contracted in order of importance, and whenever removing a vertex would be the only short route between two neighbors, a shortcut edge preserves the distance. A query then runs Dijkstra only upward through higher-ranked vertices from both ends, meeting in the middle.",
+        "invariants": [
+            "Shortcuts preserve all pairwise shortest distances after a contraction.",
+            "Upward edges always lead to a higher-ranked vertex.",
+            "The upward searches from source and target meet on an optimal path."
+        ],
+        "correctness": "Contraction only bypasses a vertex when every shortest path through it can be replaced by a shortcut, so distances are unchanged. In the upward graph any globally shortest path has a unique highest-ranked vertex, which both searches reach; taking the minimum sum at a meeting vertex therefore recovers the true shortest path.",
+        "complexityRationale": "Preprocessing adds shortcuts at about O(E log V) cost and a query runs two restricted Dijkstras in O(E log V), with O(V + E) space including shortcuts.",
+        "uses": [
+            "Millisecond shortest path queries in navigation systems",
+            "Large-scale road network routing engines",
+            "A standard technique for time-dependent and traffic-aware routing"
+        ],
+        "references": [
+            "Geisberger, Sanders, Schultes, and Delling, Contraction Hierarchies: Faster and Simpler Hierarchical Routing in Road Networks (2008)",
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)"
+        ],
+        "workedExample": "Contracting B adds shortcut A-C of weight 3 because the only short route from A to C went through B. A query from A to D then follows upward edges from both ends and meets with total cost 4, the same as an unrestricted search."
+    },
     id: "contraction-hierarchies",
     name: "Contraction Hierarchies",
     category: "shortest-path",

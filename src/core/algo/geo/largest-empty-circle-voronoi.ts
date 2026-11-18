@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The largest empty circle inside a bounding box touches no site in its interior and has the largest possible radius. In a Voronoi diagram the centers of empty circles that are locally largest are circumcenters of triples of sites, with additional candidates anchored at the box corners or boundary.",
+        "invariants": [
+            "Every candidate circle has no site strictly inside it.",
+            "A Voronoi vertex is equidistant from at least three sites.",
+            "The reported circle has maximum radius among all enumerated candidates."
+        ],
+        "correctness": "As a circle centered at a point grows until it hits a site, its radius is the distance to the nearest site, which is maximized at a Voronoi vertex where three or more cells meet. Enumerating circumcenters of all triples therefore covers interior candidates; along the bounding box the optimum occurs where the nearest-site distance is attained at a corner or boundary event, covered by the fallback. Taking the largest empty candidate among these gives the largest empty circle.",
+        "complexityRationale": "Testing all O(n^3) triples and scanning all n sites for emptiness costs O(n^4), and storing the best candidate uses O(1) space. This brute-force version is exact and intended for tiny point sets.",
+        "uses": [
+            "Finding the best location for a facility far from existing ones",
+            "Placing a largest circular obstacle-free region in robotics",
+            "Analyzing gaps in spatial point patterns"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 7",
+            "Preparata and Shamos, Computational Geometry: An Introduction, Chapter 5"
+        ],
+        "workedExample": "Sites at the four corners (0,0), (4,0), (0,4), (4,4). The circumcenter of any three is (2,2) with squared radius 8, its circle passes through all four sites, and it contains no site inside. It is therefore the largest empty circle in the bounding box."
+    },
+
     id: "largest-empty-circle-voronoi",
     name: "Largest Empty Circle",
     category: "geometry",

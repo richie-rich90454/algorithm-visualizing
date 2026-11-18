@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hierholzer Eulerian module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An Eulerian circuit is a closed walk using every edge exactly once. Hierholzer's algorithm follows unused edges greedily until it returns to a vertex with unused edges, splices a new subtour in there, and repeats until all edges are consumed.",
+        "invariants": [
+            "Every edge is traversed at most once and is removed when used.",
+            "Splicing preserves a closed circuit at the splice vertex.",
+            "The final circuit contains every edge of the graph."
+        ],
+        "correctness": "Following unused edges always returns to a vertex on the current subtour in an Eulerian graph. Splicing another subtour at a vertex with unused edges keeps the walk closed and adds disjoint edges; repeating until no unused edges remain produces a closed walk using each edge exactly once, which is an Eulerian circuit.",
+        "complexityRationale": "Each edge is pushed and popped once, giving O(E) time; adjacency bookkeeping and the circuit stack use O(V + E) space.",
+        "uses": [
+            "Route inspection and street sweeping",
+            "Generating Eulerian trails in graph drawing",
+            "A building block of the Chinese Postman algorithm"
+        ],
+        "references": [
+            "Hierholzer, Uber die Moglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren (1873)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, Eulerian circuits"
+        ],
+        "workedExample": "For the directed graph A-B-C-A and A-D-E-A, walking A-B-C-A gives a subtour; A still has unused edges, so walk A-D-E-A and splice it in at A. The combined circuit uses all six edges exactly once."
+    },
     id: "hierholzer-eulerian",
     name: "Hierholzer Eulerian",
     category: "graph",

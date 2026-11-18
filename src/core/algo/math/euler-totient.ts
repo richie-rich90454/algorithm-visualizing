@@ -134,6 +134,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Euler Totient module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Euler's totient function phi(n) counts how many integers from 1 to n share no factor with n. For a prime power phi(p^k) = p^k - p^(k-1), and because phi is multiplicative the value for n comes from multiplying the contributions of its distinct prime factors. The visualization tests each candidate with gcd to show exactly which numbers count.",
+        "invariants": [
+            "A candidate k is counted exactly when gcd(k, n) = 1.",
+            "The formula n times the product over distinct primes p of (1 - 1/p) equals the tally.",
+            "gcd(n-1, n) = 1 so n-1 is always counted for n > 1."
+        ],
+        "correctness": "Coprimality to n means avoiding every prime factor of n, so inclusion-exclusion over those primes gives phi(n) = n times the product of (1 - 1/p). The visualization's direct gcd tally matches this count because gcd captures exactly that condition. Hence the reported phi(n) is correct.",
+        "complexityRationale": "Testing each k from 1 to n with a gcd costs O(log n) each, so the direct tally is O(n log n) overall, while the header bound O(sqrt(n)) reflects factoring for the closed form. Only counters and residues are stored, so space is O(1).",
+        "uses": [
+            "Determining the size of the unit group modulo n in RSA",
+            "Counting reduced residue systems",
+            "Euler's theorem underlying modular inverses"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 2",
+            "Cormen et al., Introduction to Algorithms, Section 31.3"
+        ],
+        "workedExample": "For n = 12 the values coprime to 12 are 1, 5, 7, 11, so phi(12) = 4. The formula gives 12*(1-1/2)*(1-1/3) = 12*1/2*2/3 = 4, matching the tally."
+    },
     id: "euler-totient",
     name: "Euler's Totient",
     category: "math",

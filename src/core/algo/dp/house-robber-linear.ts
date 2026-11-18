@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "House robber on a linear street chooses non-adjacent houses to maximize loot. For each house the choice is to skip it and keep dp[i-1], or take it and add its value to dp[i-2]. The recurrence dp[i] = max(dp[i-1], dp[i-2] + nums[i]) captures that decision with only the two previous results needed.",
+        "invariants": [
+            "dp[i] is the maximum loot obtainable from houses 0 through i.",
+            "Taking house i forbids house i-1, hence the dp[i-2] dependency.",
+            "dp values are nondecreasing."
+        ],
+        "correctness": "An optimal solution for houses up to i either leaves house i unrobbed, giving dp[i-1], or robs it, forcing house i-1 to be skipped and giving dp[i-2] plus its value. These cases are exhaustive, so the max is optimal, and induction over i proves correctness.",
+        "complexityRationale": "Each house is processed once with constant work, giving O(n) time. Only two prior loot totals are needed, so space is O(1) though the visualization stores O(n) for display.",
+        "uses": [
+            "Selecting non-adjacent jobs for maximum profit",
+            "Resource allocation with adjacency conflicts",
+            "A minimal example of one-dimensional DP"
+        ],
+        "references": [
+            "LeetCode problem 198, House Robber",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For [2,7,9,3,1], dp becomes 2, 7, 11, 11, 12. Robbing houses 0, 2, and 4 gives 2+9+1 = 12, the maximum."
+    },
     id: "house-robber-linear",
     name: "House Robber (Linear)",
     category: "dynamic-programming",

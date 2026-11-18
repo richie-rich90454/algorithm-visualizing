@@ -148,6 +148,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This module studies which input orders a double-ended queue can turn into sorted output. Each value is placed at either the front or the back of the deque, choosing the end that keeps the collected sequence closest to sorted. It links sorting to permutation patterns.",
+        "invariants": [
+            "Every input element is inserted exactly once, at one of the two ends.",
+            "The deque contents are always a subsequence obtainable from some push sequence."
+        ],
+        "correctness": "A permutation is deque sortable when a sequence of front and back insertions yields increasing end-to-end order; trying both ends with the stated rule finds such a sequence when one exists. If the rule fails, the permutation is not in the deque-sortable class.",
+        "complexityRationale": "Each of the n values is considered once and each insertion is constant time, so O(n) time. Storing the deque and the decision trace uses O(n) space.",
+        "uses": [
+            "Characterizing deque-sortable permutation classes",
+            "Teaching the link between data structures and sorting",
+            "Combinatorics of stack and deque automata"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.1 (stacks and queues)",
+            "Bona, Combinatorics of Permutations, chapter on sortable permutations"
+        ],
+        "workedExample": "For [3, 1, 2], push 3 to the back, then 1 to the front, then 2 between them, reading [1, 2, 3]; the trace records each front or back decision. An order that cannot keep the two ends coherent is flagged as not deque sortable."
+    },
     id: "deque-sortable-permutations",
     name: "Deque Sortable Permutations",
     category: "sorting",

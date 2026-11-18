@@ -146,6 +146,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Boyer-Moore majority vote elects a candidate in one pass by cancelling pairs of different values, then verifies the candidate in a second pass. A true majority cannot be fully canceled, so it must survive as the final candidate.",
+        "invariants": [
+            "The tally counts surplus occurrences of the current candidate after cancellation.",
+            "If a majority exists, it equals the eventual candidate."
+        ],
+        "correctness": "Each mismatch removes one vote of the candidate and one vote of a different value; this cancellation cannot eliminate a value occurring more than n/2 times. The verification pass confirms or rejects the survivor.",
+        "complexityRationale": "One electing pass and one counting pass scan the array, O(n) time, with only a candidate and tally stored, O(1) space.",
+        "uses": [
+            "Finding the majority element in streams",
+            "Election and vote tallying problems",
+            "Teaching cancellation arguments"
+        ],
+        "references": [
+            "Boyer and Moore, MJRTY: A Fast Majority Vote Algorithm, University of Texas at Austin, 1981",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "For [2,2,1,2,3,2,2], the tally rises for 2, drops on 1, rises again, survives a 3, and ends with candidate 2; a counting pass confirms five 2s in seven entries, above half."
+    },
     id: "majority-vote-search",
     name: "Majority Vote Search",
     category: "searching",

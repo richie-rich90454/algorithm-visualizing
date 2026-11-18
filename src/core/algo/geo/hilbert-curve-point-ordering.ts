@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A Hilbert curve visits every cell of a grid in a continuous order that preserves locality. Mapping points to their Hilbert index gives a one-dimensional ordering in which nearby indices tend to be nearby in the plane, which is useful for spatial indexing.",
+        "invariants": [
+            "Each order-k cell receives a unique index from 0 to 4^k - 1.",
+            "Consecutive indices correspond to grid cells sharing an edge.",
+            "The quadrant rotations applied at each bit follow the recursive Hilbert curve orientation."
+        ],
+        "correctness": "At each level the Hilbert curve partitions the square into four quadrants joined by a fixed rotational pattern, and the recursive orientation determines which quadrant comes next. Interleaving the x and y bits while applying those rotations reproduces the exact recursive traversal, so the computed index is the cell's position along the curve. Since the curve visits every cell once, the mapping is a bijection.",
+        "complexityRationale": "Computing one index processes k bits for an order-k grid, costing O(k) per point or O(n log m) for n points on an m-cell side. Only a few integer variables are needed per point, so space is O(1) beyond the output.",
+        "uses": [
+            "Spatial indexing of geographic or multidimensional data",
+            "Improving cache locality in array and image layouts",
+            "Ordering points for color quantization and visualization"
+        ],
+        "references": [
+            "Hilbert, Ueber die stetige Abbildung einer Linie auf ein Flaechenstueck, Mathematische Annalen 38 (1891)",
+            "Sagan, Space-Filling Curves, Chapter 1"
+        ],
+        "workedExample": "On an order-1 curve, the 2 by 2 grid cells are visited as (0,0), (0,1), (1,1), (1,0) with indices 0 through 3. A point at (0.1, 0.1) maps to cell (0,0) with index 0, while a point at (0.9, 0.9) maps to cell (1,1) with index 2."
+    },
+
     id: "hilbert-curve-point-ordering",
     name: "Hilbert Curve Point Ordering",
     category: "geometry",

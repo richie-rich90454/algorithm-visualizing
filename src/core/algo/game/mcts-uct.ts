@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Monte Carlo Tree Search builds a search tree by repeated random playouts. UCT chooses which child to expand using an upper confidence bound that combines the child's mean reward with a bonus for being rarely visited. This balances exploiting known good moves against exploring untried ones.",
+        "invariants": [
+            "Every expanded child keeps a win count and a visit count.",
+            "Unvisited children are tried before heavily visited ones.",
+            "The selection score is mean reward plus c times sqrt(ln N over n)."
+        ],
+        "correctness": "The UCB1 rule is derived from a confidence bound on the mean reward of each arm, and its regret grows only logarithmically, so every arm is sampled enough to identify the best one as simulations grow. The recommendation of the most-visited arm therefore converges to the optimal move under the bandit model.",
+        "complexityRationale": "Each simulation performs one selection, playout, and backup, costing O(depth) work, so s simulations cost O(s) in this flat bandit demo. Statistics for arms use O(arms) space.",
+        "uses": [
+            "Game engines where the branching factor defeats full search",
+            "Online decision making and multi-armed bandit problems",
+            "Planning with a simulator but no explicit evaluation function"
+        ],
+        "references": [
+            "Kocsis and Szepesvari, Bandit Based Monte-Carlo Planning (2006)",
+            "Auer, Cesa-Bianchi, and Fischer, Finite-time Analysis of the Multiarmed Bandit Problem (2002)"
+        ],
+        "workedExample": "With arms A, B, and C and 9 seeded simulations, each arm is pulled once to seed its stats. Thereafter the arm with the largest mean plus 1.4 times sqrt(ln N over n) is pulled; wins and visits are backed up each time. At the end the most-visited arm is recommended."
+    },
     id: "mcts-uct",
     name: "MCTS-UCT",
     category: "game",

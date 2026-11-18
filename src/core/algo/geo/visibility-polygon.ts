@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The visibility polygon of a viewpoint inside a polygon is the set of points it can see without a wall blocking the line of sight. Casting a ray toward each vertex and finding the nearest obstacle hit gives the boundary of the visible region in angular order.",
+        "invariants": [
+            "Every visibility boundary vertex is either a polygon vertex or a point where a ray first hits an edge.",
+            "Rays are processed in angular order around the viewpoint.",
+            "The visible region is star-shaped from the viewpoint."
+        ],
+        "correctness": "The visibility polygon's corners can only occur where a ray from the viewpoint passes through a vertex or hits an edge, because between such angles the nearest obstacle varies continuously along a single edge. Casting rays to all vertices and taking the first intersection for each angular sector therefore captures every boundary event, and connecting them in angle order yields exactly the region with unobstructed line of sight.",
+        "complexityRationale": "Casting a ray to each of n vertices and intersecting it with all n edges costs O(n^2) time. The ray list and hit points use O(n) space.",
+        "uses": [
+            "Computing visible regions for guards in a floor plan",
+            "Line-of-sight queries in robotics and games",
+            "Rendering visibility in 2D environments"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Chapter 5",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 15"
+        ],
+        "workedExample": "From viewpoint (0.5,0.5) inside a convex square, rays to all four vertices hit those vertices first, so the visibility polygon is the entire square. In an L-shaped room, a ray toward the far arm hits the inner corner first and that region is excluded."
+    },
+
     id: "visibility-polygon",
     name: "Visibility Polygon",
     category: "geometry",

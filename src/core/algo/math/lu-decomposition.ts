@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LU decomposition factors a square matrix A into a unit lower-triangular matrix L and an upper-triangular matrix U. It records the elimination multipliers in L while reducing A to U, so solving a linear system becomes two cheap triangular solves. A zero pivot needs a row swap, which the plain version here reports rather than conceals.",
+        "invariants": [
+            "After k columns, the leading k-by-k block of U is upper triangular and L holds the multipliers used.",
+            "The relation A = L*U holds for the original matrix throughout the factorization.",
+            "The diagonal of L stays all ones."
+        ],
+        "correctness": "Each elimination step subtracts a multiple of the pivot row, and storing that multiplier in L makes the product L*U reconstruct the original rows by reversing the steps. By induction over columns the growing blocks satisfy A = L*U. Once U is fully triangular, the factorization is complete.",
+        "complexityRationale": "Eliminating below the diagonal in each of n columns touches O(n^2) entries in total per column, giving O(n^3) time. The two triangular factors occupy O(n^2) space.",
+        "uses": [
+            "Solving many systems with the same coefficient matrix",
+            "Computing determinants and matrix inverses",
+            "Underlying numerical linear algebra in scientific computing"
+        ],
+        "references": [
+            "Golub and Van Loan, Matrix Computations, Chapter 3",
+            "Strang, Linear Algebra and Its Applications, Chapter 2"
+        ],
+        "workedExample": "For A = [[4,2],[2,3]] the multiplier is 2/4 = 0.5, giving L = [[1,0],[0.5,1]] and U = [[4,2],[0,2]]. Multiplying L by U returns [[4,2],[2,3]], the original matrix."
+    },
     id: "lu-decomposition",
     name: "LU Decomposition",
     category: "math",

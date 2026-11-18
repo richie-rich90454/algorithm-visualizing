@@ -138,6 +138,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Booth Minimal Rotation module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A string has n rotations and we want the lexicographically smallest one. Booth's algorithm doubles the string and races two candidate starting positions i and j, comparing the rotations offset by offset. At the first mismatch the larger candidate is eliminated by jumping past that point, so each round discards at least one candidate.",
+        "invariants": [
+            "i and j are distinct candidate starts and the true minimal start is never eliminated.",
+            "The comparison offset k advances only while the two rotations agree, so every comparison rules out at least one candidate."
+        ],
+        "correctness": "When rotation i is larger than rotation j at offset k, none of the starts from i through i+k can be minimal because j's rotation is smaller and dominates them; jumping i past k is therefore safe. Symmetric reasoning applies to j. With at most n candidates and each eliminated at most once, the surviving start gives the minimal rotation.",
+        "complexityRationale": "Both pointers only move forward and can advance at most n positions in total, so the comparisons sum to O(n). Only a constant number of pointers plus the doubled string are stored, giving O(n) space (O(1) auxiliary beyond the input).",
+        "uses": [
+            "Canonical representation of circular strings and necklaces",
+            "Minimal rotation in string periodicity algorithms",
+            "Lexicographically minimal string matching"
+        ],
+        "references": [
+            "Booth, Lexicographically Least Circular Substring, 1980",
+            "Crochemore et al., Algorithms on Strings, chapter on rotations"
+        ],
+        "workedExample": "For \"cbbbaaa\" the doubled string is \"cbbbaaacbbbaaa\". Racing the candidates quickly discards starts beginning with 'c' and 'b' and converges on start 4, which yields the minimal rotation \"aaacbbb\"."
+    },
     id: "booth-minimal-rotation",
     name: "Booth's Minimal Rotation",
     category: "string",

@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A KLL sketch estimates quantiles from a stream using a hierarchy of buffers called compactors. When a buffer fills, its items are sorted and randomly thinned, and survivors move to the next level with doubled weight. The weighted samples approximate the distribution without storing every value.",
+        "invariants": [
+            "Each level's buffer holds at most k items.",
+            "A survivor from level i has twice the weight of items at level i.",
+            "Random thinning is unbiased across the retained items."
+        ],
+        "correctness": "Randomly keeping half of a sorted buffer preserves a representative sample, and doubling weights accounts for the discarded mass. The merge of all levels approximates the empirical cumulative distribution within a bounded error. Quantile estimates from that distribution are therefore accurate to within the sketch error.",
+        "complexityRationale": "Updates touch one buffer and occasionally compact, O(log n) amortized. Each level stores at most k weighted items, so space is O(k log n).",
+        "uses": [
+            "Streaming quantile and percentile estimation",
+            "Monitoring latency distributions",
+            "Approximate histograms in databases"
+        ],
+        "references": [
+            "Z. Karnin, E. Liberty, and E. Porat, \"Optimal Quantile Approximation in Streams\", FOCS 2016",
+            "Graham Cormode, \"Sketch Techniques for Approximate Algorithms\", Foundations and Trends 2009"
+        ],
+        "workedExample": "Stream 7, 2, 9, 4, 6 into level 0 with capacity k=2; when it holds three items, sort and keep two at random, promoting them to level 1 with weight 2. A median query combines weighted items across levels and reports an estimate near 6."
+    },
     id: "kll-sketch",
     name: "KLL Sketch",
     category: "data-structures",

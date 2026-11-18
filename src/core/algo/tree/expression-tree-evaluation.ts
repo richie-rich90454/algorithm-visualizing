@@ -171,6 +171,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A postfix expression can be turned into a binary tree by pushing operands as leaf nodes and, when an operator appears, popping the last two trees and making them its children. Evaluating the resulting tree in postorder then applies each operator to the values of its children.",
+        "invariants": [
+            "The stack always holds complete expression trees in evaluation order.",
+            "Every internal node is an operator with exactly two children.",
+            "Postorder evaluation visits a node only after both children have values."
+        ],
+        "correctness": "Postfix notation guarantees that when an operator is read its two operands are the most recent complete expressions on the stack, so linking them to a new operator node reconstructs the original expression tree. Postorder evaluation computes each subtree's value before its parent, so applying the operator to the two child values yields the correct value of that subtree and ultimately of the root.",
+        "complexityRationale": "Each token is pushed once and popped once, so both tree construction and evaluation take O(n) time. The tree and stack hold O(n) nodes.",
+        "uses": [
+            "Parsing arithmetic in calculators and interpreters",
+            "Converting postfix notation to expression trees",
+            "Compiling expressions into evaluable tree structures"
+        ],
+        "references": [
+            "Dragon Book (Aho, Lam, Sethi, Ullman), Compilers, Chapter 2",
+            "CLRS, Introduction to Algorithms, Chapter 10 (stacks and trees)"
+        ],
+        "workedExample": "The postfix tokens 3 4 + 2 * 7 / push 3 and 4, combine them into 7, push 2 and combine into 14, push 7 and divide, giving 2 as the value at the root."
+    },
+
     id: "expression-tree-evaluation",
     name: "Expression Tree Evaluation",
     category: "tree",

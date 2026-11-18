@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Digit DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Digit DP counts numbers in a range with a property that depends on their digits, by building the number from most significant to least. A tight flag records whether the prefix still matches the bound, restricting the next digit; a started flag handles leading zeros. Memoizing on position and flags reuses the count of valid suffixes.",
+        "invariants": [
+            "A state (pos, tight, started) fully determines the number of valid completions.",
+            "When tight is true the chosen digit cannot exceed the bound's digit at pos.",
+            "Memoized states return identical counts because the remaining problem is the same."
+        ],
+        "correctness": "At each position the allowed digits are exactly those permitted by the tight constraint and the property, and each leads to a well-defined next state. Summing their completions counts every valid number once because each number corresponds to a unique sequence of digit choices. Memoization preserves correctness by caching identical subproblems.",
+        "complexityRationale": "There are O(digits) positions, a constant number of flag combinations, and up to 10 digit choices each, giving O(digits * states * 10) time. The memo table uses O(digits) space here.",
+        "uses": [
+            "Counting numbers in a range avoiding certain digits",
+            "Lucky number and digit-property queries up to large bounds",
+            "Competitive programming range-counting problems"
+        ],
+        "references": [
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6",
+            "Competitive Programming handbook, Digit DP chapter"
+        ],
+        "workedExample": "Count 0..543 without digit 4. Processing digits left to right, at the tens place a tight prefix permits 0..4 but 4 is forbidden, so only 0..3 are counted when tight; memoized suffix counts combine into the total."
+    },
     id: "digit-dp",
     name: "Digit DP",
     category: "dynamic-programming",

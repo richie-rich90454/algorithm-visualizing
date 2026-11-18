@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Stack (linked) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A linked stack uses a singly linked list with pushes and pops at the head. Because the head is always available, both operations are O(1) and the stack grows dynamically without resizing.",
+        "invariants": [
+            "Head points to the newest element.",
+            "Each node links to the one pushed before it.",
+            "Push and pop touch only the head."
+        ],
+        "correctness": "Linking a new node in front of the head makes it newest; detaching the head on pop returns that newest element, so the order is LIFO. Advancing head to the next node restores the stack with one fewer element.",
+        "complexityRationale": "Both operations relink a constant number of pointers, O(1). Each element is one node, O(n) space, with no resizing overhead.",
+        "uses": [
+            "Recursive call emulation",
+            "Expression parsing",
+            "Backtracking where stacks grow unpredictably"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.2"
+        ],
+        "workedExample": "Push 5, 3, 8 builds head 8 to 3 to 5; pop detaches 8 so head becomes 3; another pop returns 3, leaving head 5."
+    },
     id: "stack-linked",
     name: "Stack (Linked)",
     category: "data-structures",

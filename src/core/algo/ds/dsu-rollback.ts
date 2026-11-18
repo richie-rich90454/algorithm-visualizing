@@ -108,6 +108,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A rollback DSU supports undo by recording every parent or rank change on a stack and never using path compression. To rewind, it pops changes back to a saved snapshot. This makes union-find usable in offline algorithms that need to revisit earlier states, such as divide-and-conquer connectivity.",
+        "invariants": [
+            "Each union pushes the previous values of the modified parent and rank.",
+            "Rollback restores exactly the state at the chosen snapshot.",
+            "Without path compression, find follows an unchanged parent chain."
+        ],
+        "correctness": "Because every mutation is recorded before it happens, popping the stack in reverse order restores each field to its prior value. Union by size keeps trees shallow enough without compression. Therefore a query after rollback sees precisely the partition that existed at the snapshot.",
+        "complexityRationale": "Find costs O(log n) because union by size bounds tree height, and rollback is proportional to the number of changes undone. Recording each change uses O(n + ops) space for the stack.",
+        "uses": [
+            "Offline dynamic connectivity",
+            "Divide-and-conquer over time intervals",
+            "Problems requiring undo of merges"
+        ],
+        "references": [
+            "Robert Tarjan, \"Efficiency of a Good But Not Linear Set Union Algorithm\", JACM 1975",
+            "Steven Halim, Competitive Programming 3, rollback union-find section"
+        ],
+        "workedExample": "Union(1,2) records that parent[2] changed from 2 to 1; snapshot depth is 1. Union(3,4) adds another change. Rolling back to depth 1 pops the second change, so 3 and 4 are separate again while 1 and 2 remain joined."
+    },
     id: "dsu-rollback",
     name: "DSU Rollback",
     category: "data-structures",

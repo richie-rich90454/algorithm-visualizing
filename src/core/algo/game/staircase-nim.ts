@@ -146,6 +146,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Staircase Nim arranges piles as stairs and a move shifts stones from one stair down to the next, with stones falling off the bottom stair disappearing. The surprising result is that only the odd-numbered stairs matter: the game is ordinary Nim on those piles.",
+        "invariants": [
+            "Only piles in odd positions contribute to the game value.",
+            "The value is the xor of the odd-position pile sizes.",
+            "Moving stones from an even stair to an odd stair can be answered by moving them down again."
+        ],
+        "correctness": "Stones on even stairs are irrelevant because any move from an even to an odd stair can be mirrored by the opponent moving those same stones to the next even stair, restoring the odd-pile xor. Moves from odd to even stairs reduce an odd pile exactly like a Nim move. Therefore the odd piles form an equivalent Nim game and the xor rule decides the winner.",
+        "complexityRationale": "Scanning p piles to xor the odd positions and find a reducible one costs O(p) time with O(1) extra space.",
+        "uses": [
+            "A Nim variant demonstrating position-parity invariants",
+            "Teaching how dominated moves can be ignored",
+            "A small solved game for strategy discussions"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Conway, On Numbers and Games"
+        ],
+        "workedExample": "Piles [2,1,3] use only stairs 1 and 3, whose xor is 2 xor 3 = 1. Since pile 3 can be reduced to 3 xor 1 = 2, shift one stone down to make piles [2,1,2]. The odd-position xor is now 2 xor 2 = 0, a losing position for the opponent."
+    },
     id: "staircase-nim",
     name: "Staircase Nim",
     category: "game",

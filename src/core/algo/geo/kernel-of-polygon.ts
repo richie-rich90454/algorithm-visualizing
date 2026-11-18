@@ -143,6 +143,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The kernel of a polygon is the set of points that can see every part of the polygon. A point sees the whole polygon exactly when it lies on the interior side of every edge, so the kernel is the intersection of the n half-planes defined by the edges.",
+        "invariants": [
+            "A point is in the kernel iff it is inside every edge's interior half-plane.",
+            "The kernel is always convex, being an intersection of half-planes.",
+            "For a convex polygon the kernel equals the polygon itself."
+        ],
+        "correctness": "In a simple polygon a point sees the whole boundary iff it lies to the interior side of each directed edge, because otherwise some edge would block the view of a region behind it. Clipping the polygon successively by each interior half-plane with Sutherland-Hodgman therefore leaves exactly the set of points satisfying all those conditions, which is the kernel.",
+        "complexityRationale": "Each of the n clips scans the current vertex list once in two dimensions, giving O(n^2) time and O(n) space for the current clipped polygon on these small inputs.",
+        "uses": [
+            "Finding guard positions that see an entire room",
+            "Visibility analysis in architecture and urban planning",
+            "Testing whether a polygon is star-shaped"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Chapter 5",
+            "Preparata and Shamos, Computational Geometry: An Introduction, Chapter 5"
+        ],
+        "workedExample": "For the triangle (0,0), (4,0), (0,3), all three interior half-planes intersect in the triangle itself, so the kernel is the whole triangle. For an L-shaped polygon occupying [0,2] by [0,1] plus [0,1] by [1,2], the half-planes reduce to the square [0,1] by [0,1], which is the kernel."
+    },
+
     id: "kernel-of-polygon",
     name: "Kernel of a Polygon",
     category: "geometry",

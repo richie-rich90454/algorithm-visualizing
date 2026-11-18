@@ -209,6 +209,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Karp Minimum Mean Cycle module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A directed cycle's mean weight is its total weight divided by its edge count. Karp's algorithm finds the cycle with minimum mean weight using dynamic programming: dp[k][v] is the cheapest walk of exactly k edges ending at v. A formula combining dp values over all walk lengths extracts the minimum mean cycle value.",
+        "invariants": [
+            "dp[k][v] is the minimum total weight of a k-edge walk ending at v from a virtual source.",
+            "Cycles of length at most V determine the minimum mean value.",
+            "The computed value is the minimum over vertices of a maximum over walk lengths."
+        ],
+        "correctness": "Any long walk repeats vertices and contains a cycle, so considering lengths up to V captures the relevant cycle structure. Karp's theorem shows the expression min over v of max over k of (dp[n][v] - dp[k][v])/(n-k) equals the minimum cycle mean, so evaluating it gives the correct value.",
+        "complexityRationale": "Filling n layers over E edges costs O(V E), and keeping only two layers plus a history table uses O(V) working space with O(V^2) if the full history is retained for display.",
+        "uses": [
+            "Minimum cost-to-time ratio analysis in scheduling",
+            "Detecting negative cycles and their mean weight",
+            "A building block in cycle-mean and network calculus problems"
+        ],
+        "references": [
+            "Karp, A Characterization of the Minimum Cycle Mean in a Digraph (1978)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, shortest paths"
+        ],
+        "workedExample": "For the cycle A-B-C-A with weights 4, 1, 1, the total is 6 over 3 edges, so its mean is 2. The DP fills walk costs by length, and the final formula returns 2 as the minimum mean cycle value, with vertex A or B highlighted as attained."
+    },
     id: "karp-minimum-mean-cycle",
     name: "Karp Minimum Mean Cycle",
     category: "shortest-path",

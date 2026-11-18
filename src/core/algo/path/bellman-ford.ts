@@ -219,6 +219,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bellman-Ford module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Relax every edge repeatedly. After k passes, the known distances are at most the best path using k edges. Since a simple shortest path uses at most V-1 edges, V-1 passes suffice, and one more pass detects negative cycles.",
+        "invariants": [
+            "After pass k, each distance is no larger than the true shortest path using at most k edges."
+        ],
+        "correctness": "Each pass considers every edge, so any path of length k+1 is formed by extending a path of length k; relaxation captures it. With no negative cycle, an optimal path is simple and has at most V-1 edges, so distances converge. A further improvement implies a negative cycle.",
+        "complexityRationale": "V-1 passes over E edges give O(VE) time and O(V) space, slower than Dijkstra but able to handle negative edge weights.",
+        "uses": [
+            "Graphs with negative edge weights",
+            "Negative-cycle detection in currency arbitrage",
+            "Distributed routing protocols such as distance vector"
+        ],
+        "references": [
+            "Bellman, On a Routing Problem, 1958",
+            "Ford and Fulkerson, Flows in Networks, 1962",
+            "CLRS, Introduction to Algorithms, Chapter 24"
+        ],
+        "workedExample": "Edges A->B cost 4, A->C cost 5, C->B cost -2. Pass 1 sets B=4, C=5, then relaxes B to 3 via C. Pass 2 makes no change, so distances are final: B=3, C=5."
+    },
     id: "bellman-ford",
     name: "Bellman-Ford",
     category: "shortest-path",

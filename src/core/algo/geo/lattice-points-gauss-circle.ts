@@ -86,6 +86,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The Gauss circle problem asks how many integer grid points lie inside or on a circle of radius r centered at the origin. The answer is found by checking each lattice point in the bounding square and testing whether its squared distance is at most r squared.",
+        "invariants": [
+            "A counted point has integer coordinates and x^2 + y^2 <= r^2.",
+            "Points outside the square from -r to r cannot qualify.",
+            "The count is symmetric under reflections across both axes."
+        ],
+        "correctness": "Enumerating every integer x and y from -r to r covers all lattice points that could lie in the disk, since any point with |x| > r or |y| > r has squared distance greater than r^2. The inequality test accepts exactly those inside or on the circle, so the total count is correct. Symmetry can be used to group points but does not change the result.",
+        "complexityRationale": "The double loop visits (2r+1)^2 candidate points, so time is O(r^2) and no persistent storage is needed, giving O(1) space.",
+        "uses": [
+            "Studying error terms in the Gauss circle problem",
+            "Counting grid cells covered by a disk in rasterization",
+            "Testing integer lattice approximations in number theory"
+        ],
+        "references": [
+            "Gauss, De nexu inter multitudinem classium, 1834",
+            "Titchmarsh, The Theory of the Riemann Zeta-Function, Chapter 12"
+        ],
+        "workedExample": "For r = 2, the origin contributes 1 point, the axis points at distance 1 and 2 contribute 8, and the four diagonal points (+/-1, +/-1) contribute 4, for a total of 13 lattice points."
+    },
+
     id: "lattice-points-gauss-circle",
     name: "Lattice Points (Gauss Circle)",
     category: "geometry",

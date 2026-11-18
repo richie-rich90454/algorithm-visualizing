@@ -89,6 +89,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The secretary problem asks you to pick the best candidate from a sequence interviewed in random order with no recall. The optimal strategy is to observe and reject the first n/e candidates to set a benchmark, then hire the first later candidate who beats it. This maximizes the chance of selecting the best, which approaches 1/e, about 37 percent, for large n.",
+        "invariants": [
+            "No candidate is hired during the observation phase.",
+            "The benchmark is the maximum value seen during that phase.",
+            "Once hiring starts, the first candidate exceeding the benchmark is accepted and the process stops."
+        ],
+        "correctness": "If the best candidate is at position j greater than n/e, the strategy succeeds exactly when the best of the first j-1 candidates lies in the observation phase, which has probability (n/e)/(j-1). Averaging over j and taking the limit gives 1/e, which is optimal among all stopping rules; observing too few or too many lowers the chance.",
+        "complexityRationale": "The algorithm scans the candidate list once, tracking a running maximum, O(n) time. It stores only the benchmark and the hired index, O(1) space.",
+        "uses": [
+            "Optimal stopping in hiring and decision problems",
+            "Sequential asset-selling and best-price decisions",
+            "Threshold policies in online selection",
+            "A canonical model in decision theory and auction design"
+        ],
+        "references": [
+            "Gilbert and Mosteller, Recognizing the Maximum of a Sequence, Journal of the American Statistical Association, 1966",
+            "Ferguson, Who Solved the Secretary Problem?, Statistical Science, 1989"
+        ],
+        "workedExample": "Candidates [3,1,7,2,8,4,6,5] give n=8, so observe floor(8/e)=2. The benchmark from the first two is max(3,1)=3. From position 3 onward, hire the first value above 3: candidate 7 at position 3. The optimum was 8 at position 5, so this instance misses it, illustrating that the 1/e rule is optimal only in expectation."
+    },
     id: "secretary-problem",
     name: "Secretary Problem",
     category: "math",

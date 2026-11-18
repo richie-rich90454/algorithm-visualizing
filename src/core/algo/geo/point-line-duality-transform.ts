@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Point-line duality maps a primal point (a,b) to the dual line y = a*x - b and a primal line y = m*x + c to the dual point (m, -c). Under this transform, incidence and vertical ordering are preserved, so questions about points and lines can be studied in the dual plane.",
+        "invariants": [
+            "A primal point (a,b) maps to exactly one dual line y = a*x - b.",
+            "A primal point lies on a primal line iff the dual line passes through the dual point.",
+            "Vertical order of primal points at a given x corresponds to order of dual slopes."
+        ],
+        "correctness": "Substituting (a,b) into y = m*x + c gives b = m*a + c, which rearranges to -c = m*a - b, exactly the condition that the dual line of the point passes through the dual point of the line. Hence incidence is preserved. Because a dual line's slope is the primal point's x-coordinate, the ordering of primal points by x becomes an ordering of dual slopes, so the transform carries geometric relationships across faithfully.",
+        "complexityRationale": "Transforming each point or line is a constant-time coordinate rewrite, so building the dual of n objects takes O(n) time and O(n) space. Sampling two x values per dual line for display remains constant work per object.",
+        "uses": [
+            "Solving incidence problems by transforming to the dual plane",
+            "Teaching slope ordering and arrangement duality",
+            "Reducing geometric problems to line-arrangement queries"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 8",
+            "Goodman and Pollack, Handbook of Discrete and Computational Geometry, Chapter 24"
+        ],
+        "workedExample": "The primal point (2,3) becomes the dual line y = 2x - 3, and the point (1,1) becomes y = x - 1. Sampling the first dual line at x = -2 and x = 4 gives -7 and 5, which are the two plotted nodes used to draw it."
+    },
+
     id: "point-line-duality-transform",
     name: "Point–Line Duality Transform",
     category: "geometry",

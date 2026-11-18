@@ -113,6 +113,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Queue (array) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A queue is first in, first out. An array queue keeps a front index for reads and a rear index for writes; a circular layout wraps the rear around so dequeues do not shift the remaining elements.",
+        "invariants": [
+            "Elements between front and rear modulo capacity are in arrival order.",
+            "Enqueue advances rear and dequeue advances front.",
+            "No element is reported twice."
+        ],
+        "correctness": "Writing at the rear and reading at the front makes the oldest surviving element the next returned, which is exactly FIFO. Circular indexing preserves the linear order of live elements, so wrapping does not skip or duplicate anything.",
+        "complexityRationale": "Each enqueue or dequeue reads or writes one slot and advances one index, O(1); resizing when full copies n elements, O(n) occasionally but O(1) amortized. Storage is one slot per element, O(n).",
+        "uses": [
+            "Breadth-first search frontiers",
+            "Print and message queues",
+            "Buffering producer and consumer pipelines"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.2 on queues"
+        ],
+        "workedExample": "Enqueue 5, 3, 8 gives [5,3,8]; dequeue twice returns 5 then 3, leaving [8]. A new enqueue writes at the wrapped rear slot without shifting 8."
+    },
     id: "queue-array",
     name: "Queue (Array)",
     category: "data-structures",

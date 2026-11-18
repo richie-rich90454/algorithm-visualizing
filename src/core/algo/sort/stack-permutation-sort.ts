@@ -154,6 +154,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This module asks whether a single stack can reorder the input into sorted output using only push and pop operations. Each next wanted value drives pushes until it reaches the top, then pops it; if a smaller value blocks the way, sorting fails.",
+        "invariants": [
+            "Stack contents are always a subsequence of the unread input in original order.",
+            "Popped values form an increasing output prefix."
+        ],
+        "correctness": "A permutation is stack sortable exactly when this push-until-found strategy never meets a blocking smaller value; if it succeeds the output is increasing and complete, and if it fails no alternative push schedule exists for that pattern.",
+        "complexityRationale": "Each input value is pushed and popped at most once, so O(n) time and O(n) stack space.",
+        "uses": [
+            "Recognizing stack-sortable permutations",
+            "Compiler parsing with stack disciplines",
+            "Teaching relationships between data structures and patterns"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.1 (stack permutations)",
+            "Bona, Combinatorics of Permutations, chapter on stack-sortable permutations"
+        ],
+        "workedExample": "For [3, 1, 2], want 1: push 3, push 1, pop 1; want 2: push 2, pop 2; pop 3, output [1, 2, 3]. A pattern such as [2, 3, 1] blocks 1 behind 3 and is not stack sortable."
+    },
     id: "stack-permutation-sort",
     name: "Stack Permutation Sort",
     category: "sorting",

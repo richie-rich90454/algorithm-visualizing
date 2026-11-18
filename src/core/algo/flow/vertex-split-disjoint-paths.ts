@@ -179,6 +179,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "To find the most vertex-disjoint paths between two vertices, split each intermediate vertex into an in-copy and an out-copy joined by an arc of capacity one. Any flow through that arc then uses the vertex at most once. The maximum flow in the split network equals the maximum number of vertex-disjoint paths.",
+        "invariants": [
+            "Every intermediate vertex is traversed by at most one path because its split arc has capacity one.",
+            "Source and sink are not capacity limited, so many paths may start and end there.",
+            "Each unit of flow corresponds to one path in the original graph."
+        ],
+        "correctness": "Any set of vertex-disjoint paths maps to integral flow in the split network because no two paths use the same split arc. Conversely, integral flow decomposes into paths that cannot share an intermediate vertex. By integrality of max flow and Menger's theorem, the max flow value equals the maximum number of vertex-disjoint paths.",
+        "complexityRationale": "Splitting doubles the vertex count and leaves edge count similar, and one max flow costs about O(V E^2). The split network and predecessor arrays use O(V + E) space.",
+        "uses": [
+            "Finding multiple disjoint communication routes",
+            "Testing vertex connectivity between two terminals",
+            "Fault-tolerant network design with node failures"
+        ],
+        "references": [
+            "Menger, Zur Allgemeinen Kurventheorie (1927)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow applications"
+        ],
+        "workedExample": "Directed graph 0->1, 0->2, 1->3, 2->3, 1->2, source 0 sink 3. After splitting 1 and 2 with unit-capacity arcs, max flow sends one unit along 0-1-3 and one along 0-2-3. The value 2 is the maximum number of vertex-disjoint paths."
+    },
     id: "vertex-split-disjoint-paths",
     name: "Vertex-Split Disjoint Paths",
     category: "flow",

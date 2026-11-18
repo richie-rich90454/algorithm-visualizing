@@ -139,6 +139,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Linear Search module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Check each element in order until the target is found or the array ends. It needs no ordering and works on any collection.",
+        "invariants": [
+            "All positions before the current index have been checked and do not match."
+        ],
+        "correctness": "By induction the scan never skips an unchecked element; if a match exists it is eventually examined, and if the loop ends no match exists.",
+        "complexityRationale": "At most n comparisons, O(n) worst and average time; O(1) best case when the first element matches. Space is O(1).",
+        "uses": [
+            "Small or unsorted collections",
+            "Searching linked lists where random access is unavailable",
+            "A baseline for measuring faster search structures"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Sedgewick and Wayne, Algorithms, Section 1.1"
+        ],
+        "workedExample": "Search for 7 in [4, 9, 7, 2]. Compare 4, then 9, then 7; return index 2. Searching for 5 exhausts all four elements and returns not found."
+    },
     id: "linear-search",
     name: "Linear Search",
     category: "searching",

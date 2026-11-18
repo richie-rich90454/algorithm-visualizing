@@ -170,6 +170,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Closest Pair module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The closest pair is found by divide and conquer. Sort the points by x, split them in half, and solve each half recursively; the answer is the better of the two halves unless a closer pair straddles the split. Any straddling pair must lie within the current best distance of the dividing line, so only a thin strip needs checking.",
+        "invariants": [
+            "After solving a subproblem, delta is the closest distance found in either half.",
+            "A closer cross pair must have both points within delta of the split line.",
+            "Points in the strip are kept sorted by y, so each point checks only a constant number of successors."
+        ],
+        "correctness": "Recursion gives the true closest pair inside each half. For a cross pair closer than delta, both endpoints fall inside the 2*delta strip, and packing arguments show that at most a constant number of strip points can lie within delta in y of any given point. Checking those neighbors therefore finds any better cross pair, so the minimum over the recursive answers and the strip is exact.",
+        "complexityRationale": "The recurrence is T(n) = 2T(n/2) + O(n) for the split, strip, and y-order merge, giving O(n log n) time with the initial x-sort. Recursion and strip arrays use O(n) space.",
+        "uses": [
+            "Finding nearby duplicates in geographic data",
+            "Collision detection preprocessing among moving objects",
+            "Clustering and nearest-neighbor initialization"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 33",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "Points (0,0), (1,0), (4,0), (5,0), (2,4) sorted by x. The left half gives delta = 1 and the right half delta = 1. The strip around x = 2.5 contains (1,0), (4,0), (2,4); checking y-neighbors finds no pair closer than 1, so the answer stays 1."
+    },
+
     id: "closest-pair-of-points",
     name: "Closest Pair of Points",
     category: "geometry",

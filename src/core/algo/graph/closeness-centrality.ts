@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Closeness centrality rewards vertices that can reach everyone else in few hops. It is defined as (n-1) divided by the sum of shortest-path distances from the vertex. Running one BFS from every vertex sums those distances and yields the score for each.",
+        "invariants": [
+            "BFS from a vertex gives the exact shortest distance to every reachable vertex.",
+            "Closeness is the reciprocal of the average distance to others.",
+            "A vertex that reaches all others in one hop attains the maximum score of 1."
+        ],
+        "correctness": "BFS computes shortest distances on unweighted graphs, so the summed distance is the true total. Normalizing by n-1 turns it into the inverse of the average distance, which is the standard closeness definition, so the computed scores are correct.",
+        "complexityRationale": "One BFS costs O(V + E) and there are V sources, giving O(V(V + E)) time. Distances and scores use O(V) space per source.",
+        "uses": [
+            "Ranking influential nodes in social and information networks",
+            "Choosing facility locations that minimize average travel",
+            "Comparing network efficiency under proposed changes"
+        ],
+        "references": [
+            "Freeman, Centrality in Social Networks: Conceptual Clarification (1979)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search"
+        ],
+        "workedExample": "In the star with center A and leaves B, C, D, BFS from A finds distance 1 to each leaf, so closeness is 3/3 = 1. A leaf reaches A in 1 hop and the other two leaves in 2 hops each, total 5, giving closeness 3/5 = 0.6."
+    },
     id: "closeness-centrality",
     name: "Closeness Centrality",
     category: "graph",

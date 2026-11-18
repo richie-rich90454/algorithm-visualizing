@@ -177,6 +177,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Circle sort compares symmetric pairs of elements from the outside in, like walking around a circle from both ends. Any pair found out of order is swapped; passes repeat with finer subdivision until a full pass makes no swaps. It is in place and gentle on nearly sorted input.",
+        "invariants": [
+            "Each completed pass leaves larger values nearer the right end and smaller values nearer the left.",
+            "When a pass makes no swaps, every compared pair is in order."
+        ],
+        "correctness": "Every pass pushes misplaced extreme elements toward their final ends by swapping out-of-order symmetric pairs; recursively subdividing the circle examines all offsets. A swap-free pass certifies that all pairs are ordered, which implies the array is sorted.",
+        "complexityRationale": "Each pass scans O(n) pairs and there are O(log n) passes in the typical recursive subdivision, giving O(n log n) average time; the visualization caps extreme cases. Only recursion state is stored, so space is O(log n).",
+        "uses": [
+            "Sorting nearly ordered arrays in place",
+            "Teaching symmetric compare-and-swap passes",
+            "Lightweight sorting for small data sets"
+        ],
+        "references": [
+            "Mirzayanov, Circle Sort or Strange Sorting, Kvant, 1988",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3], compare ends 5 and 3 and swap to [3, 1, 4, 2, 5]; compare 3 and 2 and swap to [2, 1, 4, 3, 5]. Further passes converge to [1, 2, 3, 4, 5]."
+    },
     id: "circle-sort",
     name: "Circle Sort",
     category: "sorting",

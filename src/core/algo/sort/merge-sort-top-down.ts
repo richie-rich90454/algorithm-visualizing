@@ -217,6 +217,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Merge Sort (Top-Down) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Split the array in half, sort each half recursively, then merge the two sorted halves by repeatedly taking the smaller leading element. A single element is already sorted, which ends the recursion.",
+        "invariants": [
+            "Each recursive call returns a sorted array containing exactly its input elements.",
+            "The merge step always takes the smaller available head, so the output prefix is sorted."
+        ],
+        "correctness": "By induction, both halves are sorted. At each merge step the smaller head is the smallest element not yet emitted, so the output is sorted; it contains every element from both halves exactly once.",
+        "complexityRationale": "The recurrence T(n) = 2T(n/2) + O(n) solves to O(n log n) on every input. Merging needs an auxiliary array of size n, so space is O(n) for the classic version.",
+        "uses": [
+            "Stable sorting where equal keys must keep their input order",
+            "External sorting of data larger than memory",
+            "The base of timsort for long runs"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "Start [5, 1, 4, 2]. Split into [5, 1] and [4, 2]. Sort each to [1, 5] and [2, 4]. Merge: compare 1 and 2, take 1; compare 5 and 2, take 2; then take 4, then 5. Result [1, 2, 4, 5]."
+    },
     id: "merge-sort-top-down",
     name: "Merge Sort (Top-Down)",
     category: "sorting",

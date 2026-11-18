@@ -89,6 +89,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An Euler tour tree represents each dynamic tree as the cyclic sequence of its edges visited in an Euler tour, stored in a balanced sequence structure. Linking two trees splices their tours, cutting splits one, and connectivity is simply testing whether two vertices share a tour. It supports dynamic forest queries in logarithmic time.",
+        "invariants": [
+            "Each tree corresponds to one balanced sequence of tour entries.",
+            "Vertices are connected exactly when they occur in the same sequence.",
+            "Link splices and cut splits preserve valid Euler tours."
+        ],
+        "correctness": "An Euler tour visits every edge of a tree twice, so its sequence uniquely represents the tree. Splicing two sequences at a vertex produces the tour of the linked tree; splitting at a cut's occurrences produces the two tours of the resulting trees. Connectivity comparison is therefore exact.",
+        "complexityRationale": "Balanced sequence operations take O(log n) each, so link, cut, and connectivity queries are O(log n). Storing each tour occurrence once uses O(n) space.",
+        "uses": [
+            "Dynamic connectivity in forests",
+            "Network reliability under link changes",
+            "Dynamic tree algorithms in graph theory"
+        ],
+        "references": [
+            "Greg Frederickson, \"Data Structures for On-Line Updating of Minimum Spanning Trees\", SIAM J. Computing 1985",
+            "Sleator and Tarjan, \"A Data Structure for Dynamic Trees\", JCSS 1983"
+        ],
+        "workedExample": "Start with isolated vertices A and B, each a trivial tour. Linking A-B splices their sequences into one tour, so a connectivity query on A and B succeeds. Cutting A-B splits the sequence back into two; the same query now fails."
+    },
     id: "euler-tour-tree",
     name: "Euler Tour Tree",
     category: "data-structures",

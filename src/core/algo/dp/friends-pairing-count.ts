@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Friends pairing counts how n friends can each stay single or pair up with one other friend. For friend i, either they stay single, giving f[i-1] arrangements, or they pair with any of the i-1 others, giving (i-1)*f[i-2]. Adding the two cases yields f[i] = f[i-1] + (i-1)*f[i-2].",
+        "invariants": [
+            "f[0] = 1 and f[1] = 1.",
+            "Every arrangement is partitioned by the status of friend i.",
+            "The pair case chooses one distinct partner and then arranges the remaining i-2 friends."
+        ],
+        "correctness": "If friend i is single, the other i-1 friends can be arranged in f[i-1] ways. If paired, there are i-1 choices of partner and f[i-2] ways for the rest, and these arrangements are disjoint. Summing counts every configuration exactly once, so the recurrence is correct by induction.",
+        "complexityRationale": "Computing up to n uses one multiplication per index, so time is O(n). A single array of counts uses O(n) space, reducible to O(1) with rolling values.",
+        "uses": [
+            "Counting matchings in a complete graph",
+            "Modeling partnership and pairing combinatorics",
+            "Counting involutions with a fixed-point rule"
+        ],
+        "references": [
+            "Stanley, Enumerative Combinatorics, Vol. 1, Chapter 1",
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 7"
+        ],
+        "workedExample": "From f[0]=1, f[1]=1: f[2]=1+1=2, f[3]=2+2*1=4, f[4]=4+3*2=10. Four friends have 10 single-or-pair arrangements."
+    },
     id: "friends-pairing-count",
     name: "Friends Pairing (Count)",
     category: "dynamic-programming",

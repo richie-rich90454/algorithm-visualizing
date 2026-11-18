@@ -176,6 +176,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Aliens Trick module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Aliens trick solves constrained DPs by charging a penalty lambda for each use of a limited resource and dropping the constraint. For each lambda the unconstrained DP is cheap, and the number of resources used is monotone in lambda. Binary searching lambda until the solution uses exactly the allowed amount recovers the optimum for the constrained problem.",
+        "invariants": [
+            "For a fixed lambda the DP finds the minimum penalized cost.",
+            "As lambda grows, the optimal solution uses no more of the resource.",
+            "The binary search brackets the lambda producing the target resource count."
+        ],
+        "correctness": "Adding lambda per unit makes the objective a linear function whose slope changes at the true optimum; the unconstrained minimizer uses the target amount precisely at the optimal lambda. Monotonicity of usage in lambda justifies binary search. Recovering the split at the converged lambda therefore gives the constrained optimum.",
+        "complexityRationale": "Each DP pass over n elements is O(n) and the binary search over the penalty range takes O(log range) iterations, giving O(n log range) time. Storing the DP array and one split uses O(n) space.",
+        "uses": [
+            "Partitioning an array into a fixed number of groups",
+            "Constrained shortest paths and resource-limited scheduling",
+            "Optimization problems with a single Lagrange multiplier"
+        ],
+        "references": [
+            "Knuth, lecture notes from a Caltech course (1988), origin of the Aliens trick",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 4"
+        ],
+        "workedExample": "Split [1, 3, 2, 6, 8, 10, 20] into 3 groups. For too small a penalty the DP uses many groups, so raise lambda; for too large it uses one. The lambda where the DP uses exactly three groups yields the optimal boundaries."
+    },
     id: "aliens-trick",
     name: "Aliens Trick",
     category: "dynamic-programming",

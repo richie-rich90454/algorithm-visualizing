@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A double-array trie encodes a trie in two parallel arrays, base and check. From state s, the slot for character c is base[s] + code(c); it is a valid child only if check[slot] equals s. Lookup therefore needs two array reads per character and no pointers.",
+        "invariants": [
+            "check[base[s] + code(c)] equals s for every valid transition.",
+            "base and check have the same length; free slots have check 0.",
+            "A terminal marker marks complete keys."
+        ],
+        "correctness": "The check array verifies ownership, so a colliding slot is rejected rather than misinterpreted as a child. Relocating a subtree changes base and updates all its check entries, preserving valid transitions. Following transitions by the formula walks exactly the trie path for the query key.",
+        "complexityRationale": "Each key character needs one base read and one check read, O(m) for key length m. The two arrays are sized to the number of trie states, O(states) space, with occasional relocation overhead.",
+        "uses": [
+            "Compact dictionaries and spell checkers",
+            "Japanese morphological analyzers",
+            "Fast prefix matching in constrained memory"
+        ],
+        "references": [
+            "Junichi Aoe, \"An Efficient Digital Search Algorithm by Using a Double-Array Structure\", IEEE Trans. Software Engineering 1989",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.3"
+        ],
+        "workedExample": "Insert cat and car: state 0 gets base 1, so c maps to slot 1 + code(c). A third key colliding at that slot triggers relocation of the smaller subtree. Searching car reads base at each state, adds the character code, verifies check equals the current state, and reaches the terminal for car."
+    },
     id: "double-array-trie",
     name: "Double-Array Trie",
     category: "data-structures",

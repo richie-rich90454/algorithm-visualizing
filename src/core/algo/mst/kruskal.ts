@@ -217,6 +217,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Kruskal module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sort all edges by weight and add an edge whenever it connects two different components, using a union-find structure to track components. Skip edges that would create a cycle.",
+        "invariants": [
+            "The chosen edges form a forest with no cycle.",
+            "Union-find correctly reports whether two endpoints are already connected."
+        ],
+        "correctness": "The cut property says the lightest edge crossing any cut is safe. When Kruskal accepts an edge, it is the lightest edge crossing the cut between its endpoint components, so it belongs to some minimum spanning tree. Repeating yields an MST.",
+        "complexityRationale": "Sorting dominates at O(E log E); union-find operations are nearly constant time with path compression and union by rank. Space is O(V + E).",
+        "uses": [
+            "Network and cable layout design",
+            "Clustering by single-link similarity",
+            "Approximation algorithms such as Christofides"
+        ],
+        "references": [
+            "Kruskal, On the Shortest Spanning Subtree of a Graph, 1956",
+            "CLRS, Introduction to Algorithms, Chapter 23"
+        ],
+        "workedExample": "Edges AB=1, BC=2, AC=3. Add AB, add BC, then AC is skipped because A and C are already connected. The tree has weight 3."
+    },
     id: "kruskal",
     name: "Kruskal's MST",
     category: "mst",

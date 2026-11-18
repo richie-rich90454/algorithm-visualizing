@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Regex matching here handles literals, the dot wildcard for any single character, and star for zero or more repetitions of the preceding element. The DP cell dp[i][j] says whether the first i characters of the string match the first j pattern characters. A star either consumes nothing, jumping back two in the pattern, or consumes one more matching character.",
+        "invariants": [
+            "dp[i][j] records a full match of s[:i] against p[:j].",
+            "The empty row is seeded so patterns such as c* can match nothing.",
+            "A star's zero-use case and extended-use case are both considered."
+        ],
+        "correctness": "If the pattern character is a literal or dot and matches, the result inherits dp[i-1][j-1]. If it is a star, either it matches zero copies, giving dp[i][j-2], or it consumes a character compatible with the starred element, giving dp[i-1][j]. These cover all regex behaviors, so induction establishes dp[n][m].",
+        "complexityRationale": "Filling an n by m table with constant work per cell is O(n*m) time. The table uses O(n*m) space, reducible to O(m) with one row.",
+        "uses": [
+            "Implementing simplified regular expression engines",
+            "Glob-style pattern matching",
+            "Teaching automata-style string DP"
+        ],
+        "references": [
+            "LeetCode problem 10, Regular Expression Matching",
+            "Hopcroft and Ullman, Introduction to Automata Theory, Languages, and Computation, Chapter 3"
+        ],
+        "workedExample": "For s = aab and p = c*a*b, the leading c* matches nothing, so dp[0][2] is true. The a* then absorbs the first two a's and the final b matches, making dp[3][5] true."
+    },
     id: "regex-matching-dp",
     name: "Regex Matching (DP)",
     category: "dynamic-programming",

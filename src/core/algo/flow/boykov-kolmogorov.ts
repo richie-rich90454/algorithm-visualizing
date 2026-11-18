@@ -304,6 +304,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Boykov-Kolmogorov module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Boykov-Kolmogorov is an augmenting-path max-flow method tuned for vision graph cuts. Instead of rebuilding search trees after every augmentation, it grows a tree from the source and a tree from the sink through the residual graph until they meet, augments along the meeting path, then repairs the trees locally.",
+        "invariants": [
+            "The source tree and sink tree span only vertices with remaining capacity to grow.",
+            "A vertex where the two trees meet certifies an augmenting path from source to sink.",
+            "Flow is feasible throughout: no edge carries more than its capacity and conservation holds at internal vertices."
+        ],
+        "correctness": "When the two search trees meet, the combined parent links trace a path from source to sink with positive residual capacity, so it is a valid augmenting path. Augmenting along it increases flow by the bottleneck. When no growth is possible the trees cannot meet, which means no augmenting path exists, so the flow is maximum.",
+        "complexityRationale": "The worst-case bound is O(E f) for f augmentations, matching basic Ford-Fulkerson. On vision-style graphs the two-tree growth and local reuse make it far faster in practice; storage is O(V + E) for trees and residual arcs.",
+        "uses": [
+            "Image segmentation and stereo matching via graph cuts",
+            "Energy minimization in computer vision with submodular pairwise terms",
+            "Interactive foreground extraction tools"
+        ],
+        "references": [
+            "Boykov and Kolmogorov, An Experimental Comparison of Min-Cut/Max-Flow Algorithms for Energy Minimization in Vision (2004)",
+            "Kolmogorov and Zabih, What Energy Functions Can Be Minimized via Graph Cuts? (2002)"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-T 2, B-T 3. Grow the source tree to A and B and the sink tree back to A and B; they meet at A along S-A-T with bottleneck 2, so send 2. The trees meet again at B along S-B-T with bottleneck 3, sending 3. Total flow is 5, equal to the source out-capacity, so it is maximum."
+    },
     id: "boykov-kolmogorov",
     name: "Boykov-Kolmogorov",
     category: "flow",

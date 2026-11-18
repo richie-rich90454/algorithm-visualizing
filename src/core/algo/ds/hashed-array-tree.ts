@@ -77,6 +77,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A hashed array tree stores an array as a two-level structure: a top directory of leaf blocks, with the high bits of an index selecting the leaf and the low bits the offset. This keeps elements contiguous within leaves while avoiding the large single allocation of a dynamic array.",
+        "invariants": [
+            "Index bits split into a top part and an offset part.",
+            "Each leaf stores a fixed number of elements contiguously.",
+            "The directory grows when a new leaf is needed."
+        ],
+        "correctness": "Splitting the index by bits gives a unique (leaf, offset) pair, so reading and writing an index always targets the correct slot. Appending fills the current leaf before allocating the next, preserving order. Growing the directory copies pointers, not elements.",
+        "complexityRationale": "Indexed access is two array dereferences, O(1). Storage is O(n) for elements plus a small directory, with geometric growth amortized.",
+        "uses": [
+            "Append-friendly arrays with stable blocks",
+            "Persistent vector implementations",
+            "Large arrays that grow without full copies"
+        ],
+        "references": [
+            "Chris Okasaki, Purely Functional Data Structures, Chapter 12",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.4 on dynamic arrays"
+        ],
+        "workedExample": "Build from [4, 1, 7, 3, 6] with leaf size 4: the top directory has two leaves, the first holding 4, 1, 7, 3 and the second holding 6. Reading index 5 uses high bits to pick leaf 1 and low bits to pick offset 1."
+    },
     id: "hashed-array-tree",
     name: "Hashed Array Tree",
     category: "data-structures",

@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Chomp is played on a chocolate bar with a poisoned top-left square. A move eats one cookie plus everything below and to the right, and whoever eats the poison loses. A strategy-stealing argument shows the first player wins on every board larger than one square; small boards are solved here by recursion.",
+        "invariants": [
+            "A move always removes an up-right closed set of cookies.",
+            "A position is losing exactly when every legal move leaves a winning position for the opponent.",
+            "The poisoned square is never chosen until no other cookie remains."
+        ],
+        "correctness": "The recursive solver labels a position winning if any chomp move leads to a losing position. By definition this is the normal-play classification of a finite game, so the verdict is correct. The strategy-stealing argument proves a first-move win for any board bigger than 1x1: if the second player had a winning reply to taking the bottom-right cookie, the first player could have taken that reply square directly.",
+        "complexityRationale": "Each cell is either present or absent, giving up to 3^(r*c) reachable states for an r by c board with memoization, so the exhaustive solver is exponential but fine on tiny boards. The memo table uses the same order of space.",
+        "uses": [
+            "Teaching strategy-stealing arguments in combinatorial game theory",
+            "A finite perfect-information game for search demonstrations",
+            "Testing retrograde and recursive game solvers"
+        ],
+        "references": [
+            "Gale, A Note on Chomp (1974)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "On a 3x3 bar the first player chomps the bottom-right single cookie at (2,2), leaving an L-shaped position. The recursive solver classifies that shape as a P-position, so whatever the opponent eats, the first player can restore a losing shape and eventually force the opponent to take the poison."
+    },
     id: "chomp",
     name: "Chomp",
     category: "game",

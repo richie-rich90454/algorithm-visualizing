@@ -121,6 +121,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Skew Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A skew heap is a meldable heap where, after merging the two roots, the children of every node on the merge path are swapped unconditionally. This rule gives O(log n) amortized operations without storing ranks or balance fields.",
+        "invariants": [
+            "Every parent is no larger than its children.",
+            "A merge never breaks heap order.",
+            "The child swap is applied at every visited node."
+        ],
+        "correctness": "Meld attaches the larger root under the smaller root, preserving heap order, then swaps children along the path; children are themselves heaps so swapping cannot violate order. The self-adjusting analysis charges each swap to earlier merges, giving logarithmic amortized cost.",
+        "complexityRationale": "Meld follows one path and swaps children, O(log n) amortized; insert and extract-min reduce to melds. Each key is one node, O(n) space, with no balance metadata.",
+        "uses": [
+            "Priority queues with frequent melding",
+            "Self-adjusting data structures",
+            "Heaps where implementation simplicity matters"
+        ],
+        "references": [
+            "Sleator and Tarjan, Self-Adjusting Heaps, SIAM Journal on Computing 1986",
+            "CLRS, Introduction to Algorithms, Chapter 19"
+        ],
+        "workedExample": "Insert 5, 3, 8, 1, 9 by melding singletons; each meld attaches the larger root under the smaller and swaps children, leaving 1 at the root. Extract-min removes 1 and melds its two children."
+    },
     id: "skew-heap",
     name: "Skew Heap",
     category: "data-structures",

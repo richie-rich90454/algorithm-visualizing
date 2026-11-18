@@ -151,6 +151,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "SMA star is best-first search under a fixed memory budget. It expands the lowest-f leaf and, when memory fills, discards the highest-f leaf while backing its f-value up to the parent so the branch can be regenerated later.",
+        "invariants": [
+            "The priority queue holds at most the configured number of nodes.",
+            "A forgotten subtree's best f-value is stored at its parent."
+        ],
+        "correctness": "With enough memory to hold the shallowest optimal path, backing up f-values preserves optimality; with too little memory the search may fail or return a suboptimal path, which is the known limitation.",
+        "complexityRationale": "Forgotten nodes can be regenerated repeatedly, so time is O(b^d) in the worst case. Space is capped by the configured memory budget.",
+        "uses": [
+            "Searching with a hard memory cap",
+            "Robotic pathfinding on embedded systems",
+            "Teaching memory-bounded best-first search"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3",
+            "Chakrabarti et al., SMA*: An Algorithm for Search with Limited Memory, 1988"
+        ],
+        "workedExample": "With a memory cap of three nodes, expand the lowest-f leaf A; when a fourth node is generated, forget the highest-f leaf and store its f on the parent. Regenerate that branch later if it remains promising."
+    },
     id: "sma-star-search",
     name: "SMA* Search",
     category: "searching",

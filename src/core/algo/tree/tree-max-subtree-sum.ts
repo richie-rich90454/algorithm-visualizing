@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "This DP finds the largest sum of a connected downward path starting anywhere and going from parent to descendant. Each node computes the best sum of a subtree hanging below it as its own value plus the best child contributions, and the answer is the maximum over all nodes.",
+        "invariants": [
+            "sub[u] is the value at u plus the positive child subtree sums.",
+            "The best downward sum starting at u equals sub[u].",
+            "The global answer is the maximum sub[u] over every vertex."
+        ],
+        "correctness": "A connected downward path beginning at u consists of u plus, for each child, at most one downward path from that child. Choosing the best child path independently gives sub[u], and including only beneficial children is captured by taking the best contribution. Postorder induction gives sub[u] correctly for every node, and since any downward path starts at some node, the maximum over all nodes is the desired answer.",
+        "complexityRationale": "Each edge is examined once in postorder with constant work, so time is O(n). One stored sum per node uses O(n) space.",
+        "uses": [
+            "Finding the most profitable subtree in a hierarchy",
+            "Maximum subarray analogue on rooted structures",
+            "Scoring best connected components in tree data"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15 (dynamic programming)",
+            "Competitive Programming 3, Hall and Li, tree DP chapter"
+        ],
+        "workedExample": "With values A = -5, B = 4, C = 2, D = 1 where B has child D and A has children B and C, sub[B] = 4 + 1 = 5 while sub[A] = -5 + 5 + 2 = 2. The maximum downward sum is 5 at B."
+    },
+
     id: "tree-max-subtree-sum",
     name: "Tree Max Subtree Sum",
     category: "tree",

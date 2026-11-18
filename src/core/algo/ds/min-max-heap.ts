@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A min-max heap alternates levels: on even depths a node is no larger than its children, and on odd depths no smaller. This lets you peek and remove both the smallest and largest key in logarithmic time from a single array. Think of it as two heaps interleaved by depth.",
+        "invariants": [
+            "Every node at an even depth is less than or equal to all of its descendants.",
+            "Every node at an odd depth is greater than or equal to all of its descendants.",
+            "The backing array is a complete tree filled level by level."
+        ],
+        "correctness": "The smallest key must sit at the root, which is a min level, and the largest must sit among the root children, which are max levels. Bubble-up compares against parents or grandparents according to level parity, restoring the alternating order on the changed path; all other paths were already valid and remain so.",
+        "complexityRationale": "Bubble and trickle operations climb or descend the heap height, which is O(log n) for a complete tree. The array stores one value per key, so auxiliary space is O(1) beyond the n slots.",
+        "uses": [
+            "Double-ended priority queues",
+            "Event simulation needing both earliest and latest deadlines",
+            "Scheduling that repeatedly removes both extremes"
+        ],
+        "references": [
+            "Atkinson, Sack, Santoro, and Strothotte, Min-Max Heaps and Generalized Priority Queues, CACM 1986",
+            "CLRS, Introduction to Algorithms, Chapter 6"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1, 9. Root 5 sits at min level 0 while children 2 and 8 occupy max level 1. Key 1 bubbles up to the root as the minimum, and key 9 ends up among the max-level children."
+    },
     id: "min-max-heap",
     name: "Min-Max Heap",
     category: "data-structures",

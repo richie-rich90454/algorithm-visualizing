@@ -189,6 +189,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bareiss module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Bareiss algorithm computes a determinant using Gaussian elimination that never creates fractions. After each pivot step it divides the updated submatrix by the previous pivot, and a theorem guarantees that division is exact. The entries stay integers throughout, avoiding floating-point rounding entirely.",
+        "invariants": [
+            "Every division by the previous pivot yields an integer.",
+            "After k steps the trailing submatrix holds the k-by-k leading minors.",
+            "A zero pivot means the determinant is zero."
+        ],
+        "correctness": "Sylvester's determinant identity shows the fraction-free update equals ordinary elimination multiplied by the previous pivot, so the quotient is integral and represents the same row reduction. Induction on the pivot index keeps the trailing block equal to the corresponding minors. The final diagonal entry is therefore the determinant of the original matrix.",
+        "complexityRationale": "There are O(n) pivot steps and each updates an O(n^2) block, giving O(n^3) arithmetic operations just like Gaussian elimination. The matrix itself occupies O(n^2) space; integer sizes grow but stay bounded by Hadamard's inequality.",
+        "uses": [
+            "Exact determinant computation for integer matrices",
+            "Computer algebra systems needing fraction-free arithmetic",
+            "Avoiding rounding error in symbolic linear algebra"
+        ],
+        "references": [
+            "Bareiss, Sylvester's identity and multistep integer-preserving Gaussian elimination (1968)",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.2"
+        ],
+        "workedExample": "For [[2,1,1],[1,3,2],[1,0,0]] the first pivot 2 updates the lower block to [[5,3],[-1,-1]]. The next pivot 5 gives ((-1)*5 - (-1)*3)/2 = -1. The last diagonal entry is -1, the determinant."
+    },
     id: "bareiss-fraction-free",
     name: "Bareiss (Fraction-Free)",
     category: "math",

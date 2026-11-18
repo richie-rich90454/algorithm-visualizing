@@ -185,6 +185,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tree sort inserts every value into a binary search tree, then reads it back with an in-order walk. The search tree rule places smaller values left and larger values right, so the walk naturally visits them in ascending order.",
+        "invariants": [
+            "At every node, all left-subtree keys are smaller and all right-subtree keys are larger.",
+            "In-order traversal of any subtree yields its keys in sorted order."
+        ],
+        "correctness": "Insertion preserves the search tree invariant; by induction an in-order walk visits left subtree, node, then right subtree in ascending order, so the full walk sorts all inserted keys.",
+        "complexityRationale": "Inserting n keys into a balanced search tree costs O(log n) each and the walk is O(n), giving O(n log n); an unbalanced tree degrades to O(n^2). The tree holds O(n) nodes.",
+        "uses": [
+            "Sorting while maintaining a searchable structure",
+            "Teaching the link between BSTs and sorting",
+            "Dynamic sets that need ordered iteration"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 12 (binary search trees)",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.2"
+        ],
+        "workedExample": "Insert [5, 3, 1, 4, 2] into a BST with 5 at the root and 3 on its left; the in-order walk visits 1, 2, 3, 4, 5."
+    },
     id: "tree-sort",
     name: "Tree Sort",
     category: "sorting",

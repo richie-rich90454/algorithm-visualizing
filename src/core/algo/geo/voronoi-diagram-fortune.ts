@@ -158,6 +158,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A Voronoi diagram partitions the plane into cells of points closest to each site. Fortune's sweep builds it with a sweep line and a beach front of parabolic arcs, generating vertices where arcs meet. This demo follows the sweep narrative and computes the finite cells exactly from the Delaunay dual, whose triangle circumcenters are the Voronoi vertices.",
+        "invariants": [
+            "Every Voronoi vertex is the circumcenter of an empty-circle Delaunay triangle.",
+            "Each cell contains exactly the points closer to its site than to any other.",
+            "Voronoi edges lie on perpendicular bisectors of pairs of sites."
+        ],
+        "correctness": "Fortune's sweep maintains the invariant that the beach front is the boundary of the region already closer to some site than to the sweep line, so arc events construct exactly the Voronoi edges and vertices. Equivalently, a point is a Voronoi vertex when it is equidistant from at least three sites with no site closer, which is the circumcenter of a Delaunay triangle. Computing those circumcenters and joining adjacent ones therefore gives the same diagram.",
+        "complexityRationale": "Fortune's algorithm runs in O(n log n) time with O(n) space. The educational Delaunay-dual computation enumerates triple circumcenters, which is slower on large inputs but exact and clear on the small default sets.",
+        "uses": [
+            "Nearest-neighbor queries in spatial databases",
+            "Service area mapping for facilities",
+            "Computing empty-circle and largest-empty-circle candidates"
+        ],
+        "references": [
+            "Fortune, A Sweepline Algorithm for Voronoi Diagrams, Algorithmica 2 (1987)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 7"
+        ],
+        "workedExample": "Sites at (0,0), (4,0), (2,3) have one Delaunay triangle. Its circumcenter is (2, 0.833), where the three cells meet. The edges from that vertex are perpendicular bisectors of the site pairs, forming the three Voronoi cells."
+    },
+
     id: "voronoi-diagram-fortune",
     name: "Voronoi Diagram (Fortune)",
     category: "geometry",

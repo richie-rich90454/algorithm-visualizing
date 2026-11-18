@@ -231,6 +231,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Johnson's Algorithm module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Johnson computes all-pairs shortest paths on sparse graphs, even with negative edges. It adds a virtual source and runs Bellman-Ford once to get potentials h, then reweights every edge so all weights become nonnegative. Running Dijkstra from each vertex on the reweighted graph is fast, and potentials convert results back to true distances.",
+        "invariants": [
+            "Reweighted costs w'(u,v) = w(u,v) + h[u] - h[v] are nonnegative.",
+            "Reweighting preserves the relative cost of every path between the same endpoints.",
+            "True distance d(u,v) is recovered as d'(u,v) - h[u] + h[v]."
+        ],
+        "correctness": "The potentials from Bellman-Ford satisfy h[v] at most h[u] plus w(u,v), which makes every reweighted edge nonnegative. Because reweighting telescopes along a path, the cheapest path is unchanged, so Dijkstra finds the correct reweighted distances, and subtracting the potential difference restores true distances.",
+        "complexityRationale": "One Bellman-Ford run costs O(V E) and V Dijkstra runs cost O(V E log V), giving the stated bound; the all-pairs table uses O(V^2) space.",
+        "uses": [
+            "All-pairs shortest paths in sparse graphs",
+            "Network analysis with negative link costs",
+            "A faster alternative to Floyd-Warshall on large sparse data"
+        ],
+        "references": [
+            "Johnson, Efficient Algorithms for Shortest Paths in Sparse Networks (1977)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, all-pairs shortest paths"
+        ],
+        "workedExample": "A virtual source gives potentials that reweight the sample graph's negative edge C-A so all costs are nonnegative. Dijkstra from each vertex fills the reweighted table, and converting back yields the true all-pairs distances."
+    },
     id: "johnson",
     name: "Johnson's Algorithm",
     category: "shortest-path",

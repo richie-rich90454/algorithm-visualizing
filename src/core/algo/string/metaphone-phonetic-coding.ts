@@ -109,6 +109,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Metaphone converts a word to a code representing its English pronunciation so that words sounding alike share a code. It normalizes the word, applies initial-silence and digraph rules, maps consonants to a small alphabet of sounds, and drops vowels except a leading one.",
+        "invariants": [
+            "The output consists only of phonetic code characters and reflects the consonant skeleton of the word.",
+            "Digraphs such as TH, SH, and PH are replaced by single sound codes before individual letters are processed."
+        ],
+        "correctness": "Each rule encodes a standard English pronunciation convention, for example TH to 0, PH to F, and initial KN to N, so words with the same pronunciation produce the same code. Because rules examine a fixed window of neighbors, the mapping is deterministic and linear.",
+        "complexityRationale": "The word is scanned a constant number of times with constant-size lookahead, giving O(n) time and O(1) auxiliary space beyond the output.",
+        "uses": [
+            "Name matching in search and databases",
+            "Spell-check suggestions",
+            "Deduplicating customer records with misspelled names"
+        ],
+        "references": [
+            "Philips, Metaphone: A Phonetic Encoding Algorithm, 1990",
+            "Philips, Double Metaphone, 2000"
+        ],
+        "workedExample": "\"Thompson\" normalizes to THOMPSON; TH becomes 0 and PH becomes F, vowels are dropped, giving the code \"0MFSN\", which similarly pronounced spellings would also produce."
+    },
     id: "metaphone-phonetic-coding",
     name: "Metaphone",
     category: "string",

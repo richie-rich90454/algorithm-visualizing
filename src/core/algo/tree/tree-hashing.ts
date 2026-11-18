@@ -97,6 +97,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Tree hashing assigns each subtree a compact value built from the hashes of its children. Sorting the child hashes makes the value independent of child order, and mixing them with a base and a prime lets structurally identical subtrees be recognized quickly.",
+        "invariants": [
+            "A leaf receives a fixed base hash.",
+            "An internal node's hash is computed from the sorted list of its children's hashes.",
+            "Isomorphic subtrees receive equal hashes under the same combine rule."
+        ],
+        "correctness": "By induction, if two subtrees are isomorphic their children can be paired into isomorphic pairs, which have equal hashes, and sorting makes their hash lists identical; applying the same deterministic combine function then gives equal parent hashes. Conversely different multisets of child hashes produce different combined values except for rare collisions, so equality of root hashes indicates structural equivalence up to the usual hash-collision caveat.",
+        "complexityRationale": "Sorting child hashes at each node costs O(deg log deg), summing to O(n log n) in the worst case, with O(n) storage for the hash values.",
+        "uses": [
+            "Comparing subtree shapes in tree isomorphism",
+            "Detecting repeated substructures in XML or AST data",
+            "Fast equality checks in competitive programming"
+        ],
+        "references": [
+            "Aho, Sagiv, Szymanski, and Ullman, Finding and Identifying Trees in Linear Time, 1981",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "A leaf gets hash 1. A node with two leaf children sorts [1,1] and mixes it with a prime to get its hash. Two such nodes in different parts of a tree receive the same hash because their child hash lists are identical."
+    },
+
     id: "tree-hashing",
     name: "Tree Hashing",
     category: "tree",

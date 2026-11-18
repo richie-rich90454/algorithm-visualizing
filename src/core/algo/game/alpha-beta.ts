@@ -263,6 +263,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Alpha-Beta module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Alpha-beta pruning is minimax with two running bounds. Alpha is the best score MAX has found so far and beta is the best score MIN has found so far. When a node's value cannot be better than what a sibling already guaranteed, the remaining children are pruned because they cannot change the root decision.",
+        "invariants": [
+            "Alpha never decreases and beta never increases along a search path.",
+            "At any MAX node, alpha is a lower bound on the final value; at any MIN node, beta is an upper bound.",
+            "Pruning only skips subtrees whose values cannot affect the root choice."
+        ],
+        "correctness": "Once alpha is at least beta at a node, every descendant value lies outside the window the parent still cares about, so the parent's decision is already determined. Skipping those descendants therefore cannot change the backed-up root value. With perfect move ordering the search visits only the O(b^(d/2)) critical nodes, while still returning exactly the minimax value.",
+        "complexityRationale": "In the best case the branching factor is effectively squared, giving O(b^(d/2)) versus O(b^d) for plain minimax, with O(d) recursion space. The game tree and bounds use O(d) working storage per path.",
+        "uses": [
+            "Game engines for chess, checkers, and board games",
+            "Any adversarial search where full minimax is too expensive",
+            "Real-time decision making with a fixed search depth"
+        ],
+        "references": [
+            "Knuth and Moore, An Analysis of Alpha-Beta Pruning (1975)",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, adversarial search chapter"
+        ],
+        "workedExample": "At a MIN node with beta already 3, the first child returns 5. Since MIN will never choose a value above the current best of 3, the remaining children cannot lower the answer below 3 and are pruned. The same cut at alternating levels lets a ternary depth-3 tree finish after far fewer than 27 leaf evaluations, with the same minimax score."
+    },
     id: "alpha-beta",
     name: "Alpha-Beta Pruning",
     category: "game",

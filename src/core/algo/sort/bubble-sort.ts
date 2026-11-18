@@ -189,6 +189,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bubble Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Walk through the array from left to right and swap any neighboring pair that is out of order. One complete pass floats the largest remaining value to its final position, so repeat passes over a shrinking unsorted region until a pass makes no swaps.",
+        "invariants": [
+            "After pass k, the last k positions hold the k largest values in sorted order.",
+            "A pass with zero swaps means the array is already sorted."
+        ],
+        "correctness": "Each pass moves the maximum of the unsorted prefix to its right end by repeated adjacent swaps; no smaller value can pass it. After n-1 passes every position is fixed. The early exit is safe because a swap-free pass implies every adjacent pair is ordered, which implies the whole array is ordered.",
+        "complexityRationale": "Each pass scans up to n elements and compares neighbors, giving O(n^2) comparisons and swaps in the worst and average cases. No auxiliary storage is needed, so space is O(1). A sorted input finishes in one pass, O(n).",
+        "uses": [
+            "Teaching the idea of local swaps and passes",
+            "Detecting that a small list is already ordered",
+            "A baseline for comparing more efficient sorts"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2"
+        ],
+        "workedExample": "Start [5, 1, 4, 2]. Pass 1: swap 5 and 1 -> [1, 5, 4, 2]; swap 5 and 4 -> [1, 4, 5, 2]; swap 5 and 2 -> [1, 4, 2, 5]. Pass 2: swap 4 and 2 -> [1, 2, 4, 5]. Pass 3 makes no swaps, so the array is sorted."
+    },
     id: "bubble-sort",
     name: "Bubble Sort",
     category: "sorting",

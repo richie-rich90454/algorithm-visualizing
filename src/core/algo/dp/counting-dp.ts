@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Counting DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Counting DP computes the number of ways to reach a state rather than an optimum. The classic example counts climbs of n stairs taking one or two steps at a time, which satisfies ways[i] = ways[i-1] + ways[i-2]. The recurrence adds counts instead of taking a maximum, producing a Fibonacci sequence.",
+        "invariants": [
+            "ways[i] counts all distinct sequences of 1 and 2 steps ending at stair i.",
+            "ways[0] and ways[1] are both one.",
+            "Every climb to i arrives from i-1 or i-2, with no overlap."
+        ],
+        "correctness": "The last move of any climb to i is either a single step from i-1 or a double step from i-2, and these cases are disjoint and exhaustive. Summing their counts gives ways[i]. With the correct bases, induction yields the number of distinct climbs for every i.",
+        "complexityRationale": "Each entry is one addition, so filling up to steps n takes O(n) time. Storing the ways array uses O(n) space, reducible to O(1) with rolling variables.",
+        "uses": [
+            "Counting paths with a small set of allowed moves",
+            "Fibonacci-style recurrence evaluation",
+            "Counting tilings and binary strings with constraints"
+        ],
+        "references": [
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 6",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For 10 stairs the recurrence gives ways: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89. So there are 89 distinct climbs using one or two steps."
+    },
     id: "counting-dp",
     name: "Counting DP",
     category: "dynamic-programming",

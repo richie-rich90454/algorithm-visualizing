@@ -157,6 +157,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "IDA star runs depth-first search with an f-cost threshold, starting at the heuristic estimate of the start node. Paths whose f exceeds the cutoff are cut off; when a round ends without the goal, the threshold rises to the smallest cutoff seen.",
+        "invariants": [
+            "Every path explored so far has f-cost at most the current threshold.",
+            "The threshold strictly increases between iterations."
+        ],
+        "correctness": "If the heuristic is admissible, the first goal found at a given threshold is optimal, and escalating thresholds ensures all cheaper paths are explored first. Re-exploration is wasteful but preserves optimality.",
+        "complexityRationale": "Each iteration can expand O(b^d) nodes and repeated iterations re-expand them, so O(b^d) total in practice. Only the current path and threshold are kept, O(d) space.",
+        "uses": [
+            "Puzzle solving with tight memory",
+            "Optimal search when A star would run out of space",
+            "Robotics planning on small state spaces"
+        ],
+        "references": [
+            "Korf, Iterative-Deepening A*: A Simple and Efficient Optimal Search Algorithm, University of California Irvine, 1985",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3"
+        ],
+        "workedExample": "From A with h(A)=2, the first cutoff is 2; paths with f above 2 are cut and the next cutoff becomes the smallest cut value, say 4. The second iteration explores those paths and reaches G with optimal cost."
+    },
     id: "ida-star-search",
     name: "IDA* Search",
     category: "searching",

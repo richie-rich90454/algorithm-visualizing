@@ -112,6 +112,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Snort is the mirror image of Col. Players claim empty cells with their own color, but here a player may not claim a cell adjacent to an enemy piece; same-color adjacency is fine. Each claim therefore fences out the opponent from neighboring cells and splits the strip.",
+        "invariants": [
+            "No player may claim a cell adjacent to an enemy piece.",
+            "Same-colored pieces may be adjacent.",
+            "A claim removes neighboring cells from the opponent's available moves."
+        ],
+        "correctness": "Every illustrated claim obeys the no-enemy-adjacency rule and removes exactly the opponent's options next to it. The game ends when a player has no legal claim; since the illustrated line leaves the last free cell adjacent to an enemy piece, that player loses and the winner is determined correctly.",
+        "complexityRationale": "Walking the illustrated line over n cells costs O(n) time and O(n) strip storage. General Snort is exponential in the board size.",
+        "uses": [
+            "Contrasting Col and Snort to teach game duality",
+            "Studying partizan games with adjacency constraints",
+            "A small example of fencing moves in combinatorial games"
+        ],
+        "references": [
+            "Conway, On Numbers and Games",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "On a 1x4 strip Left claims cell 0, Right claims cell 3, and Left claims cell 1. The remaining cell 2 touches Left at cell 1, so Right may not claim it. Right has no legal move and Left wins."
+    },
     id: "snort",
     name: "Snort",
     category: "game",

@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rather than augmenting along any path, capacity scaling only uses paths whose bottleneck is at least a threshold delta. Starting with a large power of two and halving it each phase keeps early augmentations large and few, then refines toward the exact optimum when delta reaches one.",
+        "invariants": [
+            "At the start of a phase with threshold delta, the current flow is optimal for all paths with bottleneck above 2*delta.",
+            "Every augmentation in a phase carries at least delta units.",
+            "The flow is feasible and monotonically nondecreasing in value."
+        ],
+        "correctness": "Within a phase, using only paths with capacity at least delta sends at most O(E) augmentations before no such path remains, because each augmentation saturates at least one edge. At the end of a phase the flow is maximum up to delta error; when delta becomes one every augmenting path is considered, so the final flow is truly maximum.",
+        "complexityRationale": "There are O(log U) phases for the largest capacity U, and each phase performs at most O(E) augmentations with an O(E) path search, giving O(E^2 log U). The residual network uses O(V + E) space.",
+        "uses": [
+            "Max flow on networks with a wide range of capacity magnitudes",
+            "Throughput planning in communication and transport networks",
+            "A practical acceleration of Ford-Fulkerson when capacities are large integers"
+        ],
+        "references": [
+            "Ahuja, Magnanti, and Orlin, Network Flows, capacity scaling chapter",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow problems"
+        ],
+        "workedExample": "For vertices 0-3 with capacities 0-1=5, 0-2=4, 1-2=2, 1-3=3, 2-3=6 and source 0, sink 3: with delta=4 only the path 0-2-3 (bottleneck 4) is used. Halving to delta=2 admits 0-1-3 (3) and 0-1-2-3, pushing the remaining flow. At delta=1 no further path exists; total flow is 9, matching the minimum cut of 9."
+    },
     id: "capacity-scaling-max-flow",
     name: "Capacity Scaling Max Flow",
     category: "flow",

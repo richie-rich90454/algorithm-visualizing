@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A sparse table precomputes aggregates for intervals of every power-of-two length. Any query range is covered by two overlapping power-of-two blocks, and because the operation is idempotent, such as minimum or gcd, the overlap does not change the answer.",
+        "invariants": [
+            "Table level k at index i is the aggregate of the length 2^k interval starting at i.",
+            "Longer intervals combine two overlapping halves.",
+            "The two query blocks cover the whole range."
+        ],
+        "correctness": "The two chosen blocks start at the range ends and overlap in the middle, so together they cover every element of the range. For an idempotent operation, counting shared elements twice does not change the result, so the combination equals the range aggregate.",
+        "complexityRationale": "Each level holds O(n) entries and there are O(log n) levels, giving O(n log n) build time and space. A query reads two entries and combines them, O(1).",
+        "uses": [
+            "Static range minimum queries",
+            "LCA via Euler tour plus range minimum",
+            "Range gcd and other idempotent aggregates"
+        ],
+        "references": [
+            "Bender and Farach-Colton, The LCA Problem Revisited, LATIN 2000",
+            "cp-algorithms, Sparse Table"
+        ],
+        "workedExample": "Array [5,2,8,1,7,3] with precomputed length-2 and length-4 minima; query [1,4] takes two overlapping blocks covering indices 1 through 4 and combines their minima to 1."
+    },
     id: "sparse-table",
     name: "Sparse Table",
     category: "data-structures",

@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A vertex cover is a set of vertices touching every edge. On a tree a two-state DP decides whether each node is in the cover; if it is not, all its children must be, and if it is, each child may choose the cheaper state.",
+        "invariants": [
+            "dp[u][0] is the minimum cover size in u's subtree when u is excluded.",
+            "dp[u][1] is the minimum size when u is included.",
+            "Every edge between u and a child is covered in both states."
+        ],
+        "correctness": "If u is excluded, each edge from u to a child must be covered by that child, forcing all children into the included state. If u is included, those edges are already covered and each child can independently take the cheaper of its two states. Postorder induction gives optimal subtree covers for both states, and taking the minimum at the root yields the minimum vertex cover of the whole tree.",
+        "complexityRationale": "Each edge is processed once with constant work, so time is O(n). Two values per node use O(n) space.",
+        "uses": [
+            "Selecting minimum monitors to cover all links",
+            "Assigning reviewers to cover every dependency",
+            "Teaching tree DP with mutually exclusive states"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15 (dynamic programming)",
+            "Garey and Johnson, Computers and Intractability, vertex cover chapter"
+        ],
+        "workedExample": "For the path A-B-C, choosing only B covers both edges AB and BC, giving cover size 1. The DP sets dp[A][0] to include B and confirms that no smaller cover exists."
+    },
+
     id: "tree-vertex-cover-dp",
     name: "Tree Vertex Cover DP",
     category: "tree",

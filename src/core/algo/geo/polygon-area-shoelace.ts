@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Polygon Area (shoelace) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The shoelace formula computes a polygon's area from its vertex coordinates alone. It sums cross products of consecutive vertices around the polygon and takes half the absolute value; the name comes from the criss-cross pattern of the products when the terms are written out.",
+        "invariants": [
+            "Each term x_i*y_{i+1} - x_{i+1}*y_i is the signed cross product of two consecutive position vectors.",
+            "The cyclic sum closes the polygon by connecting the last vertex back to the first.",
+            "The sign of the sum reveals the vertex orientation, clockwise or counterclockwise."
+        ],
+        "correctness": "The signed cross product of consecutive vertices equals twice the signed area of the triangle they form with the origin. Summing these triangles around a simple polygon tiles its interior with signs that cancel outside, leaving twice the signed polygon area. Taking half the absolute value therefore gives the area, and discarding the absolute value retains the orientation sign.",
+        "complexityRationale": "One cross product is computed per edge, so time is O(n). Only a running sum is kept, giving O(1) auxiliary space.",
+        "uses": [
+            "Measuring land parcel areas from coordinate lists",
+            "Computing polygon area in CAD and GIS",
+            "Detecting vertex winding order in graphics"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Section 2.1",
+            "Weisstein, Polygon Area, MathWorld"
+        ],
+        "workedExample": "For the triangle (0,0), (4,0), (0,3), the cross terms are 0*0 - 4*0 = 0, 4*3 - 0*0 = 12, and 0*0 - 0*3 = 0. Their sum is 12, so the area is 6."
+    },
+
     id: "polygon-area-shoelace",
     name: "Polygon Area (Shoelace)",
     category: "geometry",

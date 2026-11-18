@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Lucas Theorem module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Lucas's theorem computes a binomial coefficient modulo a prime by looking only at base-p digits. Writing n and k in base p, the coefficient is the product over digit positions of the small binomials C(n_i, k_i). If any digit of k exceeds the matching digit of n, that factor is zero and so is the whole value.",
+        "invariants": [
+            "The digits of n and k in base p fully determine the result modulo p.",
+            "Each digit factor C(n_i, k_i) is zero when k_i > n_i.",
+            "The product of digit factors is taken modulo p."
+        ],
+        "correctness": "The theorem follows from the identity (1+x)^p = 1 + x^p modulo p, which lets the polynomial expansion of (1+x)^n split into a product over base-p digit blocks. Comparing the coefficient of x^k on both sides yields the digit-wise product. Therefore the computed product equals C(n, k) mod p.",
+        "complexityRationale": "There are O(log_p n) digits and each small binomial is computed in constant time, so time is O(log_p n). Only a running product and the digit values are stored, giving O(1) space.",
+        "uses": [
+            "Fast binomial coefficient queries modulo a prime",
+            "Counting with combinatorial identities in competitive programming",
+            "Finite-field computations in coding theory"
+        ],
+        "references": [
+            "Lucas, Sur les congruences des nombres euleriens (1878)",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 6"
+        ],
+        "workedExample": "For C(10, 3) mod 7 write 10 = 13_7 and 3 = 03_7. The digit factors are C(1,0) = 1 and C(3,3) = 1, so the product is 1. Indeed C(10,3) = 120 and 120 mod 7 = 1."
+    },
     id: "lucas-theorem",
     name: "Lucas's Theorem",
     category: "math",

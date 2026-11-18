@@ -178,6 +178,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Reverse-Delete is the mirror of Kruskal. It begins with all edges and removes them from heaviest to lightest, deleting an edge whenever its endpoints remain connected without it. Edges that would disconnect the graph are kept, and the survivors form a minimum spanning tree.",
+        "invariants": [
+            "Kept edges always keep the graph connected.",
+            "An edge is deleted only when an alternate path already connects its endpoints.",
+            "Edges are tested in nonincreasing weight order."
+        ],
+        "correctness": "The heaviest edge on any cycle cannot belong to some minimum spanning tree by the cycle property, so deleting it when an alternate path exists is safe. Processing in decreasing weight ensures every discarded edge is the heaviest on a cycle at that moment, so the remaining connected acyclic set is an MST.",
+        "complexityRationale": "Each of the E deletion tests runs a connectivity search costing O(V + E), giving O(E^2) time with O(V + E) space for the working graph.",
+        "uses": [
+            "Minimum spanning trees when removing links is the natural operation",
+            "A dual teaching example to Kruskal's approach",
+            "Network pruning while preserving connectivity"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees",
+            "Tarjan, Data Structures and Network Algorithms"
+        ],
+        "workedExample": "For edges A-B 1, B-C 2, C-D 3, A-C 4, A-D 8, the heaviest edge A-D is removed first because A and D stay connected. A-C is removed next for the same reason. The remaining edges 1, 2, 3 connect all vertices and form the MST."
+    },
     id: "reverse-delete-mst",
     name: "Reverse-Delete MST",
     category: "mst",

@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rendezvous hashing assigns a key to the node with the highest hash weight for that key. Since every node is scored independently, adding or removing a node moves only the keys whose winner changed, which is minimal disruption.",
+        "invariants": [
+            "Each key owner is the argument maximum of its node weights.",
+            "Weights are deterministic for a given key and node pair.",
+            "Removing a node only affects keys it owned."
+        ],
+        "correctness": "The highest-weight node for a key is uniquely determined by the hash function, so a lookup recomputing weights finds the same owner. When a node is removed, only keys whose maximum was that node can change owner, so reassignment is minimal.",
+        "complexityRationale": "Choosing an owner scores the key against all n nodes, O(n) time. Storage is the node list plus assignments, O(n) space.",
+        "uses": [
+            "Distributed cache key placement as an alternative to consistent hashing",
+            "Load balancing across backend pools",
+            "Replicated storage with minimal remapping on membership changes"
+        ],
+        "references": [
+            "Thaler and Ravishankar, Using Name-Based Mappings to Increase Hit Rates, IEEE/ACM ToN 1998",
+            "Karger et al., Consistent Hashing and Random Trees, STOC 1997"
+        ],
+        "workedExample": "Hash keys 12, 5, 21, 8 against each node so every key goes to its highest-weight node. Looking up 21 recomputes the weights and finds the same winner; removing a node reassigns only the keys that chose it."
+    },
     id: "rendezvous-hashing",
     name: "Rendezvous Hashing",
     category: "data-structures",

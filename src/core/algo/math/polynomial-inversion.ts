@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Polynomial Inversion module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The inverse of a polynomial A(x) with nonzero constant term is the series B(x) with A(x)*B(x) = 1 modulo x^k. Newton's method doubles the number of correct coefficients each round using the update B <- B*(2 - A*B). Starting from the inverse of the constant term, a logarithmic number of iterations produces the full inverse series.",
+        "invariants": [
+            "After an iteration the current B is correct modulo twice as high a power of x.",
+            "A(x)*B(x) differs from 1 only in terms of degree at least the current precision.",
+            "The constant term of A is nonzero so an inverse exists."
+        ],
+        "correctness": "If A*B = 1 - E where E has order x^t, then B*(2 - A*B) = B*(1 + E) gives A times the new approximation equal to 1 - E^2, whose error has order x^(2t). Thus precision doubles each step. Starting from the exact constant-term inverse, induction yields the inverse modulo x^k after O(log k) rounds.",
+        "complexityRationale": "With fast polynomial multiplication by FFT or NTT each doubling round costs O(n log n), and the geometric sum of rounds is O(n log n); the naive arithmetic used here is O(n^2). Storing the series uses O(n) space.",
+        "uses": [
+            "Building the polynomial arithmetic toolkit",
+            "Computing polynomial division, logarithm, and exponential",
+            "Power series inversion in computer algebra"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.7",
+            "von zur Gathen and Gerhard, Modern Computer Algebra, Chapter 9"
+        ],
+        "workedExample": "For A(x) = 1 + x + x^3 start with B = 1. One Newton step B <- B*(2 - A*B), truncated, gives 1 - x + x^2 - 2x^3, and A times this equals 1 modulo x^4, the inverse to fourth-order precision."
+    },
     id: "polynomial-inversion",
     name: "Polynomial Inversion",
     category: "math",

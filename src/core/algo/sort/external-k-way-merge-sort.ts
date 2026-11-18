@@ -155,6 +155,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "External k-way merge sort handles data larger than memory by sorting memory-sized chunks into runs, then merging K runs at a time. Each pass streams from disk and writes back longer runs. It is the workhorse of database and file-system sorting.",
+        "invariants": [
+            "Every run on disk is internally sorted.",
+            "Each merge pass reduces the number of runs by a factor of K."
+        ],
+        "correctness": "A k-way merge repeatedly emits the smallest head among the K runs, so its output is sorted and contains all their elements. Repeating the pass until one run remains yields the fully sorted stream.",
+        "complexityRationale": "Each element is read and written once per merge pass, and there are O(log_K(n/M)) passes for memory size M, giving O(n log n) element operations. Only K input buffers and one output buffer are kept, O(n) in the visualization.",
+        "uses": [
+            "Database ORDER BY over disk-resident data",
+            "Large log processing and MapReduce-style merges",
+            "External sort utilities such as GNU sort"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.4.2",
+            "Garcia-Molina and Salem, Main Memory Database Systems, IEEE Transactions on Knowledge and Data Engineering, 1992"
+        ],
+        "workedExample": "With memory for two values, [5, 1, 6, 2, 4, 3] forms runs [1, 5], [2, 6], and [3, 4]. A 3-way merge streams the three run heads to produce [1, 2, 3, 4, 5, 6] in one pass."
+    },
     id: "external-k-way-merge-sort",
     name: "External K-Way Merge Sort",
     category: "sorting",

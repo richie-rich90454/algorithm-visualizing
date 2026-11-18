@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A grid file is a multidimensional index that partitions space into rectangular cells, each mapped to a disk bucket. When a bucket overflows, the cell is split by refining one of the linear scales, and the directory grows along that dimension. Range queries visit only cells overlapping the query region.",
+        "invariants": [
+            "Each grid cell maps to at most one bucket.",
+            "A bucket holds points inside its cell's region.",
+            "Splitting refines a scale and partitions only the overflowing cell."
+        ],
+        "correctness": "Linear scales map a point's coordinates to exactly one cell, so insertion places it in the correct bucket. Splitting an overflowing cell partitions its points between two new cells without loss. A range query translates bounds to cell indices and scans only overlapping cells, returning all and only points inside the range.",
+        "complexityRationale": "Point access is expected O(1) after directory lookup, and range queries cost proportional to overlapping cells plus points. Space is O(n) for points and a modest directory.",
+        "uses": [
+            "Spatial databases and geographic indexes",
+            "Multidimensional range searching",
+            "Image and feature indexing"
+        ],
+        "references": [
+            "J. Nievergelt, H. Hinterberger, and K. C. Sevcik, \"The Grid File: An Adaptable, Symmetric Multikey File Structure\", ACM TODS 1984",
+            "H. Samet, Foundations of Multidimensional and Metric Data Structures, Chapter 2"
+        ],
+        "workedExample": "Index points (1,1), (2,2), (9,9) in one cell. When it overflows, split on x at 5 into a left cell for the first two points and a right cell for (9,9). Querying the range x in [0,3] visits only the left cell and returns those two points."
+    },
     id: "grid-file",
     name: "Grid File",
     category: "data-structures",

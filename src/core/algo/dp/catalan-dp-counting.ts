@@ -114,6 +114,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Catalan numbers count many recursive structures such as binary search trees, balanced parentheses, and Dyck paths. The DP builds C[i] from smaller counts by choosing a root or split point: C[i] is the sum over j of C[j] times C[i-1-j]. Each term pairs an independent left and right substructure.",
+        "invariants": [
+            "C[0] = 1 represents the single empty structure.",
+            "Every structure of size i decomposes into left size j and right size i-1-j for some j.",
+            "All C[k] with k < i are final before C[i] is computed."
+        ],
+        "correctness": "For binary trees, choosing which j nodes go to the left subtree determines the right, and the two subtrees are independent, giving C[j]*C[i-1-j] arrangements. Summing over all j counts every tree exactly once by its root split. Induction produces the Catalan recurrence and hence the correct counts for all other interpretations.",
+        "complexityRationale": "Computing C[i] sums i products, so building up to n costs O(n^2) time. Only the array of counts is stored, using O(n) space.",
+        "uses": [
+            "Counting binary tree shapes and balanced parenthesis strings",
+            "Counting triangulations and Dyck paths",
+            "Analyzing stack permutation counts"
+        ],
+        "references": [
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 7",
+            "Stanley, Enumerative Combinatorics, Vol. 2, Chapter 6"
+        ],
+        "workedExample": "Starting C[0]=1: C[1]=1, C[2]=C[0]C[1]+C[1]C[0]=2, C[3]=5, C[4]=14. Thus there are 14 binary tree shapes with four nodes."
+    },
     id: "catalan-dp-counting",
     name: "Catalan Numbers (DP)",
     category: "dynamic-programming",

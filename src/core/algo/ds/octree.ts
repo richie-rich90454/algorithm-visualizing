@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An octree recursively splits 3D space into eight octants. Points descend into the octant containing them, and a leaf subdivides when it overflows. A nearest-neighbor query visits only octants whose bounding cube could contain a point closer than the best one found so far.",
+        "invariants": [
+            "Each point lies in exactly one leaf.",
+            "A node bounding cube contains every point below it.",
+            "A cube whose closest face is farther than the current best distance is pruned."
+        ],
+        "correctness": "If the distance from the query to a cube already exceeds the best point distance, then by the triangle inequality every point inside that cube is at least that far away. Discarding such a cube cannot lose the nearest point, so the closest point found among visited octants is globally nearest.",
+        "complexityRationale": "Balanced subdivision gives O(log n) expected depth, so inserts and well-behaved queries touch O(log n) nodes; heavily clustered inputs can degrade to O(n). One node per subdivision plus one per point gives O(n) space.",
+        "uses": [
+            "Three-dimensional collision detection",
+            "Point-cloud nearest neighbor in robotics",
+            "Spatial indexing for computer graphics and games"
+        ],
+        "references": [
+            "Meagher, Geometric Modeling Using Octree Encoding, Computer Graphics and Image Processing, 1982",
+            "Samet, Foundations of Multidimensional and Metric Data Structures, Chapter 2"
+        ],
+        "workedExample": "Insert points such as (2,3,z), (5,1,z), (7,6,z), (1,7,z) into a root cube; each falls into a different octant. A query near (4,2,z) visits only octants overlapping its search ball and prunes the distant cubes."
+    },
     id: "octree",
     name: "Octree",
     category: "data-structures",

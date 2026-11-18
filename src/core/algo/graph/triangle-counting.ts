@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Triangle counting can avoid expensive intersection tests by orienting every edge from the smaller-ranked vertex to the larger. Each triangle then becomes exactly one directed wedge from its lowest-ranked vertex to the other two, closed by an edge between them, so counting closed wedges counts each triangle once.",
+        "invariants": [
+            "Every undirected edge is oriented from lower to higher rank.",
+            "Each triangle has a unique smallest-ranked vertex that closes it.",
+            "Counting closed wedges at that vertex adds one per triangle."
+        ],
+        "correctness": "Orienting edges imposes a total order, so in any triangle exactly one vertex has two outgoing edges to the other two. The edge between those two closes the wedge and can be tested in a set, so every triangle is counted once at its minimum vertex and never elsewhere.",
+        "complexityRationale": "The oriented wedge scan costs about O(m sqrt(m)) time for m edges using the standard degree-based bound, with O(V + E) space for adjacency and ranks.",
+        "uses": [
+            "Counting triangles in social and biological networks",
+            "Computing clustering coefficients at scale",
+            "A subroutine in community detection and spam detection"
+        ],
+        "references": [
+            "Chiba and Nishizeki, Arboricity and Subgraph Listing Algorithms (1985)",
+            "Schank and Wagner, Finding, Counting and Listing All Triangles in Large Graphs (2005)"
+        ],
+        "workedExample": "The diamond with vertices A, B, C, D and triangles A-B-C and A-B-D orients edges outward from A. At A, the pairs of higher neighbors (B,C) and (B,D) are both closed by edges, so two closed wedges are found and the triangle count is 2."
+    },
     id: "triangle-counting",
     name: "Triangle Counting",
     category: "graph",

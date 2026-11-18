@@ -154,6 +154,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bitonic sort builds bitonic sequences, which rise then fall, and merges them with a fixed network. Each stage pairs wires a power-of-two apart and orders them up or down according to the block direction. Comparators are independent, making the sort a favorite on parallel machines.",
+        "invariants": [
+            "After a merge stage, each block is bitonic or fully sorted in the prescribed direction.",
+            "Comparator pairs use strides that are powers of two and halve each substage."
+        ],
+        "correctness": "Two bitonic sequences can be merged by comparing corresponding elements and keeping the larger in one half and the smaller in the other; recursion on halves yields a sorted sequence. By induction over stages the final network sorts every input because the comparator pattern is input independent.",
+        "complexityRationale": "A network of n wires needs O(log^2 n) stages of n/2 parallel comparators, so depth is O(log^2 n) and work O(n log^2 n). The visualization stores the array in place with O(n) setup.",
+        "uses": [
+            "Parallel sorting on GPUs and SIMD lanes",
+            "Fixed-function sorting hardware",
+            "Teaching comparator networks and bitonic sequences"
+        ],
+        "references": [
+            "Batcher, Sorting Networks and Their Applications, AFIPS, 1968",
+            "CLRS, Introduction to Algorithms, Chapter 27"
+        ],
+        "workedExample": "For [6, 3, 7, 1], a first stage builds rising and falling pairs; a second stage compares wires two apart and orders them upward. The fixed comparator sequence ends at [1, 3, 6, 7] for every input permutation."
+    },
     id: "bitonic-sort",
     name: "Bitonic Sort",
     category: "sorting",

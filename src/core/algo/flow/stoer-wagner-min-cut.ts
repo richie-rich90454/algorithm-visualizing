@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Stoer-Wagner computes the global minimum cut of an undirected weighted graph without max flow. In each phase it grows a maximum adjacency ordering and records the cut weight of the last added vertex, then contracts that vertex with its predecessor. The smallest recorded cut over all phases is the global minimum cut.",
+        "invariants": [
+            "The maximum adjacency ordering has the property that the last vertex's cut is minimum among cuts separating it from the rest.",
+            "Contracting the last pair never destroys the global minimum cut value.",
+            "The lightest phase cut seen so far is a valid cut of the original graph."
+        ],
+        "correctness": "The maximum adjacency search guarantees the phase cut of the last vertex is the lightest cut isolating that vertex in the current graph. The global minimum cut either separates that vertex, in which case it is recorded, or keeps the pair together, in which case contraction preserves it. Inducting over contractions, the minimum over all recorded cuts equals the global minimum cut.",
+        "complexityRationale": "Each phase costs O(E + V log V) with a priority queue and there are V-1 phases, giving O(V E + V^2 log V). The weight matrix or adjacency and contractions use O(V^2) space.",
+        "uses": [
+            "Global minimum cut in undirected graphs",
+            "Network reliability and partition analysis",
+            "A preprocessing step for clustering and graph cuts"
+        ],
+        "references": [
+            "Stoer and Wagner, A Simple Min-Cut Algorithm (1997)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, min-cut applications"
+        ],
+        "workedExample": "Triangle 0-1 weight 3, 1-2 weight 2, 0-2 weight 1. The maximum adjacency phase ending at vertex 2 records cut weight 2+1 = 3. After contracting the last pair, the remaining phase cut is not lighter, so the global minimum cut is 3, isolating vertex 2."
+    },
     id: "stoer-wagner-min-cut",
     name: "Stoer-Wagner Min Cut",
     category: "flow",

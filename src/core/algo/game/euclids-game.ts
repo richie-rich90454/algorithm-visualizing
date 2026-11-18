@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Euclid's Game starts with a pair of positive numbers. A move subtracts a positive multiple of the smaller from the larger, and reaching zero wins. The key observation is that when the quotient is at least two the player to move controls the outcome, because they can choose how many multiples to subtract.",
+        "invariants": [
+            "The larger number is always kept first after each move.",
+            "A position with quotient at least two is winning for the player to move.",
+            "When the quotient is one the move is forced and control passes deterministically."
+        ],
+        "correctness": "Let the position be (a,b) with a at least b. If the quotient is at least two, the player can subtract enough to leave a position whose forced reply hands back a winning position, so the move wins. If the quotient is one, only one subtraction is legal and the outcome is exactly the outcome of the resulting position, giving a recursive classification that terminates because the numbers shrink as in Euclid's gcd algorithm.",
+        "complexityRationale": "Each move reduces the pair exactly as the Euclidean algorithm does, so there are O(log min(a,b)) steps and the recursion uses the same order of stack space.",
+        "uses": [
+            "A bridge between the Euclidean algorithm and game theory",
+            "Teaching forced moves and quotient-based winning conditions",
+            "A small perfect-information game for recursion practice"
+        ],
+        "references": [
+            "Cole and Davie, A Game Based on the Euclidean Algorithm (1969)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "From (12,7) the quotient is 1, so subtract 7 once to reach (7,5). Again the quotient is 1, giving (5,2). Now the quotient is 2, so the player to move can subtract twice to reach (1,0) and wins. The starting position (12,7) is therefore winning."
+    },
     id: "euclids-game",
     name: "Euclid's Game",
     category: "game",

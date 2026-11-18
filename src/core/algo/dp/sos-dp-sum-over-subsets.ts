@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sum over subsets DP computes, for every bitmask, the sum of values over all of its subsets. It starts with F equal to the input array and, for each bit b, adds F[mask without bit b] into F[mask] whenever that bit is set. After all bits are processed, F[mask] holds the total over every submask.",
+        "invariants": [
+            "After processing bits up to b, F[mask] sums values over submasks that differ only in those processed bits.",
+            "The in-place update reuses the same array because the donor mask has bit b cleared.",
+            "F[full] ends as the sum over all masks."
+        ],
+        "correctness": "For a fixed bit, adding the value of the mask with that bit cleared brings in exactly the submasks that omit the bit; combining over all bits enumerates every submask once. Induction over processed bits keeps F[mask] equal to the partial subset sum. After n bits the sum is complete.",
+        "complexityRationale": "There are n bits and 2^n masks, each doing one conditional addition, giving O(n*2^n) time. The array of 2^n values uses O(2^n) space.",
+        "uses": [
+            "Fast subset convolution and zeta transforms",
+            "Computing aggregate values over bitmask states",
+            "Combinatorial counting over subsets"
+        ],
+        "references": [
+            "KACTL handbook, subset DP chapter",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For arr = [1,2,3,4] over three bits, processing bit 0 adds arr[0] into arr[1] so F[1] becomes 3, the sum over submasks of mask 001. Continuing all bits yields F[full] as the total over all eight masks."
+    },
     id: "sos-dp-sum-over-subsets",
     name: "SOS DP (Sum Over Subsets)",
     category: "dynamic-programming",

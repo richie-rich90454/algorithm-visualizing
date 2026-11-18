@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A dominating set is a set of vertices such that every vertex is either chosen or adjacent to a chosen one. On tiny trees the minimum can be found by exhaustive search: try subsets in increasing size and return the first one that dominates every vertex.",
+        "invariants": [
+            "A candidate subset dominates a vertex if the vertex or a neighbor is in the subset.",
+            "Subsets are tested in nondecreasing cardinality order.",
+            "The first dominating subset found has minimum size."
+        ],
+        "correctness": "Enumerating subsets by increasing size ensures that if any subset of size k dominates the tree, one is found before any larger subset. The domination check tests the defining condition for every vertex, so only valid subsets are accepted. Therefore the first accepted subset is a minimum dominating set.",
+        "complexityRationale": "There are 2^n subsets to test and each check scans n vertices and their neighbors, giving O(2^n * n) time on small trees. Only the current subset and answer are stored, using O(n) space.",
+        "uses": [
+            "Placing monitors so every location is observed",
+            "Selecting router or server locations in a network",
+            "Checking answers from faster tree DP algorithms"
+        ],
+        "references": [
+            "Garey and Johnson, Computers and Intractability, dominating set chapter",
+            "Haynes, Hedetniemi, and Slater, Fundamentals of Domination in Graphs"
+        ],
+        "workedExample": "For a star with center A and leaves B, C, D, the subset {A} dominates all four vertices because every leaf is adjacent to A. Since size one is the smallest possible nonempty subset, {A} is optimal."
+    },
+
     id: "tree-dominating-set-dp",
     name: "Tree Dominating Set DP",
     category: "tree",

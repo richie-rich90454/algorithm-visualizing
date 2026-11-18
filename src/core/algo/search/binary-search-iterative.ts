@@ -154,6 +154,25 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Search (Iterative) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Keep two bounds around the possible location of a target in a sorted array. Compare the middle element and discard half of the remaining range each time.",
+        "invariants": [
+            "If the target is present, its index lies within the current low and high bounds."
+        ],
+        "correctness": "Because the array is sorted, comparing the target with the middle element proves which half cannot contain it. Discarding that half preserves the invariant; when the bounds meet, only one candidate remains.",
+        "complexityRationale": "Each step halves the search range, so at most ceil(log2(n + 1)) comparisons: O(log n) time and O(1) space with the iterative form.",
+        "uses": [
+            "Lookup in sorted arrays and indexes",
+            "Guessing a threshold in a monotone predicate",
+            "The inner step of many divide-and-conquer routines"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1"
+        ],
+        "workedExample": "Search 9 in [1, 3, 5, 7, 9, 11]. Middle index 2 holds 5, so search the upper half [7, 9, 11]. Middle holds 9, return index 4."
+    },
     id: "binary-search-iterative",
     name: "Binary Search (Iterative)",
     category: "searching",

@@ -118,6 +118,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A polygon's center of mass can be computed from its vertices by the same cross-product terms used in the shoelace formula. Each edge contributes a signed cross term, and weighting the vertex sums by that term gives the centroid coordinates after dividing by six times the area.",
+        "invariants": [
+            "The cross term for edge (a,b) is a.x*b.y - b.x*a.y.",
+            "The shoelace area is half the sum of cross terms.",
+            "The centroid coordinates are sums of (a + b) times the cross term divided by six times the area."
+        ],
+        "correctness": "Decomposing the polygon into oriented triangles with one vertex at the origin, each triangle's area is its cross term over two and its centroid is the average of its three vertices. Weighting each triangle centroid by its signed area and summing, then dividing by the total signed area, yields the standard centroid formulas. The origin cancels from the weighted average, so the result depends only on the given vertices.",
+        "complexityRationale": "Each edge contributes one cross term and two coordinate updates, so time is O(n). Only running sums are stored, giving O(1) auxiliary space.",
+        "uses": [
+            "Finding the center of mass of polygon shapes in physics",
+            "Placing labels at polygon centroids in maps",
+            "Computing shape features in computer vision"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Section 2.1",
+            "Weisstein, Polygon Centroid, MathWorld"
+        ],
+        "workedExample": "For the triangle (0,0), (4,0), (0,3), only the edge (4,0)-(0,3) has cross term 12, so area = 6. The x numerator is (4+0)*12 = 48 and the y numerator is (0+3)*12 = 36, giving centroid (48/36, 36/36) = (1.33, 1), which matches the average of the three vertices."
+    },
+
     id: "polygon-centroid",
     name: "Polygon Centroid",
     category: "geometry",

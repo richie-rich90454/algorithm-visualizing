@@ -184,6 +184,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Moore's Nim_k allows a move to touch at most k piles. The xor rule of ordinary Nim is replaced by a modulo rule: a position is losing exactly when every binary digit column sums to a multiple of k+1 across all piles.",
+        "invariants": [
+            "A move changes at most k pile sizes.",
+            "A position is a P-position when all binary digit sums are zero modulo k+1.",
+            "A winning move leaves every digit sum a multiple of k+1."
+        ],
+        "correctness": "Reducing at most k piles can be analyzed column by column using mod k+1 arithmetic, generalizing the mod 2 xor argument of Nim. The zero-sum condition characterizes positions from which no move can return to the same class, and any nonzero column sum admits a reduction of at most k piles that restores all sums to zero, so the classification is correct.",
+        "complexityRationale": "The demo brute-forces reductions on tiny piles, exploring up to O(m^p) combinations for pile magnitude m and p piles, using O(p) space for the pile vector.",
+        "uses": [
+            "A generalization of Nim for teaching modular invariants",
+            "Studying Moore's nimbers and their difference from Sprague-Grundy values",
+            "A small exhaustive-search verification example"
+        ],
+        "references": [
+            "Moore, A Generalization of the Game Called Nim (1910)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "Piles [3,4,5] with k=2 have digit sums that are not all zero modulo 3, so the position is winning. Reducing piles 4 and 5 to 3 leaves [3,3,3]; each binary column now sums to three, which is zero modulo 3, handing the opponent a P-position."
+    },
     id: "moores-nim",
     name: "Moore's Nim",
     category: "game",

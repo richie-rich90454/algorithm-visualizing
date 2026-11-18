@@ -158,6 +158,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Library sort leaves gaps between elements, like shelves with room for new books. Each new element binary-searches for its slot and shifts only within a local region; when gaps run out, the array is rebalanced. This keeps insertions cheap while maintaining order.",
+        "invariants": [
+            "At all times the non-gap entries appear in sorted order.",
+            "Every occupied slot has a nearby gap until a rebalance."
+        ],
+        "correctness": "Binary search finds the correct gap slot for a new element and local shifting opens that slot without crossing any larger element, preserving sorted order. Rebalancing respaces elements without changing their order, so the array remains sorted.",
+        "complexityRationale": "With a constant fraction of gaps, each insertion shifts only O(log n) elements on average and a rebalance costs O(n) but happens rarely, giving O(n log n) total. The gapped array uses O(n) space.",
+        "uses": [
+            "Incremental sorting with many insertions",
+            "Teaching the trade-off between gaps and shifting",
+            "Inspiration for gap buffers in editors"
+        ],
+        "references": [
+            "Bender, Brodal, and Ge, The Library Sort, or How to Sort with a Constant Number of Comparisons per Insertion, 2006",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "With gaps marked by dots, [1, ., 3, ., 5, .] accepts 4 by searching between 3 and 5 and shifting 5 right: [1, ., 3, 4, ., 5]. A full shelf triggers respacing, never disordering values."
+    },
     id: "library-sort",
     name: "Library Sort",
     category: "sorting",

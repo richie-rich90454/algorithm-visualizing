@@ -151,6 +151,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This algorithm finds the kth smallest value in a matrix sorted by row and column by binary searching the value range. For a candidate value it counts how many entries are at most it, then keeps the half that must contain the kth value.",
+        "invariants": [
+            "The kth smallest value lies within the current [low, high] value range.",
+            "The count of entries at most mid decides which half to keep."
+        ],
+        "correctness": "If at least k entries are at most mid, the kth value is at most mid; otherwise it is greater. This monotone predicate makes binary search on values correct, and when the range collapses its single value is the answer.",
+        "complexityRationale": "The value range is up to max minus min and each predicate counts all rows and columns, costing O(rows*cols*log(max-min)) in this implementation. Only a few scalars are stored, O(1) space.",
+        "uses": [
+            "Selecting quantiles from sorted matrices",
+            "Rank queries in ordered grids",
+            "Teaching binary search over answer values"
+        ],
+        "references": [
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3.2 (selection)"
+        ],
+        "workedExample": "For a 2 by 3 matrix [[1,3,5],[2,4,6]] and k=4, binary search values 1 through 6; a midpoint of 3 has three entries at most 3, so the answer is above 3, and the search narrows to 4."
+    },
     id: "kth-in-sorted-matrix-search",
     name: "Kth Smallest in Sorted Matrix",
     category: "searching",

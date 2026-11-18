@@ -92,6 +92,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Static Array module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A static array is a fixed-size contiguous block where element i lives at the base address plus i times the element size. That layout gives O(1) random access by index, but the size cannot change after allocation.",
+        "invariants": [
+            "The array length is fixed.",
+            "Each in-range index maps to exactly one slot.",
+            "Out-of-range indices are rejected, never wrapped."
+        ],
+        "correctness": "Address arithmetic places each index at a unique offset, so reading or writing index i always reaches the correct slot. Because the size never changes, a valid index stays valid for the array lifetime, and rejecting out-of-range indices prevents silent corruption.",
+        "complexityRationale": "Computing an offset and reading or writing one slot is O(1). Storage is n slots, O(n) space; inserting in the middle shifts elements, O(n).",
+        "uses": [
+            "Lookup tables and buffers with known size",
+            "Matrix storage",
+            "Backing store for many other data structures"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.1 on arrays"
+        ],
+        "workedExample": "Array [5,3,8,1,9]; accessing index 2 reads 8 directly; writing index 4 sets the last slot; requesting index 5 is rejected because it is outside the fixed capacity."
+    },
     id: "static-array",
     name: "Static Array",
     category: "data-structures",

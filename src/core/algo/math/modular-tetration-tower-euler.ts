@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A modular tetration tower such as a^(b^c) mod m can be evaluated without ever forming the enormous exponent. Euler's theorem says exponents may be reduced modulo phi(m) when the base is coprime to m, so the tower is peeled from the top by repeatedly applying the totient. The visualization reduces the exponent and finishes with a modular exponentiation.",
+        "invariants": [
+            "Euler's theorem permits reducing exponents modulo phi(m) when gcd(a, m) = 1.",
+            "Each level of the tower uses the totient of the current modulus.",
+            "The final modular power equals the tower residue modulo m."
+        ],
+        "correctness": "Because a^phi(m) = 1 mod m for coprime a, exponents are only meaningful modulo phi(m), so replacing an exponent by its reduced value leaves a^exponent unchanged. Applying this recursively down the tower preserves the residue at each level. The final exponentiation therefore computes the true tower value modulo m.",
+        "complexityRationale": "Each reduction step computes a totient and a small power, costing O(log m) per level, so the stated bound is O(log m) for a short tower. A handful of integers are kept, giving O(1) space.",
+        "uses": [
+            "Computing the last digits of power towers",
+            "Modular arithmetic with huge exponents",
+            "Teaching Euler's theorem and iterated totients"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.4"
+        ],
+        "workedExample": "For 2^(3^2) mod 7 compute the top 3^2 = 9. Since phi(7) = 6, reduce 9 modulo 6 to 3. Then 2^3 = 8 = 1 mod 7, the tower residue."
+    },
     id: "modular-tetration-tower-euler",
     name: "Modular Tetration (Euler)",
     category: "math",

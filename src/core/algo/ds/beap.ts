@@ -75,6 +75,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A beap, or bi-parental heap, arranges heap-ordered values on a two-dimensional triangular grid. Each cell's parents sit above it and to its left, so search can walk a monotone staircase like searching a Young tableau. Insertions and deletions move values along grid paths.",
+        "invariants": [
+            "Every cell is at least its upper and left parents (min-heap order).",
+            "Cells are filled in triangular row order.",
+            "Rows and columns are sorted."
+        ],
+        "correctness": "Because rows and columns are sorted and the heap property holds, starting at the top and moving down when the query is larger and right when it is smaller follows a path that cannot skip a match. Insertion bubbles a new value up through parents until order is restored, which only affects that path. Search therefore finds the query exactly when it is present.",
+        "complexityRationale": "The triangular grid has rows of increasing length, so the staircase search crosses O(sqrt n) cells. The grid stores one value per cell, O(n) space.",
+        "uses": [
+            "Teaching two-dimensional heap order",
+            "Priority queues with staircase search",
+            "Sorted matrix and Young tableau exercises"
+        ],
+        "references": [
+            "M. V. S. Ramaswamy and S. S. Iyengar, \"The Beap: A New Data Structure\", 1987",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "Insert 1, 4, 2, 7, 5, 3 into a beap: 1 sits at the apex, 4 and 2 fill the second row, and each new value bubbles up past a larger parent. Searching for 5 starts at 1, moves right past 2 to 5, and stops when the staircase reaches the value."
+    },
     id: "beap",
     name: "Beap",
     category: "data-structures",

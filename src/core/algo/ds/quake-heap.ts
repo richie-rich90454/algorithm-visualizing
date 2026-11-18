@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A quake heap arranges tournament trees into levels and periodically shakes down any level holding more trees than the level below it. This relaxed balance keeps trees shallow while allowing very cheap inserts and melds.",
+        "invariants": [
+            "Each level holds trees of the same rank.",
+            "A quake never leaves an upper level larger than the one beneath it.",
+            "The smallest key always sits at a level-zero root."
+        ],
+        "correctness": "Linking equal-rank trees preserves heap order because the larger root becomes a child of the smaller. When a level outnumbers the one below, dropping trees back to lower levels restores the rank count invariant, and since the minimum is always among level-zero roots, reporting it is correct.",
+        "complexityRationale": "Inserts are O(1) and each link or quake moves a tree down one level, giving O(log n) amortized extraction. Each key lives in one tree node, O(n) space.",
+        "uses": [
+            "Priority queues needing fast meld and insert",
+            "Dijkstra on sparse graphs",
+            "Simple alternatives to Fibonacci heaps"
+        ],
+        "references": [
+            "Dorfman-Pratley and Zwick, The Quake Heaps: A Simple Alternative to Fibonacci Heaps, 2017",
+            "CLRS, Introduction to Algorithms, Chapter 19 on Fibonacci heaps"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1, 6 as level-zero trees; equal-rank links build small tournament trees. If level two outnumbers level one, a quake drops the excess down before the minimum 1 is reported."
+    },
     id: "quake-heap",
     name: "Quake Heap",
     category: "data-structures",

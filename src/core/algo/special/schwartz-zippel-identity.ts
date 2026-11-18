@@ -78,6 +78,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Schwartz-Zippel lemma gives a fast randomized test for whether two polynomials are identical. Rather than expanding them symbolically, evaluate both at a few random points from a finite set. Equal polynomials agree everywhere, while distinct polynomials of degree d agree at only a few points, so a random point usually exposes a difference.",
+        "invariants": [
+            "If P and Q are identical, they agree at every sampled point.",
+            "If they differ, they agree on at most d values in the field, where d is the degree.",
+            "Each trial samples an independent random point."
+        ],
+        "correctness": "A nonzero polynomial of degree d has at most d roots, so for distinct P and Q the difference P-Q vanishes at at most d points of the field. A uniformly random point therefore hits a root with probability at most d/|S|, and k independent trials lower the error probability to (d/|S|)^k. Equal polynomials never fail.",
+        "complexityRationale": "Evaluating a degree-d polynomial at a point takes O(d) arithmetic operations, so k trials cost O(k·d). Only the sampled points and their differences are stored, O(k) space.",
+        "uses": [
+            "Verifying polynomial identities in computer algebra",
+            "Checking algebraic circuit and matrix-product identities",
+            "Randomized verification of large symbolic computations",
+            "Program checking and primality-related tests"
+        ],
+        "references": [
+            "Schwartz, Fast Probabilistic Algorithms for Verification of Polynomial Identities, Journal of the ACM, 1980",
+            "Motwani and Raghavan, Randomized Algorithms, Chapter 7"
+        ],
+        "workedExample": "Test (x+1)(x+2) against x^2+3x+2, which are equal. At x=4 both give 30; at x=7 both give 72. After five agreeing samples the verdict is 'identical'. A genuinely distinct quadratic would agree at no more than two points in the field, so repeated agreement is strong evidence."
+    },
     id: "schwartz-zippel-identity",
     name: "Schwartz–Zippel Identity",
     category: "math",

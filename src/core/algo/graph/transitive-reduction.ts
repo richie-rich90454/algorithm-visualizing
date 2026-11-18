@@ -122,6 +122,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The transitive reduction of a DAG is the smallest graph with the same reachability relation. It keeps only edges that are not implied by a longer path. Each edge u to v is redundant when v remains reachable from u after removing that edge.",
+        "invariants": [
+            "Kept edges preserve all original reachability pairs.",
+            "An edge is dropped only when an alternate path connects its endpoints.",
+            "The result is the unique minimal DAG with the same reachability."
+        ],
+        "correctness": "Removing an edge whose endpoints stay connected leaves reachability unchanged, so repeating the test preserves the relation. When no removable edge remains, every kept edge is essential, so no smaller graph can have the same reachability, making the result the transitive reduction.",
+        "complexityRationale": "One reachability check per edge costs O(V + E), giving O(V(V + E)) time and O(V + E) space for the working graph.",
+        "uses": [
+            "Simplifying dependency and class-inheritance graphs",
+            "Drawing compact Hasse diagrams of partial orders",
+            "Minimizing reachability representations in databases"
+        ],
+        "references": [
+            "Aho, Sagiv, Szymanski, and Ullman, Inferring a Graph from Path Frequencies (research literature)",
+            "Harary, Graph Theory"
+        ],
+        "workedExample": "For edges A-B, B-C, and A-C, testing A-C finds the alternate path A-B-C, so A-C is dropped. Edges A-B and B-C have no alternate route and remain, giving the skeleton of the chain."
+    },
     id: "transitive-reduction",
     name: "Transitive Reduction (DAG)",
     category: "graph",

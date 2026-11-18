@@ -220,6 +220,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Gaussian Elimination module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gaussian elimination solves a linear system by reducing its augmented matrix to row-echelon form. For each column it swaps in a nonzero pivot, normalizes that row, and eliminates the variable from rows below. Back-substitution then reads off the unknowns from the triangular system.",
+        "invariants": [
+            "Each row operation preserves the solution set of the system.",
+            "After k columns the first k columns are zero below the diagonal.",
+            "A nonzero pivot on the diagonal means the leading variables are independent."
+        ],
+        "correctness": "Swapping rows, scaling a row, and adding a multiple of one row to another all produce equivalent systems. Driving the matrix to row-echelon form therefore keeps the same solutions, and a triangular system is solved uniquely by back-substitution when every pivot is nonzero. A zero pivot reveals a free variable or inconsistency.",
+        "complexityRationale": "For each of n columns the algorithm updates O(n) rows of length O(n), so elimination costs O(n^3) arithmetic operations. Storing the augmented matrix takes O(n^2) space.",
+        "uses": [
+            "Solving systems of linear equations throughout engineering",
+            "Computing matrix rank and inverses",
+            "Foundation for LU and Gauss-Jordan variants"
+        ],
+        "references": [
+            "Strang, Linear Algebra and Its Applications, Chapter 2",
+            "Golub and Van Loan, Matrix Computations, Chapter 3"
+        ],
+        "workedExample": "For the system with matrix [[2,1,-1],[-3,-1,2],[-2,1,2]] and b = [8,-11,-3], eliminating below the first pivot of 2 produces a triangular system. Back-substitution gives x = 2, y = 0, z = -4."
+    },
     id: "gaussian-elimination",
     name: "Gaussian Elimination",
     category: "math",

@@ -204,6 +204,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Kosaraju SCC module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Kosaraju finds strongly connected components in two depth-first passes. The first pass records vertices in order of DFS finish time. The second pass processes them in reverse finish order on the reversed graph, and each DFS tree found there is exactly one strongly connected component.",
+        "invariants": [
+            "Finish times from the first pass encode a topological-like order of the condensation DAG.",
+            "Processing in reverse finish order starts each second-pass search within one true SCC.",
+            "Every vertex belongs to exactly one second-pass tree."
+        ],
+        "correctness": "Vertices that can reach each other are discovered within the same first-pass search subtree, so the one with the latest finish time is a source in the condensation. Reversing edges and processing in reverse finish order prevents a search from leaving its SCC into another already-processed component, so each tree is maximal and equals one SCC.",
+        "complexityRationale": "Two full DFS traversals cost O(V + E); visited marks and the finish-order stack use O(V) space, with the reversed graph adding O(V + E).",
+        "uses": [
+            "Decomposing directed graphs into strongly connected regions",
+            "Solving 2-SAT via implication graph components",
+            "Preprocessing for condensation and reachability queries"
+        ],
+        "references": [
+            "Kosaraju, Strongly Connected Components (unpublished, 1978)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, strongly connected components"
+        ],
+        "workedExample": "For the graph with cycle A-B-C-A, tail D to C, chain E to D, and self-loop F, the first pass records finish order; the second pass on reversed edges in reverse order pops {A,B,C}, then {D,E}, then {F}, the three SCCs."
+    },
     id: "kosaraju-scc",
     name: "Kosaraju SCC",
     category: "graph",

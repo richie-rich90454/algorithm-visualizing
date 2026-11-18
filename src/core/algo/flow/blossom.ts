@@ -303,6 +303,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Blossom module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Maximum matching in a bipartite graph is easy, but odd cycles break the usual augmenting-path argument. Edmonds' blossom algorithm handles this by contracting any odd cycle that blocks the search into a single super-vertex, searching there, then expanding the cycle to lift the augmenting path back to the original graph.",
+        "invariants": [
+            "The matching size increases by exactly one on each augmentation.",
+            "A contracted blossom has an odd cycle with exactly one exposed vertex, so it can be entered from any of its vertices.",
+            "No augmenting path exists in the contracted graph exactly when none exists in the original graph."
+        ],
+        "correctness": "Every augmenting path found in the contracted graph lifts to an augmenting path in the original graph after expanding blossoms, because a blossom can be traversed from its exposed vertex to whichever cycle vertex the path enters. When the search ends with no augmenting path, Berge's theorem guarantees the matching is maximum.",
+        "complexityRationale": "Each of at most V augmentations performs a search with O(E) work plus blossom contractions, giving the classic O(V^3) bound for the general-graph implementation. The graph, forest, and contraction state occupy O(V + E) space.",
+        "uses": [
+            "Maximum pairing in non-bipartite graphs such as ride or donor matching",
+            "Minimum-weight perfect matching as a subroutine in the blossom algorithm family",
+            "Finding maximum independent sets on general graphs through matching duality"
+        ],
+        "references": [
+            "Edmonds, Paths, Trees, and Flowers, Canadian Journal of Mathematics (1965)",
+            "Galil, Efficient Algorithms for Finding Maximum Matchings, ACM Computing Surveys (1986)"
+        ],
+        "workedExample": "The graph has triangle A-B-C and triangle D-E-F joined by bridge C-D. Start with the empty matching. Add C-D, then augment inside each triangle to take A-B and E-F. The matching {A-B, C-D, E-F} has three edges covering all six vertices, so it is maximum."
+    },
     id: "blossom",
     name: "Blossom Algorithm",
     category: "flow",

@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An adaptive radix tree is a compressed trie whose nodes change size to match how many children they actually have. Small nodes use 4 slots and grow to 16, 48, and 256 as needed, so sparse nodes waste little memory while dense nodes keep direct access. Keys share common prefixes, so a lookup follows one edge per byte or character.",
+        "invariants": [
+            "Each node uses the smallest of the 4, 16, 48, or 256 layouts that fits its child count.",
+            "Edges out of a node are labeled by distinct bytes, preserving prefix order.",
+            "Every stored key ends at a marked terminal node."
+        ],
+        "correctness": "Because each outgoing edge is keyed by the next byte, following the bytes of a query visits exactly the nodes whose prefixes match that key. Growing a node copies its existing children into the larger layout, so no child is lost. A lookup therefore succeeds exactly when the terminal marker is reached after the last byte.",
+        "complexityRationale": "A lookup or insert touches one node per key byte, so time is O(k) in the key length regardless of how many keys are stored. Memory is O(n) in the total stored bytes because each node is compact and shared prefixes are stored once.",
+        "uses": [
+            "In-memory database indexes such as ART",
+            "IP routing tables keyed by address prefixes",
+            "String dictionaries and autocomplete"
+        ],
+        "references": [
+            "V. Leis et al., \"The Adaptive Radix Tree: ARTful Indexing for Main-Memory Databases\", ICDE 2013",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.3"
+        ],
+        "workedExample": "Insert car, cat, dog, dot. The root gains edges for c and d; the c branch shares prefix ca and splits into r and t, while the d branch shares do and splits into g and t. Searching cat reads c, a, then t and reaches the terminal for cat, while cap stops at the missing p edge and reports a miss."
+    },
     id: "adaptive-radix-tree",
     name: "Adaptive Radix Tree",
     category: "data-structures",

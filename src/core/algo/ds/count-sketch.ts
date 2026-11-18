@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A count sketch is a probabilistic frequency summary built from several rows of counters. Each item hashes to one counter per row and receives a random plus or minus sign. Collisions add noise, but because signs are symmetric the noise has mean zero, and taking the median of the row estimates gives an unbiased answer.",
+        "invariants": [
+            "Each update touches exactly one counter per row.",
+            "Signs are chosen independently per item and row.",
+            "The estimate is the median of signed counter values."
+        ],
+        "correctness": "A queried item contributes its true frequency plus a sum of colliding items' signed contributions. Because those signs are random, the expected contribution of collisions is zero, so each row is an unbiased estimator. The median of several independent rows concentrates around the true frequency, keeping error small.",
+        "complexityRationale": "Update and query touch one counter in each of r rows, O(r) time. The table has r rows of w counters, O(r w) space, independent of the stream length.",
+        "uses": [
+            "Heavy-hitter detection in network traffic",
+            "Frequency estimation in streaming databases",
+            "Approximate query answering at scale"
+        ],
+        "references": [
+            "Moses Charikar, Kevin Chen, and Martin Farach-Colton, \"Finding Frequent Items in Data Streams\", ICALP 2002",
+            "Graham Cormode, \"Sketch Techniques for Approximate Algorithms\", Foundations and Trends 2009"
+        ],
+        "workedExample": "Stream a, b, a, c, a with two rows and signs: a hits counters with + in row 1 and - in row 2. After all updates the signed row estimates for a are each 3 plus or minus collision noise; the median is near 3, the true count. A never-seen key produces estimates around zero."
+    },
     id: "count-sketch",
     name: "Count Sketch",
     category: "data-structures",

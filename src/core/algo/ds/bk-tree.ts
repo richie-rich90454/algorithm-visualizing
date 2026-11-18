@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A BK-tree indexes strings or points under a metric, with each node's children keyed by their distance to the parent. It relies on the triangle inequality: if a node is d away from the query, only children whose distance label lies in d plus or minus the tolerance can contain matches. This prunes most of the tree during fuzzy search.",
+        "invariants": [
+            "A child labeled k contains items at distance k from its parent.",
+            "Distances satisfy the triangle inequality.",
+            "Sibling labels are distinct."
+        ],
+        "correctness": "For a query q and a node x at distance d, any item y in a child labeled k has |d - k| <= distance(q, y) by the triangle inequality. If |d - k| exceeds the tolerance t, no item in that subtree can be within t, so skipping it is safe. Searching the remaining children finds all and only the matches.",
+        "complexityRationale": "Insertion computes one distance per visited node and follows one child, so it is O(log n) on average with a good metric. A tolerant search prunes whole subtrees, typically O(log n) but O(n) in the worst case. Each item is one node, O(n) space.",
+        "uses": [
+            "Spell checking and fuzzy string search",
+            "Near-duplicate detection",
+            "Metric-space nearest-neighbor lookup"
+        ],
+        "references": [
+            "Walter A. Burkhard and Robert M. Keller, \"Some Approaches to Best-Match File Searching\", CACM 1973",
+            "Peter N. Yianilos, metric-space search notes, 1993"
+        ],
+        "workedExample": "Insert cat, then cut and dog using edit distance: cat is root, cut hangs from child label 1, dog from label 3. Querying cot with tolerance 1 computes distance 1 to cat, so only children labeled 0, 1, or 2 are searched, finding cut at distance 1 and skipping dog."
+    },
     id: "bk-tree",
     name: "BK-Tree",
     category: "data-structures",

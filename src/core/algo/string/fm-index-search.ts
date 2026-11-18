@@ -112,6 +112,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An FM-index counts pattern occurrences using the Burrows-Wheeler transform without scanning the whole text. Backward search extends a pattern one character at a time from the end, maintaining a range of BWT rows whose suffixes begin with the characters read so far; the range narrows until it represents all occurrences.",
+        "invariants": [
+            "After processing k pattern characters, the interval [lo,hi) holds exactly the BWT rows whose suffix starts with the last k characters of the pattern.",
+            "Updating with LF-mapping, first[c] plus rank_c, preserves this invariant for one more leading character."
+        ],
+        "correctness": "The LF-mapping maps each occurrence of a character in the last column to the same occurrence in the first column, so prepending character c restricts the interval to rows whose preceding text is c. By induction every processed character tightens the interval correctly and its final size is the number of occurrences.",
+        "complexityRationale": "Each pattern character needs a constant-time rank and first-character lookup, so a pattern of length m is counted in O(m) independent of text length. Storing the BWT and rank structures uses O(n) space.",
+        "uses": [
+            "Full-text search in compressed indexes such as bwa and Bowtie",
+            "Counting and locating reads in genomics",
+            "Substring search with a small memory footprint"
+        ],
+        "references": [
+            "Ferragina and Manzini, Opportunistic Data Structures with Applications, 2000",
+            "Navarro and Makinen, Compressed Full-Text Indexes, 2007"
+        ],
+        "workedExample": "For text \"banana\" with BWT \"annb$aa\", searching \"ana\" reads a, n, a from the right, each time applying first[c]+occ(c,.) to shrink the interval. The final interval size is 2, matching the two occurrences of \"ana\" at indices 1 and 3."
+    },
     id: "fm-index-search",
     name: "FM-Index Search",
     category: "string",

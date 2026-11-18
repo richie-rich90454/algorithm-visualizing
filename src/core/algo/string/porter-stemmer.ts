@@ -70,6 +70,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Porter stemmer reduces English words to a common base by sequentially stripping and simplifying suffixes. Its steps handle plurals, past and progressive endings, and several derivational suffixes, each guarded by conditions on the word's structure.",
+        "invariants": [
+            "Each step transforms the word deterministically and preserves the leading portion of the stem.",
+            "Suffix rules are applied in a fixed order with conditions such as the presence of a vowel in the preceding part."
+        ],
+        "correctness": "The ordered rules encode standard English morphology, for example caresses to caress and ponies to poni, and ed and ing are removed only after a vowel. Because the rules are conservative and ordered, related words collapse to the same stem, improving retrieval recall.",
+        "complexityRationale": "Each step examines a constant-length suffix and performs constant work, so stemming is O(n) time with O(1) auxiliary space.",
+        "uses": [
+            "Normalizing terms in information retrieval and search engines",
+            "Clustering morphologically related words",
+            "Preprocessing for text classification"
+        ],
+        "references": [
+            "Porter, An Algorithm for Suffix Stripping, 1980",
+            "The official Porter stemmer specification"
+        ],
+        "workedExample": "\"caresses\" ends in \"sses\" so step 1a gives \"caress\"; \"cats\" loses the trailing \"s\" to become \"cat\"; \"feeding\" drops \"ing\" after the vowel e to become \"feed\"."
+    },
     id: "porter-stemmer",
     name: "Porter Stemmer",
     category: "string",

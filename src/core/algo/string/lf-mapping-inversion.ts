@@ -110,6 +110,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The LF-mapping is the inverse step of the Burrows-Wheeler transform: it maps a row of the sorted rotation matrix to the row whose rotation starts one character earlier. Repeatedly following it from the row containing the end marker reconstructs the original string backward.",
+        "invariants": [
+            "For any character c, LF maps the i-th occurrence of c in the last column to the row of the i-th occurrence of c in the first column.",
+            "Following one LF step prepends the preceding character of the original string."
+        ],
+        "correctness": "Because the first column is the sorted last column and rotations preserve character order within equal letters, the rank of a character in the last column equals its rank among the same letters in the first column; LF therefore moves to the rotation shifted left by one. Iterating from the end-marker row walks backward through the text until it is fully recovered.",
+        "complexityRationale": "Computing the first column and occurrence ranks takes O(n) for BWT length n, and each of the n reconstruction steps is a constant-time lookup, giving O(n) time and O(n) space.",
+        "uses": [
+            "Decompressing BWT-compressed data",
+            "Reconstructing text in FM-indexes",
+            "Validating a BWT implementation by round-tripping"
+        ],
+        "references": [
+            "Burrows and Wheeler, A Block-Sorting Lossless Data Compression Algorithm, 1994",
+            "Navarro and Makinen, Compressed Full-Text Indexes, 2007"
+        ],
+        "workedExample": "For BWT \"annb$aa\" the first column is \"$aaabnn\" (the sorted characters). Starting from the row of '$', LF steps prepend one character each; after n-1 steps the reconstruction yields \"banana$\"."
+    },
     id: "lf-mapping-inversion",
     name: "LF-Mapping Inversion",
     category: "string",

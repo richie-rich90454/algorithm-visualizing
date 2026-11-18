@@ -221,6 +221,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Binary lifting precomputes, for every node and every power of two, the ancestor that many steps up together with the maximum edge weight along the jump. A path query first lifts the deeper node to the same depth and then lifts both nodes together, accumulating the largest edge seen, so each query finishes in logarithmic time.",
+        "invariants": [
+            "up[k][v] is the 2^k-th ancestor of v, or a sentinel above the root.",
+            "mx[k][v] is the maximum edge weight on the path from v up to up[k][v].",
+            "After the depth-alignment step both query nodes are at the same depth."
+        ],
+        "correctness": "The table is built by composing two jumps of 2^(k-1), so up[k][v] and mx[k][v] are correct by induction on k. Lifting the deeper node by the binary decomposition of its depth excess reaches the other node's level without changing the path endpoints. Then lifting both together from large k down, only when their ancestors differ, stops exactly one step below the lowest common ancestor, so the maximum gathered along the way is the maximum edge on the whole path.",
+        "complexityRationale": "Building the table fills n log n entries, taking O(n log n) time and space. Each query examines O(log n) jump levels, so q queries cost O((n + q) log n) overall.",
+        "uses": [
+            "Maximum edge or bottleneck queries on tree paths",
+            "Network routing with worst-link capacity constraints",
+            "Ancestor jumping as a building block for LCA queries"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (binary lifting exercises)",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "On a path A-B-C-D with edge weights A-B = 5, B-C = 2, C-D = 7, query the path from A to D. Node D is three levels deeper, so lifting it to A's level accumulates maxima 7, 2, 5 and gives maximum 7, which is the largest edge on the path."
+    },
+
     id: "binary-lifting-max-edge-query",
     name: "Binary Lifting Max Edge Query",
     category: "tree",

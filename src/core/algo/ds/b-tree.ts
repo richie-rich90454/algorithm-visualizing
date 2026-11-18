@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The B-Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A B-tree is a balanced search tree whose nodes hold many keys and many children, so one node fits a disk block. Splitting a full node and promoting its median keeps all leaves at the same depth. The wide branching factor means fewer levels and fewer disk reads than a binary tree.",
+        "invariants": [
+            "A node of order t holds between t-1 and 2t-1 keys.",
+            "Keys in a node separate its child subtrees by range.",
+            "All leaves are at the same depth."
+        ],
+        "correctness": "The separator keys define disjoint ranges for the children, so comparing the search key at each level always descends into the only subtree that can contain it. Splitting a full node around its median and promoting the median preserves both the key ranges and the equal-depth property. Therefore search finds a key exactly when it is stored.",
+        "complexityRationale": "Each node has order t children, so height is O(log_t n) and each operation touches one node per level. In internal memory that is O(log n) comparisons; on disk it is O(log_t n) I/Os. Space is O(n) because keys are stored once.",
+        "uses": [
+            "Database and filesystem indexes",
+            "Block-oriented storage where I/O dominates",
+            "Ordered dictionaries on disk"
+        ],
+        "references": [
+            "R. Bayer and E. McCreight, \"Organization and Maintenance of Large Ordered Indexes\", 1972",
+            "CLRS, Introduction to Algorithms, Chapter 18"
+        ],
+        "workedExample": "Insert 5, 12, 20 into a B-tree node that can hold up to three keys; the node becomes [5, 12, 20] at the root. Searching for 20 compares inside the root and finds it directly. Adding 30 overflows the node, so splitting around median 12 promotes 12 to a new root with children [5] and [20, 30]."
+    },
     id: "b-tree",
     name: "B-Tree",
     category: "data-structures",

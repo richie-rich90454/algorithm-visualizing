@@ -104,6 +104,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     });
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Visit every node of a binary tree in a fixed order. Preorder visits the root first, inorder visits it between the subtrees, postorder visits it last, and level order works left to right one depth at a time.",
+        "invariants": [
+            "Each node is visited exactly once.",
+            "For inorder on a binary search tree, visits occur in nondecreasing key order."
+        ],
+        "correctness": "Each traversal recursively covers the left subtree, the root, and the right subtree, so every node is visited once and the relative order matches the definition. Level order follows the queue discipline, so nodes are emitted by increasing depth.",
+        "complexityRationale": "Every node and edge is handled a constant number of times: O(n) time. Recursive forms use O(h) stack space where h is tree height; level order uses O(w) space for the widest level.",
+        "uses": [
+            "Expression tree evaluation",
+            "Serializing and copying trees",
+            "Inorder iteration of binary search trees"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 12",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.3"
+        ],
+        "workedExample": "Tree with root B, left child A, right child C. Inorder gives A, B, C; preorder gives B, A, C; postorder gives A, C, B; level order gives B, A, C."
+    },
     id: "tree-traversals",
     name: "Tree Traversals",
     category: "tree",

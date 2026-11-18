@@ -225,6 +225,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Borůvka module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Boruvka builds a minimum spanning tree by growing many components at once. In each round every component independently picks its cheapest outgoing edge to a different component, and all chosen edges are added together. Because every component merges with at least one other, the number of components at least halves, so only O(log V) rounds are needed.",
+        "invariants": [
+            "Chosen edges never create a cycle because they join distinct components.",
+            "Every component's chosen edge is the cheapest edge leaving it in that round.",
+            "The number of components at least halves after each round."
+        ],
+        "correctness": "For any component, the cheapest edge leaving it is safe: there exists a minimum spanning tree containing it by the cut property, since it is a lightest edge across the cut defined by that component. Adding all such safe edges preserves membership in some MST, and when one component remains the accumulated edges form a minimum spanning tree.",
+        "complexityRationale": "Each of the O(log V) rounds scans all E edges once, giving O(E log V) time with union-find; component labels and chosen edges use O(V + E) space.",
+        "uses": [
+            "Minimum spanning tree construction with natural parallelism",
+            "A first phase of the Karger-Klein-Tarjan randomized MST algorithm",
+            "Distributed MST computation on partitioned graphs"
+        ],
+        "references": [
+            "Boruvka, O jistem problemu minimalnim (1926)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees"
+        ],
+        "workedExample": "On the sample graph, each singleton first picks its cheapest incident edge, such as A picking A-C of weight 2 and B picking B-C of weight 1. Adding all picks merges components; later rounds connect the survivors. The process ends with one spanning tree of minimum total weight."
+    },
     id: "boruvka",
     name: "Borůvka's MST",
     category: "mst",

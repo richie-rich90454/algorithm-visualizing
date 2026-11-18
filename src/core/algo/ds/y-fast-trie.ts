@@ -147,6 +147,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A y-fast trie groups keys into small buckets and stores only bucket representatives in an x-fast trie. A query finds the representative predecessor in logarithmic-logarithmic time, scans its small bucket, and checks the next bucket, giving fast successor queries with linear space.",
+        "invariants": [
+            "Each bucket holds a bounded number of sorted keys.",
+            "Bucket representatives are stored in the x-fast index.",
+            "Splits and merges keep bucket sizes near target."
+        ],
+        "correctness": "The x-fast index gives the bucket whose representative is largest at or below the query, so the answer is in that bucket or the next one; scanning those small buckets finds the true predecessor. Splitting and merging preserve the bucket partition of the key set.",
+        "complexityRationale": "The x-fast lookup costs O(log log U) and scanning a constant-size bucket is O(1), giving O(log log U) time. Small buckets plus one index entry per bucket use O(n) space.",
+        "uses": [
+            "Successor queries on bounded integers with linear space",
+            "In-memory indexes for timers and event scheduling",
+            "Van Emde Boas alternative when memory matters"
+        ],
+        "references": [
+            "Willard, Log-Logarithmic Search: A Machine Index for Dynamic Sets, 1983",
+            "CLRS, Introduction to Algorithms, Chapter 20 on predecessor data structures"
+        ],
+        "workedExample": "Keys 2, 5, 11, 14 grouped into small buckets with representatives in an x-fast trie; querying 12 finds the representative bucket, scans it to find 11 as predecessor and checks the next bucket for 14 as successor."
+    },
     id: "y-fast-trie",
     name: "Y-Fast Trie",
     category: "data-structures",

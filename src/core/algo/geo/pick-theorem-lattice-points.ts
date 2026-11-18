@@ -121,6 +121,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Pick's theorem gives a striking formula for a polygon whose vertices are integer grid points: the area equals the number of interior lattice points plus half the boundary lattice points minus one. The demo counts boundary points by summing gcds along edges, gets the area from the shoelace formula, and solves for the interior count.",
+        "invariants": [
+            "An edge from (x1,y1) to (x2,y2) contains gcd(|dx|,|dy|) + 1 lattice points including endpoints.",
+            "The total boundary count B sums the gcd contributions without double counting corners.",
+            "The interior count I = A - B/2 + 1 is a nonnegative integer for a lattice polygon."
+        ],
+        "correctness": "The shoelace formula gives the exact polygon area A for lattice vertices. Walking the boundary, the number of lattice steps along an edge is gcd(|dx|,|dy|), and summing these over edges counts each boundary point once because endpoints are shared between adjacent edges. Pick's theorem states A = I + B/2 - 1 for any simple lattice polygon, so rearranging yields I = A - B/2 + 1.",
+        "complexityRationale": "Each edge requires one gcd and one shoelace term, so both time and auxiliary space are O(1) per edge and O(n) overall for the vertex list.",
+        "uses": [
+            "Counting lattice points inside polygon-shaped regions",
+            "Checking results of lattice enumeration algorithms",
+            "Problems in discrete geometry and number theory"
+        ],
+        "references": [
+            "Pick, Geometrisches zum Viereck, Sitzungsberichte Naturwissenschaftlicher Verein (1899)",
+            "O'Rourke, Computational Geometry in C, Section 2.2"
+        ],
+        "workedExample": "For the lattice triangle (0,0), (4,0), (0,3), shoelace area A = 6. Boundary gcds are 4, 3, and 1, so B = 8. Pick's theorem gives I = 6 - 4 + 1 = 3 interior lattice points."
+    },
+
     id: "pick-theorem-lattice-points",
     name: "Pick's Theorem (Lattice Points)",
     category: "geometry",

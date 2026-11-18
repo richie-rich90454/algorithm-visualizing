@@ -283,6 +283,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hungarian module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Hungarian algorithm solves the assignment problem: choose one entry in each row and column of a cost matrix so the total is minimal. It exploits the fact that subtracting a constant from a whole row or column cannot change which assignment is best, then drives the reduced costs until a full assignment of zero entries exists.",
+        "invariants": [
+            "Subtracting row and column minima never changes the set of optimal assignments.",
+            "All reduced costs are nonnegative.",
+            "A perfect matching among zero entries is an optimal assignment."
+        ],
+        "correctness": "Every assignment has cost equal to its reduced-cost sum plus a constant shift, so minimizing reduced cost is equivalent to minimizing true cost. Because reduced costs are nonnegative, an assignment using only zero entries has the smallest possible reduced cost of zero, hence is optimal. The cover-and-adjust steps create such a zero assignment in polynomial time.",
+        "complexityRationale": "The classic implementation performs O(n) cover adjustments, each scanning the n by n matrix, for O(n^3) time. The cost matrix and auxiliary arrays use O(n^2) space.",
+        "uses": [
+            "Assigning jobs to machines or workers to tasks at minimum cost",
+            "Tracking assignment in radar and computer vision",
+            "Solving the linear assignment subproblem in larger optimizers"
+        ],
+        "references": [
+            "Kuhn, The Hungarian Method for the Assignment Problem (1955)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, matching and assignment"
+        ],
+        "workedExample": "Costs are row0 [8,4,7], row1 [5,2,3], row2 [9,4,8]. After subtracting row and column minima and covering zeros, the optimal zero assignment maps row0 to column0, row1 to column2, and row2 to column1. The total true cost is 8+3+4 = 15, the minimum."
+    },
     id: "hungarian",
     name: "Hungarian Algorithm",
     category: "flow",

@@ -169,6 +169,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Weak-heap sort relaxes the heap invariant: each node needs only one distinguished child and a reverse bit instead of two children. This halves pointer bookkeeping while still supporting find-minimum and delete-minimum in logarithmic time.",
+        "invariants": [
+            "Each node is no larger than its distinguished child and its reverse-designated neighbor.",
+            "The weak-heap order implies the minimum is among the roots."
+        ],
+        "correctness": "Weak-heap operations preserve the relaxed order and the minimum of a weak heap is found at a distinguished root; deleting it and merging the resulting heaps restores the structure, so repeated extraction emits sorted values.",
+        "complexityRationale": "Building takes O(n) and each extraction and merge is O(log n), giving O(n log n) worst-case time with fewer comparisons than binary heaps. The node array and reverse bits use O(n) space.",
+        "uses": [
+            "Sorting with fewer comparisons than binary heap sort",
+            "Priority queues with cheap pointer storage",
+            "Teaching relaxed heap invariants"
+        ],
+        "references": [
+            "Dutton, Weak Heaps, Technical Report TR-87-15, University of Central Florida, 1988",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3], nodes are joined by distinguished edges so 1 is a root minimum; extract 1, merge its children back, and the next root minimum is 2, then 3, 4, 5."
+    },
     id: "weak-heap-sort",
     name: "Weak Heap Sort",
     category: "sorting",

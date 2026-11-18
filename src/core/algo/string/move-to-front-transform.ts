@@ -76,6 +76,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Move-to-front re-encodes a sequence by replacing each symbol with its current position in an ordered list, then moving that symbol to the front. Symbols seen recently get small indices, which compress well after run-length or entropy coding.",
+        "invariants": [
+            "The list always contains each alphabet symbol exactly once.",
+            "The emitted code is the zero-based index of the current symbol, and after emitting it that symbol is at the front."
+        ],
+        "correctness": "The transform is reversible because reading a code k tells the decoder to output the k-th list element and then move it to the front, exactly mirroring the encoder's list state. The locality property follows because a just-seen symbol sits at index 0.",
+        "complexityRationale": "Each character needs a linear search for its index and a move to front on a list of size sigma, giving O(sigma) per character and O(n·sigma) total; the list uses O(sigma) space.",
+        "uses": [
+            "The symbol-ranking stage of the bzip2 compressor",
+            "Cache simulation models",
+            "Locality-aware data transformations"
+        ],
+        "references": [
+            "Ryabko, Data Compression by Means of a Book Stack, 1980",
+            "Burrows and Wheeler, A Block-Sorting Lossless Data Compression Algorithm, 1994"
+        ],
+        "workedExample": "For \"banana\" with alphabet [a, b, n], reading 'b' gives index 1 and moves b to front; 'a' then gives index 1, and 'n' gives index 2, producing the code stream [1, 1, 2, 1, 1] of mostly small values."
+    },
     id: "move-to-front-transform",
     name: "Move-To-Front",
     category: "string",

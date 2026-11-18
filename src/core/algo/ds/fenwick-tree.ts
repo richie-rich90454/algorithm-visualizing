@@ -151,6 +151,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Fenwick Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Fenwick tree, or binary indexed tree, stores partial sums so that prefix sums and point updates both take logarithmic time. Each index i holds the sum of a range whose length is the lowest set bit of i. Updates move upward with i += lowbit(i) and queries move downward with i -= lowbit(i).",
+        "invariants": [
+            "tree[i] sums the original array over the range (i - lowbit(i), i].",
+            "lowbit(i) = i & -i is the largest power of two dividing i.",
+            "A prefix sum up to i is the sum of tree entries on the downward lowbit path."
+        ],
+        "correctness": "Adding a delta to every tree index on the upward path updates exactly those partial sums that include position i. Summing tree indices on the downward path partitions [1, i] into disjoint ranges, so the result is the true prefix sum. Both paths have at most log n steps.",
+        "complexityRationale": "Each update or query visits one node per set bit, at most O(log n) steps. The tree array is the same size as the input plus one, O(n) space.",
+        "uses": [
+            "Prefix-sum and frequency tables",
+            "Competitive programming range queries",
+            "Cumulative counters in online analytics"
+        ],
+        "references": [
+            "Peter M. Fenwick, \"A New Data Structure for Cumulative Frequency Tables\", Software: Practice and Experience 1994",
+            "Steven Halim, Competitive Programming 3, Fenwick tree chapter"
+        ],
+        "workedExample": "For array [2, 1, 3, 4, 5, 1], build tree so tree[4] holds indices 1-4 sum 10 and tree[6] holds 5-6 sum 6. Prefix sum to 5 is tree[4] + tree[5] = 10 + 5 = 15. Updating index 3 by +2 adds 2 to tree[3], tree[4], and tree[8]."
+    },
     id: "fenwick-tree",
     name: "Fenwick Tree",
     category: "data-structures",

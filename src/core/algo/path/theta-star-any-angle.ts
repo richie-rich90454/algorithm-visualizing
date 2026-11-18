@@ -218,6 +218,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Theta* extends A* so a node's parent can be any visible vertex rather than only an adjacent grid cell. When the current vertex's parent has line of sight to a successor, the algorithm shortcuts directly there, removing the zigzag artifacts of grid-constrained paths while using the same search framework.",
+        "invariants": [
+            "A node keeps the parent giving the lowest cost among grid neighbors and visible ancestors.",
+            "Line-of-sight checks only allow shortcuts through free space.",
+            "The goal is finalized with the least-cost any-angle path found."
+        ],
+        "correctness": "Allowing a parent to be any visible vertex only adds cheaper alternatives to A*'s relaxation set, never invalid ones, because a shortcut is used only when no obstacle lies between the points. The search therefore finds a path no more expensive than grid A* and avoids unnecessary turns, giving an any-angle path of minimal cost among considered lines.",
+        "complexityRationale": "Each expansion performs line-of-sight checks for neighbors, so the bound is O(E log V), with O(V) space for costs, parents, and the open set.",
+        "uses": [
+            "Natural-looking pathfinding in games and simulations",
+            "Robot navigation on grid maps with smooth paths",
+            "Reducing path length without post-processing smoothing"
+        ],
+        "references": [
+            "Nash, Koenig, and Tovey, Theta*: Any-Angle Path Planning on Grids (2007)",
+            "Hart, Nilsson, and Raphael, A Formal Basis for Heuristic Search (1968)"
+        ],
+        "workedExample": "On the open corridor, A* would zigzag between grid cells. Theta* checks that the parent at (0,2) sees (4,2) directly and shortcuts the whole corridor, producing a straight path of cost 4."
+    },
     id: "theta-star-any-angle",
     name: "Theta* (Any-Angle)",
     category: "shortest-path",

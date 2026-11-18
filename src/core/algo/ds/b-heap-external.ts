@@ -53,6 +53,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A B-heap adapts the heap to disk by making each node a block that holds a parent and its children, aligned page by page. Because one I/O reads a whole block, a sift operation touches as few blocks as possible. The fanout is chosen to match the page size, minimizing transfers.",
+        "invariants": [
+            "Each parent block's key is at most the keys in its child blocks (min-heap order).",
+            "Every block occupies one page, so one I/O transfers a full subtree.",
+            "The tree remains complete, with blocks filled left to right."
+        ],
+        "correctness": "Inserting places the key in the next free slot and swaps violating blocks up the tree, which restores heap order because only the path to the root can be affected. Extracting the minimum removes the root block's value and refills it from a child, then pushes down until order holds. Both operations touch one block per level.",
+        "complexityRationale": "Height is O(log_B n) because each block has B children, and each level costs one I/O, giving O(log_B n) transfers. Storing all keys once takes O(n) space on disk.",
+        "uses": [
+            "External-memory priority queues in databases",
+            "Bulk sorting with disk-resident heaps",
+            "Event scheduling over very large datasets"
+        ],
+        "references": [
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4",
+            "J. S. Vitter, \"External Memory Algorithms and Data Structures\", ACM Computing Surveys 2001"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1, 7 into a B-heap whose block holds a parent and children. The root starts at 5; inserting 2 swaps it upward so the root becomes 2. Inserting 1 again swaps along one block path, so the minimum 1 ends at the root and the I/O counter records only a few block reads."
+    },
     id: "b-heap-external",
     name: "B-Heap",
     category: "data-structures",

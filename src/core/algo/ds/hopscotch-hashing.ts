@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hopscotch hashing keeps each key within a small neighborhood of its home bucket by storing a bitmap of occupied slots near the home. On insertion into a free slot farther away, it swaps entries closer until the new key is within the neighborhood. Lookups scan only that fixed neighborhood.",
+        "invariants": [
+            "Every key lies within H slots of its home bucket.",
+            "The neighborhood bitmap marks occupied slots in that window.",
+            "Swaps preserve the neighborhood property of displaced keys."
+        ],
+        "correctness": "Hashing gives a home bucket, and the invariant guarantees the key is within H slots, so scanning exactly those slots finds it. Swapping a distant empty slot with a closer occupied one moves the occupant closer to its own home, never farther. Lookups are therefore complete and insertion preserves the invariant.",
+        "complexityRationale": "Lookup scans H slots, O(1) for fixed H. Insertion may perform a bounded number of swaps, expected O(1); space is one array of buckets, O(n).",
+        "uses": [
+            "Concurrent hash tables",
+            "Cache-friendly dictionaries",
+            "High-load hash tables with fast lookups"
+        ],
+        "references": [
+            "Maurice Herlihy, Nir Shavit, and Moran Tzafrir, \"Hopscotch Hashing\", DISC 2008",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "With neighborhood H=4, key 21 hashes to bucket 0 but only bucket 3 is free. Insert 21 at 3, then swap it with a resident at bucket 1 whose home is 0, moving 21 to bucket 1. Query 21 scans buckets 0-3 and finds it quickly."
+    },
     id: "hopscotch-hashing",
     name: "Hopscotch Hashing",
     category: "data-structures",

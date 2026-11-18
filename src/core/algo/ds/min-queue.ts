@@ -111,6 +111,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A min queue keeps two stacks, each remembering its own minimum at every depth. Enqueues push onto the input stack and dequeues pop from the output stack, refilling it only when empty. The current minimum is simply the smaller of the two stack minima.",
+        "invariants": [
+            "Each stack minimum at depth i is the minimum of its bottom i+1 entries.",
+            "Elements leave the two stacks in FIFO order overall.",
+            "The queue minimum is the smaller of the two stack minima."
+        ],
+        "correctness": "A stack records the true minimum of everything below each position, so its top minimum is the minimum of all elements currently in that stack. Every element lives in exactly one of the two stacks, so the smaller of the two minima is the global minimum. Pouring the input stack reverses it, which preserves FIFO order.",
+        "complexityRationale": "Each element is pushed once and popped once per stack, so any sequence takes linear total work and each operation is O(1) amortized. Two stacks hold all n elements plus one minimum per entry, O(n) space.",
+        "uses": [
+            "Queues that must report their smallest pending item",
+            "Sliding window minimum with an expiry policy",
+            "Priority scheduling with FIFO tie order"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10 on stacks and queues",
+            "Hood and Melville, Real-Time Queue Operations in Pure Lisp, 1981"
+        ],
+        "workedExample": "Enqueue 4, 2, 7, dequeue once, then enqueue 1. The input stack holds 4, 2, 7 with minima 4, 2, 2. Pouring sends 4 out first in FIFO order, and after enqueuing 1 the overall minimum becomes 1."
+    },
     id: "min-queue",
     name: "Min Queue",
     category: "data-structures",

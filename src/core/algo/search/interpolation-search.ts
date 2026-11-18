@@ -182,6 +182,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Interpolation Search module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Interpolation search estimates the probe position from the target's value assuming keys are roughly uniformly distributed. A target near the low end probes near the low end, unlike binary search which always probes the middle.",
+        "invariants": [
+            "If the target is present, it lies within the current value-bounded interval.",
+            "The probe position is between low and high by the interpolation formula."
+        ],
+        "correctness": "With sorted keys, if the probe value is below the target the search moves right and if above it moves left; the interpolated point is a valid position in the interval, so the search region always shrinks consistently with binary search.",
+        "complexityRationale": "Under a uniform distribution each probe removes a fraction of the range, giving O(log log n) expected comparisons; on skewed data it degrades to O(n). Only index variables are stored, O(1) space.",
+        "uses": [
+            "Searching large uniformly distributed sorted arrays",
+            "Phone-book style lookups",
+            "Teaching distribution-aware searching"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (interpolation search)",
+            "Pearson, Interpolation Search: An Iterative Development, Communications of the ACM, 1990"
+        ],
+        "workedExample": "In [10,20,30,40,50,60,70,80] for target 60, the linear estimate points close to index 5, which holds 60, so the answer is found immediately instead of starting at the middle."
+    },
     id: "interpolation-search",
     name: "Interpolation Search",
     category: "searching",

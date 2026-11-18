@@ -124,6 +124,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Page replacement policies decide which page to evict when memory is full. FIFO evicts the oldest-loaded page, LRU evicts the least recently used page, and OPT, Belady's clairvoyant algorithm, evicts the page whose next use is farthest in the future. Racing them on one reference string shows OPT is optimal and LRU usually beats FIFO.",
+        "invariants": [
+            "Each policy keeps at most F resident pages and tallies one fault per reference to an absent page.",
+            "OPT uses the full future reference string, while FIFO and LRU use only history.",
+            "A hit never changes a policy's fault count."
+        ],
+        "correctness": "OPT is provably optimal: evicting the page used farthest in the future minimizes future faults, by a standard exchange argument, giving a theoretical lower bound. LRU and FIFO are practical approximations; LRU is not subject to Belady's anomaly while FIFO can be. The demo verifies OPT has the fewest faults on the sample string.",
+        "complexityRationale": "Each reference checks membership and possibly evicts: FIFO and LRU are O(1) with a queue or list, while OPT scans up to F pages and searches ahead, O(F·n) worst case per reference. Overall the race is O(n·f). Each policy stores F page ids, O(f) space.",
+        "uses": [
+            "Virtual-memory page replacement in operating systems",
+            "CPU cache replacement policies",
+            "Database buffer-pool management",
+            "Web and CDN cache eviction strategies"
+        ],
+        "references": [
+            "Belady, A Study of Replacement Algorithms for a Virtual-Storage Computer, IBM Systems Journal, 1966",
+            "Silberschatz, Galvin and Gagne, Operating System Concepts, Chapter 9"
+        ],
+        "workedExample": "On the reference string [1,2,3,4,1,2,5,1,2,3,4,5] with three frames, FIFO faults repeatedly because it evicts the oldest page even when it is about to be reused. LRU does better by keeping recently used pages 1 and 2. OPT, knowing the future, evicts pages 4 and 5 first and records the fewest faults."
+    },
     id: "paging-algorithms-race",
     name: "Paging Algorithms Race",
     category: "data-structures",

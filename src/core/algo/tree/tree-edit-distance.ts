@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Tree edit distance measures how many insertions, deletions, and substitutions turn one tree into another. This visualization focuses on ordered chains, where each tree is a root-to-leaf path, so the problem reduces to classical string edit distance on the label sequences.",
+        "invariants": [
+            "Each chain is represented by its ordered sequence of node labels.",
+            "dp[i][j] is the minimum cost to align the first i labels of one chain with the first j of the other.",
+            "The standard recurrence considers match, substitution, insertion, and deletion."
+        ],
+        "correctness": "For chains, every ancestor relation is preserved by a sequence alignment, so tree edit distance equals string edit distance on the label paths. The dynamic programming recurrence examines all ways the last labels can be aligned, taking the minimum of matching or substituting them, deleting one, or inserting one. By induction over prefix lengths dp gives the minimum edit cost, so the final cell is the distance between the two chains.",
+        "complexityRationale": "Filling an (n+1) by (m+1) table with constant work per cell costs O(n*m) time and the same O(n*m) space. For general unordered trees the problem is harder, but chains keep this demo exact.",
+        "uses": [
+            "Comparing ordered hierarchical documents",
+            "Measuring differences between syntax paths",
+            "Teaching edit distance before general tree edit algorithms"
+        ],
+        "references": [
+            "Zhang and Shasha, Simple Fast Algorithms for the Editing Distance Between Trees, SIAM Journal on Computing 18 (1989)",
+            "CLRS, Introduction to Algorithms, Chapter 15 (sequence alignment)"
+        ],
+        "workedExample": "Chains with labels A-B-C and A-X-C have edit distance 1: the first and last labels match and B is substituted by X. The DP table's final cell equals 1."
+    },
+
     id: "tree-edit-distance",
     name: "Tree Edit Distance",
     category: "tree",

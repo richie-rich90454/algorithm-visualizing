@@ -157,6 +157,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The DFS (Recursive) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Go as deep as possible along one branch before backtracking. Mark a vertex when first reached, recurse into each unvisited neighbor, and finish the vertex when all neighbors are explored.",
+        "invariants": [
+            "The recursion stack is a path in the graph of currently active vertices.",
+            "A vertex marked visited is either finished or an ancestor on that path."
+        ],
+        "correctness": "Recursion explores every reachable neighbor, so all reachable vertices are visited. The discovery and finish times give a valid depth-first forest and support classification of tree, back, forward, and cross edges.",
+        "complexityRationale": "Each vertex is discovered once and each edge examined once or twice, giving O(V + E) time. Space is O(V) for the visited set and recursion stack.",
+        "uses": [
+            "Topological ordering and cycle detection",
+            "Connected and strongly connected components",
+            "Backtracking search and puzzle solving"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms, 1972"
+        ],
+        "workedExample": "Graph A-B, A-C, B-D. Start at A, mark it, recurse into B, mark it, recurse into D, mark and finish D, finish B, then recurse into C and finish C, finally finish A. Discovery order is A, B, D, C."
+    },
     id: "dfs-recursive",
     name: "DFS (Recursive)",
     category: "graph",

@@ -151,6 +151,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A k-dominating set requires every vertex to be within distance k of some chosen vertex. On tiny trees the minimum such set is found by exhaustive search over subsets in increasing size, accepting the first subset whose distance-k neighborhoods cover the whole tree.",
+        "invariants": [
+            "A chosen vertex covers all nodes within k edges.",
+            "Subsets are tried from smallest to largest cardinality.",
+            "A subset is accepted only if the union of its covered nodes is the full vertex set."
+        ],
+        "correctness": "Testing coverage computes the distance-k neighborhood of every chosen vertex and checks their union against all vertices, so acceptance exactly matches the definition of a k-dominating set. Because subsets are enumerated in nondecreasing size, the first accepted subset is guaranteed to have minimum cardinality among all dominating subsets.",
+        "complexityRationale": "Enumerating 2^n subsets and checking coverage over up to n nodes costs O(2^n * n) time, suitable only for tiny trees. The current subset and a coverage marker use O(n) space.",
+        "uses": [
+            "Placing facilities so every client is within k hops",
+            "Selecting monitoring nodes with delayed coverage",
+            "Cross-checking parameterized dominating-set algorithms"
+        ],
+        "references": [
+            "Haynes, Hedetniemi, and Slater, Fundamentals of Domination in Graphs",
+            "Garey and Johnson, Computers and Intractability, dominated set chapter"
+        ],
+        "workedExample": "On the default five-node tree with k = 1, the subset {B, C} covers every node: B covers its neighbors and C covers the remaining branch. No single vertex covers all five, so size two is optimal."
+    },
+
     id: "tree-k-dominating-set",
     name: "Tree K-Dominating Set",
     category: "tree",

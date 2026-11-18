@@ -101,6 +101,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Chord is a distributed hash table that arranges nodes on a circular identifier ring. Each node keeps a finger table of successors at exponentially growing offsets, so a query can roughly halve its remaining distance each hop. A key is owned by its successor, the first node encountered clockwise from the key's identifier.",
+        "invariants": [
+            "Each key is stored at its successor, the first node clockwise from the key.",
+            "Finger i of a node points to the successor of (n + 2^i) mod 2^m.",
+            "A lookup moves monotonically closer to the target without overshooting it."
+        ],
+        "correctness": "Each hop selects the finger closest to, but preceding, the key, which reduces the clockwise distance to the target by at least half. With m fingers for an m-bit identifier space, any lookup reaches the successor in O(log N) hops. The demo finds key 10 at node 12 in two hops, and once at the successor the owning node is determined uniquely.",
+        "complexityRationale": "An m-bit ring gives each node m = O(log N) fingers, so storage is O(log N) per node. Because every hop at least halves the remaining distance, a lookup needs O(log N) hops.",
+        "uses": [
+            "Peer-to-peer file-sharing overlays",
+            "Distributed key-value stores and sharded tables",
+            "Service discovery in large clusters",
+            "Content-addressable networks such as IPFS-style routing"
+        ],
+        "references": [
+            "Stoica, Morris, Karger, Kaashoek and Balakrishnan, Chord: A Scalable Peer-to-Peer Lookup Service for Internet Applications, SIGCOMM 2001",
+            "Balakrishnan, Kaashoek and Karger, Looking Up Anywhere in a Peer-to-Peer Network, HotNets 2002"
+        ],
+        "workedExample": "On a 4-bit ring (0..15) with nodes {1,4,9,12}, key 10 belongs to successor 12. From node 1 the finger starts at offsets 1,2,4,8 pointing to successors {4,4,9,12}. The closest preceding finger of 10 is 9, so hop 1->9; node 9 knows 12, so hop 9->12. The key is found in two hops."
+    },
     id: "chord-dht-lookup",
     name: "Chord DHT Lookup",
     category: "data-structures",

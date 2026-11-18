@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Farey sequence of order n lists all reduced fractions between 0 and 1 whose denominators are at most n, in increasing order. A classic construction repeatedly inserts the mediant of adjacent fractions, (a+c)/(b+d), whenever its denominator fits the order. Because mediants fall between their parents and preserve reducedness, the list grows in sorted order.",
+        "invariants": [
+            "All fractions remain in reduced form with denominator at most the order.",
+            "Adjacent fractions a/b and c/d satisfy bc - ad = 1.",
+            "The sequence is sorted between the sentinels 0/1 and 1/1."
+        ],
+        "correctness": "The mediant of two adjacent Farey fractions is the fraction with smallest denominator lying between them, and its denominator is the sum of the parents' denominators. Inserting it when that denominator is within the order therefore adds exactly the missing fractions. Repeating until no mediant fits yields the complete sorted Farey sequence.",
+        "complexityRationale": "The order-n Farey sequence has Theta(n^2) terms and each insertion scans adjacent pairs, giving O(n^2) time and O(n^2) space for the stored list.",
+        "uses": [
+            "Enumerating reduced rational approximations with bounded denominator",
+            "Studying Ford circles and continued fractions",
+            "Generating test data for rational arithmetic"
+        ],
+        "references": [
+            "Hardy and Wright, An Introduction to the Theory of Numbers, Chapter 3",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 6"
+        ],
+        "workedExample": "Starting from 0/1 and 1/1 with order 4, insert mediants 1/2, then 1/3 and 2/3, then 1/4 and 3/4. The sequence 0/1, 1/4, 1/3, 1/2, 2/3, 3/4, 1/1 is the Farey sequence of order 4."
+    },
     id: "farey-sequence",
     name: "Farey Sequence",
     category: "math",

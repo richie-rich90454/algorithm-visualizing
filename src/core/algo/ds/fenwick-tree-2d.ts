@@ -80,6 +80,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 2D Fenwick tree nests the lowbit index trick over rows and columns. Updates climb both dimensions with i += lowbit(i) and j += lowbit(j), and prefix sums descend both. A rectangle sum is obtained by inclusion-exclusion from four prefix sums.",
+        "invariants": [
+            "Each cell stores the sum of a rectangle defined by lowbit ranges in both axes.",
+            "Lowbit stepping is independent in rows and columns.",
+            "A rectangle query uses four corner prefix sums."
+        ],
+        "correctness": "The nested lowbit decomposition partitions the 2D prefix region into disjoint rectangles, so summing the visited cells yields the true prefix sum. Inclusion-exclusion of four prefixes cancels the overlapping regions, leaving exactly the rectangle. Updates touch precisely the cells whose rectangles contain the point.",
+        "complexityRationale": "Both dimensions contribute log factors, so updates and queries are O(log n log m). The grid of accumulators is O(n m) in the dense implementation shown.",
+        "uses": [
+            "2D range-sum queries on grids",
+            "Sparse matrix cumulative statistics",
+            "Image integral computations"
+        ],
+        "references": [
+            "Peter M. Fenwick, \"A New Data Structure for Cumulative Frequency Tables\", 1994",
+            "Steven Halim, Competitive Programming 3, 2D Fenwick section"
+        ],
+        "workedExample": "On a 6 by 6 grid, updating cell (3, 4) touches rows 3 and 4 and columns 4 and 8 in the nested loops. A rectangle query [1, 4] combines prefix sums at its four corners, subtracting the two smaller corners and adding back the origin."
+    },
     id: "fenwick-tree-2d",
     name: "Fenwick Tree 2D",
     category: "data-structures",

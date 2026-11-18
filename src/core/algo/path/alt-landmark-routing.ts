@@ -206,6 +206,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "ALT speeds up A* on large road networks by precomputing distances from a few landmark vertices. The triangle inequality turns those distances into an admissible heuristic: the absolute difference between a landmark's distance to the current vertex and to the target never overestimates the remaining cost. Taking the maximum over landmarks makes the heuristic as strong as possible.",
+        "invariants": [
+            "Precomputed landmark distances are exact shortest-path distances.",
+            "The heuristic is admissible because a detour through a landmark obeys the triangle inequality.",
+            "A* still returns the optimal path because the heuristic never overestimates."
+        ],
+        "correctness": "For any landmark L, the triangle inequality gives d(v,t) at least the absolute difference of d(L,v) and d(L,t), so that quantity is a lower bound on the true remaining cost and is admissible. Maximizing admissible bounds preserves admissibility, so A* with this heuristic remains optimal while expanding fewer vertices.",
+        "complexityRationale": "Preprocessing runs one Dijkstra per landmark, O(L E log V), stored in O(L V) space; each query is then an A* search bounded by O(E log V).",
+        "uses": [
+            "Fast point-to-point routing in road networks",
+            "Reducing search space in map and navigation services",
+            "A practical admissible heuristic with offline preprocessing"
+        ],
+        "references": [
+            "Goldberg, Kaplan, and Werneck, Reachability and Distance Queries via 2-Hop Labels (2002)",
+            "Hart, Nilsson, and Raphael, A Formal Basis for the Heuristic Determination of Minimum Cost Paths (1968)"
+        ],
+        "workedExample": "With landmarks A and D, precomputed distances give a heuristic at each vertex from |dist(L,v) - dist(L,t)|. Searching from A to D with these lower bounds expands far fewer vertices than Dijkstra yet still returns the optimal cost 4."
+    },
     id: "alt-landmark-routing",
     name: "ALT Landmark Routing",
     category: "shortest-path",

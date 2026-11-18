@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Ear clipping triangulates a simple polygon by repeatedly finding an ear, a convex vertex whose triangle with its two neighbors contains no other polygon vertex, and cutting it off. Removing ears one by one reduces the polygon until a single triangle remains.",
+        "invariants": [
+            "A clipped vertex is convex and its ear triangle is empty of other vertices.",
+            "Removing an ear preserves a simple polygon with one fewer vertex.",
+            "The collected ears plus the final triangle form a valid triangulation with n-2 triangles."
+        ],
+        "correctness": "Every simple polygon has at least two ears by the two-ears theorem, so progress is always possible. The diagonal of an ear lies inside the polygon and separates the ear from the rest, so clipping it does not disturb the remaining polygon. By induction the recursively triangulated remainder plus the ear gives a triangulation of the original polygon into exactly n-2 triangles with non-crossing diagonals.",
+        "complexityRationale": "Finding and testing each ear scans the remaining vertices, costing O(n) per removed vertex and O(n^2) total time. The vertex list and diagonal list use O(n) space.",
+        "uses": [
+            "Triangulating polygon meshes for rendering",
+            "Preparing polygons for finite element analysis",
+            "Converting map shapes into triangle meshes"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Chapter 5",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 3"
+        ],
+        "workedExample": "For a convex pentagon, every vertex is an ear, so clipping any four of them leaves one triangle and produces three triangles in total. For a polygon with an inward notch, the reflex vertex at the notch is not an ear until nearby ears have been removed."
+    },
+
     id: "polygon-triangulation-ear-clipping",
     name: "Polygon Triangulation (Ear Clipping)",
     category: "geometry",

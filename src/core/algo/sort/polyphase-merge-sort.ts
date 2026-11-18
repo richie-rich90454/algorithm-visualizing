@@ -156,6 +156,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Polyphase merge distributes runs across tapes in Fibonacci proportions so every merge pass keeps all tapes busy. Dummy runs pad the counts to keep the pattern exact. It was the fastest tape sort of its era.",
+        "invariants": [
+            "Run counts on the tapes follow consecutive Fibonacci numbers.",
+            "Each pass merges every non-dummy run once, leaving no idle tape."
+        ],
+        "correctness": "Merging runs from the two fuller tapes onto the emptiest tape produces counts matching the next Fibonacci step; by induction the distribution stays balanced and the final single run is sorted.",
+        "complexityRationale": "Each element takes part in O(log n) merge passes, so O(n log n) time with fewer rewinds than balanced cascades. Tape buffers store O(n) elements in the visualization.",
+        "uses": [
+            "Historical high-performance tape sorting",
+            "Teaching Fibonacci numbers in algorithm design",
+            "Understanding dummy-run padding tricks"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.4.2",
+            "Lorin, Sorting and Sort Systems, Addison-Wesley, 1975"
+        ],
+        "workedExample": "Runs [5, 2] and [6, 1] become [2, 5] and [1, 6]; [4, 3] becomes [3, 4]. Merging pairs across tapes with a dummy pad yields [1, 2, 5, 6] and then [1, 2, 3, 4, 5, 6]."
+    },
     id: "polyphase-merge-sort",
     name: "Polyphase Merge Sort",
     category: "sorting",

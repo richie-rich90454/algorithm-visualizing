@@ -116,6 +116,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "DFA minimization merges states that cannot be distinguished by any input string. Hopcroft's algorithm starts with the final and non-final blocks and repeatedly splits a block using a splitter symbol and a known distinguishing block, choosing the smaller side of each split to keep the worklist small.",
+        "invariants": [
+            "States in the same current block are equivalent with respect to all symbols processed so far.",
+            "Any two blocks in the partition are distinguishable by some string, so merging within a block never merges different behaviors."
+        ],
+        "correctness": "Splitting by which block a transition on symbol a lands in separates exactly the states that behave differently on a. Processing all splitters to a fixed point yields the coarsest stable partition, which by the Myhill-Nerode theorem is the state set of the minimal DFA.",
+        "complexityRationale": "Each state moves to a smaller block at most O(log n) times because the smaller half of a split becomes the new splitter, giving O(n log n) time for a constant alphabet. Space is O(n) for blocks and the worklist.",
+        "uses": [
+            "Minimizing lexer and parser automata",
+            "Optimizing regular-expression engines",
+            "Shrinking state machines in model checking"
+        ],
+        "references": [
+            "Hopcroft, An n log n Algorithm for Minimizing States in a Finite Automaton, 1971",
+            "Sipser, Introduction to the Theory of Computation, DFA chapter"
+        ],
+        "workedExample": "With states 0 through 3, final {3}, and transitions that make states 1 and 2 behave identically, the algorithm starts from {0,1,2} and {3}, finds no further split, merges 1 with 2, and leaves three minimal states."
+    },
     id: "hopcroft-dfa-minimization",
     name: "Hopcroft Minimization",
     category: "string",

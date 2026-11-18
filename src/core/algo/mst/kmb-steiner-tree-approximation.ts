@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Steiner tree problem connects a chosen set of terminals as cheaply as possible, possibly using other vertices. The Kou-Markowsky-Berman approximation builds the metric closure over terminals using shortest-path distances, takes its minimum spanning tree, expands each closure edge back into a path, and prunes leaves that are not terminals.",
+        "invariants": [
+            "The metric closure satisfies the triangle inequality on terminal distances.",
+            "Expanding closure edges yields a connected subgraph spanning all terminals.",
+            "Pruning non-terminal leaves never disconnects two terminals."
+        ],
+        "correctness": "The MST of the metric closure is at most twice the optimal Steiner tree because doubling an optimal tree gives a Eulerian walk that visits all terminals, which can be shortcut into a closure cycle. Expanding and pruning therefore yields a tree whose cost is within 2 minus 2/t of optimal for t terminals.",
+        "complexityRationale": "All-pairs shortest paths among terminals costs O(T V^2) with a dense method, and the MST and expansion add less, with O(V^2) space for the distance and next-hop tables.",
+        "uses": [
+            "Network design connecting a subset of sites",
+            "VLSI routing and multicast tree construction",
+            "A practical approximation with a guaranteed ratio"
+        ],
+        "references": [
+            "Kou, Markowsky, and Berman, A Fast Algorithm for Steiner Trees (1981)",
+            "Vazirani, Approximation Algorithms, Steiner tree chapter"
+        ],
+        "workedExample": "Terminals 0 and 3 are connected directly by an expensive edge of cost 10 but through a path 0-1-2-3 of cost 3. The metric closure uses the short distance, its MST selects that closure edge, and expansion restores the cheap path, giving a Steiner tree of cost 3."
+    },
     id: "kmb-steiner-tree-approximation",
     name: "KMB Steiner Tree Approximation",
     category: "mst",

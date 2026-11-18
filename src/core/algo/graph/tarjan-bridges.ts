@@ -174,6 +174,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tarjan Bridges module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A bridge is an edge whose removal disconnects the graph. Tarjan's DFS stamps discovery times and lowlinks; a tree edge from v to child w is a bridge exactly when w's subtree cannot reach v or any ancestor of v, expressed as low[w] greater than disc[v].",
+        "invariants": [
+            "low[w] is the smallest discovery time reachable from w's subtree by a back edge.",
+            "Parent edges are skipped so undirected back edges are handled once.",
+            "An edge is a bridge if and only if no back edge spans it."
+        ],
+        "correctness": "If low[w] exceeds disc[v], no path from w's subtree reaches v or above without the tree edge, so deleting it separates the subtree, making it a bridge. If low[w] is at most disc[v], a back edge provides an alternate route, so the edge is not a bridge. The condition is therefore exact.",
+        "complexityRationale": "A single DFS costs O(V + E) and the discovery, lowlink, and parent arrays use O(V) space.",
+        "uses": [
+            "Identifying vulnerable single points of failure in networks",
+            "Decomposing graphs into 2-edge-connected components",
+            "A standard exercise in DFS lowlink reasoning"
+        ],
+        "references": [
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search"
+        ],
+        "workedExample": "The graph has triangle A-B-C and a tail D-E attached at D through B. DFS gives low[E] equal to disc[E] with no back edge to D, so edge D-E satisfies low[E] greater than disc[D] and is a bridge. Edges inside the triangle have lowlinks reaching ancestors and are not bridges."
+    },
     id: "tarjan-bridges",
     name: "Tarjan Bridges",
     category: "graph",

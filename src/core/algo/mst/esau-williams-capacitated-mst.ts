@@ -209,6 +209,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The capacitated MST connects terminals to a root while keeping each subtree's demand within a capacity. Esau-Williams starts with every terminal wired directly to the root and repeatedly merges the pair of subtrees with the largest positive saving, provided the combined demand fits.",
+        "invariants": [
+            "Every terminal is connected to the root through some path.",
+            "No subtree exceeds the capacity limit after a merge.",
+            "The total tree cost decreases by the saving of each accepted merge."
+        ],
+        "correctness": "Starting from a feasible star, each merge preserves connectivity and feasibility because it is accepted only when the capacity constraint holds, and it lowers cost by the computed saving. The result is a feasible capacitated spanning tree; like most capacitated MST methods it is a heuristic rather than an exact algorithm, which the visualization states.",
+        "complexityRationale": "Sorting or scanning all pairwise savings costs O(V^2 log V) time, with O(V + E) space for the tree and demand bookkeeping.",
+        "uses": [
+            "Designing distribution networks with capacity limits",
+            "Telecommunications concentrator placement",
+            "Vehicle and depot routing with load constraints"
+        ],
+        "references": [
+            "Esau and Williams, On Teleprocessing System Design (1966)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, capacitated network design"
+        ],
+        "workedExample": "With capacity 2 and three unit-demand terminals, the star uses three root links. Merging the pair with the largest saving, say terminals 1 and 2, replaces two root links by one root link plus a short connecting edge, as long as their combined demand of 2 fits the capacity."
+    },
     id: "esau-williams-capacitated-mst",
     name: "Esau-Williams Capacitated MST",
     category: "mst",

@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Domineering is a partisan game on a checkerboard. Left may place only vertical dominoes and Right only horizontal ones, and the player who cannot place loses. Each placement blocks cells for the opponent and splits the board into independent regions evaluated as a sum of combinatorial games.",
+        "invariants": [
+            "Left places only vertical dominoes and Right only horizontal dominoes.",
+            "A placed domino occupies two adjacent empty cells and blocks further overlap.",
+            "The game ends when the player to move has no legal placement of their orientation."
+        ],
+        "correctness": "Every move is a legal placement of the player's orientation, and the game is finite because each domino consumes two cells. Regions cut off by placements are independent, so their game values add; the illustrated line strands the player whose needed orientation no longer fits, which determines the winner.",
+        "complexityRationale": "The demo walks one placement line on a size by size board in O(n^2) time and O(n^2) space. Full Domineering solving is exponential in the board area.",
+        "uses": [
+            "A canonical example of a hot partisan game",
+            "Studying temperature and mean in combinatorial game theory",
+            "Visualizing how orientation constraints create advantages"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Conway, On Numbers and Games"
+        ],
+        "workedExample": "On a 4x4 board Left places vertical dominoes and Right places horizontal ones along the illustrated line. After the sequence, every remaining free cell has its horizontal neighbor taken, so Right has no legal horizontal placement and loses while Left made the last move."
+    },
     id: "domineering",
     name: "Domineering",
     category: "game",

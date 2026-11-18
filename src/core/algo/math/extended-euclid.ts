@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Extended Euclid module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The extended Euclidean algorithm finds not only gcd(a, b) but also coefficients x and y with a*x + b*y = gcd(a, b). It runs the ordinary Euclidean algorithm while carrying two coefficient rows that are updated by the same quotients. Those Bezout coefficients are exactly what modular inverses need.",
+        "invariants": [
+            "At every step oldR = a*oldX + b*oldY and r = a*x + b*y.",
+            "The remainder sequence strictly decreases until it reaches zero.",
+            "The last nonzero remainder is gcd(a, b)."
+        ],
+        "correctness": "Each new remainder is oldR minus quotient times r, and updating the coefficients by the same combination preserves the Bezout identity by induction. When the remainder reaches zero the previous remainder is the gcd by Euclid's theorem, and its coefficients satisfy a*x + b*y = gcd. Hence the returned triple is correct.",
+        "complexityRationale": "The number of divisions is O(log min(a, b)) by Lame's theorem, and each updates a constant number of values. Only a few integer variables are stored, so space is O(1).",
+        "uses": [
+            "Computing modular inverses for RSA key setup",
+            "Solving linear Diophantine equations",
+            "Rational reconstruction and fraction cancellation"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.2",
+            "Cormen et al., Introduction to Algorithms, Section 31.2"
+        ],
+        "workedExample": "For a = 48 and b = 36 Euclid gives quotients 1 and 3. Back-substitution yields 12 = 48*1 + 36*(-1), so gcd is 12 with coefficients x = 1 and y = -1."
+    },
     id: "extended-euclid",
     name: "Extended Euclid",
     category: "math",

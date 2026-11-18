@@ -209,6 +209,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Heap Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Build a max-heap from the array, then repeatedly remove the root, which is the largest remaining value, and place it at the end of the array. Restore the heap property by sifting the displaced root down.",
+        "invariants": [
+            "The heap region satisfies the max-heap property at every node.",
+            "The sorted suffix holds the largest values in final order."
+        ],
+        "correctness": "The root of a max-heap is the maximum of the heap region, so swapping it to the end places the correct next value. Sift-down restores the heap property on the smaller region; induction over the shrinking heap completes the sort.",
+        "complexityRationale": "Heap construction is O(n), and each of n removals costs O(log n), giving O(n log n) on every input. Sorting is in place with O(1) extra space, though the recursion-free sift-down is easier to keep constant space.",
+        "uses": [
+            "Sorting with a guaranteed O(n log n) worst case",
+            "Priority queue selection",
+            "The fallback branch of introsort"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 6",
+            "Sedgewick and Wayne, Algorithms, Section 2.4"
+        ],
+        "workedExample": "Start [3, 1, 6, 2]. Build max-heap -> [6, 3, 1, 2] conceptually. Remove 6 to the end, restore heap -> [3, 2, 1 | 6]. Remove 3, restore -> [2, 1 | 3, 6]. Remove 2 -> [1 | 2, 3, 6]. Result [1, 2, 3, 6]."
+    },
     id: "heap-sort",
     name: "Heap Sort",
     category: "sorting",

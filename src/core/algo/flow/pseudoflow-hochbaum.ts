@@ -180,6 +180,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hochbaum's pseudoflow algorithm maintains a preflow, meaning vertices may temporarily hold excess beyond conservation, and organizes them into a forest. It pushes excess toward the sink along forest arcs and merges components when needed, gradually collapsing the forest until the excess is drained and a minimum cut is revealed.",
+        "invariants": [
+            "Arcs are either saturated, unsaturated, or frozen, and the classification only becomes more final.",
+            "Excess is conserved globally, moving between components rather than vanishing.",
+            "Components of the forest merge or become valid cut sides as the search proceeds."
+        ],
+        "correctness": "Pushing excess only along admissible arcs preserves feasibility of the preflow while driving excess toward the sink. When no admissible push remains, relabeling or merging restores progress without discarding saturated arcs, and the algorithm terminates with flow equal to the capacity of the cut formed by the remaining components, which is maximum by max-flow min-cut.",
+        "complexityRationale": "The push and merge operations can be bounded by a cubic number of vertex operations, O(V^3), with careful component management. The forest, arc states, and excess values use O(V + E) space.",
+        "uses": [
+            "Maximum flow with a push-based alternative to augmenting paths",
+            "Minimum cut computation in dense graphs",
+            "A framework unifying several preflow push algorithms"
+        ],
+        "references": [
+            "Hochbaum, The Pseudoflow Algorithm: A New Algorithm for the Maximum-Flow Problem (2008)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, preflow-push chapter"
+        ],
+        "workedExample": "For vertices 0-3 with capacities 0-1=5, 0-2=4, 1-2=2, 1-3=3, 2-3=6 and source 0, sink 3, saturate 0-1 and 0-2 to create excess at 1 and 2. Push through 1-3 and 2-3 until the sink holds all 9 units; the residual components give a cut of capacity 9, so max flow is 9."
+    },
     id: "pseudoflow-hochbaum",
     name: "Pseudoflow (Hochbaum)",
     category: "flow",

@@ -89,6 +89,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A bitset stores membership of values as individual bits in an array of machine words. Testing a value is a single bit read, and bulk operations such as union and intersection run a whole word at a time using bitwise AND and OR. It is the densest possible representation when the universe of values is small.",
+        "invariants": [
+            "Bit i is 1 exactly when value i is in the set.",
+            "All bits beyond the universe size remain 0.",
+            "Cardinality equals the number of set bits."
+        ],
+        "correctness": "Setting a bit records membership and clearing it removes membership, so a membership test reads exactly the right bit. Bitwise OR computes union because a bit is set in either operand, and AND computes intersection because a bit is set in both. Counting set bits therefore yields the set size.",
+        "complexityRationale": "Membership, insertion, and deletion are O(1) word operations. A universe of u values uses u/w machine words, so space is O(u/w), and bulk Boolean operations run in O(u/w).",
+        "uses": [
+            "Fast membership tests and deduplication",
+            "Database bitmap indexes",
+            "Representing flags and graph adjacency in solvers"
+        ],
+        "references": [
+            "Donald Knuth, The Art of Computer Programming, Vol. 4A, Section 7.1.3",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.1 bitset exercises"
+        ],
+        "workedExample": "With values 3, 1, 4, 6 added to an 8-bit set, the pattern for values 0 through 7 is 0 1 0 1 1 0 1 0. Query 4 reads bit 4 and finds 1, so 4 is present; query 5 reads bit 5 and finds 0, so 5 is absent. The cardinality is four set bits."
+    },
     id: "bitset",
     name: "Bitset",
     category: "data-structures",

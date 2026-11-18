@@ -304,6 +304,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Second Best MST module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The second-best spanning tree is the cheapest tree that is not the MST. A classic construction starts from the MST, then tries adding each non-tree edge, which creates a cycle, and removes the heaviest edge on that cycle. The swap producing the smallest increase gives the second-best tree.",
+        "invariants": [
+            "Adding a non-tree edge to the MST creates exactly one cycle.",
+            "Removing the heaviest edge on that cycle yields a valid spanning tree.",
+            "Only one swap is needed to reach the second-best tree."
+        ],
+        "correctness": "Any spanning tree differs from the MST by at least one swap of a non-tree edge for a tree edge on its cycle. The cheapest possible such single swap therefore gives the smallest weight above the MST, and considering all non-tree edges and their cycle maxima finds it.",
+        "complexityRationale": "For each non-tree edge a path walk of up to O(V) steps finds the heaviest edge, giving O(E V) time with O(V + E) space for the MST adjacency and union-find.",
+        "uses": [
+            "Finding a backup spanning tree with near-minimal cost",
+            "Sensitivity and what-if analysis of MST weight",
+            "A subroutine in some k-best tree algorithms"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees",
+            "Eppstein, Finding the k Shortest Spanning Trees (1992)"
+        ],
+        "workedExample": "After Kruskal builds the MST on the sample graph, consider non-tree edge C-E of weight 10. It forms a cycle whose heaviest tree edge is removed; the resulting tree is a candidate. Repeating for every non-tree edge and choosing the smallest increase yields the second-best MST."
+    },
     id: "second-best-mst",
     name: "Second Best MST",
     category: "mst",

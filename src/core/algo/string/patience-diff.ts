@@ -97,6 +97,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Patience diff compares two sequences by focusing on lines that are unique in both, using their matched positions as anchors. It finds the longest increasing subsequence of those anchors to identify a stable matching, then recursively diffs the regions between anchors.",
+        "invariants": [
+            "An anchor is a line appearing exactly once in each input, so its match is unambiguous.",
+            "The increasing subsequence of anchor positions respects the order in both sequences."
+        ],
+        "correctness": "Because unique lines can only match one another, any chosen anchor must pair with its unique counterpart; the LIS selects the largest set of anchors whose order agrees in both files. Recursing between anchors yields a readable diff consistent with those anchors.",
+        "complexityRationale": "Finding unique lines and positions costs O(n) per file with hashing and the LIS of k anchors costs O(k log k), giving O(n log n) average time and O(n) space.",
+        "uses": [
+            "The diff option used in version control such as Git's patience diff",
+            "Producing human-readable patches",
+            "Comparing source files with repeated boilerplate"
+        ],
+        "references": [
+            "Cohen, Patience Diff, bramcohen.com",
+            "Hunt and Szymanski, A Fast Algorithm for Computing Longest Common Subsequences, 1977"
+        ],
+        "workedExample": "For a=[\"a\",\"b\",\"c\"] and b=[\"a\",\"c\",\"b\"] all lines are unique with positions in b [0,2,1]; the longest increasing subsequence is [0,2] (lines a and c), anchoring the diff and leaving b as a move between them."
+    },
     id: "patience-diff",
     name: "Patience Diff",
     category: "string",

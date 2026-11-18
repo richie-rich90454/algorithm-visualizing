@@ -111,6 +111,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Two-Way is the first linear-time, constant-space string matching algorithm. It splits the pattern at a critical factorization into left and right halves, then at each alignment compares the right half first, using its periodicity to shift safely, and checks the left half only when the right matches.",
+        "invariants": [
+            "The critical factorization guarantees the halves have different periods, so the left half's position is determined once the right matches.",
+            "Shifts based on the right half's period never skip a valid occurrence."
+        ],
+        "correctness": "The periodicity lemma bounds how far a pattern can repeat, so a mismatch after matching a periodic right half permits a shift by its period without missing an occurrence. Verifying the left half only on right-half matches is safe because any true occurrence must have matched the right half first.",
+        "complexityRationale": "Each alignment does O(1) amortized comparisons and shifts forward, giving O(n+m) time overall; only a constant number of indices and periods are stored, so space is O(1).",
+        "uses": [
+            "Constant-memory substring search in embedded systems",
+            "The search routine in standard libraries such as strstr",
+            "Large-text searching where memory is tight"
+        ],
+        "references": [
+            "Crochemore and Perrin, Two-Way String-Matching, 1991",
+            "Crochemore et al., Algorithms on Strings"
+        ],
+        "workedExample": "For pattern \"abc\" split at \"a\" | \"bc\", each alignment compares \"bc\" first; when it matches at index 0 the left half \"a\" is verified and \"abc\" is reported at 0, while mismatches shift by the computed period."
+    },
     id: "two-way-string-matching",
     name: "Two-Way Matching",
     category: "string",

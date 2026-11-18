@@ -207,6 +207,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The LCA (Binary Lifting) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Precompute for every node its 2^k-th ancestor. To find the lowest common ancestor of two nodes, first lift the deeper node to the same depth, then lift both upward in powers of two until their parents match.",
+        "invariants": [
+            "up[v][k] is the 2^k-th ancestor of v, or a root sentinel if none exists.",
+            "After the depth-alignment step both nodes are at the same depth."
+        ],
+        "correctness": "Binary decomposition can represent any depth difference, so alignment is exact. Then for the largest k where the ancestors differ, neither ancestor can be the LCA; skipping them preserves the LCA. When the parents coincide, that parent is the deepest common ancestor.",
+        "complexityRationale": "Preprocessing is O(n log n) time and space; each query is O(log n). It is a good fit for static trees with many queries.",
+        "uses": [
+            "Path queries on static trees",
+            "Distance queries with depth arrays",
+            "Tree algorithms such as virtual trees and HLD helpers"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 exercise",
+            "Halperin and others, Efficient LCA queries, 2004"
+        ],
+        "workedExample": "In a chain Root-A-B-C, the LCA of B and C is B. Align depths by lifting C one step to B; the nodes now match, so B is returned."
+    },
     id: "lca-binary-lifting",
     name: "LCA (Binary Lifting)",
     category: "tree",

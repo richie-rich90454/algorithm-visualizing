@@ -198,6 +198,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A circulation with demands asks for flows on edges that respect lower and upper bounds while balancing inflow and outflow at every vertex. The trick is to send the lower bound first, compute each vertex's resulting imbalance, then add a super source and super sink and run max flow to see whether those imbalances can be corrected.",
+        "invariants": [
+            "After subtracting lower bounds, each residual arc has capacity equal to its original slack.",
+            "A vertex with excess demand must receive flow from the super source, or send flow to the super sink.",
+            "A feasible circulation exists exactly when all super-source arcs are saturated."
+        ],
+        "correctness": "Subtracting lower bounds converts every edge constraint into a residual capacity plus a per-vertex imbalance. Any flow that balances these imbalances, when added back to the lower bounds, gives a feasible circulation. The super-source construction makes finding such a balancing flow a standard max-flow problem, so saturating all demand arcs is equivalent to feasibility.",
+        "complexityRationale": "The constructed network has O(V + E) arcs, and one max-flow computation costs about O(V E^2) with a basic augmenting method. Storing bounds, imbalances, and residual arcs uses O(V + E) space.",
+        "uses": [
+            "Checking feasibility of scheduled flows with minimum requirements",
+            "Lower-bounded circulation in supply networks",
+            "Modeling metabolic and traffic flow with mandatory minimums"
+        ],
+        "references": [
+            "Ahuja, Magnanti, and Orlin, Network Flows, lower-bounded flows chapter",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, flow with lower bounds"
+        ],
+        "workedExample": "Vertices 0 and 1 have arcs 0 to 1 with lower bound 1 upper 2, and 1 to 0 with lower bound 0 upper 2, with zero net demand. Sending the lower bounds leaves vertex 0 needing 1 more out and vertex 1 needing 1 more in; the residual arc 1 to 0 cannot help, but increasing 0 to 1 to 2 and 1 to 0 to 2 balances both. A circulation of 2 on each arc is feasible."
+    },
     id: "feasible-circulation-demands",
     name: "Feasible Circulation with Demands",
     category: "flow",

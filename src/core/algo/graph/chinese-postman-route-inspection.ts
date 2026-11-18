@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Chinese Postman Problem asks for the cheapest closed walk that traverses every edge at least once. When every vertex has even degree an Euler circuit already covers each edge exactly once, so Hierholzer's walk gives an optimal tour. With odd-degree vertices the general fix is to pair them along shortest paths and duplicate those edges.",
+        "invariants": [
+            "An Euler circuit exists exactly when all vertices have even degree and the graph is connected.",
+            "Hierholzer's splicing uses each edge exactly once.",
+            "The tour cost is the sum of traversed edge weights, with no repeats in the even case."
+        ],
+        "correctness": "A closed walk using every edge exactly once must be an Euler circuit, which exists precisely under the even-degree condition. Hierholzer's algorithm builds one by splicing subtours at vertices with unused edges, consuming every edge once. For the even-degree input shown, the resulting tour is therefore optimal because nothing needs repeating.",
+        "complexityRationale": "The even-degree case is one Hierholzer walk over V and E, giving O(V + E) time and O(V + E) space for the walk stack and edge bookkeeping.",
+        "uses": [
+            "Mail delivery and street-sweeping route planning",
+            "Inspection and maintenance route optimization",
+            "A classic Eulerian graph application"
+        ],
+        "references": [
+            "Edmonds and Johnson, Chinese Postman Problem (1973)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, Eulerian circuits"
+        ],
+        "workedExample": "The even square A-B-C-D-A with unit edges has all degrees equal to two. Hierholzer walks A-B-C-D-A and consumes each of the four edges exactly once, giving a postman tour of cost 4 with no repeats, which is optimal."
+    },
     id: "chinese-postman-route-inspection",
     name: "Chinese Postman (Route Inspection)",
     category: "graph",

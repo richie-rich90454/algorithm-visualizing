@@ -200,6 +200,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The diameter of a tree is its longest shortest-path distance between any two vertices. Finding a spanning tree with the smallest diameter is hard in general, so this demo brute-forces every subset of V-1 edges on a tiny graph, skips disconnected or cyclic subsets, and keeps the connected tree with the smallest longest path.",
+        "invariants": [
+            "Every candidate subset has exactly V-1 edges.",
+            "Only connected, acyclic subsets are valid spanning trees.",
+            "The best tree has the smallest diameter, with weight as a tie-breaker."
+        ],
+        "correctness": "Every spanning tree has V-1 edges, so enumerating all such subsets covers the entire search space. Filtering to connected acyclic subsets leaves exactly the spanning trees, and computing each tree's diameter and keeping the minimum finds the optimal diameter tree by exhaustive search.",
+        "complexityRationale": "Testing all subsets of E edges costs O(2^E V) time on tiny inputs, with O(V + E) space for the candidate tree and distance computations.",
+        "uses": [
+            "Designing trees that minimize worst-case latency",
+            "A brute-force reference for checking heuristic diameter trees",
+            "Teaching exhaustive search on small graph instances"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, tree diameter",
+            "Garey and Johnson, Computers and Intractability, minimum diameter spanning tree"
+        ],
+        "workedExample": "With four vertices and five edges, the demo enumerates all four-edge subsets. Subsets that disconnect a vertex are skipped; among the remaining trees the one whose farthest pair is closest wins, and its total weight is reported as a tie-breaker."
+    },
     id: "minimum-diameter-spanning-tree",
     name: "Minimum Diameter Spanning Tree",
     category: "mst",

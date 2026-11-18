@@ -108,6 +108,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The shunting-yard algorithm converts an infix expression to reverse Polish notation using an output queue and an operator stack. Numbers go straight to output; operators are pushed after popping operators of higher or equal precedence, and parentheses control grouping.",
+        "invariants": [
+            "The output queue holds a valid postfix prefix.",
+            "The operator stack holds operators awaiting their right operands in order of increasing precedence from bottom to top."
+        ],
+        "correctness": "An operator is popped before a lower or equal precedence operator is pushed, which preserves evaluation order and associativity, and parentheses force a scope. Draining the stack at the end appends operators in correct postfix order, so the result evaluates identically to the infix expression.",
+        "complexityRationale": "Each token is processed once and pushed or popped at most once, giving O(n) time and O(n) space for the stack and output.",
+        "uses": [
+            "Expression parsers in calculators and interpreters",
+            "Compiler front-end expression handling",
+            "Converting formulas for stack-based evaluation"
+        ],
+        "references": [
+            "Dijkstra, Shunting-yard algorithm, 1961",
+            "Aho et al., Compilers: Principles, Techniques, and Tools, Chapter 4"
+        ],
+        "workedExample": "For \"3+4*2\": output 3, push +; output 4, push * because it has higher precedence; output 2; drain the stack popping * then +, giving postfix \"3 4 2 * +\" which evaluates to 11."
+    },
     id: "shunting-yard-parse",
     name: "Shunting-Yard",
     category: "string",

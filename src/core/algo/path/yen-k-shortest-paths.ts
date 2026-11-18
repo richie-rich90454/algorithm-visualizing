@@ -208,6 +208,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Yen's algorithm lists the K best loopless paths in increasing cost order. Starting from the shortest path, it treats each vertex on the previous path as a spur node, forbids the edge used to reach it and any root vertices that would create a loop, and runs Dijkstra for the spur. The cheapest new candidate becomes the next path.",
+        "invariants": [
+            "Accepted paths are loopless and in nondecreasing cost order.",
+            "Each spur search finds the best path deviating at that node.",
+            "Candidates that duplicate an accepted path are discarded."
+        ],
+        "correctness": "The k-shortest path lemma says the next best path after an accepted path differs at exactly one spur, so enumerating spurs and forbidding earlier root vertices covers all candidates. Taking the cheapest valid new one each round therefore produces the correct ordered list of K shortest loopless paths.",
+        "complexityRationale": "K rounds with up to V spur Dijkstra runs cost O(K V (E log V)), with O(K V + E) space for stored paths and candidates.",
+        "uses": [
+            "Offering alternative routes in navigation services",
+            "K shortest path routing with diversity",
+            "A building block for constrained path optimization"
+        ],
+        "references": [
+            "Yen, Finding the K Shortest Loopless Paths in a Network (1971)",
+            "Eppstein, Finding the k Shortest Paths (1998)"
+        ],
+        "workedExample": "With k=3 the algorithm first finds the shortest path of cost 4. Spur searches then produce candidates, and after discarding duplicates the next two accepted paths both cost 6, giving the ordered list 4, 6, 6."
+    },
     id: "yen-k-shortest-paths",
     name: "Yen's K Shortest Paths",
     category: "shortest-path",

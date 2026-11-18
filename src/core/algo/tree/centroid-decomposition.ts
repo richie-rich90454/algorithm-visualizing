@@ -189,6 +189,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Centroid Decomposition module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A centroid is a node whose removal splits the tree into pieces each holding at most half the vertices. Centroid decomposition repeatedly removes centroids, building a secondary tree whose depth is logarithmic because each removal at least halves the remaining component size.",
+        "invariants": [
+            "The chosen centroid leaves no component larger than half the current tree.",
+            "Every original vertex is assigned to exactly one centroid level.",
+            "Following parent links in the decomposition tree reaches smaller and smaller components."
+        ],
+        "correctness": "A centroid always exists in a tree, and removing it strictly shrinks every resulting component to at most half the previous size. Recursing on those components therefore terminates and assigns each vertex once. Because sizes halve at every level, the recursion depth is O(log n), and the parent links form a tree over the centroids; many global path queries can then be answered by combining contributions along these O(log n) levels.",
+        "complexityRationale": "Computing a centroid scans its current component, and each vertex is scanned once per level over O(log n) levels, giving O(n log n) build time. The decomposition tree and size arrays use O(n) space.",
+        "uses": [
+            "Counting paths with a given property in trees",
+            "Finding nearest marked or red nodes",
+            "Competitive programming queries on static trees"
+        ],
+        "references": [
+            "Competitive Programming 3, Hall and Li, advanced tree chapter",
+            "Cormen et al., Introduction to Algorithms, Chapter 22"
+        ],
+        "workedExample": "For the path 1-2-3-4-5-6, node 3 is a centroid because removing it leaves components of sizes 2 and 3. Removing it leaves {1,2} and {4,5,6}, whose centroids are 2 and 5. The decomposition tree has depth 2."
+    },
+
     id: "centroid-decomposition",
     name: "Centroid Decomposition",
     category: "tree",

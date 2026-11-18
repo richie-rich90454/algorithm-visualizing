@@ -95,6 +95,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield bars(nums, -1, `Cap reached – stopping honestly (path ${path}).`, 3, { found: false });
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Stern-Brocot tree enumerates every positive reduced fraction exactly once. Starting from the bounds 0/1 and 1/0, it inserts mediants and recurses. To locate a target fraction, compare it with the current mediant and step left or right, narrowing the bracket until the mediant equals the target.",
+        "invariants": [
+            "The target always stays strictly between the current lower and upper bounds.",
+            "Each bound pair satisfies the determinant condition bc - ad = 1.",
+            "Every left or right step halves the denominator interval in the search sense."
+        ],
+        "correctness": "The mediant of two Farey neighbors is the unique fraction with smallest denominator between them, so repeatedly bracketing the target follows the unique path in the Stern-Brocot tree to that fraction. When the mediant equals the target, the path is exactly the sequence of left and right turns. Because the tree contains every reduced fraction once, the search terminates correctly.",
+        "complexityRationale": "The depth of a fraction a/b in the tree is O(a + b), so locating it takes that many mediant comparisons with constant work each. Only the current bounds are stored, giving O(1) space.",
+        "uses": [
+            "Finding best rational approximations with bounded numerator",
+            "Enumerating reduced fractions in order",
+            "Ratio approximation in mechanical and musical tuning"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.2.6",
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 4"
+        ],
+        "workedExample": "To locate 3/5 start between 0/1 and 1/0 with mediant 1/1. Since 3/5 < 1, go left to mediant 1/2; 3/5 > 1/2 so go right to 2/3; continue until the mediant is 3/5, giving the path of turns."
+    },
     id: "stern-brocot-tree",
     name: "Stern-Brocot Tree Search",
     category: "math",

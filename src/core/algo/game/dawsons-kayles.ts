@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dawson's Kayles is played on a row of pins. A move fells two adjacent pins and also removes their immediate neighbors, splitting the row into two smaller independent rows. Like Kayles, it is solved by Grundy numbers, but the wider removal makes many positions cold.",
+        "invariants": [
+            "A felling at position i leaves rows of length max(0, i-1) and max(0, n-i-3).",
+            "G(n) is the mex of the xor of Grundy values of the two resulting rows.",
+            "G(n) equal to zero means the row is a losing P-position."
+        ],
+        "correctness": "The two leftover rows are independent, so the value of a move is the xor of their Grundy numbers. Taking the minimum excluded value over all felling positions implements the Sprague-Grundy definition, so the computed G values classify every row correctly. A winning felling is one whose leftover xor is zero.",
+        "complexityRationale": "Computing G up to n tries O(n) felling positions per value, each an O(1) xor lookup, for O(n^2) time; the memo table uses O(n).",
+        "uses": [
+            "Studying octal games and their periodic Grundy sequences",
+            "A richer variant of Kayles for teaching mex computations",
+            "Testing impartial game solvers on known cold positions"
+        ],
+        "references": [
+            "Guy and Smith, The G-values of various games (1956)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "For a row of 7 pins the computed G(7) is 0, so the player to move loses with perfect play. Every possible felling leaves two rows whose Grundy xor is nonzero, handing the opponent a winning reply; there is no move to a zero-xor position."
+    },
     id: "dawsons-kayles",
     name: "Dawson's Kayles",
     category: "game",

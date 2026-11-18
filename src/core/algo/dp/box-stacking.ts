@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Box stacking finds the tallest tower from a set of boxes, where a box may be rotated and a wider base must support a narrower one. It first generates every rotation, then sorts by base area, and finally runs a longest-increasing-substyle DP. The recurrence extends the best tower that can sit below each rotation.",
+        "invariants": [
+            "best[i] is the tallest stack ending with rotation i on top.",
+            "A valid base j has strictly larger width and depth than rotation i and appears earlier in the order.",
+            "Sorting by decreasing base area guarantees all valid supports come before their dependents."
+        ],
+        "correctness": "Any stack ending at rotation i has a box directly beneath it satisfying the strict dimension rule and smaller base area, so that predecessor was processed earlier. The recurrence considers all such predecessors and takes the tallest, capturing the optimal substructure. Induction over the sorted order therefore gives the maximum stack height.",
+        "complexityRationale": "Generating rotations yields O(n) items and the sort costs O(n log n); the DP scans all pairs, O(n^2), which dominates. Storing rotations and best values uses O(n) space.",
+        "uses": [
+            "Warehouse loading and nesting problems",
+            "A variant of the longest increasing subsequence in two dimensions",
+            "Packing and layout optimization with ordering constraints"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Bengtsson and Chen, Rotating box stacking problem (2006)"
+        ],
+        "workedExample": "With boxes [4,6,7] and [1,2,3], rotations of the larger box can support the smaller one because both base dimensions exceed it. The DP stacks the 1x2 base box on a 4x6 base rotation, giving a taller tower than either alone."
+    },
     id: "box-stacking",
     name: "Box Stacking",
     category: "dynamic-programming",

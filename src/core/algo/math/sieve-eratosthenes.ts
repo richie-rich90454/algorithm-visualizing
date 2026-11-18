@@ -164,6 +164,15 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Sieve of Eratosthenes module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        intuition: "Write down all integers up to n, then repeatedly cross out multiples of each prime starting from 2. Whatever survives is prime, because a composite number must have a factor at most its square root.",
+        invariants: ["After processing prime p, every composite with a prime factor at most p is crossed out.", "Uncrossed numbers have no prime factor up to the current bound."],
+        correctness: "Every composite n has a prime factor at most sqrt(n), so it is crossed out when that factor is processed. Every prime has no smaller factor and therefore survives. Starting crossings at p squared avoids redundant work on already crossed multiples.",
+        complexityRationale: "The standard array version runs in O(n log log n) time and O(n) space. A segmented variant reduces working space to O(sqrt(n)) plus the segment size.",
+        uses: ["Generating primes for cryptography experiments", "Precomputing smallest-prime-factor tables", "Competitive programming and number theory tools"],
+        references: ["Crandall and Pomerance, Prime Numbers: A Computational Perspective", "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5"],
+        workedExample: "For n=20, cross out multiples of 2 from 4, of 3 from 9, and of 5 from 25 (beyond the limit). Survivors are 2, 3, 5, 7, 11, 13, 17, 19.",
+    },
     id: "sieve-eratosthenes",
     name: "Sieve of Eratosthenes",
     category: "math",

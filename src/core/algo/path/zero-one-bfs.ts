@@ -157,6 +157,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "When every edge weight is 0 or 1, a priority queue is unnecessary. A deque works because relaxing a 0-weight edge can push the vertex to the front while a 1-weight edge pushes it to the back, keeping the deque ordered by distance. This yields shortest paths in linear time.",
+        "invariants": [
+            "The deque is sorted by tentative distance.",
+            "A vertex pushed to the front has the same distance as the current one.",
+            "A vertex pushed to the back has distance one greater."
+        ],
+        "correctness": "Because edge weights are only 0 or 1, relaxing an edge changes distance by at most one, so front and back insertion preserve sorted order. Popping from the front therefore always selects a minimum-distance vertex, making the relaxations equivalent to Dijkstra's and the distances correct.",
+        "complexityRationale": "Each vertex and edge is handled once with O(1) deque operations, giving O(V + E) time and O(V) space for distances and the deque.",
+        "uses": [
+            "Shortest paths on graphs with binary weights",
+            "0-1 cost problems such as minimum flips",
+            "A linear-time alternative to Dijkstra for special weights"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, single-source shortest paths, exercises",
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)"
+        ],
+        "workedExample": "Starting from A with edge A-B of weight 0 and A-C of weight 1, B goes to the front and C to the back. Both candidate routes from A to D end up with cost 1, and the deque ordering ensures that result is found without a heap."
+    },
     id: "zero-one-bfs",
     name: "0-1 BFS",
     category: "shortest-path",

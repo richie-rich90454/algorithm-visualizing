@@ -193,6 +193,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Eertree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An eertree stores every distinct palindromic substring of a string as a node. Two artificial roots handle odd and even lengths; when a character is appended, the tree walks the suffix-link chain to find the longest palindromic suffix that can be extended, creating at most one new node.",
+        "invariants": [
+            "Each non-root node represents a distinct palindrome labeled by its length.",
+            "A node's suffix link points to its longest proper palindromic suffix.",
+            "The \"last\" node is always the longest palindromic suffix of the current prefix."
+        ],
+        "correctness": "A new palindrome created by appending a character is that character wrapped around the longest extendable suffix; following suffix links finds it because every shorter palindromic suffix lies on the chain. Since at most one new palindrome is added per character, the tree holds exactly the distinct palindromes.",
+        "complexityRationale": "Each append walks suffix links, and amortized over the string the total link traversals are O(n), giving linear build time. The tree stores O(n) nodes with a transition per character, so space is O(n·sigma).",
+        "uses": [
+            "Counting and enumerating distinct palindromes in linear time",
+            "Palindrome-related string queries",
+            "A compact index of palindromic structure"
+        ],
+        "references": [
+            "Rubinchik and Shur, EERTREE: An Efficient Data Structure for Processing Palindromes in Strings, 2016",
+            "Crochemore et al., Algorithms on Strings"
+        ],
+        "workedExample": "Building over \"ababa\" starts with roots of length -1 and 0, then appends characters to create nodes for \"a\", \"b\", \"aba\", \"bab\", and \"ababa\": five distinct palindromes."
+    },
     id: "eertree",
     name: "Eertree (Palindromic Tree)",
     category: "string",

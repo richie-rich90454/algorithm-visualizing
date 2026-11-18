@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The transitive closure adds an edge from i to j whenever any path exists from i to j, making reachability explicit. Warshall's rule fixes each intermediate vertex k in turn and links i to j whenever i reaches k and k reaches j.",
+        "invariants": [
+            "After processing intermediate vertices up to k, the matrix records reachability using only those intermediates.",
+            "Adding k as an intermediate only adds edges, never removes them.",
+            "At the end the matrix is the full reachability relation."
+        ],
+        "correctness": "Any path using intermediates among the first k vertices either avoids k, already recorded, or passes through k and splits into an i-to-k path and a k-to-j path using smaller intermediates. The update rule adds exactly those split paths, so induction on k shows the matrix is correct at the end.",
+        "complexityRationale": "Three nested loops over vertices give O(V^3) time, and the reachability matrix uses O(V^2) space.",
+        "uses": [
+            "Answering reachability queries quickly after preprocessing",
+            "Computing precedence and dependency relations",
+            "A building block for transitive reduction and closure queries"
+        ],
+        "references": [
+            "Warshall, A Theorem on Boolean Matrices (1962)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, all-pairs shortest paths"
+        ],
+        "workedExample": "For the chain A to B to C, the initial matrix has A-B and B-C. When B is used as the intermediate, A reaches B and B reaches C, so A-C is added. The final matrix records A-B, B-C, and A-C."
+    },
     id: "transitive-closure",
     name: "Transitive Closure (Warshall)",
     category: "graph",

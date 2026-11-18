@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Betweenness centrality scores a vertex by how often it lies on a shortest path between other pairs. A bridge that every route must cross scores high while a leaf scores zero. Brandes' algorithm computes all scores with one breadth-first search per source, building a shortest-path DAG and then pushing dependency contributions back toward the source.",
+        "invariants": [
+            "After a BFS from source s, predecessor lists and path counts describe every shortest path from s.",
+            "A vertex's dependency is the fraction of source-to-other shortest paths that pass through it.",
+            "Accumulating dependencies over all sources gives each vertex's betweenness score."
+        ],
+        "correctness": "The BFS layers form a DAG of shortest paths, so a dependency can be computed in reverse layer order by splitting each successor's dependency among its predecessors in proportion to path counts. Summing these per-source dependencies over all sources counts, for each pair, every vertex on a shortest path exactly once, which is the definition of betweenness.",
+        "complexityRationale": "One BFS plus one dependency pass costs O(V + E) on an unweighted graph, and there are V sources, giving O(V E). Distances, predecessors, path counts, and scores use O(V + E) space.",
+        "uses": [
+            "Identifying bottlenecks and important connectors in social and transport networks",
+            "Girvan-Newman community detection edge scoring",
+            "Routing and infrastructure criticality analysis"
+        ],
+        "references": [
+            "Brandes, A Faster Algorithm for Betweenness Centrality (2001)",
+            "Freeman, A Set of Measures of Centrality Based on Betweenness (1977)"
+        ],
+        "workedExample": "On the path A-B-C-D, BFS from A finds paths to C and D through B, so B collects dependency from both; BFS from D similarly credits B and C. After halving scores for the undirected graph, B and C each sit on two shortest paths and outscore the endpoints A and D."
+    },
     id: "betweenness-centrality-brandes",
     name: "Betweenness Centrality (Brandes)",
     category: "graph",

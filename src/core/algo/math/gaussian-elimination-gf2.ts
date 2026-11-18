@@ -198,6 +198,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Gaussian Elimination (GF(2)) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gaussian elimination over GF(2) solves binary linear systems using only XOR and AND. Because addition is XOR, eliminating a variable means XOR-ing one row into another, and every entry stays 0 or 1. The result is a row-echelon form from which solutions can be read back, and the same machinery underlies XOR bases and linear codes.",
+        "invariants": [
+            "Every row operation is an XOR of one row into another, preserving the solution set.",
+            "Once a pivot column is processed, all other rows have zero in that column.",
+            "Pivot columns appear strictly left to right, giving row-echelon form."
+        ],
+        "correctness": "XOR-ing a pivot row into another row adds an equation of the system to another, which never changes the solution set. Processing columns left to right clears each pivot column in all other rows. The final echelon system is equivalent to the original, so back-substitution yields exactly its solutions.",
+        "complexityRationale": "For each of up to n pivot columns the algorithm scans and XORs O(n) rows, costing O(n^3) bit operations naively, or O(n^2) machine words when rows are packed. The augmented matrix uses O(n^2) space.",
+        "uses": [
+            "Solving linear systems over bits in coding theory",
+            "Building XOR linear bases for competitive programming",
+            "Linear matroid and parity constraint problems"
+        ],
+        "references": [
+            "Strang, Linear Algebra and Its Applications, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.2"
+        ],
+        "workedExample": "For rows [1,1,0], [0,1,1], [1,0,1] with b = [1,0,1], the third row XOR the first gives [0,1,1], duplicating row two. The echelon form has two pivots and the system is consistent with a one-parameter family of solutions."
+    },
     id: "gaussian-elimination-gf2",
     name: "Gaussian Elimination (GF(2))",
     category: "math",

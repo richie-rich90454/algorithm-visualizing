@@ -199,6 +199,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Radix Sort (LSD) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sort by the least significant digit first, using a stable sort for each digit. Because stability preserves the order established by lower digits, after the most significant digit the whole key is sorted.",
+        "invariants": [
+            "After processing digit d, items are sorted by their d least significant digits.",
+            "Each digit pass is stable, so earlier order is preserved."
+        ],
+        "correctness": "Stability is the key: sorting by digit d+1 keeps items with equal digit d+1 in their existing order by lower digits. Inductively after the final digit the array is sorted by the full key.",
+        "complexityRationale": "Each pass is O(n + k) with k the digit base; there are d passes for d digits, so O(d(n + k)) total. Space is O(n + k). It avoids comparisons entirely.",
+        "uses": [
+            "Sorting fixed-width integers and strings",
+            "High-throughput key sorting in databases",
+            "Non-comparison sorting where keys are bounded"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 8",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2"
+        ],
+        "workedExample": "Start [170, 45, 75, 90]. Ones pass -> [170, 90, 45, 75]. Tens pass -> [170, 45, 75, 90] (45 before 75 preserved). Hundreds pass -> [45, 75, 90, 170]."
+    },
     id: "radix-sort-lsd",
     name: "Radix Sort (LSD)",
     category: "sorting",

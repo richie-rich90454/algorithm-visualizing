@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cuckoo hashing uses two hash tables and two hash functions. Each key has one slot in each table; if both are occupied, it evicts the resident key and sends it to its alternate slot, repeating until an empty spot appears. Lookups check just the two candidate slots, so they are worst-case O(1).",
+        "invariants": [
+            "Each key occupies one of its two candidate slots.",
+            "A slot holds at most one key.",
+            "If a relocation chain exceeds a limit, the table is rehashed with new functions."
+        ],
+        "correctness": "Every eviction moves a key to its other legal slot, so all keys remain in one of their two positions and no key is lost. Lookup checks both positions, so it finds a key exactly when it is stored. Rehashing after a long chain restores a valid placement rather than looping forever.",
+        "complexityRationale": "Lookup is two slot reads, O(1) worst case. Insertion is expected O(1) with low load but can be O(n) in a long displacement chain; rehashing bounds practical cost. Two tables of slots use O(n) space.",
+        "uses": [
+            "High-performance hash maps with fast lookups",
+            "Router and switch forwarding tables",
+            "Dictionaries in language runtimes"
+        ],
+        "references": [
+            "Pagh and Rodler, \"Cuckoo Hashing\", J. Algorithms 2004",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "Insert 12, 5, 21 into two tables with h1 = key mod 5 and h2 = key mod 7. If 12 and 5 both want slot 2 of table 1, 5 is evicted to its table-2 slot. Query 5 checks both candidate slots and finds it; a long chain would trigger rehashing."
+    },
     id: "cuckoo-hashing",
     name: "Cuckoo Hashing",
     category: "data-structures",

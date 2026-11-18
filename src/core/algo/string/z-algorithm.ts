@@ -175,6 +175,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Z-Algorithm module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Z-algorithm computes, for each position i, the length Z[i] of the longest substring starting at i that matches the string's prefix, in linear time. It maintains a window [l,r] of the rightmost known match so positions inside it can reuse a mirrored Z-value instead of re-comparing.",
+        "invariants": [
+            "[l,r] is the interval of the match reaching furthest right found so far.",
+            "For i inside the window, Z[i] is at least the smaller of the mirror's Z-value and the remaining window length."
+        ],
+        "correctness": "Inside the window, symmetry of the prefix match means the substring at i matches the prefix at least as far as the mirrored position does, capped by the window's end. Starting from that bound and extending directly gives the true Z[i], and since r only increases the total comparisons are linear.",
+        "complexityRationale": "Every comparison either increases r or ends a scan, so total work is O(n) for a string of length n; the Z array uses O(n) space, and the pattern-plus-text formulation stays linear in both lengths.",
+        "uses": [
+            "Linear-time substring search",
+            "Finding periods and repeated prefixes",
+            "Pattern matching with the combined-string formulation"
+        ],
+        "references": [
+            "Main and Lorentz, An O(n) Algorithm for Finding All Repetitions in a String, 1984",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For the combined string \"ababcab$ababcabababcab\", computing Z-values gives Z[8]=7 at the start of the text part, so a match at index 0 is reported; window reuse keeps the whole scan linear."
+    },
     id: "z-algorithm",
     name: "Z-Algorithm",
     category: "string",

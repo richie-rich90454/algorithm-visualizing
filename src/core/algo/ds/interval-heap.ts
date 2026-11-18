@@ -81,6 +81,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An interval heap is a double-ended priority queue. Each array node stores a pair [low, high] with low <= high; every descendant's low is at least this low and every descendant's high is at most this high. Thus the minimum is the root's low and the maximum is the root's high, and both ends can be extracted in logarithmic time.",
+        "invariants": [
+            "In each pair low <= high.",
+            "A parent's low <= all descendant lows and its high >= all descendant highs.",
+            "The global minimum and maximum are in the root pair."
+        ],
+        "correctness": "Insertion places a value into a pair and swaps within it to keep low <= high, then bubbles toward the root respecting the interval order. This restores all parent-descendant bounds along one path. Extracting from either end replaces the value and trickles down, restoring the same bounds, so the ends always hold the true min and max.",
+        "complexityRationale": "Each operation follows one path of length O(log n) and does constant work per level. Pairs of values are stored in an array, O(n) space.",
+        "uses": [
+            "Double-ended priority queues",
+            "Sliding-window min and max",
+            "Event simulations needing both extremes"
+        ],
+        "references": [
+            "van Leeuwen and Wood, \"Interval Heaps and the Duality of Priority Queues\", 1993",
+            "CLRS, Introduction to Algorithms, Chapter 6 on heaps"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1: the root pair becomes [1, 8] after swaps, so minimum is 1 and maximum is 8. Extracting the min removes 1 and replaces it from a child pair, then trickles down; extracting the max removes 8 similarly."
+    },
     id: "interval-heap",
     name: "Interval Heap",
     category: "data-structures",

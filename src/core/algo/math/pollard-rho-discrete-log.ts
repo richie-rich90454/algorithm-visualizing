@@ -134,6 +134,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pollard rho computes a discrete log by walking a pseudo-random sequence in the group and detecting a collision with the birthday paradox. Two states are advanced at different speeds, and when they meet the exponents attached to each path give a linear equation for x. Because collisions occur after roughly the square root of the group size, it needs only constant memory.",
+        "invariants": [
+            "Each walked state is g^alpha * h^beta for tracked exponents alpha and beta.",
+            "A collision of two states yields alpha1-alpha2 = (beta2-beta1)*x modulo the group order.",
+            "The tortoise and hare eventually meet in a finite group."
+        ],
+        "correctness": "When two distinct tracked states coincide as group elements, their exponent representations must satisfy g^(alpha1-alpha2) = h^(beta2-beta1), which converts to a linear congruence for x modulo the order. Solving it gives a candidate exponent that is verified by g^x = h. Cycle detection guarantees such a collision occurs.",
+        "complexityRationale": "By the birthday paradox a collision appears after O(sqrt(p)) steps, and each step is one group multiplication, so expected time is O(sqrt(p)). Only a constant number of states are kept, giving O(1) space.",
+        "uses": [
+            "Discrete logarithms with negligible memory",
+            "Cryptanalysis of small or weak groups",
+            "Birthday paradox applications in algorithm design"
+        ],
+        "references": [
+            "Pollard, Monte Carlo methods for index computation mod p (1978)",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 3"
+        ],
+        "workedExample": "For p = 11 with g = 2 and h = 7, walk two pseudo-random sequences of states g^a*h^b with a tortoise and hare. When they collide, solve the resulting linear congruence for x, then confirm 2^x = 7 mod 11."
+    },
     id: "pollard-rho-discrete-log",
     name: "Pollard Rho Discrete Log",
     category: "math",

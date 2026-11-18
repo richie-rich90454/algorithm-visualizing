@@ -227,6 +227,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Radix Sort (MSD) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Most-significant-digit radix sort processes digits from the left. It distributes values by their leading digit, then recursively sorts each group by the next digit. The partition-then-recurse shape resembles quicksort but uses digit buckets.",
+        "invariants": [
+            "After a digit level, groups are ordered by their prefix digits.",
+            "All values in a group share the same processed prefix."
+        ],
+        "correctness": "Ordering groups by the current digit and recursively sorting each group by subsequent digits gives lexicographic digit order, which is numeric order for fixed-width keys. Single-element or exhausted-digit groups are already sorted.",
+        "complexityRationale": "Each element takes part in at most d digit distributions, each O(n) with bucket overhead, so O(d * n) average time. The recursive buckets need O(n) auxiliary space.",
+        "uses": [
+            "Sorting fixed-length strings and integers",
+            "Trie-style prefix grouping",
+            "Comparison-free sorting when digit access is cheap"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1",
+            "CLRS, Introduction to Algorithms, Chapter 8"
+        ],
+        "workedExample": "For [170, 45, 75, 90] with two-digit views, the hundreds digit splits 170 and 90 from 45 and 75; within groups the tens digit orders 45 before 75 and 90 before 170, finishing [45, 75, 90, 170]."
+    },
     id: "radix-sort-msd",
     name: "Radix Sort (MSD)",
     category: "sorting",

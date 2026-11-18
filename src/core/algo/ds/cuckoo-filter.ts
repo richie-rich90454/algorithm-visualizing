@@ -83,6 +83,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A cuckoo filter stores a short fingerprint of each key in one of two candidate buckets. On collision it evicts an existing fingerprint and moves it to its alternate bucket, like a cuckoo pushing another egg out. Deletion is supported by removing the fingerprint, and lookup checks both candidate buckets.",
+        "invariants": [
+            "A key maps to exactly two buckets derived from its hash and fingerprint.",
+            "Each bucket holds at most a small fixed number of fingerprints.",
+            "A fingerprint's alternate bucket can be computed from its stored value."
+        ],
+        "correctness": "If a key was inserted, its fingerprint is in one of its two buckets, so checking both never yields a false negative. Displacement preserves that invariant because each moved fingerprint goes to its own alternate bucket. False positives occur only when another key has the same fingerprint in a candidate bucket.",
+        "complexityRationale": "Insertion does a bounded number of relocations and lookup checks two small buckets, both expected O(1). Storage is roughly n fingerprints, O(n), with load kept below a threshold.",
+        "uses": [
+            "Approximate set membership with deletions",
+            "Network and storage deduplication",
+            "Bloom-filter replacement in caches"
+        ],
+        "references": [
+            "Bin Fan, David G. Andersen, Michael Kaminsky, and Michael D. Mitzenmacher, \"Cuckoo Filter: Practically Better Than Bloom\", CoNEXT 2014",
+            "Burton H. Bloom, \"Space/Time Trade-offs in Hash Coding with Allowable Errors\", CACM 1970"
+        ],
+        "workedExample": "Insert 5, 17, 9 into buckets chosen by hash: each key computes a fingerprint and two candidate buckets. If 9 collides with 17, 17 is relocated to its alternate bucket and 9 takes its slot. Query 17 finds its fingerprint in that alternate bucket and reports present."
+    },
     id: "cuckoo-filter",
     name: "Cuckoo Filter",
     category: "data-structures",

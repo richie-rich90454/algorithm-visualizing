@@ -308,6 +308,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Minimum Enclosing Circle module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Welzl's algorithm finds the smallest circle covering a point set in expected linear time. It adds points in random order; whenever the new point lies outside the current circle, that point must lie on the boundary of the true circle, so the algorithm recurses with that point pinned to the boundary. Small boundary sets of one to three points have direct circle formulas.",
+        "invariants": [
+            "The circle returned for a prefix encloses every point in that prefix.",
+            "Points pinned as boundary constraints lie on the circle.",
+            "At most three boundary points are ever pinned, since a circle is defined by three points."
+        ],
+        "correctness": "If a newly added point lies inside the current circle, that circle is still the minimum for the larger prefix because the old solution was minimum and the new point adds no constraint. If it lies outside, any enclosing circle for the larger prefix must have it on its boundary, so fixing it is safe and recursion finds the minimum subject to that condition. The base cases construct the unique circle through one, two, or three boundary points, so induction yields the true minimum enclosing circle.",
+        "complexityRationale": "The probability that point i changes the circle is at most 3/i, so the expected number of expensive recursive calls is bounded by a harmonic sum and expected time is O(n). Recursion depth and boundary storage are O(n) in the worst case.",
+        "uses": [
+            "Computing bounding circles for spatial indexes",
+            "Collision detection with spherical bounding volumes",
+            "Finding the smallest coverage area for sensor placement"
+        ],
+        "references": [
+            "Welzl, Smallest Enclosing Disks, New Results and Techniques in Computer Science (1991)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 4"
+        ],
+        "workedExample": "For points (0,0), (2,0), (1,1), (4,0), the first three define a circle centered at (1, 0) with radius 1. Adding (4,0) lies outside it, so (4,0) is pinned and recursion finds the circle through (0,0) and (4,0), centered (2,0) with radius 2, which encloses all four points."
+    },
+
     id: "min-enclosing-circle-welzl",
     name: "Min Enclosing Circle (Welzl)",
     category: "geometry",

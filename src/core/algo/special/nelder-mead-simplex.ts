@@ -84,6 +84,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Nelder-Mead is a derivative-free optimizer for low-dimensional functions. It maintains a simplex, a triangle in two dimensions, of candidate points, sorts them by function value, and repeatedly replaces the worst point by reflecting, expanding, contracting or shrinking it around the centroid of the better points. The simplex crawls downhill toward a minimum.",
+        "invariants": [
+            "The simplex always has n+1 vertices in n dimensions.",
+            "The best vertex's function value never increases across iterations.",
+            "The operations keep the vertices distinct in normal operation."
+        ],
+        "correctness": "Nelder-Mead is a heuristic without a general convergence guarantee to a global optimum. Each operation is designed so improved points replace worse ones, and for well-behaved unimodal functions the simplex typically contracts toward a local minimum. The demo reports the best vertex value, which is non-increasing.",
+        "complexityRationale": "Each iteration sorts a constant number of vertices, three in two dimensions, and does a few function evaluations, O(n) for n dimensions, so t iterations cost O(t·n). Storing the simplex uses O(n) space.",
+        "uses": [
+            "Parameter fitting when derivatives are unavailable or unreliable",
+            "Engineering design and scientific model calibration",
+            "Curve fitting and low-dimensional hyperparameter tuning",
+            "Numerical optimization in spreadsheet solvers"
+        ],
+        "references": [
+            "Nelder and Mead, A Simplex Method for Function Minimization, The Computer Journal, 1965",
+            "Press et al., Numerical Recipes, Chapter 10"
+        ],
+        "workedExample": "Minimize f(x,y)=(x-2)^2+(y-1)^2 from triangle {(0,0),(1,0),(0,1)}. The worst vertex (0,0) has f=5 and the centroid of the other two is (0.5,0.5). Reflecting gives (1,1) with f=1; expanding goes toward (1.5,1.5). Repeated steps converge to (2,1), f=0."
+    },
     id: "nelder-mead-simplex",
     name: "Nelder–Mead Simplex",
     category: "math",

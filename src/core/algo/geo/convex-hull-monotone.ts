@@ -210,6 +210,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Convex Hull (Monotone chain) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Andrew's monotone chain builds the hull by sorting points by x and y, then constructing the lower and upper chains separately with the same right-turn stack test as Graham's scan. Because the sort is by coordinates rather than angle, it is simpler and more numerically robust.",
+        "invariants": [
+            "The lower chain is convex and lies below every point processed so far.",
+            "The upper chain is convex and lies above every point processed so far.",
+            "A point that would create a clockwise turn is popped and cannot be extreme."
+        ],
+        "correctness": "Sorting by x makes the hull split cleanly into a lower and an upper chain, each a monotone convex function of x. In each pass the stack test removes any middle point that makes a non-left turn, which lies on or inside the chain. After the left-to-right and right-to-left passes, the concatenated chains are the complete convex hull.",
+        "complexityRationale": "The coordinate sort costs O(n log n), and each of the two linear passes pushes and pops every point at most once, adding O(n). The sorted points and two stacks use O(n) space.",
+        "uses": [
+            "Computing convex hulls without trigonometry",
+            "Preprocessing for diameter and width queries",
+            "Robust hull computation when coordinates have near-equal angles"
+        ],
+        "references": [
+            "Andrew, Another Efficient Algorithm for Convex Hulls in Two Dimensions, 1979",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 1"
+        ],
+        "workedExample": "For (0,0), (2,0), (2,2), (0,2), (1,1), sorting gives (0,0), (0,2), (1,1), (2,0), (2,2). The lower pass pops (1,1) when it would bend the chain the wrong way, and the upper pass also rejects it. The hull is the square (0,0), (2,0), (2,2), (0,2)."
+    },
+
     id: "convex-hull-monotone",
     name: "Convex Hull (Monotone Chain)",
     category: "geometry",

@@ -190,6 +190,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "D* Lite is built for an agent that discovers obstacles while moving. It plans a shortest path, then when an edge is reported blocked it repairs only the inconsistent part of its search tree rather than replanning from scratch. Inconsistency means a vertex's one-step lookahead value no longer matches its stored distance.",
+        "invariants": [
+            "The rhs value is the best one-step estimate from a vertex's predecessors.",
+            "Consistent vertices satisfy g equal to rhs.",
+            "Only inconsistent vertices need to be re-expanded after a change."
+        ],
+        "correctness": "When edge costs change, only vertices whose rhs depends on that edge become inconsistent. Re-expanding them in key order restores consistency and propagates corrected costs through the affected subtree, so the repaired tree again gives optimal distances from the current position without touching unaffected vertices.",
+        "complexityRationale": "Each repair expands the inconsistent subset, costing O(E log V) in the worst case, with O(V + E) space for g values, rhs values, and the priority queue.",
+        "uses": [
+            "Mobile robot navigation with unknown terrain",
+            "Replanning around dynamic obstacles",
+            "Incremental search when edge costs change online"
+        ],
+        "references": [
+            "Koenig and Likhachev, D* Lite (2002)",
+            "Stentz, The Focussed D* Algorithm for Real-Time Replanning (1995)"
+        ],
+        "workedExample": "The agent plans A-B-C-D, then learns edge C-D is blocked. Vertices near C become inconsistent, are re-expanded with the new cost, and the repaired plan routes around the blockage while leaving the untouched part of the tree intact."
+    },
     id: "d-star-lite-replanning",
     name: "D* Lite Replanning",
     category: "shortest-path",

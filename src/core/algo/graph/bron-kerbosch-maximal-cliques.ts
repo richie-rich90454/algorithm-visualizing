@@ -130,6 +130,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bron-Kerbosch enumerates all maximal cliques by backtracking with three sets: R is the clique being built, P holds candidates that can extend it, and X holds vertices already tried to prevent duplicates. Choosing a pivot from P union X that covers the most candidates shrinks the branching to only those candidates not adjacent to the pivot.",
+        "invariants": [
+            "R is always a clique in the original graph.",
+            "Every maximal clique is reachable by some sequence of extensions from the current state.",
+            "A vertex moved into X is never reconsidered for the same R, avoiding duplicate reports."
+        ],
+        "correctness": "When P and X are both empty no vertex can extend R without duplicating an already explored clique, so R is maximal. The pivot is safe because any maximal clique extending R must contain a vertex outside the pivot's neighborhood or the pivot itself, and the algorithm branches on exactly those cases, so no clique is missed.",
+        "complexityRationale": "The worst-case number of maximal cliques is about 3^(V/3), and the pivot version meets that bound up to polynomial factors. Recursion plus adjacency sets use O(V^2) space.",
+        "uses": [
+            "Enumerating maximal cliques in social and biological networks",
+            "Finding maximal complete subgraphs in constraint systems",
+            "A subroutine for some graph coloring and clustering methods"
+        ],
+        "references": [
+            "Bron and Kerbosch, Algorithm 457: Finding All Cliques of an Undirected Graph (1973)",
+            "Tomita, Tanaka, and Takahashi, The Worst-Case Time Complexity for Generating All Maximal Cliques (2006)"
+        ],
+        "workedExample": "The triangle-plus-tail graph starts with R empty and P all vertices. Pivoting at C limits branching to vertices outside its neighborhood; the search records maximal clique {A,B,C}, then moves on to record {C,D}. Both are maximal and neither is reported twice."
+    },
     id: "bron-kerbosch-maximal-cliques",
     name: "Maximal Cliques (Bron–Kerbosch)",
     category: "graph",

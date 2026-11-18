@@ -89,6 +89,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A link-cut tree maintains a dynamic forest under link and cut operations. Preferred paths are stored in splay trees connected by path-parent pointers, and the access operation exposes the root-to-vertex path as one splay. Link, cut, and path queries then reduce to splay operations on exposed paths.",
+        "invariants": [
+            "Each splay represents a contiguous preferred path in the represented tree.",
+            "Path-parent pointers connect splays into the full tree.",
+            "access(v) makes the root-to-v path the preferred path ending at v."
+        ],
+        "correctness": "Exposing a path makes every vertex on it belong to one splay, so a path aggregate can be read from that splay's stored summary. Linking attaches a root as a path child; cutting detaches after exposure. Splay rotations preserve inorder path order, so the represented forest is always encoded correctly.",
+        "complexityRationale": "Each access does O(log n) amortized splay work, so link, cut, and path queries are O(log n) amortized. One node per vertex plus splay links uses O(n) space.",
+        "uses": [
+            "Dynamic connectivity in forests",
+            "Network flow and dynamic tree problems",
+            "Path queries on evolving hierarchies"
+        ],
+        "references": [
+            "Daniel D. Sleator and Robert E. Tarjan, \"A Data Structure for Dynamic Trees\", JCSS 1983",
+            "D. D. Sleator and R. E. Tarjan, \"Self-Adjusting Binary Search Trees\", JACM 1985"
+        ],
+        "workedExample": "Start with isolated A, B, C. Link A-B makes one tree; access(B) exposes path A-B in a splay. Linking B-C adds C to that tree. Cutting A-B after exposing A-B splits the splay, so connectivity from A to C now fails."
+    },
     id: "link-cut-tree",
     name: "Link-Cut Tree",
     category: "data-structures",

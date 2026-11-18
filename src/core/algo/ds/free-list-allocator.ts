@@ -85,6 +85,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A free-list allocator keeps freed blocks in lists indexed by size so a new request can reuse one instead of asking the system for more memory. This demo uses first fit: scan the list and take the first block large enough. Adjacent free blocks are coalesced to reduce fragmentation.",
+        "invariants": [
+            "Every free block appears in exactly one list.",
+            "Allocated blocks never appear on the free list.",
+            "Coalescing merges only adjacent free blocks."
+        ],
+        "correctness": "First fit returns a block at least as large as the request, and splitting it returns the remainder to the free list, keeping all free space tracked. Freeing pushes the block back so it can be reused. Coalescing neighbors reconstructs larger blocks without overlapping live allocations.",
+        "complexityRationale": "Scanning the list is O(blocks) worst case, and splitting or coalescing is O(1) given the block's neighbors. Storage for metadata is O(blocks).",
+        "uses": [
+            "Manual memory allocators",
+            "Object pools and slab caches",
+            "Embedded systems without an OS heap"
+        ],
+        "references": [
+            "Donald E. Knuth, The Art of Computer Programming, Vol. 1, Section 2.5",
+            "Andrew Hunter, \"A Memory Allocator\" notes, 2001"
+        ],
+        "workedExample": "Start with one free block of size 16. Allocate 5 by splitting off 5 and returning 11 to the list. Allocate 3 from the remainder, leaving 8 free. Freeing the first 5 and finding it adjacent to other free space coalesces them into a larger block."
+    },
     id: "free-list-allocator",
     name: "Free List Allocator",
     category: "data-structures",

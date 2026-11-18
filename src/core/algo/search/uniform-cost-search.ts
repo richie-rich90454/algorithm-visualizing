@@ -143,6 +143,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Uniform-cost search expands the cheapest unexpanded node first, using path cost g rather than a heuristic. It is Dijkstra's algorithm stated as a graph search and guarantees the cheapest path when it expands the goal.",
+        "invariants": [
+            "The frontier is ordered by nondecreasing path cost.",
+            "Every expanded node has the minimum cost among all unexpanded nodes."
+        ],
+        "correctness": "With nonnegative edge costs, once the goal is selected for expansion no cheaper path can remain in the frontier, so its cost is optimal.",
+        "complexityRationale": "The frontier can hold O(b^(C*/e)) paths where C* is the optimal cost and e the minimum edge cost, giving that order for time and space.",
+        "uses": [
+            "Shortest-path search without a heuristic",
+            "Network routing with Dijkstra",
+            "Baseline for comparing A star"
+        ],
+        "references": [
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs, Numerische Mathematik, 1959",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3"
+        ],
+        "workedExample": "From A toward G, expand the cheapest frontier node each time: A first, then whichever neighbor has the smallest accumulated cost, continuing until G is selected for expansion with minimum total cost."
+    },
     id: "uniform-cost-search",
     name: "Uniform-Cost Search",
     category: "searching",

@@ -172,6 +172,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Half-Plane Intersection module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A half-plane is one side of a line, and the intersection of any collection of half-planes is a convex region. Sorting the lines by angle and sweeping them with a deque lets each new line push out older lines that it makes redundant, leaving exactly the boundary lines of the intersection polygon.",
+        "invariants": [
+            "The deque lines are kept in increasing angular order.",
+            "After each insertion, consecutive deque lines define a vertex of the current intersection.",
+            "A line popped from the deque is redundant, since its neighbors already imply it."
+        ],
+        "correctness": "In angular order, a half-plane can only be made redundant by neighbors adjacent to it in that order, so a deque check is sufficient. When a new line's intersection with the last line lies outside the previous line's half-plane, the last line cannot bound the result and is popped, and similarly at the front. Once no pops are needed, the stored lines bound a convex polygon equal to the intersection of every input half-plane.",
+        "complexityRationale": "Sorting the lines by angle costs O(n log n), and each line is pushed and popped at most once in the deque sweep, adding O(n). The deque and sorted lines use O(n) space.",
+        "uses": [
+            "Computing the feasible region of a system of linear inequalities",
+            "Finding the visible region in graphics clipping",
+            "Robotics workspace and reachability analysis"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 4",
+            "Shamos, Computational Geometry, PhD thesis, Yale University, 1978"
+        ],
+        "workedExample": "The half-planes x >= 0, y >= 0, and x + y <= 2 are sorted by angle and inserted. None makes another redundant, so all three survive as boundary lines and their intersection is the right triangle with corners (0,0), (2,0), (0,2)."
+    },
+
     id: "half-plane-intersection",
     name: "Half-Plane Intersection",
     category: "geometry",

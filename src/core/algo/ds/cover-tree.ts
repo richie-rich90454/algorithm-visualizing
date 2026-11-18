@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A cover tree organizes points in levels whose covering radius shrinks geometrically. Each level has a cover set that dominates all points below it, and parent-child distances shrink as you descend. Queries prune subtrees using the triangle inequality, giving fast nearest-neighbor search in low-dimensional metric spaces.",
+        "invariants": [
+            "At level i, every point is within the level's radius of some cover-set point.",
+            "Cover radii decrease by a constant factor each level.",
+            "A child's distance to its parent is bounded by the level radius."
+        ],
+        "correctness": "Because each level covers all points, a query within tolerance of a point must be near some cover parent. The triangle inequality lets the search discard a cover-set subtree when the distance to its parent minus the parent's radius exceeds the current best. Examining all surviving covers therefore finds the true nearest neighbor.",
+        "complexityRationale": "The geometric radius decrease bounds the number of points per level to a constant in fixed dimension, so search is O(log n). Storing one node per point uses O(n) space.",
+        "uses": [
+            "Nearest-neighbor search in metric spaces",
+            "Machine learning and density estimation",
+            "Robotics configuration-space queries"
+        ],
+        "references": [
+            "Alina Beygelzimer, Sham Kakade, and John Langford, \"Cover Trees for Nearest Neighbor\", ICML 2006",
+            "Peter N. Yianilos, metric-space search notes, 1993"
+        ],
+        "workedExample": "Index points (0,0), (1,0), (2,0), (10,10): the top level covers all with center (0,0) and radius 16, lower levels split into tighter covers. Querying (1.2,0) descends the near cover, finds distance about 0.2 to (1,0), and prunes the far (10,10) branch because its lower bound is much larger."
+    },
     id: "cover-tree",
     name: "Cover Tree",
     category: "data-structures",

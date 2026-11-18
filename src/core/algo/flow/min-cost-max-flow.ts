@@ -251,6 +251,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Min-Cost Max-Flow module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Minimum-cost maximum flow first maximizes flow, then among all maximum flows chooses the cheapest. The successive-shortest-paths method repeatedly finds the cheapest augmenting path in the residual graph and pushes flow along it. Bellman-Ford is used because residual reverse edges can have negative cost even when original costs are positive.",
+        "invariants": [
+            "Every augmenting path is the least-cost path in the current residual graph.",
+            "The flow remains feasible and its value increases each iteration.",
+            "Successive augmentations keep the flow minimum-cost for its current value."
+        ],
+        "correctness": "If the current flow is minimum-cost for its value, augmenting along the cheapest residual path yields a minimum-cost flow of the next value; this is the standard optimality invariant for successive shortest paths. Bellman-Ford finds that path even with negative residual edges because no negative-cost cycle exists when the flow is optimal. Stopping when no path reaches the sink gives a minimum-cost maximum flow.",
+        "complexityRationale": "There are f augmentations of at least one unit each, and each Bellman-Ford search costs O(V E), giving O(f V E). The residual graph, costs, and predecessors use O(V + E) space.",
+        "uses": [
+            "Shipping goods at least cost subject to demand",
+            "Assigning bandwidth with per-link prices",
+            "Energy and load redistribution with transportation costs"
+        ],
+        "references": [
+            "Ahuja, Magnanti, and Orlin, Network Flows, successive shortest paths chapter",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, min-cost flow"
+        ],
+        "workedExample": "With S-A cap 3 cost 2, S-B cap 2 cost 1, A-T cap 2 cost 3, B-T cap 3 cost 2, and A-B cap 1 cost 1: send 2 units S-B-T at 3 each, 2 units S-A-T at 5 each, and 1 unit S-A-B-T at 5. All 5 units flow at total cost 21, the minimum."
+    },
     id: "min-cost-max-flow",
     name: "Min-Cost Max-Flow",
     category: "flow",

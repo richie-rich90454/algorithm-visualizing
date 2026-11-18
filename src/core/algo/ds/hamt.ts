@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A hash array mapped trie, or HAMT, is a persistent hash trie that consumes a hash in small chunks, typically five bits per level. A bitmap marks which of the 32 slots are occupied, and a population count turns a chunk into a compact array index. This makes nodes small and lookups fast.",
+        "invariants": [
+            "The bitmap bit for chunk c is set exactly when child c exists.",
+            "A child's array index is the number of set bits before c.",
+            "Each level consumes a distinct five-bit chunk of the hash."
+        ],
+        "correctness": "The bitmap records precisely which branches exist, so a population count maps a chunk to the right compact slot. Insertion sets the bit and adds the child; lookup repeats the same chunk walk. Collisions at full depth are stored in a leaf bucket, so two equal hashes remain distinct entries.",
+        "complexityRationale": "Each operation consumes one 5-bit chunk per level, so depth is O(log32 n) and time matches that. Compressed nodes store only occupied children, using O(n) space.",
+        "uses": [
+            "Persistent maps and sets in functional languages",
+            "Clojure and Scala collection implementations",
+            "Memory-efficient associative arrays"
+        ],
+        "references": [
+            "Phil Bagwell, \"Ideal Hash Trees\", INRIA tech report 2001",
+            "Steven Prokopec et al., \"Efficient Immutable Collections\", 2012"
+        ],
+        "workedExample": "Hash car and cat; their first five-bit chunks agree, so they share the root bitmap and descend together. At the next chunk they differ, so two bits are set in the child node. Searching cat follows its chunk sequence, uses population counts to find compact slots, and reaches the terminal."
+    },
     id: "hamt",
     name: "HAMT",
     category: "data-structures",

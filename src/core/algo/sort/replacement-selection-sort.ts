@@ -150,6 +150,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Replacement selection builds initial sorted runs longer than memory using a heap. It outputs the heap minimum, then refills with the next input only if that input is at least the value just emitted; otherwise it is frozen for the next run.",
+        "invariants": [
+            "The heap contains only values eligible for the current run.",
+            "Frozen values are all larger than the last emitted value and belong to a later run."
+        ],
+        "correctness": "Allowing only values no smaller than the last output keeps a run nondecreasing; when no eligible value remains the run is complete and frozen values start the next. Concatenated sorted runs merge into fully sorted data.",
+        "complexityRationale": "Each output involves a heap extraction and insertion, O(log m) for heap size m, so O(n log m) total, usually written O(n log n). The heap and freeze storage use O(n) space.",
+        "uses": [
+            "Generating long initial runs for external sorts",
+            "Snowplow sorting in tape and disk systems",
+            "Teaching heap-based run formation"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.4.2",
+            "Bentley and Saxe, Generating a Sorted Stream from Sorted Subsequences, 1980"
+        ],
+        "workedExample": "With heap capacity three and input [5, 1, 4, 2, 3], output 1 and refill with 4 to keep the run going; output 4 and refill with 2, which is smaller so it freezes; the first run ends and 2, 3, 5 start the next."
+    },
     id: "replacement-selection-sort",
     name: "Replacement Selection Sort",
     category: "sorting",

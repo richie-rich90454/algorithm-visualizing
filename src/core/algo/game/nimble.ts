@@ -146,6 +146,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Nimble places coins on a strip of squares. A move slides one coin any number of squares to the left, and coins do not stack. The position is equivalent to Nim with heaps equal to the coin squares, so the winner is decided by xoring the occupied square numbers.",
+        "invariants": [
+            "Coins occupy distinct squares and only move left.",
+            "The game value is the xor of the occupied square indices.",
+            "A move that zeros the xor leaves a P-position."
+        ],
+        "correctness": "Sliding a coin from square c to a smaller empty square d is exactly reducing a Nim heap from c to d, and the no-stacking rule mirrors one heap per coin. By the Sprague-Grundy theorem the xor of heap values is the position value, so a move to xor zero is winning and no move exists from xor zero to xor zero.",
+        "complexityRationale": "Xoring c coin positions and searching for a legal target costs O(c) time and O(c) space for the coin set.",
+        "uses": [
+            "Showing how a board game is equivalent to Nim heaps",
+            "Teaching Sprague-Grundy reduction of token games",
+            "A compact example of xor invariants"
+        ],
+        "references": [
+            "Conway, On Numbers and Games",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "Coins at squares 1, 4, and 6 give xor 1 xor 4 xor 6 = 3. The coin at 6 can move to 5 because 6 xor 3 = 5 is smaller and empty. The new coins at 1, 4, 5 xor to zero, leaving a losing position."
+    },
     id: "nimble",
     name: "Nimble",
     category: "game",

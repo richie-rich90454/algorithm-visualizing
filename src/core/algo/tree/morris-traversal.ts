@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Morris traversal performs an inorder walk using no stack and no recursion. When a node has a left subtree it temporarily threads the rightmost node of that subtree, which is the predecessor, to point back to the current node; walking that thread later removes it and restores the original tree.",
+        "invariants": [
+            "A thread exists only from a predecessor to its successor and only while needed.",
+            "Every thread created is removed before the traversal ends.",
+            "A node is visited exactly once, when its left subtree has been exhausted."
+        ],
+        "correctness": "The predecessor of a node with a left child is the rightmost node in that left subtree, so linking its empty right pointer to the current node gives a temporary path back after finishing the subtree. When the traversal reaches that predecessor again and sees the thread, it knows the left subtree is complete, removes the thread, and visits the current node. Restoring all pointers leaves the tree unchanged and yields the same order as a standard inorder traversal.",
+        "complexityRationale": "Each edge is traversed a constant number of times and each node is visited once, so time is O(n). Only a few pointers are used at a time, giving O(1) extra space.",
+        "uses": [
+            "Inorder traversal under tight memory limits",
+            "Iterators for binary search trees without a stack",
+            "Teaching temporary tree threading techniques"
+        ],
+        "references": [
+            "Morris, Traversing Binary Trees Simply and Cheaply, Information Processing Letters 9 (1979)",
+            "CLRS, Introduction to Algorithms, Chapter 12"
+        ],
+        "workedExample": "For tree A with left child B, right child C, and B having left child D, threads are created from B to A and from D to B. The walk visits D, B, A, C and then removes both threads, restoring the original structure."
+    },
+
     id: "morris-traversal",
     name: "Morris Traversal",
     category: "tree",

@@ -131,6 +131,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Maximal square finds the largest all-ones square in a binary matrix. The DP cell dp[i][j] is the side length of the largest square whose bottom-right corner is (i,j). A zero cell gives zero; a one cell is one plus the minimum of the top, left, and diagonal neighbors, because all three must support a larger square.",
+        "invariants": [
+            "dp[i][j] is the side of the largest all-ones square ending at (i,j).",
+            "A zero cell cannot be part of such a square.",
+            "Each cell uses already-computed top, left, and diagonal entries."
+        ],
+        "correctness": "To extend a square to bottom-right (i,j), the squares ending at the three neighbors must all be at least as large as the new side minus one, so the minimum governs the extension. If any neighbor is smaller, that direction limits the size. This recurrence correctly captures the largest square at each cell, so the global maximum is the answer.",
+        "complexityRationale": "Each of the m*n cells does constant work, giving O(m*n) time. The dp table uses O(m*n) space, reducible to O(n) with two rows.",
+        "uses": [
+            "Detecting square free regions in binary images",
+            "Grid-based pattern recognition",
+            "A compact two-dimensional DP example"
+        ],
+        "references": [
+            "LeetCode problem 221, Maximal Square",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For the 3x3 sample matrix the DP builds up to side 2 at several cells, so the largest all-ones square has side 2 and area 4."
+    },
     id: "maximal-square",
     name: "Maximal Square",
     category: "dynamic-programming",

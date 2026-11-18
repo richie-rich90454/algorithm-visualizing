@@ -188,6 +188,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A degree-constrained spanning tree limits how many tree edges may touch each vertex. This heuristic follows Kruskal's greedy order but skips any edge that would exceed a vertex's degree bound or form a cycle. It is fast and often good, though the exact optimization problem is NP-hard.",
+        "invariants": [
+            "No vertex exceeds its degree bound in the accepted set.",
+            "Accepted edges never form a cycle because union-find rejects them.",
+            "Edges are considered in nondecreasing weight order."
+        ],
+        "correctness": "Every accepted edge maintains a forest and respects the bounds, so the result is a feasible degree-bounded forest; if it spans all vertices it is a spanning tree. Because the exact problem is NP-hard, the heuristic is not guaranteed optimal, and the visualization is explicit about being a greedy approximation rather than an exact solver.",
+        "complexityRationale": "Sorting E edges dominates at O(E log E), with union-find and degree counts using O(V + E) space.",
+        "uses": [
+            "Network design with port or interface limits per switch",
+            "Layout problems where each node has a maximum fan-out",
+            "A greedy baseline before exact degree-bounded optimization"
+        ],
+        "references": [
+            "Furukawa and Zhao, The Complexity of the Minimum Degree-Bounded Spanning Tree Problem (2010)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees"
+        ],
+        "workedExample": "With bound 2 on a small graph, sort edges by weight and accept A-B (1), B-C (2), and C-D (3) as they join new sets without exceeding degree 2. Edges that would give a vertex a third incident tree edge are skipped, leaving a bounded-degree spanning tree."
+    },
     id: "degree-constrained-mst-heuristic",
     name: "Degree-Constrained MST Heuristic",
     category: "mst",

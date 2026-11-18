@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Unbounded Knapsack module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Unbounded knapsack allows using each item type any number of times to maximize value under a capacity. The DP reduces to one dimension over capacity, with dp[w] = max(dp[w], dp[w-weight[i]] + value[i]). Iterating capacities upward is what permits reuse, because a newly improved dp[w-weight] can be used again for the same item.",
+        "invariants": [
+            "dp[w] is the best value achievable at capacity w with unlimited copies of processed items.",
+            "dp[0] is zero.",
+            "Ascending capacity order allows an item to be added repeatedly."
+        ],
+        "correctness": "If an optimal solution uses item i, removing one copy leaves a solution at w-weight[i], so adding value[i] to dp[w-weight[i]] is a candidate. Processing capacities upward ensures that value already includes any number of copies of i, enabling the unbounded property. Taking the max over items yields the true optimum.",
+        "complexityRationale": "There are n items and W capacity values, giving O(n*W) time. A single capacity array uses O(W) space.",
+        "uses": [
+            "Making unlimited use of resource types under a budget",
+            "Coin change variant maximizing value",
+            "Cutting stock problems with repeatable patterns"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With weights [2,3,4], values [3,4,5], and capacity 8, four copies of the weight-2 item give value 12, which the DP reports as the maximum at dp[8]."
+    },
     id: "knapsack-complete",
     name: "Knapsack (Unbounded)",
     category: "dynamic-programming",

@@ -202,6 +202,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The D-ary Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A d-ary heap generalizes a binary heap to d children per node. Larger d makes the tree shallower, reducing the number of sift-down levels, but each level compares more children. With d = 4 the tradeoff often favors fewer array touches in practice.",
+        "invariants": [
+            "Each parent is at least all d of its children in this max-heap.",
+            "Children of i are indices d*i+1 through d*i+d.",
+            "The tree is complete and stored in a flat array."
+        ],
+        "correctness": "Sift-down swaps a violating parent with its largest child, which fixes the local violation and cannot break order below because that child was maximal. Processing parents from the last up guarantees children are heaps first. Thus the root ends as the maximum and order holds everywhere.",
+        "complexityRationale": "Height is log_d n, so insertion is O(log_d n) and extraction compares d children per level, O(d log_d n). The array uses O(n) space with no pointers.",
+        "uses": [
+            "Priority queues tuned for cache locality",
+            "Dijkstra implementations with fewer sift levels",
+            "Heap sort variants with adjustable fanout"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 6 exercises",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 2.4"
+        ],
+        "workedExample": "Build a 4-ary max-heap from [5, 9, 4, 7, 3, 2, 8]: children of index 0 are indices 1 through 4. The largest child 9 swaps with 5, placing 9 at the root; later sifts ensure every parent dominates children 4*i+1 through 4*i+4."
+    },
     id: "dary-heap",
     name: "D-ary Heap",
     category: "data-structures",

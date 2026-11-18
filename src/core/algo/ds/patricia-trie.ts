@@ -111,6 +111,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Patricia trie compresses an ordinary trie by collapsing every chain of single-child nodes into one edge labeled with the skipped characters. Searches compare a whole label at once, so depth depends on the number of branch points rather than the word length.",
+        "invariants": [
+            "Every internal node has at least two children.",
+            "Every edge label is a nonempty string.",
+            "Concatenating edge labels from the root spells each stored word."
+        ],
+        "correctness": "A compressed edge represents a chain that had exactly one choice, so skipping it loses no branching information: any matching word must take that path. Splitting the edge at the first differing character restores the missing branch, preserving the represented word set on insertion.",
+        "complexityRationale": "Each operation follows at most one edge per branch point and compares labels whose total length is O(k) for key length k, so O(k) time. Storage is one node per branch point plus one edge label per word, O(nk) worst case.",
+        "uses": [
+            "Longest-prefix matching in IP routing tables",
+            "Compact dictionary and prefix indexes",
+            "String dictionaries where memory is scarce"
+        ],
+        "references": [
+            "Morrison, PATRICIA: Practical Algorithm To Retrieve Information Coded in Alphanumeric, JACM 1968",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.3 on digital searching"
+        ],
+        "workedExample": "Insert car, cat, dog, dot. The ca prefix becomes a branch splitting into r and t, and do splits into g and t. Searching cat follows the ca edge then the t branch and reaches a terminal marker."
+    },
     id: "patricia-trie",
     name: "Patricia Trie",
     category: "data-structures",

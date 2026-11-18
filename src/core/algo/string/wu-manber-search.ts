@@ -95,6 +95,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Wu-Manber searches many patterns at once using a block of B characters. It builds a shift table keyed on blocks, giving how far the window can move when a block appears in no pattern, and a hash table of patterns; when the shift is zero, only patterns with a matching hash prefix are verified.",
+        "invariants": [
+            "A block absent from all patterns permits a shift of m-B+1, so skipping is safe.",
+            "Patterns are grouped by a hash of their prefix so verification stays small."
+        ],
+        "correctness": "If the current block occurs in no pattern, no occurrence can start in the skipped positions, so the shift is safe. When it does occur, every pattern occurrence must contain that block, so checking only hash-matching candidates and then verifying characters finds all occurrences without false negatives.",
+        "complexityRationale": "Tables indexed by blocks of sigma letters give O(sigma^B + total pattern length) preprocessing and O(n) average search time, reported as O(n+m) average with O(sigma^2) space for B=2.",
+        "uses": [
+            "Network intrusion detection with thousands of signatures such as Snort",
+            "Multi-keyword scanning in search engines",
+            "Antivirus signature matching"
+        ],
+        "references": [
+            "Wu and Manber, A Fast Algorithm for Multi-Pattern Searching, 1994",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings"
+        ],
+        "workedExample": "For patterns \"ab\" and \"bc\" over text \"ababcab\", two-character blocks give zero shift where they match pattern prefixes; verification reports \"ab\" at indices 0 and 5 and \"bc\" at index 3."
+    },
     id: "wu-manber-search",
     name: "Wu-Manber",
     category: "string",

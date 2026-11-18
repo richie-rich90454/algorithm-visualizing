@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A weak heap relaxes the heap rule: a right child only has to be at least as large as its grandparent rather than its parent, with tree shape recorded by a reverse-bit array. That relaxation roughly halves the comparisons needed by weak heapsort.",
+        "invariants": [
+            "Every right child is no smaller than its grandparent.",
+            "Left children have no order constraint relative to their parent.",
+            "Reverse bits encode which child is distinguished at each node."
+        ],
+        "correctness": "Grandparent ordering still guarantees the root holds the minimum because following distinguished ancestors leads to smaller or equal keys. Swap and flip operations preserve the weak-heap invariant, so extraction through that order returns keys in nondecreasing sequence.",
+        "complexityRationale": "Each swap or extract climbs the ancestor chain, O(log n) worst case. The key array plus one reverse bit per node gives O(n) space.",
+        "uses": [
+            "Weak heapsort with fewer comparisons than binary heapsort",
+            "Priority queues where comparisons are expensive",
+            "Selection algorithms"
+        ],
+        "references": [
+            "Dutton, Weak Heaps: A New Data Structure for Implementing Heapsort, 1988",
+            "CLRS, Introduction to Algorithms, Chapter 6 on ordinary heaps"
+        ],
+        "workedExample": "Keys 5, 2, 8, 1, 4 start in input order with cleared reverse bits; swapping against distinguished ancestors and flipping bits builds weak-heap order, and extracting drains 1, 2, 4, 5, 8 while showing the flip history."
+    },
     id: "weak-heap",
     name: "Weak Heap",
     category: "data-structures",

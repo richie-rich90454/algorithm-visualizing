@@ -140,6 +140,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An ear decomposition builds a graph path by path. Start with a cycle or single vertex, then repeatedly attach an ear, which is a path whose endpoints are already in the constructed part while its inner vertices are new. Every 2-connected graph has such a decomposition, and this demo derives one from a DFS tree and its non-tree edges.",
+        "invariants": [
+            "The constructed subgraph starts with the DFS spine and stays connected.",
+            "Each added ear has both endpoints in the existing subgraph and new internal vertices.",
+            "Every edge of the graph eventually belongs to the spine or to exactly one ear."
+        ],
+        "correctness": "DFS tree edges form an initial path-like spine, and every non-tree edge closes a cycle whose endpoints already lie in the spine, qualifying as an ear. Because all edges are either tree edges or non-tree edges, the process covers every edge, producing a valid ear decomposition.",
+        "complexityRationale": "One DFS plus a scan of non-tree edges costs O(V + E), with O(V + E) space for the tree set and ear lists.",
+        "uses": [
+            "Characterizing 2-connected graphs",
+            "Testing biconnectivity constructively",
+            "A tool in graph structure theory and some matching algorithms"
+        ],
+        "references": [
+            "Whitney, Congruent Graphs and the Connectivity of Graphs (1932)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search"
+        ],
+        "workedExample": "On the cycle A-B-C-D-A, DFS builds the spine A-B-C-D. The closing non-tree edge D-A becomes the final ear; its endpoints are already in the spine and it has no new internal vertices, so spine plus ear reconstructs the whole ring."
+    },
     id: "ear-decomposition",
     name: "Ear Decomposition",
     category: "graph",

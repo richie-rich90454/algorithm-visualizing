@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A longest arithmetic subsequence is an ordered subsequence whose consecutive differences are all the same. The DP keys on both the ending index and the common difference: dp[j][d] extends dp[i][d] whenever nums[j] - nums[i] = d. Each pair of indices either starts a new difference or lengthens an existing chain.",
+        "invariants": [
+            "dp[i][d] is the length of the longest arithmetic subsequence ending at i with difference d.",
+            "Every extension preserves the difference between consecutive terms.",
+            "The answer is the maximum over all states."
+        ],
+        "correctness": "An arithmetic subsequence ending at j with difference d must have a previous term i < j with nums[j]-nums[i] = d, whose best chain is dp[i][d]. Extending gives dp[j][d] >= dp[i][d]+1, and maximizing over all i yields the optimum. Induction over index order proves correctness.",
+        "complexityRationale": "There are O(n^2) pairs, each updating one difference state in constant time, so time is O(n^2). Storing the difference maps for all indices uses O(n^2) space.",
+        "uses": [
+            "Detecting equally spaced patterns in sequences",
+            "Time-series trend analysis",
+            "Combinatorial DP over pairs and differences"
+        ],
+        "references": [
+            "LeetCode problem 446, Longest Arithmetic Subsequence of Given Difference",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For [3,6,9,12] the pair (3,6) starts difference 3 with length 2. Extending through (6,9) and (9,12) reaches length 4, so the whole array is an arithmetic subsequence."
+    },
     id: "longest-arithmetic-subsequence",
     name: "Longest Arithmetic Subsequence",
     category: "dynamic-programming",

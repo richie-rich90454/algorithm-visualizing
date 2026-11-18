@@ -196,6 +196,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bidirectional BFS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bidirectional BFS finds a shortest path by searching simultaneously from the source and from the target. Each side expands one full level at a time, and when the two frontiers meet the concatenated parent links give the path. Exploring radius d/2 twice is far cheaper than one search of radius d in a graph with high branching factor.",
+        "invariants": [
+            "Each frontier contains vertices at the same distance from its own start.",
+            "Both searches use breadth-first order, so first meeting occurs at minimum total distance.",
+            "A meeting vertex yields a path made of the forward prefix and reversed backward prefix."
+        ],
+        "correctness": "After k full levels on each side, all vertices within k hops of either endpoint have been discovered. When the frontiers share a vertex v, the path from source to v plus v to target has length dist_forward(v) plus dist_backward(v). Because BFS explores in nondecreasing distance, the first such meeting minimizes that sum, giving a shortest path.",
+        "complexityRationale": "Each search reaches depth at most d/2, so with branching factor b the work is about O(b^(d/2)) instead of O(b^d), with the same order of space for the two frontiers.",
+        "uses": [
+            "Shortest path queries in social networks and maps",
+            "Six-degrees-of-separation style connection searches",
+            "Speeding up pathfinding when both endpoints are known"
+        ],
+        "references": [
+            "Pohl, Bi-directional Search (1971)",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, informed search"
+        ],
+        "workedExample": "From A toward F and from F toward A, the forward frontier reaches B and C while the backward frontier reaches D and E. The next forward expansion reaches D and meets the backward frontier on edge B-D, producing the shortest path A-B-D-F (or equivalently through E) of length 3."
+    },
     id: "bidirectional-bfs",
     name: "Bidirectional BFS",
     category: "graph",

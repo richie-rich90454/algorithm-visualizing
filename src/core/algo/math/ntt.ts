@@ -187,6 +187,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The NTT module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The number theoretic transform is the fast Fourier transform carried out over a finite field instead of the complex numbers. It swaps complex roots of unity for a primitive root modulo a prime, so every operation is exact integer arithmetic. The iterative Cooley-Tukey layout with bit reversal and butterflies is unchanged, making it ideal for exact polynomial multiplication.",
+        "invariants": [
+            "All values stay reduced modulo the chosen prime.",
+            "Twiddle factors are powers of a primitive root of unity modulo p.",
+            "After all butterfly stages the array holds the exact NTT of the input."
+        ],
+        "correctness": "The DFT decomposition into even and odd halves is purely algebraic and holds in any field containing the required roots of unity. The prime is chosen so a primitive n-th root exists, so the same butterfly recombination applies. Because modular arithmetic is exact, the transform has no floating-point error and inverts to the original coefficients.",
+        "complexityRationale": "There are log n stages of n/2 butterflies, so time is O(n log n) modular operations. The coefficient array uses O(n) space.",
+        "uses": [
+            "Exact convolution and polynomial multiplication modulo a prime",
+            "Fast large-integer multiplication without rounding",
+            "Coding theory and lattice-based cryptography"
+        ],
+        "references": [
+            "Cooley and Tukey, An algorithm for the machine calculation of complex Fourier series (1965)",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.3.3"
+        ],
+        "workedExample": "For values [1, 2, 3, 4] with a suitable NTT prime and root, bit reversal gives [1, 3, 2, 4]. Butterfly stages combine pairs with modular twiddle factors, producing four exact residues that form the number theoretic transform."
+    },
     id: "ntt",
     name: "Number Theoretic Transform",
     category: "math",

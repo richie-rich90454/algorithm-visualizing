@@ -167,6 +167,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In a time-dependent network, edge travel time depends on when you enter it. If the FIFO property holds, departing later never arrives earlier, so waiting is never useful. A Dijkstra-like search can then settle vertices by earliest arrival time, using a priority queue ordered by arrival rather than distance.",
+        "invariants": [
+            "The FIFO property makes arrival-time functions non-decreasing.",
+            "The unsettled vertex with smallest arrival time has its earliest possible arrival.",
+            "Relaxing an edge computes arrival from the current vertex's arrival time."
+        ],
+        "correctness": "FIFO ensures that a path arriving at a vertex later cannot leave and beat an earlier arrival, so the earliest-arrival label is final when popped. This restores Dijkstra's greedy choice, and relaxing edges with their time-dependent costs gives correct earliest-arrival paths.",
+        "complexityRationale": "A heap ordered by arrival time gives O(E log V) time, with O(V + E) space for arrival labels and predecessors.",
+        "uses": [
+            "Routing with traffic and time-of-day travel times",
+            "Public transit itinerary planning under the FIFO assumption",
+            "Scheduling deliveries with departure-dependent durations"
+        ],
+        "references": [
+            "Ausiello, Gentile, and Spaccamela, Dynamic Shortest Paths with FIFO Travel Times (research literature)",
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)"
+        ],
+        "workedExample": "Departing A at time 0, route A-B-D arrives at 4 while A-C-D arrives at 6. The search settles B before C and finalizes D at time 4, giving the earliest-arrival path A-B-D."
+    },
     id: "time-dependent-fifo-shortest-path",
     name: "Time-Dependent FIFO Shortest Path",
     category: "shortest-path",

@@ -130,6 +130,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The transportation problem ships goods from suppliers with fixed supplies to demanders with fixed demands at minimum cost. When totals match, any feasible shipping plan saturates every supply and demand. This demo enumerates all such plans on a tiny instance and keeps the cheapest, showing the structure that network-simplex exploits at scale.",
+        "invariants": [
+            "Every row's shipped amount equals its supply and every column's equals its demand.",
+            "All shipments are nonnegative integers in this small demonstration.",
+            "Total cost is the sum of flow times unit cost over every route."
+        ],
+        "correctness": "Enumerating every matrix of shipments satisfying the supply and demand margins covers the entire feasible set, so the minimum-cost member found is globally optimal. This brute-force certificate is practical only for tiny instances, where it verifies the answer that a transportation simplex would produce.",
+        "complexityRationale": "The number of feasible plans grows combinatorially with supplies and demanders, and enumerating them costs about O(S D) per plan for S suppliers and D demanders. The shipment matrix and cost table use O(S D) space.",
+        "uses": [
+            "Logistics planning from warehouses to customers",
+            "Production distribution with per-site capacity",
+            "A teaching model for min-cost flow and linear programming"
+        ],
+        "references": [
+            "Hitchcock, The Distribution of a Product from Several Sources to Numerous Localities (1941)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, transportation problem"
+        ],
+        "workedExample": "Supplies are [3,2], demands [2,3], with costs [[1,3],[2,1]]. Ship 2 from supplier 0 to demander 0, 1 from supplier 0 to demander 1, and 2 from supplier 1 to demander 1. Cost is 2*1 + 1*3 + 2*1 = 7, the cheapest feasible plan."
+    },
     id: "transportation-problem",
     name: "Transportation Problem",
     category: "flow",

@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A rank-select bitvector answers rank(i), the number of ones before position i, and select(k), the position of the k-th one, using small popcount tables. Superblock totals plus per-block counts let rank read only a couple of counters and one short scan, while select jumps to the right block using the totals.",
+        "invariants": [
+            "Stored block counts equal the true ones count in each block.",
+            "Superblock totals are sums of their blocks.",
+            "Rank and select agree on the same underlying bit sequence."
+        ],
+        "correctness": "Rank(i) is the superblock total before i plus complete block counts plus the popcount of the partial block, which counts exactly the ones before i. Select finds the first block whose running total reaches k and then locates the k-th one inside it; the totals guarantee that block is the right one.",
+        "complexityRationale": "Rank touches one superblock counter, one block counter, and one short scan, O(1) for fixed block size. Select jumps by superblock and scans one block, also O(1); auxiliary tables add only o(n) bits beyond the n raw bits.",
+        "uses": [
+            "Succinct data structures and compressed indexes",
+            "FM-index and wavelet tree rank support",
+            "Bit-parallel algorithms needing fast counting"
+        ],
+        "references": [
+            "Jacobson, Space-Efficient Static Trees and Graphs, FOCS 1989",
+            "Clark and Munro, Efficient Succinct Encoding of Binary Search Trees, CPM 1994"
+        ],
+        "workedExample": "For bits [1,0,1,1,0,0,1,0], rank(5) counts three ones in positions 0 through 4; select(3) returns position 3, the third one; superblock totals guide both jumps."
+    },
     id: "rank-select-bitvector",
     name: "Rank-Select Bitvector",
     category: "data-structures",

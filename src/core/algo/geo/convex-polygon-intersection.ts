@@ -161,6 +161,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The intersection of two convex polygons is found by clipping the subject polygon against each edge half-plane of the clipping polygon in turn, using Sutherland-Hodgman. Because the clip polygon is convex and counterclockwise, each edge defines a half-plane whose intersection with the current polygon is another convex polygon.",
+        "invariants": [
+            "After processing k clip edges, the current polygon is the subject intersected with those k half-planes.",
+            "The current polygon stays convex.",
+            "Every output vertex lies inside all processed half-planes."
+        ],
+        "correctness": "Sutherland-Hodgman clipping replaces the current polygon with its intersection with one half-plane, preserving exactly the points inside that edge. Processing all edges of the clip polygon therefore intersects the subject with the full clip polygon, which is their intersection. Computing the area of the resulting polygon with the shoelace formula then gives the overlap area.",
+        "complexityRationale": "Each of the m clip edges scans the current vertex list once, and the list has at most O(n+m) vertices, so total time is O(n*m). The vertex lists require O(n+m) space.",
+        "uses": [
+            "Computing overlap of two convex geographic regions",
+            "Collision detection between convex game shapes",
+            "Clipping polygons in a rendering pipeline"
+        ],
+        "references": [
+            "Sutherland and Hodgman, Reentrant Polygon Clipping, Communications of the ACM 17 (1974)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 1"
+        ],
+        "workedExample": "Intersecting the square [0,2] by [0,2] with the square [1,3] by [1,3]: clipping by x >= 1, x <= 3, y >= 1, and y <= 3 leaves the square [1,2] by [1,2]. The shoelace area of that result is 1."
+    },
+
     id: "convex-polygon-intersection",
     name: "Convex Polygon Intersection",
     category: "geometry",

@@ -130,6 +130,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Sorted Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A sorted linked list keeps nodes in order at all times. Insertion walks from the head to the first larger node and splices the new node there; equal keys keep their original order, making the structure stable.",
+        "invariants": [
+            "Nodes are in nondecreasing order.",
+            "Each node links to its successor.",
+            "Insert and delete preserve the ordering."
+        ],
+        "correctness": "Scanning stops at the first node greater than the key, so splicing before it places the key correctly; equal keys are placed after existing equals, preserving stability. Since every other pair was already ordered, the whole list remains sorted.",
+        "complexityRationale": "Finding the insertion point takes O(n) walks while the splice itself is O(1). One node per value gives O(n) space.",
+        "uses": [
+            "Small ordered collections with frequent traversals",
+            "Stable insertion-based sorting",
+            "Adjacency lists kept in sorted order"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.3"
+        ],
+        "workedExample": "List 5 to 10 to 20 to 30; inserting 15 walks past 10 and splices before 20, yielding 5, 10, 15, 20, 30; a verification walk confirms sorted order."
+    },
     id: "sorted-linked-list",
     name: "Sorted Linked List",
     category: "data-structures",

@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A virtual tree is a compact tree that keeps only a set of important nodes plus the lowest common ancestors needed to connect them. It preserves the ancestry relationships among those nodes while shrinking a large tree down to O(k) relevant vertices.",
+        "invariants": [
+            "Every important node appears in the virtual tree.",
+            "The LCA of any two important nodes is included when needed to connect them.",
+            "Ancestry order among kept nodes matches the original tree."
+        ],
+        "correctness": "Sorting important nodes by Euler entry time and inserting LCAs of neighboring pairs captures every branching point needed to connect them, because the LCA of a set of nodes appears as the LCA of some adjacent pair in that order. Rewiring parent links to skip non-kept nodes then yields a tree whose induced relationships among important nodes match the original, so any query expressible on those nodes gives the same answer on the virtual tree.",
+        "complexityRationale": "Sorting k important nodes costs O(k log k), and building LCAs plus the compact tree is linear in the number of kept nodes, giving O(k log k) time and O(k) space.",
+        "uses": [
+            "Answering queries on a small subset of tree nodes",
+            "Compressing large trees for DP over marked vertices",
+            "Competitive programming multi-query tree problems"
+        ],
+        "references": [
+            "Competitive Programming 3, Hall and Li, tree chapter",
+            "CLRS, Introduction to Algorithms, Chapter 22 (lowest common ancestors)"
+        ],
+        "workedExample": "In a tree rooted at A with children B and C, if B and C are the important nodes, their LCA A is added and edges A-B and A-C are kept. The virtual tree has exactly three nodes and preserves their original relationships."
+    },
+
     id: "virtual-tree",
     name: "Virtual Tree",
     category: "tree",

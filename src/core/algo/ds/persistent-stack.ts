@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A persistent stack is a chain of immutable nodes. Pushing allocates one new node pointing at the old top and records it as a new version, so older tops are never changed and you can fork a new history from any past version.",
+        "invariants": [
+            "Every node is immutable and links to one child.",
+            "Each version root is a valid stack top.",
+            "Branching never alters the source version."
+        ],
+        "correctness": "Pushing creates a fresh head whose tail is exactly the previous version chain, so the new version reads as the old top plus the new value. Because no existing node is mutated, all past tops continue to represent their original sequences.",
+        "complexityRationale": "Push allocates one node and sets one pointer, O(1); pop is a root read. Each push adds one node, so space is O(number of versions).",
+        "uses": [
+            "Functional language lists",
+            "Undo stacks with branching histories",
+            "Persistent backtracking state in search"
+        ],
+        "references": [
+            "Okasaki, Purely Functional Data Structures, Chapter 2 on singly linked lists",
+            "Driscoll, Sleator, and Tarjan, Making Data Structures Persistent"
+        ],
+        "workedExample": "Push 1, 2, 3 to form versions [1], [1,2], [1,2,3]. Branching from version [1] by pushing 9 yields [1,9] while the original [1,2,3] stays readable."
+    },
     id: "persistent-stack",
     name: "Persistent Stack",
     category: "data-structures",

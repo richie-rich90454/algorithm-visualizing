@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Trie module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A trie is a tree of prefixes: each edge carries one character and a root-to-node path spells a prefix. Insert, search, and prefix queries walk one edge per character, independent of how many words are stored.",
+        "invariants": [
+            "Edges leaving a node carry distinct characters.",
+            "A terminal marker identifies complete words.",
+            "Every stored word has a path from the root."
+        ],
+        "correctness": "Following a word characters from the root either finds the path, proving the word or prefix exists, or hits a missing edge, proving it does not. Creating nodes on insertion adds exactly the needed path, so all inserted words are represented.",
+        "complexityRationale": "Each operation visits one node per character, O(L) for word length L, regardless of the number of words. Space is one node per distinct prefix, O(total characters).",
+        "uses": [
+            "Autocomplete and type-ahead suggestions",
+            "Spell checkers",
+            "IP prefix routing and dictionary lookups"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.3 on digital searching",
+            "Sedgewick and Wayne, Algorithms, 4th Edition, Section 5.2"
+        ],
+        "workedExample": "Words cat, car, cart, dog share nodes c-a and c-a-r; searching car follows c, a, r and reaches a terminal marker, while ca reaches a node that is a prefix but not a word."
+    },
     id: "trie",
     name: "Trie",
     category: "data-structures",

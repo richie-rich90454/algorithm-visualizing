@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Every rational number can be written as a finite continued fraction by repeatedly taking the integer part and reciprocating the remainder. The Euclidean algorithm produces the partial quotients, and a simple recurrence turns them into successive convergents. Each convergent is the best rational approximation to the value using numbers of its size.",
+        "invariants": [
+            "The partial quotients are exactly the quotients from Euclid's algorithm on numerator and denominator.",
+            "The recurrence p_k = a_k*p_(k-1) + p_(k-2) (and likewise for q) holds for every convergent.",
+            "Consecutive convergents satisfy p_k*q_(k-1) - p_(k-1)*q_k = plus or minus one."
+        ],
+        "correctness": "The Euclidean steps generate a finite continued fraction equal to the original ratio because reciprocating the remainder reconstructs the division chain. The standard recurrence is proven by induction to build numerator and denominator of each convergent. The final convergent therefore equals the starting fraction exactly.",
+        "complexityRationale": "Euclid's algorithm takes O(log min(num, den)) divisions, and each produces one convergent via constant-time recurrence updates. Storing the convergent chain uses O(log min(num, den)) space.",
+        "uses": [
+            "Best rational approximation of real numbers",
+            "Solving linear Diophantine equations via convergents",
+            "Rational reconstruction in computer algebra and cryptography"
+        ],
+        "references": [
+            "Hardy and Wright, An Introduction to the Theory of Numbers, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.3"
+        ],
+        "workedExample": "For 7/5 the Euclidean quotients are 1, 2, 2, giving [1; 2, 2]. The convergents are 1/1, 3/2, and 7/5; the last one recovers the original fraction."
+    },
     id: "continued-fractions-convergents",
     name: "Continued Fraction Convergents",
     category: "math",

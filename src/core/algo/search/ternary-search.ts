@@ -174,6 +174,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Ternary Search module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Ternary search splits the search interval into thirds using probes at 1/3 and 2/3. Comparing the target with the probes discards one third of the interval. It is more often used to find the extremum of a unimodal function than to search arrays.",
+        "invariants": [
+            "The target or optimum lies within the current interval.",
+            "Each step removes one third of the interval."
+        ],
+        "correctness": "For sorted arrays, comparing with two probes identifies which third can hold the target, and discarding the others is safe by sortedness; repeated division converges to a single position.",
+        "complexityRationale": "Each step needs two comparisons and shrinks the range by a factor of three, requiring about 2*log_3 n probes, which is worse than binary search for arrays. Space is O(1).",
+        "uses": [
+            "Finding the maximum of a unimodal function",
+            "Teaching divide and conquer with more than two parts",
+            "Optimization over a single-peaked range"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "For [2,5,8,11,14,17,20,23] and target 17, probes at one-third and two-thirds positions bracket 17; discarding the lower third and then part of the rest converges to index 5."
+    },
     id: "ternary-search",
     name: "Ternary Search",
     category: "searching",

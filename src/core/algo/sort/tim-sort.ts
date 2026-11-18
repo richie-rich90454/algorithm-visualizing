@@ -238,6 +238,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tim Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Scan the input for short already ordered runs, extend descending runs by reversing them, then merge the runs with rules that keep natural order and balance merge sizes. Insertion sort finishes very short runs.",
+        "invariants": [
+            "Every run on the stack is sorted internally.",
+            "Run lengths obey the merge invariants, so merges stay balanced."
+        ],
+        "correctness": "Each run is sorted by insertion sort or by reversal of a descending run. Merging two sorted runs yields a sorted run, so when all runs collapse into one the array is sorted.",
+        "complexityRationale": "Runs take O(n) to detect and extend. Balanced merges give O(n log n) worst case; naturally ordered data can finish in O(n). Space is O(n) for merge buffers.",
+        "uses": [
+            "Default sort in Python and Java object arrays",
+            "Real-world data that contains existing ordered runs",
+            "Adaptive sorting where best case matters"
+        ],
+        "references": [
+            "Peters, Timsort description, 2002",
+            "Macilotti and Odersky, On the Worst-Case Complexity of TimSort, 2015"
+        ],
+        "workedExample": "Input [1, 2, 3, 9, 5, 4] has an ascending run [1, 2, 3, 9] and a descending run [5, 4], which is reversed to [4, 5]. The two sorted runs merge into [1, 2, 3, 4, 5, 9]."
+    },
     id: "tim-sort",
     name: "Tim Sort",
     category: "sorting",

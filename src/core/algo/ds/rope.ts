@@ -109,6 +109,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A rope stores a long string as a balanced binary tree whose leaves are short chunks, with each internal node caching the total length of its subtree. Concatenation creates a new root, split descends by weights, and charAt follows the weights to the correct leaf.",
+        "invariants": [
+            "Each cached node length equals the sum of its children lengths.",
+            "Leaves hold the actual characters.",
+            "The tree is rebalanced when one side grows much heavier."
+        ],
+        "correctness": "Concatenation preserves character order and new roots correctly sum their children. CharAt compares the index with left subtree weights to choose a child, so it lands on the right character; splitting reuses subtrees and yields two ropes whose concatenation is the original text.",
+        "complexityRationale": "Following weights descends O(log n) levels in a balanced rope, so index, concat, and split are O(log n); building all leaves is O(n). One node per chunk plus internal nodes gives O(n) space.",
+        "uses": [
+            "Text buffers in editors",
+            "Representing large strings with cheap concatenation",
+            "Persistent strings in functional languages"
+        ],
+        "references": [
+            "Boehm, Atkinson, and Plass, Ropes: an Alternative to Strings, Software: Practice and Experience 1995"
+        ],
+        "workedExample": "Chunks hel, lo, wor, ld concatenate to hello world; charAt(7) uses left weights to find w; splitting at index 5 yields hello and world, whose lengths sum to 11."
+    },
     id: "rope",
     name: "Rope",
     category: "data-structures",

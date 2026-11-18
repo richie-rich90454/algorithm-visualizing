@@ -91,6 +91,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The factoradic rank of a permutation counts how many permutations come before it in lexicographic order. For each position, count how many unused digits are smaller than the current one and multiply by the remaining factorial weight. Summing these contributions gives a number between 0 and n!-1 that uniquely identifies the permutation.",
+        "invariants": [
+            "The digits used at earlier positions are excluded from later counts.",
+            "The weight at position i is (n-1-i)!.",
+            "Each position's contribution is strictly less than its weight."
+        ],
+        "correctness": "Choosing a smaller unused digit at a position would place the permutation earlier in lexicographic order, and there are exactly that many choices times the number of arrangements of the remaining digits, which is the factorial weight. Summing over positions therefore counts all predecessors exactly, giving the rank.",
+        "complexityRationale": "For each of n positions the algorithm scans up to n unused digits, costing O(n^2) time. Storing the used flags and permutation uses O(n) space.",
+        "uses": [
+            "Permutation unranking and ranking for enumeration",
+            "Compact encoding of permutations in combinatorial algorithms",
+            "Generating test cases in lexicographic order"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 4, Section 7.2.1.2",
+            "Comtet, Advanced Combinatorics, Chapter 1"
+        ],
+        "workedExample": "For permutation [2, 0, 1] of {0,1,2}: at position 0, one unused digit (0) is smaller, weight 2! = 2, contributing 2; position 1 contributes 0. The rank is 2, matching the third permutation in lexicographic order."
+    },
     id: "permutation-rank-factoradic",
     name: "Permutation Rank (Factoradic)",
     category: "math",

@@ -340,6 +340,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Smooth Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Smooth sort is Dijkstra's adaptive sort built from Leonardo heaps, trees whose sizes follow the Leonardo numbers. The array is covered by a stack of such heaps, and extracting maxima one by one sorts in place. Already sorted input runs in near-linear time.",
+        "invariants": [
+            "Each heap on the stack satisfies the max-heap property.",
+            "The heap sizes follow the Leonardo decomposition of the remaining array length."
+        ],
+        "correctness": "The root of each Leonardo heap is the maximum of its tree; repeatedly extracting the largest root and restoring heap order emits elements in descending order, which reversed gives sorted order. Heap repair preserves the heap property.",
+        "complexityRationale": "Building and repairing heaps costs O(log n) per extraction in the worst case, giving O(n log n); when input is nearly sorted few repairs are needed and time approaches O(n). It is in place, O(1) space.",
+        "uses": [
+            "Adaptive sorting when input is often nearly sorted",
+            "In-place sorting with a worst-case guarantee",
+            "Teaching Leonardo heaps and implicit data structures"
+        ],
+        "references": [
+            "Dijkstra, Smoothsort, an Adaptive Variant of Heapsort, Software Practice and Experience, 1981",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "For [8, 3, 6, 1, 7, 2, 5, 4], Leonardo heap sizes decompose the eight slots; the largest root 8 is extracted first, then 7, and so on, emitting [8, 7, 6, 5, 4, 3, 2, 1] which reverses into sorted order."
+    },
     id: "smooth-sort",
     name: "Smooth Sort",
     category: "sorting",

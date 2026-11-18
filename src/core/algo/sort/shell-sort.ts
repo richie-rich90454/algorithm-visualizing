@@ -178,6 +178,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Shell Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Shell sort generalizes insertion sort by comparing elements a gap apart. Wide gaps move elements toward their final region quickly; as the gap shrinks to 1 the last pass is an ordinary insertion sort on an almost sorted array, so it does little work.",
+        "invariants": [
+            "After a gap pass, every gap-spaced subsequence is sorted.",
+            "When the gap is 1, the whole array is sorted."
+        ],
+        "correctness": "Sorting each gap subsequence preserves the sortedness of previously processed larger-gap subsequences in the standard gapped-insertion argument; when the final gap-1 insertion pass completes, the entire array is sorted.",
+        "complexityRationale": "The halving gap sequence gives O(n^2) worst-case comparisons, though practical counts are much lower; other sequences have better proven bounds. Only the gap, index, and a temporary value are stored, O(1) space.",
+        "uses": [
+            "Sorting medium arrays with simple code",
+            "Embedded systems needing no recursion or buffer",
+            "Teaching the gap-sequence idea behind faster sorts"
+        ],
+        "references": [
+            "Shell, A High-Speed Sorting Procedure, Communications of the ACM, 1959",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "For [23, 3, 41, 7, 11, 13, 17, 29] with gap 4, compare (23, 11), (3, 13), (41, 17), (7, 29); gap 2 and then gap 1 passes finish the array as [3, 7, 11, 13, 17, 23, 29, 41]."
+    },
     id: "shell-sort",
     name: "Shell Sort",
     category: "sorting",

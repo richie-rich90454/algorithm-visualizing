@@ -137,6 +137,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Palindrome partitioning min cuts finds the fewest cuts that split a string so every piece is a palindrome. It first builds a table marking which substrings are palindromes, then computes cuts[i], the minimum cuts for the prefix ending at i. If the whole prefix is a palindrome no cut is needed; otherwise a cut before any palindromic suffix is considered.",
+        "invariants": [
+            "pal[l][r] records whether s[l..r] is a palindrome.",
+            "cuts[i] is the minimum number of cuts for s[0..i].",
+            "Every valid last piece is a palindrome starting at some j+1 and ending at i."
+        ],
+        "correctness": "Any partition has a final palindromic piece s[j+1..i]; the cuts before it equal cuts[j] plus one, unless the whole prefix is already a palindrome. Minimizing over all such j considers every possible last piece, so cuts[i] is optimal by induction.",
+        "complexityRationale": "Building the palindrome table and the cuts each cost O(n^2), so total time is O(n^2). Both tables use O(n^2) space.",
+        "uses": [
+            "Minimizing cuts in string segmentation tasks",
+            "Text formatting and wrapping with palindrome constraints",
+            "A two-stage DP over palindromes"
+        ],
+        "references": [
+            "LeetCode problem 132, Palindrome Partitioning II",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s = aab the substring aa is a palindrome and b is a palindrome, so one cut gives aa|b. The DP reports cuts[2] = 1."
+    },
     id: "palindrome-partitioning-min-cuts",
     name: "Palindrome Partitioning (Min Cuts)",
     category: "dynamic-programming",

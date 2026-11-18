@@ -199,6 +199,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A vertex-disjoint path cover partitions the vertices of a tree into the fewest simple paths. Because kept edges must form paths, no vertex can have more than two kept edges, so minimizing the number of paths is equivalent to keeping as many edges as possible under that degree constraint.",
+        "invariants": [
+            "Kept edges form a collection of vertex-disjoint paths.",
+            "Every vertex has degree at most two in the kept-edge set.",
+            "The number of paths equals n minus the number of kept edges."
+        ],
+        "correctness": "In a forest with n vertices and e kept edges, each component is a path exactly when it is acyclic and has maximum degree two; a tree has no cycles to worry about. Each kept edge reduces the component count by one, so starting from n isolated vertices the path count is n - e. Maximizing e subject to the degree constraint therefore minimizes the number of paths, and the tiny exhaustive search finds that maximum.",
+        "complexityRationale": "The demo searches subsets of edges on small trees, costing O(2^n) time with O(n) space for the current edge set. Polynomial dynamic programming exists for larger trees.",
+        "uses": [
+            "Covering a network with the fewest disjoint routes",
+            "Scheduling chains of dependent tasks",
+            "Checking answers from greedy path-cover algorithms"
+        ],
+        "references": [
+            "Bondy and Murty, Graph Theory, Chapter 5 (path covers)",
+            "Garey and Johnson, Computers and Intractability, path cover chapter"
+        ],
+        "workedExample": "For a star with center A and leaves B, C, D, at most two edges can be kept because A would otherwise have degree three. Keeping B-A-C gives one path plus the isolated vertex D, so the minimum cover has two paths."
+    },
+
     id: "tree-path-cover",
     name: "Tree Path Cover",
     category: "tree",

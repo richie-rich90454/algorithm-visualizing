@@ -139,6 +139,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Saddleback search starts at the top-right corner of a row- and column-sorted matrix. If the current cell is too large, moving left is the only option; if too small, moving down is the only option. Each step eliminates a whole row or column.",
+        "invariants": [
+            "Everything below the current cell in its column is at least the current value.",
+            "Everything left of the current cell in its row is at most the current value."
+        ],
+        "correctness": "A too-large cell rules out the rest of its column below; a too-small cell rules out the rest of its row to the left. Walking off the grid means every possible location was eliminated, so the target is absent.",
+        "complexityRationale": "Each comparison removes one row or one column, so at most rows + cols steps, O(rows + cols) time, with only two indices, O(1) space.",
+        "uses": [
+            "Searching multiplication tables and sorted grids",
+            "Teaching monotone-matrix search",
+            "Database range queries on ordered indexes"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "In a grid sorted by row and column, start at the top-right value; if it exceeds the target go left, if below go down. For a small matrix and target 6 the walk lands exactly on 6 after a few moves."
+    },
     id: "saddleback-search",
     name: "Saddleback Search",
     category: "searching",

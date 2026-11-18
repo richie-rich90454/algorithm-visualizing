@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Computing many binomial coefficients modulo a prime is easy if factorials are precomputed. Since C(n, k) = n! / (k!*(n-k)!), we build a table of factorials up to n and multiply by the modular inverses of the denominator terms. Fermat's theorem gives each inverse as a single exponentiation, so queries are answered in constant time after setup.",
+        "invariants": [
+            "The table entry f[i] equals i! modulo p.",
+            "p is prime so every nonzero factorial has an inverse.",
+            "The product f[n] times inv(f[k]) times inv(f[n-k]) equals C(n, k) mod p."
+        ],
+        "correctness": "By induction f[i] = f[i-1]*i = i! mod p. The algebraic definition of the binomial coefficient rewrites division as multiplication by modular inverses, which exist because p exceeds n and all factorials are nonzero mod p. The computed product is therefore C(n, k) modulo p.",
+        "complexityRationale": "Building the table costs O(n) multiplications and the two Fermat inversions cost O(log p) each, giving O(n + log p) time. The factorial table needs O(n) space.",
+        "uses": [
+            "Answering many binomial queries modulo a prime",
+            "Combinatorial counting in competitive programming",
+            "Computing coefficients in polynomial expansions"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 6",
+            "Cormen et al., Introduction to Algorithms, Section 31.3"
+        ],
+        "workedExample": "Modulo 13 build factorials up to 5: f[5] = 120 = 3. Then C(5,2) = 3 * inv(f[2]) * inv(f[3]) = 3 * inv(2) * inv(6) = 3 * 7 * 11 = 231 = 10 mod 13, matching 10."
+    },
     id: "ncr-precompute-factorials",
     name: "nCr via Factorial Table",
     category: "math",

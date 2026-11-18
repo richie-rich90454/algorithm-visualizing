@@ -162,6 +162,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Flash sort classifies each value into a bucket by linear interpolation between the minimum and maximum, then permutes values directly into their bucket's region. A final insertion sort cleans up the almost sorted array. It is very fast on uniformly distributed data.",
+        "invariants": [
+            "Each element is moved to the region associated with its interpolated class.",
+            "After permutation, elements in earlier classes are no larger than elements in later classes."
+        ],
+        "correctness": "Interpolation assigns monotonically larger values to higher classes, so permuting into class regions orders the array by class; insertion sort then fixes ordering inside each region. The result is fully sorted.",
+        "complexityRationale": "Classifying and permuting n values is linear, and under uniform data each class holds O(1) values so the finishing insertion sort is linear too, O(n) overall. The class boundaries and output array use O(n) space.",
+        "uses": [
+            "Sorting uniformly distributed sensor readings",
+            "Fast preprocessing in graphics and games",
+            "Teaching interpolation-based distribution sorts"
+        ],
+        "references": [
+            "Neubert, Flash Sort, Dr. Dobb's Journal, 1998",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3] with min 1 and max 5, interpolation maps 1 to class 0 and 5 to class 4; values are swapped into their class slots, leaving nearly sorted [1, 2, 3, 4, 5] that insertion sort confirms."
+    },
     id: "flash-sort",
     name: "Flash Sort",
     category: "sorting",

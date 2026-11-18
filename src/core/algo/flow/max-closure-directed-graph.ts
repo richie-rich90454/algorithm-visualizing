@@ -198,6 +198,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A closure is a set of vertices with no arc leaving it: if you include a project you must include everything it depends on. Weighted maximum closure can be solved by a single min cut, putting positive weights on the source side of a network and negative weights on the sink side, with infinite arcs enforcing dependencies.",
+        "invariants": [
+            "Infinite-capacity arcs enforce that selecting a vertex selects all its successors.",
+            "The value of a closure equals the sum of positive weights minus the capacity of the cut it defines.",
+            "A finite minimum cut corresponds to a valid closure."
+        ],
+        "correctness": "Each closed set maps to an s-t cut whose capacity is exactly the positive weight left behind plus negative weight pulled in, so minimizing cut capacity maximizes closure weight. Infinite arcs prevent cuts that would break a dependency, so every finite cut is a closed set. By max-flow min-cut, one flow computation finds the optimum closure.",
+        "complexityRationale": "The network has V vertices and E dependency arcs plus source and sink arcs, and one max flow costs about O(V E^2). Building and storing the network uses O(V + E) space.",
+        "uses": [
+            "Project selection with prerequisite constraints",
+            "Maximum-weight closure in directed dependency graphs",
+            "Image segmentation and feature selection reductions"
+        ],
+        "references": [
+            "Picard, Maximal Closure of a Graph and Applications to Combinatorial Problems (1976)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, closure applications"
+        ],
+        "workedExample": "Weights A=5, B=-3, C=4 with arcs A to B and A to C. Selecting A forces B and C, giving weight 5-3+4 = 6. Other closed sets such as {C} score 4 and {B,C} score 1, so {A,B,C} with total 6 is the maximum closure."
+    },
     id: "max-closure-directed-graph",
     name: "Max Closure of a Directed Graph",
     category: "flow",

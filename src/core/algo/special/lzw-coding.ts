@@ -102,6 +102,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LZW is a variant of LZ78 that seeds the dictionary with every single character and emits numeric codes instead of prefix-and-character pairs. As it scans, it extends the current phrase while that phrase is in the dictionary, then emits its code and adds phrase plus next character. The decoder builds the same dictionary from the codes alone.",
+        "invariants": [
+            "The dictionary always holds all single characters plus one new phrase per emitted code.",
+            "Encoder and decoder dictionaries stay synchronized because each new phrase is the previous phrase plus the first character of the current one.",
+            "Codes grow monotonically from the alphabet size."
+        ],
+        "correctness": "The decoder reconstructs each dictionary entry one step before it is needed, with a special case when a code refers to the entry currently being created, so every emitted code is decodable. By induction the reconstructed phrases equal the encoder's, making the round trip exact as the demo verifies.",
+        "complexityRationale": "Using a hash map, each scan step does constant-time lookups, so encoding and decoding are O(n) for n characters. The dictionary holds at most n entries; with bounded phrase length and a map, space is O(n).",
+        "uses": [
+            "GIF image compression",
+            "TIFF and PDF image streams",
+            "The Unix compress utility",
+            "General dictionary-based lossless compression and hardware compressors"
+        ],
+        "references": [
+            "Welch, A Technique for High-Performance Data Compression, IEEE Computer, 1984",
+            "Ziv and Lempel, Compression of Individual Sequences via Variable-Rate Coding, 1978"
+        ],
+        "workedExample": "For \"abababa\" over {a,b}, dictionary a=0 and b=1. Scanning emits code 0 for 'a' and adds \"ab\"=2, emits 1 for 'b' and adds \"ba\"=3, emits 2 for \"ab\" and adds \"aba\"=4, then emits 4 for the final \"aba\". The codes [0,1,2,4] replay to \"abababa\"."
+    },
     id: "lzw-coding",
     name: "LZW Coding",
     category: "string",

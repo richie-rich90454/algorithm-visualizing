@@ -146,6 +146,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Point in Polygon (ray) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Ray casting decides containment by shooting a horizontal ray from the query point to the right and counting how many polygon edges it crosses. An odd count means the point is inside, an even count means outside, and the rule works for both convex and non-convex simple polygons.",
+        "invariants": [
+            "The crossing count changes by one each time the ray passes the polygon boundary.",
+            "Points outside the vertical span of an edge cannot have that edge cross the ray.",
+            "Vertex and collinear cases are handled consistently so each crossing is counted once."
+        ],
+        "correctness": "Traveling along the ray from the query point to infinity, each boundary crossing toggles between inside and outside. Far away the point is certainly outside, so an odd number of crossings implies the starting point was inside and an even number implies outside. Careful half-open treatment of edge endpoints and collinear edges ensures each genuine crossing is counted exactly once.",
+        "complexityRationale": "Every edge is examined once with constant work, so time is O(n). Only the running parity and a few coordinates are kept, so space is O(1).",
+        "uses": [
+            "Hit testing shapes in vector graphics and maps",
+            "Determining whether a coordinate falls within a country boundary",
+            "Point inclusion in game collision polygons"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Chapter 5",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "For the unit square and query (0.5,0.5), the ray to the right crosses the edge x = 1 once, an odd count, so the point is inside. For query (2,0.5) there are no crossings, so it is outside."
+    },
+
     id: "point-in-polygon-ray",
     name: "Point in Polygon (Ray)",
     category: "geometry",

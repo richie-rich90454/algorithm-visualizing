@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "HITS assigns each page two scores. An authority is good if many good hubs point to it, and a hub is good if it points to many good authorities. Each round recomputes authority scores from in-neighbors and hub scores from out-neighbors, then normalizes, and the vectors settle after a few rounds.",
+        "invariants": [
+            "Authority and hub vectors are normalized after every update.",
+            "Mutually reinforcing hub-authority links increase both scores.",
+            "Repeated updates converge to the principal eigenvectors of the adjacency products."
+        ],
+        "correctness": "The update is a power iteration on the matrices A^T A and A A^T, whose dominant eigenvectors are the authority and hub vectors by the Perron-Frobenius theorem. Normalization prevents unbounded growth, so after enough rounds the scores approximate the HITS solution.",
+        "complexityRationale": "Each of k rounds touches every edge twice, O(k(V + E)) time, with O(V) space for the two score vectors.",
+        "uses": [
+            "Web page ranking and topic-specific search",
+            "Finding authoritative sources in citation networks",
+            "Identifying influential hubs in bipartite structures"
+        ],
+        "references": [
+            "Kleinberg, Authoritative Sources in a Hyperlinked Environment (1999)",
+            "Gibson, Kleinberg, and Raghavan, Inferring Web Communities from Link Topology (1998)"
+        ],
+        "workedExample": "For edges A to B, A to C, and B to C, start all scores at 1. After three normalized rounds, C has the highest authority because both A and B point to it, while A has the highest hub score because it points to both other vertices."
+    },
     id: "hits-hubs-authorities",
     name: "HITS Hubs and Authorities",
     category: "graph",

@@ -269,6 +269,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dijkstra (Fibonacci) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This is Dijkstra's algorithm using a Fibonacci heap. The operation that dominates Dijkstra is decrease-key, and a Fibonacci heap performs it in O(1) amortized time versus O(log V) for a binary heap. That reduces the total to O(V log V + E), the best classic bound for dense graphs.",
+        "invariants": [
+            "The heap holds at least one entry per unsettled vertex with its current best distance.",
+            "Stale heap entries are skipped when a vertex has already been finalized.",
+            "A finalized vertex's distance equals its true shortest distance."
+        ],
+        "correctness": "Extracting the minimum key selects the unsettled vertex of smallest tentative distance, so Dijkstra's argument applies: every remaining path to it would pass through another unsettled vertex with distance at least as large. Relaxing its edges preserves correct tentative distances, so finalization is safe.",
+        "complexityRationale": "V extract-min operations cost O(V log V) and E decrease-keys cost O(E) amortized with a Fibonacci heap, giving O(V log V + E); the heap and arrays use O(V + E) space.",
+        "uses": [
+            "Dense shortest-path problems where decrease-key dominates",
+            "A teaching version of the Fibonacci heap interface",
+            "Network routing with large graphs and many relaxations"
+        ],
+        "references": [
+            "Fredman and Tarjan, Fibonacci Heaps and Their Uses in Improved Network Optimization Algorithms (1987)",
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)"
+        ],
+        "workedExample": "Starting at A, relax edges to put B and C in the heap. Each improvement marks an entry for decrease-key; extracting the smallest repeatedly settles A, C, B, D, E, F in order, and the predecessor chain gives the shortest route to F of cost 6."
+    },
     id: "dijkstra-fibonacci",
     name: "Dijkstra (Fibonacci)",
     category: "shortest-path",

@@ -151,6 +151,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree Euler Tour module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "An Euler tour records a timestamp when a node is entered and another when it is exited. The key consequence is that a node's entire subtree occupies one contiguous interval of timestamps, turning subtree questions into range queries on an array.",
+        "invariants": [
+            "tin[u] is assigned when u is first visited and tout[u] when its DFS finishes.",
+            "A node v is in u's subtree exactly when tin[u] <= tin[v] <= tout[u].",
+            "Timestamps are unique and increase monotonically along the DFS."
+        ],
+        "correctness": "Depth-first search explores a node's whole subtree before returning to its ancestors, so every descendant is entered between the entry and exit of that node. Hence the subtree corresponds exactly to the timestamp interval [tin, tout]. Testing interval containment therefore answers ancestry and subtree membership correctly, and the contiguous layout lets array range structures answer aggregate subtree queries.",
+        "complexityRationale": "A single DFS assigns two timestamps per node, costing O(n) time. The timer and timestamp arrays use O(n) space.",
+        "uses": [
+            "Subtree sum queries with Fenwick or segment trees",
+            "Ancestry testing in rooted trees",
+            "Flattening trees for range-based algorithms"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (DFS timestamps)",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "For tree A with children B and C, and B with child D, one tour gives tin A = 0, tin B = 1, tin D = 2, tout D = 3, tout B = 4, tin C = 5, tout C = 6, tout A = 7. B's subtree is exactly the interval [1,4]."
+    },
+
     id: "tree-euler-tour",
     name: "Tree Euler Tour",
     category: "tree",

@@ -73,6 +73,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bisection finds a root of a continuous function by repeatedly halving an interval whose endpoints have opposite signs. If f(a) and f(b) bracket zero, evaluate the midpoint and keep whichever half still straddles zero. Each step shrinks the interval while guaranteeing the root remains inside it.",
+        "invariants": [
+            "f(a) and f(b) always have opposite signs, or one endpoint is a root.",
+            "The interval [a,b] only shrinks, halving in width each iteration.",
+            "The true root always lies within the current interval."
+        ],
+        "correctness": "The intermediate value theorem says a continuous function taking opposite signs at a and b must cross zero between them. Keeping the sub-interval whose endpoints still straddle zero preserves that guarantee, so after t steps the midpoint is within (b-a)/2^(t+1) of a root. Convergence is assured for any continuous function with a bracketed root.",
+        "complexityRationale": "Each iteration does constant work: one function evaluation and a sign test, so t iterations cost O(t). Only the endpoints and midpoint are stored, O(1) space. Halving the interval each step gives linear convergence in the number of iterations.",
+        "uses": [
+            "Solving equations in engineering and physics",
+            "Root-finding routines in numerical libraries",
+            "Computing implied interest rates and internal rate of return",
+            "Calibrating model parameters and embedded-systems math"
+        ],
+        "references": [
+            "Burden and Faires, Numerical Analysis, Chapter 2",
+            "Press et al., Numerical Recipes, Chapter 9"
+        ],
+        "workedExample": "For f(x)=x^3-x-2 on [1,2], f(1)=-2 and f(2)=4 straddle zero. The midpoint 1.5 has f(1.5)=-0.125, so keep the right half [1.5,2]. The next midpoint 1.75 has f>0, so keep [1.5,1.75]. Continuing halves the bracket until the root is approximately 1.5214."
+    },
     id: "bisection-method",
     name: "Bisection Method",
     category: "math",

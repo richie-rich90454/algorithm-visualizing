@@ -67,6 +67,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A gossip protocol spreads information like a rumor: each node that knows a piece of news periodically pushes it to a randomly chosen peer. Early on, the number of informed nodes roughly doubles each round because most pushes reach someone new. Near the end, a few extra rounds are needed to reach the last holdouts.",
+        "invariants": [
+            "A node, once informed, stays informed.",
+            "The informed set only grows from round to round.",
+            "Each round every informed node makes exactly one push to a random peer."
+        ],
+        "correctness": "Gossip is probabilistic rather than exact. Because each informed node repeatedly chooses random peers, the probability that a given uninformed node stays untouched after r rounds decays exponentially, so with high probability every node is informed after O(log n) rounds. The demo reports the informed count after each round.",
+        "complexityRationale": "Each round every informed node performs one push, so a round costs at most O(n) work, and O(log n) rounds suffice with high probability. Each node stores one bit of rumor state, O(n) space overall.",
+        "uses": [
+            "Failure detection and membership in distributed systems",
+            "Anti-entropy replication in Cassandra and Dynamo-style stores",
+            "Disseminating configuration in large clusters",
+            "Peer-to-peer overlays and blockchain transaction propagation"
+        ],
+        "references": [
+            "Demers et al., Epidemic Algorithms for Replicated Database Maintenance, PODC 1987",
+            "Birman, Guide to Reliable Distributed Systems, Chapter 9"
+        ],
+        "workedExample": "Five nodes start with the rumor only at node 0. Round 1: node 0 pushes to node 2, so 2 know. Round 2: nodes 0 and 2 push, reaching nodes 1 and 4, so 4 know. Round 3: the informed nodes push and node 3 finally hears it, giving 5/5 informed. Coverage doubles early, then tails off."
+    },
     id: "gossip-protocol",
     name: "Gossip Protocol",
     category: "data-structures",

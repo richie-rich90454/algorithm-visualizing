@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Baillie-PSW pairs two independent compositeness tests: a strong base-2 Miller-Rabin test followed by a strong Lucas test. Failing either test proves a number composite, while passing both marks it as a probable prime. The two tests rely on different algebra, so the pair is far more reliable than either one alone.",
+        "invariants": [
+            "One failing witness proves n composite with certainty.",
+            "Passing the base-2 stage means n is a strong probable prime to base 2.",
+            "The Lucas stage independently checks a Fibonacci-style recurrence modulo n."
+        ],
+        "correctness": "Miller-Rabin rejects composites exposed by the square root of one property, and the Lucas test rejects composites exposed by Lucas sequence divisibility. Because the two checks use different structures, a number passing both is almost certainly prime. The method never labels a genuine prime composite, so it is a valid probable-primality filter.",
+        "complexityRationale": "Each Miller-Rabin witness costs O(log^3 n) with schoolbook arithmetic (O(log n) squarings of O(log n)-bit numbers), and the Lucas stage is comparable. Only a handful of residues are stored, so space is O(1).",
+        "uses": [
+            "Fast primality screening before cryptographic key generation",
+            "Rejecting Carmichael numbers that fool plain Fermat tests",
+            "Primality checks in computer algebra systems"
+        ],
+        "references": [
+            "Baillie and Wagstaff, Lucas pseudoprimes, Mathematics of Computation (1980)",
+            "Crandall and Pomerance, Prime Numbers, Chapter 3"
+        ],
+        "workedExample": "For n = 21 write 20 = 5*4, so d = 5 and s = 2. Compute 2^5 = 32 = 11 (mod 21); squaring gives 11^2 = 16, never reaching -1 = 20. The base-2 stage fails, so 21 is composite and no Lucas test is needed."
+    },
     id: "baillie-psw-primality",
     name: "Baillie-PSW Primality",
     category: "math",

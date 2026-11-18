@@ -131,6 +131,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The line graph L(G) turns the edges of G into vertices. Two line-graph vertices are adjacent exactly when the original edges share an endpoint. This converts questions about edges in G into questions about vertices in L(G).",
+        "invariants": [
+            "Each edge of G maps to exactly one vertex of L(G).",
+            "Two line vertices connect if and only if their edges share an endpoint in G.",
+            "A set of edges meeting at one vertex becomes a clique in L(G)."
+        ],
+        "correctness": "By definition the adjacency test examines every pair of original edges and links them when they share an endpoint, so the constructed graph is precisely the line graph. Parts of a star all share the hub, so their line vertices form a clique, which the construction reproduces.",
+        "complexityRationale": "Testing all pairs of edges costs O(E^2) time and the line-graph adjacency uses O(E^2) space in the worst case.",
+        "uses": [
+            "Reducing edge problems to vertex problems such as edge coloring",
+            "Graph theory transformations and Whitney isomorphism results",
+            "Modeling adjacency of links in communication networks"
+        ],
+        "references": [
+            "Whitney, Congruent Graphs and the Connectivity of Graphs (1932)",
+            "Harary, Graph Theory"
+        ],
+        "workedExample": "The star with hub A and leaves B, C, D has three edges that all meet at A. In L(G) those become three vertices AB, AC, AD, each pair adjacent because the corresponding edges share A, so L(G) is a triangle."
+    },
     id: "line-graph-construction",
     name: "Line Graph Construction",
     category: "graph",

@@ -239,6 +239,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Min Cut module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An s-t cut splits vertices into a side containing the source and a side containing the sink, and its capacity is the total edge capacity crossing between them. The max-flow min-cut theorem says the minimum such capacity equals the maximum flow. So compute a max flow, then take the vertices still reachable from the source in the residual graph as the source side of a minimum cut.",
+        "invariants": [
+            "No residual capacity leaves the reachable set toward its complement.",
+            "Every original edge crossing the reachable set is saturated.",
+            "The capacity of the reachable-set cut equals the maximum flow value."
+        ],
+        "correctness": "After max flow, no augmenting path exists, so the sink is not reachable in the residual graph and the reachable set forms a valid s-t cut. Every forward edge crossing it must be saturated, otherwise it would offer residual capacity into the complement. Summing those saturated capacities gives exactly the flow value, so the cut is minimum.",
+        "complexityRationale": "The max-flow phase costs O(E f) with Ford-Fulkerson and the final reachability scan costs O(V + E), so time is dominated by the flow computation. Residual arcs and the reachable set use O(V + E) space.",
+        "uses": [
+            "Network vulnerability and bottleneck identification",
+            "Image segmentation via graph cut",
+            "Minimum cut reductions such as bipartite matching and closure"
+        ],
+        "references": [
+            "Ford and Fulkerson, Maximal Flow through a Network (1956)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow min-cut theorem"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-T 2, B-T 3 has max flow 5. After augmentation both source arcs are saturated, so in the residual graph only S is reachable from S. The cut {S} versus {A,B,T} has capacity 3+2 = 5, equal to the flow and therefore minimum."
+    },
     id: "min-cut",
     name: "Minimum Cut",
     category: "flow",

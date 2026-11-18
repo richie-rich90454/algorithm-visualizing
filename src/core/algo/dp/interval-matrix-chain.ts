@@ -184,6 +184,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Matrix Chain module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Matrix chain multiplication finds the parenthesization of a chain of matrices that minimizes scalar multiplications. The interval DP stores the minimum cost for multiplying matrices i through j. A split k combines the cost of the left and right subchains plus the cost of multiplying their resulting dimensions.",
+        "invariants": [
+            "dp[i][j] is the minimum cost to compute the product of matrices i..j.",
+            "dp[i][i] is zero because one matrix needs no multiplication.",
+            "Intervals are filled in increasing length so subchains are final."
+        ],
+        "correctness": "Any parenthesization performs a final multiplication combining results of subchains i..k and k+1..j, whose costs are independent and given by dp. Adding the dimension cost of that final product gives the total for the split, and minimizing over k chooses the best. Induction over interval length proves the table values.",
+        "complexityRationale": "There are O(n^2) intervals and O(n) splits per interval, costing O(n^3) time. The cost table and split table use O(n^2) space.",
+        "uses": [
+            "Choosing evaluation order in numerical linear algebra",
+            "Optimizing chained tensor or matrix products",
+            "A canonical interval DP teaching example"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.2",
+            "Golub and Van Loan, Matrix Computations, Chapter 1"
+        ],
+        "workedExample": "For dimensions [30,35,15,5,10] the DP compares all parenthesizations of four matrices. The optimum is ((A1A2)(A3A4)) costing 30*35*15 plus 15*5*10 plus 30*15*10 = 15125 multiplications."
+    },
     id: "interval-matrix-chain",
     name: "Matrix Chain Multiplication",
     category: "dynamic-programming",

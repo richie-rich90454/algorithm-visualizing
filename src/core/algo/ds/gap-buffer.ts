@@ -77,6 +77,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A gap buffer stores a mutable sequence with a blank gap at the cursor position. Inserting writes into the gap and shrinks it, while deleting grows it. Moving the cursor slides characters across the gap, so editing near the cursor is O(1) per character but moving far is O(n).",
+        "invariants": [
+            "All real characters lie before or after the contiguous gap.",
+            "The gap starts at the cursor position.",
+            "Total capacity equals characters plus gap size."
+        ],
+        "correctness": "Writing into the gap adds a character exactly at the cursor and reduces the gap, preserving the sequence of real characters. Deleting expands the gap over removed characters. Moving the gap copies characters across without changing their relative order, so the sequence stays correct.",
+        "complexityRationale": "Insert and delete at the gap are O(1); moving the gap by d positions shifts d characters, O(d), worst O(n). The backing array is O(n) space.",
+        "uses": [
+            "Text editors such as early Emacs",
+            "Interactive sequence editing",
+            "Buffers with localized insertion patterns"
+        ],
+        "references": [
+            "Craig A. Finseth, The Craft of Text Editing, gap buffer chapter",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.1"
+        ],
+        "workedExample": "Buffer [4, 1 | gap | 7, 3, 6] with cursor after 1. Inserting 9 writes into the gap to get [4, 1, 9 | gap | 7, 3, 6]. Moving the cursor right shifts 7 across the gap, and deleting expands the gap over the character just removed."
+    },
     id: "gap-buffer",
     name: "Gap Buffer",
     category: "data-structures",

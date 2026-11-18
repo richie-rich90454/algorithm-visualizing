@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Pairing Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A pairing heap is a meldable heap whose nodes link to their children as a singly linked sibling list. Melding attaches the larger root under the smaller root in O(1); extract-min removes the root and pairwise melds its children. Despite its simplicity it often rivals more complex heaps in practice.",
+        "invariants": [
+            "Every parent is no larger than its children.",
+            "The structure is one heap-ordered tree rooted at the minimum.",
+            "Children are stored as a first-child and next-sibling chain."
+        ],
+        "correctness": "Meld preserves heap order because the smaller root is already at most all of its children and at most the attached root. Extract-min removes the minimum root and re-melds its heap-ordered child subtrees, so the resulting tree is again heap ordered and its root is the next smallest key.",
+        "complexityRationale": "Insert and meld are a constant number of pointer changes, O(1) amortized. Extract-min pairwise melds children along one path, O(log n) amortized; one node per key gives O(n) space.",
+        "uses": [
+            "Dijkstra and Prim with meldable heaps",
+            "Event-driven simulation",
+            "Priority queues that frequently merge two sets"
+        ],
+        "references": [
+            "Fredrickson and Johnson, The Pairing Heap: A New Form of Self-Adjusting Heap, Algorithmica 1986",
+            "CLRS, Introduction to Algorithms, Chapter 19 on binomial heaps"
+        ],
+        "workedExample": "Insert 5, 3, 8, 1, 9 by melding singletons so the root becomes 1. Extract-min removes 1, pairs the children into groups, and melds those groups left to right to form the remaining heap."
+    },
     id: "pairing-heap",
     name: "Pairing Heap",
     category: "data-structures",

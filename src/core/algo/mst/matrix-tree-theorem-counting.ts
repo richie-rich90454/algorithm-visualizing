@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Kirchhoff's Matrix-Tree theorem counts spanning trees without enumerating them. Build the Laplacian as degree matrix minus adjacency, delete any one row and column, and take the determinant of the remaining minor. That determinant equals the number of spanning trees.",
+        "invariants": [
+            "Each row of the Laplacian sums to zero.",
+            "All cofactors of the Laplacian are equal.",
+            "The cofactor determinant is a nonnegative integer equal to the tree count."
+        ],
+        "correctness": "The Laplacian encodes incidence structure so that its determinant minor expands as a sum over subsets of edges, and a subset contributes one exactly when it forms a spanning tree. Hence the cofactor counts spanning trees exactly, and fraction-free elimination preserves the integer result.",
+        "complexityRationale": "Computing a determinant of a (V-1) by (V-1) matrix costs O(V^3), and the Laplacian plus working matrix use O(V^2) space.",
+        "uses": [
+            "Counting spanning trees in networks and electrical circuits",
+            "Analyzing random walk and network reliability quantities",
+            "Checking enumeration algorithms on small graphs"
+        ],
+        "references": [
+            "Kirchhoff, Uber die Auflosung der Gleichungen, auf welche man bei der Untersuchung der linearen Vertheilung galvanischer Strome gefuhrt wird (1847)",
+            "Stanley, Enumerative Combinatorics, matrix-tree theorem"
+        ],
+        "workedExample": "For the triangle A-B-C with unit edges, the Laplacian has degree 2 on the diagonal and minus one for each neighbor. Deleting one row and column leaves a 2 by 2 matrix with determinant 3, so the triangle has three spanning trees, one for each choice of two edges."
+    },
     id: "matrix-tree-theorem-counting",
     name: "Matrix-Tree Theorem Counting",
     category: "mst",

@@ -169,6 +169,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dial's algorithm is Dijkstra specialized for small nonnegative integer weights. When every edge weight is at most C, distances advance in bounded steps, so vertices can live in buckets indexed by distance. A forward scan finds the next nonempty bucket in amortized constant time instead of using a heap.",
+        "invariants": [
+            "Bucket d holds vertices whose current tentative distance is d.",
+            "The scan always selects the smallest nonempty bucket index.",
+            "Each vertex is finalized when its bucket is processed."
+        ],
+        "correctness": "Because weights are bounded integers, the next nonempty bucket in forward order is exactly the unsettled vertex of minimum distance, matching Dijkstra's selection rule. Relaxing its edges and moving improved vertices into later buckets preserves the invariant, so finalized distances are shortest.",
+        "complexityRationale": "Scanning up to C times V buckets plus relaxing E edges costs O(C V + E), with O(C V) space for the bucket array.",
+        "uses": [
+            "Shortest paths with small integer weights such as grid steps",
+            "Traffic simulation with discrete travel times",
+            "A heap-free Dijkstra for bounded-weight graphs"
+        ],
+        "references": [
+            "Dial, Algorithm 360: Shortest-Path Forest with Topological Ordering (1969)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, single-source shortest paths"
+        ],
+        "workedExample": "On the demo graph with integer weights, bucket 0 holds A. Processing it places B in bucket 2 and C in bucket 5; scanning forward settles B, then C, then D with the final route A-B-C-D of cost 4."
+    },
     id: "dial-bucket-dijkstra",
     name: "Dial's Bucket Dijkstra",
     category: "shortest-path",

@@ -193,6 +193,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Li Chao segment tree supports inserting lines and querying the minimum value at a point in logarithmic time. Each node stores the line that is best at its segment midpoint; inserting a line recurses only into the half where the new line can win. This dynamic structure handles online insertions where the static convex hull trick does not.",
+        "invariants": [
+            "Each node's stored line is at least as good as the old line on the half that was kept.",
+            "A query at x examines every node on the root-to-leaf path for x.",
+            "The minimum over those nodes is the true lower envelope value at x."
+        ],
+        "correctness": "When inserting, two lines cross at most once, so one of the two halves of a segment is where the new line can be better; recursing only there preserves the correct best line everywhere. Querying takes the minimum of stored lines along the path, which covers all candidates that could be optimal at x. Hence the answer is the envelope minimum.",
+        "complexityRationale": "Insertion descends one path of height O(log C) where C is the coordinate range, and queries do the same, giving O(log C) per operation. The tree over the coordinate domain uses O(C) space.",
+        "uses": [
+            "Online DP transitions with line insertions between queries",
+            "Dynamic lower-envelope maintenance",
+            "Optimizing piecewise linear cost functions"
+        ],
+        "references": [
+            "KACTL handbook, Li Chao Tree chapter",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5"
+        ],
+        "workedExample": "Insert lines y=2x+1, y=x+2, and y=-x+5 into the tree. At x=0 the query path returns 1, at x=2 it returns 3 from the negative-slope line, matching the lower envelope."
+    },
     id: "li-chao-segment-tree-dp",
     name: "Li Chao Segment Tree (DP)",
     category: "dynamic-programming",

@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An M-tree is a height-balanced index for metric spaces where objects are only known through a distance function. Each node stores routing objects together with a covering radius, and inserts descend toward the routing object whose ball is closest. Queries prune whole subtrees with the triangle inequality, so it behaves like a B-tree whose keys are distances rather than ordered values.",
+        "invariants": [
+            "Every routing object ball covers all objects stored in its subtree.",
+            "All leaves sit at the same depth so the tree stays balanced.",
+            "For a query q, dist(q, center) minus radius lower-bounds the distance to anything inside that ball."
+        ],
+        "correctness": "By the triangle inequality, any object inside a ball lies at least dist(q, center) minus radius away from the query. If that lower bound already exceeds the best distance found, the entire subtree can be discarded without losing a closer object. Searching all remaining balls therefore cannot miss the true nearest neighbor.",
+        "complexityRationale": "Balance like a B-tree gives height O(log n), so insert and search visit O(log n) nodes and each node scan is linear in its fanout. Every indexed object is stored once, giving O(n) space.",
+        "uses": [
+            "Similarity search in metric spaces where only distances are defined",
+            "Content-based image and multimedia retrieval",
+            "Nearest-neighbor search over embeddings with a custom distance"
+        ],
+        "references": [
+            "Ciaccia, Patella, and Zezula, M-Tree: An Efficient Access Method for Similarity Search in Metric Spaces, VLDB 1997",
+            "Zezula, Amato, Dohnal, and Batko, Similarity Search: The Metric Space Approach"
+        ],
+        "workedExample": "Insert points (2,3), (5,1), (7,6), (1,7) and query (4,2). The nearest point is (5,1) at distance sqrt(10), about 3.16. Any routing ball whose lower bound exceeds 3.16 is pruned, leaving (5,1) as the answer."
+    },
     id: "m-tree",
     name: "M-Tree",
     category: "data-structures",

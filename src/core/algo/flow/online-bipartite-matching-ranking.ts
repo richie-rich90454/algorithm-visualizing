@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In online bipartite matching, requests arrive one at a time and must be irrevocably matched on arrival. The Ranking algorithm fixes a random order of the offline vertices and matches each arrival to its highest-ranked free neighbor. Randomization gives a constant competitive ratio against an offline optimum that sees all requests in advance.",
+        "invariants": [
+            "Once a vertex is matched it is never rematched or released.",
+            "Each arrival is matched to the best available neighbor under the fixed ranking.",
+            "The online matching is always a subset of some feasible offline matching."
+        ],
+        "correctness": "Every decision is irrevocable but always pairs two still-free endpoints, so the result is a valid matching. The classic analysis conditions on the random ranks and shows the expected size is at least 1-1/e times the offline optimum, using a charging argument that maps matched offline vertices to arrivals that could have taken them.",
+        "complexityRationale": "Generating ranks costs O(V log V) and processing arrivals scans at most O(E) neighbor slots overall, giving O(V E) in the simple implementation. The rank order, matching, and adjacency use O(V + E) space.",
+        "uses": [
+            "Ad slot allocation and online advertising",
+            "Matching ride requests to available drivers",
+            "Any irrevocable assignment with one-sided uncertainty"
+        ],
+        "references": [
+            "Karp, Vazirani, and Vazirani, An Optimal Algorithm for On-Line Bipartite Matching (1990)",
+            "Kleinberg and Tardos, Algorithm Design, online algorithms chapter"
+        ],
+        "workedExample": "Offline vertices a,b with arrivals x,y and edges x-a, y-a, y-b. With b ranked above a, x takes a and y then takes b, for size 2. Since the offline optimum is also 2, this run achieves the full optimum and stays within the competitive bound."
+    },
     id: "online-bipartite-matching-ranking",
     name: "Online Bipartite Matching (Ranking)",
     category: "flow",

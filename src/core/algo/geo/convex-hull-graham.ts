@@ -238,6 +238,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Convex Hull (Graham) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Graham's scan finds the convex hull by sorting the points by angle around the lowest one and then sweeping them in order. It keeps a stack of candidate hull vertices and pops the top whenever the last three points make a non-left turn, since such a middle point cannot be on the hull.",
+        "invariants": [
+            "The stack always forms a convex chain for the points processed so far.",
+            "Every point already popped lies inside or on the current chain.",
+            "The chain is ordered by increasing polar angle around the pivot."
+        ],
+        "correctness": "The lowest point is certainly a hull vertex, so sorting around it and scanning in angular order visits hull vertices in sequence. When a new point makes a right turn with the top two stack points, the middle one lies inside the triangle formed with the pivot and can never be extreme, so popping it is safe. Repeating until a left turn holds restores convexity, and after all points are scanned the stack is exactly the convex hull.",
+        "complexityRationale": "Sorting by angle costs O(n log n). Each point is pushed once and popped at most once, so the scan itself is O(n). The stack and sorted list use O(n) space.",
+        "uses": [
+            "Computing a bounding polygon for a set of locations",
+            "Shape matching and collision hulls in games",
+            "A preprocessing step for rotating calipers and diameter queries"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 33",
+            "Graham, An Efficient Algorithm for Determining the Convex Hull, Information Processing Letters 1 (1972)"
+        ],
+        "workedExample": "For points (0,0), (3,0), (1,1), (2,2), (0,3), the pivot is (0,0) and the angular order is (3,0), (1,1), (2,2), (0,3). Pushing (1,1) then considering (2,2) makes a right turn, so (1,1) is popped. The final stack is (0,0), (3,0), (2,2), (0,3)."
+    },
+
     id: "convex-hull-graham",
     name: "Convex Hull (Graham)",
     category: "geometry",

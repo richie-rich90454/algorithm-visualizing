@@ -104,6 +104,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This finds the fewest palindromes whose concatenation equals the input. It first precomputes which substrings are palindromes, then uses DP where dp[i] is the minimum number of palindromes needed for the prefix ending at i, choosing a cut at the best palindrome ending there.",
+        "invariants": [
+            "isPal[i][j] is true exactly when s[i..j] is a palindrome.",
+            "dp[i] is the minimum number of palindromic parts covering s[0..i-1] and cut[i] records the start of the last part."
+        ],
+        "correctness": "The palindrome table is correct by induction on length, since a substring is a palindrome when its ends match and the interior is. The DP considers every palindrome ending at i and takes the minimum, so by optimal substructure dp[n] is the true minimum and following cut pointers reconstructs the partition.",
+        "complexityRationale": "Computing the palindrome table considers O(n^2) substrings with O(1) work each, and the DP tries all starts for each end, giving O(n^2) time and O(n^2) space for the table, with O(n) for the stored cuts.",
+        "uses": [
+            "Palindrome-based text compression",
+            "Analyzing palindromic structure in genomes",
+            "Partitioning strings for pattern matching"
+        ],
+        "references": [
+            "Crochemore et al., Algorithms on Strings",
+            "Ravsky et al., On the Palindromic Factorization of a Word"
+        ],
+        "workedExample": "For \"ababa\" the whole string is itself a palindrome, so the minimum partition is the single part \"ababa\"; a less efficient tie-break might give \"a | bab | a\", but the DP prefers the fewest parts."
+    },
     id: "palindromic-factorization",
     name: "Palindromic Factorization",
     category: "string",

@@ -80,6 +80,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A merge sort tree is a segment tree in which every node stores a sorted vector of the elements in its interval. To answer a question about a range, split it into O(log n) canonical nodes and binary search inside each sorted vector. It is a segment tree whose merge step is simply keeping the sorted list.",
+        "invariants": [
+            "Each node vector is exactly the sorted elements of its segment.",
+            "A parent vector is the merge of its two child vectors.",
+            "The canonical nodes used by a query are disjoint and their union is the query range."
+        ],
+        "correctness": "Because each node holds the sorted multiset of its segment, binary search correctly counts how many values satisfy a predicate inside that segment. The canonical nodes are disjoint and cover the range exactly, so summing their counts gives the answer with no double counting.",
+        "complexityRationale": "Building merges and sorts vectors level by level, storing each element once per level, for O(n log n) build time and space. A query visits O(log n) nodes and binary searches each in O(log n), giving O(log^2 n).",
+        "uses": [
+            "Counting values below a threshold inside a subarray",
+            "Range quantile queries together with a value-index structure",
+            "Offline two-dimensional dominance counting"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14 on augmenting data structures",
+            "cp-algorithms, Merge Sort Tree (online reference)"
+        ],
+        "workedExample": "For array [5,2,8,1,7,3] and range [1,4] the slice is [2,8,1,7], with sum 18 and minimum 1. The query splits into sorted node vectors, and binary searching each one yields the range aggregate."
+    },
     id: "merge-sort-tree",
     name: "Merge Sort Tree",
     category: "data-structures",

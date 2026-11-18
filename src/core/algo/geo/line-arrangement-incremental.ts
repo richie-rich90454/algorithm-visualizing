@@ -111,6 +111,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "An arrangement of lines partitions the plane into cells, and adding a line creates new vertices wherever it crosses existing lines. The incremental construction inserts lines one at a time and records each new pairwise intersection as it appears.",
+        "invariants": [
+            "After k insertions, the known vertices are all pairwise intersections among the first k lines.",
+            "Parallel lines never contribute an intersection vertex.",
+            "Concurrent intersections at the same coordinates are counted once."
+        ],
+        "correctness": "Two nonparallel lines intersect in exactly one point, so checking each new line against every earlier line discovers all new vertices. Lines already processed had all their intersections recorded by induction, so the union after insertion is the complete vertex set of the arrangement. Deduplicating coordinates handles concurrency correctly.",
+        "complexityRationale": "The i-th line is checked against i-1 earlier lines, giving O(n^2) pairwise tests and time. Only the intersection list is retained, which holds up to O(n^2) vertices in general.",
+        "uses": [
+            "Computing cell decompositions in computational geometry",
+            "Point location preprocessing for planar subdivisions",
+            "Analyzing intersections of road or utility lines"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2",
+            "Goodman and Pollack, Handbook of Discrete and Computational Geometry, Chapter 24"
+        ],
+        "workedExample": "Insert y = 0 and y = 1 first; they are parallel so no vertex appears. Inserting x = 0 crosses them at (0,0) and (0,1), giving two arrangement vertices."
+    },
+
     id: "line-arrangement-incremental",
     name: "Line Arrangement (Incremental)",
     category: "geometry",

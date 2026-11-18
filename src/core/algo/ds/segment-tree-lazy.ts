@@ -168,6 +168,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Lazy Segment Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Lazy propagation makes range updates fast by stamping a pending value on a node that fully covers the update range instead of visiting every leaf. The tag is pushed to children only when a later operation needs them, keeping both range add and range query logarithmic.",
+        "invariants": [
+            "A node aggregate reflects all updates applied to its segment.",
+            "A pending lazy tag records updates not yet passed to children.",
+            "Pushing a tag preserves the aggregate while distributing the work."
+        ],
+        "correctness": "A covered node update adds to its aggregate and records the tag, correctly representing the whole segment without touching children. Before descending, pushing the tag makes children aggregates and tags consistent, so every later query or partial update sees the true values.",
+        "complexityRationale": "A range update or query visits O(log n) canonical nodes and pushes tags only along those paths, O(log n). The node array and one tag per node use O(n) space.",
+        "uses": [
+            "Range add and range sum on large arrays",
+            "Interval scheduling with batched updates",
+            "Graphics and geometry range operations"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14",
+            "cp-algorithms, Lazy Propagation in segment trees"
+        ],
+        "workedExample": "Array [2,1,3,4,5]; range add 2 on [1,3] stamps covering nodes without touching leaves. Query [0,4] pushes tags along the path and returns the updated total 21."
+    },
     id: "segment-tree-lazy",
     name: "Segment Tree (Lazy)",
     category: "data-structures",

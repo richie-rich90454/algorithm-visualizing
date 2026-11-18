@@ -198,6 +198,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Polynomial Log/Exp module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The formal logarithm and exponential of a power series extend the familiar functions to polynomials. The log is computed as the integral of A'(x)/A(x), using differentiation, the polynomial inverse, and integration. The exponential is obtained from an iteration that solves a differential equation, so both operations are built from a small set of primitives.",
+        "invariants": [
+            "The formal derivative and integral are inverse operations up to a constant.",
+            "ln(A) satisfies the identity built from A' times the inverse of A.",
+            "exp(A) satisfies the differential equation (exp A)' = A' * exp A with zero constant term correction."
+        ],
+        "correctness": "Integrating A'/A computes the unique series with zero constant term whose derivative matches that of the logarithm, so it is ln(A). The exponential iteration forces the derivative relation and fixes the constant term to 1, uniquely determining exp(A) among series with that constant. Hence the constructed series are the formal log and exp.",
+        "complexityRationale": "With naive polynomial arithmetic each primitive costs O(n^2), giving O(n^2) time; replacing multiplication by NTT reduces it to O(n log n). The series arrays occupy O(n) space.",
+        "uses": [
+            "Fast polynomial exponentiation and powering",
+            "Computing generating functions in combinatorics",
+            "Building blocks for symbolic integration and computer algebra"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.7",
+            "von zur Gathen and Gerhard, Modern Computer Algebra, Chapter 9"
+        ],
+        "workedExample": "For A(x) = 1 + x + x^3, differentiate to 1 + 3x^2, multiply by the inverse of A, and integrate term by term to get ln(A). With zero constant term, exp(A) is then recovered by the differential-equation iteration."
+    },
     id: "polynomial-log-exp",
     name: "Polynomial Log/Exp",
     category: "math",

@@ -154,6 +154,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Point in Polygon (winding) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The winding-number algorithm counts how many times the polygon wraps around the query point. Each edge contributes a signed angle, and if the total winding is nonzero the point is inside. Unlike ray casting, this method also handles self-touching polygons correctly.",
+        "invariants": [
+            "Each upward or downward edge crossing the horizontal line of the query contributes +1 or -1 to the winding.",
+            "The winding number is an integer for a closed polygon.",
+            "A point outside the polygon has winding number zero."
+        ],
+        "correctness": "The winding number equals the total signed angle swept by the polygon boundary around the point divided by 2*pi, which is an integer for a closed curve. A point outside has winding zero because the curve does not enclose it, while any point in a region enclosed with a net counterclockwise or clockwise orientation has a nonzero value. Counting upward and downward crossings implements this definition exactly, including cancellation for overlapping regions.",
+        "complexityRationale": "Each edge is processed once with constant checks, so time is O(n). Only the running integer and a few coordinates are stored, giving O(1) space.",
+        "uses": [
+            "Point inclusion for self-intersecting or self-touching polygons",
+            "Computing inside tests for font glyph outlines",
+            "Robust containment in computational geometry libraries"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Chapter 5",
+            "Heckbert, Generic Geometric Transformations, Graphics Gems III"
+        ],
+        "workedExample": "For the square (0,0), (1,0), (1,1), (0,1) and query (0.5,0.5), the right edge contributes +1 and no other edge does, so the winding is 1 and the point is inside. Reversing the vertex order gives winding -1, still inside."
+    },
+
     id: "point-in-polygon-winding",
     name: "Point in Polygon (Winding)",
     category: "geometry",

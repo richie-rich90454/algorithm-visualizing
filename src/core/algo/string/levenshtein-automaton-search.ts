@@ -88,6 +88,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Levenshtein automaton accepts all strings within edit distance k of a pattern. Traversing a trie of dictionary words while tracking a parametric edit-distance vector finds every word within k edits, pruning branches whose distance already exceeds k.",
+        "invariants": [
+            "At a trie node the state encodes the minimum edit distance achieved for each prefix length of the pattern.",
+            "Transitions update the vector by insertion, deletion, or substitution, and states whose minimum exceeds k are discarded."
+        ],
+        "correctness": "The parametric vector is exactly the Levenshtein dynamic-programming row for the current word prefix against all pattern prefixes. A word is accepted when the distance for the full pattern is at most k, and pruning states above k cannot remove a word that might later return within k because distances never decrease along a transition.",
+        "complexityRationale": "Each character expansion updates O(m) vector entries for pattern length m, so a word of length w costs O(mw), reported as O(n·m) per word. Space is O(m) for the active vector plus the trie.",
+        "uses": [
+            "Spell checkers and autocorrect",
+            "Fuzzy dictionary lookup",
+            "Searching names with typos in databases"
+        ],
+        "references": [
+            "Levenshtein, Binary Codes Capable of Correcting Deletions, Insertions, and Reversals, 1965",
+            "Navarro, A Guided Tour to Approximate String Matching, 2001"
+        ],
+        "workedExample": "For pattern \"apple\" with k=1, the words \"apple\" (distance 0) and \"apply\" (distance 1, e to y substitution) are accepted, while \"ape\" (distance 2) is rejected."
+    },
     id: "levenshtein-automaton-search",
     name: "Levenshtein Automaton",
     category: "string",

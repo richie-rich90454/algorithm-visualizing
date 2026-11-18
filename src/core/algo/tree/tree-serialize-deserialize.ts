@@ -175,6 +175,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A binary tree can be written as a level-order list where missing children are marked with a null marker such as #. Reading the list back with a queue rebuilds the tree by attaching children in the same order, so the process is a clean round trip.",
+        "invariants": [
+            "Each node contributes exactly two child slots to the serialized list.",
+            "A null marker adds no node when decoding.",
+            "Encoding the decoded tree yields the original string."
+        ],
+        "correctness": "Breadth-first serialization visits nodes in queue order and writes both children for each, including markers for missing ones, so every parent-child position is recorded unambiguously. Decoding consumes the list in the same order and attaches children to each dequeued node, reconstructing identical links. Since the encoding is injective on binary trees with these markers, equality of the two strings certifies a correct round trip.",
+        "complexityRationale": "Each node and each null slot is written and read once, so both encoding and decoding take O(n) time with O(n) space for the queue and output string.",
+        "uses": [
+            "Persisting binary trees in files or network messages",
+            "Tree equality checks via canonical serialization",
+            "Interview-grade tree codec implementations"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 12 (binary trees)",
+            "LeetCode, Serialize and Deserialize Binary Tree, problem 297"
+        ],
+        "workedExample": "Tree A with left child B and right child C, where C has left child D, serializes level-order as A,B,C,#,#,D,#,#. Decoding with a queue reads A, attaches B and C, then reads B's two nulls, then gives C its left child D."
+    },
+
     id: "tree-serialize-deserialize",
     name: "Tree Serialize Deserialize",
     category: "tree",

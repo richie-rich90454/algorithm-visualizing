@@ -107,6 +107,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Montgomery reduction computes a*b mod m without doing a costly division by m. It works in a special representation where numbers are scaled by a power of two R, and uses low-bit operations plus an exact shift to reduce a product. The division by R becomes a bit shift, which is cheap on binary hardware, making it the standard for modular arithmetic in cryptography.",
+        "invariants": [
+            "The modulus m is odd so that its inverse modulo R exists.",
+            "The chosen m1 makes T + m1*m divisible by R exactly.",
+            "The result is congruent to T times R inverse modulo m and lies in the reduced range."
+        ],
+        "correctness": "Setting m1 = (T mod R)*m' mod R with m' = -m^-1 mod R guarantees the low R bits of T + m1*m are zero, so dividing by R is exact. The quotient t is congruent to T*R^-1 modulo m because the added term is a multiple of m. One conditional subtraction keeps t below m, giving the canonical Montgomery residue.",
+        "complexityRationale": "All operations are multiplications and shifts on numbers of O(log R) bits, costing O(log R) word work per reduction. Only a few intermediate values are stored, so space is O(1).",
+        "uses": [
+            "Fast modular multiplication in RSA and elliptic-curve cryptography",
+            "Avoiding division in repeated modular arithmetic",
+            "Hardware and software big-integer libraries"
+        ],
+        "references": [
+            "Montgomery, Modular multiplication without trial division (1985)",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 14"
+        ],
+        "workedExample": "For m = 13, R = 16, and T = 100: m' makes m1 = ((100 mod 16)*m') mod 16. Then t = (100 + m1*13)/16 is integral and congruent to 100*16^-1 mod 13; subtracting 13 if needed leaves the reduced residue."
+    },
     id: "montgomery-reduction",
     name: "Montgomery Reduction",
     category: "math",

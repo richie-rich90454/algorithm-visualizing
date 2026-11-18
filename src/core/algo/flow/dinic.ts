@@ -290,6 +290,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dinic module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dinic improves on simple augmenting paths by working in layers. A breadth-first search builds a level graph of shortest residual distances, and a depth-first search pushes a blocking flow that saturates at least one path in that level graph. Repeating the phases until the sink is unreachable yields the maximum flow much faster than one path at a time.",
+        "invariants": [
+            "Flow only moves from a vertex to one at the next level of the current level graph.",
+            "After each blocking flow, at least one edge on a shortest path is saturated.",
+            "The sink's level strictly increases between phases, so there are at most V phases."
+        ],
+        "correctness": "A blocking flow saturates every shortest source-to-sink path in the level graph, so no augmenting path of that length remains. Because levels strictly increase, when the sink becomes unreachable there is no augmenting path of any length, and by max-flow min-cut the flow is maximum.",
+        "complexityRationale": "Each phase costs O(V^2 E) in the general bound for DFS blocking-flow searches, and there are at most V phases, giving O(V^2 E); on unit-capacity networks the bound improves to O(E sqrt(V)). The residual graph and level arrays use O(V + E) space.",
+        "uses": [
+            "Maximum throughput in communication and transport networks",
+            "Bipartite matching and other reductions solved as max flow",
+            "Image segmentation energy minimization"
+        ],
+        "references": [
+            "Dinic, Algorithm for Solution of a Problem of Maximum Flow in Networks with Power Estimation (1970)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow chapter"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-C 2, B-C 3, B-T 1, C-T 4. Phase 1 builds levels S, then A and B, then C and T, and pushes a blocking flow through S-A-C-T, S-B-T, and S-B-C-T. Later phases find no new level path; total flow is 5, equal to the source out-capacity."
+    },
     id: "dinic",
     name: "Dinic's Algorithm",
     category: "flow",

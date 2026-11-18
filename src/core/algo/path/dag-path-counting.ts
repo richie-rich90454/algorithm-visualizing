@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This counts how many distinct directed paths run from a source to a target in a DAG. Processing vertices in topological order guarantees every predecessor is finished before a vertex is handled, so the number of ways to reach a vertex is just the sum over its incoming edges of the ways to reach each predecessor.",
+        "invariants": [
+            "When a vertex is processed, all its predecessors already have final counts.",
+            "ways[v] equals the number of directed paths from the source to v.",
+            "The source starts with one empty path to itself."
+        ],
+        "correctness": "Every path to v ends with exactly one incoming edge u to v and extends a unique path to u, so ways[v] is the sum of ways[u] over incoming edges. Topological order ensures those sums use finished values, giving the correct count by induction.",
+        "complexityRationale": "One topological sort plus one pass over edges costs O(V + E) time and uses O(V + E) space for the order and counts.",
+        "uses": [
+            "Counting execution paths in acyclic control flow graphs",
+            "Probability propagation in Bayesian networks",
+            "Combinatorial counting on dependency DAGs"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, dynamic programming on DAGs",
+            "Kleinberg and Tardos, Algorithm Design, dynamic programming"
+        ],
+        "workedExample": "For A to B, C and B, C to D, topological order processes A with ways 1, then B and C each get 1, then D gets ways[B] plus ways[C] = 2. The path A-B-D and A-C-D are the two distinct routes."
+    },
     id: "dag-path-counting",
     name: "Path Counting in a DAG",
     category: "shortest-path",

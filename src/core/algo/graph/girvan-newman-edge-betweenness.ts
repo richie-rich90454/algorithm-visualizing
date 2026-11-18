@@ -171,6 +171,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Communities are dense groups joined by a few bridge edges, and bridges carry a large share of all shortest paths. Girvan-Newman repeatedly scores every edge by betweenness, removes the highest scorer, and recomputes. Removing bridges peels the graph into its natural communities.",
+        "invariants": [
+            "Only live edges are candidates for removal and scoring.",
+            "The removed edge is always the current maximum betweenness edge.",
+            "After each cut the remaining graph may split into more components."
+        ],
+        "correctness": "Edges between communities lie on many cross-group shortest paths and therefore receive high betweenness, so removing the top scorer targets an inter-community link rather than an internal one. Recomputing after each cut accounts for the changed path structure, and repeating produces a hierarchical decomposition into communities.",
+        "complexityRationale": "A full Brandes betweenness pass costs O(V E) and is repeated for each removed edge, giving about O(E^2 V); scratch arrays use O(V + E) space.",
+        "uses": [
+            "Community detection in social and biological networks",
+            "Finding bridge edges and modular structure",
+            "A hierarchical alternative to label propagation"
+        ],
+        "references": [
+            "Girvan and Newman, Community Structure in Social and Biological Networks (2002)",
+            "Brandes, A Faster Algorithm for Betweenness Centrality (2001)"
+        ],
+        "workedExample": "The barbell graph has two triangles joined by edge C-D. Edge betweenness is highest on C-D because every shortest path between the halves uses it, so the first cut removes C-D and separates communities {A,B,C} and {D,E,F}."
+    },
     id: "girvan-newman-edge-betweenness",
     name: "Girvan–Newman (Edge Betweenness)",
     category: "graph",

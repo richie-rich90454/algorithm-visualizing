@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An AA tree is a balanced binary search tree that keeps its height logarithmic using two simple operations, skew and split. Skew removes a left horizontal link with a right rotation, and split removes two consecutive right horizontal links with a left rotation. After each insert the tree repairs any violations on the way back to the root. The result is as balanced as a red-black tree but with less bookkeeping.",
+        "invariants": [
+            "Every node's level is one more than its left child's level.",
+            "No node has two consecutive right horizontal links.",
+            "Keys in a left subtree are smaller and keys in a right subtree are larger."
+        ],
+        "correctness": "Skew and split are rotations, so they restore the level invariants without changing the inorder key sequence. A violation can only appear at the node where a new leaf attaches and is repaired on the unwinding path. Because levels act as approximate heights and the two link rules restrict their growth, the tree height is O(log n), so searches and inserts touch only logarithmic nodes.",
+        "complexityRationale": "Each insert follows one root-to-leaf path and performs a constant number of rotations per level, giving O(log n) time. The level field is one integer per node, so total space stays O(n).",
+        "uses": [
+            "In-memory ordered maps and sets needing predictable depth",
+            "Compiler symbol tables",
+            "Priority indexes where keys arrive in arbitrary order"
+        ],
+        "references": [
+            "Arne Andersson, \"Balanced Search Trees Made Simple\", 1993",
+            "Mark Allen Weiss, Data Structures and Algorithm Analysis in C++, Section 4.4"
+        ],
+        "workedExample": "Insert 5, 3, 7, 2 into an empty AA tree: 5 is the root, 3 and 7 its children. Adding 2 under 3 creates a left horizontal link, so a skew rotation replaces the link 3->2 with 2->3. A search for 6 compares with 5, goes right to 7, then left to a missing child and reports a miss."
+    },
     id: "aa-tree",
     name: "AA Tree",
     category: "data-structures",

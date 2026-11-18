@@ -148,6 +148,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Doubly Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A doubly linked list adds a previous pointer to each node of a singly linked list. This allows walking backward and deleting a node in O(1) when its pointer is known, at the cost of one extra pointer per node. It underlies many standard library containers.",
+        "invariants": [
+            "For interior nodes, node.next.prev equals node and node.prev.next equals node.",
+            "head.prev is null and tail.next is null.",
+            "Forward and backward traversals visit the same nodes in reverse orders."
+        ],
+        "correctness": "Insertion rewires four pointers around the new node, so every adjacent pair becomes consistent and no existing node is skipped. Deletion bypasses the removed node by linking its neighbors together. Because each pointer is updated symmetrically, both forward and backward walks remain valid.",
+        "complexityRationale": "Deletion given a node, and insertion at a known position, are O(1) pointer updates. Search is O(n) because there is no random access, and two pointers per node give O(n) space.",
+        "uses": [
+            "LRU caches and ordered containers",
+            "Undo histories and browser back-forward lists",
+            "Deque and free-list implementations"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.3"
+        ],
+        "workedExample": "Start with 10 -> 20 -> 30. Insert 15 after 10 by setting 15.prev=10, 15.next=20, 10.next=15, 20.prev=15. Forward traversal gives 10, 15, 20, 30; backward from 30 gives 30, 20, 15, 10."
+    },
     id: "doubly-linked-list",
     name: "Doubly Linked List",
     category: "data-structures",

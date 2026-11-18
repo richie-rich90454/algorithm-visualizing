@@ -107,6 +107,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An even perfect number equals the sum of its proper divisors. Euler proved that every even perfect number has the form 2^(p-1)*(2^p - 1) where 2^p - 1 is a Mersenne prime. The visualization builds that candidate from p, checks whether the Mersenne factor is prime, and verifies the divisor sum.",
+        "invariants": [
+            "The candidate is n = 2^(p-1)*Mp with Mp = 2^p - 1.",
+            "If Mp is prime then the Euclid-Euler theorem guarantees n is perfect.",
+            "The sum of all divisors of n is 2n exactly when n is perfect."
+        ],
+        "correctness": "Euclid showed the form yields a perfect number when Mp is prime, and Euler proved the converse for even perfect numbers. Trial division decides primality of Mp, so when it succeeds the constructed n must be perfect. Summing the divisors gives 2n as an independent check.",
+        "complexityRationale": "Trial division of Mp, which is near 2^p, costs O(sqrt(Mp)) = O(2^(p/2)) time, matching the stated O(2^p) bound conservatively. Space is O(1) since only the candidate and a running divisor sum are kept.",
+        "uses": [
+            "Generating even perfect numbers from Mersenne primes",
+            "Exploring the connection between perfect numbers and Mersenne primes",
+            "Verifying the Euclid-Euler theorem computationally"
+        ],
+        "references": [
+            "Euclid, Elements, Book IX, Proposition 36",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 1"
+        ],
+        "workedExample": "For p = 5, Mp = 31 is prime, so n = 2^4*31 = 496. Its proper divisors sum to 1+2+4+8+16+31+62+124+248 = 496, confirming 496 is perfect."
+    },
     id: "even-perfect-numbers-euler",
     name: "Even Perfect Numbers",
     category: "math",

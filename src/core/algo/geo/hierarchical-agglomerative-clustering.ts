@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Agglomerative clustering starts with every point in its own cluster and repeatedly merges the closest pair until the desired number of clusters remains. With single linkage, the distance between two clusters is the minimum distance over all cross-cluster point pairs, which tends to form long chained clusters.",
+        "invariants": [
+            "Every point belongs to exactly one cluster at each step.",
+            "The merge distance is nondecreasing as clusters grow.",
+            "Single-link distance is the minimum pairwise distance between the two clusters."
+        ],
+        "correctness": "Choosing the globally closest pair and merging it is the greedy step defining single-linkage hierarchical clustering. Because single-link distance is the minimum over cross pairs, the merge corresponds to adding the shortest edge in the single-link dendrogram. Inductively the cluster hierarchy equals the connected components obtained by thresholding the minimum spanning tree of the points.",
+        "complexityRationale": "Recomputing all cross-cluster pair distances after each of O(n) merges costs O(n^3) in the straightforward version, with O(n^2) space for the distance matrix. Using a priority queue and updating only affected pairs improves this in implementations.",
+        "uses": [
+            "Taxonomy construction in biology",
+            "Grouping similar documents or users",
+            "Creating dendrograms for exploratory data analysis"
+        ],
+        "references": [
+            "Han, Kamber, and Pei, Data Mining: Concepts and Techniques, Chapter 10",
+            "Jain, Murty, and Flynn, Data Clustering: A Review, ACM Computing Surveys 31 (1999)"
+        ],
+        "workedExample": "Points (0,0), (1,0), (5,0), (6,0): the closest pairs are the two unit gaps. Merge (0,0) with (1,0) and (5,0) with (6,0), each at height 1, then merge the two clusters at height 4 using the single-link distance between (1,0) and (5,0)."
+    },
+
     id: "hierarchical-agglomerative-clustering",
     name: "Hierarchical Agglomerative Clustering",
     category: "geometry",

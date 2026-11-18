@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Splay Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A splay tree is a BST that moves every accessed node to the root using zig, zig-zig, and zig-zag rotations. Frequently used keys stay near the root, giving O(log n) amortized operations even though a single access can cost O(n).",
+        "invariants": [
+            "Every operation ends with the accessed node at the root.",
+            "Rotations preserve in-order key order.",
+            "Splaying steps move the accessed node monotonically upward."
+        ],
+        "correctness": "Rotations preserve the in-order sequence so the tree stays a valid BST. The access theorem shows the splaying potential, a sum of logarithmic subtree sizes, drops enough to pay for the rotations, so any sequence of m accesses takes O((m+n) log n) total time.",
+        "complexityRationale": "Each rotation is O(1) and a splay uses a number proportional to depth, but amortized over a sequence the cost is O(log n) per operation. One node per key gives O(n) space.",
+        "uses": [
+            "Caches and interpreters with locality of reference",
+            "Self-adjusting ordered maps",
+            "Virtual memory and data compression structures"
+        ],
+        "references": [
+            "Sleator and Tarjan, Self-Adjusting Binary Search Trees, JACM 1985",
+            "CLRS, Introduction to Algorithms, Chapter 13"
+        ],
+        "workedExample": "BST from 8, 3, 10, 1, 6, 14; accessing 6 splays it above 3 then above 8 with zig-zig and zig-zag rotations, ending with 6 at the root so later accesses are cheap."
+    },
     id: "splay-tree",
     name: "Splay Tree",
     category: "data-structures",

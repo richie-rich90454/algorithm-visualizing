@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Karger's algorithm finds a global minimum cut by repeated random contraction. Pick a random edge, merge its two endpoints, and delete any loops, until only two super-vertices remain; the edges between them form a cut. Running many independent trials and keeping the smallest cut makes failure unlikely.",
+        "invariants": [
+            "Contraction never removes an edge crossing a minimum cut unless that edge is chosen.",
+            "Each trial produces a valid cut of the original graph.",
+            "The minimum cut of any contracted graph is at least the global minimum cut of the original."
+        ],
+        "correctness": "A minimum cut survives a contraction unless the randomly chosen edge crosses it. The probability of never choosing such an edge in one run is at least a constant depending only on the number of vertices, so repeating O(V^2 log V) times finds the minimum cut with high probability. Each surviving final cut is genuine, so the smallest observed is correct when the minimum survives.",
+        "complexityRationale": "One trial contracts V-2 times with O(E) work per contraction, about O(V E), and repeating for high probability multiplies by O(V^2). The adjacency lists and super-vertex mapping use O(V + E) space.",
+        "uses": [
+            "Approximate global min cut in large graphs",
+            "Randomized algorithms teaching and Monte Carlo analysis",
+            "A subroutine in recursive min-cut and MST algorithms"
+        ],
+        "references": [
+            "Karger, Global Min-Cuts in RNC and Other Ramifications of a Simple Min-Cut Algorithm (1993)",
+            "Motwani and Raghavan, Randomized Algorithms, min-cut chapter"
+        ],
+        "workedExample": "Triangle 0-1 weight 3, 1-2 weight 2, 0-2 weight 1. Contracting 0 and 1 leaves a cut of weight 3 (edges to 2), while contracting 0 and 2 leaves a cut of weight 5. The minimum singleton cut is vertex 2 with weight 3, and the best trial reports 3."
+    },
     id: "karger-random-contraction",
     name: "Karger Random Contraction",
     category: "flow",

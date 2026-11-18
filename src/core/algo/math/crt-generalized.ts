@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The CRT (generalized) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The generalized Chinese Remainder Theorem handles moduli that share factors. It merges congruences two at a time: two equations x = a (mod m) and x = b (mod n) are compatible exactly when gcd(m, n) divides a - b. A compatible pair collapses into one congruence modulo lcm(m, n), and repeating this resolves the whole system.",
+        "invariants": [
+            "Each merge replaces two congruences by one equivalent congruence modulo their lcm.",
+            "A pair with gcd(m, n) not dividing a - b proves the system inconsistent.",
+            "After all merges the single congruence describes every solution."
+        ],
+        "correctness": "Two residue classes intersect iff a - b is divisible by gcd(m, n), and the intersection is a single class modulo lcm(m, n). Merging is therefore equivalence-preserving. Applying it inductively over all congruences either yields one class describing all solutions or exposes an irreconcilable pair.",
+        "complexityRationale": "Each of up to k merges computes a gcd and an extended Euclid inverse, O(log max m) time, so total time is O(k log max m). The working congruence list uses O(k) space.",
+        "uses": [
+            "Solving residue systems in libraries where moduli need not be coprime",
+            "Signal processing reconstruction from overlapping modular samples",
+            "Cryptographic protocols with non-coprime moduli"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.3.2",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 4"
+        ],
+        "workedExample": "Merge x = 2 (mod 4) with x = 4 (mod 6): gcd is 2 and 2 divides 2, so they combine to x = 10 (mod 12). Merging with x = 1 (mod 3) is consistent and keeps x = 10 (mod 12) as the solution class."
+    },
     id: "crt-generalized",
     name: "CRT (Generalized)",
     category: "math",

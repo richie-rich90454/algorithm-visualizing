@@ -157,6 +157,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Bose-Nelson network is a simple recursive way to build a fixed sorting network. It sorts the first half and second half of the wires, then merges them with a regular pattern of comparators chosen so every wire crosses every other once. It uses more comparators than Batcher but is easy to construct and teach.",
+        "invariants": [
+            "After the recursive calls, each half of the wires is internally sorted.",
+            "Every merge comparator connects one wire from each half, so no intra-half order is disturbed."
+        ],
+        "correctness": "The merge step implements insertion of each sorted half into the other by a fixed comparator sequence; by induction both halves are sorted and the merge pattern sorts their union. Since the pattern does not depend on values, the network sorts all inputs.",
+        "complexityRationale": "The construction needs O(n^2) comparators arranged over O(n) depth. The visualization applies comparators to an in-place array and keeps O(1) extra state.",
+        "uses": [
+            "Generating compact sorting networks for small n",
+            "Teaching recursive network construction",
+            "Baseline for comparator-count optimizations"
+        ],
+        "references": [
+            "Bose and Nelson, A Sorting Network, IEEE Transactions on Computers, 1962",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3.4"
+        ],
+        "workedExample": "For [4, 3, 2, 1], sort halves into [3, 4] and [1, 2], then apply the fixed merge comparators: compare 3 with 1 and 4 with 2, then 3 with 2 and 4 with 1, ending at [1, 2, 3, 4]."
+    },
     id: "bose-nelson-sorting-network",
     name: "Bose-Nelson Sorting Network",
     category: "sorting",

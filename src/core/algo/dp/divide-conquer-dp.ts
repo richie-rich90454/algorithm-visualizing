@@ -213,6 +213,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Divide-and-Conquer DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Divide and conquer DP speeds up recurrences whose optimal split index is monotone in the interval endpoint. Instead of scanning every possible split for each cell, a recursive solve limits the search to a bounded k range and passes narrowed ranges to its children. This cuts O(n^2) work per row to O(n log n).",
+        "invariants": [
+            "The optimal split for a midpoint lies within the current search window.",
+            "opt[g][j-1] <= opt[g][j] monotonicity keeps windows valid.",
+            "Left and right recursive calls use disjoint index ranges."
+        ],
+        "correctness": "The monotonicity property guarantees the optimum for a midpoint is bracketed by the optima of neighboring endpoints, so searching only that window cannot miss it. Solving the midpoint then restricts children appropriately. By induction every cell receives a search window containing its true optimum, so all values are correct.",
+        "complexityRationale": "At each recursion level the windows across all midpoints are disjoint in total size O(n log n) per row, giving O(m*n log n) time versus O(m*n^2). Two rows of dp values use O(n) space.",
+        "uses": [
+            "Partitioning arrays into groups with monotone costs",
+            "Optimal layout and segmentation problems",
+            "Knuth-style DP speedups when quadrangle inequalities fail"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5",
+            "KACTL handbook, Divide and Conquer DP chapter"
+        ],
+        "workedExample": "Partition [1,2,6,8,10,20] into three groups. For each group count the DP restricts the split search using the previous row's optimal indices, evaluating far fewer split candidates than a full quadratic scan."
+    },
     id: "divide-conquer-dp",
     name: "Divide & Conquer DP",
     category: "dynamic-programming",

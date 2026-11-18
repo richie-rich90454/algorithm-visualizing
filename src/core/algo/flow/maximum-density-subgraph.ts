@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The densest subgraph maximizes the ratio of edges to vertices. Goldberg's parametric characterization says a set is densest for some probe value lambda when a certain auxiliary network has a minimum cut; sweeping lambda finds the largest ratio. This demo verifies the answer exhaustively on a tiny graph.",
+        "invariants": [
+            "For a probe lambda, each vertex gets a weight based on its degree minus lambda.",
+            "Edges are given infinite capacity so a finite cut never splits an edge.",
+            "A set has density above lambda exactly when its auxiliary cut is negative."
+        ],
+        "correctness": "The density of a set exceeds lambda precisely when the sum of degree-minus-lambda over its vertices is positive, which the closure network tests via a min cut. The maximum density is the largest lambda for which some set beats the threshold. Exhaustive enumeration on the small demo confirms the densest set found by the closure test.",
+        "complexityRationale": "Each probe runs a max flow on a network with V vertices and E edges, around O(E^2) per probe; exhaustive confirmation on tiny inputs adds O(2^V). Networks and subsets use O(V + E) space.",
+        "uses": [
+            "Finding tightly knit groups in social and biological networks",
+            "Dense subgraph discovery for fraud detection",
+            "Graph mining and community scoring"
+        ],
+        "references": [
+            "Goldberg, Finding a Maximum Density Subgraph (1984)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, density applications"
+        ],
+        "workedExample": "Vertices 0,1,2 form a triangle and vertex 3 is isolated. The triangle has 3 edges over 3 vertices, density 1, while any two-vertex set with one edge has density 0.5. The densest subgraph is {0,1,2} with density 1."
+    },
     id: "maximum-density-subgraph",
     name: "Maximum Density Subgraph",
     category: "flow",

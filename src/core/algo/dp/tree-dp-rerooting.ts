@@ -174,6 +174,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree DP Rerooting module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rerooting DP computes a tree DP answer for every possible root in linear time. The first pass gathers subtree information bottom-up, such as sizes and distance sums. The second pass pushes a parent's full answer into each child, adjusting for the part of the tree that lies outside that child's subtree, so each new root is evaluated in constant time.",
+        "invariants": [
+            "down[v] is the contribution from vertices inside v's subtree.",
+            "up[child] is the contribution from all vertices outside the child's subtree.",
+            "At the root the full answer equals down[root]."
+        ],
+        "correctness": "When the root moves across an edge from parent to child, every node in the child's subtree becomes one hop closer and every other node one hop farther, so the distance sum can be updated from subtree sizes alone. The down pass supplies those sizes and sums, and the up pass applies the shift exactly. By induction every vertex receives the correct total.",
+        "complexityRationale": "Each pass visits every vertex and edge once, giving O(V) time. Storing down values, sizes, and per-node answers uses O(V) space.",
+        "uses": [
+            "Computing eccentricity and distance sums from every node",
+            "Facility location on trees",
+            "A two-pass template for many tree DP problems"
+        ],
+        "references": [
+            "Competitive Programming handbook, rerooting chapter",
+            "Cormen et al., Introduction to Algorithms, Section 22.3"
+        ],
+        "workedExample": "For the sample tree, the down pass computes subtree distance sums from root A. The up pass shifts those sums across each edge using subtree sizes, so the final table reports the sum of distances from every vertex to all others."
+    },
     id: "tree-dp-rerooting",
     name: "Tree DP (Rerooting)",
     category: "dynamic-programming",

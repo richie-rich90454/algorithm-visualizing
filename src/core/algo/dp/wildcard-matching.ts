@@ -134,6 +134,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Wildcard matching checks whether a string matches a pattern containing '?' for any single character and '*' for any sequence. The DP cell dp[i][j] records whether the first i characters of the string match the first j of the pattern. A star can match nothing, jump back two in the pattern, or consume one more string character while staying in the same state.",
+        "invariants": [
+            "dp[i][j] is a full match of s[:i] against p[:j].",
+            "Leading stars are seeded so they can match an empty prefix.",
+            "A question mark consumes exactly one character with no restriction on its value."
+        ],
+        "correctness": "For a literal or question mark, a match requires the current characters to agree and the prefixes before them to match. For a star, matching zero characters uses dp[i][j-2] and consuming one uses dp[i-1][j]. These transitions cover every possible interpretation of the pattern, so induction yields dp[n][m].",
+        "complexityRationale": "Filling the n by m table with constant work per cell takes O(n*m) time. The table uses O(n*m) space, reducible to O(m) with one row.",
+        "uses": [
+            "Filename glob and wildcard pattern matching",
+            "Simple template and filter engines",
+            "A string DP counterpart to regex matching"
+        ],
+        "references": [
+            "LeetCode problem 44, Wildcard Matching",
+            "Hopcroft and Ullman, Introduction to Automata Theory, Languages, and Computation, Chapter 3"
+        ],
+        "workedExample": "For s = aa and p = a*, the star first matches zero characters at dp[1][2], then consumes the remaining a to reach dp[2][2] true. The whole string matches."
+    },
     id: "wildcard-matching",
     name: "Wildcard Matching",
     category: "dynamic-programming",

@@ -205,6 +205,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Suurballe's algorithm finds two edge-disjoint paths of minimum total length between a source and sink. It first runs Dijkstra to get a shortest path, then reweights edges using distances from the source and reverses that path's arcs. A second Dijkstra on the residual network finds a path that, after cancelling shared arcs, combines into two disjoint routes.",
+        "invariants": [
+            "Reweighting by shortest-path potentials keeps all residual arc lengths nonnegative.",
+            "Reversing the first path lets the second search share then split away from it.",
+            "Canceling opposite arcs yields two paths sharing no edge."
+        ],
+        "correctness": "The nonnegative reweighting lets Dijkstra find the shortest augmenting route in the residual network. Combining it with the first path and deleting any pair of opposite arcs produces two edge-disjoint paths whose total length equals the shortest possible for a pair, by Suurballe's optimality theorem.",
+        "complexityRationale": "Two Dijkstra runs with a binary heap cost O(E log V), plus linear reweighting and cancellation. Distances, potentials, and path arrays use O(V + E) space.",
+        "uses": [
+            "Backup routing with a disjoint secondary path",
+            "Network survivability and protection planning",
+            "Finding two disjoint links in transportation grids"
+        ],
+        "references": [
+            "Suurballe, Disjoint Paths in a Network (1974)",
+            "Suurballe and Tarjan, A Quick Method for Finding Shortest Pairs of Disjoint Paths (1984)"
+        ],
+        "workedExample": "Edges 0-1 weight 1, 1-3 weight 2, 0-2 weight 2, 2-3 weight 1, 1-2 weight 1. The first shortest path is 0-1-3 of length 3. After reweighting and a second search, the complement path is 0-2-3 of length 3. The two paths share no edge and have total length 6."
+    },
     id: "suurballe-edge-disjoint-pair",
     name: "Suurballe Edge-Disjoint Pair",
     category: "flow",

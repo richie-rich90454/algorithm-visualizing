@@ -207,6 +207,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Nim module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Nim is the archetypal impartial game: several piles of stones, and a move removes any positive number from one pile. Despite its simplicity it has a complete theory. A position is winning exactly when the bitwise xor of the pile sizes, called the nim-sum, is nonzero.",
+        "invariants": [
+            "The nim-sum is the xor of all pile sizes.",
+            "A zero nim-sum means every move makes it nonzero.",
+            "A nonzero nim-sum always has a move that restores it to zero."
+        ],
+        "correctness": "If the nim-sum is zero, changing one pile from x to y with y smaller changes the xor by x xor y, which is nonzero, so every move leaves a nonzero sum. If the sum is s nonzero, choose a pile whose leading bit matches s and reduce it to p xor s, which is smaller; the new xor is zero. This gives the standard invariant proof of Bouton's theorem.",
+        "complexityRationale": "Xoring p pile sizes and scanning for a reducible pile costs O(p) time with O(1) extra space.",
+        "uses": [
+            "The foundational example of Sprague-Grundy theory",
+            "Xor-based invariants in programming and checksums",
+            "Solving any impartial game by reducing it to Nim heaps"
+        ],
+        "references": [
+            "Bouton, Nim, a Game with a Complete Mathematical Theory (1901)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, bitwise XOR"
+        ],
+        "workedExample": "Piles [3,4,5] have nim-sum 3 xor 4 xor 5 = 2. The pile of 3 satisfies 3 xor 2 = 1, which is smaller, so reduce it to 1. The new piles [1,4,5] xor to zero, a losing position for the opponent."
+    },
     id: "nim",
     name: "Nim Game",
     category: "game",

@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A connected component is a maximal group of vertices joined by paths. Union-find starts with each vertex in its own set and merges the sets of the endpoints of every edge. Path compression keeps the trees shallow, so after all edges are processed vertices sharing a root are exactly one component.",
+        "invariants": [
+            "Two vertices are in the same set if and only if a path of processed edges connects them.",
+            "A set's root is a stable representative for all its members.",
+            "Path compression only shortens trees and never changes set membership."
+        ],
+        "correctness": "Initially every singleton is one component. Merging endpoints of an edge preserves the invariant that set membership equals connectivity, and processing all edges makes membership equal connectivity in the whole graph. Grouping by final root therefore lists the connected components exactly.",
+        "complexityRationale": "With union by rank and path compression, each of the E unions and V finds is nearly constant time, O(E alpha(V)), where alpha is the inverse Ackermann function. Parent and rank arrays use O(V) space.",
+        "uses": [
+            "Counting connected regions in grids and graphs",
+            "Kruskal's minimum spanning tree and other greedy algorithms",
+            "Dynamic connectivity for networks with incremental edges"
+        ],
+        "references": [
+            "Tarjan, Efficiency of a Good But Not Linear Set Union Algorithm (1975)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, disjoint sets"
+        ],
+        "workedExample": "For edges A-B, C-D, and isolated E, union-find starts with five singletons. Processing A-B merges {A,B}, processing C-D merges {C,D}, and E stays alone. Reading three distinct roots gives the three components {A,B}, {C,D}, and {E}."
+    },
     id: "connected-components-union-find",
     name: "Connected Components (Union-Find)",
     category: "graph",

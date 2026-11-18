@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An adjacency set replaces each vertex's neighbor list with a hash set. Neighbor iteration still walks only the entries that exist, but testing whether a specific edge exists drops from linear in the degree to expected constant time. Duplicate edges collapse automatically because a set stores each neighbor once.",
+        "invariants": [
+            "Each vertex owns a hash set of its neighbors.",
+            "No neighbor appears twice in a vertex's set.",
+            "Undirected edges appear in both endpoints' sets."
+        ],
+        "correctness": "Insertion adds the neighbor to the source vertex's set, so set membership is exactly edge existence. Hashing resolves collisions internally without changing which elements are stored, so membership returns true for stored neighbors and false otherwise. Deduplication follows because a set admits each value at most once.",
+        "complexityRationale": "With a well-distributed hash, insertion, deletion, and membership take expected O(1) per edge, and iterating neighbors takes O(degree). Memory is O(V + E) because each edge contributes one stored neighbor per endpoint.",
+        "uses": [
+            "Fast edge-membership tests in dynamic graphs",
+            "Deduplicating edges while building graphs from streams",
+            "Representing sparse boolean matrices"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapters 11 and 22",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Sections 3.4 and 4.1"
+        ],
+        "workedExample": "For an undirected graph with edge A-B, the sets are A: {B} and B: {A}. Adding A-B again leaves both sets unchanged. Querying whether A connects to B checks membership in A's set and succeeds in expected constant time, while querying A to C fails."
+    },
     id: "adjacency-set",
     name: "Adjacency Set",
     category: "data-structures",

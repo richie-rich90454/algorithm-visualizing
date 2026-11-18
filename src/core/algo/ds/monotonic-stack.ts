@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Monotonic Stack module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A monotonic stack keeps its values sorted by popping anything beaten by the incoming element. Scanning left to right, a new value pops all larger stack elements, and the incoming index is recorded as the next smaller element of each one popped.",
+        "invariants": [
+            "The stack holds indices whose values are strictly increasing.",
+            "A popped element has the index that popped it as its next smaller element.",
+            "Any index still on the stack has no next smaller element to its right."
+        ],
+        "correctness": "When value x pops index j, x is the first element to the right of j that is smaller, because every earlier right-side element was scanned and did not pop j. Thus the recorded answer is exactly the next smaller element, and elements never popped have no smaller element to their right.",
+        "complexityRationale": "Each index is pushed once and popped at most once, so the scan does O(n) total work regardless of input. The stack holds up to n indices, O(n) space.",
+        "uses": [
+            "Largest rectangle in a histogram",
+            "Next greater or next smaller element queries",
+            "Stock span and other dominance problems"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "cp-algorithms, Next greater element and histogram stack methods"
+        ],
+        "workedExample": "For [4,5,2,10,8], push 4 and 5; value 2 pops 5 then 4, so both get next smaller index 2. Push 2 and 10; value 8 pops 10, giving next smaller index 4."
+    },
     id: "monotonic-stack",
     name: "Monotonic Stack",
     category: "data-structures",

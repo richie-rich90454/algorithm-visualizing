@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Green Hackenbush stalk is a vertical bamboo of edges rooted in the ground. Cutting an edge removes it and everything above it, so a stalk of n edges behaves exactly like a Nim heap of size n. With green edges both players may cut anywhere.",
+        "invariants": [
+            "Cutting edge i leaves a stalk of i edges below it.",
+            "A stalk of zero edges is the only losing P-position.",
+            "Every nonzero stalk is a nimber equal to its edge count."
+        ],
+        "correctness": "The stalk is a Nim heap because the reachable positions after a cut are precisely stalks of every smaller size. By the Sprague-Grundy definition the value is mex of those smaller values, which is n by induction starting from G(0) equal to zero. Any positive stalk can therefore be reduced to zero in one move.",
+        "complexityRationale": "Scanning the n edges costs O(n) time and the representation uses O(1) extra space.",
+        "uses": [
+            "The simplest example of the colon principle in Hackenbush",
+            "Introducing the equivalence between stalks and Nim heaps",
+            "A building block for sums of green Hackenbush graphs"
+        ],
+        "references": [
+            "Conway, On Numbers and Games",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "A stalk of 5 edges is a Nim heap of size 5. Cutting the base edge removes all 5 edges and leaves the empty stalk of size 0. Since only the empty stalk is losing, the first player wins immediately by cutting at the base."
+    },
     id: "green-hackenbush-stalk",
     name: "Green Hackenbush Stalk",
     category: "game",

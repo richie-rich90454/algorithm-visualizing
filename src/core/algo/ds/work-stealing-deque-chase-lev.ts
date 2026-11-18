@@ -101,6 +101,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Chase-Lev deque gives each worker a double-ended queue: the owner pushes and pops at the bottom while thieves steal from the top with compare-and-swap. The owner end needs no synchronization except when one item remains, keeping the common case fast.",
+        "invariants": [
+            "Owner operations use plain stores at the bottom.",
+            "Thieves atomically claim items at the top.",
+            "A failed compare-and-swap means another thief won and must retry."
+        ],
+        "correctness": "Only the owner touches the bottom and only thieves race for the top; the compare-and-swap on steal ensures at most one thief claims an item. When one item remains the owner also uses a compare-and-swap, so an item cannot be both popped and stolen.",
+        "complexityRationale": "Owner push and pop are O(1) with a plain store except the final-item compare-and-swap, and steals are O(1) with retries. The growable circular array holds n tasks, O(n) space.",
+        "uses": [
+            "Schedulers in parallel runtimes such as Cilk, Go, and Rayon",
+            "Thread-pool task scheduling",
+            "Load balancing across worker threads"
+        ],
+        "references": [
+            "Chase and Lev, Dynamic Circular Work-Stealing Deque, SPAA 2005",
+            "Cilk scheduler and work-stealing literature"
+        ],
+        "workedExample": "Owner pushes 1, 2, 3, 4 at the bottom; two thieves steal from the top claiming 1 and 2 via compare-and-swap, and the owner pops 4 from the bottom. The reported splits account for all four tasks once."
+    },
     id: "work-stealing-deque-chase-lev",
     name: "Work-Stealing Deque",
     category: "data-structures",

@@ -147,6 +147,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binomial Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A binomial heap is a forest of binomial trees whose sizes match the set bits of the element count. Each tree of order k has exactly 2^k nodes, so merging two heaps works exactly like adding two binary numbers with carries. The minimum is kept at a tree root, and extraction reverses a root's children into the forest.",
+        "invariants": [
+            "At most one tree of each order exists in the forest.",
+            "Each tree is heap ordered, so its root is its minimum.",
+            "The multiset of tree orders represents the binary form of the element count."
+        ],
+        "correctness": "Linking two equal-order trees makes the root with the smaller key the parent, preserving heap order and producing one tree of the next order, exactly a binary carry. Consolidation removes all duplicate orders, so the representation stays unique. The global minimum is the smallest root, and extracting it plus relinking children restores the structure.",
+        "complexityRationale": "There are at most log n trees, and merging or linking is constant per order, so insert, merge, and extract-min take O(log n). Storage is one node per element, O(n).",
+        "uses": [
+            "Meldable priority queues",
+            "Efficient heap union in graph algorithms",
+            "Cache-friendly sorting via heap selection"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 19",
+            "J. Vuillemin, \"A Data Structure for Manipulating Priority Queues\", CACM 1978"
+        ],
+        "workedExample": "Inserting 3, 7, 1, 9, 5 creates singleton trees and carries as counts grow: after four inserts the forest holds one order-2 tree, after five it holds that tree plus an order-0 tree. The roots are 1 and 5, so the minimum is 1; extracting 1 promotes its children back into the forest."
+    },
     id: "binomial-heap",
     name: "Binomial Heap",
     category: "data-structures",

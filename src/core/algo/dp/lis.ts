@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The LIS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest increasing subsequence finds the longest chain of elements in order whose values strictly increase. The O(n^2) DP defines dp[i] as the length of the best increasing subsequence ending at index i. It scans all earlier positions j whose value is smaller and extends the best of them.",
+        "invariants": [
+            "dp[i] is the length of the LIS ending exactly at i.",
+            "Only predecessors j < i with array[j] < array[i] are valid extensions.",
+            "Parent pointers record a predecessor achieving dp[i]."
+        ],
+        "correctness": "Any increasing subsequence ending at i has a penultimate element j with smaller value and earlier index, so its length is dp[j] plus one. Taking the maximum over all such j gives dp[i] by optimal substructure. The overall answer is the maximum dp value, and following parents reconstructs the chain.",
+        "complexityRationale": "Each of n indices scans all earlier indices, costing O(n^2) time. The dp array and parent array use O(n) space; a patience-sorting variant improves time to O(n log n).",
+        "uses": [
+            "Analyzing ordering and trends in data series",
+            "A subroutine in some edit-distance and scheduling algorithms",
+            "Competitive programming pattern for chain DP"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.1.4"
+        ],
+        "workedExample": "For [3,1,4,1,5,9,2,6] the DP values end with a maximum of 4, reconstructed as 1, 4, 5, 9. Each element is larger than the previous and appears later in the array."
+    },
     id: "lis",
     name: "Longest Increasing Subsequence",
     category: "dynamic-programming",

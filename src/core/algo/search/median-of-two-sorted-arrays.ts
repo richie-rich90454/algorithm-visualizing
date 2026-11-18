@@ -137,6 +137,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This finds the median of two sorted arrays without merging them. It binary searches a cut in the shorter array and a complementary cut in the longer one so every element on the left is at most every element on the right.",
+        "invariants": [
+            "The cut indices partition both arrays into left and right parts.",
+            "The maximum of the left parts is at most the minimum of the right parts at a valid cut."
+        ],
+        "correctness": "A valid cut splits the combined elements into equal halves with the correct ordering, so the median is the average of the two largest left values for even totals or the smaller left maximum for odd totals; binary search finds that cut.",
+        "complexityRationale": "The binary search runs over the shorter array of length min(n,m), giving O(log(min(n,m))) time and O(1) space.",
+        "uses": [
+            "Computing medians of merged data without merging",
+            "Statistics over distributed sorted streams",
+            "Teaching partition-based binary search"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2 exercises",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3.2 (medians)"
+        ],
+        "workedExample": "For [1,2,3,4] and [5,6,7,8], the cut lands after 4 in the first array and before 5 in the second; the median is (4+5)/2 = 4.5, found after a few partition checks."
+    },
     id: "median-of-two-sorted-arrays",
     name: "Median of Two Sorted Arrays",
     category: "searching",

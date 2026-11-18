@@ -177,6 +177,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Monkey Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Monkey sort, also called bogosort, checks whether the array is sorted and, if not, shuffles it randomly and checks again. It relies on luck rather than structure: eventually a random permutation happens to be sorted. It exists to show why algorithms need a plan.",
+        "invariants": [
+            "Each shuffle produces some permutation of the original multiset of values.",
+            "The loop ends only when the current permutation is sorted."
+        ],
+        "correctness": "Every permutation has a nonzero chance of being produced, so with probability one a sorted permutation is eventually drawn and the check terminates. There is no deterministic progress guarantee, which is precisely the lesson.",
+        "complexityRationale": "There are n! permutations and each is equally likely, so the expected number of shuffles is n!, each costing O(n), giving O(n * n!) expected time. Only the array and a shuffling buffer are stored, O(n) space.",
+        "uses": [
+            "Teaching why brute-force randomness is not an algorithm",
+            "Entertainment and classroom demos",
+            "A baseline that no practical method would ever choose"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2 (sorting folklore)",
+            "Sedgewick and Wayne, Algorithms, Section 2.5 exercises"
+        ],
+        "workedExample": "For [3, 1, 4, 2], a shuffle might give [1, 3, 2, 4], still unsorted, then [2, 4, 1, 3], and eventually by chance [1, 2, 3, 4], which passes the sorted check."
+    },
     id: "monkey-sort",
     name: "Monkey Sort",
     category: "sorting",

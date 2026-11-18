@@ -82,6 +82,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A vector clock improves on a Lamport clock by giving each process a vector of counters, one per process, so it can detect concurrency as well as causal order. Each process increments its own slot on local events and sends its whole vector with messages; on receipt it takes the element-wise maximum and increments its own slot. Comparing two vectors reveals happens-before or concurrency.",
+        "invariants": [
+            "Each process's own slot is incremented on every local event and on receive.",
+            "On receive, each component becomes the maximum of local and message values before the local tick.",
+            "Vector entries never decrease."
+        ],
+        "correctness": "By induction, a process's vector component i counts the events of process i that happen-before the current event. Therefore event A happens-before event B exactly when A's vector is component-wise at most B's with at least one strict inequality. If neither dominates, the events are concurrent, so the comparison is exact unlike a single scalar clock.",
+        "complexityRationale": "Each event updates or compares a vector of length n, the number of processes, O(n) time. Storing one vector per process uses O(n^2) space overall, O(n) per process.",
+        "uses": [
+            "Distributed debugging and causal tracing",
+            "Conflict detection in replicated databases such as Dynamo and Riak",
+            "Optimistic replication and version vectors",
+            "Causal-consistent caching and event ordering"
+        ],
+        "references": [
+            "Fidge, Timestamps in Message-Passing Systems That Preserve the Partial Ordering, 1988",
+            "Mattern, Virtual Time and Global States of Distributed Systems, 1989"
+        ],
+        "workedExample": "Three processes start at [0,0,0]. P0 works and sends [2,0,0] to P1, which receives and ticks to [2,1,0]. Meanwhile P2 works alone to [0,0,1]. Comparing P1's [2,1,0] with P2's [0,0,1], neither dominates the other, so they are concurrent; a happens-before pair would have one vector strictly below the other."
+    },
     id: "vector-clock",
     name: "Vector Clock",
     category: "data-structures",

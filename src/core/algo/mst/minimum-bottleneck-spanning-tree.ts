@@ -158,6 +158,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A minimum bottleneck spanning tree minimizes the largest edge weight rather than the total weight. Every minimum spanning tree is also a minimum bottleneck tree, so the algorithm runs Kruskal's greedy scan and records the maximum edge it accepts. That maximum is the smallest possible bottleneck.",
+        "invariants": [
+            "Accepted edges form a spanning forest in nondecreasing weight order.",
+            "The bottleneck is the largest weight accepted so far.",
+            "Any spanning tree must contain an edge at least as heavy as the bottleneck."
+        ],
+        "correctness": "Kruskal produces a minimum spanning tree, and the maximum edge of an MST is a minimum possible bottleneck: if a spanning tree had a smaller maximum edge, it would be a lighter MST contradiction by the cut property. Therefore reporting the MST's heaviest edge gives the minimum bottleneck value.",
+        "complexityRationale": "Sorting edges dominates at O(E log E) time, with O(V + E) space for the tree and union-find structure.",
+        "uses": [
+            "Finding a connection where the worst link is as good as possible",
+            "Bandwidth-limited network design",
+            "A lower-bound heuristic for bottleneck routing problems"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees",
+            "Garey and Johnson, Computers and Intractability, bottleneck problems"
+        ],
+        "workedExample": "For edges A-B 1, B-C 2, C-D 3, A-C 4, A-D 8, Kruskal accepts weights 1, 2, 3 to span the four vertices. The largest accepted edge is 3, so no spanning tree can avoid an edge of weight at least 3 and the minimum bottleneck is 3."
+    },
     id: "minimum-bottleneck-spanning-tree",
     name: "Minimum Bottleneck Spanning Tree",
     category: "mst",

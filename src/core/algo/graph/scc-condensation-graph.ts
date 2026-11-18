@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Contracting each strongly connected component into one super-vertex produces the condensation graph, which is always a directed acyclic graph because any cycle between components would have merged them. The demo runs Kosaraju to find components, then adds an edge between super-vertices whenever an original edge crosses components.",
+        "invariants": [
+            "Each original vertex belongs to exactly one component.",
+            "Every condensation edge comes from an original edge between different components.",
+            "The condensation graph has no directed cycle."
+        ],
+        "correctness": "Kosaraju correctly partitions vertices into SCCs, so contracting them is well defined. If the condensation had a directed cycle, the components on it would be mutually reachable and thus one SCC, a contradiction; hence it is a DAG. The cross-component edge scan adds exactly the edges of that DAG.",
+        "complexityRationale": "Kosaraju costs O(V + E) and one more edge scan builds the condensation, with O(V + E) space for order, components, and links.",
+        "uses": [
+            "Simplifying reachability analysis on directed graphs",
+            "A first step in DAG algorithms applied to general graphs",
+            "Dependency and compilation ordering after cycle collapse"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, strongly connected components",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)"
+        ],
+        "workedExample": "For the graph with A and B mutually reachable and C and D mutually reachable, plus an edge B to C, Kosaraju finds components {A,B} and {C,D}. Contracting them yields two super-vertices with a single edge from the first to the second."
+    },
     id: "scc-condensation-graph",
     name: "SCC Condensation Graph",
     category: "graph",

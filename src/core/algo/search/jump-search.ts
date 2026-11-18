@@ -188,6 +188,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Jump Search module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Jump search walks a sorted array in fixed blocks of about sqrt(n), jumping past blocks whose last value is too small, then scanning linearly inside the final block. The block size balances the number of jumps against the scan length.",
+        "invariants": [
+            "Every skipped block ends with a value smaller than the target.",
+            "The target, if present, is in the current block."
+        ],
+        "correctness": "Because blocks are ordered, skipping a block whose last element is below the target cannot discard the target; once a block's end reaches or exceeds the target, a linear scan finds it or proves absence.",
+        "complexityRationale": "With block size sqrt(n) there are at most sqrt(n) jumps and at most sqrt(n) in-block checks, so O(sqrt n) time. Only index variables are stored, O(1) space.",
+        "uses": [
+            "Searching sorted arrays with expensive random access",
+            "Teaching block-based search trade-offs",
+            "Roadmap-style indexing on slow storage"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "For [2,4,6,8,10,12,14,16,18] with target 14 and block size 3, jump past blocks ending at 6 and 12, then scan 14, 16, 18 to find 14 at index 6."
+    },
     id: "jump-search",
     name: "Jump Search",
     category: "searching",

@@ -94,6 +94,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Integer square root uses Newton's method on the function x^2 - n to converge quickly to the floor of sqrt(n). The iteration x <- (x + n/x)/2 halves the error each round once close, so it needs only O(log n) steps. When the guess stops improving it is pinned between x^2 <= n and (x+1)^2 > n.",
+        "invariants": [
+            "Once the guess is at least sqrt(n), every later iterate stays at or above sqrt(n).",
+            "The sequence of guesses strictly decreases until convergence.",
+            "At termination x^2 <= n < (x+1)^2, so x is the integer square root."
+        ],
+        "correctness": "Newton's iteration for x^2 - n has local quadratic, hence at least linear, convergence from a starting guess above the root, so the values descend toward sqrt(n). The integer version stops when the next iterate would not decrease, which is exactly when the floor condition holds. Thus the returned x is floor(sqrt(n)).",
+        "complexityRationale": "The number of iterations is O(log n) because the error is roughly squared each step near the root. Each iteration is one division and one addition, with O(1) space.",
+        "uses": [
+            "Computing exact integer roots without floating point",
+            "Primality and factorization routines needing sqrt bounds",
+            "Fixing rounding errors of floating-point square root"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.4",
+            "Crandall and Pomerance, Prime Numbers, Section 2.1"
+        ],
+        "workedExample": "For n = 50 start from x = 50: next is (50 + 1)/2 = 25, then (25 + 2)/2 = 13, then (13 + 3)/2 = 8, then (8 + 6)/2 = 7. Since 7^2 = 49 <= 50 and 8^2 = 64 > 50, the answer is 7."
+    },
     id: "integer-sqrt-newton",
     name: "Integer Square Root (Newton)",
     category: "math",

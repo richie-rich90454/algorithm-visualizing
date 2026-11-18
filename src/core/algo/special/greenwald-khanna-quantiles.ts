@@ -106,6 +106,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Greenwald-Khanna summary estimates quantiles on a stream using little memory. It keeps sorted tuples of (value, gap, slack), where the slack bounds how far a tuple's rank may be from the truth. Periodic compression merges cheap adjacent tuples, and a quantile query returns a value whose rank is within epsilon times the stream length of the true rank.",
+        "invariants": [
+            "Tuples remain in sorted order by value.",
+            "For every tuple, gap plus slack never exceeds 2·epsilon·n, the compression threshold.",
+            "The summary always retains the minimum and maximum values."
+        ],
+        "correctness": "The gap and slack fields bound the possible rank range of each tuple. By merging only tuples whose combined gap plus slack stays below 2·epsilon·n, the algorithm guarantees that any reported quantile has rank within epsilon·n of the true rank. The demo compares its median estimate against the exact median.",
+        "complexityRationale": "Insertion locates a position in the sorted tuple list in O(log(1/epsilon)) amortized time because the summary stays bounded, and compression is linear in the summary size, O(1/epsilon). Memory is O((1/epsilon)·log(epsilon·n)) tuples, independent of the stream length.",
+        "uses": [
+            "Computing medians and percentiles in network monitoring",
+            "Latency and SLA percentile tracking in large systems",
+            "Approximate percentile aggregates in databases",
+            "Quantile estimation in stream processors such as Apache Flink"
+        ],
+        "references": [
+            "Greenwald and Khanna, Space-Efficient Online Computation of Quantile Summaries, SIGMOD 2001",
+            "Muthukrishnan, Data Streams: Algorithms and Applications, 2005"
+        ],
+        "workedExample": "Stream [7,2,9,4,1,8,3,6,5,10] with epsilon=0.2 inserts tuples in sorted order, compressing at n=4 and n=8. The median query for target rank 5 scans accumulating rank plus slack and returns the first tuple whose rank plus slack reaches 5, here 5 or 6, within epsilon·n=2 ranks of the true median 5."
+    },
     id: "greenwald-khanna-quantiles",
     name: "Greenwald–Khanna Quantiles",
     category: "data-structures",

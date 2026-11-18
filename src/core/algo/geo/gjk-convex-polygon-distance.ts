@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The Gilbert-Johnson-Keerthi algorithm estimates the distance between convex shapes by repeatedly choosing support points, the extreme points in a search direction, and maintaining a small simplex that closes in on the closest features. Because the support function of a convex polygon is easy to evaluate, each iteration is cheap.",
+        "invariants": [
+            "Every simplex vertex is a support point of one polygon in some direction.",
+            "The closest point of the simplex to the origin is a lower bound improvement over the previous iterate.",
+            "The search direction is always toward the origin from the current simplex closest point."
+        ],
+        "correctness": "For convex sets, the difference body contains the origin exactly when the shapes overlap, and the support mapping of the difference is the difference of the two support mappings. GJK searches that difference body with simplices; when the new support point fails to move past the origin, the current simplex closest point is the exact distance to the difference body, which is the shape distance. The visualization also reports the direct edge-pair minimum so the answer can be checked exactly.",
+        "complexityRationale": "Each iteration evaluates a support point on both polygons in O(n + m) time and the simplex has at most three vertices, so the iteration count is small in practice on these shapes. Space is O(n + m) for the polygons plus a constant-size simplex.",
+        "uses": [
+            "Collision detection in physics engines",
+            "Computing separation distances between obstacles in robotics",
+            "Broad-phase and narrow-phase checks in game engines"
+        ],
+        "references": [
+            "Gilbert, Johnson, and Keerthi, A Fast Procedure for Computing the Distance Between Complex Objects, IEEE Robotics and Automation 4 (1988)",
+            "Ericson, Real-Time Collision Detection, Chapter 10"
+        ],
+        "workedExample": "Take unit square A from (0,0) to (1,1) and unit square B from (3,0) to (4,1). The support point of A in direction (1,0) is its right edge and of B in direction (-1,0) is its left edge. The simplex closes on a horizontal separation of 2, which equals the exact closest edge-pair distance."
+    },
+
     id: "gjk-convex-polygon-distance",
     name: "GJK Convex Polygon Distance",
     category: "geometry",

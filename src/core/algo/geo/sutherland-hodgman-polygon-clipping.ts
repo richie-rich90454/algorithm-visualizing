@@ -164,6 +164,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Sutherland-Hodgman clips a subject polygon against a clipping polygon one edge at a time. For each clip edge it walks the subject vertices in order, keeping those inside the edge's half-plane and inserting intersection points where the polygon crosses the boundary.",
+        "invariants": [
+            "After processing an edge, the current polygon is the subject intersected with that half-plane.",
+            "Vertices are output in boundary order, preserving polygon orientation.",
+            "Crossing an edge adds exactly two intersection points, one on the way out and one on the way back in."
+        ],
+        "correctness": "The region inside a convex clip polygon is the intersection of its edge half-planes. Clipping against one half-plane replaces the current polygon by exactly the portion inside it, so applying all edges leaves the intersection with the clip polygon. Inserting crossings when consecutive vertices straddle a boundary keeps the output polygon closed and in order, so the final vertex list describes the clipped polygon exactly.",
+        "complexityRationale": "Each of the clip polygon's m edges scans the current vertex list once, of size at most O(n+m), giving O(n*m) time and O(n+m) space for the vertex buffers.",
+        "uses": [
+            "Viewport and window clipping in rendering",
+            "Intersecting shapes in CAD applications",
+            "Clipping geographic polygons to a region of interest"
+        ],
+        "references": [
+            "Sutherland and Hodgman, Reentrant Polygon Clipping, Communications of the ACM 17 (1974)",
+            "Foley et al., Computer Graphics: Principles and Practice, Chapter 3"
+        ],
+        "workedExample": "Clipping the triangle (0,0), (4,0), (0,4) to the window [0,3] by [0,3] processes four half-planes. The edge from (4,0) to (0,4) crosses x = 3 at (3,1) and (0,4) is cut to (0,3), leaving the quadrilateral (0,0), (3,0), (3,1), (0,3)."
+    },
+
     id: "sutherland-hodgman-polygon-clipping",
     name: "Sutherland–Hodgman Polygon Clipping",
     category: "geometry",

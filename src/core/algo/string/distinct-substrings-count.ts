@@ -73,6 +73,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This counts how many different substrings a string contains. The straightforward method enumerates every substring by length and starting position and inserts each into a hash set; the set's size at the end is the answer.",
+        "invariants": [
+            "After processing length L the set contains exactly all distinct substrings of length at most L.",
+            "Inserting a substring already present does not change the set, so the count grows only for genuinely new strings."
+        ],
+        "correctness": "Every substring has some length between 1 and n and some start, so the nested loops enumerate all of them. A hash set keeps one copy of each distinct value, so its final cardinality is exactly the number of distinct substrings.",
+        "complexityRationale": "There are O(n^2) substrings and each slice plus hash insert can cost up to O(n) depending on the hashing model, so the work is O(n^2) to O(n^3) in the worst case; the module reports O(n^2) with O(n^2) storage. Suffix automata or suffix arrays do it in O(n).",
+        "uses": [
+            "Measuring string complexity and repeat richness",
+            "Genomics metrics based on substring diversity",
+            "A building block for substring-based text features"
+        ],
+        "references": [
+            "Crochemore et al., Algorithms on Strings, chapter on suffix structures",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"aba\": length 1 gives {a, b}; length 2 adds {ab, ba}; length 3 adds {aba}, for a total of 5 distinct substrings out of 6 occurrences, since \"a\" appears twice."
+    },
     id: "distinct-substrings-count",
     name: "Distinct Substrings Count",
     category: "string",

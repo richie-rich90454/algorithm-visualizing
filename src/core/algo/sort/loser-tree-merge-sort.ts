@@ -144,6 +144,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A loser tree is a tournament bracket that remembers which leaf lost each match, so replacing one leaf costs only O(log K) to replay its path. Seeding the leaves with sorted runs and repeatedly extracting the winner merges K runs efficiently.",
+        "invariants": [
+            "Each internal node stores the index of the losing child, so the winner is read at the root.",
+            "Exhausted leaves are marked and never win again."
+        ],
+        "correctness": "Because only the path from a changed leaf can affect match outcomes, replaying that path restores the tree invariant; the root therefore always names the smallest available head. Extracting heads in that order merges the runs into sorted output.",
+        "complexityRationale": "Each of the n output elements triggers an O(log K) replay and building the tree costs O(K), giving O(n log K) merge work and O(n log n) overall for the sort. The tree uses O(K) or O(n) auxiliary storage.",
+        "uses": [
+            "Multiway merging in external sorts",
+            "Priority queues with stable tie handling",
+            "Tournament replacement in database merge joins"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.4.2",
+            "Bentley and Saxe, Generating a Sorted Stream from Sorted Subsequences, ACM Transactions on Mathematical Software, 1980"
+        ],
+        "workedExample": "Seed leaves with heads 1, 4, and 2; the root names 1 as winner. After outputting 1, replace its leaf with 5 and replay only that path to find the next winner 2, then 4, producing the sorted stream 1, 2, 4, 5."
+    },
     id: "loser-tree-merge-sort",
     name: "Loser Tree Merge Sort",
     category: "sorting",

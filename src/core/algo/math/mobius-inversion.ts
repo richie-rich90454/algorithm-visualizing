@@ -166,6 +166,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Möbius Inversion module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Mobius function assigns 0 to numbers with a squared prime factor, and plus or minus one according to the parity of the number of distinct primes otherwise. Mobius inversion says that if g(n) sums f over the divisors of n, then f can be recovered by summing mu(d)*g(n/d) over divisors. It is the divisor-sum analogue of inclusion-exclusion.",
+        "invariants": [
+            "mu(n) is zero exactly when n is divisible by a prime square.",
+            "For squarefree n, mu(n) equals (-1)^k for k distinct prime factors.",
+            "The convolution mu * 1 equals the identity function at 1."
+        ],
+        "correctness": "The sum of mu over the divisors of n is 1 when n = 1 and 0 otherwise, so convolving with mu inverts the divisor-sum operator. Applying that convolution to g = f * 1 recovers f exactly. The sieve computes mu by factoring, so the inversion identity holds for the values shown.",
+        "complexityRationale": "Sieving mu up to n by marking multiples of primes costs O(n log n) total work. The array of mu values occupies O(n) space.",
+        "uses": [
+            "Inverting divisor sums in analytic number theory",
+            "Counting coprime pairs and squarefree numbers",
+            "Fast zeta-transform style computations over divisors"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 4",
+            "Apostol, Introduction to Analytic Number Theory, Chapter 2"
+        ],
+        "workedExample": "For n = 6, mu(1)=1, mu(2)=-1, mu(3)=-1, mu(6)=1. If g(n) sums f over divisors, then f(6) = g(6) - g(3) - g(2) + g(1), the inversion formula with these mu weights."
+    },
     id: "mobius-inversion",
     name: "Möbius Inversion",
     category: "math",

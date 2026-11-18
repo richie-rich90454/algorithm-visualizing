@@ -360,6 +360,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Misere Nim module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Misere Nim is played like Nim except the player who takes the last stone loses. The strategy is almost the same as normal Nim, with one twist: when every pile has size one, the parity of the number of piles decides the winner instead of the xor.",
+        "invariants": [
+            "The nim-sum is the xor of all pile sizes.",
+            "When all piles are singletons, an even count is winning and an odd count losing.",
+            "Otherwise the normal-play winning condition of nonzero nim-sum applies."
+        ],
+        "correctness": "With all piles of size one, each move removes exactly one pile, so the player facing an even number can leave an odd number and force the opponent to take the last stone. With a pile larger than one, normal Nim play can be followed until the position reaches the all-singletons case on the opponent's turn, preserving the win.",
+        "complexityRationale": "Computing the xor over p piles and counting singletons costs O(p) time with O(1) extra space.",
+        "uses": [
+            "A classic misere play variant for teaching game theory",
+            "Testing how a rule change alters Nim strategy",
+            "A small finite game with a closed-form solution"
+        ],
+        "references": [
+            "Bouton, Nim, a Game with a Complete Mathematical Theory (1901)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "Piles [1,2,3] are not all singletons and xor to 1 xor 2 xor 3 = 0, so the position is losing for the player to move. Every take leaves a nonzero nim-sum, letting the opponent steer the game back to a losing position."
+    },
     id: "misere-nim",
     name: "Misère Nim",
     category: "game",

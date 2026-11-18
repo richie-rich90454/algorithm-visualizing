@@ -232,6 +232,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Jump Point Search speeds up A* on uniform grids by ignoring symmetric paths. Instead of stepping to every neighbor, it jumps along a row or column past cells that have no forced neighbors, and only creates nodes at jump points where a wall forces a turn.",
+        "invariants": [
+            "Every jumped-over cell lies on a path that has an equally short symmetric alternative.",
+            "A jump point is the first cell with a forced neighbor or the goal.",
+            "The path through jump points has the same cost as the optimal grid path."
+        ],
+        "correctness": "On a uniform-cost grid, paths that differ only by the order of moves through an open area have equal cost, so skipping them loses no optimal path. The only places where a unique continuation is forced are jump points near obstacles, so exploring just those preserves at least one optimal path and A* remains optimal.",
+        "complexityRationale": "Worst-case cost is O(E log V) like A*, but open grids expand far fewer nodes; the open set and bookkeeping use O(V) space.",
+        "uses": [
+            "Fast pathfinding on uniform grid maps for games",
+            "Robot motion planning on tiled environments",
+            "Reducing A* expansions in large open areas"
+        ],
+        "references": [
+            "Harabor and Grastien, Online Graph Pruning for Pathfinding on Grid Maps (2011)",
+            "Hart, Nilsson, and Raphael, A Formal Basis for Heuristic Search (1968)"
+        ],
+        "workedExample": "With a vertical wall except a gap at (2,2), the search jumps straight down the corridor from (0,2) to (2,2) and then to (4,2). Intermediate open cells are skipped because moving through them in a different order costs the same, giving optimal cost 4."
+    },
     id: "jump-point-search",
     name: "Jump Point Search",
     category: "shortest-path",

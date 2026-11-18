@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree Center module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The center of a tree is the vertex or pair of vertices that minimizes the farthest distance to any other node. Leaf peeling finds it by repeatedly removing all current leaves at once; the last one or two vertices left are the centers.",
+        "invariants": [
+            "Peeling a layer of leaves does not change the set of centers.",
+            "The eccentricity of remaining vertices decreases by one each round.",
+            "A tree ends with either one center or two adjacent centers."
+        ],
+        "correctness": "Removing every leaf shortens all longest paths by exactly one at each end, so the vertices minimizing maximum distance remain the same after a round. Repeating until one or two vertices remain gives the middle of every longest path, which is the center. A tree has one center if its diameter is even and two adjacent centers if the diameter is odd, which matches the final peeling result.",
+        "complexityRationale": "Each vertex is removed at most once and edges are examined when their endpoints are peeled, giving O(n) time. The degree counts and queue use O(n) space.",
+        "uses": [
+            "Finding optimal meeting points in a tree network",
+            "Computing tree radius from the center",
+            "Rooting a tree to minimize height"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (tree properties)",
+            "Harary, Graph Theory, Chapter 4"
+        ],
+        "workedExample": "For the path 1-2-3-4-5-6, peel leaves 1 and 6, then 2 and 5, then 3 and 4. Two adjacent vertices remain, so the tree has centers 3 and 4."
+    },
+
     id: "tree-center",
     name: "Tree Center",
     category: "tree",

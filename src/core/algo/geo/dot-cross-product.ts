@@ -123,6 +123,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dot/Cross Product module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The dot product and cross product are the two basic ways to combine planar vectors. The dot product measures how much two vectors point the same way and its sign tells whether the angle is acute or obtuse. The cross product gives the signed area of the parallelogram they span and its sign is the standard left-or-right turn test.",
+        "invariants": [
+            "dot(u,v) equals |u| times |v| times the cosine of the angle between them.",
+            "cross(u,v) equals |u| times |v| times the sine of the signed angle.",
+            "cross(u,v) is positive exactly when v is counterclockwise from u."
+        ],
+        "correctness": "Expanding the vectors in coordinates gives dot(u,v) = u1*v1 + u2*v2 and cross(u,v) = u1*v2 - u2*v1, which are the algebraic forms of the cosine and sine relations. The sign of the dot follows the cosine, so it classifies acute versus obtuse angles. The sign of the cross follows the sine, so it classifies left versus right turns and zero indicates collinearity.",
+        "complexityRationale": "Each product uses a fixed number of multiplications and additions, so time is O(1). No arrays are allocated, so space is O(1).",
+        "uses": [
+            "Orientation tests in convex hulls and segment intersection",
+            "Projection and similarity scoring in graphics and machine learning",
+            "Computing areas and angles in physics simulations"
+        ],
+        "references": [
+            "Strang, Linear Algebra and Its Applications, Chapter 1",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 1"
+        ],
+        "workedExample": "For u = (3,1) and v = (2,4), dot = 3*2 + 1*4 = 10, which is positive so the angle is acute. Cross = 3*4 - 1*2 = 10, also positive, so v is a counterclockwise turn from u."
+    },
+
     id: "dot-cross-product",
     name: "Dot & Cross Product",
     category: "geometry",

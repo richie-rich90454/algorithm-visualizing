@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A wavelet tree recursively splits the alphabet in half and stores a bitvector recording which half each element goes to. Range queries descend the tree, using rank on the bitvector to map the interval to the appropriate child.",
+        "invariants": [
+            "Each node bitvector marks the split choice of its elements in order.",
+            "Left children hold the lower alphabet half and right the upper.",
+            "Rank maps a range positions from parent to child."
+        ],
+        "correctness": "Because the bitvector is aligned with parent element order, rank tells exactly which child each element belongs to and in what order, so a query range maps to the correct contiguous child range. Recursing to a leaf recovers the alphabet symbol and the correct range answer.",
+        "complexityRationale": "A query descends O(log s) levels for alphabet size s, doing one rank per level, O(log s). Each level stores one bit per element, O(n log s) space.",
+        "uses": [
+            "Compressed full-text indexes",
+            "Range counting and selection on sequences",
+            "Geometric range searching on static data"
+        ],
+        "references": [
+            "Grossi, Gupta, and Vitter, High-Order Entropy-Compressed Text Indexes, JCSS 2005",
+            "Navarro, Wavelet Trees: A Success Story, 2014 survey"
+        ],
+        "workedExample": "Array [5,2,8,1,7,3] splits the alphabet with a bitvector at each node; query [1,4] uses rank to map the interval down matching branches and recovers the values in that range."
+    },
     id: "wavelet-tree",
     name: "Wavelet Tree",
     category: "data-structures",

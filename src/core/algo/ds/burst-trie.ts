@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A burst trie starts with a single container of strings and turns a container into a trie node when it grows too large. Small key sets stay compact in one container, while popular prefixes automatically get their own branches. Searches walk trie characters, then scan the small leftover container.",
+        "invariants": [
+            "Each container holds at most the burst threshold number of words.",
+            "A burst replaces a container by children keyed on the next character.",
+            "Every word is stored in exactly one container."
+        ],
+        "correctness": "Bursting distributes words by their next character, so any future lookup follows the same character to the right container. Because the split is by prefix, two words stay together only when they share that prefix. Scanning the final container therefore finds the word if and only if it was inserted.",
+        "complexityRationale": "Each character of a lookup costs one trie step, and the final container scan is bounded by the threshold, so amortized time is O(k). Storage is O(n) because each word appears once and nodes are created only when needed.",
+        "uses": [
+            "In-memory string dictionaries",
+            "Autocomplete and spell-checker front ends",
+            "Token indexes in search engines"
+        ],
+        "references": [
+            "Steffen Heinz, Justin Zobel, and Hugh E. Williams, \"Burst Tries: A Fast, Efficient Data Structure for String Keys\", ACM TOIS 2002",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.3"
+        ],
+        "workedExample": "With words car, cat, dog, dot and a threshold of 2, inserting creates one container of four words, which bursts on first character into a c branch (car, cat) and a d branch (dog, dot). Searching cat follows c then a and scans the small container to find cat."
+    },
     id: "burst-trie",
     name: "Burst Trie",
     category: "data-structures",

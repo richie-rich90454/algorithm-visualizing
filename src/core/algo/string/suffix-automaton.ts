@@ -158,6 +158,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Suffix Automaton module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A suffix automaton is the minimal DFA accepting all substrings of a string, built online one character at a time. Each state stores a maximum length, a suffix link, and transitions; appending a character may create a new state and occasionally clones one to keep the automaton minimal.",
+        "invariants": [
+            "Each state represents a class of substrings with the same end-position set, with lengths bounded by its suffix link.",
+            "The suffix-link chain from any state moves through progressively shorter suffix classes down to the initial state."
+        ],
+        "correctness": "Extending adds exactly the new substrings ending at the last position; when an existing transition would make a state span too wide a length range, cloning splits it so each state keeps a consistent end-position set. The result is the minimal automaton recognizing all substrings, by the DAWG theorem.",
+        "complexityRationale": "Each extension creates at most two states and follows suffix links amortized O(1) times, so build is O(n) with at most 2n states and 3n transitions; space is O(n).",
+        "uses": [
+            "Counting distinct substrings in linear time",
+            "Substring occurrence queries",
+            "Full-text indexing and longest common substring"
+        ],
+        "references": [
+            "Blumer et al., The Smallest Automaton Recognizing the Subwords of a Text, 1985",
+            "Crochemore et al., Algorithms on Strings"
+        ],
+        "workedExample": "Building over \"ababa\" yields about six states; the suffix-link chain connects the state for \"ababa\" to those for \"baba\", \"aba\", \"ba\", \"a\", and the root, showing how all suffixes are represented compactly."
+    },
     id: "suffix-automaton",
     name: "Suffix Automaton",
     category: "string",

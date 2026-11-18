@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pohlig-Hellman solves the discrete log g^x = h when the group order is smooth, meaning it factors into small primes. It solves the problem separately in each prime-order subgroup, producing a congruence x = xi (mod qi), then combines the pieces with the Chinese Remainder Theorem. The difficulty drops from the whole group to its largest prime factor.",
+        "invariants": [
+            "Each subgroup solution satisfies x congruent to xi modulo qi.",
+            "The prime factors qi multiply to the group order.",
+            "The CRT combination satisfies g^x = h modulo p."
+        ],
+        "correctness": "Projecting into a subgroup of order qi reduces the exponent modulo qi, so solving there yields x mod qi. Because the qi are coprime and their product is the group order, CRT reconstructs x modulo the group order uniquely. The reconstructed exponent is verified by exponentiating g.",
+        "complexityRationale": "Each subgroup of prime order q is solved by baby-step giant-step in O(sqrt(q)) time, so the dominant cost is O(sqrt(q_max)) where q_max is the largest prime factor. Space is O(1) in this small implementation.",
+        "uses": [
+            "Attacking discrete logs in groups with smooth order",
+            "Guiding secure choice of cryptographic group parameters",
+            "Teaching subgroup decomposition and CRT combination"
+        ],
+        "references": [
+            "Pohlig and Hellman, An improved algorithm for computing logarithms over GF(p) (1978)",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 3"
+        ],
+        "workedExample": "For p = 11 the group order is 10 = 2*5. Solve x modulo 2 and modulo 5 using subgroup baby-step giant-step, obtaining two congruences, then CRT-combine them into x modulo 10 and check that g^x = h mod 11."
+    },
     id: "pohlig-hellman-discrete-log",
     name: "Pohlig-Hellman Discrete Log",
     category: "math",

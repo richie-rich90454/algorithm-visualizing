@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The CRT (coprime) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Chinese Remainder Theorem rebuilds a number from its remainders modulo several pairwise-coprime moduli. For each congruence it forms a term that is 1 modulo one modulus and 0 modulo all the others, using the modular inverse. Adding the terms yields the unique solution modulo the product of all moduli.",
+        "invariants": [
+            "The moduli are pairwise coprime, so the product M is the least common multiple.",
+            "Each term r_i * M_i * inv(M_i mod m_i) is congruent to r_i mod m_i and 0 mod the other moduli.",
+            "The total is determined uniquely modulo M."
+        ],
+        "correctness": "For each i, M_i = M/m_i is coprime to m_i, so its inverse exists and the constructed term is 1 at modulus i and 0 elsewhere by construction. Summing gives a number matching every specified remainder. Uniqueness modulo M follows because any two solutions differ by a multiple of each coprime modulus, hence of their product.",
+        "complexityRationale": "There are k congruences and each needs one extended Euclid inverse costing O(log m), giving O(k log m) time. Storing the k terms uses O(k) space.",
+        "uses": [
+            "Speeding up modular arithmetic with large moduli",
+            "Threshold secret sharing schemes",
+            "Reconstructing residues in cryptographic algorithms such as RSA"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.3.2",
+            "Cormen et al., Introduction to Algorithms, Section 31.5"
+        ],
+        "workedExample": "Solve x = 2 (mod 3), x = 3 (mod 5), x = 2 (mod 7). With M = 105 the terms sum to 23 mod 105. Indeed 23 mod 3 = 2, mod 5 = 3, and mod 7 = 2."
+    },
     id: "crt-coprime",
     name: "CRT (Coprime)",
     category: "math",

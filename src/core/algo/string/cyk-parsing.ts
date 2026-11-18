@@ -99,6 +99,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "CYK decides membership in a context-free grammar in Chomsky Normal Form using dynamic programming. It fills a triangular table where cell (i,j) holds the nonterminals that can derive the substring from i to j. Length-1 spans come from terminal rules and longer spans combine two shorter spans with binary rules.",
+        "invariants": [
+            "A nonterminal is in cell (i,j) if and only if it derives the exact substring s[i..j].",
+            "The table is filled by increasing span length, so smaller spans needed for a combination are already complete."
+        ],
+        "correctness": "By induction on span length, length-1 cells are correct by the terminal productions. For a longer span, any derivation's first rule splits it into two nonempty parts covered by smaller spans; CYK tries every split and every binary rule, so it adds exactly the nonterminals that can derive the span. The start symbol in the top cell therefore means the whole string is derivable.",
+        "complexityRationale": "There are O(n^2) spans, each trying O(n) split points and checking grammar rules, giving O(n^3·|G|) time in Chomsky Normal Form. The triangular table uses O(n^2) space.",
+        "uses": [
+            "Syntax checking for context-free languages",
+            "Natural-language parsing",
+            "The membership test underlying chart parsers"
+        ],
+        "references": [
+            "Hopcroft and Ullman, Introduction to Automata Theory, Languages, and Computation, Chapter 5",
+            "CLRS, Introduction to Algorithms, dynamic programming chapter"
+        ],
+        "workedExample": "Grammar S→AB, A→a, B→b on \"ab\": cell (0,0) gets A and cell (1,1) gets B; for span (0,1) the split k=0 has A on the left and B on the right, triggering S→AB so S is in the top cell and the string is accepted."
+    },
     id: "cyk-parsing",
     name: "CYK Parsing",
     category: "string",

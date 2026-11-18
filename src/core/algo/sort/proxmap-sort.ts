@@ -155,6 +155,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Proxmap sort guesses each key's final position with a map function, scatters keys near their guesses, then insertion-sorts each short bucket. Good guesses make buckets tiny and the finish nearly linear. It foreshadows learned index structures.",
+        "invariants": [
+            "Every key is placed in the bucket associated with its mapped position.",
+            "Keys in different buckets are ordered by the map, so cross-bucket order is fixed."
+        ],
+        "correctness": "The map is monotone, so any key landing in an earlier bucket is no larger than one in a later bucket; insertion sorting inside each bucket then orders the remaining local inversions.",
+        "complexityRationale": "Mapping n keys is O(n) and each bucket holds O(1) keys under a good map, so insertion sorting all buckets is O(n) expected; a poor map can degrade to O(n^2). The bucket array uses O(n) space.",
+        "uses": [
+            "Prototyping learned indexes and proximity maps",
+            "Sorting keys with a known distribution",
+            "Teaching distribution sorts with approximate guesses"
+        ],
+        "references": [
+            "Walker, Proxmap Sort, 1985 technical report, University of Tennessee",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3] over range 1..5, the map sends each value near its rank; keys scatter into nearby slots and short insertion passes settle them to [1, 2, 3, 4, 5]."
+    },
     id: "proxmap-sort",
     name: "Proxmap Sort",
     category: "sorting",

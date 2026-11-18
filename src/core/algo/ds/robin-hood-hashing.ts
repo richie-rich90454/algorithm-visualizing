@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Robin Hood hashing is open addressing where a key that has probed farther can displace a key that has probed less. This evens out probe lengths, so the longest probes stay short and lookups terminate early.",
+        "invariants": [
+            "Probe distances within a cluster are nondecreasing.",
+            "An evicted key continues probing with a longer distance.",
+            "A lookup can stop at an empty slot or a resident with shorter probe distance."
+        ],
+        "correctness": "Swapping a longer-probing key with a shorter-probing resident keeps both findable and never increases the shorter key distance, so the invariant holds. Because distances are nondecreasing, meeting a resident with a shorter probe proves the target cannot be farther along, so absent keys are detected early.",
+        "complexityRationale": "With good hashing and bounded load, average probes are O(1) and worst-case probes O(log n); each probe is constant work. The table stores one entry per slot, O(n) space.",
+        "uses": [
+            "Hash maps needing predictable probe tails",
+            "Caches with tight latency requirements",
+            "Compiler symbol tables"
+        ],
+        "references": [
+            "Celis, Larson, and Munro, Robin Hood Hashing, 1985",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.4 on hashing"
+        ],
+        "workedExample": "Hash 12, 5, 21, 8 into a small table; when 21 lands on a shorter-probing resident, that resident steps aside and 21 continues. Lookup of 21 follows the probe sequence and finds it; a key hashing to an early empty slot stops immediately."
+    },
     id: "robin-hood-hashing",
     name: "Robin Hood Hashing",
     category: "data-structures",

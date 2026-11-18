@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Hamiltonian cycle visits every vertex exactly once and returns to the start. Backtracking builds a path one vertex at a time, extending it with an unvisited neighbor and retreating when a dead end is reached. If the path covers all vertices and its last vertex links back to the start, a cycle is found.",
+        "invariants": [
+            "The current path has no repeated vertex.",
+            "Every path edge exists in the original graph.",
+            "Backtracking only abandons branches that cannot complete a cycle."
+        ],
+        "correctness": "Each extension follows a real edge and avoids repeats, so any complete path is a Hamiltonian path. Closing it requires an edge from last vertex back to the start, giving a Hamiltonian cycle. Exhaustive backtracking tries every possible prefix, so if none closes, no Hamiltonian cycle exists.",
+        "complexityRationale": "The search tree can have up to O(V!) permutations, giving factorial worst-case time, while the current path uses O(V) space.",
+        "uses": [
+            "Solving small instances of the traveling salesman decision problem",
+            "Route planning with visit-once constraints",
+            "A canonical example of exponential backtracking"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, backtracking",
+            "Garey and Johnson, Computers and Intractability, Hamiltonian cycle"
+        ],
+        "workedExample": "The square graph A-B-C-D-A starts at A. Extending A-B-C-D covers all vertices and D links back to A, so the cycle A-B-C-D-A closes with no backtracking. On a graph without that closing edge the search would retreat and try other branches."
+    },
     id: "hamiltonian-cycle-backtracking",
     name: "Hamiltonian Cycle (Backtracking)",
     category: "graph",

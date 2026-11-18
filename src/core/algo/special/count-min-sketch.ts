@@ -132,6 +132,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Count-Min Sketch module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A count-min sketch estimates item frequencies with sub-linear memory. It keeps d rows of counters, each with its own hash function; seeing an item increments one counter per row. To estimate a frequency, take the minimum of that item's d counters. Hash collisions can only inflate counts, so the minimum is the least inflated estimate available.",
+        "invariants": [
+            "Every counter holds the true count of some item plus non-negative collision noise.",
+            "The estimate never undercounts an item's true frequency.",
+            "Each update touches exactly one counter per row."
+        ],
+        "correctness": "A counter for item x equals x's true count plus the counts of colliding items, so it is always at least the true count; taking the minimum across rows therefore cannot undercount. With d = ln(1/delta) rows and w = e/epsilon columns, the overestimate is bounded by epsilon times the stream length with probability at least 1 - delta.",
+        "complexityRationale": "Each update and estimate computes d hashes and touches d counters, O(d) time independent of stream length. The counter table holds w·d values, O(w·d) space, far smaller than exact counts over a large universe.",
+        "uses": [
+            "Network flow and traffic measurement",
+            "Counting frequent items in web clickstreams",
+            "N-gram statistics in natural language processing",
+            "Per-key request-rate tracking at large scale"
+        ],
+        "references": [
+            "Cormode and Muthukrishnan, An Improved Data Stream Summary: The Count-Min Sketch and its Applications, 2004",
+            "Muthukrishnan, Data Streams: Algorithms and Applications, 2005"
+        ],
+        "workedExample": "With 3 rows of 5 counters and stream a,b,a,c,a,b, each sighting of \"a\" increments one cell per row, three times total. Probing \"a\" reads its three cells and returns their minimum. If no collision inflated them, the minimum is 3, matching the exact count of three; if one cell was bumped to 4 by a colliding key, the minimum still returns 3."
+    },
     id: "count-min-sketch",
     name: "Count-Min Sketch",
     category: "data-structures",

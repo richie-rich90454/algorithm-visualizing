@@ -167,6 +167,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sqrt decomposition splits a sorted array into blocks of about sqrt(n). It compares the target with each block's last element to skip entire blocks, then linear-scans the one block that could contain it.",
+        "invariants": [
+            "Blocks are ordered, so a block ending below the target cannot contain it.",
+            "The target, if present, lies in the first block whose end is at least the target."
+        ],
+        "correctness": "Skipping blocks whose maximum is below the target is safe by sortedness; scanning the first viable block finds the target or proves absence because earlier blocks were too low and later ones start higher.",
+        "complexityRationale": "There are about sqrt(n) blocks and each holds about sqrt(n) elements, so O(sqrt n) time checking block ends plus scanning one block; only a block size and index are stored, O(1) space.",
+        "uses": [
+            "Searching sorted arrays with cheap block indexing",
+            "Range-query preprocessing",
+            "Teaching block decomposition trade-offs"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "For [2,4,6,8,10,12,14,16,18] with target 14 and blocks of three, block ends 6 and 12 are skipped; the third block [14,16,18] is scanned and 14 found at index 6."
+    },
     id: "sqrt-decomposition-search",
     name: "Sqrt Decomposition Search",
     category: "searching",

@@ -148,6 +148,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Batcher's odd-even merge sort is a fixed network of compare-and-swap wires with no data-dependent branching. It merges two sorted halves by comparing odd-indexed wires, then even-indexed wires, with strides that widen and then narrow. Every comparison is predetermined, so the network maps cleanly onto parallel hardware.",
+        "invariants": [
+            "After a stage, each pair of wires joined by a comparator is in sorted local order.",
+            "Merging two sorted subsequences of length m produces one sorted subsequence of length 2m."
+        ],
+        "correctness": "The odd-even merge recurrence merges the odd positions and even positions of two sorted lists recursively, then compares adjacent pairs to interleave them correctly. By induction on list length the merged output is sorted, and the network applies this recurrence for every power-of-two size.",
+        "complexityRationale": "The network has O(log^2 n) stages, each with up to n/2 comparators that can run in parallel, so depth is O(log^2 n) and total comparators O(n log^2 n). The visualization treats wires as an in-place array with O(1) extra storage per comparator.",
+        "uses": [
+            "GPU and SIMD sorting where branches are costly",
+            "Hardware sorting networks in ASICs and FPGAs",
+            "Foundational example of a fixed comparison network"
+        ],
+        "references": [
+            "Batcher, Sorting Networks and Their Applications, AFIPS Spring Joint Computer Conference, 1968",
+            "CLRS, Introduction to Algorithms, Chapter 27"
+        ],
+        "workedExample": "Merge the sorted runs [1, 4] and [2, 3]: compare odd-position wires (1 with 2, 4 with 3), then even-position wires (2 with 3). The fixed comparator sequence yields [1, 2, 3, 4] regardless of the input values."
+    },
     id: "batcher-odd-even-merge-sort",
     name: "Batcher Odd-Even Merge Sort",
     category: "sorting",

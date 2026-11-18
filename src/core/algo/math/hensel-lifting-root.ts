@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hensel lifting refines a solution of a polynomial congruence modulo a prime into a solution modulo a higher power of that prime. It uses a first-order Taylor step: measure how far the current root is from satisfying the equation, then correct it using the inverse of the derivative. Each lift doubles the number of correct p-adic digits.",
+        "invariants": [
+            "The current residue r satisfies f(r) = 0 modulo the current power of p.",
+            "The derivative f'(r) is nonzero modulo p so its inverse exists.",
+            "Each lift increases the modulus by a factor of p while preserving the congruence."
+        ],
+        "correctness": "Taylor expansion gives f(r + c*p^k) = f(r) + c*p^k*f'(r) modulo p^(k+1). Choosing c to cancel f(r)/p^k requires dividing by f'(r), which is invertible by assumption, so the corrected r satisfies the congruence to the next power. Induction lifts the root as far as needed.",
+        "complexityRationale": "Each lift performs a few arithmetic operations on numbers of size O(log power), costing O(log p) time per level. With only the current root, modulus, and derivative stored, space is O(1).",
+        "uses": [
+            "Lifting modular square roots in primality and factoring routines",
+            "p-adic methods in number theory and algebraic geometry",
+            "Solving polynomial congruences to high prime powers"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 5",
+            "Koblitz, p-adic Numbers, p-adic Analysis, and Zeta-Functions, Chapter 1"
+        ],
+        "workedExample": "Start with r = 3 satisfying r^2 = 2 mod 7 since 9 = 2 mod 7. With f'(r) = 2r = 6 and its inverse 6 mod 7, the correction cancels (r^2-2)/7, giving a residue modulo 49 whose square is 2 mod 49."
+    },
     id: "hensel-lifting-root",
     name: "Hensel Lifting",
     category: "math",

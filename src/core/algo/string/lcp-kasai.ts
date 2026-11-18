@@ -143,6 +143,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The LCP (Kasai) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The LCP array stores, for adjacent suffixes in the suffix array, the length of their longest common prefix. Kasai's algorithm computes it in linear time by scanning suffixes in text order and reusing the previous comparison: if suffix i and its neighbor share h characters, the next suffix shares at least h-1.",
+        "invariants": [
+            "h is the LCP of the current suffix i and its suffix-array predecessor.",
+            "After decreasing h by one it is a lower bound for the next suffix's LCP, so further comparisons only extend it."
+        ],
+        "correctness": "Removing the first character from two suffixes with a common prefix of length h leaves suffixes with a common prefix of at least h-1. Because the algorithm visits suffixes in text order and the rank array maps each to its suffix-array neighbor, this bound always applies, so each extension is valid and every LCP value is exact.",
+        "complexityRationale": "h increases by one per successful comparison and decreases by at most one per suffix, so total comparisons are O(n) across the scan. Storing the rank and LCP arrays uses O(n) space.",
+        "uses": [
+            "Building suffix-array-based indexes",
+            "Longest repeated substring queries",
+            "Full-text search accelerators"
+        ],
+        "references": [
+            "Kasai et al., Linear-Time Longest-Common-Prefix Computation in Suffix Arrays, 2001",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"banana\" with suffix array [5,3,1,0,4,2], scanning in text order reuses h: suffixes \"ana\" and \"anana\" share 3 characters, the next pair starts from h=2, and the resulting LCP array is [1,3,0,0,2]."
+    },
     id: "lcp-kasai",
     name: "LCP Array (Kasai)",
     category: "string",

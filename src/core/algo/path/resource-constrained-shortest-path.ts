@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This finds the cheapest route that also fits a resource budget such as fuel. Dynamic programming tracks dp[v][f], the least cost to reach vertex v having used exactly f units of resource. Edges are relaxed only when the resulting resource use stays within the budget.",
+        "invariants": [
+            "dp[v][f] is the minimum cost reaching v with resource use f.",
+            "Only transitions with f + edge resource at most the budget are allowed.",
+            "Processing resource levels in order makes each state's value final."
+        ],
+        "correctness": "Every feasible path corresponds to a sequence of resource-increasing transitions, so the DP considers it. Taking minima over all transitions into a state yields the cheapest cost for that vertex and resource level, and minimizing over levels at the target gives the cheapest feasible route.",
+        "complexityRationale": "Expanding R resource levels over V and E costs O(R(V + E)) time with O(R V) space for the cost table and predecessors.",
+        "uses": [
+            "Routing electric vehicles with battery constraints",
+            "Scheduling with limited budget or fuel",
+            "Any shortest path with an additive side constraint"
+        ],
+        "references": [
+            "Desrochers and Soumis, A Generalized Label Correcting Method for Shortest Path Problems with Time Windows (1988)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, dynamic programming"
+        ],
+        "workedExample": "With budget 3, route A-B-D needs 4 fuel and is rejected, while A-C-D uses only 2 fuel and costs 5. The DP records both states but reports A-C-D as the cheapest feasible path."
+    },
     id: "resource-constrained-shortest-path",
     name: "Resource Constrained Shortest Path",
     category: "shortest-path",

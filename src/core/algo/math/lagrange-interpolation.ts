@@ -97,6 +97,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Lagrange interpolation builds the unique polynomial of degree at most n-1 passing through n given points. For each point it forms a basis polynomial that is 1 at that point and 0 at all the others, then weights the bases by the observed y-values. Summing them gives a polynomial that matches every point exactly.",
+        "invariants": [
+            "Each basis polynomial L_i vanishes at every node except x_i.",
+            "L_i evaluated at x_i equals 1.",
+            "The weighted sum P(x_i) equals y_i for every data point."
+        ],
+        "correctness": "The basis polynomial is a product of ratios (x - x_j)/(x_i - x_j) over j not equal to i, which is 1 at x_i and 0 at other nodes. Therefore the sum of y_i times L_i takes value y_k at x_k because only the k-th basis is nonzero there. A nonzero polynomial of degree less than n cannot have n roots, so this interpolant is unique.",
+        "complexityRationale": "Evaluating each of the n basis products takes O(n) multiplications, giving O(n^2) time. The construction uses O(1) extra space beyond the input points when only one value is evaluated.",
+        "uses": [
+            "Fitting a polynomial through known data points",
+            "Secret reconstruction in Shamir sharing",
+            "Finite-field interpolation in erasure coding"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.2.5",
+            "Burden and Faires, Numerical Analysis, Chapter 3"
+        ],
+        "workedExample": "Through points (0,1), (1,3), (2,7) the polynomial is P(x) = x^2 + x + 1. Evaluating at x = 3 gives 9 + 3 + 1 = 13, and the weighted Lagrange bases produce the same value."
+    },
     id: "lagrange-interpolation",
     name: "Lagrange Interpolation",
     category: "math",

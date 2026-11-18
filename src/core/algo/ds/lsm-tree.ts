@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An LSM tree buffers writes in an in-memory memtable and flushes it as an immutable sorted run when full. Smaller runs are compacted into larger ones over time. Reads check the newest structures first, so the first copy found is the latest value for a key.",
+        "invariants": [
+            "Each run is sorted by key and immutable once flushed.",
+            "Newer levels contain more recent versions of keys.",
+            "A lookup returns the first matching version from newest to oldest."
+        ],
+        "correctness": "Because writes land in the memtable, the newest value of a key is always in the newest structure containing it. Compaction merges sorted runs and discards overwritten versions, preserving the latest value. Searching from newest to oldest therefore returns the correct current value.",
+        "complexityRationale": "Writes are O(1) appends to the memtable and amortized cheap flushes, giving O(1) amortized write cost. Reads may consult several runs, O(log n) levels, with Bloom filters reducing lookups. Space is O(n) with temporary duplication during compaction.",
+        "uses": [
+            "Write-heavy databases such as LevelDB and Cassandra",
+            "Log-structured storage engines",
+            "Time-series and event stores"
+        ],
+        "references": [
+            "Patrick O'Neil et al., \"The Log-Structured Merge-Tree (LSM-Tree)\", Acta Informatica 1996",
+            "S. Ghemawat and J. Dean, LevelDB design documentation"
+        ],
+        "workedExample": "Insert keys 3, 1, 4 into the memtable; when it fills, flush a sorted run containing 1, 3, 4. Insert 2, flush a newer run, then compact the runs into a larger sorted level. A lookup for 3 checks the newest structures first, finds 3 in the level, and returns it."
+    },
     id: "lsm-tree",
     name: "LSM Tree",
     category: "data-structures",

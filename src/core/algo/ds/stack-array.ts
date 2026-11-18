@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Stack (array) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A stack is last in, first out. An array stack keeps a top index: push writes at top and increments, pop decrements and reads. Since all work happens at one end, every operation is O(1).",
+        "invariants": [
+            "Slots below top hold the stack in arrival order.",
+            "Top points one past the newest element.",
+            "Pop returns the most recently pushed surviving value."
+        ],
+        "correctness": "Writing and reading at the same moving end means the last pushed element is the first popped, which is LIFO. Decrementing top before reading exposes exactly the previous element, so successive pops reverse the push order.",
+        "complexityRationale": "Push, pop, and peek touch one slot and one index, O(1); occasional resizing copies n elements but is O(1) amortized. Storage is one slot per element, O(n).",
+        "uses": [
+            "Function call and expression evaluation stacks",
+            "Undo and redo history",
+            "Depth-first traversal"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.2 on stacks"
+        ],
+        "workedExample": "Push 5, 3, 8 into slots 0, 1, 2; pop returns 8 as top moves to 2, then 3; the remaining stack [5] with top 1 reflects LIFO order."
+    },
     id: "stack-array",
     name: "Stack (Array)",
     category: "data-structures",

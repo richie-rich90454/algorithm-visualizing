@@ -71,6 +71,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Lamport clock assigns a number to each event so that cause and effect keep their order. Every process increments its counter on each event; when it sends a message it attaches the counter, and the receiver sets its clock to the maximum of local and received values plus one. This guarantees that if one event happens before another, the earlier one has a smaller timestamp.",
+        "invariants": [
+            "Each process's clock never decreases and rises by at least one per event.",
+            "A send event's timestamp is strictly less than the matching receive event's timestamp.",
+            "If event a happens-before event b, then timestamp(a) is less than timestamp(b)."
+        ],
+        "correctness": "By induction along the happens-before relation, local events increment the clock, and a receive takes the maximum with the sender's timestamp, which already dominates all causes of the message, then adds one. The clock value therefore respects causal order. The converse does not hold: ordered timestamps alone do not prove a causal link between concurrent events.",
+        "complexityRationale": "Each event does constant work, an increment or a maximum, so e events cost O(e) overall and O(1) per event. Each process stores one integer, O(number of processes) space.",
+        "uses": [
+            "Causal timestamping in distributed logs and debugging",
+            "Event ordering in distributed databases",
+            "Distributed mutual exclusion such as Lamport's bakery algorithm",
+            "Tracing and versioning in message-passing systems"
+        ],
+        "references": [
+            "Lamport, Time, Clocks, and the Ordering of Events in a Distributed System, Communications of the ACM, 1978",
+            "Coulouris et al., Distributed Systems: Concepts and Design, Chapter 18"
+        ],
+        "workedExample": "Three processes start at [0,0,0]. P0 has an internal event, giving [1,0,0], then sends with stamp 1 to P1. P1 receives and sets its clock to max(0,1)+1=2, yielding [1,2,0]. Each later send and receive keeps the send stamp strictly below the receive stamp, preserving causal order."
+    },
     id: "lamport-clock",
     name: "Lamport Clock",
     category: "data-structures",

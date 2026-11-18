@@ -87,6 +87,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Polynomial long division divides one polynomial by another, producing a quotient and a remainder of smaller degree. At each step the leading term of the remainder is cancelled by subtracting a suitable multiple of the divisor, and that multiple becomes the next quotient term. It mirrors numerical long division but aligns by degree instead of decimal place.",
+        "invariants": [
+            "At every step dividend = divisor*quotient + remainder.",
+            "The degree of the remainder strictly decreases after each cancellation.",
+            "The process stops when the remainder degree is below the divisor degree."
+        ],
+        "correctness": "Each step subtracts a multiple of the divisor chosen to kill the current leading term, which preserves the identity dividend = divisor*quotient + remainder while lowering the remainder degree. When no cancellation is possible the degree condition holds, so the quotient and remainder satisfy the division algorithm's unique characterization.",
+        "complexityRationale": "There are O(n) quotient terms for a degree-n dividend and each cancellation touches O(m) coefficients of a degree-m divisor, costing O(n*m) time. The working arrays use O(n) space.",
+        "uses": [
+            "Dividing polynomials in computer algebra systems",
+            "Reducing polynomials modulo another for finite-field arithmetic",
+            "Computing rational function forms"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.1",
+            "von zur Gathen and Gerhard, Modern Computer Algebra, Chapter 2"
+        ],
+        "workedExample": "Divide x^3 + 2x^2 + 3x + 4 by x + 1. Cancel x^3 with x^2, leaving x^2 + 3x + 4; cancel x^2 with x, leaving 2x + 4; cancel 2x with 2, leaving remainder 2. The quotient is x^2 + x + 2 with remainder 2."
+    },
     id: "polynomial-long-division",
     name: "Polynomial Long Division",
     category: "math",

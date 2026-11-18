@@ -169,6 +169,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Recursive best-first search is A star in linear space. It follows the most promising child but remembers each sibling's f-value as a backup limit; when all children exceed the limit it unwinds, keeping only the best f for the forgotten subtree.",
+        "invariants": [
+            "Each stack frame stores the f-value of the best forgotten alternative.",
+            "The current path never exceeds its inherited f-limit."
+        ],
+        "correctness": "With an admissible heuristic, backing up the minimum exceeded f-value preserves the information needed to resume the best path later, so RBFS finds an optimal goal when memory is sufficient.",
+        "complexityRationale": "Forgotten subtrees are re-expanded, so time can be O(b^d) despite good heuristics. Only the recursion path and sibling limits are stored, O(d) space.",
+        "uses": [
+            "Optimal search with limited memory",
+            "Puzzle solving where A star exhausts memory",
+            "Teaching memory-bounded search trade-offs"
+        ],
+        "references": [
+            "Korf, Real-Time Heuristic Search and the Pathfinding Search Problem, AI Magazine, 1990",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3"
+        ],
+        "workedExample": "From A, explore child B with f=4 while sibling C has f=6 backed up; if B's subtree grows past 6, unwind and explore C, regenerating B's best path later if C fails."
+    },
     id: "rbfs-search",
     name: "RBFS Search",
     category: "searching",

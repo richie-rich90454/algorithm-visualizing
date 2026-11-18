@@ -191,6 +191,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Priority Queue module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A priority queue always removes the highest-priority element, here the smallest key. A binary min-heap keeps keys in a complete tree where every parent is no larger than its children, so the minimum sits at the root. Insert bubbles a key up and extract-min sifts the last leaf down.",
+        "invariants": [
+            "Every parent is less than or equal to its children.",
+            "The tree is complete, filled level by level.",
+            "The root is the minimum key."
+        ],
+        "correctness": "Bubble-up swaps a key with its larger parent until the parent is no larger, restoring order on that path without disturbing others. Extract-min replaces the root with the last leaf and sifts it down by swapping with the smaller child, the only child that could violate order, yielding a min-heap with the new minimum at the root.",
+        "complexityRationale": "Bubble and sift climb or descend the tree height, O(log n), while peek is O(1) because the minimum is at the root. The complete tree fits in n array slots, O(n) space.",
+        "uses": [
+            "Dijkstra and A star frontier management",
+            "Event simulation and job scheduling",
+            "Heap sort"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 6",
+            "Williams, Algorithm 232: Heapsort, CACM 1964"
+        ],
+        "workedExample": "Insert 5, 3, 8, 1, 9 so 1 bubbles to the root. Extract-min removes 1, lifts 9 to the root, and sifts it past 3 to restore heap order; the next extraction returns 3."
+    },
     id: "priority-queue",
     name: "Priority Queue",
     category: "data-structures",

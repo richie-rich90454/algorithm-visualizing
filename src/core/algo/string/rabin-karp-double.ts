@@ -190,6 +190,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Rabin-Karp (Double) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rabin-Karp hashes the pattern and each text window with a rolling polynomial hash, sliding in O(1) by removing the outgoing character and appending the incoming one. The double variant computes two independent hashes and accepts a candidate only when both match, making collisions negligible.",
+        "invariants": [
+            "A window's rolling hash equals the polynomial hash of its characters under the current base and modulus.",
+            "Two equal windows always have equal hash pairs, while unequal windows almost surely differ."
+        ],
+        "correctness": "If a window's hash pair differs from the pattern's, the windows cannot be equal, so it can be skipped. When both hashes match, a direct character comparison verifies equality, so collisions never cause false positives and no occurrence is missed.",
+        "complexityRationale": "Hashing the pattern and first window costs O(m), each slide is O(1), and verification is O(m) only on hash hits, giving O(n+m) average time with O(nm) worst case under adversarial collisions. Space is O(1) beyond the text.",
+        "uses": [
+            "Plagiarism and duplicate detection",
+            "Multi-pattern search",
+            "The rolling-hash core of 2D template matching"
+        ],
+        "references": [
+            "Karp and Rabin, Efficient Randomized Pattern-Matching Algorithms, 1987",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "Searching \"ababcab\" in \"ababcabababcab\", each window's pair of base-31 and base-37 hashes is compared to the pattern's; at indices 0 and 7 both hashes match and direct verification confirms occurrences."
+    },
     id: "rabin-karp-double",
     name: "Rabin-Karp (Double)",
     category: "string",

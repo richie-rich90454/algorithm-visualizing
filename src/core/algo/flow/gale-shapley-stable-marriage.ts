@@ -173,6 +173,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gale-Shapley finds a stable matching between two equally sized sets with ranked preferences. Proposers apply to their next choice; each receiver keeps the best proposal so far and rejects the rest, and rejected proposers move down their lists. The process always ends with no blocking pair, meaning no two unmatched-to-each-other participants would both prefer each other.",
+        "invariants": [
+            "A receiver's current hold is always its favorite among all proposals received so far.",
+            "Each proposer applies to candidates in strictly descending preference order.",
+            "Once a receiver rejects a proposer, that pair can never be matched."
+        ],
+        "correctness": "The algorithm terminates because each of the finite ordered pairs is proposed at most once. The result is a perfect matching because a free proposer always has someone left to approach. No blocking pair exists: if a man prefers a woman to his match, he proposed to her earlier and she rejected or later upgraded him, so she prefers her final match.",
+        "complexityRationale": "There are at most n squared proposals for n men and n women, and each proposal is handled in constant time, giving O(n^2). Preference tables and current matches use O(n^2) space.",
+        "uses": [
+            "Medical residency and school choice matching markets",
+            "Assigning users to servers or tasks to machines with preferences",
+            "Stable assignment in two-sided markets"
+        ],
+        "references": [
+            "Gale and Shapley, College Admissions and the Stability of Marriage (1962)",
+            "Kleinberg and Tardos, Algorithm Design, matching markets chapter"
+        ],
+        "workedExample": "Men m0,m1,m2 propose in order; m0 goes to w0 and m1 to w1, both held. m2 proposes to w0, who already holds a better-ranked m0, so m2 is rejected, then w1 rejects him too, and he settles at w2. The result m0-w0, m1-w1, m2-w2 has no blocking pair."
+    },
     id: "gale-shapley-stable-marriage",
     name: "Gale-Shapley Stable Marriage",
     category: "flow",

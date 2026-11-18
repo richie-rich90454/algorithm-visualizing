@@ -183,6 +183,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Kadane 2D module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "2D Kadane finds the maximum-sum rectangle in a matrix by reducing the problem to repeated 1D Kadane scans. It fixes a left and right column, collapses the rows between them into a single array of row sums, and runs classic Kadane on that array. Trying every column pair finds the best rectangle overall.",
+        "invariants": [
+            "For a fixed column pair, rowSums[r] equals the sum of row r across the chosen columns.",
+            "1D Kadane on rowSums returns the best row interval for the current column band.",
+            "best holds the largest rectangle sum seen over all processed column pairs."
+        ],
+        "correctness": "A rectangle is determined by a left column, right column, top row and bottom row. For a fixed column pair, compressing to row sums turns the choice of top and bottom rows into a maximum-subarray problem, which 1D Kadane solves optimally. Enumerating every column pair therefore examines all rectangles, so the maximum found is global.",
+        "complexityRationale": "There are O(cols^2) column pairs, and each is built and scanned in O(rows) time, giving O(rows·cols^2) total. The only auxiliary storage is the rowSums array of length rows, O(rows) space.",
+        "uses": [
+            "Finding the brightest rectangular region in an image",
+            "Two-dimensional maximum-profit and submatrix problems",
+            "Geospatial analysis of maximum-sum grid regions",
+            "Computer vision and financial matrix analysis"
+        ],
+        "references": [
+            "Bentley, Programming Pearls, Column 7",
+            "Cormen et al., Introduction to Algorithms (CLRS), Chapter 4"
+        ],
+        "workedExample": "For the module's 3x3 grid, fixing columns 0..1 gives row sums [3,1,-4] and a best of 4. Fixing columns 1..2 gives row sums [1,6,-2], whose 1D Kadane returns 7 from rows 0..1. The best rectangle is those two rows and columns 1..2, with sum 2+(-1)+4+2=7."
+    },
     id: "kadane-2d",
     name: "Kadane (2D)",
     category: "dynamic-programming",

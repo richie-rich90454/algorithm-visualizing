@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A binary trie is a tree with one level per bit of a fixed-width key. At each level the next bit chooses the 0 or 1 child, and a terminal flag marks where a stored key ends. Because the path is determined entirely by the bits, lookup and insertion take time proportional only to key width, not to the number of keys.",
+        "invariants": [
+            "Depth d corresponds to bit d of the key.",
+            "Each node has at most one child labeled 0 and one labeled 1.",
+            "A terminal flag marks a complete stored key."
+        ],
+        "correctness": "Following the bits of a query visits exactly the nodes whose prefixes equal those bits, so reaching a terminal after the last bit means the key is stored. Creating missing children on insertion keeps the path intact. Two keys sharing a prefix share nodes until they differ, which preserves distinctness.",
+        "complexityRationale": "Each operation walks at most w bits, O(w) independent of the number of keys. Each stored key contributes at most w nodes, so space is O(n w) in the worst case.",
+        "uses": [
+            "IP longest-prefix matching",
+            "Bit-level indexes and compressed dictionaries",
+            "Fast set-membership on fixed-width keys"
+        ],
+        "references": [
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.3",
+            "Thomas H. Cormen et al., Introduction to Algorithms, Chapter 12 exercises"
+        ],
+        "workedExample": "Insert the two-bit keys 01, 10, 11: the root gains a 0 child leading to a 1 terminal and a 1 child leading to two terminals 0 and 1. Searching 10 reads bit 1 then bit 0, reaches the terminal, and reports a hit; searching 00 stops at the missing 0 child under the 0 branch."
+    },
     id: "binary-trie",
     name: "Binary Trie",
     category: "data-structures",

@@ -163,6 +163,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "AC-3 enforces arc consistency by repeatedly revising every directed constraint arc. For each arc Xi to Xj it deletes any value of Xi that has no supporting value in Xj. Deletions re-queue neighboring arcs because a neighbor may have relied on a removed value.",
+        "invariants": [
+            "Every value remaining in a domain has support in all constrained neighbors after its arcs are processed.",
+            "Domains only shrink; values are never added back."
+        ],
+        "correctness": "When the queue empties every arc is consistent, because each revision removed unsupported values and any domain change re-queued affected arcs. If a domain becomes empty, no assignment can satisfy the constraints, proving unsatisfiability.",
+        "complexityRationale": "There are at most e directed arcs and each revision scans up to d squared value pairs with requeues, giving O(e * d^3) worst-case time. The arc queue and domains use O(e) space.",
+        "uses": [
+            "Constraint propagation before backtracking search",
+            "Solving scheduling and coloring puzzles",
+            "Preprocessing in SAT and CSP solvers"
+        ],
+        "references": [
+            "Mackworth, Consistency in Networks of Relations, Artificial Intelligence, 1977",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 6"
+        ],
+        "workedExample": "With domains X {1,2}, Y {1}, Z {1,2} and constraints X != Y and Y < Z, revising Z against Y deletes 1 from Z because Y is fixed at 1; X keeps 2 only. The reduced domains guide the search."
+    },
     id: "ac3-arc-consistency",
     name: "AC-3 Arc Consistency",
     category: "searching",

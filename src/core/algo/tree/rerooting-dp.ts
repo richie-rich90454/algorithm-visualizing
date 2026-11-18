@@ -199,6 +199,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Rerooting DP module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Rerooting DP computes a tree DP value for every possible root using only two passes. A down pass computes subtree contributions with the original root, and an up pass combines each parent's value from all other subtrees with the child's own value, so every node learns its answer as if it were the root.",
+        "invariants": [
+            "After the down pass, each node knows the DP value of its subtree rooted at that node.",
+            "During the up pass, a child receives the parent's value excluding the child's contribution.",
+            "The combined value at a node equals the value obtained by rerooting at that node from scratch."
+        ],
+        "correctness": "The down pass is ordinary tree DP and is correct by induction on subtree size. For the up pass, the value seen by a child is the parent's rerooted value minus or excluding exactly the child's subtree contribution, which is the contribution of all nodes outside that child's subtree. Combining that with the child's own subtree gives the same result a fresh rooting at the child would produce, so by induction over the up traversal every node gets the true rerooted value.",
+        "complexityRationale": "Each edge is used once in the down pass and once in the up pass, with constant or monoid-combine work, so time is O(n) and the stored DP values use O(n) space.",
+        "uses": [
+            "Computing total distance from every node to all others",
+            "Finding each node's best rerooted DP score",
+            "Tree problems where the answer depends on the chosen root"
+        ],
+        "references": [
+            "Competitive Programming 3, Hall and Li, tree chapter",
+            "CLRS, Introduction to Algorithms, Chapter 15 (dynamic programming)"
+        ],
+        "workedExample": "On a path A-B-C with unit edges, the down pass from A gives subtree sizes 3, 2, 1. The up pass propagates outside contributions so the total distances become A = 3, B = 2, and C = 3, matching a direct computation from each root."
+    },
+
     id: "rerooting-dp",
     name: "Rerooting DP",
     category: "tree",

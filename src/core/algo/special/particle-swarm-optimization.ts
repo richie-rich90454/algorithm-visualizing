@@ -75,6 +75,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Particle Swarm Optimization is a population-based optimizer inspired by flocking birds. Each particle moves through the search space with a velocity continually adjusted toward its own best-found position and the swarm's best-found position, plus some inertia. The mix of personal memory and social sharing pulls the swarm toward good solutions.",
+        "invariants": [
+            "Each particle remembers the position with the best fitness it has personally seen.",
+            "The swarm best is the best personal best across all particles and never gets worse.",
+            "Positions stay clamped within the search bounds."
+        ],
+        "correctness": "PSO is a metaheuristic without a general convergence proof to a global optimum. The update rule guarantees that personal and global bests are monotone, so the algorithm never forgets a good solution; convergence to a local or global optimum is empirical and depends on the inertia and social parameters.",
+        "complexityRationale": "Each iteration updates n particles with constant-time velocity and position arithmetic, O(n), so t iterations cost O(t·n). Storing positions, velocities and bests for n particles uses O(n) space.",
+        "uses": [
+            "Engineering design and aerodynamic optimization",
+            "Neural-network training and hyperparameter tuning",
+            "Robotics path planning and antenna design",
+            "Feature selection and clustering"
+        ],
+        "references": [
+            "Kennedy and Eberhart, Particle Swarm Optimization, ICNN 1995",
+            "Shi and Eberhart, A Modified Particle Swarm Optimizer, IEEE CEC 1998"
+        ],
+        "workedExample": "Four particles scatter in [0,6], scored by (x-3)^2. A particle at x=1 with personal best 2 and swarm best 2.8 adjusts its velocity toward both targets and moves closer to 3. Over five iterations the swarm clusters near x=3 with fitness near zero."
+    },
     id: "particle-swarm-optimization",
     name: "Particle Swarm Optimization",
     category: "math",

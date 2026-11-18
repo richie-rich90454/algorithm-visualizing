@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In a flow graph with a fixed entry, vertex d dominates v when every path from the entry to v passes through d. The immediate dominator is the closest such vertex. Lengauer-Tarjan frames the computation with DFS order and semidominators solved by union-find, while this demo uses the equivalent iterative dataflow of intersecting predecessor dominator sets.",
+        "invariants": [
+            "Dom(entry) contains only the entry vertex.",
+            "For any other vertex, Dom(v) is itself union the intersection of Dom over all predecessors.",
+            "Dominator sets only shrink as the fixed point is approached."
+        ],
+        "correctness": "A vertex dominates v exactly when it dominates every predecessor of v and is v itself, so the dataflow equation characterizes the dominator sets. Starting from the maximal sets and repeatedly applying the monotone equation converges to the least fixed point, which is the true dominator relation; the immediate dominator is read off from those sets.",
+        "complexityRationale": "Lengauer-Tarjan achieves O((V + E) log(V + E)) with link-eval trees; the iterative set version shown costs more but uses O(V + E) space for predecessor lists and dominator sets.",
+        "uses": [
+            "Compiler control-flow analysis and loop detection",
+            "Program slicing and optimization",
+            "Network reliability analysis from a fixed source"
+        ],
+        "references": [
+            "Lengauer and Tarjan, A Fast Algorithm for Finding Dominators in a Flowgraph (1979)",
+            "Aho, Lam, Sethi, and Ullman, Compilers: Principles, Techniques, and Tools"
+        ],
+        "workedExample": "For the graph A to B and C, both to D, then D to E, the fixed point gives Dom(D) = {A,D} and Dom(E) = {A,D,E}. The immediate dominator of D is A because every path to D comes from A, and the immediate dominator of E is D."
+    },
     id: "dominators-lengauer-tarjan",
     name: "Dominators (Lengauer–Tarjan)",
     category: "graph",

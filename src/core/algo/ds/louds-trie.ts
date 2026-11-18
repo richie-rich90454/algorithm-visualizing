@@ -76,6 +76,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LOUDS encodes a trie as a bitvector in level order: each node contributes a run of 1 bits equal to its number of children followed by a 0. The shape of the whole tree fits in 2n+1 bits, and rank and select operations on the bitvector navigate to children. Labels are stored separately.",
+        "invariants": [
+            "The bitvector is 1^degree followed by 0 for each node in breadth-first order.",
+            "The number of 1 bits plus one equals the number of nodes.",
+            "The kth child of a node is found by rank and select on the bitvector."
+        ],
+        "correctness": "Unary encoding makes the position of a node's first child computable from the rank of ones, and its degree from the distance to the next zero. Selecting the child position then yields the correct child node. Because the encoding is a bijection with tree shape, navigation is exact.",
+        "complexityRationale": "Rank and select on a succinct bitvector take O(1) with a small index, so child navigation is O(1). The structure uses 2n+1 bits plus labels, essentially O(n) bits.",
+        "uses": [
+            "Succinct dictionaries and tries",
+            "Compressed text indexes",
+            "Memory-constrained prefix matching"
+        ],
+        "references": [
+            "J. P. Jacobson, \"Space-Efficient Static Trees and Graphs\", FOCS 1989",
+            "Raman, Raman, and Rao, \"Succinct Indexable Dictionaries\", 2002"
+        ],
+        "workedExample": "A root with two children, each a leaf, encodes as 110 10 10, or 1101010: root contributes 110, first child 10, second child 10. The seven bits equal 2*3 + 1 for three nodes. Child positions are found by rank and select over the ones."
+    },
     id: "louds-trie",
     name: "LOUDS Trie",
     category: "data-structures",

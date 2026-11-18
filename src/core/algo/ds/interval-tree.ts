@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An interval tree is a balanced BST over interval low endpoints, augmented with the maximum high endpoint in each subtree. That extra value lets a search skip any left subtree whose maximum endpoint is still below the query, so overlap queries touch only O(log n + k) nodes.",
+        "invariants": [
+            "BST order is by interval low endpoint.",
+            "Each node stores maxEnd of its subtree.",
+            "If the left subtree's maxEnd is below the query low, it cannot contain an overlap."
+        ],
+        "correctness": "Any interval in the left subtree has low at most the node's low, so if the subtree's maximum high is below the query low, none can overlap and pruning is safe. Otherwise recursion finds overlaps on that side. Because only nodes that can overlap are visited plus the output size, the query reports all overlapping intervals.",
+        "complexityRationale": "The search visits the path to matching nodes plus k reported overlaps, O(log n + k) for a balanced tree. Storing one extra scalar per node keeps space O(n).",
+        "uses": [
+            "Calendar and scheduling conflict detection",
+            "Genomic interval queries",
+            "Collision detection in graphics"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14",
+            "M. de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 10"
+        ],
+        "workedExample": "Insert intervals [1,5], [3,7], [10,12] keyed by low; the root [3,7] stores maxEnd 12. Query [6,8] checks the root, finds overlap with [3,7], skips the left subtree whose maxEnd is 5 below 6, and reports only [3,7]."
+    },
     id: "interval-tree",
     name: "Interval Tree",
     category: "data-structures",

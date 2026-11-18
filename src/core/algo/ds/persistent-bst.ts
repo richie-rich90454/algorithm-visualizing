@@ -167,6 +167,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "To make a BST persistent, copy only the nodes on the root-to-leaf path during an update; untouched subtrees are shared with the old version. Each version keeps its own root, so every past tree remains queryable.",
+        "invariants": [
+            "Two versions share exactly the subtrees they did not modify.",
+            "Each version root reaches a complete valid BST.",
+            "Copying never mutates an existing node."
+        ],
+        "correctness": "Insertion copies each visited node and rewires the copied parent to the new child, leaving the original tree untouched. All off-path subtrees are reused unchanged and still satisfy BST order relative to the copied ancestors, so the new root defines a valid BST while the old root still defines the old set.",
+        "complexityRationale": "An update copies one node per search level, O(log n) time and O(log n) new nodes; a query is an ordinary O(log n) descent. Total space is O(n plus updates times log n).",
+        "uses": [
+            "Functional maps and sets",
+            "Databases with snapshot isolation",
+            "Persistent indexes in version-controlled systems"
+        ],
+        "references": [
+            "Driscoll, Sleator, and Tarjan, Making Data Structures Persistent",
+            "Okasaki, Purely Functional Data Structures"
+        ],
+        "workedExample": "Insert 3, then 1, then 4, producing one root per version. Version 1 with keys 3 and 1 and version 2 with keys 3, 1, 4 share unchanged subtrees, and querying key 1 from version 1 still succeeds."
+    },
     id: "persistent-bst",
     name: "Persistent BST",
     category: "data-structures",

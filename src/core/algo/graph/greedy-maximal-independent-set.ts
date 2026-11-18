@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An independent set contains no adjacent vertices, and it is maximal when every outside vertex touches the set. The greedy scan walks vertices in order, taking a vertex when none of its neighbors has been taken and blocking its neighbors as it goes.",
+        "invariants": [
+            "No two taken vertices are adjacent.",
+            "Every vertex skipped because of a neighbor is dominated by the set.",
+            "At the end every vertex is either taken or adjacent to a taken vertex."
+        ],
+        "correctness": "Taking a vertex only when none of its neighbors is already taken preserves independence. At termination any vertex not taken was blocked at the time by a neighbor that was taken, so every outsider touches the set and it is maximal. Note that maximal does not mean maximum.",
+        "complexityRationale": "One pass with neighbor marking examines each edge once, O(V + E) time, and the taken and blocked sets use O(V) space.",
+        "uses": [
+            "Selecting non-conflicting tasks or frequencies",
+            "A greedy starting point for maximum independent set heuristics",
+            "Computing a maximal set quickly on large graphs"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, greedy algorithms",
+            "Garey and Johnson, Computers and Intractability, independent set"
+        ],
+        "workedExample": "On the triangle-plus-tail graph the scan takes A, blocking B and C, then takes D. The set {A,D} is independent and every other vertex touches it, so it is maximal, even though a single triangle vertex plus D would also be maximal."
+    },
     id: "greedy-maximal-independent-set",
     name: "Maximal Independent Set (Greedy)",
     category: "graph",

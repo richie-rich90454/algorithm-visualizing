@@ -147,6 +147,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 2D peak is a cell at least as large as its four orthogonal neighbors. This visualization does greedy hill climbing: from the top-left corner, step to the largest neighbor whenever it beats the current cell. Every move goes uphill, so the walk ends at a peak.",
+        "invariants": [
+            "Each move strictly increases the current cell's value.",
+            "The walk cannot revisit a cell because values strictly increase."
+        ],
+        "correctness": "Strictly uphill movement forbids cycles in a finite grid, so the walk terminates; at termination no neighbor is larger, which is exactly the definition of a 2D peak.",
+        "complexityRationale": "A climb may visit many cells on a large grid, so O(nm) worst-case time; only the current position and best neighbor are stored, O(1) space.",
+        "uses": [
+            "Teaching hill climbing on a grid",
+            "Locating local maxima in images or terrain",
+            "Introducing optimization landscapes"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 4 (hill climbing)",
+            "MIT 6.046 lecture notes on 2D peak finding"
+        ],
+        "workedExample": "On a small grid starting at the top-left value 1, compare four neighbors and step toward 7, then toward 9; when no neighbor exceeds 9, the walk stops at that 2D peak."
+    },
     id: "peak-finding-2d",
     name: "Peak Finding 2D",
     category: "searching",

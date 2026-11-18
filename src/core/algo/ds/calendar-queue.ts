@@ -81,6 +81,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A calendar queue is a priority queue for discrete-event simulation that hashes event times into buckets laid out like calendar days. Bucket width adapts to event density so the next event is usually at the head of the current bucket. Dequeue then rarely scans more than one bucket.",
+        "invariants": [
+            "Each event sits in the bucket for its time interval.",
+            "Events within a bucket are sorted by time.",
+            "Bucket width is chosen so average occupancy stays near one."
+        ],
+        "correctness": "Hashing an event to its time bucket and keeping buckets sorted means the earliest event is in the current or a later bucket, never an earlier one. Scanning from the current bucket in time order therefore returns the true minimum. Resizing buckets when density changes preserves the mapping.",
+        "complexityRationale": "With occupancy near one, enqueue and dequeue are O(1) amortized because the hand advances monotonically through buckets. Storage is O(n) for events plus a fixed number of buckets.",
+        "uses": [
+            "Discrete-event simulation",
+            "Network packet scheduling",
+            "Timer wheels in operating systems"
+        ],
+        "references": [
+            "Randy Brown, \"Calendar Queues: A Fast O(1) Priority Queue Implementation for the Simulation Event Set Problem\", CACM 1988",
+            "Alan Jay Smith, survey of cache memory design and evaluation, 1982"
+        ],
+        "workedExample": "With buckets covering time 0-9 in width-1 slots, insert events at 1.2, 1.7, and 4.0; the first two share bucket 1 in sorted order. Dequeue returns 1.2, then 1.7, then advances the hand to bucket 4 for 4.0, scanning only a few entries."
+    },
     id: "calendar-queue",
     name: "Calendar Queue",
     category: "data-structures",

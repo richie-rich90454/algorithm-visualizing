@@ -155,6 +155,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield frame(`All queries answered – distinct counts [${answers.join(", ")}].`, 4, { answers });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Mo's algorithm on trees flattens the tree with an Euler tour so a root-to-node path becomes a prefix of an array. Path queries are then sorted in Mo order to minimize how far the two ends of the active interval move, and colors are added or removed as the interval slides.",
+        "invariants": [
+            "The Euler entry and exit times turn each subtree or path into array intervals.",
+            "Queries are processed in sorted block order so pointer movement is bounded.",
+            "The current interval always reflects exactly the nodes included in the active path."
+        ],
+        "correctness": "Flattening preserves ancestry information because ancestors enter before descendants, so marking the path to a node corresponds to a set of prefix intervals whose parity of visits decides inclusion. Maintaining a sliding interval with add and remove operations keeps an exact count of active colors. Mo ordering bounds the total pointer movement at O(n sqrt n), so processing queries in that order computes each query's answer correctly with far fewer updates than arbitrary order.",
+        "complexityRationale": "With n nodes and q queries, Mo ordering gives O((n + q) sqrt n) pointer moves, each an O(1) color update. The flattened array, query list, and counts use O(n + q) space.",
+        "uses": [
+            "Answering offline path distinct-count queries",
+            "Tree color and frequency statistics",
+            "Competitive programming batch path queries"
+        ],
+        "references": [
+            "Mo, USACO tutorial on Mo's algorithm, 2015",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "Flatten a tree by Euler tour entry times and sort queries by the block of their left endpoint. Sliding the interval to a query adds the path nodes to a color counter; moving to the next nearby query only adds or removes a few nodes, and the distinct-color total is read off directly."
+    },
+
     id: "mos-on-trees",
     name: "Mo's on Trees",
     category: "tree",

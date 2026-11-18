@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Grid paths with obstacles counts how many ways a robot can move right or down from the top-left to the bottom-right of a grid, avoiding blocked cells. Each cell gets the sum of paths from its top and left neighbors, and blocked cells contribute zero. This extends ordinary lattice path counting with barriers.",
+        "invariants": [
+            "dp[i][j] counts reachable obstacle-free paths to cell (i,j).",
+            "A blocked cell has dp value zero and stops propagation.",
+            "Cells are filled top to bottom and left to right."
+        ],
+        "correctness": "Any path to a free cell arrives from above or from the left, so summing those two counts enumerates all routes. A blocked cell cannot be entered, so zero is correct. Induction over row-major order makes predecessors final, giving the path count at the destination.",
+        "complexityRationale": "Each of the m*n cells does constant work, so time is O(m*n). The dp table uses O(m*n) space, reducible to O(n) with one row.",
+        "uses": [
+            "Counting routes around barriers in grid layouts",
+            "Robot motion planning reachability counts",
+            "Dynamic programming on two-dimensional lattices"
+        ],
+        "references": [
+            "LeetCode problem 63, Unique Paths II",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "In a 3x3 grid with the center cell blocked, the top-left has one path, edge cells have one, and the bottom-right receives paths only from above and left, totaling two routes around the obstacle."
+    },
     id: "grid-paths-count-with-obstacles",
     name: "Grid Paths with Obstacles",
     category: "dynamic-programming",

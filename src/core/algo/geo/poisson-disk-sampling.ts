@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Poisson disk sampling places points so that no two are closer than a chosen radius r, producing a natural blue-noise distribution. Bridson's algorithm keeps a list of active points and, for each, tries a fixed number of random candidates in the annulus between r and 2r, accepting those that fit and rejecting those too close to existing samples.",
+        "invariants": [
+            "No two accepted samples are closer than r.",
+            "Every accepted sample comes from the annulus around an active point.",
+            "The background grid cell size r/sqrt(2) allows at most one sample per cell, so neighbor checks are constant."
+        ],
+        "correctness": "Candidates are accepted only after checking all grid-neighbor cells within distance r, so the minimum-distance constraint holds by induction for every accepted point. Every new sample is generated from an existing active point, so the output is connected in the sampling process until the active list empties. When no candidate survives k attempts for every active point, no further legal point can be added from that process, so the result is a maximal Poisson disk sample.",
+        "complexityRationale": "Each active point makes at most k attempts, and each attempt checks a constant number of grid cells, so expected time is O(n) for n accepted samples. The grid and active list use O(n) space.",
+        "uses": [
+            "Generating natural-looking textures and stippling",
+            "Placing samples uniformly for graphics and simulations",
+            "Creating blue-noise point distributions for rendering"
+        ],
+        "references": [
+            "Bridson, Fast Poisson Disk Sampling in Arbitrary Dimensions, SIGGRAPH 2007",
+            "Cook, Sampling and Reconstruction with Spatial Statistics, SIGGRAPH 1986"
+        ],
+        "workedExample": "With r = 1 on a 10 by 10 domain, seed 123456789, and k = 8, the first sample sits near the center. Eight candidates in the annulus [1,2] are tested on a grid of cell size 0.707; those violating the distance rule are rejected, accepted ones become active, and the process repeats until the list is empty."
+    },
+
     id: "poisson-disk-sampling",
     name: "Poisson Disk Sampling",
     category: "geometry",

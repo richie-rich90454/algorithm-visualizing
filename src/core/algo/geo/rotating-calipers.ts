@@ -184,6 +184,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Rotating Calipers module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Rotating calipers finds the diameter of a convex polygon, the farthest pair of vertices, without checking every pair. Two parallel supporting lines are rotated around the polygon; the antipodal vertex pairs they touch advance monotonically, and the largest distance among those pairs is the diameter.",
+        "invariants": [
+            "The two calipers remain parallel and each touches the polygon.",
+            "Antipodal indices advance forward around the polygon and never retreat.",
+            "A diameter endpoint pair is always antipodal for some caliper orientation."
+        ],
+        "correctness": "For a convex polygon, any pair realizing the maximum distance is supported by parallel lines through its endpoints, so it is an antipodal pair. As the calipers rotate through 180 degrees, the antipodal relationship advances monotonically and every antipodal pair is visited. Taking the maximum distance over all such pairs therefore captures the true diameter, and the monotone walk visits each vertex a constant number of times.",
+        "complexityRationale": "The caliper indices make only O(n) total advances, so time is O(n) once a convex polygon is given. Only a few indices and coordinates are kept, giving O(1) auxiliary space.",
+        "uses": [
+            "Computing the width and diameter of convex shapes",
+            "Bounding box and packing computations in CAD",
+            "Collision detection preprocessing for convex hulls"
+        ],
+        "references": [
+            "Shamos, Computational Geometry, PhD thesis, Yale University, 1978",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 4"
+        ],
+        "workedExample": "For the rectangle (0,0), (3,0), (3,1), (0,1), the antipodal pairs include (0,0)-(3,1) and (3,0)-(0,1), both at distance sqrt(10). That is the largest antipodal distance, so the diameter is sqrt(10)."
+    },
+
     id: "rotating-calipers",
     name: "Rotating Calipers",
     category: "geometry",

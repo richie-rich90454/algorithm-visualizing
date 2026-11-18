@@ -160,6 +160,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Manacher module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Manacher finds the longest palindromic substring in linear time. It inserts separators between characters so every palindrome has an odd center, then computes an arm radius for each center, reusing the mirror of a center that lies inside the current rightmost palindrome.",
+        "invariants": [
+            "The window from center to center plus arm is the palindrome centered at i that reaches furthest right so far.",
+            "For any i inside that window, arm[i] is at least the smaller of the mirror's arm and the distance to the right boundary."
+        ],
+        "correctness": "Palindromes are symmetric, so a mirror center inside the current palindrome has the same arm unless it would cross the boundary, in which case the boundary caps it. Starting from that lower bound and expanding outward finds the true arm, and since the right boundary only moves forward the total expansions are linear.",
+        "complexityRationale": "Each center's arm is initialized in O(1) from the mirror and each compared pair advances the right boundary, so total comparisons are O(n) on the padded string. The arm array and padded string use O(n) space.",
+        "uses": [
+            "Longest palindromic substring in linear time",
+            "Palindrome queries in strings and genomes",
+            "Preprocessing for palindrome-based indexes"
+        ],
+        "references": [
+            "Manacher, A New Linear-Time On-Line Algorithm for Finding the Smallest Initial Palindrome, 1975",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"babadcdabab\", after padding with '#', the center on 'c' in \"dcd\" grows to radius 3 and the center in \"ababa\" reaches 5; the largest arm reconstructs the palindrome \"bcdcb\"."
+    },
     id: "manacher",
     name: "Manacher",
     category: "string",

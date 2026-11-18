@@ -160,6 +160,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Cartesian tree is built from an array so that it is a heap by value and an inorder traversal recovers the original array order. A monotonic stack builds it in linear time: pop larger elements until the heap property holds, then attach the popped subtree as the new node's left child. The tree supports range minimum queries through lowest common ancestors.",
+        "invariants": [
+            "Every parent's value is at most its children's (min-heap).",
+            "Inorder traversal yields the original array.",
+            "The stack holds a path with strictly increasing values."
+        ],
+        "correctness": "Popping while the stack top exceeds the incoming value guarantees the new node's left child contains exactly the contiguous prefix it dominates, preserving both heap order and inorder position. Each element is pushed and popped once, so construction is linear. The heap property makes the LCA of two positions the minimum over the interval between them.",
+        "complexityRationale": "Each array element is pushed once and popped at most once, giving O(n) build time and O(n) space. Once built with RMQ preprocessing, range minimum queries answer in O(1).",
+        "uses": [
+            "Range minimum queries",
+            "Finding nearest smaller elements",
+            "Building suffix-tree and LCA-based indexes"
+        ],
+        "references": [
+            "Jean Vuillemin, \"A Unifying Look at Data Structures\", CACM 1980",
+            "Torben Hagerup, level ancestor and Cartesian-tree RMQ notes"
+        ],
+        "workedExample": "Build from [5, 3, 7, 2]: push 5; 3 pops 5 and becomes root with left child 5; 7 is pushed as right child; 2 pops 7 and 3, becoming root whose left subtree has 3 with children 5 and 7. Inorder traversal returns 5, 3, 7, 2, the original array."
+    },
     id: "cartesian-tree",
     name: "Cartesian Tree",
     category: "data-structures",

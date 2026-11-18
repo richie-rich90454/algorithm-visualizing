@@ -108,6 +108,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "PageRank models a random surfer who follows a random out-link with probability d and teleports to a random page otherwise. Each round recomputes a page's rank as the teleport contribution plus the discounted rank flowing in from in-neighbors split by their out-degree. Repeating converges to the long-run visit probabilities.",
+        "invariants": [
+            "Ranks are nonnegative and sum to one after normalization.",
+            "Damping guarantees a positive teleport contribution to every page.",
+            "Power iteration converges to the dominant eigenvector of the Google matrix."
+        ],
+        "correctness": "The update is multiplication by a stochastic, irreducible matrix, so Perron-Frobenius theory gives a unique stationary distribution that power iteration converges to. That distribution is exactly the probability of visiting each page under the random surfer model, which is the PageRank definition.",
+        "complexityRationale": "Each of k iterations touches every edge once, O(k(V + E)) time, and the rank vector uses O(V) space.",
+        "uses": [
+            "Web search result ranking",
+            "Influence scoring in social and citation networks",
+            "Personalized ranking with a biased teleport vector"
+        ],
+        "references": [
+            "Page et al., The PageRank Citation Ranking: Bringing Order to the Web (1999)",
+            "Langville and Meyer, Google's PageRank and Beyond"
+        ],
+        "workedExample": "On the symmetric 3-cycle with damping 0.85, every page has one in-link and one out-link. Starting from 1/3 each, repeated rounds leave the ranks unchanged at about 0.333 because the incoming flow exactly balances the teleport contribution."
+    },
     id: "pagerank-power-iteration",
     name: "PageRank (Power Iteration)",
     category: "graph",

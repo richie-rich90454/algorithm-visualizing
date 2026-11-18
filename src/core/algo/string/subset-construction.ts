@@ -135,6 +135,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Subset construction converts a nondeterministic finite automaton to a deterministic one by making each DFA state represent a set of NFA states. Starting from the epsilon-closure of the start state, each transition moves the whole set on a symbol and takes its epsilon-closure, creating a new DFA state for each new set.",
+        "invariants": [
+            "A DFA state's set equals exactly the NFA states reachable after reading the input that led to it.",
+            "Epsilon-closure is applied after every move so the set is complete."
+        ],
+        "correctness": "The NFA accepts an input iff its reachable set after that input contains an accepting state. By induction the DFA state reached by the same input holds exactly that set, so marking sets containing accept states as accepting gives a DFA equivalent to the NFA.",
+        "complexityRationale": "There are at most 2^n subset states for n NFA states; each is discovered once and processed over sigma symbols with epsilon-closure costing O(n), giving O(2^n·n·sigma) time and O(2^n) space.",
+        "uses": [
+            "Converting regex NFAs to DFAs in lexer generators",
+            "Implementing regular-expression engines",
+            "Deterministic matching hardware"
+        ],
+        "references": [
+            "Sipser, Introduction to the Theory of Computation, Chapter 1",
+            "Aho et al., Compilers: Principles, Techniques, and Tools, Chapter 3"
+        ],
+        "workedExample": "For regex \"a(b|c)\", the epsilon-closure of the start is {0}; reading 'a' reaches {1} whose closure is {2,3,5}; subsequent 'b' or 'c' transitions form new subsets, producing a DFA whose accepting set contains NFA state 7."
+    },
     id: "subset-construction",
     name: "Subset Construction",
     category: "string",

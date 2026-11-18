@@ -94,6 +94,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Twin primes are pairs of primes differing by two. This visualization first sieves all primes up to a limit, then walks the sorted prime list looking for consecutive entries with a gap of exactly two. Each such pair is recorded, and the prime 2 is skipped because its only even partner does not exist.",
+        "invariants": [
+            "The sieve marks exactly the primes up to the limit.",
+            "A recorded pair (p, p+2) has both entries prime.",
+            "Pairs are counted once by scanning primes in increasing order."
+        ],
+        "correctness": "Primality from the sieve is exact, so any pair found with gap two is genuinely a twin prime pair. Scanning the ordered prime list examines every candidate pair exactly once. Hence the listed pairs and their count are the twin primes up to the limit.",
+        "complexityRationale": "Sieving to the limit costs O(n log log n), and the linear scan of primes adds O(n / log n), so the sieve dominates. The prime table uses O(n) space.",
+        "uses": [
+            "Exploring the twin prime conjecture empirically",
+            "Counting twin primes for number theory experiments",
+            "Reusing a sieve for multiple prime-pair queries"
+        ],
+        "references": [
+            "Hardy and Wright, An Introduction to the Theory of Numbers, Chapter 1",
+            "Crandall and Pomerance, Prime Numbers, Section 3.2"
+        ],
+        "workedExample": "Sieve to 20 to get 2, 3, 5, 7, 11, 13, 17, 19. Pairs with gap two are (3,5), (5,7), (11,13), and (17,19), so there are four twin prime pairs up to 20."
+    },
     id: "twin-prime-sieve",
     name: "Twin Prime Sieve",
     category: "math",

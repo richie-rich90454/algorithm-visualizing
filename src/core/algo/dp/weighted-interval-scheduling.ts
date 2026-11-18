@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Weighted interval scheduling picks non-overlapping jobs with maximum total weight. Jobs are sorted by finish time, and p(j) is the last job that finishes before job j starts. The recurrence dp[j] = max(dp[j-1], weight[j] + dp[p(j)]) chooses between skipping and taking job j, with a binary search finding p(j) quickly.",
+        "invariants": [
+            "Jobs are processed in nondecreasing finish time.",
+            "p(j) indexes the last job compatible with job j.",
+            "dp[j] is the optimal weight using jobs 0 through j."
+        ],
+        "correctness": "An optimal schedule either excludes job j, giving dp[j-1], or includes it, in which case no later-indexed overlapping job can be used and the best compatible prefix is dp[p(j)]. These cases are exhaustive, so the max is optimal by induction over finish-time order.",
+        "complexityRationale": "Sorting costs O(n log n), each binary search for p(j) costs O(log n), and the DP scan is linear, giving O(n log n) overall. The dp array and sorted jobs use O(n) space.",
+        "uses": [
+            "Scheduling jobs with deadlines and profits",
+            "Selecting non-overlapping reservations by value",
+            "A weighted extension of activity selection"
+        ],
+        "references": [
+            "Kleinberg and Tardos, Algorithm Design, Chapter 4",
+            "Cormen et al., Introduction to Algorithms, Section 16.1"
+        ],
+        "workedExample": "For jobs (1,3,5), (2,5,6), (4,6,5), sorting by finish time and computing p gives three compatibility indexes. The DP finds that taking jobs 1 and 3 yields weight 10, the maximum."
+    },
     id: "weighted-interval-scheduling",
     name: "Weighted Interval Scheduling",
     category: "dynamic-programming",

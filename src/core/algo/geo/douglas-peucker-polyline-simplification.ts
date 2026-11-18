@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Douglas-Peucker simplifies a polyline by keeping only the vertices that matter. It connects the endpoints of a segment, finds the interior vertex farthest from that line, and if the distance exceeds epsilon it keeps that vertex and recurses on the two halves. Vertices closer than epsilon are discarded.",
+        "invariants": [
+            "Every kept vertex is at distance greater than epsilon from the line connecting the current endpoints.",
+            "The simplified polyline always starts and ends at the original endpoints.",
+            "Discarded vertices lie within epsilon of some retained segment."
+        ],
+        "correctness": "If no interior vertex is farther than epsilon from the chord, replacing the whole chain by that chord adds at most epsilon error everywhere, so dropping them is safe. Otherwise the farthest vertex is a genuine corner and must be kept, and the same argument applies independently to the two subchains. Recursion therefore yields the minimal greedy set of vertices whose removal stays within epsilon along the whole line.",
+        "complexityRationale": "Each recursion scans its subchain once to find the farthest vertex. In the common case of modest simplification the total is O(n log n); if nearly every vertex is kept the scan can degrade toward O(n^2). The recursion stack and point copies use O(n) space.",
+        "uses": [
+            "Simplifying GPS tracks for maps",
+            "Reducing vertex counts in computer graphics meshes",
+            "Compressing time series curves for display"
+        ],
+        "references": [
+            "Douglas and Peucker, Algorithms for the Reduction of the Number of Points Required to Represent a Digitized Line, Canadian Cartographer 10 (1973)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "Polyline (0,0), (1,0.1), (2,0), (3,5) with epsilon = 1. From the chord (0,0)-(3,5), the point (2,0) is farthest at about 1.72, so it is kept. Its subchains drop (1,0.1) since that point is only 0.1 from (0,0)-(2,0). The result is (0,0), (2,0), (3,5)."
+    },
+
     id: "douglas-peucker-polyline-simplification",
     name: "Douglas Peucker Simplification",
     category: "geometry",

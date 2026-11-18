@@ -175,6 +175,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "DPLL decides satisfiability by repeatedly applying unit propagation, which forces a literal in a one-literal clause, and splitting, which guesses a value for an unassigned variable. Conflicts trigger backtracking in the full algorithm.",
+        "invariants": [
+            "Every assignment on the trail is consistent with the clauses checked so far.",
+            "Unit clauses are propagated to completion before a new split."
+        ],
+        "correctness": "Unit propagation is sound because a unit clause must be satisfied; splitting tries both truth values, so if a satisfying assignment exists some branch finds it. Exhausting both values on all branches proves unsatisfiability.",
+        "complexityRationale": "Splitting can branch on n variables with two choices each, so O(2^n) worst-case time; unit propagation prunes many branches. The partial assignment and decision trail use O(n) space.",
+        "uses": [
+            "Boolean satisfiability solvers",
+            "Hardware verification and formal methods",
+            "The core of modern CDCL SAT solvers"
+        ],
+        "references": [
+            "Davis, Putnam, Logemann, and Loveland, A Machine Program for Theorem-Proving, Communications of the ACM, 1962",
+            "Biere et al., Handbook of Satisfiability, IOS Press, 2009"
+        ],
+        "workedExample": "For clauses that force X true and then require Y false, unit propagation assigns X and Y without guessing; a remaining two-literal clause forces a split, and one branch satisfies all four clauses."
+    },
     id: "dpll-sat-search",
     name: "DPLL SAT Search",
     category: "searching",

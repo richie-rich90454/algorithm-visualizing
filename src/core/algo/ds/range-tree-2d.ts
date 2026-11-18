@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A two-dimensional range tree is a balanced tree on x coordinates in which each node also stores its points sorted by y. To report points in a rectangle, decompose the x range into canonical nodes and filter each node y list by the y range.",
+        "invariants": [
+            "Each node associated set is exactly the points in its x interval.",
+            "Each node y list is sorted.",
+            "The canonical nodes for an x range are disjoint and cover it."
+        ],
+        "correctness": "Points whose x lies in the query range are partitioned among the canonical nodes, so scanning each sorted y list finds exactly those with y in range. No point outside the x range is in those nodes and none inside is missed, so the reported set equals the rectangle contents.",
+        "complexityRationale": "Building stores each point in one y list per level, O(n log n) space and time. A query visits O(log n) nodes and binary searches each y list, giving O(log^2 n + k) for k reported points.",
+        "uses": [
+            "Orthogonal range reporting in databases",
+            "Geographic queries over latitude and longitude",
+            "Two-dimensional indexing with range filters"
+        ],
+        "references": [
+            "Bentley and Maurer, A Note on Dimensional Searching and Dynamic Index Structures, ICDT 1980",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 5"
+        ],
+        "workedExample": "With points derived from [5,2,8,1,7,3] and rectangle range [1,4], the x tree selects canonical nodes covering that x interval and filters their y lists; the reported points all lie inside and the count verifies."
+    },
     id: "range-tree-2d",
     name: "Range Tree 2D",
     category: "data-structures",

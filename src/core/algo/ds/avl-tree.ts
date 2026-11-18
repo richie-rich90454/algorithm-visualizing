@@ -192,6 +192,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The AVL Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An AVL tree is a binary search tree that enforces strict height balance: at every node the left and right subtree heights differ by at most one. Insertion or deletion that breaks this rule is repaired by one or two rotations. Because the height stays logarithmic, every search, insert, and delete is guaranteed O(log n).",
+        "invariants": [
+            "For every node, the absolute difference height(left) - height(right) is at most 1.",
+            "Left subtree keys are smaller and right subtree keys are larger.",
+            "Each node stores its current height."
+        ],
+        "correctness": "Rotations rearrange links but preserve inorder order, so the BST property survives rebalancing. A single rotation fixes a same-side imbalance (left-left or right-right), and a double rotation fixes the zig-zag case (left-right or right-left). Since balance is restored at the first violating ancestor on the way back to the root, the height bound holds for the whole tree.",
+        "complexityRationale": "Search or insert follows one path of length equal to the tree height, which the balance rule bounds by O(log n). Rotations at each level take constant time, so operations stay O(log n), and storing one height per node gives O(n) space.",
+        "uses": [
+            "Ordered maps and sets with worst-case guarantees",
+            "Database indexes needing predictable lookup depth",
+            "Real-time systems where amortized bounds are unacceptable"
+        ],
+        "references": [
+            "G. M. Adelson-Velsky and E. M. Landis, \"An Algorithm for the Organization of Information\", 1962",
+            "CLRS, Introduction to Algorithms, Chapter 13"
+        ],
+        "workedExample": "Insert 10, 20, 30 into an empty AVL tree. After 30 the root 10 has balance -2 and its right child 20 is right-heavy, so a left rotation at 10 makes 20 the root with 10 and 30 as children. Inserting 25 then 40 keeps height differences at most one, so no further rotation is needed."
+    },
     id: "avl-tree",
     name: "AVL Tree",
     category: "data-structures",

@@ -127,6 +127,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Deque module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A deque supports insertion and removal at both ends in constant time. It combines the capabilities of a stack and a queue, so it can push to the front or back and pop from either side. Deques are the backbone of sliding-window algorithms and undo buffers.",
+        "invariants": [
+            "Elements are stored from the front index to the back index in order.",
+            "Push and pop update only the corresponding end pointer.",
+            "The deque is empty when front passes back."
+        ],
+        "correctness": "Pushing at an end writes just outside current bounds and moves that pointer, so existing elements are untouched. Popping removes the boundary element and moves the pointer inward, preserving relative order. Therefore the remaining sequence is the original with elements removed only from the ends.",
+        "complexityRationale": "Each end operation touches one slot and one pointer, O(1) time. A dynamic-array implementation stores O(n) elements with occasional geometric resizing that is amortized O(1).",
+        "uses": [
+            "Sliding-window maximum and minimum",
+            "Undo and redo buffers",
+            "Breadth-first search frontiers and work stealing"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.3"
+        ],
+        "workedExample": "Push front 2, push back 3 gives deque [2, 3]. Push front 1 gives [1, 2, 3]; popping back removes 3 leaving [1, 2]. Each operation touches just one end, so no shifting is needed."
+    },
     id: "deque",
     name: "Deque",
     category: "data-structures",

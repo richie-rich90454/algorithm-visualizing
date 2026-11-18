@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The skyline of a set of rectangles is the outline of their union as seen from the side. A sweep line moves across the x events, tracks the currently active rectangle heights, and emits a horizontal segment whenever the maximum active height changes between consecutive events.",
+        "invariants": [
+            "Between consecutive x events, the set of active rectangles is unchanged.",
+            "The skyline height in a slab is the maximum height among active rectangles.",
+            "Consecutive output segments with the same height are merged."
+        ],
+        "correctness": "Rectangle starts and ends are the only x positions where the active set changes, so the skyline height is constant inside each slab. Taking the maximum active height gives the correct top of the union in that slab, and emitting a segment when that maximum changes produces the outline. Removing duplicate consecutive heights avoids redundant zero-width visual steps without changing the skyline.",
+        "complexityRationale": "There are O(n) events and scanning the active height list at each event costs O(n), so the straightforward version runs in O(n^2) time with O(n) space for active heights and events.",
+        "uses": [
+            "Visualizing overlapping building silhouettes",
+            "Computing upper envelopes in scheduling diagrams",
+            "Rendering union outlines in graphics"
+        ],
+        "references": [
+            "Preparata and Shamos, Computational Geometry: An Introduction, Chapter 7",
+            "Wikipedia, Skyline problem, overview article"
+        ],
+        "workedExample": "Rectangles [0,2] height 3, [1,4] height 2, and [3,5] height 4 give events at x = 0, 1, 2, 3, 4, 5. The maximum heights per slab are 3, 3, 2, 4, 4, so the skyline is height 3 on [0,2], height 2 on [2,3], and height 4 on [3,5]."
+    },
+
     id: "skyline-problem-sweep",
     name: "Skyline Problem Sweep",
     category: "geometry",

@@ -89,6 +89,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Shift-Or is a bit-parallel exact search. For each character a mask marks which pattern positions that character does not match. A single state word is shifted and masked per text character, and a zero in the top bit signals that the pattern has just been matched.",
+        "invariants": [
+            "After processing text character i, bit j of the state is zero exactly when the pattern prefix of length j+1 matches the text suffix ending at i.",
+            "The mask for a character has zeros at positions where that character is allowed."
+        ],
+        "correctness": "Shifting left moves each prefix match to the next length and AND-ing with the character mask keeps only positions where the new character matches. Thus a clear bit j after processing means the length-(j+1) prefix matches the current suffix, and a clear top bit means a full match ended here.",
+        "complexityRationale": "Each text character needs one shift, one OR, and one AND on a word of ceil(m/w) words, so search is O(n·m/w) time; masks use O(sigma·m/w) words of space.",
+        "uses": [
+            "Fast exact search for short patterns",
+            "The shift-and foundation of approximate matching",
+            "Search in resource-constrained devices"
+        ],
+        "references": [
+            "Baeza-Yates and Gonnet, A New Approach to Text Searching, 1992",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings"
+        ],
+        "workedExample": "For pattern \"abc\" and text \"ababcab\", processing characters folds the state until reading the 'c' at index 4 clears the top bit, reporting the match \"abc\" ending at index 4."
+    },
     id: "shift-or-bitap",
     name: "Shift-Or Bitap",
     category: "string",

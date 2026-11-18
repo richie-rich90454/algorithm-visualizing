@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Broken profile, or plug DP, counts tilings by sweeping cell by cell and remembering only the boundary between processed and unprocessed cells. That boundary is encoded as a bitmask of plugs indicating which neighboring cells still need filling. Transitions place a tile in one of the valid local patterns and update the mask, keeping the state space to O(2^width).",
+        "invariants": [
+            "dp[col][mask] counts partial tilings whose overhang into the next column is mask.",
+            "Every transition fills one cell using a locally valid tile placement.",
+            "A complete tiling ends with an empty overhang mask."
+        ],
+        "correctness": "Because tiles only interact across the frontier, the mask is a sufficient statistic for all future choices, so states with the same mask have identical continuation counts. Enumerating the local placements covers every tiling exactly once. Induction over the sweep yields the full tiling count at dp[cols][0].",
+        "complexityRationale": "There are O(N) cells and O(2^M) masks, each with O(M) transition work, giving O(N*2^M*M) time and O(N*2^M) space as stated.",
+        "uses": [
+            "Counting domino and tromino tilings of grids",
+            "Hamiltonian path counting on small-width graphs",
+            "Connectivity DP with a narrow frontier"
+        ],
+        "references": [
+            "KACTL handbook, Broken Profile DP chapter",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For a 2x3 board the sweep starts with dp[0][0] = 1. Placing vertical or horizontal pieces updates the overhang mask column by column, and dp[3][0] ends as 3, the number of domino tilings of a 2x3 rectangle."
+    },
     id: "profile-plug-dp-broken-profile",
     name: "Broken Profile (Plug DP)",
     category: "dynamic-programming",

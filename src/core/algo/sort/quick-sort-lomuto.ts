@@ -210,6 +210,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Quick Sort (Lomuto) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Choose the last element as a pivot, then scan with one pointer that moves every value smaller than the pivot into a growing left region. Swap the pivot into the boundary, and recurse on the two sides.",
+        "invariants": [
+            "Everything left of the partition boundary is less than or equal to the pivot.",
+            "Everything right of the boundary and before the pivot is greater than the pivot."
+        ],
+        "correctness": "The partition loop maintains the left-region invariant with each swap. Placing the pivot at the boundary puts every smaller value before it and every larger value after it, so the pivot is in its final position. Recursion then sorts both independent sides.",
+        "complexityRationale": "Partitioning a range of size k costs O(k). Balanced pivots give O(n log n); consistently extreme pivots give O(n^2), which happens here on already sorted input because the pivot is the last element. Recursion uses O(log n) stack space on average.",
+        "uses": [
+            "General-purpose in-place sorting",
+            "The partition step of introspective sort",
+            "Selection algorithms such as quickselect"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 7",
+            "Sedgewick and Wayne, Algorithms, Section 2.3"
+        ],
+        "workedExample": "Start [3, 7, 2, 6], pivot 6. Scan 3 (small, keep), 7 (large, keep), 2 (small, swap into left region) -> [3, 2, 7, 6]. Swap pivot with 7 -> [3, 2, 6, 7]. Recurse on [3, 2] -> [2, 3]. Result [2, 3, 6, 7]."
+    },
     id: "quick-sort-lomuto",
     name: "Quick Sort (Lomuto)",
     category: "sorting",

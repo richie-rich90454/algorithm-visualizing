@@ -153,6 +153,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Slow sort is a deliberately inefficient recursive sort: sort both halves, compare their maxima, swap if needed, then recurse on all but the last element. Its recurrence solves to roughly n raised to the log of n, dramatically worse than quadratic.",
+        "invariants": [
+            "After a call, the maximum of the current range sits at its right end.",
+            "The suffix of finalized maxima is never touched again."
+        ],
+        "correctness": "Sorting the halves and placing their larger maximum at the end puts the range maximum in final position; recursing on the remaining prefix sorts the rest by induction.",
+        "complexityRationale": "The recurrence T(n) = 2T(n/2) plus a recursive call on n-1 yields superpolynomial growth, about O(n^(log n)). Only the recursion stack is needed, O(n) space.",
+        "uses": [
+            "Teaching recurrence analysis with a memorable example",
+            "Demonstrating that plausible recursion can be terrible",
+            "Comparing asymptotic growth rates in class"
+        ],
+        "references": [
+            "Write, Slow Sort, 1986 APL conference paper (described by Knuth)",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "For [3, 1, 2], sort [3, 1] and [2], move the larger maximum 3 to the end, then recurse on [2, 1] to obtain [1, 2, 3] after many redundant sub-calls."
+    },
     id: "slow-sort",
     name: "Slow Sort",
     category: "sorting",

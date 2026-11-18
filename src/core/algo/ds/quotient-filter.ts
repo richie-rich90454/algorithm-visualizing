@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A quotient filter splits each hash fingerprint into a quotient that selects a bucket and a remainder stored alongside it. Colliding remainders are kept in contiguous runs within the bucket, so membership reduces to checking a short run.",
+        "invariants": [
+            "Each stored remainder sits in the run for its quotient bucket.",
+            "Runs stay ordered by quotient value.",
+            "An empty or mismatched run proves nonmembership."
+        ],
+        "correctness": "A key present must have its remainder in the run of its quotient bucket, so an absent remainder proves the key is not stored. Because runs are ordered and bounded by bucket boundaries, scanning the expected run finds the remainder when present; a match means possibly present, as with all approximate filters.",
+        "complexityRationale": "Hashing and scanning a short run take expected O(1) time. The table stores one remainder slot per fingerprint plus small metadata, O(n) space.",
+        "uses": [
+            "Approximate set membership in storage engines",
+            "Avoiding expensive reads in key-value stores",
+            "Fast packet classification filters"
+        ],
+        "references": [
+            "Cleary, Compact Hash Tables Using Doubly Linked Linear Lists, JACM 1984",
+            "Bender et al., A Quotient Filter, 2012"
+        ],
+        "workedExample": "With keys 5, 17, 9, a query for 17 finds its remainder in its quotient bucket run and reports possibly present; a key hashing to an empty run is reported definitely absent."
+    },
     id: "quotient-filter",
     name: "Quotient Filter",
     category: "data-structures",

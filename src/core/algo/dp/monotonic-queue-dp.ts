@@ -158,6 +158,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Monotonic Queue DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Monotonic queue DP optimizes recurrences that need a sliding-window minimum or maximum, such as dp[i] = cost[i] plus the best dp over the last k positions. A deque keeps candidate indices with monotonically increasing dp values, so the front is always the best and expired indices fall off. Each index enters and leaves once, turning O(n*k) into O(n).",
+        "invariants": [
+            "The deque indices lie inside the current window.",
+            "Their dp values are in increasing order from front to back.",
+            "The front therefore gives the window's minimum in constant time."
+        ],
+        "correctness": "An index with a larger dp than a later index can never become the minimum while both are in the window, so discarding it is safe. Removing expired indices keeps only valid candidates. Thus the front always holds the true minimum, and dp[i] computed from it is correct by induction.",
+        "complexityRationale": "Each index is inserted once and removed at most once from the deque, giving amortized O(1) work per position and O(n) total time. The deque and dp array use O(n) space.",
+        "uses": [
+            "Sliding-window maximum and minimum queries",
+            "Optimizing jump or segmentation DPs with bounded windows",
+            "Amortized analysis teaching example"
+        ],
+        "references": [
+            "KACTL handbook, deque optimizations chapter",
+            "Cormen et al., Introduction to Algorithms, Section 10.1"
+        ],
+        "workedExample": "With costs [0,3,1,2,5,1,2,1] and window 3, the deque at each step holds indices whose dp values increase. Reading the front gives the best predecessor, and dp reaches the final position with the minimum total cost."
+    },
     id: "monotonic-queue-dp",
     name: "Monotonic Queue DP",
     category: "dynamic-programming",

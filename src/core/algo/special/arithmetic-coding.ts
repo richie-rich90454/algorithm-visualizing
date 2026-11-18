@@ -122,6 +122,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Arithmetic coding represents an entire message as a single number in the interval [0,1). Starting from the whole interval, each symbol narrows it to the sub-interval reserved for that symbol under the probability model. After the last symbol, any number inside the tiny final interval decodes uniquely back to the message. Common symbols shrink the interval less and therefore cost fewer bits.",
+        "invariants": [
+            "After t symbols, the interval width equals the product of the probabilities of those symbols.",
+            "The interval always contains every number that decodes to the symbols processed so far.",
+            "Sub-intervals assigned to distinct symbols are disjoint."
+        ],
+        "correctness": "Each symbol maps to a disjoint sub-interval sized by its probability, so a number in the final interval corresponds to exactly one symbol sequence. Decoding reverses the narrowing step by step: locate which symbol's sub-interval contains the code, then rescale. The demo verifies the round trip for the sample message.",
+        "complexityRationale": "Encoding and decoding each process every symbol once with constant work per symbol, O(n) time. Only the two interval endpoints are stored, O(1) space beyond the fixed probability table.",
+        "uses": [
+            "Lossless text and image compression (JPEG 2000, JBIG2)",
+            "Context-adaptive binary arithmetic coding in H.264 and HEVC video",
+            "Entropy coding in PDF and archival formats",
+            "General-purpose data compression such as zpaq"
+        ],
+        "references": [
+            "Cover and Thomas, Elements of Information Theory, Chapter 5",
+            "Witten, Neal and Cleary, Arithmetic Coding for Data Compression, Communications of the ACM, 1987"
+        ],
+        "workedExample": "For \"aaba\" with P(a)=0.6 and P(b)=0.4: start [0,1). 'a' gives [0,0.6); a second 'a' gives [0,0.36); 'b' gives [0.216,0.36); the final 'a' gives [0.216,0.3024). Choosing the midpoint 0.2592 as the code, decoding locates a, a, b, a in turn and recovers \"aaba\"."
+    },
     id: "arithmetic-coding",
     name: "Arithmetic Coding",
     category: "string",

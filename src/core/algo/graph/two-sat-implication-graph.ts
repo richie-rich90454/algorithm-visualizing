@@ -148,6 +148,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Each 2-SAT clause (a or b) is equivalent to two implications, not a implies b and not b implies a. Building these implication vertices and edges gives a directed graph. The formula is satisfiable exactly when no variable shares a strongly connected component with its negation, and assigning components in reverse topological order gives a satisfying truth assignment.",
+        "invariants": [
+            "Every clause contributes exactly two implication edges.",
+            "Implication is transitive, so SCCs collapse equivalent literals.",
+            "A variable and its negation in one SCC make the formula unsatisfiable."
+        ],
+        "correctness": "Implication graphs encode all logical consequences of the clauses. If x and not x are mutually reachable, both would have to be true, a contradiction; otherwise assigning false to components in reverse topological order and true to the rest respects every implication and satisfies every clause.",
+        "complexityRationale": "The implication graph has 2V vertices and 2E edges, and Kosaraju finds SCCs in O(V + E), with O(V + E) space for both graph copies.",
+        "uses": [
+            "Solving 2-SAT constraints in schedulers and configuration tools",
+            "Modeling binary constraints in circuit design",
+            "A standard reduction target in complexity theory"
+        ],
+        "references": [
+            "Aspvall, Plass, and Tarjan, A Linear-Time Algorithm for Testing the Truth of Certain Quantified Boolean Formulas (1979)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, 2-SAT"
+        ],
+        "workedExample": "Clauses (x0 or x1), (not x0 or x1), and (not x0 or not x1) build implication edges between literals. Kosaraju finds no component containing both a literal and its negation, and reverse topological assignment yields x0 false and x1 true, satisfying all three clauses."
+    },
     id: "two-sat-implication-graph",
     name: "2-SAT (Implication Graph)",
     category: "graph",

@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A biconnected component is a maximal group of edges that stays connected after removing any single vertex. One depth-first search stamps each vertex with a discovery time and a low value, the oldest vertex reachable from its subtree, while pushing traversed edges on a stack. When a child cannot reach above its parent, the edges down to that child pop off as one component.",
+        "invariants": [
+            "Each edge is pushed on the stack exactly once and popped into exactly one component.",
+            "low[v] is the smallest discovery time reachable from v through its subtree and one back edge.",
+            "A vertex is an articulation point when a child has low at least its discovery time."
+        ],
+        "correctness": "If low of a child is at least the discovery time of its parent, no back edge links the child's subtree above the parent, so removing the parent disconnects that subtree and the popped edges form a maximal biconnected component. Otherwise the subtree remains linked upward, so it belongs to the same component as the parent, which is why popping is delayed.",
+        "complexityRationale": "A single DFS examines each vertex and edge a constant number of times, giving O(V + E); discovery times, low values, and the edge stack use O(V + E) space.",
+        "uses": [
+            "Finding resilient groupings in communication networks",
+            "Identifying articulation points alongside edge components",
+            "A preprocessing step for block-cut tree construction"
+        ],
+        "references": [
+            "Hopcroft and Tarjan, Algorithm 447: Efficient Algorithms for Graph Manipulation (1973)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search"
+        ],
+        "workedExample": "The graph has triangle A-B-C and a tail edge C-D. DFS from A discovers low values that keep A, B, and C in one component; when D finishes with low greater than discovery of C, the edge C-D pops as a second component. C is marked as the articulation point joining them."
+    },
     id: "biconnected-components-hopcroft-tarjan",
     name: "Biconnected Components (Hopcroft–Tarjan)",
     category: "graph",

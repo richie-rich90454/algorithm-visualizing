@@ -122,6 +122,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Retrograde analysis solves a game by working backward from terminal positions instead of forward from the start. Terminal states with no moves are losses, any state with a move to a loss is a win, and a state whose every move leads to a win is a loss. Repeated passes propagate these labels until nothing changes.",
+        "invariants": [
+            "A terminal state with no legal moves is labeled LOSS.",
+            "A state with at least one move to a LOSS state is labeled WIN.",
+            "A state with all moves to WIN states is labeled LOSS."
+        ],
+        "correctness": "The labels satisfy the defining equations of normal-play outcome classes, and the propagation starts from terminals where the answer is known. Because each pass either labels a new state or the process stops, the final fixed point is the unique consistent labeling, so the start state's label is correct.",
+        "complexityRationale": "Each state and edge is examined a constant number of times, giving O(V + E) time over the state graph. The status table and predecessor lists use O(V + E) space.",
+        "uses": [
+            "Building endgame tablebases for chess and checkers",
+            "Solving finite state-space games exhaustively",
+            "Analyzing reachability games in verification"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Buro, Progressive Analysis and Retrograde Analysis in Game Solving (research literature)"
+        ],
+        "workedExample": "For the chain S0 to S1 to S2, terminal S2 is marked LOSS. S1 has a move to S2, so it is WIN. Every move from S0 leads to the WIN state S1, so S0 is LOSS and the second player wins from the start."
+    },
     id: "retrograde-analysis",
     name: "Retrograde Analysis",
     category: "game",

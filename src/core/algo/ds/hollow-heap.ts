@@ -108,6 +108,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A hollow heap is a lazy meldable heap where decreasing a key creates a new node with the smaller value and turns the old node into a hollow shell. On delete-min, hollow nodes are reclaimed and their links repaired. This avoids the cascade cutting of Fibonacci heaps while keeping good amortized bounds.",
+        "invariants": [
+            "A hollow node holds no item, only links to its children.",
+            "Every live item appears in exactly one full node.",
+            "The minimum pointer references the smallest live key."
+        ],
+        "correctness": "Moving an item to a new node and hollowing the old one preserves the item's value and children, so no data is lost. Reclaiming hollow nodes during cleanup reattaches children to live parents, keeping heap order. Delete-min therefore removes the true minimum.",
+        "complexityRationale": "Insert and decrease-key are O(1) amortized because they just add nodes; delete-min is O(log n) amortized due to cleanup and rank-based linking. Space is O(n) counting full and hollow nodes.",
+        "uses": [
+            "Meldable priority queues",
+            "Shortest-path algorithms with many decreases",
+            "Alternative to Fibonacci heaps in practice"
+        ],
+        "references": [
+            "Gerth Stolting Brodal, \"Worst-Case Efficient Priority Queues\", SODA 1996",
+            "CLRS, Introduction to Algorithms, Chapter 20 on Fibonacci heaps"
+        ],
+        "workedExample": "Insert 5, 2, 8: root is 2. Decreasing 8 to 1 creates a new full node with key 1 and hollows the old 8 node, so the min pointer moves to 1. The next delete-min removes 1 and reclaims the hollow shell, linking its children back into the heap."
+    },
     id: "hollow-heap",
     name: "Hollow Heap",
     category: "data-structures",
