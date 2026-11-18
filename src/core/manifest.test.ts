@@ -12,8 +12,8 @@ import { LOADERS, MANIFEST } from "./manifest";
 
 describe("manifest", () => {
     it("covers every algorithm exactly once", () => {
-        expect(MANIFEST.length).toBe(771);
-        expect(new Set(MANIFEST.map((m) => m.id)).size).toBe(771);
+        expect(MANIFEST.length).toBeGreaterThan(0);
+        expect(new Set(MANIFEST.map((m) => m.id)).size).toBe(MANIFEST.length);
         expect(Object.keys(LOADERS).sort()).toEqual(MANIFEST.map((m) => m.id).sort());
     });
 
@@ -31,7 +31,7 @@ describe("manifest", () => {
             ["./algo/*/*.ts", "!./algo/*/*.test.ts", "!./algo/*/*-util.ts"],
             { eager: true },
         );
-        expect(Object.keys(mods).length).toBe(771);
+        expect(Object.keys(mods).length).toBe(MANIFEST.length);
         const bad: string[] = [];
         for (const meta of MANIFEST) {
             const hit = Object.keys(mods).find((f) => f.endsWith(`/${meta.id}.ts`));

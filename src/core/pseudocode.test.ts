@@ -4,7 +4,7 @@
  * Production-grade teaching requires: real textbook pseudocode per module,
  * valid codeLineNumber highlights on every frame, specific non-empty
  * descriptions, and meaningful meta stats. This test enforces all four
- * across the full 771-module library.
+ * across the full module library.
  */
 
 import { describe, expect, it } from "vitest";
