@@ -1,0 +1,2739 @@
+{
+  "startedAt": "2026-11-18T12:05:22.181Z",
+  "base": "http://localhost:5178/algorithm-visualizing/",
+  "checks": [
+    {
+      "area": "Boot",
+      "name": "App mounts and store is reachable",
+      "status": "PASS",
+      "details": {
+        "id": null,
+        "frames": 0,
+        "loading": false
+      }
+    },
+    {
+      "area": "Boot",
+      "name": "Initial empty state renders without errors",
+      "status": "PASS",
+      "details": {
+        "title": "Algorithmic Visualization Engine",
+        "desc": "Select an algorithm to begin.",
+        "steps": "1 / 0",
+        "canvases": 1,
+        "categories": 20,
+        "theme": "dark",
+        "lang": "en"
+      }
+    },
+    {
+      "area": "Boot",
+      "name": "No console errors on first load",
+      "status": "PASS",
+      "details": []
+    },
+    {
+      "area": "Boot",
+      "name": "No failed network requests on first load",
+      "status": "PASS",
+      "details": []
+    },
+    {
+      "area": "Sidebar",
+      "name": "Search filters the tree after debounce",
+      "status": "PASS",
+      "details": {
+        "leaves": [
+          "Bubble Sort"
+        ],
+        "headers": 1,
+        "placeholder": "Search algorithms…"
+      }
+    },
+    {
+      "area": "Sidebar",
+      "name": "Search results in a collapsed category are directly clickable",
+      "status": "FAIL",
+      "details": {
+        "headers": [
+          "▸Quantum Algorithms1"
+        ],
+        "leaves": [],
+        "open": 0
+      }
+    },
+    {
+      "area": "Sidebar",
+      "name": "Clearing search restores all 20 categories",
+      "status": "PASS",
+      "details": {
+        "headers": 20
+      }
+    },
+    {
+      "area": "Sidebar",
+      "name": "Category expand/collapse toggles aria-expanded and reveals leaves",
+      "status": "PASS",
+      "details": {
+        "before": "false",
+        "after": "true",
+        "leaves": 19,
+        "label": "▾Quantum Algorithms19"
+      }
+    },
+    {
+      "area": "Canvas",
+      "name": "bubble-sort paints a non-blank canvas",
+      "status": "PASS",
+      "details": {
+        "w": 854,
+        "h": 612,
+        "cw": 854,
+        "ch": 612,
+        "uniqueColors": 54,
+        "nonBg": 34126,
+        "bg": "#0f172a"
+      }
+    },
+    {
+      "area": "Canvas",
+      "name": "bubble-sort entities are finite, in-bounds and described",
+      "status": "PASS",
+      "details": {
+        "total": 6,
+        "edges": 0,
+        "layout": "array",
+        "bad": [],
+        "missingEdges": [],
+        "overlaps": [],
+        "description": "Initial array – every element is untouched."
+      }
+    },
+    {
+      "area": "Selection",
+      "name": "Selecting a leaf highlights it and updates the URL/title",
+      "status": "PASS",
+      "details": {
+        "active": "Bubble Sort",
+        "url": "?algo=bubble-sort&step=0",
+        "title": "Bubble Sort - Algorithmic Visualization Engine"
+      }
+    },
+    {
+      "area": "Playback",
+      "name": "Play advances frames and updates the button label",
+      "status": "PASS",
+      "details": {
+        "beforePlay": 0,
+        "afterPlay": {
+          "step": 2,
+          "playing": true,
+          "label": "Pause"
+        }
+      }
+    },
+    {
+      "area": "Playback",
+      "name": "Pause stops playback and restores the Play label",
+      "status": "PASS",
+      "details": {
+        "playing": false,
+        "label": "Play"
+      }
+    },
+    {
+      "area": "Playback",
+      "name": "Reset returns to frame 0",
+      "status": "PASS",
+      "details": {
+        "afterReset": 0
+      }
+    },
+    {
+      "area": "Playback",
+      "name": "Speed slider changes the interval",
+      "status": "PASS",
+      "details": {
+        "speedBefore": 300,
+        "speedAfter": 150
+      }
+    },
+    {
+      "area": "Keyboard",
+      "name": "Space toggles playback",
+      "status": "PASS",
+      "details": {
+        "focused": "Input",
+        "stepBeforeKey": 0,
+        "afterSpace": {
+          "step": 0,
+          "playing": true,
+          "active": "Input"
+        }
+      }
+    },
+    {
+      "area": "Keyboard",
+      "name": "Space activates a focused header button (native semantics)",
+      "status": "FAIL",
+      "details": {
+        "focused": "Input",
+        "panelOpenedBySpace": false
+      }
+    },
+    {
+      "area": "Keyboard",
+      "name": "Enter activates a focused header button",
+      "status": "PASS",
+      "details": {
+        "clicks": 1,
+        "panel": true,
+        "hasFocus": true
+      }
+    },
+    {
+      "area": "Keyboard",
+      "name": "ArrowRight / ArrowLeft / R step and reset",
+      "status": "PASS",
+      "details": {
+        "k0": 1,
+        "k1": 2,
+        "k2": 1,
+        "k3": 0
+      }
+    },
+    {
+      "area": "Keyboard",
+      "name": "Arrow keys are ignored inside a text input",
+      "status": "PASS",
+      "details": {
+        "t0": 0,
+        "t1": 0
+      }
+    },
+    {
+      "area": "Theme",
+      "name": "Toggle flips light/dark theme, CSS tokens and theme-color meta",
+      "status": "PASS",
+      "details": {
+        "light": {
+          "theme": "dark",
+          "bg": "#0f172a",
+          "text": "#f3f4f6",
+          "metaColor": "#0f172a"
+        },
+        "dark": {
+          "theme": "light",
+          "bg": "#ffffff",
+          "metaColor": "#ffffff"
+        }
+      }
+    },
+    {
+      "area": "Canvas",
+      "name": "Canvas repaints in dark theme",
+      "status": "PASS",
+      "details": {
+        "w": 854,
+        "h": 612,
+        "cw": 854,
+        "ch": 612,
+        "uniqueColors": 55,
+        "nonBg": 34156,
+        "bg": "#ffffff"
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "Text contrast >= 4.5:1 in both themes",
+      "status": "WARN",
+      "details": [
+        {
+          "theme": "light",
+          "name": "leaf",
+          "ratio": 3.68,
+          "fg": "rgb(255, 255, 255)",
+          "bg": "rgb(59, 130, 246)"
+        }
+      ]
+    },
+    {
+      "area": "Input",
+      "name": "Friendly input form renders labelled fields and a Run button",
+      "status": "PASS",
+      "details": {
+        "fields": [
+          "Values"
+        ],
+        "toolbar": [
+          "Default",
+          "Random",
+          "Advanced JSON"
+        ],
+        "run": true
+      }
+    },
+    {
+      "area": "Input",
+      "name": "Editing a field and running restarts the algorithm",
+      "status": "PASS",
+      "details": {
+        "notice": "Input applied. The algorithm restarted from the first step.",
+        "step": 0,
+        "frames": 23,
+        "input": "5, 3, 1, 4, 2",
+        "before": "4, 2, 7, 1, 9, 3"
+      }
+    },
+    {
+      "area": "Input",
+      "name": "Random and Default buttons refill the form",
+      "status": "PASS",
+      "details": {
+        "randomNotice": "Random values generated. Select Run to apply them.",
+        "defaultNotice": "Default values restored. Select Run to apply them."
+      }
+    },
+    {
+      "area": "Input",
+      "name": "Invalid JSON shows an alert-role validation message",
+      "status": "PASS",
+      "details": {
+        "text": "Enter valid JSON, using double quotes around names.",
+        "role": "alert"
+      }
+    },
+    {
+      "area": "Compare",
+      "name": "Compare mode shows two labelled canvases and both counters",
+      "status": "PASS",
+      "details": {
+        "canvases": 2,
+        "labels": [
+          "A: Bubble Sort",
+          "B: Insertion Sort"
+        ],
+        "columns": [
+          "A: Bubble Sort",
+          "B: Insertion Sort"
+        ],
+        "a": 0,
+        "b": 0,
+        "canvasB": {
+          "w": 427,
+          "h": 338,
+          "cw": 427,
+          "ch": 338,
+          "uniqueColors": 47,
+          "nonBg": 18299,
+          "bg": "#0f172a"
+        },
+        "entitiesB": {
+          "total": 5,
+          "edges": 0,
+          "layout": "array",
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "description": "Initial array – every element is untouched."
+        }
+      }
+    },
+    {
+      "area": "Compare",
+      "name": "Comparison canvas B paints and has valid entities",
+      "status": "PASS",
+      "details": {
+        "canvas": {
+          "w": 427,
+          "h": 338,
+          "cw": 427,
+          "ch": 338,
+          "uniqueColors": 47,
+          "nonBg": 18299,
+          "bg": "#0f172a"
+        },
+        "entities": {
+          "total": 5,
+          "edges": 0,
+          "layout": "array",
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "description": "Initial array – every element is untouched."
+        }
+      }
+    },
+    {
+      "area": "Compare",
+      "name": "Both engines advance together",
+      "status": "PASS",
+      "details": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    {
+      "area": "Share",
+      "name": "Share panel builds a deep link and an embed snippet",
+      "status": "PASS",
+      "details": {
+        "link": "http://localhost:5178/algorithm-visualizing/?algo=bubble-sort&step=2",
+        "embed": "<iframe src=\"http://localhost:5178/algorithm-visualizing/?algo=bubble-sort&step=2&embed=1\" width=\"800\" height=\"600\" title=\"Algorithm visualization\" loading=\"lazy\"></iframe>",
+        "title": "Bubble Sort - Algorithmic Visualization Engine",
+        "statusRole": "polite"
+      }
+    },
+    {
+      "area": "Share",
+      "name": "Copy link reports success or a clear failure",
+      "status": "PASS",
+      "details": {
+        "copyStatus": "Link copied."
+      }
+    },
+    {
+      "area": "Export",
+      "name": "Code export renders non-empty code for multiple languages",
+      "status": "PASS",
+      "details": {
+        "tabs": [
+          "Python",
+          "JavaScript",
+          "Java",
+          "C++"
+        ],
+        "pressed": [
+          "Python"
+        ],
+        "py": "# Bubble Sort - educational source sketch\n# Pseudocode-derived, NOT the canonical implementation.\n# ",
+        "java": "// Bubble Sort - educational source sketch\n// Pseudocode-derived, NOT the canonical implementation.\n"
+      }
+    },
+    {
+      "area": "Learning",
+      "name": "Bookmark, progress, related and quiz render and respond",
+      "status": "PASS",
+      "details": {
+        "before": "true",
+        "after": "false",
+        "saved": true,
+        "quiz": 3,
+        "feedback": "Not quite. Bubble Sort is grouped under sorting.",
+        "related": 4,
+        "progress": 20
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "Every icon-only button has an aria-label",
+      "status": "PASS",
+      "details": []
+    },
+    {
+      "area": "Accessibility",
+      "name": "Canvas exposes role=img and a descriptive aria-label",
+      "status": "PASS",
+      "details": {
+        "role": "img",
+        "label": "Visualization: 5 and 3 were out of order – swapping.."
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "Descriptions are announced through a polite live region",
+      "status": "PASS",
+      "details": {
+        "role": "status",
+        "live": "polite"
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "Text alternative panel lists caption, entities and connections",
+      "status": "PASS",
+      "details": {
+        "summary": "Text alternative for this step",
+        "caption": "5 and 3 were out of order – swapping.",
+        "entityRows": 5,
+        "headings": [
+          "Entities",
+          "Connections"
+        ]
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "Keyboard focus shows a visible focus ring",
+      "status": "PASS",
+      "details": {
+        "tag": "BUTTON",
+        "text": "▾Sorting1",
+        "outline": "solid 2px rgb(96, 165, 250)",
+        "focusVisible": true
+      }
+    },
+    {
+      "area": "Accessibility",
+      "name": "prefers-reduced-motion is honored by CSS",
+      "status": "PASS",
+      "details": {
+        "matches": true,
+        "transition": "1e-05s",
+        "animation": "1e-05s"
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "bubble-sort (sorting)",
+      "status": "PASS",
+      "details": {
+        "total": 27,
+        "layout": "array",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "linear-search (searching)",
+      "status": "PASS",
+      "details": {
+        "total": 9,
+        "layout": "array",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "bfs (graph)",
+      "status": "PASS",
+      "details": {
+        "total": 12,
+        "layout": "graph",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "a-star (shortest-path)",
+      "status": "PASS",
+      "details": {
+        "total": 17,
+        "layout": "graph",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "kruskal (mst)",
+      "status": "PASS",
+      "details": {
+        "total": 20,
+        "layout": "graph",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "dinic (flow)",
+      "status": "PASS",
+      "details": {
+        "total": 9,
+        "layout": "graph",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "tree-traversals (tree)",
+      "status": "PASS",
+      "details": {
+        "total": 8,
+        "layout": "tree",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "knuth-morris-pratt (string)",
+      "status": "PASS",
+      "details": {
+        "total": 20,
+        "layout": "text",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "sieve-eratosthenes (math)",
+      "status": "PASS",
+      "details": {
+        "total": 93,
+        "layout": "grid",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "knapsack-01 (dynamic-programming)",
+      "status": "PASS",
+      "details": {
+        "total": 26,
+        "layout": "grid",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "minimax (game)",
+      "status": "PASS",
+      "details": {
+        "total": 15,
+        "layout": "tree",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "convex-hull-graham (geometry)",
+      "status": "PASS",
+      "details": {
+        "total": 10,
+        "layout": "point",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "dsu (data-structures)",
+      "status": "PASS",
+      "details": {
+        "total": 6,
+        "layout": "tree",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "adaboost (ml-ai)",
+      "status": "PASS",
+      "details": {
+        "total": 3,
+        "layout": "point",
+        "frames": 3,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "aes-gcm-encryption (cryptography-security)",
+      "status": "PASS",
+      "details": {
+        "total": 6,
+        "layout": "grid",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "atomic-broadcast (parallel-distributed)",
+      "status": "PASS",
+      "details": {
+        "total": 6,
+        "layout": "grid",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "adams-bashforth (numerical-optimization)",
+      "status": "PASS",
+      "details": {
+        "total": 9,
+        "layout": "array",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "grover-search (quantum)",
+      "status": "PASS",
+      "details": {
+        "total": 7,
+        "layout": "array",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "bayes-theorem (statistics-probability)",
+      "status": "PASS",
+      "details": {
+        "total": 3,
+        "layout": "grid",
+        "frames": 3,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "AlgorithmSweep",
+      "name": "token-bucket-rate-limiter (production-systems)",
+      "status": "PASS",
+      "details": {
+        "total": 9,
+        "layout": "grid",
+        "frames": 5,
+        "verdict": {
+          "blank": 0,
+          "badEntities": 0,
+          "overlaps": 0,
+          "missingDesc": 0,
+          "consoleErrors": 0,
+          "networkErrors": 0,
+          "deepLinkOk": true
+        }
+      }
+    },
+    {
+      "area": "DeepLink",
+      "name": "Unknown algorithm id degrades gracefully",
+      "status": "PASS",
+      "details": {
+        "unknown": {
+          "id": null,
+          "loading": false
+        },
+        "errs": []
+      }
+    },
+    {
+      "area": "PWA",
+      "name": "Service worker registers with the app scope",
+      "status": "PASS",
+      "details": [
+        {
+          "scope": "http://localhost:5178/algorithm-visualizing/",
+          "script": "http://localhost:5178/algorithm-visualizing/sw.js",
+          "state": "activated"
+        }
+      ]
+    },
+    {
+      "area": "PWA",
+      "name": "Service worker populates a cache",
+      "status": "PASS",
+      "details": {
+        "algorithm-visualizing-v1": 140
+      }
+    },
+    {
+      "area": "Mobile",
+      "name": "No horizontal page overflow at 390px",
+      "status": "PASS",
+      "details": {
+        "innerWidth": 390,
+        "scrollWidth": 390
+      }
+    },
+    {
+      "area": "Mobile",
+      "name": "Sidebar becomes a closed drawer with a hamburger toggle",
+      "status": "PASS",
+      "details": {
+        "toggle": "flex",
+        "wrapOpen": false,
+        "canvasSize": {
+          "w": 390,
+          "h": 456,
+          "cw": 390,
+          "ch": 456
+        }
+      }
+    },
+    {
+      "area": "Mobile",
+      "name": "Information column is reachable by scrolling",
+      "status": "PASS",
+      "details": {
+        "overflow": "auto"
+      }
+    },
+    {
+      "area": "Mobile",
+      "name": "Selecting an algorithm from the drawer closes it and paints the canvas",
+      "status": "PASS",
+      "details": {
+        "drawerOpen": true,
+        "picked": true,
+        "wrapOpen": false,
+        "canvas": {
+          "colors": 40,
+          "nonBg": 4910
+        }
+      }
+    }
+  ],
+  "console": [],
+  "network": [],
+  "algorithms": [
+    {
+      "id": "bubble-sort",
+      "cat": "sorting",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 54,
+          "nonBg": 34126,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Initial array – every element is untouched.",
+          "bar": "Initial array – every element is untouched."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 66,
+          "nonBg": 34131,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Comparing 4 and 2.",
+          "bar": "Comparing 4 and 2."
+        },
+        {
+          "target": 13,
+          "step": 13,
+          "uniqueColors": 68,
+          "nonBg": 34129,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Comparing 4 and 7.",
+          "bar": "Comparing 4 and 7."
+        },
+        {
+          "target": 25,
+          "step": 25,
+          "uniqueColors": 63,
+          "nonBg": 34127,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Pass 4 complete – 3 is now in place.",
+          "bar": "Pass 4 complete – 3 is now in place."
+        },
+        {
+          "target": 26,
+          "step": 26,
+          "uniqueColors": 51,
+          "nonBg": 34134,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Array sorted in 14 comparisons and 7 swaps.",
+          "bar": "Array sorted in 14 comparisons and 7 swaps."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 27,
+      "name": "Bubble Sort",
+      "layout": "array",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "linear-search",
+      "cat": "searching",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 62,
+          "nonBg": 51137,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Searching for 7 in the array.",
+          "bar": "Searching for 7 in the array."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 76,
+          "nonBg": 51139,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Checking index 0: is 5 the target 7?",
+          "bar": "Checking index 0: is 5 the target 7?"
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 70,
+          "nonBg": 51137,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Checking index 3: is 1 the target 7?",
+          "bar": "Checking index 3: is 1 the target 7?"
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 73,
+          "nonBg": 51138,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Checking index 6: is 7 the target 7?",
+          "bar": "Checking index 6: is 7 the target 7?"
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 72,
+          "nonBg": 51138,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Found 7 at index 6 after 7 comparisons.",
+          "bar": "Found 7 at index 6 after 7 comparisons."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 9,
+      "name": "Linear Search",
+      "layout": "array",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "bfs",
+      "cat": "graph",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 98,
+          "nonBg": 1954,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Starting breadth-first search from A.",
+          "bar": "Starting breadth-first search from A."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 134,
+          "nonBg": 1957,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Dequeuing and visiting A (queue: []).",
+          "bar": "Dequeuing and visiting A (queue: [])."
+        },
+        {
+          "target": 5,
+          "step": 5,
+          "uniqueColors": 204,
+          "nonBg": 2026,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Dequeuing and visiting C (queue: [D]).",
+          "bar": "Dequeuing and visiting C (queue: [D])."
+        },
+        {
+          "target": 10,
+          "step": 10,
+          "uniqueColors": 131,
+          "nonBg": 1952,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Expanded E – enqueued its unvisited neighbors (queue: []).",
+          "bar": "Expanded E – enqueued its unvisited neighbors (queue: [])."
+        },
+        {
+          "target": 11,
+          "step": 11,
+          "uniqueColors": 131,
+          "nonBg": 1952,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "BFS complete – visited 5 node(s) level by level.",
+          "bar": "BFS complete – visited 5 node(s) level by level."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 12,
+      "name": "BFS",
+      "layout": "graph",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "a-star",
+      "cat": "shortest-path",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 96,
+          "nonBg": 2845,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "A* from A to F – g-scores set, prioritizing f(n) = g(n) + h(n).",
+          "bar": "A* from A to F – g-scores set, prioritizing f(n) = g(n) + h(n)."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 129,
+          "nonBg": 2847,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Expanding A with smallest f-score (g=0, h=5, f=5).",
+          "bar": "Expanding A with smallest f-score (g=0, h=5, f=5)."
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 187,
+          "nonBg": 2945,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "C closed with final g-score 2, continuing search.",
+          "bar": "C closed with final g-score 2, continuing search."
+        },
+        {
+          "target": 15,
+          "step": 15,
+          "uniqueColors": 168,
+          "nonBg": 3017,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "E closed with final g-score 6, continuing search.",
+          "bar": "E closed with final g-score 6, continuing search."
+        },
+        {
+          "target": 16,
+          "step": 16,
+          "uniqueColors": 192,
+          "nonBg": 3291,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "A* found shortest path A → C → B → E → F with cost 7.",
+          "bar": "A* found shortest path A → C → B → E → F with cost 7."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 17,
+      "name": "A*",
+      "layout": "graph",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "kruskal",
+      "cat": "mst",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 99,
+          "nonBg": 2844,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Kruskal's algorithm on 6 vertices, 9 edges – considering edges from lightest to heaviest.",
+          "bar": "Kruskal's algorithm on 6 vertices, 9 edges – considering edges from lightest to heaviest."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 99,
+          "nonBg": 2844,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Considering edge B–C (weight 1).",
+          "bar": "Considering edge B–C (weight 1)."
+        },
+        {
+          "target": 9,
+          "step": 9,
+          "uniqueColors": 92,
+          "nonBg": 2832,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Considering edge A–B (weight 4).",
+          "bar": "Considering edge A–B (weight 4)."
+        },
+        {
+          "target": 18,
+          "step": 18,
+          "uniqueColors": 91,
+          "nonBg": 2832,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Rejected C–E (weight 10) – it would create a cycle.",
+          "bar": "Rejected C–E (weight 10) – it would create a cycle."
+        },
+        {
+          "target": 19,
+          "step": 19,
+          "uniqueColors": 92,
+          "nonBg": 2832,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Minimum spanning tree complete – 5 edges, total weight 13: B–C(1), A–C(2), D–E(2), E–F(3), B–D(5).",
+          "bar": "Minimum spanning tree complete – 5 edges, total weight 13: B–C(1), A–C(2), D–E(2), E–F(3), B–D(5)."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 20,
+      "name": "Kruskal's MST",
+      "layout": "graph",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "dinic",
+      "cat": "flow",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 101,
+          "nonBg": 2555,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Dinic's algorithm from S to T – building level graphs phase by phase.",
+          "bar": "Dinic's algorithm from S to T – building level graphs phase by phase."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 105,
+          "nonBg": 2551,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "BFS phase 1 – sink level is 2.",
+          "bar": "BFS phase 1 – sink level is 2."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 148,
+          "nonBg": 2948,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Pushed 3 in phase 2 – total flow 4.",
+          "bar": "Pushed 3 in phase 2 – total flow 4."
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 101,
+          "nonBg": 2525,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "BFS phase 4 – sink level is ∞.",
+          "bar": "BFS phase 4 – sink level is ∞."
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 142,
+          "nonBg": 3047,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Maximum flow from S to T is 5 across 3 phase(s).",
+          "bar": "Maximum flow from S to T is 5 across 3 phase(s)."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 9,
+      "name": "Dinic's Algorithm",
+      "layout": "graph",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "tree-traversals",
+      "cat": "tree",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 58,
+          "nonBg": 1019,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Traversals of tree rooted at A.",
+          "bar": "Traversals of tree rooted at A."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 86,
+          "nonBg": 1020,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Preorder visit A – [A].",
+          "bar": "Preorder visit A – [A]."
+        },
+        {
+          "target": 3,
+          "step": 3,
+          "uniqueColors": 114,
+          "nonBg": 982,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Preorder visit D – [A,B,D].",
+          "bar": "Preorder visit D – [A,B,D]."
+        },
+        {
+          "target": 6,
+          "step": 6,
+          "uniqueColors": 61,
+          "nonBg": 979,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Preorder done [A,B,D,E,C]; postorder [D,E,B,C,A].",
+          "bar": "Preorder done [A,B,D,E,C]; postorder [D,E,B,C,A]."
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 64,
+          "nonBg": 983,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 5,
+          "description": "Level order [A,B,C,D,E]; all 5 nodes visited.",
+          "bar": "Level order [A,B,C,D,E]; all 5 nodes visited."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 8,
+      "name": "Tree Traversals",
+      "layout": "tree",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "knuth-morris-pratt",
+      "cat": "string",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 36,
+          "nonBg": 1231,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 14,
+          "description": "Searching for \"ababcab\" in \"ababcabababcab\".",
+          "bar": "Searching for \"ababcab\" in \"ababcabababcab\"."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 36,
+          "nonBg": 1231,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 14,
+          "description": "Prefix function built: [0, 0, 1, 2, 0, 1, 2].",
+          "bar": "Prefix function built: [0, 0, 1, 2, 0, 1, 2]."
+        },
+        {
+          "target": 9,
+          "step": 9,
+          "uniqueColors": 68,
+          "nonBg": 1237,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 14,
+          "description": "Pattern found at index 0!",
+          "bar": "Pattern found at index 0!"
+        },
+        {
+          "target": 18,
+          "step": 18,
+          "uniqueColors": 67,
+          "nonBg": 1237,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 14,
+          "description": "Pattern found at index 7!",
+          "bar": "Pattern found at index 7!"
+        },
+        {
+          "target": 19,
+          "step": 19,
+          "uniqueColors": 33,
+          "nonBg": 1243,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 14,
+          "description": "\"ababcab\" occurs at 0, 7.",
+          "bar": "\"ababcab\" occurs at 0, 7."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 20,
+      "name": "KMP",
+      "layout": "text",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "sieve-eratosthenes",
+      "cat": "math",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 84,
+          "nonBg": 128374,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 59,
+          "description": "Sieve of Eratosthenes up to 60.",
+          "bar": "Sieve of Eratosthenes up to 60."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 98,
+          "nonBg": 128376,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 59,
+          "description": "2 is prime – crossing out its multiples.",
+          "bar": "2 is prime – crossing out its multiples."
+        },
+        {
+          "target": 46,
+          "step": 46,
+          "uniqueColors": 134,
+          "nonBg": 128472,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 59,
+          "description": "Marked 48 as composite (multiple of 3).",
+          "bar": "Marked 48 as composite (multiple of 3)."
+        },
+        {
+          "target": 91,
+          "step": 91,
+          "uniqueColors": 142,
+          "nonBg": 128493,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 59,
+          "description": "Finished processing prime 59.",
+          "bar": "Finished processing prime 59."
+        },
+        {
+          "target": 92,
+          "step": 92,
+          "uniqueColors": 121,
+          "nonBg": 128526,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 59,
+          "description": "Found 17 primes up to 60: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59.",
+          "bar": "Found 17 primes up to 60: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 93,
+      "name": "Sieve of Eratosthenes",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "knapsack-01",
+      "cat": "dynamic-programming",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 62,
+          "nonBg": 130617,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 30,
+          "description": "0/1 knapsack – 4 items, capacity 5.",
+          "bar": "0/1 knapsack – 4 items, capacity 5."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 84,
+          "nonBg": 130617,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 30,
+          "description": "Item 1 (w=2, v=3) at capacity 0 → 0.",
+          "bar": "Item 1 (w=2, v=3) at capacity 0 → 0."
+        },
+        {
+          "target": 12,
+          "step": 12,
+          "uniqueColors": 88,
+          "nonBg": 130610,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 30,
+          "description": "Item 2 (w=3, v=4) at capacity 5 → 7.",
+          "bar": "Item 2 (w=3, v=4) at capacity 5 → 7."
+        },
+        {
+          "target": 24,
+          "step": 24,
+          "uniqueColors": 89,
+          "nonBg": 130601,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 30,
+          "description": "Item 4 (w=5, v=6) at capacity 5 → 7.",
+          "bar": "Item 4 (w=5, v=6) at capacity 5 → 7."
+        },
+        {
+          "target": 25,
+          "step": 25,
+          "uniqueColors": 75,
+          "nonBg": 130599,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 30,
+          "description": "Maximum value = 7.",
+          "bar": "Maximum value = 7."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 26,
+      "name": "Knapsack (0/1)",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "minimax",
+      "cat": "game",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 111,
+          "nonBg": 3943,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 40,
+          "description": "Minimax on depth-3 ternary tree with 27 leaf scores, MAX to move at root.",
+          "bar": "Minimax on depth-3 ternary tree with 27 leaf scores, MAX to move at root."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 200,
+          "nonBg": 3972,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 40,
+          "description": "MAX node node-2 chose 5 from child scores {3, 5, 2}.",
+          "bar": "MAX node node-2 chose 5 from child scores {3, 5, 2}."
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 293,
+          "nonBg": 3884,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 40,
+          "description": "MAX node node-23 chose 8 from child scores {8, 6, 3}.",
+          "bar": "MAX node node-23 chose 8 from child scores {8, 6, 3}."
+        },
+        {
+          "target": 13,
+          "step": 13,
+          "uniqueColors": 212,
+          "nonBg": 3911,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 40,
+          "description": "MAX node node-0 chose 7 from child scores {5, 5, 7}.",
+          "bar": "MAX node node-0 chose 7 from child scores {5, 5, 7}."
+        },
+        {
+          "target": 14,
+          "step": 14,
+          "uniqueColors": 182,
+          "nonBg": 3911,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 40,
+          "description": "Game value under optimal play = 7; root MAX picks the best-scoring move.",
+          "bar": "Game value under optimal play = 7; root MAX picks the best-scoring move."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 15,
+      "name": "Minimax",
+      "layout": "tree",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "convex-hull-graham",
+      "cat": "geometry",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 67,
+          "nonBg": 1580,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Graham scan – computing the convex hull.",
+          "bar": "Graham scan – computing the convex hull."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 94,
+          "nonBg": 1582,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Pivot is point 4 (0, 0).",
+          "bar": "Pivot is point 4 (0, 0)."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 123,
+          "nonBg": 1509,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Hull stack after point 7: [4, 6, 7].",
+          "bar": "Hull stack after point 7: [4, 6, 7]."
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 88,
+          "nonBg": 1516,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Hull stack after point 0: [4, 6, 3, 8, 0].",
+          "bar": "Hull stack after point 0: [4, 6, 3, 8, 0]."
+        },
+        {
+          "target": 9,
+          "step": 9,
+          "uniqueColors": 102,
+          "nonBg": 3098,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Convex hull: 4 → 6 → 3 → 8 → 0.",
+          "bar": "Convex hull: 4 → 6 → 3 → 8 → 0."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 10,
+      "name": "Convex Hull (Graham)",
+      "layout": "point",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "dsu",
+      "cat": "data-structures",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 50,
+          "nonBg": 1062,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Disjoint set with 6 elements – each is its own set.",
+          "bar": "Disjoint set with 6 elements – each is its own set."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 68,
+          "nonBg": 1082,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Union(0, 1) – representatives 0 and 1 merged.",
+          "bar": "Union(0, 1) – representatives 0 and 1 merged."
+        },
+        {
+          "target": 2,
+          "step": 2,
+          "uniqueColors": 82,
+          "nonBg": 1049,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Union(2, 3) – representatives 2 and 3 merged.",
+          "bar": "Union(2, 3) – representatives 2 and 3 merged."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 88,
+          "nonBg": 1112,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Union(4, 5) – representatives 4 and 5 merged.",
+          "bar": "Union(4, 5) – representatives 4 and 5 merged."
+        },
+        {
+          "target": 5,
+          "step": 5,
+          "uniqueColors": 88,
+          "nonBg": 1112,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "DSU complete – 2 set(s) remain.",
+          "bar": "DSU complete – 2 set(s) remain."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 6,
+      "name": "Disjoint Set Union",
+      "layout": "tree",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "adaboost",
+      "cat": "ml-ai",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 55,
+          "nonBg": 1052,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Boosting 6 points for up to 5 round(s) with decision stumps.",
+          "bar": "Boosting 6 points for up to 5 round(s) with decision stumps."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 55,
+          "nonBg": 1052,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Round 1: stump on feature 0 at 3.50 has weighted error 0.000 and alpha 11.513; accuracy 100%.",
+          "bar": "Round 1: stump on feature 0 at 3.50 has weighted error 0.000 and alpha 11.513; accuracy 100%."
+        },
+        {
+          "target": 2,
+          "step": 2,
+          "uniqueColors": 57,
+          "nonBg": 1022,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Final ensemble of 1 stump(s) classifies 6 of 6 points correctly.",
+          "bar": "Final ensemble of 1 stump(s) classifies 6 of 6 points correctly."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 2,
+        "ok": true
+      },
+      "total": 3,
+      "name": "AdaBoost",
+      "layout": "point",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "aes-gcm-encryption",
+      "cat": "cryptography-security",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 71,
+          "nonBg": 98179,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 12,
+          "description": "Toy AES-GCM: encrypt one 4-byte block with XOR and build an authentication tag.",
+          "bar": "Toy AES-GCM: encrypt one 4-byte block with XOR and build an authentication tag."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 100,
+          "nonBg": 98184,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 12,
+          "description": "Byte 0: 48 XOR 1F = 57.",
+          "bar": "Byte 0: 48 XOR 1F = 57."
+        },
+        {
+          "target": 2,
+          "step": 2,
+          "uniqueColors": 117,
+          "nonBg": 98194,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 12,
+          "description": "Byte 1: 69 XOR 2E = 47.",
+          "bar": "Byte 1: 69 XOR 2E = 47."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 97,
+          "nonBg": 98200,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 12,
+          "description": "Byte 3: 2A XOR 4C = 66.",
+          "bar": "Byte 3: 2A XOR 4C = 66."
+        },
+        {
+          "target": 5,
+          "step": 5,
+          "uniqueColors": 73,
+          "nonBg": 106332,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 13,
+          "description": "Tag 30; XOR decryption recovers the original block and the tag verifies.",
+          "bar": "Tag 30; XOR decryption recovers the original block and the tag verifies."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 6,
+      "name": "AES-GCM Encryption (Toy Model)",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "atomic-broadcast",
+      "cat": "parallel-distributed",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 78,
+          "nonBg": 114487,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 7,
+          "description": "Starting atomic broadcast of 4 message(s) to 3 process(es).",
+          "bar": "Starting atomic broadcast of 4 message(s) to 3 process(es)."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 91,
+          "nonBg": 114489,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 7,
+          "description": "Deliver message \"b\" from sender 0 (local 0) to every process in the same order.",
+          "bar": "Deliver message \"b\" from sender 0 (local 0) to every process in the same order."
+        },
+        {
+          "target": 2,
+          "step": 2,
+          "uniqueColors": 103,
+          "nonBg": 114491,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 7,
+          "description": "Deliver message \"a\" from sender 1 (local 0) to every process in the same order.",
+          "bar": "Deliver message \"a\" from sender 1 (local 0) to every process in the same order."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 96,
+          "nonBg": 114487,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 7,
+          "description": "Deliver message \"d\" from sender 1 (local 1) to every process in the same order.",
+          "bar": "Deliver message \"d\" from sender 1 (local 1) to every process in the same order."
+        },
+        {
+          "target": 5,
+          "step": 5,
+          "uniqueColors": 90,
+          "nonBg": 114487,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 7,
+          "description": "All 4 message(s) delivered to all 3 process(es) in one identical total order.",
+          "bar": "All 4 message(s) delivered to all 3 process(es) in one identical total order."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 6,
+      "name": "Atomic Broadcast",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "adams-bashforth",
+      "cat": "numerical-optimization",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 28,
+          "nonBg": 12423,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Solving y' = 1 y with step size 0.1; the exact solution is y0 times exp(lambda t).",
+          "bar": "Solving y' = 1 y with step size 0.1; the exact solution is y0 times exp(lambda t)."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 43,
+          "nonBg": 23001,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Step 1: Runge Kutta startup gives y = 1.105171 at t = 0.10.",
+          "bar": "Step 1: Runge Kutta startup gives y = 1.105171 at t = 0.10."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 97,
+          "nonBg": 49015,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Step 4: Adams-Bashforth four-step gives y = 1.491820 at t = 0.40.",
+          "bar": "Step 4: Adams-Bashforth four-step gives y = 1.491820 at t = 0.40."
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 109,
+          "nonBg": 68264,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Step 7: Adams-Bashforth four-step gives y = 2.013728 at t = 0.70.",
+          "bar": "Step 7: Adams-Bashforth four-step gives y = 2.013728 at t = 0.70."
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 128,
+          "nonBg": 73491,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 9,
+          "description": "Final value 2.225507 at t = 0.80; absolute error 3.37e-5.",
+          "bar": "Final value 2.225507 at t = 0.80; absolute error 3.37e-5."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 9,
+      "name": "Adams-Bashforth (Order 4)",
+      "layout": "array",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "grover-search",
+      "cat": "quantum",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 29,
+          "nonBg": 12334,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Search 8 items with 3 qubits, starting from the basis state |0...0>. The marked index is 5.",
+          "bar": "Search 8 items with 3 qubits, starting from the basis state |0...0>. The marked index is 5."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 41,
+          "nonBg": 33392,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Hadamard gates create an equal superposition over all N items.",
+          "bar": "Hadamard gates create an equal superposition over all N items."
+        },
+        {
+          "target": 3,
+          "step": 3,
+          "uniqueColors": 46,
+          "nonBg": 25198,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Diffusion reflects amplitudes about their mean 0.2652, amplifying the marked state.",
+          "bar": "Diffusion reflects amplitudes about their mean 0.2652, amplifying the marked state."
+        },
+        {
+          "target": 5,
+          "step": 5,
+          "uniqueColors": 45,
+          "nonBg": 14449,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Diffusion reflects amplitudes about their mean 0.0442, amplifying the marked state.",
+          "bar": "Diffusion reflects amplitudes about their mean 0.0442, amplifying the marked state."
+        },
+        {
+          "target": 6,
+          "step": 6,
+          "uniqueColors": 53,
+          "nonBg": 14087,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "After 2 Grover iteration(s), measuring returns the marked index 5 with probability 94.5 percent. Ideal simulator only; n",
+          "bar": "After 2 Grover iteration(s), measuring returns the marked index 5 with probability 94.5 percent. Ideal simulator only; n"
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 7,
+      "name": "Grover's Search (Ideal Small Simulator)",
+      "layout": "array",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "bayes-theorem",
+      "cat": "statistics-probability",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 65,
+          "nonBg": 130653,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Start with a prior probability of 0.0100 for the hypothesis.",
+          "bar": "Start with a prior probability of 0.0100 for the hypothesis."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 112,
+          "nonBg": 130654,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "The evidence occurs with likelihood 0.9500 under the hypothesis and 0.0500 otherwise.",
+          "bar": "The evidence occurs with likelihood 0.9500 under the hypothesis and 0.0500 otherwise."
+        },
+        {
+          "target": 2,
+          "step": 2,
+          "uniqueColors": 103,
+          "nonBg": 130657,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 6,
+          "description": "Total evidence probability is 0.0590, so the posterior is 0.1610.",
+          "bar": "Total evidence probability is 0.0590, so the posterior is 0.1610."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 2,
+        "ok": true
+      },
+      "total": 3,
+      "name": "Bayes' Theorem",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    },
+    {
+      "id": "token-bucket-rate-limiter",
+      "cat": "production-systems",
+      "frames": [
+        {
+          "target": 0,
+          "step": 0,
+          "uniqueColors": 62,
+          "nonBg": 130620,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Token bucket starts full with 2 token(s) and refills at 1 per second.",
+          "bar": "Token bucket starts full with 2 token(s) and refills at 1 per second."
+        },
+        {
+          "target": 1,
+          "step": 1,
+          "uniqueColors": 85,
+          "nonBg": 130622,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Arrival 0 at t=0: allowed, 1.00 token(s) remain.",
+          "bar": "Arrival 0 at t=0: allowed, 1.00 token(s) remain."
+        },
+        {
+          "target": 4,
+          "step": 4,
+          "uniqueColors": 124,
+          "nonBg": 130635,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Arrival 3 at t=1: allowed, 0.00 token(s) remain.",
+          "bar": "Arrival 3 at t=1: allowed, 0.00 token(s) remain."
+        },
+        {
+          "target": 7,
+          "step": 7,
+          "uniqueColors": 122,
+          "nonBg": 130650,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Arrival 6 at t=2: allowed, 0.00 token(s) remain.",
+          "bar": "Arrival 6 at t=2: allowed, 0.00 token(s) remain."
+        },
+        {
+          "target": 8,
+          "step": 8,
+          "uniqueColors": 112,
+          "nonBg": 130652,
+          "bad": [],
+          "missingEdges": [],
+          "overlaps": [],
+          "entityCount": 8,
+          "description": "Arrival 7 at t=2.5: rejected, 0.50 token(s) remain.",
+          "bar": "Arrival 7 at t=2.5: rejected, 0.50 token(s) remain."
+        }
+      ],
+      "deepLink": {
+        "requested": 3,
+        "got": 3,
+        "ok": true
+      },
+      "total": 9,
+      "name": "Token Bucket Rate Limiter",
+      "layout": "grid",
+      "consoleErrors": [],
+      "networkErrors": [],
+      "verdict": {
+        "blank": 0,
+        "badEntities": 0,
+        "overlaps": 0,
+        "missingDesc": 0,
+        "consoleErrors": 0,
+        "networkErrors": 0,
+        "deepLinkOk": true
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "scripts/content/qa/screenshots/mobile-390x844.jpg",
+      "bytes": 51182
+    }
+  ],
+  "accessibility": {
+    "contrast": [
+      {
+        "theme": "light",
+        "name": "title",
+        "ratio": 17.74,
+        "fg": "rgb(17, 24, 39)",
+        "bg": "rgb(255, 255, 255)"
+      },
+      {
+        "theme": "light",
+        "name": "description",
+        "ratio": 16.98,
+        "fg": "rgb(17, 24, 39)",
+        "bg": "rgb(249, 250, 251)"
+      },
+      {
+        "theme": "light",
+        "name": "leaf",
+        "ratio": 3.68,
+        "fg": "rgb(255, 255, 255)",
+        "bg": "rgb(59, 130, 246)"
+      },
+      {
+        "theme": "light",
+        "name": "button",
+        "ratio": 17.74,
+        "fg": "rgb(17, 24, 39)",
+        "bg": "rgb(255, 255, 255)"
+      },
+      {
+        "theme": "dark",
+        "name": "title",
+        "ratio": 13.34,
+        "fg": "rgb(243, 244, 246)",
+        "bg": "rgb(31, 41, 55)"
+      },
+      {
+        "theme": "dark",
+        "name": "description",
+        "ratio": 16.12,
+        "fg": "rgb(243, 244, 246)",
+        "bg": "rgb(17, 24, 39)"
+      },
+      {
+        "theme": "dark",
+        "name": "leaf",
+        "ratio": 7.02,
+        "fg": "rgb(15, 23, 42)",
+        "bg": "rgb(96, 165, 250)"
+      },
+      {
+        "theme": "dark",
+        "name": "button",
+        "ratio": 13.34,
+        "fg": "rgb(243, 244, 246)",
+        "bg": "rgb(31, 41, 55)"
+      }
+    ],
+    "basics": {
+      "iconless": [],
+      "canvasRole": "img",
+      "canvasLabel": "Visualization: 5 and 3 were out of order – swapping..",
+      "descRole": "status",
+      "descLive": "polite",
+      "textAlt": {
+        "summary": "Text alternative for this step",
+        "caption": "5 and 3 were out of order – swapping.",
+        "entityRows": 5,
+        "headings": [
+          "Entities",
+          "Connections"
+        ]
+      }
+    },
+    "focus": {
+      "tag": "BUTTON",
+      "text": "▾Sorting1",
+      "outline": "solid 2px rgb(96, 165, 250)",
+      "focusVisible": true
+    },
+    "reducedMotion": {
+      "matches": true,
+      "transition": "1e-05s",
+      "animation": "1e-05s"
+    }
+  },
+  "interactions": {},
+  "sw": {
+    "registrations": [
+      {
+        "scope": "http://localhost:5178/algorithm-visualizing/",
+        "script": "http://localhost:5178/algorithm-visualizing/sw.js",
+        "state": "activated"
+      }
+    ],
+    "caches": {
+      "algorithm-visualizing-v1": 140
+    }
+  },
+  "initial": {
+    "title": "Algorithmic Visualization Engine",
+    "desc": "Select an algorithm to begin.",
+    "steps": "1 / 0",
+    "canvases": 1,
+    "categories": 20,
+    "theme": "dark",
+    "lang": "en"
+  },
+  "searchOther": {
+    "headers": [
+      "▸Quantum Algorithms1"
+    ],
+    "leaves": [],
+    "open": 0
+  },
+  "darkCanvas": {
+    "w": 854,
+    "h": 612,
+    "cw": 854,
+    "ch": 612,
+    "uniqueColors": 55,
+    "nonBg": 34156,
+    "bg": "#ffffff"
+  },
+  "shareLink": "http://localhost:5178/algorithm-visualizing/?algo=bubble-sort&step=2",
+  "finishedAt": "2026-11-18T12:07:47.668Z",
+  "summary": {
+    "PASS": 64,
+    "FAIL": 2,
+    "WARN": 1
+  }
+}
