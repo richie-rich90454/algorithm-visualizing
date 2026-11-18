@@ -23,7 +23,7 @@
  * ---------------------------------------------------------------------------
  *   - Each accepted or rejected step is a node at its (t, y) position.
  *   - Accepted steps are green; a rejected step is red.
- *   - Edges connect consecutive attempts and are labelled with the step size.
+ *   - Edges connect consecutive attempts and are labeled with the step size.
  */
 
 import type { AlgorithmModule, EntityState, VisualEdge, VisualEntity, VisualFrame } from "@/types";

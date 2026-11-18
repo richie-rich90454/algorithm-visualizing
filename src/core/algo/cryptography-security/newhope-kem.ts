@@ -156,7 +156,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             stepNumber: step,
             entities: makeCells(rows, i, i),
             edges: [],
-            description: `${rows[i]?.[0]}: ${rows[i]?.[1]}.`,
+            description: `Ring-LWE row ${i + 1}: ${rows[i]?.[0]} computes ${rows[i]?.[1]}.`,
             codeLineNumber: i < 6 ? 1 : i < 12 ? 3 : 5,
             layout: "grid",
             meta: { ...metaBase, b: data.b, u: data.u, v: data.v },

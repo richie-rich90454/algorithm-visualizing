@@ -21,7 +21,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each generated Lanczos vector is a node labelled with its index.
+ *   - Each generated Lanczos vector is a node labeled with its index.
  *   - Diagonal alpha and subdiagonal beta values are shown in the metadata.
  *   - The final frame reports the Ritz values (eigenvalues of the tridiagonal).
  */
