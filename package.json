@@ -8,6 +8,10 @@
         "build": "run-p type-check \"build-only {@}\" --",
         "preview": "vite preview",
         "build-only": "vite build",
+        "docs:gen": "bun scripts/generate-docs.ts",
+        "docs:dev": "bun scripts/generate-docs.ts && vitepress dev docs",
+        "docs:build": "bun scripts/generate-docs.ts && vitepress build docs && node scripts/copy-docs.mjs",
+        "build:all": "bun run build && bun run docs:build",
         "type-check": "vue-tsc --build",
         "format": "oxfmt .",
         "format:check": "oxfmt --check .",
@@ -27,6 +31,7 @@
         "typescript": "^6.0.3",
         "vite": "^8.3.8",
         "vite-plugin-vue-devtools": "^8.2.1",
+        "vitepress": "^1.6.4",
         "vitest": "^5.1.0",
         "vue-tsc": "^3.3.14"
     },
