@@ -15,6 +15,7 @@ import { computed, ref } from "vue";
 import { getAllAlgorithms } from "@/core";
 import type { AlgorithmMeta } from "@/core/manifest";
 import { useVisualizerStore } from "@/stores/visualizer";
+import { CATEGORY_LABELS } from "@/composables/categories";
 import type { AlgorithmCategory } from "@/types";
 
 /** The current search query; leaves not matching it are hidden. */
@@ -50,8 +51,22 @@ const groups = computed(() => {
     return [...buckets.entries()];
 });
 
+/** True while a search query is narrowing the tree. */
+const isSearching = computed(() => props.query.trim().length > 0);
+
 /** Set of categories currently expanded; defaults to the first category. */
 const openCategories = ref<Set<AlgorithmCategory>>(new Set<AlgorithmCategory>(["sorting"]));
+
+/**
+ * Categories whose leaves are visible. During a search every category with a
+ * match is expanded so results are clickable immediately; the manual
+ * `openCategories` state is never overwritten and is restored when search clears.
+ */
+const visibleCategories = computed<Set<AlgorithmCategory>>(() =>
+    isSearching.value
+        ? new Set(groups.value.map(([category]) => category))
+        : openCategories.value,
+);
 
 /** Toggle whether a category section is expanded. */
 function toggleCategory(category: AlgorithmCategory): void {
@@ -64,22 +79,6 @@ function toggleCategory(category: AlgorithmCategory): void {
     openCategories.value = next;
 }
 
-/** Human-readable label for each category, used as section headers. */
-const CATEGORY_LABELS: Record<AlgorithmCategory, string> = {
-    sorting: "Sorting",
-    searching: "Searching",
-    graph: "Graph Traversal",
-    "shortest-path": "Shortest Path",
-    mst: "Minimum Spanning Trees",
-    flow: "Network Flow",
-    tree: "Tree Algorithms",
-    string: "String Algorithms",
-    math: "Number Theory",
-    "dynamic-programming": "Dynamic Programming",
-    game: "Game Theory",
-    geometry: "Computational Geometry",
-    "data-structures": "Data Structures",
-};
 </script>
 
 <template>
@@ -88,15 +87,15 @@ const CATEGORY_LABELS: Record<AlgorithmCategory, string> = {
             <button
                 type="button"
                 class="category-header"
-                :aria-expanded="openCategories.has(category)"
+                :aria-expanded="visibleCategories.has(category)"
                 @click="toggleCategory(category)"
             >
-                <span class="chevron">{{ openCategories.has(category) ? "▾" : "▸" }}</span>
+                <span class="chevron">{{ visibleCategories.has(category) ? "▾" : "▸" }}</span>
                 <span class="category-name">{{ CATEGORY_LABELS[category] ?? category }}</span>
                 <span class="category-count">{{ modules.length }}</span>
             </button>
 
-            <ul v-if="openCategories.has(category)" class="leaf-list">
+            <ul v-if="visibleCategories.has(category)" class="leaf-list">
                 <li v-for="module in modules" :key="module.id">
                     <button
                         type="button"

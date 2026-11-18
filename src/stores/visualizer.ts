@@ -46,13 +46,28 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     /** Full executable module of the loaded algorithm (has run + pseudocode). */
     const loadedModule = ref<AlgorithmModule | null>(null);
 
+    /** The input currently feeding the engine, editable through InputForm. */
+    const currentInput = ref<unknown>(null);
+
+    /** Id of the second algorithm in compare mode, or null when compare is off. */
+    const compareId = ref<string | null>(null);
+
+    /** Executable module of the second algorithm in compare mode. */
+    const compareModule = ref<AlgorithmModule | null>(null);
+
     /** Monotonic token so rapid selections only apply the latest fetch. */
     let loadToken = 0;
+
+    /** Monotonic token for compare-mode selections. */
+    let compareToken = 0;
 
     /** The internal step engine; owns the frame buffer and current index. */
     // Reactive so computed getters (currentFrame/totalSteps) invalidate when
     // load()/next()/prev() mutate the frame buffer and index.
     const engine = reactive(new StepEngine());
+
+    /** Second engine used by compare mode; mirrors the primary step pointer. */
+    const compareEngine = reactive(new StepEngine());
 
     /** Handle of the playback interval, null while paused. */
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -75,6 +90,21 @@ export const useVisualizerStore = defineStore("visualizer", () => {
 
     /** The loaded algorithm's metadata, or null before any selection. */
     const algorithm = computed(() => (algorithmId.value ? getAlgorithm(algorithmId.value) : null));
+
+    /** Frame shown in the second compare canvas, or null. */
+    const compareFrame = computed(() => compareEngine.getCurrentFrame());
+
+    /** Zero-based step of the second compare engine. */
+    const compareStepIndex = computed(() => compareEngine.step);
+
+    /** Total frames of the second compare engine. */
+    const compareTotalSteps = computed(() => compareEngine.totalFrames);
+
+    /** Metadata of the second algorithm in compare mode. */
+    const compareAlgorithm = computed(() => (compareId.value ? getAlgorithm(compareId.value) : null));
+
+    /** True while a second algorithm is loaded for side-by-side comparison. */
+    const isCompareMode = computed(() => compareId.value !== null && compareModule.value !== null);
 
     // ------------------------------------------------------------------
     // Actions
@@ -115,27 +145,109 @@ export const useVisualizerStore = defineStore("visualizer", () => {
             return;
         }
         loadedModule.value = module;
+        currentInput.value = module.defaultInput;
         engine.load(module, module.defaultInput);
+        // The second run always sees the same input as the first.
+        if (compareModule.value) {
+            compareEngine.load(compareModule.value, module.defaultInput);
+        }
         isLoading.value = false;
     }
 
-    /** Advance one frame and pause when the final frame is reached. */
+    /**
+     * Re-run the loaded algorithm (and its compare partner) with a new input.
+     * Playback stops so the learner starts from the first frame again.
+     */
+    function runWithInput(input: unknown): void {
+        stopPlayback();
+        selectedEntity.value = null;
+        currentInput.value = input;
+        if (loadedModule.value) {
+            engine.load(loadedModule.value, input);
+        }
+        if (compareModule.value) {
+            compareEngine.load(compareModule.value, input);
+        }
+    }
+
+    /** Jump to a specific zero-based frame, used when restoring a deep link. */
+    function goToStep(index: number): void {
+        engine.reset();
+        const target = Math.max(0, Math.floor(index));
+        for (let i = 0; i < target; i += 1) {
+            if (!engine.next()) {
+                break;
+            }
+        }
+        if (compareModule.value) {
+            compareEngine.reset();
+            for (let i = 0; i < target; i += 1) {
+                if (!compareEngine.next()) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Enable compare mode with a second algorithm, or turn it off with null.
+     * The second module runs against whatever input the first one used.
+     */
+    async function setCompareAlgorithm(id: string | null): Promise<void> {
+        if (id === null) {
+            compareToken += 1;
+            compareId.value = null;
+            compareModule.value = null;
+            return;
+        }
+        if (!getAlgorithm(id)) {
+            return;
+        }
+        const token = ++compareToken;
+        compareId.value = id;
+        compareModule.value = null;
+        let module: AlgorithmModule | null = null;
+        try {
+            module = await loadAlgorithmModule(id);
+        } catch {
+            module = null;
+        }
+        if (token !== compareToken) {
+            return;
+        }
+        compareModule.value = module;
+        if (module) {
+            const input = currentInput.value ?? module.defaultInput;
+            compareEngine.load(module, input);
+        }
+    }
+
+    /** Advance one frame in both engines and pause when the primary ends. */
     function nextStep(): void {
         const moved = engine.next();
+        if (compareModule.value) {
+            compareEngine.next();
+        }
         // Hitting the end of the animation stops playback automatically.
         if (!moved && isPlaying.value) {
             stopPlayback();
         }
     }
 
-    /** Move one frame backward. */
+    /** Move one frame backward in both engines. */
     function prevStep(): void {
         engine.prev();
+        if (compareModule.value) {
+            compareEngine.prev();
+        }
     }
 
-    /** Rewind to the first frame. */
+    /** Rewind both engines to the first frame. */
     function reset(): void {
         engine.reset();
+        if (compareModule.value) {
+            compareEngine.reset();
+        }
     }
 
     /** Toggle between playing and paused. */
@@ -159,11 +271,8 @@ export const useVisualizerStore = defineStore("visualizer", () => {
         }
         isPlaying.value = true;
         interval = setInterval(() => {
-            // If we cannot advance, we have reached the end – stop playing.
-            if (!engine.next()) {
-                stopPlayback();
-                return;
-            }
+            // nextStep advances both engines in compare mode and stops at the end.
+            nextStep();
         }, speed.value);
     }
 
@@ -207,7 +316,17 @@ export const useVisualizerStore = defineStore("visualizer", () => {
         totalSteps,
         algorithm,
         loadedModule,
+        currentInput,
+        compareId,
+        compareFrame,
+        compareStepIndex,
+        compareTotalSteps,
+        compareAlgorithm,
+        isCompareMode,
         loadAlgorithm,
+        runWithInput,
+        goToStep,
+        setCompareAlgorithm,
         nextStep,
         prevStep,
         reset,

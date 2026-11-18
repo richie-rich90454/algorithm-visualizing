@@ -19,9 +19,9 @@
  * Everything is cleaned up on unmount: observers, timers, and the rAF loop.
  */
 
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useVisualizerStore } from "@/stores/visualizer";
+import { useTheme } from "@/composables/useTheme";
 import { DPR, getLogicalCoords, scaleContext } from "@/visualization/HiDPI";
 import { applyArrayLayout } from "@/visualization/layout/ArrayLayout";
 import { applyGraphLayout } from "@/visualization/layout/GraphLayout";
@@ -35,9 +35,26 @@ import { renderLabels } from "@/visualization/renderers/LabelRenderer";
 import { renderOverlay } from "@/visualization/renderers/OverlayRenderer";
 import { hitTest } from "@/visualization/interaction/HitTester";
 import TooltipOverlay from "@/visualization/interaction/TooltipOverlay.vue";
-import type { LayoutType, VisualEntity } from "@/types";
+import type { LayoutType, VisualEntity, VisualFrame } from "@/types";
+
+/**
+ * Optional frame source. Left unset the container follows the store; compare
+ * mode passes a second engine's frame so two canvases can render side by side.
+ */
+const props = defineProps<{
+    frame?: VisualFrame | null;
+    totalSteps?: number;
+    label?: string;
+}>();
 
 const store = useVisualizerStore();
+const { theme } = useTheme();
+
+/** Frame to render, either the compare prop or the primary store frame. */
+const frameRef = computed(() => (props.frame === undefined ? store.currentFrame : props.frame));
+
+/** Total step count for the overlay, from the prop or the store. */
+const stepsRef = computed(() => (props.totalSteps === undefined ? store.totalSteps : props.totalSteps));
 
 /** The canvas element, reached through the template ref. */
 const canvasEl = ref<HTMLCanvasElement | null>(null);
@@ -66,19 +83,26 @@ const mousePos = ref({ x: 0, y: 0 });
 /** Timer handle for the 200ms hover delay before showing the tooltip. */
 let tooltipTimer: ReturnType<typeof setTimeout> | null = null;
 
-/** The frame currently displayed; reference identity drives the dirty flag. */
-const { currentFrame, selectedEntity } = storeToRefs(store);
+/** Local selection for compare canvases; the primary canvas uses the store. */
+const localSelected = ref<VisualEntity | null>(null);
 
-// Mark the canvas dirty whenever the engine steps to a new frame. Each frame
-// is a distinct object, so comparing by reference is enough.
-watch(currentFrame, () => {
+/** The entity whose overlay outline is drawn. */
+const entityRef = computed(() =>
+    props.frame === undefined ? store.selectedEntity : localSelected.value,
+);
+
+// Mark the canvas dirty whenever a new frame arrives. Each frame is a distinct
+// object, so comparing by reference is enough.
+watch(frameRef, () => {
     dirty = true;
 });
 
-/** The currently selected entity (from the store), for the overlay outline. */
+// A redraw must also occur when the selected entity or the theme changes.
+watch(entityRef, () => {
+    dirty = true;
+});
 
-// The selected entity lives in the store; a redraw must occur when it changes.
-watch(selectedEntity, () => {
+watch(theme, () => {
     dirty = true;
 });
 
@@ -109,7 +133,7 @@ function resizeCanvas(): void {
  */
 function applyLayout(): void {
     const canvas = canvasEl.value;
-    const frame = store.currentFrame;
+    const frame = frameRef.value;
     if (!canvas || !frame) {
         return;
     }
@@ -153,13 +177,14 @@ function applyLayout(): void {
  */
 function draw(): void {
     const canvas = canvasEl.value;
-    const frame = store.currentFrame;
+    const frame = frameRef.value;
     if (!canvas || !ctx || !frame) {
         return;
     }
 
-    // Wipe the canvas to white before repainting.
-    ctx.fillStyle = "#FFFFFF";
+    // Match the canvas surface to the active theme before repainting.
+    const themeBg = getComputedStyle(canvas).getPropertyValue("--color-bg-canvas").trim();
+    ctx.fillStyle = themeBg || "#FFFFFF";
     ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
     // Edges first so nodes are painted on top of their connecting lines.
@@ -171,8 +196,8 @@ function draw(): void {
         frame,
         canvas.clientWidth,
         canvas.clientHeight,
-        store.totalSteps,
-        store.selectedEntity,
+        stepsRef.value,
+        entityRef.value,
     );
 }
 
@@ -194,7 +219,8 @@ function renderLoop(): void {
 /** Convert a mouse event to logical canvas coordinates and hit-test it. */
 function handleMouseMove(event: MouseEvent): void {
     const canvas = canvasEl.value;
-    if (!canvas || !store.currentFrame) {
+    const frame = frameRef.value;
+    if (!canvas || !frame) {
         return;
     }
 
@@ -205,7 +231,7 @@ function handleMouseMove(event: MouseEvent): void {
 
     // Find what the cursor is over, then schedule the tooltip to appear once
     // the user has hovered it for 200ms.
-    const hit = hitTest(store.currentFrame.entities, x, y);
+    const hit = hitTest(frame.entities, x, y);
     hoveredEntity.value = hit;
 
     if (tooltipTimer) {
@@ -228,13 +254,19 @@ function handleMouseLeave(): void {
 /** Clicking an entity selects it (or deselects when clicking empty space). */
 function handleClick(event: MouseEvent): void {
     const canvas = canvasEl.value;
-    if (!canvas || !store.currentFrame) {
+    const frame = frameRef.value;
+    if (!canvas || !frame) {
         return;
     }
 
     const rect = canvas.getBoundingClientRect();
     const { x, y } = getLogicalCoords(event.clientX, event.clientY, rect, DPR);
-    store.selectedEntity = hitTest(store.currentFrame.entities, x, y);
+    const hit = hitTest(frame.entities, x, y);
+    if (props.frame === undefined) {
+        store.selectedEntity = hit;
+    } else {
+        localSelected.value = hit;
+    }
 }
 
 onMounted(() => {
@@ -269,6 +301,9 @@ onBeforeUnmount(() => {
         <canvas
             ref="canvasEl"
             class="visual-canvas"
+            tabindex="0"
+            role="img"
+            :aria-label="`Visualization: ${frameRef?.description ?? 'No algorithm loaded'}. ${props.label ?? ''}`.trim()"
             @mousemove="handleMouseMove"
             @mouseleave="handleMouseLeave"
             @click="handleClick"
@@ -284,12 +319,17 @@ onBeforeUnmount(() => {
     position: relative;
     flex: 1;
     min-height: 0;
-    background: #ffffff;
+    background: var(--color-bg-canvas);
 }
 
 .visual-canvas {
     display: block;
     width: 100%;
     height: 100%;
+}
+
+.visual-canvas:focus-visible {
+    outline: 2px solid var(--state-active-bg);
+    outline-offset: -2px;
 }
 </style>

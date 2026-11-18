@@ -72,7 +72,7 @@
     --state-idle-bg: #f3f4f6;
     --state-idle-border: #d1d5db;
     --state-idle-text: #111827;
-    --state-active-bg: #3b82f6;
+    --state-active-bg: #2563eb;
     --state-active-border: #2563eb;
     --state-active-text: #ffffff;
     --state-comparing-bg: #fcd34d;
@@ -104,6 +104,29 @@
     --state-unvisited-text: #111827;
 }
 
+/* Dark theme – same flat language, inverted surfaces and readable text. */
+:root[data-theme="dark"] {
+    --color-bg-canvas: #0f172a;
+    --color-bg-sidebar: #111827;
+    --color-bg-controls: #1f2937;
+    --color-bg-description: #111827;
+    --color-border-panel: #374151;
+
+    --color-text-primary: #f3f4f6;
+    --color-text-secondary: #9ca3af;
+
+    --state-idle-bg: #374151;
+    --state-idle-border: #6b7280;
+    --state-idle-text: #f3f4f6;
+    --state-active-bg: #60a5fa;
+    --state-active-border: #93c5fd;
+    --state-active-text: #0f172a;
+    --state-error-border: #fca5a5;
+    --state-unvisited-bg: #1f2937;
+    --state-unvisited-border: #9ca3af;
+    --state-unvisited-text: #f3f4f6;
+}
+
 /* ------------------------------------------------------------------ */
 /* Reset */
 /* ------------------------------------------------------------------ */
@@ -132,8 +155,9 @@ body {
 /* ------------------------------------------------------------------ */
 #app {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     width: 100vw;
 }
 
@@ -167,9 +191,26 @@ button:hover {
     color: var(--state-active-border);
 }
 
-button:focus-visible {
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
     outline: 2px solid var(--state-active-bg);
     outline-offset: 2px;
+}
+
+/* Motion is optional: honor the system preference everywhere. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* Headings are always 600 weight at 16px. */
