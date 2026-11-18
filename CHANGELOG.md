@@ -19,6 +19,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - CI runs the Vitest package script, the manifest test derives its expected count from the registry, and the documentation now reports the live catalog size.
 
+## [0.5.0] - 2026-11-19
+
+### Added
+
+- Wave 3 of the 2026 backlog: 76 verified modules across probability, production systems, search, graph theory, and shortest paths. The catalog now has 1,243 modules in 20 categories with 3,321 automated tests.
+- A semantic-duplicate guard that skipped 20 near-duplicate candidates rather than adding redundant modules.
+- Moved the new search and shortest-path modules into the established `search/` and `path/` folders so each category has one physical location.
+
+### Changed
+
+- Regenerated the manifest, VitePress documentation, media kit, and all public counts for the expanded catalog.
+
 ## [0.4.0] - 2026-11-18
 
 ### Added
@@ -71,7 +83,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Quality gate and manifest consistency checks as required CI steps.
 - Baseline: 771 algorithm modules across 13 categories, roughly 1,561 automated tests, lazy-loaded modules, and a live demo on GitHub Pages.
 
-[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.5.0
 [0.4.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.4.0
 [0.3.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.3.0
 [0.2.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.2.0
