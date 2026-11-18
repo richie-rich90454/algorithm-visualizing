@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://richie-rich90454.github.io/algorithm-visualizing/sitemap.xml
