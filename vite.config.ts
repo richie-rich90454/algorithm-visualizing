@@ -26,6 +26,9 @@ export default defineConfig({
         // Tests are plain Node unit tests; no DOM is needed.
         environment: "node",
         include: ["src/**/*.test.ts"],
+        // Heavy algorithm tests (large streams, long simulations) can exceed
+        // the 5s default when thousands of files run in parallel on CI.
+        testTimeout: 30000,
     },
     build: {
         rollupOptions: {
