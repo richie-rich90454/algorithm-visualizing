@@ -11,7 +11,7 @@
  * cover every strategy is an equilibrium after normalization. Starting from
  * the origin, we drop one label, pivot along the unique edge that drops it,
  * and alternate polytopes on the duplicated label until the pair is fully
- * labelled again.
+ * labeled again.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -25,7 +25,7 @@
  * ---------------------------------------------------------------------------
  *   - Nodes are the vertices of the two best-response polytopes.
  *   - Edges connect adjacent vertices; the highlighted edge joins the current pair.
- *   - The final green node pair is the fully labelled equilibrium.
+ *   - The final green node pair is the fully labeled equilibrium.
  */
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
@@ -247,7 +247,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             entities: entityView(p, q, visited, fullyLabeled),
             edges: edgeView(p, q),
             description: fullyLabeled
-                ? `Pivot ${pivots}: the pair is fully labelled; gained ${gained ?? "none"} and reached an equilibrium.`
+                ? `Pivot ${pivots}: the pair is fully labeled; gained ${gained ?? "none"} and reached an equilibrium.`
                 : `Pivot ${pivots}: gained label ${gained ?? "none"} in the ${inP ? "row" : "column"} polytope and dropped ${dropped}.`,
             codeLineNumber: fullyLabeled ? 6 : (inP ? 3 : 5),
             layout: "graph",
@@ -291,7 +291,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         edges: edgeView(p, q),
         description: equilibrium
             ? `Nash equilibrium found: row plays (${x[0].toFixed(3)}, ${x[1].toFixed(3)}), column plays (${y[0].toFixed(3)}, ${y[1].toFixed(3)}).`
-            : "No fully labelled pair was reached; the game may be degenerate.",
+            : "No fully labeled pair was reached; the game may be degenerate.",
         codeLineNumber: 7,
         layout: "graph",
         meta: {
@@ -308,14 +308,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 const module: AlgorithmModule = {
     education: {
         intuition:
-            "A Nash equilibrium is a pair of mixed strategies where neither player can gain by changing strategy alone. Lemke and Howson turned this into a walk: draw each player's best-response polytope, label every facet with a pure strategy, and follow edges from the origin until a pair of vertices shares no missing label. That fully labelled pair is the equilibrium.",
+            "A Nash equilibrium is a pair of mixed strategies where neither player can gain by changing strategy alone. Lemke and Howson turned this into a walk: draw each player's best-response polytope, label every facet with a pure strategy, and follow edges from the origin until a pair of vertices shares no missing label. That fully labeled pair is the equilibrium.",
         invariants: [
             "Each vertex of a polytope carries exactly two labels in the two-by-two case.",
             "A pivot removes the dropped label and adds exactly one new label.",
             "At every intermediate pair one label is missing and one label is duplicated.",
         ],
         correctness:
-            "A fully labelled vertex pair satisfies the best-response conditions: every pure strategy in a player's support is a best response to the opponent's mixed strategy, so no unilateral deviation can raise that player's payoff. The path is unique because a simple polytope has exactly one edge leaving a vertex when a given label is dropped, and the walk terminates at a second fully labelled pair, which differs from the artificial origin.",
+            "A fully labeled vertex pair satisfies the best-response conditions: every pure strategy in a player's support is a best response to the opponent's mixed strategy, so no unilateral deviation can raise that player's payoff. The path is unique because a simple polytope has exactly one edge leaving a vertex when a given label is dropped, and the walk terminates at a second fully labeled pair, which differs from the artificial origin.",
         complexityRationale:
             "Each step is a single pivot along one polytope edge. The number of pivots can be exponential in the strategy counts in the worst case, but for the two-by-two games shown here the walk visits at most the handful of vertices of the two quadrilaterals, so each step is constant work.",
         uses: [
