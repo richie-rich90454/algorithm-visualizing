@@ -2,7 +2,7 @@
 
 ## Dev.to article outline
 
-Title: Building an algorithms visualizer with 2219 step-by-step explanations
+Title: Building an algorithms visualizer with 2290 step-by-step explanations
 
 Sections:
 1. Why static pseudocode was not enough
@@ -15,7 +15,7 @@ Sections:
 
 ## X / Twitter thread
 
-1/ I built a free algorithms visualizer with 2219 algorithms. You can play, pause, rewind, and step through all of them. Each one has pseudocode, complexity, and a plain-language explanation of every step.
+1/ I built a free algorithms visualizer with 2290 algorithms. You can play, pause, rewind, and step through all of them. Each one has pseudocode, complexity, and a plain-language explanation of every step.
 
 2/ The catalog spans 20 categories: sorting, graphs, strings, number theory, dynamic programming, geometry, game theory, data structures, and more. Each algorithm loads as its own small chunk, so the app stays fast.
 
@@ -28,7 +28,7 @@ Source: https://github.com/richie-rich90454/algorithm-visualizing
 
 ## LinkedIn post
 
-I have been building an open-source project that makes algorithms easier to understand: a visualizer that lets you step through 2219 algorithms, one frame at a time.
+I have been building an open-source project that makes algorithms easier to understand: a visualizer that lets you step through 2290 algorithms, one frame at a time.
 
 Each algorithm includes replayable visualization, highlighted pseudocode, complexity analysis, and now a structured writeup with intuition, invariants, a correctness sketch, real-world uses, references, and a worked example.
 
@@ -40,7 +40,7 @@ Live demo: https://richie-rich90454.github.io/algorithm-visualizing/
 
 Subject: Addition request: Algorithm Visualization Engine
 
-Hello, I would like to suggest adding Algorithm Visualization Engine to your list. It is an MIT-licensed, offline-capable interactive visualizer with 2219 algorithms across 20 categories, step-by-step playback, pseudocode, complexity annotations, and structured educational writeups. Each algorithm also has an indexable docs page.
+Hello, I would like to suggest adding Algorithm Visualization Engine to your list. It is an MIT-licensed, offline-capable interactive visualizer with 2290 algorithms across 20 categories, step-by-step playback, pseudocode, complexity annotations, and structured educational writeups. Each algorithm also has an indexable docs page.
 
 Project: https://github.com/richie-rich90454/algorithm-visualizing
 Live demo: https://richie-rich90454.github.io/algorithm-visualizing/
