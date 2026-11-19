@@ -160,7 +160,7 @@ const module: AlgorithmModule = {
     run,
     pseudocode: [
         "set a0 = floor(sqrt(D)), m = 0, d = 1, a = a0",
-        "repeat",
+        "repeat the recurrence until the period closes",
         "set m = d*a - m",
         "set d = (D - m squared)/d and a = floor((a0 + m)/d)",
         "append a to the partial quotient list",
