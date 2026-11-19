@@ -69,7 +69,7 @@ describe("AdaHessian optimizer", () => {
             { target: 1, start: -3, iterations: 15, learningRate: 0.1 },
         ];
         for (const partial of cases) {
-            const cfg = resolve({ ...mod.defaultInput, ...partial });
+            const cfg = resolve({ ...(mod.defaultInput as object), ...partial });
             const frames = [...mod.run(cfg)];
             checkFrames(frames);
             const expected = reference(cfg);

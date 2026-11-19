@@ -206,7 +206,16 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 
     emit(initial, -1, `Karger-Stein recursive min cut on ${vertices.length} vertices.`, 0, Infinity);
-    const answer = solve(initial);
+    // Karger-Stein finds the minimum with high probability; repeat the whole
+    // recursion a bounded number of times so the small demo reliably succeeds.
+    let answer: Result = { value: Infinity, members: [] };
+    const outerTrials = Math.max(4, Math.min(vertices.length * 2, 24));
+    for (let t = 0; t < outerTrials; t += 1) {
+        const candidate = solve(initial);
+        if (candidate.value < answer.value) {
+            answer = candidate;
+        }
+    }
     emit(initial, -1, `Global minimum cut is ${answer.value}, side ${answer.members.join(", ") || "empty"}.`, 7, answer.value, {
         bestCut: answer.value,
         side: answer.members.join(","),

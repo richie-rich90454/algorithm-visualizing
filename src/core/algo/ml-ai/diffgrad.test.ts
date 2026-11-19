@@ -71,7 +71,7 @@ describe("DiffGrad optimizer", () => {
             { target: 1, start: 1, iterations: 5, learningRate: 0.5 },
         ];
         for (const partial of cases) {
-            const cfg = resolve({ ...mod.defaultInput, ...partial });
+            const cfg = resolve({ ...(mod.defaultInput as object), ...partial });
             const frames = [...mod.run(cfg)];
             checkFrames(frames);
             const expected = reference(cfg);

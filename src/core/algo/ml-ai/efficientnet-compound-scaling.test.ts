@@ -53,7 +53,7 @@ function checkFrames(frames: VisualFrame[]): void {
 describe("EfficientNet compound scaling", () => {
     it("matches an independent scaling reference for several phi values", () => {
         for (const phi of [0, 1, 2, 3]) {
-            const cfg = resolve({ ...mod.defaultInput, phi });
+            const cfg = resolve({ ...(mod.defaultInput as object), phi });
             const frames = [...mod.run(cfg)];
             checkFrames(frames);
             const expected = reference(cfg);
@@ -66,7 +66,7 @@ describe("EfficientNet compound scaling", () => {
     });
 
     it("leaves the base network unchanged at phi zero and respects rounding", () => {
-        const cfg = resolve({ ...mod.defaultInput, phi: 0 });
+        const cfg = resolve({ ...(mod.defaultInput as object), phi: 0 });
         const frames = [...mod.run(cfg)];
         const base = frames[0]?.meta;
         const final = frames[frames.length - 1]?.meta;

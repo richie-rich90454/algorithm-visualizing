@@ -154,7 +154,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
             }
         } else {
             if (rearStack.length === 0 && frontStack.length > 0) {
-                for (const _ of rotate("rear")) {
+                for (const _ of rotate("back")) {
                     yield pending.shift() as VisualFrame;
                 }
             }

@@ -64,7 +64,7 @@ describe("AdaSGD optimizer", () => {
             { target: 5, start: -1, iterations: 12, learningRate: 0.7 },
         ];
         for (const partial of cases) {
-            const cfg = resolve({ ...mod.defaultInput, ...partial });
+            const cfg = resolve({ ...(mod.defaultInput as object), ...partial });
             const frames = [...mod.run(cfg)];
             checkFrames(frames);
             const expected = reference(cfg);

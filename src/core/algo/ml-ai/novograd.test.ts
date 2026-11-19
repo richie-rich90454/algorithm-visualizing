@@ -69,7 +69,7 @@ describe("NovoGrad optimizer", () => {
             { target: 0, start: 7, iterations: 12, learningRate: 0.15 },
         ];
         for (const partial of cases) {
-            const cfg = resolve({ ...mod.defaultInput, ...partial });
+            const cfg = resolve({ ...(mod.defaultInput as object), ...partial });
             const frames = [...mod.run(cfg)];
             checkFrames(frames);
             const expected = reference(cfg);
