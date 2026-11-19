@@ -1,7 +1,7 @@
-/** nadam-optimizer.test.ts - Independent update check, frame shape, termination. */
+/** adabelief.test.ts - Independent update check, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./nadam-optimizer";
+import mod from "./adabelief";
 import type { VisualFrame } from "@/types";
 
 interface Input {
@@ -16,19 +16,17 @@ interface Input {
 function reference(input: Input): number[] {
     const theta = input.parameters.slice();
     const m = theta.map(() => 0);
-    const v = theta.map(() => 0);
+    const s = theta.map(() => 0);
     for (let t = 0; t < input.gradients.length; t += 1) {
         const g = input.gradients[t];
         const timeStep = t + 1;
         for (let i = 0; i < theta.length; i += 1) {
             m[i] = input.beta1 * m[i] + (1 - input.beta1) * g[i];
-            v[i] = input.beta2 * v[i] + (1 - input.beta2) * g[i] * g[i];
+            const deviation = g[i] - m[i];
+            s[i] = input.beta2 * s[i] + (1 - input.beta2) * deviation * deviation;
             const mHat = m[i] / (1 - Math.pow(input.beta1, timeStep));
-            const vHat = v[i] / (1 - Math.pow(input.beta2, timeStep));
-            const nesterov =
-                input.beta1 * mHat +
-                ((1 - input.beta1) * g[i]) / (1 - Math.pow(input.beta1, timeStep));
-            theta[i] -= (input.learningRate * nesterov) / (Math.sqrt(vHat) + input.epsilon);
+            const sHat = s[i] / (1 - Math.pow(input.beta2, timeStep));
+            theta[i] -= (input.learningRate * mHat) / (Math.sqrt(sHat) + input.epsilon);
         }
     }
     return theta;
@@ -49,13 +47,14 @@ function checkFrames(frames: VisualFrame[], d: number): void {
     });
 }
 
-describe("Nadam Optimizer", () => {
+describe("AdaBelief Optimizer", () => {
     const input: Input = {
         parameters: [1, -1, 0.5, -0.5],
         gradients: [
+            [0.8, -0.7, 0.2, -0.2],
             [0.7, -0.6, 0.2, -0.2],
-            [0.4, -0.3, 0.1, -0.1],
-            [0.2, -0.1, 0.05, -0.05],
+            [0.1, -0.1, 0.02, -0.02],
+            [0.75, -0.65, 0.2, -0.2],
         ],
         learningRate: 0.1,
         beta1: 0.9,
@@ -63,7 +62,7 @@ describe("Nadam Optimizer", () => {
         epsilon: 1e-8,
     };
 
-    it("matches an independent Nadam replay", () => {
+    it("matches an independent AdaBelief replay", () => {
         const frames = [...mod.run(input)];
         checkFrames(frames, input.parameters.length);
         const expected = reference(input);
@@ -73,13 +72,16 @@ describe("Nadam Optimizer", () => {
         }
     });
 
-    it("decreases a positive parameter under a positive gradient", () => {
-        const cases: Input = { ...input, parameters: [1], gradients: [[0.5], [0.5]] };
-        const frames = [...mod.run(cases)];
-        const values = frames.slice(0, -1).map((frame) => Number(frame.entities[0]?.value));
-        for (let i = 1; i < values.length; i += 1) {
-            expect(values[i]).toBeLessThan(values[i - 1]);
+    it("keeps belief variance nonnegative and increases it on surprising gradients", () => {
+        const frames = [...mod.run(input)];
+        const steps = frames.slice(1, -1);
+        for (const frame of steps) {
+            const belief = frame.meta["belief"] as number[];
+            expect(belief.every((value) => value >= 0)).toBe(true);
         }
+        const afterConsistent = (steps[1]?.meta["belief"] as number[])[0];
+        const afterSurprise = (steps[2]?.meta["belief"] as number[])[0];
+        expect(afterSurprise).toBeGreaterThan(afterConsistent);
     });
 
     it("terminates cleanly", () => {

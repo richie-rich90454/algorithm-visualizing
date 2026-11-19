@@ -1,7 +1,7 @@
-/** ga-lore-optimizer.test.ts - Independent replay, rank-one property, frame shape, termination. */
+/** ga-lore.test.ts - Independent replay, rank-one property, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./ga-lore-optimizer";
+import mod from "./ga-lore";
 import type { VisualFrame } from "@/types";
 
 interface Input {

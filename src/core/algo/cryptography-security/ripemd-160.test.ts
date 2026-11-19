@@ -1,7 +1,7 @@
-/** sha1-hash.test.ts - Known-answer vectors, frame shape, termination. */
+/** ripemd-160.test.ts - Known-answer vectors, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./sha1-hash";
+import mod from "./ripemd-160";
 import type { VisualFrame } from "@/types";
 
 function digestOf(message: string): string {
@@ -24,28 +24,29 @@ function checkFrames(frames: VisualFrame[]): void {
     });
 }
 
-describe("SHA-1 Hash", () => {
+describe("RIPEMD-160 Hash", () => {
     const vectors: Array<[string, string]> = [
-        ["", "da39a3ee5e6b4b0d3255bfef95601890afd80709"],
-        ["abc", "a9993e364706816aba3e25717850c26c9cd0d89d"],
-        ["message digest", "c12252ceda8be8994d5fa0290a47231c1d16aae3"],
-        ["abcdefghijklmnopqrstuvwxyz", "32d10c7b8cf96570ca04ce37f2a19d84240d3a89"],
+        ["", "9c1185a5c5e9fc54612808977ee8f548b2258d31"],
+        ["abc", "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc"],
+        ["message digest", "5d0689ef49d2fae572b881b123a85ffa21595f36"],
+        ["abcdefghijklmnopqrstuvwxyz", "f71c27109c692c1b56bbdceb5b9d2865b3708dbc"],
     ];
 
-    it("matches the FIPS 180 test vectors", () => {
+    it("matches the reference RIPEMD-160 test vectors", () => {
         for (const [message, expected] of vectors) {
             expect(digestOf(message)).toBe(expected);
         }
     });
 
-    it("changes the digest when one character changes", () => {
+    it("produces a 40-character hexadecimal digest", () => {
+        expect(digestOf("abc")).toHaveLength(40);
         expect(digestOf("abc")).not.toBe(digestOf("abd"));
     });
 
     it("has well-formed frames and terminates", () => {
         const frames = [...mod.run(mod.defaultInput)];
         checkFrames(frames);
-        expect(frames.length).toBe(1 + 4 + 1);
+        expect(frames.length).toBe(1 + 5 + 1);
         const generator = mod.run(mod.defaultInput);
         let count = 0;
         for (const _frame of generator) {
@@ -53,11 +54,5 @@ describe("SHA-1 Hash", () => {
         }
         expect(count).toBe(frames.length);
         expect(generator.next().done).toBe(true);
-    });
-
-    it("handles a message spanning multiple blocks", () => {
-        const long = "The quick brown fox jumps over the lazy dog";
-        expect(digestOf(long)).toBe("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12");
-        checkFrames([...mod.run({ message: long })]);
     });
 });

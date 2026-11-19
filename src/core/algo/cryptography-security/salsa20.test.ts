@@ -1,7 +1,7 @@
-/** salsa20-stream-cipher.test.ts - Known vector, independent reference, frame shape, termination. */
+/** salsa20.test.ts - Known vector, independent reference, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./salsa20-stream-cipher";
+import mod from "./salsa20";
 import type { VisualFrame } from "@/types";
 
 interface Input {

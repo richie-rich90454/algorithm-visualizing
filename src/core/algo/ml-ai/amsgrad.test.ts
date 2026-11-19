@@ -1,7 +1,7 @@
-/** amsgrad-optimizer.test.ts - Independent update check, frame shape, termination. */
+/** amsgrad.test.ts - Independent update check, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./amsgrad-optimizer";
+import mod from "./amsgrad";
 import type { VisualFrame } from "@/types";
 
 interface Input {

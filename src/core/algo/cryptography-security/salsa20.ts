@@ -1,5 +1,5 @@
 /**
- * salsa20-stream-cipher.ts - Salsa20 Block Function (Teaching Core)
+ * salsa20.ts - Salsa20 Block Function (Teaching Core)
  *
  * ---------------------------------------------------------------------------
  * What it does

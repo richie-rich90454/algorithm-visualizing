@@ -1,5 +1,5 @@
 /**
- * sha512-hash.ts - SHA-512 Secure Hash Algorithm
+ * sha-512.ts - SHA-512 Secure Hash Algorithm
  *
  * ---------------------------------------------------------------------------
  * What it does

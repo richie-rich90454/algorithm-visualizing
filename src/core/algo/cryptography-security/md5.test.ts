@@ -1,7 +1,7 @@
-/** ripemd160-hash.test.ts - Known-answer vectors, frame shape, termination. */
+/** md5.test.ts - Known-answer vectors, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./ripemd160-hash";
+import mod from "./md5";
 import type { VisualFrame } from "@/types";
 
 function digestOf(message: string): string {
@@ -24,29 +24,29 @@ function checkFrames(frames: VisualFrame[]): void {
     });
 }
 
-describe("RIPEMD-160 Hash", () => {
+describe("MD5 Hash", () => {
     const vectors: Array<[string, string]> = [
-        ["", "9c1185a5c5e9fc54612808977ee8f548b2258d31"],
-        ["abc", "8eb208f7e05d987a9b044a8e98c6b087f15a0bfc"],
-        ["message digest", "5d0689ef49d2fae572b881b123a85ffa21595f36"],
-        ["abcdefghijklmnopqrstuvwxyz", "f71c27109c692c1b56bbdceb5b9d2865b3708dbc"],
+        ["", "d41d8cd98f00b204e9800998ecf8427e"],
+        ["abc", "900150983cd24fb0d6963f7d28e17f72"],
+        ["message digest", "f96b697d7cb7938d525a2f31aaf161d0"],
+        ["abcdefghijklmnopqrstuvwxyz", "c3fcd3d76192e4007dfb496cca67e13b"],
     ];
 
-    it("matches the reference RIPEMD-160 test vectors", () => {
+    it("matches the published RFC 1321 test vectors", () => {
         for (const [message, expected] of vectors) {
             expect(digestOf(message)).toBe(expected);
         }
     });
 
-    it("produces a 40-character hexadecimal digest", () => {
-        expect(digestOf("abc")).toHaveLength(40);
-        expect(digestOf("abc")).not.toBe(digestOf("abd"));
+    it("uses a different digest for each message", () => {
+        const seen = new Set(vectors.map(([message]) => digestOf(message)));
+        expect(seen.size).toBe(vectors.length);
     });
 
     it("has well-formed frames and terminates", () => {
         const frames = [...mod.run(mod.defaultInput)];
         checkFrames(frames);
-        expect(frames.length).toBe(1 + 5 + 1);
+        expect(frames.length).toBe(1 + 4 + 1);
         const generator = mod.run(mod.defaultInput);
         let count = 0;
         for (const _frame of generator) {
@@ -54,5 +54,15 @@ describe("RIPEMD-160 Hash", () => {
         }
         expect(count).toBe(frames.length);
         expect(generator.next().done).toBe(true);
+    });
+
+    it("handles a message spanning several blocks", () => {
+        const long = "a".repeat(100);
+        const digest = digestOf(long);
+        expect(digest).toHaveLength(32);
+        expect(digest).not.toBe(digestOf("a".repeat(99)));
+        const frames = [...mod.run({ message: long })];
+        checkFrames(frames);
+        expect(frames.length).toBe(1 + 2 * 4 + 1);
     });
 });

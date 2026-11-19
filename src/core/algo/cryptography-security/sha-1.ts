@@ -1,5 +1,5 @@
 /**
- * sha1-hash.ts - SHA-1 Secure Hash Algorithm (Historical)
+ * sha-1.ts - SHA-1 Secure Hash Algorithm (Historical)
  *
  * ---------------------------------------------------------------------------
  * What it does

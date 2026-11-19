@@ -1,7 +1,7 @@
-/** sha512-hash.test.ts - Known-answer vectors, frame shape, termination. */
+/** sha-512.test.ts - Known-answer vectors, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./sha512-hash";
+import mod from "./sha-512";
 import type { VisualFrame } from "@/types";
 
 function digestOf(message: string): string {

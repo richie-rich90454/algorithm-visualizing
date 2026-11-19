@@ -1,7 +1,7 @@
-/** adafactor-optimizer.test.ts - Independent replay, frame shape, termination. */
+/** adafactor.test.ts - Independent replay, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./adafactor-optimizer";
+import mod from "./adafactor";
 import type { VisualFrame } from "@/types";
 
 interface Input {

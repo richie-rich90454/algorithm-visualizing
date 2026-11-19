@@ -1,5 +1,5 @@
 /**
- * radam-optimizer.ts - RAdam: Rectified Adam
+ * radam.ts - RAdam: Rectified Adam
  *
  * ---------------------------------------------------------------------------
  * What it does

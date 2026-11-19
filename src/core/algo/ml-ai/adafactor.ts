@@ -1,5 +1,5 @@
 /**
- * adafactor-optimizer.ts - Adafactor: Factored Adaptive Second Moments
+ * adafactor.ts - Adafactor: Factored Adaptive Second Moments
  *
  * ---------------------------------------------------------------------------
  * What it does

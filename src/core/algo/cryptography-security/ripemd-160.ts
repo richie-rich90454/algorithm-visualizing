@@ -1,5 +1,5 @@
 /**
- * ripemd160-hash.ts - RIPEMD-160 Message Digest
+ * ripemd-160.ts - RIPEMD-160 Message Digest
  *
  * ---------------------------------------------------------------------------
  * What it does

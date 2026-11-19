@@ -1,5 +1,5 @@
 /**
- * ga-lore-optimizer.ts - GaLore: Gradient Low-Rank Projection
+ * ga-lore.ts - GaLore: Gradient Low-Rank Projection
  *
  * ---------------------------------------------------------------------------
  * What it does

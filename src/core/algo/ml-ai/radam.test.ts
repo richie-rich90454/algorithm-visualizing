@@ -1,7 +1,7 @@
-/** adabelief-optimizer.test.ts - Independent update check, frame shape, termination. */
+/** radam.test.ts - Independent update check, frame shape, termination. */
 
 import { describe, expect, it } from "vitest";
-import mod from "./adabelief-optimizer";
+import mod from "./radam";
 import type { VisualFrame } from "@/types";
 
 interface Input {
@@ -16,17 +16,30 @@ interface Input {
 function reference(input: Input): number[] {
     const theta = input.parameters.slice();
     const m = theta.map(() => 0);
-    const s = theta.map(() => 0);
+    const v = theta.map(() => 0);
+    const rhoInf = 2 / (1 - input.beta2) - 1;
     for (let t = 0; t < input.gradients.length; t += 1) {
         const g = input.gradients[t];
         const timeStep = t + 1;
+        const beta2Pow = Math.pow(input.beta2, timeStep);
+        const rho = rhoInf - (2 * timeStep * beta2Pow) / (1 - beta2Pow);
+        let coefficient = 0;
+        if (rho > 4) {
+            coefficient = Math.sqrt(
+                ((rho - 4) * (rho - 2) * rhoInf) / ((rhoInf - 4) * (rhoInf - 2) * rho),
+            );
+        }
         for (let i = 0; i < theta.length; i += 1) {
             m[i] = input.beta1 * m[i] + (1 - input.beta1) * g[i];
-            const deviation = g[i] - m[i];
-            s[i] = input.beta2 * s[i] + (1 - input.beta2) * deviation * deviation;
+            v[i] = input.beta2 * v[i] + (1 - input.beta2) * g[i] * g[i];
             const mHat = m[i] / (1 - Math.pow(input.beta1, timeStep));
-            const sHat = s[i] / (1 - Math.pow(input.beta2, timeStep));
-            theta[i] -= (input.learningRate * mHat) / (Math.sqrt(sHat) + input.epsilon);
+            if (rho <= 4) {
+                theta[i] -= input.learningRate * mHat;
+            } else {
+                const vHat = v[i] / (1 - beta2Pow);
+                theta[i] -=
+                    (input.learningRate * coefficient * mHat) / (Math.sqrt(vHat) + input.epsilon);
+            }
         }
     }
     return theta;
@@ -47,22 +60,24 @@ function checkFrames(frames: VisualFrame[], d: number): void {
     });
 }
 
-describe("AdaBelief Optimizer", () => {
+describe("RAdam Optimizer", () => {
     const input: Input = {
         parameters: [1, -1, 0.5, -0.5],
         gradients: [
-            [0.8, -0.7, 0.2, -0.2],
             [0.7, -0.6, 0.2, -0.2],
-            [0.1, -0.1, 0.02, -0.02],
-            [0.75, -0.65, 0.2, -0.2],
+            [0.4, -0.3, 0.1, -0.1],
+            [0.2, -0.1, 0.05, -0.05],
+            [0.1, -0.05, 0.02, -0.01],
+            [0.05, -0.02, 0.01, -0.005],
+            [0.02, -0.01, 0.005, -0.002],
         ],
         learningRate: 0.1,
         beta1: 0.9,
-        beta2: 0.999,
+        beta2: 0.99,
         epsilon: 1e-8,
     };
 
-    it("matches an independent AdaBelief replay", () => {
+    it("matches an independent RAdam replay", () => {
         const frames = [...mod.run(input)];
         checkFrames(frames, input.parameters.length);
         const expected = reference(input);
@@ -72,16 +87,11 @@ describe("AdaBelief Optimizer", () => {
         }
     });
 
-    it("keeps belief variance nonnegative and increases it on surprising gradients", () => {
+    it("uses the momentum branch first and rectification later", () => {
         const frames = [...mod.run(input)];
-        const steps = frames.slice(1, -1);
-        for (const frame of steps) {
-            const belief = frame.meta["belief"] as number[];
-            expect(belief.every((value) => value >= 0)).toBe(true);
-        }
-        const afterConsistent = (steps[1]?.meta["belief"] as number[])[0];
-        const afterSurprise = (steps[2]?.meta["belief"] as number[])[0];
-        expect(afterSurprise).toBeGreaterThan(afterConsistent);
+        expect(frames[1]?.meta["rectified"]).toBe(false);
+        const later = frames.slice(2, -1).some((frame) => frame.meta["rectified"] === true);
+        expect(later).toBe(true);
     });
 
     it("terminates cleanly", () => {

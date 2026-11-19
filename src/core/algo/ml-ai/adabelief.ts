@@ -1,29 +1,30 @@
 /**
- * amsgrad-optimizer.ts - AMSGrad: Adam with a Monotone Second Moment
+ * adabelief.ts - AdaBelief: Adapting Step Size by Belief
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * AMSGrad (Reddi et al., 2018) repairs a convergence failure of Adam by keeping
- * the running maximum of the second-moment estimate. Because that denominator
- * can never shrink, the effective learning rate is monotone, which restores
- * convergence guarantees on convex problems.
+ * AdaBelief (Zhuang et al., 2020) changes Adam's second moment. Instead of the
+ * raw squared gradient it averages the squared deviation between the gradient
+ * and the running mean, which the authors call the belief. When observations
+ * agree with the belief the step grows; when they disagree it shrinks, which
+ * improves generalization and stabilizes training.
  *
  * ---------------------------------------------------------------------------
  * Complexity
  * ---------------------------------------------------------------------------
- *   Time:  O(steps * d)   Space: O(d) for three moment arrays
+ *   Time:  O(steps * d)   Space: O(d) for two moments
  *
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Bars show the parameter vector after each step.
- *   - Meta exposes the monotone maximum used as the denominator.
+ *   - Meta exposes the positive belief variance for verification.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
-interface AmsgradInput {
+interface AdaBeliefInput {
     parameters?: number[];
     gradients?: number[][];
     learningRate?: number;
@@ -56,13 +57,13 @@ function lossAt(params: number[]): number {
 }
 
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
-    const task = (input as AmsgradInput | null) ?? {};
+    const task = (input as AdaBeliefInput | null) ?? {};
     const theta = [...(task.parameters ?? [1, -1, 0.5, -0.5])];
     const gradients = task.gradients ?? [
-        [1.0, -0.8, 0.3, -0.2],
-        [0.2, -0.1, 0.05, -0.02],
-        [0.6, -0.5, 0.2, -0.1],
-        [0.1, -0.05, 0.01, -0.005],
+        [0.8, -0.7, 0.2, -0.2],
+        [0.7, -0.6, 0.2, -0.2],
+        [0.1, -0.1, 0.02, -0.02],
+        [0.75, -0.65, 0.2, -0.2],
     ];
     const lr = typeof task.learningRate === "number" ? task.learningRate : 0.1;
     const beta1 = typeof task.beta1 === "number" ? task.beta1 : 0.9;
@@ -70,15 +71,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const epsilon = typeof task.epsilon === "number" ? task.epsilon : 1e-8;
 
     const m = theta.map(() => 0);
-    const v = theta.map(() => 0);
-    const vMax = theta.map(() => 0);
+    const s = theta.map(() => 0);
     let step = 0;
 
     yield {
         stepNumber: step,
         entities: makeBars(theta, "idle"),
         edges: [],
-        description: `Initializing AMSGrad with ${theta.length} parameters and a monotone second moment.`,
+        description: `Initializing AdaBelief with ${theta.length} parameters and belief-based scaling.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { step: 0, loss: lossAt(theta), learningRate: lr },
@@ -94,19 +94,19 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < theta.length; i += 1) {
             const g = gradient[i] ?? 0;
             m[i] = beta1 * (m[i] ?? 0) + (1 - beta1) * g;
-            v[i] = beta2 * (v[i] ?? 0) + (1 - beta2) * g * g;
-            vMax[i] = Math.max(vMax[i] ?? 0, v[i] ?? 0);
+            s[i] = beta2 * (s[i] ?? 0) + (1 - beta2) * (g - (m[i] ?? 0)) * (g - (m[i] ?? 0));
             const mHat = (m[i] ?? 0) / (1 - Math.pow(beta1, timeStep));
-            theta[i] = (theta[i] ?? 0) - (lr * mHat) / (Math.sqrt(vMax[i] ?? 0) + epsilon);
+            const sHat = (s[i] ?? 0) / (1 - Math.pow(beta2, timeStep));
+            theta[i] = (theta[i] ?? 0) - (lr * mHat) / (Math.sqrt(sHat) + epsilon);
         }
         yield {
             stepNumber: step,
             entities: makeBars(theta, "active"),
             edges: [],
-            description: `Step ${timeStep}: divided by the running maximum of the second moment.`,
+            description: `Step ${timeStep}: the belief variance measured the deviation of g from the running mean.`,
             codeLineNumber: 5,
             layout: "array",
-            meta: { step: timeStep, loss: lossAt(theta), vMax: vMax.slice() },
+            meta: { step: timeStep, loss: lossAt(theta), belief: s.slice() },
         };
         step += 1;
     }
@@ -115,7 +115,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(theta, "sorted"),
         edges: [],
-        description: `Finished ${gradients.length} AMSGrad steps; final loss ${lossAt(theta).toFixed(6)}.`,
+        description: `Finished ${gradients.length} AdaBelief steps; final loss ${lossAt(theta).toFixed(6)}.`,
         codeLineNumber: 7,
         layout: "array",
         meta: { step: gradients.length, loss: lossAt(theta), parameters: theta.slice() },
@@ -125,53 +125,52 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 const module: AlgorithmModule = {
     education: {
         intuition:
-            "Adam can accidentally increase its step size when a large gradient stops recurring, because its second-moment estimate decays. AMSGrad remembers the largest value that estimate ever reached and always divides by that, so the step size can only stay the same or shrink.",
+            "AdaBelief replaces 'how big was the gradient' with 'how surprised was I by the gradient'. It tracks the running mean of gradients and measures how far each new gradient deviates from that mean; consistent gradients produce a large step and erratic ones produce a small step.",
         invariants: [
-            "The second-moment estimate v is an exponential average of squared gradients.",
-            "The denominator vMax is the coordinatewise maximum of v seen so far.",
-            "The effective step size is nonincreasing at every step.",
+            "The first moment m is the running mean of the gradients.",
+            "The second moment s averages the squared deviation g minus m.",
+            "Both moments are bias-corrected before forming the step.",
         ],
         correctness:
-            "The generator applies the AMSGrad recurrence with a coordinatewise running maximum. The companion test replays the recurrence independently and verifies that the exposed vMax never decreases across steps, the property that gives AMSGrad its convergence proof.",
+            "The generator implements the published AdaBelief update with the deviation taken against the newly updated mean. The test independently reproduces the recurrence and verifies that the belief variance is never negative and that all final coordinates agree.",
         complexityRationale:
-            "A constant number of operations per coordinate per step gives O(steps * d) time, and the first moment plus the two second-moment arrays use O(d) space.",
+            "Each step costs a constant number of operations per coordinate, so O(steps * d) time; two d-length moment arrays give O(d) space.",
         uses: [
-            "Convex and nonconvex training where Adam's convergence is suspect",
-            "Regression tasks with sparse or bursty gradients",
-            "A theoretically grounded Adam replacement",
+            "Image classification with better generalization than Adam",
+            "Training generative adversarial networks stably",
+            "Fine-tuning transformers where erratic gradients appear",
         ],
         references: [
-            "Reddi, Kale, and Kumar, On the Convergence of Adam and Beyond, ICLR 2018",
+            "Zhuang et al., AdaBelief Optimizer, NeurIPS 2020",
             "Kingma and Ba, Adam: A Method for Stochastic Optimization, ICLR 2015",
         ],
         workedExample:
-            "If coordinate zero sees gradients 1.0, 0.2, then 0.6, its second moment rises and then decays, but vMax keeps the earlier larger value. The step for that coordinate is therefore never enlarged when the later gradient shrinks.",
+            "With gradients 0.8 then 0.7, the second gradient is close to the running mean near 0.7, so the deviation is tiny and the belief variance is small: AdaBelief takes a large step. A later gradient of 0.1 is surprising and produces a much larger variance and smaller step.",
     },
-    id: "amsgrad",
-    name: "AMSGrad Optimizer",
+    id: "adabelief",
+    name: "AdaBelief Optimizer",
     category: "ml-ai",
     complexity: { time: "O(steps * d)", space: "O(d)" },
     defaultInput: {
         parameters: [1, -1, 0.5, -0.5],
         gradients: [
-            [1.0, -0.8, 0.3, -0.2],
-            [0.2, -0.1, 0.05, -0.02],
-            [0.6, -0.5, 0.2, -0.1],
-            [0.1, -0.05, 0.01, -0.005],
+            [0.8, -0.7, 0.2, -0.2],
+            [0.7, -0.6, 0.2, -0.2],
+            [0.1, -0.1, 0.02, -0.02],
+            [0.75, -0.65, 0.2, -0.2],
         ],
         learningRate: 0.1,
     },
     visualType: "array",
     run,
     pseudocode: [
-        "initialize first moment m and second moment v to zero; vMax = 0",
+        "initialize first moment m and belief moment s to zero",
         "for each step t with gradient g do",
         "m = beta1 * m + (1 - beta1) * g",
-        "v = beta2 * v + (1 - beta2) * g^2",
-        "vMax = max(vMax, v) taken coordinatewise",
-        "mHat = m / (1 - beta1^t)",
-        "theta = theta - lr * mHat / (sqrt(vMax) + eps)",
-        "record the parameter vector and vMax",
+        "s = beta2 * s + (1 - beta2) * (g - m)^2",
+        "mHat = m / (1 - beta1^t); sHat = s / (1 - beta2^t)",
+        "theta = theta - lr * mHat / (sqrt(sHat) + eps)",
+        "record the parameter vector and belief variance",
         "done: report the final parameters",
     ],
 };

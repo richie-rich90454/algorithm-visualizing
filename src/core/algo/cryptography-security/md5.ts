@@ -1,5 +1,5 @@
 /**
- * md5-hash.ts - MD5 Message Digest (Historical Algorithm)
+ * md5.ts - MD5 Message Digest (Historical Algorithm)
  *
  * ---------------------------------------------------------------------------
  * What it does

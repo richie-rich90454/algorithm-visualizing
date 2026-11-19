@@ -1,14 +1,13 @@
 /**
- * adabelief-optimizer.ts - AdaBelief: Adapting Step Size by Belief
+ * nadam.ts - Nadam: Nesterov-Accelerated Adam
  *
  * ---------------------------------------------------------------------------
  * What it does
  * ---------------------------------------------------------------------------
- * AdaBelief (Zhuang et al., 2020) changes Adam's second moment. Instead of the
- * raw squared gradient it averages the squared deviation between the gradient
- * and the running mean, which the authors call the belief. When observations
- * agree with the belief the step grows; when they disagree it shrinks, which
- * improves generalization and stabilizes training.
+ * Nadam (Dozat, 2016) combines Adam's bias-corrected first and second moments
+ * with Nesterov momentum. The update applies the momentum to the corrected
+ * first moment and adds a fresh-gradient correction, so it anticipates the
+ * next position before taking the adaptive step.
  *
  * ---------------------------------------------------------------------------
  * Complexity
@@ -19,12 +18,12 @@
  * Visualization mapping
  * ---------------------------------------------------------------------------
  *   - Bars show the parameter vector after each step.
- *   - Meta exposes the positive belief variance for verification.
+ *   - Meta records step, loss, and the Nesterov-corrected first moment.
  */
 
 import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/types";
 
-interface AdaBeliefInput {
+interface NadamInput {
     parameters?: number[];
     gradients?: number[][];
     learningRate?: number;
@@ -57,13 +56,12 @@ function lossAt(params: number[]): number {
 }
 
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
-    const task = (input as AdaBeliefInput | null) ?? {};
+    const task = (input as NadamInput | null) ?? {};
     const theta = [...(task.parameters ?? [1, -1, 0.5, -0.5])];
     const gradients = task.gradients ?? [
-        [0.8, -0.7, 0.2, -0.2],
         [0.7, -0.6, 0.2, -0.2],
-        [0.1, -0.1, 0.02, -0.02],
-        [0.75, -0.65, 0.2, -0.2],
+        [0.4, -0.3, 0.1, -0.1],
+        [0.2, -0.1, 0.05, -0.05],
     ];
     const lr = typeof task.learningRate === "number" ? task.learningRate : 0.1;
     const beta1 = typeof task.beta1 === "number" ? task.beta1 : 0.9;
@@ -71,14 +69,14 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     const epsilon = typeof task.epsilon === "number" ? task.epsilon : 1e-8;
 
     const m = theta.map(() => 0);
-    const s = theta.map(() => 0);
+    const v = theta.map(() => 0);
     let step = 0;
 
     yield {
         stepNumber: step,
         entities: makeBars(theta, "idle"),
         edges: [],
-        description: `Initializing AdaBelief with ${theta.length} parameters and belief-based scaling.`,
+        description: `Initializing Nadam with ${theta.length} parameters and Nesterov momentum ${beta1}.`,
         codeLineNumber: 0,
         layout: "array",
         meta: { step: 0, loss: lossAt(theta), learningRate: lr },
@@ -94,19 +92,20 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         for (let i = 0; i < theta.length; i += 1) {
             const g = gradient[i] ?? 0;
             m[i] = beta1 * (m[i] ?? 0) + (1 - beta1) * g;
-            s[i] = beta2 * (s[i] ?? 0) + (1 - beta2) * (g - (m[i] ?? 0)) * (g - (m[i] ?? 0));
+            v[i] = beta2 * (v[i] ?? 0) + (1 - beta2) * g * g;
             const mHat = (m[i] ?? 0) / (1 - Math.pow(beta1, timeStep));
-            const sHat = (s[i] ?? 0) / (1 - Math.pow(beta2, timeStep));
-            theta[i] = (theta[i] ?? 0) - (lr * mHat) / (Math.sqrt(sHat) + epsilon);
+            const vHat = (v[i] ?? 0) / (1 - Math.pow(beta2, timeStep));
+            const nesterov = beta1 * mHat + ((1 - beta1) * g) / (1 - Math.pow(beta1, timeStep));
+            theta[i] = (theta[i] ?? 0) - (lr * nesterov) / (Math.sqrt(vHat) + epsilon);
         }
         yield {
             stepNumber: step,
             entities: makeBars(theta, "active"),
             edges: [],
-            description: `Step ${timeStep}: the belief variance measured the deviation of g from the running mean.`,
+            description: `Step ${timeStep}: applied the bias-corrected Nesterov Adam update.`,
             codeLineNumber: 5,
             layout: "array",
-            meta: { step: timeStep, loss: lossAt(theta), belief: s.slice() },
+            meta: { step: timeStep, loss: lossAt(theta), learningRate: lr },
         };
         step += 1;
     }
@@ -115,7 +114,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         stepNumber: step,
         entities: makeBars(theta, "sorted"),
         edges: [],
-        description: `Finished ${gradients.length} AdaBelief steps; final loss ${lossAt(theta).toFixed(6)}.`,
+        description: `Finished ${gradients.length} Nadam steps; final loss ${lossAt(theta).toFixed(6)}.`,
         codeLineNumber: 7,
         layout: "array",
         meta: { step: gradients.length, loss: lossAt(theta), parameters: theta.slice() },
@@ -125,52 +124,51 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 const module: AlgorithmModule = {
     education: {
         intuition:
-            "AdaBelief replaces 'how big was the gradient' with 'how surprised was I by the gradient'. It tracks the running mean of gradients and measures how far each new gradient deviates from that mean; consistent gradients produce a large step and erratic ones produce a small step.",
+            "Nadam makes Adam look ahead. Instead of stepping along the smoothed gradient alone, it evaluates momentum one step into the future by mixing the bias-corrected first moment with a fresh gradient term, then scales by Adam's adaptive denominator.",
         invariants: [
-            "The first moment m is the running mean of the gradients.",
-            "The second moment s averages the squared deviation g minus m.",
-            "Both moments are bias-corrected before forming the step.",
+            "The first and second moments are exponential averages of g and g squared.",
+            "Both moments are divided by their bias-correction factors 1 - beta^t.",
+            "The Nesterov term weights the corrected moment by beta and adds a fresh gradient correction.",
         ],
         correctness:
-            "The generator implements the published AdaBelief update with the deviation taken against the newly updated mean. The test independently reproduces the recurrence and verifies that the belief variance is never negative and that all final coordinates agree.",
+            "The generator applies the published Nadam recurrence once per gradient in order. The companion test implements the recurrence independently and compares every final coordinate, and also checks that a positive gradient reduces a positive parameter.",
         complexityRationale:
-            "Each step costs a constant number of operations per coordinate, so O(steps * d) time; two d-length moment arrays give O(d) space.",
+            "Each step updates d coordinates with a constant number of operations, giving O(steps * d) time; the two d-length moment arrays require O(d) space.",
         uses: [
-            "Image classification with better generalization than Adam",
-            "Training generative adversarial networks stably",
-            "Fine-tuning transformers where erratic gradients appear",
+            "Training recurrent and transformer networks with faster early convergence",
+            "Situations where Adam's momentum benefit is desired without manual tuning",
+            "Benchmark comparisons of adaptive optimizers",
         ],
         references: [
-            "Zhuang et al., AdaBelief Optimizer, NeurIPS 2020",
+            "Dozat, Incorporating Nesterov Momentum into Adam, ICLR Workshop 2016",
             "Kingma and Ba, Adam: A Method for Stochastic Optimization, ICLR 2015",
         ],
         workedExample:
-            "With gradients 0.8 then 0.7, the second gradient is close to the running mean near 0.7, so the deviation is tiny and the belief variance is small: AdaBelief takes a large step. A later gradient of 0.1 is surprising and produces a much larger variance and smaller step.",
+            "With theta = 1, first gradient 0.7, beta1 = 0.9, beta2 = 0.999, at step one the corrected moments are mHat = 0.7 and vHat = 0.7, so the Nesterov term is about 0.7 and theta drops by roughly the learning rate.",
     },
-    id: "adabelief",
-    name: "AdaBelief Optimizer",
+    id: "nadam",
+    name: "Nadam Optimizer",
     category: "ml-ai",
     complexity: { time: "O(steps * d)", space: "O(d)" },
     defaultInput: {
         parameters: [1, -1, 0.5, -0.5],
         gradients: [
-            [0.8, -0.7, 0.2, -0.2],
             [0.7, -0.6, 0.2, -0.2],
-            [0.1, -0.1, 0.02, -0.02],
-            [0.75, -0.65, 0.2, -0.2],
+            [0.4, -0.3, 0.1, -0.1],
+            [0.2, -0.1, 0.05, -0.05],
         ],
         learningRate: 0.1,
     },
     visualType: "array",
     run,
     pseudocode: [
-        "initialize first moment m and belief moment s to zero",
+        "initialize first moment m and second moment v to zero",
         "for each step t with gradient g do",
-        "m = beta1 * m + (1 - beta1) * g",
-        "s = beta2 * s + (1 - beta2) * (g - m)^2",
-        "mHat = m / (1 - beta1^t); sHat = s / (1 - beta2^t)",
-        "theta = theta - lr * mHat / (sqrt(sHat) + eps)",
-        "record the parameter vector and belief variance",
+        "m = beta1 * m + (1 - beta1) * g; v = beta2 * v + (1 - beta2) * g^2",
+        "mHat = m / (1 - beta1^t); vHat = v / (1 - beta2^t)",
+        "nesterov = beta1 * mHat + (1 - beta1) * g / (1 - beta1^t)",
+        "theta = theta - lr * nesterov / (sqrt(vHat) + eps)",
+        "record the parameter vector and current loss",
         "done: report the final parameters",
     ],
 };
