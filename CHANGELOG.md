@@ -19,6 +19,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - CI runs the Vitest package script, the manifest test derives its expected count from the registry, and the documentation now reports the live catalog size.
 
+## [0.6.0] - 2026-11-19
+
+### Added
+
+- Final backlog sweep: 41 verified modules across mathematics, game theory, geometry, strings, graphs, shortest paths, dynamic programming, flow, data structures, trees, and spanning trees. The catalog now has 1,284 modules in 20 categories with 3,438 automated tests.
+- Two research backlogs: `backlog-core.json` (377 classical candidates) and `backlog-modern.json` (395 modern candidates), both collision-free.
+- A semantic-duplicate guard across every sweep that rejected more than 100 near-duplicate candidates, keeping the catalog free of redundant modules.
+
+### Changed
+
+- The manifest generator emits parsed JSON for default inputs, avoiding a TypeScript union complexity overflow as the catalog grows.
+- Regenerated the manifest, VitePress documentation, media kit, and all public counts for the expanded catalog.
+
 ## [0.5.0] - 2026-11-19
 
 ### Added
@@ -83,7 +96,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Quality gate and manifest consistency checks as required CI steps.
 - Baseline: 771 algorithm modules across 13 categories, roughly 1,561 automated tests, lazy-loaded modules, and a live demo on GitHub Pages.
 
-[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.6.0
 [0.5.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.5.0
 [0.4.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.4.0
 [0.3.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.3.0

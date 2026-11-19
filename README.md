@@ -1,6 +1,6 @@
 # Algorithm Visualization Engine
 
-An interactive, offline-capable web application that lets you watch 1243 algorithms think, one step at a time.
+An interactive, offline-capable web application that lets you watch 1284 algorithms think, one step at a time.
 
 [![CI](https://github.com/richie-rich90454/algorithm-visualizing/actions/workflows/ci.yml/badge.svg)](https://github.com/richie-rich90454/algorithm-visualizing/actions/workflows/ci.yml)
 ![Tests](https://img.shields.io/badge/tests-1%2C620%20passing-brightgreen)
@@ -18,13 +18,13 @@ Most algorithm visualizations are either a small curated set of toys or a blank 
 
 Everything is self-hosted. There are no third-party CDN dependencies, fonts are bundled locally, and each algorithm is loaded as its own small code chunk only when you open it. The result is a fast, offline-capable teaching tool that stays quick no matter how large the catalog grows.
 
-The library currently contains **1243 algorithm modules** across **20 categories**, backed by **3,321 automated tests**. Every module includes a structured writeup with intuition, invariants, a correctness sketch, complexity rationale, real-world uses, references, and a worked example.
+The library currently contains **1284 algorithm modules** across **20 categories**, backed by **3,438 automated tests**. Every module includes a structured writeup with intuition, invariants, a correctness sketch, complexity rationale, real-world uses, references, and a worked example.
 
 ## Features
 
 | Feature | What it means |
 | --- | --- |
-| Broad, categorized catalog | 1243 modules across 20 categories, from sorting and graphs to quantum algorithms and production systems. |
+| Broad, categorized catalog | 1284 modules across 20 categories, from sorting and graphs to quantum algorithms and production systems. |
 | Step-by-step replay | Every algorithm is a generator that yields one frame per step. Play, pause, step forward, step back, or reset. |
 | Deterministic playback | Frames are precomputed, so revisiting a step is instant and reproducible. |
 | Purpose-built layouts | Arrays, grids, matrices, trees, graphs, text, and point clouds each get a renderer matched to their shape. |
@@ -125,7 +125,7 @@ Honest differences, based on each project's public positioning at the time of wr
 
 | | This project | VisuAlgo | algorithm-visualizer | USP-style applet collections |
 | --- | --- | --- | --- | --- |
-| Catalog | 1243 modules, 20 categories, growing | Curated set of classic algorithms | User-authored visualizations plus a public gallery | Smaller, topic-specific applet sets |
+| Catalog | 1284 modules, 20 categories, growing | Curated set of classic algorithms | User-authored visualizations plus a public gallery | Smaller, topic-specific applet sets |
 | Effort to see an algorithm | Click it in the sidebar | Click it in the catalog | Open an existing visualization or write code | Open the relevant applet |
 | Write code to visualize | No | No | Usually yes | No |
 | Offline-capable | Yes, self-hosted assets and no CDN | Hosted service | Hosted; can be self-hosted | Typically hosted |
