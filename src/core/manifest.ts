@@ -7,8 +7,7 @@
  * with: bun scripts/gen-manifest.ts
  */
 
-import type { AlgorithmCategory, AlgorithmComplexity, LayoutType } from "@/types";
-import type { AlgorithmModule } from "@/types";
+import type { AlgorithmCategory, AlgorithmComplexity, AlgorithmModule, LayoutType } from "@/types";
 
 /** Everything the sidebar, search, and info panel need - no run code. */
 export interface AlgorithmMeta {
@@ -26,18 +25,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "A*",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 2]],
-                B: [["D", 5], ["E", 3]],
-                C: [["B", 1], ["D", 8]],
-                D: [["E", 2], ["F", 6]],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",2]],\"B\":[[\"D\",5],[\"E\",3]],\"C\":[[\"B\",1],[\"D\",8]],\"D\":[[\"E\",2],[\"F\",6]],\"E\":[[\"F\",1]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -45,7 +33,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AA Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -53,7 +41,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AC-3 Arc Consistency",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(e·d³)", space: "O(e)" },
-        defaultInput: { domains: { X: [1, 2], Y: [1], Z: [1, 2] } },
+        defaultInput: JSON.parse("{\"domains\":{\"X\":[1,2],\"Y\":[1],\"Z\":[1,2]}}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -61,7 +49,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Activity Selection (Greedy)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { intervals: [[1, 3], [2, 4], [3, 5]] },
+        defaultInput: JSON.parse("{\"intervals\":[[1,3],[2,4],[3,5]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -69,7 +57,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Actor-Critic",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(A) per step", space: "O(A)" },
-        defaultInput: { rewards: [1, -1], gamma: 0.9, actorStep: 0.5, criticStep: 0.1, steps: 30 },
+        defaultInput: JSON.parse("{\"rewards\":[1,-1],\"gamma\":0.9,\"actorStep\":0.5,\"criticStep\":0.1,\"steps\":30}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -77,7 +65,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AdaBoost",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * n log n)", space: "O(T + n)" },
-        defaultInput: { points: [[1, 2], [2, 1], [3, 2], [4, 1], [5, 2], [6, 1]], labels: [1, 1, 1, -1, -1, -1], rounds: 5 },
+        defaultInput: JSON.parse("{\"points\":[[1,2],[2,1],[3,2],[4,1],[5,2],[6,1]],\"labels\":[1,1,1,-1,-1,-1],\"rounds\":5}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -85,7 +73,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AdaGrad",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations * d)", space: "O(d)" },
-        defaultInput: { start: [0, 0], target: [3, -2], curvature: 4, lr: 1, eps: 1e-8, iterations: 12 },
+        defaultInput: JSON.parse("{\"start\":[0,0],\"target\":[3,-2],\"curvature\":4,\"lr\":1,\"eps\":1e-8,\"iterations\":12}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -93,7 +81,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adam Optimizer",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(iterations)" },
-        defaultInput: { target: 3, start: 0, iterations: 30, learningRate: 0.3, beta1: 0.9, beta2: 0.999, epsilon: 1e-8 },
+        defaultInput: JSON.parse("{\"target\":3,\"start\":0,\"iterations\":30,\"learningRate\":0.3,\"beta1\":0.9,\"beta2\":0.999,\"epsilon\":1e-8}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -101,7 +89,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adams-Bashforth (Order 4)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { lambda: 1, y0: 1, h: 0.1, steps: 8 },
+        defaultInput: JSON.parse("{\"lambda\":1,\"y0\":1,\"h\":0.1,\"steps\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -109,16 +97,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AdamW Optimizer",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(1)" },
-        defaultInput: {
-            theta: 4,
-            target: 0,
-            learningRate: 0.1,
-            beta1: 0.9,
-            beta2: 0.999,
-            epsilon: 1e-8,
-            weightDecay: 0.1,
-            steps: 8,
-        },
+        defaultInput: JSON.parse("{\"theta\":4,\"target\":0,\"learningRate\":0.1,\"beta1\":0.9,\"beta2\":0.999,\"epsilon\":1e-8,\"weightDecay\":0.1,\"steps\":8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -126,7 +105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adaptive Simpson Quadrature",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(panels)", space: "O(depth + panels)" },
-        defaultInput: { fn: "sin", a: 0, b: 1, tol: 0.000001, maxDepth: 20 },
+        defaultInput: JSON.parse("{\"fn\":\"sin\",\"a\":0,\"b\":1,\"tol\":0.000001,\"maxDepth\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -134,7 +113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adaptive Radix Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) ops", space: "O(n)" },
-        defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
+        defaultInput: JSON.parse("{\"words\":[\"car\",\"cat\",\"dog\",\"dot\"],\"search\":\"cat\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -142,7 +121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Addition Chain (Brauer Star)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(e)", space: "O(e)" },
-        defaultInput: { e: 15 },
+        defaultInput: JSON.parse("{\"e\":15}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -150,7 +129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adjacency List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(degree) edge check", space: "O(V + E)" },
-        defaultInput: { adjacency: { A: ["B", "C"], B: ["A", "D"], C: ["A", "D"], D: ["B", "C"] }, query: "B" },
+        defaultInput: JSON.parse("{\"adjacency\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"D\"],\"D\":[\"B\",\"C\"]},\"query\":\"B\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -158,7 +137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adjacency Matrix",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) edge check", space: "O(V²)" },
-        defaultInput: { matrix: [[0, 1, 1, 0], [1, 0, 0, 1], [1, 0, 0, 1], [0, 1, 1, 0]], query: [1, 3] },
+        defaultInput: JSON.parse("{\"matrix\":[[0,1,1,0],[1,0,0,1],[1,0,0,1],[0,1,1,0]],\"query\":[1,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -166,7 +145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adjacency Set",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) edge test", space: "O(V + E)" },
-        defaultInput: { edges: [["A", "B"], ["B", "C"], ["A", "C"]], queries: [["A", "B"], ["A", "D"], ["B", "C"]] },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\"],[\"B\",\"C\"],[\"A\",\"C\"]],\"queries\":[[\"A\",\"B\"],[\"A\",\"D\"],[\"B\",\"C\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -174,7 +153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Adler-32 Checksum",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "Wikipedia" },
+        defaultInput: JSON.parse("{\"text\":\"Wikipedia\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -182,7 +161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ADMM for L1 Least Squares",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(n)" },
-        defaultInput: { diagonal: [2, 3, 1], b: [2, 1, 4], lambda: 0.5, rho: 1, iterations: 40, tol: 1e-10 },
+        defaultInput: JSON.parse("{\"diagonal\":[2,3,1],\"b\":[2,1,4],\"lambda\":0.5,\"rho\":1,\"iterations\":40,\"tol\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -190,7 +169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AES-GCM Encryption (Toy Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(b)", space: "O(b)" },
-        defaultInput: { plaintext: [72, 105, 33, 42], keystream: [31, 46, 61, 76], authKey: 90 },
+        defaultInput: JSON.parse("{\"plaintext\":[72,105,33,42],\"keystream\":[31,46,61,76],\"authKey\":90}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -198,7 +177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Aho-Corasick",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + matches)", space: "O(patterns)" },
-        defaultInput: { text: "abacababa", patterns: ["aba", "ab", "ba"] },
+        defaultInput: JSON.parse("{\"text\":\"abacababa\",\"patterns\":[\"aba\",\"ab\",\"ba\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -206,22 +185,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Akaike Information Criterion",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(M)", space: "O(M)" },
-        defaultInput: {
-            models: [
-                { name: "linear", k: 2, logLikelihood: -120.4 },
-                { name: "quadratic", k: 3, logLikelihood: -118.1 },
-                { name: "cubic", k: 4, logLikelihood: -117.9 },
-            ],
-            sampleSize: 100,
-        },
+        defaultInput: JSON.parse("{\"models\":[{\"name\":\"linear\",\"k\":2,\"logLikelihood\":-120.4},{\"name\":\"quadratic\",\"k\":3,\"logLikelihood\":-118.1},{\"name\":\"cubic\",\"k\":4,\"logLikelihood\":-117.9}],\"sampleSize\":100}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "aks-primality-test",
+        name: "AKS Primality Test",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(log^6 n)", space: "O(r log n)" },
+        defaultInput: JSON.parse("{\"n\":101}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "aks-sorting-network",
         name: "AKS Sorting Network",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n log n)" },
-        defaultInput: [8, 4, 6, 2, 7, 3, 5, 1],
+        defaultInput: JSON.parse("[8,4,6,2,7,3,5,1]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -229,7 +209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ALiBi Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(heads * n^2 * d)", space: "O(heads * n^2)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1], [0.5, 0.5]], heads: 2 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1],[0.5,0.5]],\"heads\":2}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -237,7 +217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Aliens Trick",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n log range)", space: "O(n)" },
-        defaultInput: { array: [1, 3, 2, 6, 8, 10, 20], groups: 3 },
+        defaultInput: JSON.parse("{\"array\":[1,3,2,6,8,10,20],\"groups\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -245,7 +225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Alpha-Beta Pruning",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(b^(d/2))", space: "O(d)" },
-        defaultInput: { leaves: [3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6] },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2,8,1,9,3,5,4,2,8,6,3,2,7,1,4,9,5,3,8,6]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -253,20 +233,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Alpha Shapes",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n⁴) brute force", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [2, 0], [1, 1], [3, 1], [0, 2], [2, 2]], alpha: 1.5 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[2,0],[1,1],[3,1],[0,2],[2,2]],\"alpha\":1.5}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "alpha-zero-mcts",
+        name: "AlphaZero MCTS (PUCT)",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(simulations * actions)", space: "O(actions)" },
+        defaultInput: JSON.parse("{\"sims\":12,\"c\":1.5,\"seed\":7}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "alt-landmark-routing",
         name: "ALT Landmark Routing",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(L·V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-            landmarks: ["A", "D"],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"landmarks\":[\"A\",\"D\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -274,7 +257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "American Flag Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n + k)", space: "O(k)" },
-        defaultInput: [4, 1, 3, 1, 2],
+        defaultInput: JSON.parse("[4,1,3,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -282,7 +265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Amplitude Amplification",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(N) per iteration (simulator)", space: "O(N)" },
-        defaultInput: { states: 4, marked: [1], iterations: 1 },
+        defaultInput: JSON.parse("{\"states\":4,\"marked\":[1],\"iterations\":1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -290,7 +273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ant Colony Optimization",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t·m·n²)", space: "O(n²)" },
-        defaultInput: { ants: 3, iters: 4, seed: 11 },
+        defaultInput: JSON.parse("{\"ants\":3,\"iters\":4,\"seed\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -298,17 +281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Apache Kafka Log Segment Retention",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(s log s)", space: "O(s)" },
-        defaultInput: {
-            segments: [
-                { baseOffset: 0, sizeBytes: 300, maxTimestamp: 1000 },
-                { baseOffset: 10, sizeBytes: 400, maxTimestamp: 4000 },
-                { baseOffset: 20, sizeBytes: 350, maxTimestamp: 6000 },
-                { baseOffset: 30, sizeBytes: 400, maxTimestamp: 9000 },
-            ],
-            retentionBytes: 600,
-            retentionMs: 5000,
-            now: 10000,
-        },
+        defaultInput: JSON.parse("{\"segments\":[{\"baseOffset\":0,\"sizeBytes\":300,\"maxTimestamp\":1000},{\"baseOffset\":10,\"sizeBytes\":400,\"maxTimestamp\":4000},{\"baseOffset\":20,\"sizeBytes\":350,\"maxTimestamp\":6000},{\"baseOffset\":30,\"sizeBytes\":400,\"maxTimestamp\":9000}],\"retentionBytes\":600,\"retentionMs\":5000,\"now\":10000}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -316,33 +289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ARA* (Anytime Repairing A*)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(k (V + E) log V)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 1], ["D", 1]],
-                B: [["A", 1], ["C", 1], ["E", 1]],
-                C: [["B", 1], ["F", 1]],
-                D: [["A", 1], ["E", 1], ["G", 1]],
-                E: [["B", 1], ["D", 1], ["F", 1], ["H", 1]],
-                F: [["C", 1], ["E", 1], ["I", 1]],
-                G: [["D", 1], ["H", 1]],
-                H: [["E", 1], ["G", 1], ["I", 1]],
-                I: [["F", 1], ["H", 1]],
-            },
-            coords: {
-                A: [0, 0],
-                B: [1, 0],
-                C: [2, 0],
-                D: [0, 1],
-                E: [1, 1],
-                F: [2, 1],
-                G: [0, 2],
-                H: [1, 2],
-                I: [2, 2],
-            },
-            start: "A",
-            goal: "I",
-            epsilons: [2, 1.5, 1],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",1],[\"D\",1]],\"B\":[[\"A\",1],[\"C\",1],[\"E\",1]],\"C\":[[\"B\",1],[\"F\",1]],\"D\":[[\"A\",1],[\"E\",1],[\"G\",1]],\"E\":[[\"B\",1],[\"D\",1],[\"F\",1],[\"H\",1]],\"F\":[[\"C\",1],[\"E\",1],[\"I\",1]],\"G\":[[\"D\",1],[\"H\",1]],\"H\":[[\"E\",1],[\"G\",1],[\"I\",1]],\"I\":[[\"F\",1],[\"H\",1]]},\"coords\":{\"A\":[0,0],\"B\":[1,0],\"C\":[2,0],\"D\":[0,1],\"E\":[1,1],\"F\":[2,1],\"G\":[0,2],\"H\":[1,2],\"I\":[2,2]},\"start\":\"A\",\"goal\":\"I\",\"epsilons\":[2,1.5,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -350,7 +297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ARC Cache",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(capacity)" },
-        defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c", "b"] },
+        defaultInput: JSON.parse("{\"capacity\":2,\"accesses\":[\"a\",\"b\",\"a\",\"c\",\"b\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -358,7 +305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Arena Allocator",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(used)" },
-        defaultInput: { arenaSize: 8, allocs: [2, 3, 2] },
+        defaultInput: JSON.parse("{\"arenaSize\":8,\"allocs\":[2,3,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -366,7 +313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Argon2id (toy mixing model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(m)" },
-        defaultInput: { memoryBlocks: 16, seed: 5, passes: 1 },
+        defaultInput: JSON.parse("{\"memoryBlocks\":16,\"seed\":5,\"passes\":1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -374,7 +321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ARIMA Model",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n * (p + q) + steps * (p + q))", space: "O(n + steps)" },
-        defaultInput: { series: [10, 12, 13, 15, 14, 17, 16, 19, 21, 20], d: 1, phi: [0.6], theta: [0.4], steps: 3 },
+        defaultInput: JSON.parse("{\"series\":[10,12,13,15,14,17,16,19,21,20],\"d\":1,\"phi\":[0.6],\"theta\":[0.4],\"steps\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -382,7 +329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Arithmetic Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { message: "aaba" },
+        defaultInput: JSON.parse("{\"message\":\"aaba\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -390,7 +337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Arnoldi Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m^2*n)", space: "O(m*n)" },
-        defaultInput: { matrix: [[4, 1, 0], [1, 3, 1], [0, 1, 2]], q1: [1, 0, 0], steps: 3 },
+        defaultInput: JSON.parse("{\"matrix\":[[4,1,0],[1,3,1],[0,1,2]],\"q1\":[1,0,0],\"steps\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -398,7 +345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Art Gallery Guards (Fisk)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 2], [2, 4], [0, 3], [1, 1.5]] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,2],[2,4],[0,3],[1,1.5]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -406,7 +353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Assignment (Bitmask DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²·2^n)", space: "O(2^n)" },
-        defaultInput: { cost: [[9, 2, 7], [6, 4, 3], [5, 8, 1]] },
+        defaultInput: JSON.parse("{\"cost\":[[9,2,7],[6,4,3],[5,8,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -414,15 +361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Atomic Broadcast",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(m log m + m * processes)", space: "O(m + processes)" },
-        defaultInput: {
-            processes: 3,
-            messages: [
-                { sender: 1, localSeq: 0, content: "a" },
-                { sender: 0, localSeq: 0, content: "b" },
-                { sender: 2, localSeq: 0, content: "c" },
-                { sender: 1, localSeq: 1, content: "d" },
-            ],
-        },
+        defaultInput: JSON.parse("{\"processes\":3,\"messages\":[{\"sender\":1,\"localSeq\":0,\"content\":\"a\"},{\"sender\":0,\"localSeq\":0,\"content\":\"b\"},{\"sender\":2,\"localSeq\":0,\"content\":\"c\"},{\"sender\":1,\"localSeq\":1,\"content\":\"d\"}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -430,7 +369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Attribute-Based Encryption (Toy Threshold)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(2^n * k^2)", space: "O(n)" },
-        defaultInput: { totalAttributes: 3, threshold: 2, secret: 4242, plaintext: 73 },
+        defaultInput: JSON.parse("{\"totalAttributes\":3,\"threshold\":2,\"secret\":4242,\"plaintext\":73}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -438,7 +377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AVL Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { inserts: [10, 20, 30, 40, 50, 25] },
+        defaultInput: JSON.parse("{\"inserts\":[10,20,30,40,50,25]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -446,7 +385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "AWQ Quantization (Activation-Aware Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { weights: [0.6, 0.4, 0.9, 0.1], activations: [10, 1, 1, 1], groupSize: 4, bits: 2 },
+        defaultInput: JSON.parse("{\"weights\":[0.6,0.4,0.9,0.1],\"activations\":[10,1,1,1],\"groupSize\":4,\"bits\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -454,7 +393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "B-Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log_B n) I/Os", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 7] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -462,7 +401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "B+ Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { routing: [9], leaves: [3, 5, 9, 12, 18, 21], search: 12 },
+        defaultInput: JSON.parse("{\"routing\":[9],\"leaves\":[3,5,9,12,18,21],\"search\":12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -470,7 +409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "B-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 12, 20], search: 20 },
+        defaultInput: JSON.parse("{\"keys\":[5,12,20],\"search\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -478,7 +417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "B-Tree Insert and Split",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [10, 20, 5, 6, 12, 30, 7, 17, 3, 4], order: 4 },
+        defaultInput: JSON.parse("{\"keys\":[10,20,5,6,12,30,7,17,3,4],\"order\":4}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -486,7 +425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "B92 Quantum Key Distribution (Small Toy Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: { bits: [0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1], seed: 9, eavesdropper: false },
+        defaultInput: JSON.parse("{\"bits\":[0,1,0,0,1,1,0,1,0,0,1,0,1,1,0,1],\"seed\":9,\"eavesdropper\":false}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -494,7 +433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Baby-Step Giant-Step",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(√p)", space: "O(√p)" },
-        defaultInput: { a: 2, b: 5, p: 29 },
+        defaultInput: JSON.parse("{\"a\":2,\"b\":5,\"p\":29}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -502,7 +441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Backpropagation",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(W)", space: "O(W)" },
-        defaultInput: { x: [0.5, 0.8], target: 0.7 },
+        defaultInput: JSON.parse("{\"x\":[0.5,0.8],\"target\":0.7}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -510,7 +449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Backtracking CSP Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(d^n)", space: "O(n)" },
-        defaultInput: { domains: { X: [1, 2], Y: [1, 2], Z: [1, 2] } },
+        defaultInput: JSON.parse("{\"domains\":{\"X\":[1,2],\"Y\":[1,2],\"Z\":[1,2]}}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -518,7 +457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Baillie-PSW Primality",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log^3 n)", space: "O(1)" },
-        defaultInput: { n: 21 },
+        defaultInput: JSON.parse("{\"n\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -526,7 +465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ball Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -534,7 +473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Banded DP Approx",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nk)", space: "O(nk)" },
-        defaultInput: { text: "ababcab", pattern: "abc", k: 1 },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\",\"k\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -542,7 +481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bandit UCB1",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t·k)", space: "O(k)" },
-        defaultInput: { rounds: 9, seed: 3 },
+        defaultInput: JSON.parse("{\"rounds\":9,\"seed\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -550,7 +489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Banker's Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
-        defaultInput: { ops: [["snoc", 1], ["snoc", 2], ["tail"], ["snoc", 3]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"snoc\",1],[\"snoc\",2],[\"tail\"],[\"snoc\",3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -558,15 +497,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bareiss (Fraction-Free)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { matrix: [[2, 1, 1], [1, 3, 2], [1, 0, 0]] },
+        defaultInput: JSON.parse("{\"matrix\":[[2,1,1],[1,3,2],[1,0,0]]}") as unknown,
         visualType: "matrix" as LayoutType,
+    },
+    {
+        id: "barrett-reduction",
+        name: "Barrett Reduction",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(1)", space: "O(1)" },
+        defaultInput: JSON.parse("{\"m\":17,\"x\":123456}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "baseball-elimination",
         name: "Baseball Elimination",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(T^2 G)", space: "O(T^2)" },
-        defaultInput: { teams: ["A", "B", "C"], wins: [10, 9, 8], remaining: [[0, 2, 1], [2, 0, 1], [1, 1, 0]], query: "C" },
+        defaultInput: JSON.parse("{\"teams\":[\"A\",\"B\",\"C\"],\"wins\":[10,9,8],\"remaining\":[[0,2,1],[2,0,1],[1,1,0]],\"query\":\"C\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -574,7 +521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Basis Pursuit via ADMM",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * (m n + m^3))", space: "O(m n + m^2)" },
-        defaultInput: { rho: 10, iterations: 400 },
+        defaultInput: JSON.parse("{\"rho\":10,\"iterations\":400}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -582,7 +529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Batch Gradient Descent",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n)", space: "O(n)" },
-        defaultInput: { points: [[0, 1], [1, 3], [2, 5], [3, 7], [4, 9]], learningRate: 0.05, epochs: 200 },
+        defaultInput: JSON.parse("{\"points\":[[0,1],[1,3],[2,5],[3,7],[4,9]],\"learningRate\":0.05,\"epochs\":200}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -590,7 +537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Batch Normalization",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { values: [1, 2, 3, 4, 5], gamma: 2, beta: 0.5, eps: 0.00001 },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5],\"gamma\":2,\"beta\":0.5,\"eps\":0.00001}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -598,7 +545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Batcher Odd-Even Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(log² n)", space: "O(1)" },
-        defaultInput: [6, 3, 7, 1, 5, 2, 8, 4],
+        defaultInput: JSON.parse("[6,3,7,1,5,2,8,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -606,7 +553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bayes' Theorem",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { prior: 0.01, likelihood: 0.95, falsePositive: 0.05 },
+        defaultInput: JSON.parse("{\"prior\":0.01,\"likelihood\":0.95,\"falsePositive\":0.05}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -614,7 +561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bayesian Information Criterion",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(maxDegree * n * degree^2)", space: "O(degree^2)" },
-        defaultInput: { x: [0, 1, 2, 3, 4, 5, 6], y: [2.12, 1.42, 1.55, 2.37, 4.09, 6.44, 9.74], maxDegree: 4 },
+        defaultInput: JSON.parse("{\"x\":[0,1,2,3,4,5,6],\"y\":[2.12,1.42,1.55,2.37,4.09,6.44,9.74],\"maxDegree\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -622,7 +569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BB84 Key Distribution (Small Toy Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: { rounds: 12, seed: 7, eavesdropper: false, sampleFraction: 0.25 },
+        defaultInput: JSON.parse("{\"rounds\":12,\"seed\":7,\"eavesdropper\":false,\"sampleFraction\":0.25}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -630,7 +577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bead Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n · max)", space: "O(n · max)" },
-        defaultInput: [4, 1, 3, 2, 5],
+        defaultInput: JSON.parse("[4,1,3,2,5]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -638,7 +585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Beam Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(w × b × d)", space: "O(w)" },
-        defaultInput: { start: "A", goal: "G", width: 2 },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\",\"width\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -646,12 +593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Beam Search Decoding",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(L * B * V log(B * V))", space: "O(B * L)" },
-        defaultInput: {
-            vocab: ["a", "b", "c"],
-            logProbs: [[-0.1, -1.2, -2], [-0.7, -0.2, -1.5], [-0.3, -0.9, -0.4], [-1, -0.1, -1.8]],
-            length: 3,
-            width: 2,
-        },
+        defaultInput: JSON.parse("{\"vocab\":[\"a\",\"b\",\"c\"],\"logProbs\":[[-0.1,-1.2,-2],[-0.7,-0.2,-1.5],[-0.3,-0.9,-0.4],[-1,-0.1,-1.8]],\"length\":3,\"width\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -659,7 +601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Beap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(sqrt n) search", space: "O(n)" },
-        defaultInput: { keys: [1, 4, 2, 7, 5, 3], query: 5 },
+        defaultInput: JSON.parse("{\"keys\":[1,4,2,7,5,3],\"query\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -667,7 +609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Beaver Triples MPC (Toy Field)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { p: 97, x: 15, y: 20, a: 7, b: 11 },
+        defaultInput: JSON.parse("{\"p\":97,\"x\":15,\"y\":20,\"a\":7,\"b\":11}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -675,7 +617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bell State Preparation",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { initial: "00" },
+        defaultInput: JSON.parse("{\"initial\":\"00\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -683,18 +625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bellman-Ford",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 5]],
-                B: [["C", -3], ["D", 2]],
-                C: [["D", 6], ["E", 1]],
-                D: [["E", -2], ["F", 3]],
-                E: [["F", 2]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",5]],\"B\":[[\"C\",-3],[\"D\",2]],\"C\":[[\"D\",6],[\"E\",1]],\"D\":[[\"E\",-2],[\"F\",3]],\"E\":[[\"F\",2]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -702,7 +633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Benjamini-Hochberg FDR",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(m log m)", space: "O(m)" },
-        defaultInput: { pValues: [0.001, 0.012, 0.02, 0.03, 0.08, 0.2, 0.4, 0.9], q: 0.1 },
+        defaultInput: JSON.parse("{\"pValues\":[0.001,0.012,0.02,0.03,0.08,0.2,0.4,0.9],\"q\":0.1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -710,7 +641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bernoulli Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { p: 0.5, t: 1 },
+        defaultInput: JSON.parse("{\"p\":0.5,\"t\":1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -718,7 +649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bernstein-Vazirani (Toy Simulation)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n*2^n) simulated", space: "O(2^n)" },
-        defaultInput: { qubits: 3, secret: 5 },
+        defaultInput: JSON.parse("{\"qubits\":3,\"secret\":5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -726,7 +657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bertrand Postulate Check",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n sqrt(n))", space: "O(1)" },
-        defaultInput: { n: 10 },
+        defaultInput: JSON.parse("{\"n\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -734,7 +665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Beta Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(m * K)", space: "O(m)" },
-        defaultInput: { a: 2, b: 5, points: 21 },
+        defaultInput: JSON.parse("{\"a\":2,\"b\":5,\"points\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -742,7 +673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Betweenness Centrality (Brandes)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -750,7 +681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BFGS Quasi-Newton Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * d^2)", space: "O(d^2)" },
-        defaultInput: { A: [[2, 0], [0, 4]], b: [6, -4], c: 11, start: [0, 0], iterations: 40, tolerance: 1e-8 },
+        defaultInput: JSON.parse("{\"A\":[[2,0],[0,4]],\"b\":[6,-4],\"c\":11,\"start\":[0,0],\"iterations\":40,\"tolerance\":1e-8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -758,7 +689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BFS",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"E\"],\"D\":[\"B\",\"E\"],\"E\":[\"C\",\"D\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -766,7 +697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BFV (Toy Homomorphic Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { q: 1048576, delta: 1000, a: 7919, s: 3, x: 7, y: 3, c: 4 },
+        defaultInput: JSON.parse("{\"q\":1048576,\"delta\":1000,\"a\":7919,\"s\":3,\"x\":7,\"y\":3,\"c\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -774,7 +705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BiCGSTAB",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: { a: [[4, 1], [1, 3]], b: [1, 2], maxIter: 50, tol: 1e-10 },
+        defaultInput: JSON.parse("{\"a\":[[4,1],[1,3]],\"b\":[1,2],\"maxIter\":50,\"tol\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -782,7 +713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Biconnected Components (Hopcroft–Tarjan)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -790,18 +721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bidirectional BFS",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(b^(d/2))", space: "O(b^(d/2))" },
-        defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "D"],
-                C: ["A", "E"],
-                D: ["B", "E", "F"],
-                E: ["C", "D", "F"],
-                F: ["D", "E"],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"E\"],\"D\":[\"B\",\"E\",\"F\"],\"E\":[\"C\",\"D\",\"F\"],\"F\":[\"D\",\"E\"]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -809,16 +729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bidirectional Dijkstra",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 2], ["C", 5]],
-                B: [["A", 2], ["C", 1], ["D", 4]],
-                C: [["A", 5], ["B", 1], ["D", 1]],
-                D: [["B", 4], ["C", 1]],
-            },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"A\",2],[\"C\",1],[\"D\",4]],\"C\":[[\"A\",5],[\"B\",1],[\"D\",1]],\"D\":[[\"B\",4],[\"C\",1]]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -826,7 +737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bidirectional Selection Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -834,7 +745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Exponentiation",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log b)", space: "O(1)" },
-        defaultInput: { base: 3, exponent: 13 },
+        defaultInput: JSON.parse("{\"base\":3,\"exponent\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -842,7 +753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary GCD (Stein)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log max(a, b))", space: "O(1)" },
-        defaultInput: { a: 48, b: 36 },
+        defaultInput: JSON.parse("{\"a\":48,\"b\":36}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -850,7 +761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { values: [5, 9, 4, 7, 3, 2] },
+        defaultInput: JSON.parse("{\"values\":[5,9,4,7,3,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -858,11 +769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Lifting Max Edge Query",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((n+q) log n)", space: "O(n log n)" },
-        defaultInput: {
-            nodes: ["A", "B", "C", "D", "E"],
-            edges: [["A", "B", 3], ["A", "C", 5], ["B", "D", 2], ["B", "E", 7]],
-            queries: [["D", "C"], ["E", "D"]],
-        },
+        defaultInput: JSON.parse("{\"nodes\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"edges\":[[\"A\",\"B\",3],[\"A\",\"C\",5],[\"B\",\"D\",2],[\"B\",\"E\",7]],\"queries\":[[\"D\",\"C\"],[\"E\",\"D\"]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -870,7 +777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Search (Iterative)",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 5, 7, 9, 11, 13, 15], target: 7 },
+        defaultInput: JSON.parse("{\"array\":[1,3,5,7,9,11,13,15],\"target\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -878,7 +785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Search (Lower Bound)",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 3, 3, 5, 7, 9, 11], target: 3 },
+        defaultInput: JSON.parse("{\"array\":[1,3,3,3,5,7,9,11],\"target\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -886,7 +793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Search (Recursive)",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(log n)" },
-        defaultInput: { array: [1, 3, 5, 7, 9, 11, 13, 15], target: 11 },
+        defaultInput: JSON.parse("{\"array\":[1,3,5,7,9,11,13,15],\"target\":11}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -894,7 +801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Search (Upper Bound)",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 3, 3, 5, 7, 9, 11], target: 3 },
+        defaultInput: JSON.parse("{\"array\":[1,3,3,3,5,7,9,11],\"target\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -902,7 +809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) traversal", space: "O(n)" },
-        defaultInput: { values: [8, 3, 10, 1, 6, 9, 14] },
+        defaultInput: JSON.parse("{\"values\":[8,3,10,1,6,9,14]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -910,7 +817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(w) ops", space: "O(n w)" },
-        defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
+        defaultInput: JSON.parse("{\"words\":[\"car\",\"cat\",\"dog\",\"dot\"],\"search\":\"cat\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -918,7 +825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binomial Distribution PMF",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 10, p: 0.5 },
+        defaultInput: JSON.parse("{\"n\":10,\"p\":0.5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -926,7 +833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binomial Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { inserts: [3, 7, 1, 9, 5] },
+        defaultInput: JSON.parse("{\"inserts\":[3,7,1,9,5]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -934,13 +841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bipartite b-Matching",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: {
-            left: ["L0", "L1"],
-            right: ["R0", "R1"],
-            bLeft: [2, 1],
-            bRight: [1, 2],
-            edges: [["L0", "R0"], ["L0", "R1"], ["L1", "R0"], ["L1", "R1"]],
-        },
+        defaultInput: JSON.parse("{\"left\":[\"L0\",\"L1\"],\"right\":[\"R0\",\"R1\"],\"bLeft\":[2,1],\"bRight\":[1,2],\"edges\":[[\"L0\",\"R0\"],[\"L0\",\"R1\"],[\"L1\",\"R0\"],[\"L1\",\"R1\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -948,7 +849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bipartite Check (Two-Coloring)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\",\"A\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -956,7 +857,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bisection Method",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(1)" },
-        defaultInput: { a: 1, b: 2, iters: 8 },
+        defaultInput: JSON.parse("{\"a\":1,\"b\":2,\"iters\":8}") as unknown,
+        visualType: "array" as LayoutType,
+    },
+    {
+        id: "bit-reversal",
+        name: "Bit-Reversal Permutation",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(n)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"n\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -964,12 +873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bitmap Index",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(R * C + R)", space: "O(R * C)" },
-        defaultInput: {
-            numRows: 8,
-            columns: { region: [0, 1, 4, 5], active: [0, 2, 3, 6, 7], premium: [1, 3, 5, 7] },
-            and: ["active"],
-            or: ["premium"],
-        },
+        defaultInput: JSON.parse("{\"numRows\":8,\"columns\":{\"region\":[0,1,4,5],\"active\":[0,2,3,6,7],\"premium\":[1,3,5,7]},\"and\":[\"active\"],\"or\":[\"premium\"]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -977,16 +881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bitmask TSP (Held-Karp)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(2^n·n²)", space: "O(2^n·n)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 10], ["C", 15], ["D", 20]],
-                B: [["A", 10], ["C", 35], ["D", 25]],
-                C: [["A", 15], ["B", 35], ["D", 30]],
-                D: [["A", 20], ["B", 25], ["C", 30]],
-            },
-            vertices: ["A", "B", "C", "D"],
-            start: "A",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",10],[\"C\",15],[\"D\",20]],\"B\":[[\"A\",10],[\"C\",35],[\"D\",25]],\"C\":[[\"A\",15],[\"B\",35],[\"D\",30]],\"D\":[[\"A\",20],[\"B\",25],[\"C\",30]]},\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -994,7 +889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bitonic Array Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 8, 12, 9, 5, 2], target: 9 },
+        defaultInput: JSON.parse("{\"array\":[1,3,8,12,9,5,2],\"target\":9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1002,7 +897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bitonic Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(log² n)", space: "O(n)" },
-        defaultInput: [6, 3, 7, 1, 5, 2, 8, 4],
+        defaultInput: JSON.parse("[6,3,7,1,5,2,8,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1010,7 +905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bitset",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) test", space: "O(u/w)" },
-        defaultInput: { values: [3, 1, 4, 6], query: 4 },
+        defaultInput: JSON.parse("{\"values\":[3,1,4,6],\"query\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1018,7 +913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BK-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1026,7 +921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BLAKE2b Hash (Toy Compression)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(rounds)", space: "O(1)" },
-        defaultInput: { message: "abc", rounds: 2 },
+        defaultInput: JSON.parse("{\"message\":\"abc\",\"rounds\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1034,7 +929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Block Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(1)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1042,7 +937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bloom Filter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(m)" },
-        defaultInput: { keys: ["apple", "banana", "cherry"], m: 20, probe: "banana" },
+        defaultInput: JSON.parse("{\"keys\":[\"apple\",\"banana\",\"cherry\"],\"m\":20,\"probe\":\"banana\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1050,10 +945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Blossom Algorithm",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V³)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            edges: [["A", "B"], ["A", "C"], ["B", "C"], ["C", "D"], ["D", "E"], ["D", "F"], ["E", "F"]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],\"edges\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"E\"],[\"D\",\"F\"],[\"E\",\"F\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1061,11 +953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BLS Signature Aggregation (Toy Pairing)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(signers * (log p + p))", space: "O(signers)" },
-        defaultInput: {
-            p: 11,
-            g: 2,
-            signers: [{ secret: 3, message: "alpha" }, { secret: 4, message: "beta" }, { secret: 5, message: "gamma" }],
-        },
+        defaultInput: JSON.parse("{\"p\":11,\"g\":2,\"signers\":[{\"secret\":3,\"message\":\"alpha\"},{\"secret\":4,\"message\":\"beta\"},{\"secret\":5,\"message\":\"gamma\"}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1073,7 +961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BLS12-381 Pairing (Toy Properties Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log q)", space: "O(1)" },
-        defaultInput: { a: 2, b: 3 },
+        defaultInput: JSON.parse("{\"a\":2,\"b\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1081,7 +969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BNDM",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm) worst, O(n/m) avg", space: "O(m·σ)" },
-        defaultInput: { text: "ababcab", pattern: "cab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"cab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -1089,7 +977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BOM Matching",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm) worst, O(n) avg", space: "O(m)" },
-        defaultInput: { text: "ababcab", pattern: "abc" },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -1097,7 +985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bonferroni Correction",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(m)" },
-        defaultInput: { pValues: [0.001, 0.01, 0.04, 0.2, 0.6], alpha: 0.05 },
+        defaultInput: JSON.parse("{\"pValues\":[0.001,0.01,0.04,0.2,0.6],\"alpha\":0.05}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1105,7 +993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Boolean Parenthesization",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { symbols: "TFT", ops: "|&" },
+        defaultInput: JSON.parse("{\"symbols\":\"TFT\",\"ops\":\"|&\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1113,7 +1001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Booth's Minimal Rotation",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "cbbbaaa" },
+        defaultInput: JSON.parse("{\"text\":\"cbbbaaa\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -1121,7 +1009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bootstrap Resampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(B * n)", space: "O(B * n)" },
-        defaultInput: { data: [2, 4, 4, 4, 5, 5, 7, 9], resamples: 200, seed: 42, alpha: 0.05 },
+        defaultInput: JSON.parse("{\"data\":[2,4,4,4,5,5,7,9],\"resamples\":200,\"seed\":42,\"alpha\":0.05}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1129,20 +1017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Borůvka's MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"C\",1],[\"B\",\"D\",5],[\"C\",\"D\",8],[\"C\",\"E\",10],[\"D\",\"E\",2],[\"D\",\"F\",6],[\"E\",\"F\",3]],\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1150,7 +1025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bose-Nelson Sorting Network",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [4, 3, 2, 1],
+        defaultInput: JSON.parse("[4,3,2,1]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1158,7 +1033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Boson Sampling (Exact Small Simulation)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(C(n+m-1,n) * n * n!)", space: "O(C(n+m-1,n) * m)" },
-        defaultInput: { modes: 4, photons: 2, inputModes: [0, 1], seed: 11 },
+        defaultInput: JSON.parse("{\"modes\":4,\"photons\":2,\"inputModes\":[0,1],\"seed\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1166,7 +1041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Box Stacking",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { boxes: [[4, 6, 7], [1, 2, 3]] },
+        defaultInput: JSON.parse("{\"boxes\":[[4,6,7],[1,2,3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1174,7 +1049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Boyer-Moore",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(σ + m)" },
-        defaultInput: { text: "ababcabababcab", pattern: "abcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"abcab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -1182,12 +1057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Boykov-Kolmogorov",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3], ["S", "B", 2], ["A", "B", 1], ["A", "T", 2], ["B", "T", 3]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1195,15 +1065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Byte-Pair Encoding Merge (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(m * total_symbols)", space: "O(total_symbols + vocabulary)" },
-        defaultInput: {
-            corpus: [
-                { word: "low", freq: 5 },
-                { word: "lower", freq: 2 },
-                { word: "newest", freq: 3 },
-                { word: "widest", freq: 2 },
-            ],
-            vocabTarget: 14,
-        },
+        defaultInput: JSON.parse("{\"corpus\":[{\"word\":\"low\",\"freq\":5},{\"word\":\"lower\",\"freq\":2},{\"word\":\"newest\",\"freq\":3},{\"word\":\"widest\",\"freq\":2}],\"vocabTarget\":14}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1211,15 +1073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Branch and Bound (0/1 Knapsack)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(2^n) worst case", space: "O(n)" },
-        defaultInput: {
-            items: [
-                { weight: 2, value: 6 },
-                { weight: 3, value: 10 },
-                { weight: 4, value: 12 },
-                { weight: 5, value: 14 },
-            ],
-            capacity: 9,
-        },
+        defaultInput: JSON.parse("{\"items\":[{\"weight\":2,\"value\":6},{\"weight\":3,\"value\":10},{\"weight\":4,\"value\":12},{\"weight\":5,\"value\":14}],\"capacity\":9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1227,7 +1081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Branch and Bound Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^d) worst", space: "O(d)" },
-        defaultInput: { start: "A", goal: "G" },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1235,7 +1089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Brent's Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(1)" },
-        defaultInput: { func: "x2-2", a: 0, b: 2, tol: 1e-12, iterations: 40 },
+        defaultInput: JSON.parse("{\"func\":\"x2-2\",\"a\":0,\"b\":2,\"tol\":1e-12,\"iterations\":40}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1243,7 +1097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bresenham Line Rasterization",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { from: [0, 0], to: [5, 3] },
+        defaultInput: JSON.parse("{\"from\":[0,0],\"to\":[5,3]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1251,7 +1105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Brodal Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) worst-case", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1259,7 +1113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximal Cliques (Bron–Kerbosch)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(3^(V/3))", space: "O(V²)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1267,15 +1121,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Brotli-Style Compression",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n * window * matchLength)", space: "O(n)" },
-        defaultInput: { text: "the quick brown fox jumps over the lazy dog and the quick brown fox runs" },
+        defaultInput: JSON.parse("{\"text\":\"the quick brown fox jumps over the lazy dog and the quick brown fox runs\"}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "brzozowski-derivative",
+        name: "Brzozowski Derivative",
+        category: "string" as AlgorithmCategory,
+        complexity: { time: "O(|input| * |pattern|)", space: "O(|pattern|)" },
+        defaultInput: JSON.parse("{\"pattern\":\"(ab|ac)*\",\"input\":\"abac\"}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "bsp-tree",
         name: "BSP Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) query", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1283,7 +1145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Binary Search Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(h) ops", space: "O(n)" },
-        defaultInput: { values: [8, 3, 10, 1, 6, 14], search: 6 },
+        defaultInput: JSON.parse("{\"values\":[8,3,10,1,6,14],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1291,7 +1153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bubble Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [4, 2, 7, 1, 9, 3],
+        defaultInput: JSON.parse("[4,2,7,1,9,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1299,7 +1161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bucket Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1/B log) amortized", space: "O(n)" },
-        defaultInput: { keys: [6, 2, 9, 1] },
+        defaultInput: JSON.parse("{\"keys\":[6,2,9,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1307,7 +1169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bucket Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n) average", space: "O(n)" },
-        defaultInput: [0.42, 0.32, 0.67, 0.1, 0.55, 0.83, 0.24, 0.71],
+        defaultInput: JSON.parse("[0.42,0.32,0.67,0.1,0.55,0.83,0.24,0.71]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1315,7 +1177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Buddy Allocator",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { total: 8, ops: [["alloc", 2], ["alloc", 1], ["free", 0], ["alloc", 4]] },
+        defaultInput: JSON.parse("{\"total\":8,\"ops\":[[\"alloc\",2],[\"alloc\",1],[\"free\",0],[\"alloc\",4]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1323,7 +1185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bulk Synchronous Parallel Prefix Scan",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n/P + P)", space: "O(n/P)" },
-        defaultInput: { values: [1, 2, 3, 4, 5, 6, 7, 8], processors: 4 },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5,6,7,8],\"processors\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1331,7 +1193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bulletproof Range Proof (Toy Inner-Product Argument)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { value: 7, bits: 3, u: 3 },
+        defaultInput: JSON.parse("{\"value\":7,\"bits\":3,\"u\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1339,7 +1201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bullshark Consensus (Teaching Core)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(w * n)", space: "O(n)" },
-        defaultInput: { nodes: 4, crash: -1, value: "block-1", coin: 0, maxWaves: 2 },
+        defaultInput: JSON.parse("{\"nodes\":4,\"crash\":-1,\"value\":\"block-1\",\"coin\":0,\"maxWaves\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1347,7 +1209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Bully Leader Election",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n^2) messages", space: "O(n)" },
-        defaultInput: { processIds: [0, 1, 2, 3, 4], down: [2], initiator: 1 },
+        defaultInput: JSON.parse("{\"processIds\":[0,1,2,3,4],\"down\":[2],\"initiator\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1355,7 +1217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Burrows-Wheeler",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n²)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1363,7 +1225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Burst Balloons",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { nums: [3, 1, 5, 8] },
+        defaultInput: JSON.parse("{\"nums\":[3,1,5,8]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1371,7 +1233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Burst Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) amortized", space: "O(n)" },
-        defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
+        defaultInput: JSON.parse("{\"words\":[\"car\",\"cat\",\"dog\",\"dot\"],\"search\":\"cat\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1379,7 +1241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Burstsort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n · w)", space: "O(n)" },
-        defaultInput: [5, 3, 1, 4, 2],
+        defaultInput: JSON.parse("[5,3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1387,7 +1249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "BPE Tokenization",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n) per merge", space: "O(n)" },
-        defaultInput: { text: "aaabdaaabac" },
+        defaultInput: JSON.parse("{\"text\":\"aaabdaaabac\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -1395,7 +1257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cache-Oblivious B-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log_B N)", space: "O(n)" },
-        defaultInput: { keys: [1, 2, 3, 4, 5, 6, 7], query: 5 },
+        defaultInput: JSON.parse("{\"keys\":[1,2,3,4,5,6,7],\"query\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1403,7 +1265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cache Replacement ARC",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(c)", space: "O(c)" },
-        defaultInput: { references: ["A", "B", "C", "A", "D", "B", "E", "C", "A", "B", "C", "D"], capacity: 3 },
+        defaultInput: JSON.parse("{\"references\":[\"A\",\"B\",\"C\",\"A\",\"D\",\"B\",\"E\",\"C\",\"A\",\"B\",\"C\",\"D\"],\"capacity\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1411,7 +1273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LFU Cache Replacement (LRU Tie-Break)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(capacity) per access", space: "O(capacity)" },
-        defaultInput: { capacity: 3, accesses: [1, 2, 3, 1, 2, 4, 1, 5, 2, 3, 4, 5] },
+        defaultInput: JSON.parse("{\"capacity\":3,\"accesses\":[1,2,3,1,2,4,1,5,2,3,4,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1419,7 +1281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LRU Cache Replacement",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(capacity) per access", space: "O(capacity)" },
-        defaultInput: { capacity: 3, accesses: [1, 2, 3, 2, 4, 1, 5, 2, 3, 4, 5] },
+        defaultInput: JSON.parse("{\"capacity\":3,\"accesses\":[1,2,3,2,4,1,5,2,3,4,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1427,7 +1289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "TinyLFU Cache Replacement",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(capacity + rows)", space: "O(capacity + rows * width)" },
-        defaultInput: { capacity: 4, accesses: [1, 2, 3, 1, 2, 4, 5, 1, 3, 5, 6, 2, 4, 6, 7, 1] },
+        defaultInput: JSON.parse("{\"capacity\":4,\"accesses\":[1,2,3,1,2,4,5,1,3,5,6,2,4,6,7,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1435,7 +1297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Caesar Cipher",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { plaintext: "ATTACKATDAWN", shift: 3 },
+        defaultInput: JSON.parse("{\"plaintext\":\"ATTACKATDAWN\",\"shift\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1443,7 +1305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Calendar Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
-        defaultInput: { events: [["a", 1], ["b", 5], ["c", 2], ["d", 8]] },
+        defaultInput: JSON.parse("{\"events\":[[\"a\",1],[\"b\",5],[\"c\",2],[\"d\",8]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1451,7 +1313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Capacity Scaling Max Flow",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E^2 log U)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2", "3"], edges: [[0, 1, 5], [0, 2, 4], [1, 2, 2], [1, 3, 3], [2, 3, 6]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1,5],[0,2,4],[1,2,2],[1,3,3],[2,3,6]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1459,7 +1321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Carmichael Korselt Test",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(n))", space: "O(1)" },
-        defaultInput: { n: 561 },
+        defaultInput: JSON.parse("{\"n\":561}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1467,7 +1329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cartesian Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) build, O(1) LCA w/ RMQ", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1475,7 +1337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cascade Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [4, 1, 5, 2, 3],
+        defaultInput: JSON.parse("[4,1,5,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1483,7 +1345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Catalan Numbers (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { n: 4 },
+        defaultInput: JSON.parse("{\"n\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1491,15 +1353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Causal Broadcast (Vector Clock Model)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(m^2 * p)", space: "O(m * p)" },
-        defaultInput: {
-            processes: 3,
-            messages: [
-                { from: 2, vector: [0, 1, 1] },
-                { from: 1, vector: [0, 1, 0] },
-                { from: 2, vector: [0, 1, 2] },
-                { from: 1, vector: [0, 2, 1] },
-            ],
-        },
+        defaultInput: JSON.parse("{\"processes\":3,\"messages\":[{\"from\":2,\"vector\":[0,1,1]},{\"from\":1,\"vector\":[0,1,0]},{\"from\":2,\"vector\":[0,1,2]},{\"from\":1,\"vector\":[0,2,1]}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1507,7 +1361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Central Limit Theorem (Dice Convolution)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n * sides^2 * maxN)", space: "O(maxN * sides)" },
-        defaultInput: { sides: 6, maxN: 4 },
+        defaultInput: JSON.parse("{\"sides\":6,\"maxN\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1515,10 +1369,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Centroid Decomposition",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V log V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
+        visualType: "tree" as LayoutType,
+    },
+    {
+        id: "cfr",
+        name: "Counterfactual Regret Minimization",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(iterations * sets * actions)", space: "O(sets * actions)" },
+        defaultInput: JSON.parse("{\"iterations\":300}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -1526,11 +1385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Completely Fair Scheduler",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(ticks * taskCount)", space: "O(taskCount)" },
-        defaultInput: {
-            tasks: [{ name: "alpha", nice: 0 }, { name: "beta", nice: 5 }, { name: "gamma", nice: -5 }],
-            ticks: 24,
-            quantum: 4,
-        },
+        defaultInput: JSON.parse("{\"tasks\":[{\"name\":\"alpha\",\"nice\":0},{\"name\":\"beta\",\"nice\":5},{\"name\":\"gamma\",\"nice\":-5}],\"ticks\":24,\"quantum\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1538,79 +1393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ChaCha20-Poly1305 (Teaching Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(L/16)", space: "O(1)" },
-        defaultInput: {
-            key: [
-                0,
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13,
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-                20,
-                21,
-                22,
-                23,
-                24,
-                25,
-                26,
-                27,
-                28,
-                29,
-                30,
-                31,
-            ],
-            nonce: [0, 0, 0, 9, 0, 0, 0, 74, 0, 0, 0, 0],
-            counter: 1,
-            message: "Cryptographic Forum Research Group",
-            polyKey: [
-                133,
-                214,
-                190,
-                120,
-                87,
-                85,
-                109,
-                51,
-                127,
-                68,
-                82,
-                254,
-                66,
-                213,
-                6,
-                168,
-                1,
-                3,
-                128,
-                138,
-                251,
-                13,
-                178,
-                253,
-                74,
-                191,
-                246,
-                175,
-                65,
-                73,
-                245,
-                27,
-            ],
-        },
+        defaultInput: JSON.parse("{\"key\":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],\"nonce\":[0,0,0,9,0,0,0,74,0,0,0,0],\"counter\":1,\"message\":\"Cryptographic Forum Research Group\",\"polyKey\":[133,214,190,120,87,85,109,51,127,68,82,254,66,213,6,168,1,3,128,138,251,13,178,253,74,191,246,175,65,73,245,27]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1618,18 +1401,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chain of Thought",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(m)" },
-        defaultInput: {
-            start: 2,
-            operations: [{ op: "+", value: 3 }, { op: "*", value: 4 }, { op: "-", value: 5 }, { op: "/", value: 3 }],
-        },
+        defaultInput: JSON.parse("{\"start\":2,\"operations\":[{\"op\":\"+\",\"value\":3},{\"op\":\"*\",\"value\":4},{\"op\":\"-\",\"value\":5},{\"op\":\"/\",\"value\":3}]}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "chan-convex-hull",
+        name: "Chan's Convex Hull",
+        category: "geometry" as AlgorithmCategory,
+        complexity: { time: "O(n log h)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[3,1],[1,2],[4,3],[2,4],[5,0],[0,5],[6,2],[3,5]]}") as unknown,
+        visualType: "point" as LayoutType,
     },
     {
         id: "chandy-lamport-snapshot",
         name: "Chandy-Lamport Snapshot",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(e)", space: "O(p + e)" },
-        defaultInput: { values: [4, 7, 2, 5] },
+        defaultInput: JSON.parse("{\"values\":[4,7,2,5]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1637,14 +1425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Change Data Capture",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(c log c)", space: "O(k)" },
-        defaultInput: {
-            changes: [
-                { seq: 1, op: "INSERT", key: "k1", value: "a" },
-                { seq: 2, op: "INSERT", key: "k2", value: "b" },
-                { seq: 3, op: "UPDATE", key: "k1", value: "c" },
-                { seq: 4, op: "DELETE", key: "k2", value: "" },
-            ],
-        },
+        defaultInput: JSON.parse("{\"changes\":[{\"seq\":1,\"op\":\"INSERT\",\"key\":\"k1\",\"value\":\"a\"},{\"seq\":2,\"op\":\"INSERT\",\"key\":\"k2\",\"value\":\"b\"},{\"seq\":3,\"op\":\"UPDATE\",\"key\":\"k1\",\"value\":\"c\"},{\"seq\":4,\"op\":\"DELETE\",\"key\":\"k2\",\"value\":\"\"}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1652,7 +1433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Change Point Detection",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { series: [1, 2, 2, 1, 9, 10, 9, 10, 8], minLen: 2 },
+        defaultInput: JSON.parse("{\"series\":[1,2,2,1,9,10,9,10,8],\"minLen\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1660,7 +1441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Characteristic Function",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps * outcomes)", space: "O(steps)" },
-        defaultInput: { values: [0, 1], probabilities: [0.4, 0.6], tMin: -3, tMax: 3, steps: 9 },
+        defaultInput: JSON.parse("{\"values\":[0,1],\"probabilities\":[0.4,0.6],\"tMin\":-3,\"tMax\":3,\"steps\":9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1668,7 +1449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chernoff Bound",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n squared)", space: "O(n)" },
-        defaultInput: { trials: 10, probability: 0.4 },
+        defaultInput: JSON.parse("{\"trials\":10,\"probability\":0.4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1676,7 +1457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chi-Square Goodness-of-Fit Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(k)" },
-        defaultInput: { observed: [25, 20, 15, 10, 30], expected: [20, 20, 20, 20, 20], alpha: 0.05 },
+        defaultInput: JSON.parse("{\"observed\":[25,20,15,10,30],\"expected\":[20,20,20,20,20],\"alpha\":0.05}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1684,15 +1465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chinese Postman (Route Inspection)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 1], ["D", 1]],
-                B: [["A", 1], ["C", 1]],
-                C: [["B", 1], ["D", 1]],
-                D: [["C", 1], ["A", 1]],
-            },
-            start: "A",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",1],[\"D\",1]],\"B\":[[\"A\",1],[\"C\",1]],\"C\":[[\"B\",1],[\"D\",1]],\"D\":[[\"C\",1],[\"A\",1]]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1700,7 +1473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cholesky Decomposition",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { matrix: [[4, 2, 2], [2, 10, 1], [2, 1, 9]] },
+        defaultInput: JSON.parse("{\"matrix\":[[4,2,2],[2,10,1],[2,1,9]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1708,7 +1481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chomp",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(3^(r·c))", space: "O(3^(r·c))" },
-        defaultInput: { rows: 3, cols: 3 },
+        defaultInput: JSON.parse("{\"rows\":3,\"cols\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1716,7 +1489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chord DHT",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(log N) lookup", space: "O(N log N)" },
-        defaultInput: { m: 4, nodes: [1, 4, 9, 12], key: 11 },
+        defaultInput: JSON.parse("{\"m\":4,\"nodes\":[1,4,9,12],\"key\":11}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1724,7 +1497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Chord DHT Lookup",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(log n)" },
-        defaultInput: { key: 10, from: 1 },
+        defaultInput: JSON.parse("{\"key\":10,\"from\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1732,7 +1505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Christofides Euclidean TSP",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { points: [[0, 0], [2, 0], [2, 2], [0, 2]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[2,0],[2,2],[0,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1740,7 +1513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circle–Circle Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { c0: [0, 0], r0: 3, c1: [4, 0], r1: 3 },
+        defaultInput: JSON.parse("{\"c0\":[0,0],\"r0\":3,\"c1\":[4,0],\"r1\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1748,7 +1521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circle Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(log n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1756,7 +1529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circle Union Area Sweep",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n² log n)", space: "O(n)" },
-        defaultInput: { circles: [[0, 0, 1], [1, 0, 1]] },
+        defaultInput: JSON.parse("{\"circles\":[[0,0,1],[1,0,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1764,12 +1537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circuit Breaker",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            outcomes: ["S", "S", "F", "F", "F", "F", "F", "S", "S", "S", "S", "F", "F", "F", "F", "F", "S", "S", "S"],
-            failureThreshold: 3,
-            resetTimeout: 3,
-            successThreshold: 2,
-        },
+        defaultInput: JSON.parse("{\"outcomes\":[\"S\",\"S\",\"F\",\"F\",\"F\",\"F\",\"F\",\"S\",\"S\",\"S\",\"S\",\"F\",\"F\",\"F\",\"F\",\"F\",\"S\",\"S\",\"S\"],\"failureThreshold\":3,\"resetTimeout\":3,\"successThreshold\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1777,7 +1545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circular Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) known insert, O(n) search", space: "O(n)" },
-        defaultInput: { values: [7, 3, 9, 1] },
+        defaultInput: JSON.parse("{\"values\":[7,3,9,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1785,7 +1553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Circumcenter (Circle Through 3 Points)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { points: [[0, 0], [4, 0], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1793,7 +1561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CKKS-Style Homomorphic Arithmetic (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(s)", space: "O(s)" },
-        defaultInput: { a: [1.5, -2.25], b: [0.5, 3] },
+        defaultInput: JSON.parse("{\"a\":[1.5,-2.25],\"b\":[0.5,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1801,7 +1569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Classifier-Free Guidance",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(steps * dim)", space: "O(dim)" },
-        defaultInput: { uncond: [[1, 2, 3, 4], [0.5, 1, 1.5, 2]], cond: [[2, 3, 1, 5], [1, 2, 2, 3]], scale: 2 },
+        defaultInput: JSON.parse("{\"uncond\":[[1,2,3,4],[0.5,1,1.5,2]],\"cond\":[[2,3,1,5],[1,2,2,3]],\"scale\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1809,7 +1577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Clock Cache",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(capacity)" },
-        defaultInput: { capacity: 3, accesses: ["a", "b", "c", "a", "d"] },
+        defaultInput: JSON.parse("{\"capacity\":3,\"accesses\":[\"a\",\"b\",\"c\",\"a\",\"d\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1817,7 +1585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Closeness Centrality",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·(V + E))", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A"], C: ["A"], D: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\"],\"C\":[\"A\"],\"D\":[\"A\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1825,7 +1593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Closest Pair of Points",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [12, 30], [40, 50], [5, 1], [12, 10], [3, 4]] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[12,30],[40,50],[5,1],[12,10],[3,4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1833,7 +1601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CNOT Gate",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { initial: "10" },
+        defaultInput: JSON.parse("{\"initial\":\"10\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1841,7 +1609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Coalesced Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) avg", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1849,7 +1617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cocktail Shaker Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 1, 8, 3, 7, 2, 6, 4],
+        defaultInput: JSON.parse("[5,1,8,3,7,2,6,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1857,28 +1625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CoDel Active Queue Management",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            packets: [
-                { arrival: 0, service: 10 },
-                { arrival: 0, service: 10 },
-                { arrival: 0, service: 10 },
-                { arrival: 0, service: 10 },
-                { arrival: 0, service: 10 },
-                { arrival: 5, service: 10 },
-                { arrival: 5, service: 10 },
-                { arrival: 5, service: 10 },
-                { arrival: 20, service: 10 },
-                { arrival: 20, service: 10 },
-                { arrival: 20, service: 10 },
-                { arrival: 30, service: 10 },
-                { arrival: 30, service: 10 },
-                { arrival: 40, service: 10 },
-                { arrival: 40, service: 10 },
-                { arrival: 50, service: 10 },
-            ],
-            target: 10,
-            interval: 50,
-        },
+        defaultInput: JSON.parse("{\"packets\":[{\"arrival\":0,\"service\":10},{\"arrival\":0,\"service\":10},{\"arrival\":0,\"service\":10},{\"arrival\":0,\"service\":10},{\"arrival\":0,\"service\":10},{\"arrival\":5,\"service\":10},{\"arrival\":5,\"service\":10},{\"arrival\":5,\"service\":10},{\"arrival\":20,\"service\":10},{\"arrival\":20,\"service\":10},{\"arrival\":20,\"service\":10},{\"arrival\":30,\"service\":10},{\"arrival\":30,\"service\":10},{\"arrival\":40,\"service\":10},{\"arrival\":40,\"service\":10},{\"arrival\":50,\"service\":10}],\"target\":10,\"interval\":50}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1886,7 +1633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cohen–Sutherland Line Clipping",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { segment: [[-1, 2], [6, 3]], window: { minX: 0, minY: 0, maxX: 4, maxY: 4 } },
+        defaultInput: JSON.parse("{\"segment\":[[-1,2],[6,3]],\"window\":{\"minX\":0,\"minY\":0,\"maxX\":4,\"maxY\":4}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1894,7 +1641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Coin Change (Count Ways)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·amount)", space: "O(amount)" },
-        defaultInput: { coins: [1, 2, 5], amount: 5 },
+        defaultInput: JSON.parse("{\"coins\":[1,2,5],\"amount\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1902,7 +1649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Coin Change (Min Coins)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·amount)", space: "O(amount)" },
-        defaultInput: { coins: [1, 2, 5], amount: 5 },
+        defaultInput: JSON.parse("{\"coins\":[1,2,5],\"amount\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1910,7 +1657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Col",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { size: 4 },
+        defaultInput: JSON.parse("{\"size\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1918,7 +1665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Color Code (Distance-3 Syndrome Decoding)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(q)", space: "O(q)" },
-        defaultInput: { error: 2, type: "X" },
+        defaultInput: JSON.parse("{\"error\":2,\"type\":\"X\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1926,7 +1673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Column Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 2, 7, 1, 5, 3, 8, 4],
+        defaultInput: JSON.parse("[6,2,7,1,5,3,8,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1934,24 +1681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Columnar Storage",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(R * C)", space: "O(R * C)" },
-        defaultInput: {
-            rows: [
-                { id: 1, region: 3, sales: 120 },
-                { id: 2, region: 1, sales: 95 },
-                { id: 3, region: 2, sales: 80 },
-                { id: 4, region: 3, sales: 110 },
-                { id: 5, region: 1, sales: 175 },
-                { id: 6, region: 2, sales: 260 },
-                { id: 7, region: 3, sales: 140 },
-                { id: 8, region: 1, sales: 290 },
-                { id: 9, region: 2, sales: 110 },
-                { id: 10, region: 3, sales: 240 },
-                { id: 11, region: 1, sales: 80 },
-                { id: 12, region: 2, sales: 310 },
-            ],
-            rowGroupSize: 4,
-            predicate: { column: "sales", op: ">", value: 150 },
-        },
+        defaultInput: JSON.parse("{\"rows\":[{\"id\":1,\"region\":3,\"sales\":120},{\"id\":2,\"region\":1,\"sales\":95},{\"id\":3,\"region\":2,\"sales\":80},{\"id\":4,\"region\":3,\"sales\":110},{\"id\":5,\"region\":1,\"sales\":175},{\"id\":6,\"region\":2,\"sales\":260},{\"id\":7,\"region\":3,\"sales\":140},{\"id\":8,\"region\":1,\"sales\":290},{\"id\":9,\"region\":2,\"sales\":110},{\"id\":10,\"region\":3,\"sales\":240},{\"id\":11,\"region\":1,\"sales\":80},{\"id\":12,\"region\":2,\"sales\":310}],\"rowGroupSize\":4,\"predicate\":{\"column\":\"sales\",\"op\":\">\",\"value\":150}}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1959,7 +1689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Comb Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [8, 4, 1, 7, 3, 9, 2, 6],
+        defaultInput: JSON.parse("[8,4,1,7,3,9,2,6]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1967,7 +1697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Concurrent Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
-        defaultInput: { ops: [["A", "enqueue", 1], ["B", "enqueue", 2], ["A", "enqueue", 3], ["B", "dequeue", 0]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"A\",\"enqueue\",1],[\"B\",\"enqueue\",2],[\"A\",\"enqueue\",3],[\"B\",\"dequeue\",0]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -1975,7 +1705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Concurrent Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(m) lock-free", space: "O(keys)" },
-        defaultInput: { keys: ["01", "10", "11"], lookup: "10" },
+        defaultInput: JSON.parse("{\"keys\":[\"01\",\"10\",\"11\"],\"lookup\":\"10\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1983,7 +1713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Conditional Probability",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(rows * cols)", space: "O(rows * cols)" },
-        defaultInput: { table: [[80, 10], [5, 20]], givenColumn: 1 },
+        defaultInput: JSON.parse("{\"table\":[[80,10],[5,20]],\"givenColumn\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -1991,7 +1721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Conjugate Gradient",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: { A: [[4, 1], [1, 3]], b: [1, 2], iterations: 10, tolerance: 1e-10 },
+        defaultInput: JSON.parse("{\"A\":[[4,1],[1,3]],\"b\":[1,2],\"iterations\":10,\"tolerance\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -1999,7 +1729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Conjugate Prior Update",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(m * g)", space: "O(g)" },
-        defaultInput: { alpha: 2, beta: 2, observations: [1, 1, 0, 1, 0, 0, 1], samples: 41 },
+        defaultInput: JSON.parse("{\"alpha\":2,\"beta\":2,\"observations\":[1,1,0,1,0,0,1],\"samples\":41}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2007,7 +1737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Connected Components (Union-Find)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E α(V))", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["A"], C: ["D"], D: ["C"], E: [] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"A\"],\"C\":[\"D\"],\"D\":[\"C\"],\"E\":[]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2015,7 +1745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Consistency Model (Distillation Step)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * p)", space: "O(T)" },
-        defaultInput: { x0: 1, noise: 0.8, levels: [0.2, 0.4, 0.6, 0.8, 1], learningRate: 0.01 },
+        defaultInput: JSON.parse("{\"x0\":1,\"noise\":0.8,\"levels\":[0.2,0.4,0.6,0.8,1],\"learningRate\":0.01}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2023,7 +1753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Consistent Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n·v)" },
-        defaultInput: { nodes: ["N0", "N1", "N2"], keys: ["a", "b", "c", "d", "e"], drop: "N1" },
+        defaultInput: JSON.parse("{\"nodes\":[\"N0\",\"N1\",\"N2\"],\"keys\":[\"a\",\"b\",\"c\",\"d\",\"e\"],\"drop\":\"N1\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2031,20 +1761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Consistent Hashing With Bounded Loads",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n log n + k * n)", space: "O(n + k)" },
-        defaultInput: {
-            nodes: [{ id: "A", position: 0.1 }, { id: "B", position: 0.45 }, { id: "C", position: 0.8 }],
-            keys: [
-                { id: "k0", hash: 0.05 },
-                { id: "k1", hash: 0.2 },
-                { id: "k2", hash: 0.3 },
-                { id: "k3", hash: 0.5 },
-                { id: "k4", hash: 0.6 },
-                { id: "k5", hash: 0.7 },
-                { id: "k6", hash: 0.85 },
-                { id: "k7", hash: 0.95 },
-            ],
-            capacity: 3,
-        },
+        defaultInput: JSON.parse("{\"nodes\":[{\"id\":\"A\",\"position\":0.1},{\"id\":\"B\",\"position\":0.45},{\"id\":\"C\",\"position\":0.8}],\"keys\":[{\"id\":\"k0\",\"hash\":0.05},{\"id\":\"k1\",\"hash\":0.2},{\"id\":\"k2\",\"hash\":0.3},{\"id\":\"k3\",\"hash\":0.5},{\"id\":\"k4\",\"hash\":0.6},{\"id\":\"k5\",\"hash\":0.7},{\"id\":\"k6\",\"hash\":0.85},{\"id\":\"k7\",\"hash\":0.95}],\"capacity\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -2052,7 +1769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Continued Fraction Convergents",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log min(num, den))", space: "O(log min(num, den))" },
-        defaultInput: { num: 7, den: 5 },
+        defaultInput: JSON.parse("{\"num\":7,\"den\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2060,11 +1777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Contraction Hierarchies",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2072,7 +1785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "NT-Xent Contrastive Loss",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(M^2 * d)", space: "O(M^2)" },
-        defaultInput: { embeddings: [[1, 0], [0.9, 0.1], [-1, 0], [-0.9, -0.1]], temperature: 0.5 },
+        defaultInput: JSON.parse("{\"embeddings\":[[1,0],[0.9,0.1],[-1,0],[-0.9,-0.1]],\"temperature\":0.5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2080,7 +1793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Hull (Graham)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3], [2, 4]] },
+        defaultInput: JSON.parse("{\"points\":[[0,3],[1,1],[2,2],[4,4],[0,0],[1,2],[3,1],[3,3],[2,4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2088,7 +1801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Hull (Jarvis)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·h)", space: "O(h)" },
-        defaultInput: { points: [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3], [2, 4]] },
+        defaultInput: JSON.parse("{\"points\":[[0,3],[1,1],[2,2],[4,4],[0,0],[1,2],[3,1],[3,3],[2,4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2096,7 +1809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Hull (Monotone Chain)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 3], [1, 1], [2, 2], [4, 4], [0, 0], [1, 2], [3, 1], [3, 3], [2, 4]] },
+        defaultInput: JSON.parse("{\"points\":[[0,3],[1,1],[2,2],[4,4],[0,0],[1,2],[3,1],[3,3],[2,4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2104,7 +1817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Hull Trick (Static)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O((n+q) log n)", space: "O(n)" },
-        defaultInput: { lines: [{ m: 2, b: 1 }, { m: 1, b: 2 }, { m: -1, b: 5 }], queries: [0, 1, 2] },
+        defaultInput: JSON.parse("{\"lines\":[{\"m\":2,\"b\":1},{\"m\":1,\"b\":2},{\"m\":-1,\"b\":5}],\"queries\":[0,1,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2112,7 +1825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Layers (Onion Peeling)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(k·n log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 4], [0, 4], [1, 1], [3, 1], [2, 3], [2, 2]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,4],[0,4],[1,1],[3,1],[2,3],[2,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2120,7 +1833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Convex Polygon Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n+m)" },
-        defaultInput: { a: [[0, 0], [3, 0], [3, 3], [0, 3]], b: [[2, 2], [5, 2], [2, 5]] },
+        defaultInput: JSON.parse("{\"a\":[[0,0],[3,0],[3,3],[0,3]],\"b\":[[2,2],[5,2],[2,5]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2128,7 +1841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Coordinate Descent",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n^2)" },
-        defaultInput: { q: [[4, 1], [1, 3]], b: [1, 2], iterations: 25, tolerance: 1e-12 },
+        defaultInput: JSON.parse("{\"q\":[[4,1],[1,3]],\"b\":[1,2],\"iterations\":25,\"tolerance\":1e-12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2136,16 +1849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Copy-on-Write Snapshot",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(P) per operation", space: "O(P * S) worst case" },
-        defaultInput: {
-            initial: [10, 20, 30, 40],
-            operations: [
-                { op: "snapshot", label: "v1" },
-                { op: "write", page: 1, value: 99 },
-                { op: "write", page: 2, value: 88 },
-                { op: "snapshot", label: "v2" },
-                { op: "write", page: 1, value: 77 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"initial\":[10,20,30,40],\"operations\":[{\"op\":\"snapshot\",\"label\":\"v1\"},{\"op\":\"write\",\"page\":1,\"value\":99},{\"op\":\"write\",\"page\":2,\"value\":88},{\"op\":\"snapshot\",\"label\":\"v2\"},{\"op\":\"write\",\"page\":1,\"value\":77}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2153,12 +1857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cost Scaling",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V·E·log C)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3, 2], ["S", "B", 2, 1], ["A", "B", 1, 1], ["A", "T", 2, 3], ["B", "T", 3, 2]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3,2],[\"S\",\"B\",2,1],[\"A\",\"B\",1,1],[\"A\",\"T\",2,3],[\"B\",\"T\",3,2]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2166,7 +1865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Count-Min Sketch",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(d)", space: "O(w·d)" },
-        defaultInput: { keys: ["a", "b", "a", "c", "a", "b"], probe: "a" },
+        defaultInput: JSON.parse("{\"keys\":[\"a\",\"b\",\"a\",\"c\",\"a\",\"b\"],\"probe\":\"a\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2174,7 +1873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Count Sketch",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(rows)", space: "O(rows x width)" },
-        defaultInput: { stream: ["a", "b", "a", "c", "a"], query: "a" },
+        defaultInput: JSON.parse("{\"stream\":[\"a\",\"b\",\"a\",\"c\",\"a\"],\"query\":\"a\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2182,7 +1881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Counting Bloom Filter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) ops", space: "O(m)" },
-        defaultInput: { keys: [5, 17, 9], query: 17 },
+        defaultInput: JSON.parse("{\"keys\":[5,17,9],\"query\":17}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2190,7 +1889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Counting DP",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { steps: 10 },
+        defaultInput: JSON.parse("{\"steps\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2198,7 +1897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Counting Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n + k)", space: "O(n + k)" },
-        defaultInput: [4, 2, 2, 8, 3, 3, 1, 6],
+        defaultInput: JSON.parse("[4,2,2,8,3,3,1,6]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2206,7 +1905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cover Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -2214,19 +1913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cox Proportional Hazards",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: {
-            subjects: [
-                { time: 1, event: 1, x: 0 },
-                { time: 2, event: 1, x: 1 },
-                { time: 3, event: 0, x: 0 },
-                { time: 4, event: 1, x: 1 },
-                { time: 5, event: 1, x: 1 },
-                { time: 6, event: 0, x: 0 },
-                { time: 7, event: 1, x: 0 },
-            ],
-            maxIterations: 25,
-            tol: 1e-9,
-        },
+        defaultInput: JSON.parse("{\"subjects\":[{\"time\":1,\"event\":1,\"x\":0},{\"time\":2,\"event\":1,\"x\":1},{\"time\":3,\"event\":0,\"x\":0},{\"time\":4,\"event\":1,\"x\":1},{\"time\":5,\"event\":1,\"x\":1},{\"time\":6,\"event\":0,\"x\":0},{\"time\":7,\"event\":1,\"x\":0}],\"maxIterations\":25,\"tol\":1e-9}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -2234,16 +1921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Command Query Responsibility Segregation (CQRS)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(c + e)", space: "O(e + a)" },
-        defaultInput: {
-            accounts: ["checking", "savings"],
-            commands: [
-                { type: "deposit", account: "checking", amount: 100 },
-                { type: "deposit", account: "savings", amount: 50 },
-                { type: "withdraw", account: "checking", amount: 30 },
-                { type: "withdraw", account: "savings", amount: 80 },
-                { type: "deposit", account: "checking", amount: 20 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"accounts\":[\"checking\",\"savings\"],\"commands\":[{\"type\":\"deposit\",\"account\":\"checking\",\"amount\":100},{\"type\":\"deposit\",\"account\":\"savings\",\"amount\":50},{\"type\":\"withdraw\",\"account\":\"checking\",\"amount\":30},{\"type\":\"withdraw\",\"account\":\"savings\",\"amount\":80},{\"type\":\"deposit\",\"account\":\"checking\",\"amount\":20}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2251,7 +1929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cram",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { size: 3 },
+        defaultInput: JSON.parse("{\"size\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2259,7 +1937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CRC-32 Checksum",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(8 * n)", space: "O(n)" },
-        defaultInput: { text: "123456789" },
+        defaultInput: JSON.parse("{\"text\":\"123456789\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2267,7 +1945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CRDT G-Counter",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r) per merge", space: "O(r)" },
-        defaultInput: { updates: [3, 5, 2] },
+        defaultInput: JSON.parse("{\"updates\":[3,5,2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2275,10 +1953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LWW Register CRDT",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(updates + replicas * merges)", space: "O(replicas)" },
-        defaultInput: {
-            replicas: 3,
-            updates: [{ replica: 0, value: 5 }, { replica: 1, value: 9 }, { replica: 2, value: 3 }],
-        },
+        defaultInput: JSON.parse("{\"replicas\":3,\"updates\":[{\"replica\":0,\"value\":5},{\"replica\":1,\"value\":9},{\"replica\":2,\"value\":3}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2286,16 +1961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LWW-Element-Set CRDT",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(n)" },
-        defaultInput: {
-            operations: [
-                { replica: 0, action: "add", element: "a", timestamp: 1 },
-                { replica: 0, action: "add", element: "b", timestamp: 2 },
-                { replica: 1, action: "add", element: "c", timestamp: 1 },
-                { replica: 0, action: "remove", element: "a", timestamp: 3 },
-                { replica: 1, action: "add", element: "a", timestamp: 4 },
-            ],
-            addWins: true,
-        },
+        defaultInput: JSON.parse("{\"operations\":[{\"replica\":0,\"action\":\"add\",\"element\":\"a\",\"timestamp\":1},{\"replica\":0,\"action\":\"add\",\"element\":\"b\",\"timestamp\":2},{\"replica\":1,\"action\":\"add\",\"element\":\"c\",\"timestamp\":1},{\"replica\":0,\"action\":\"remove\",\"element\":\"a\",\"timestamp\":3},{\"replica\":1,\"action\":\"add\",\"element\":\"a\",\"timestamp\":4}],\"addWins\":true}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2303,14 +1969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "OR-Map CRDT (Observed-Remove Map)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(o + t)", space: "O(t)" },
-        defaultInput: {
-            keys: ["color", "size"],
-            opsA: [
-                { type: "add", key: "color", value: "red", tag: "A0" },
-                { type: "add", key: "size", value: "10", tag: "A1" },
-            ],
-            opsB: [{ type: "remove", key: "color" }, { type: "add", key: "size", value: "20", tag: "B1" }],
-        },
+        defaultInput: JSON.parse("{\"keys\":[\"color\",\"size\"],\"opsA\":[{\"type\":\"add\",\"key\":\"color\",\"value\":\"red\",\"tag\":\"A0\"},{\"type\":\"add\",\"key\":\"size\",\"value\":\"10\",\"tag\":\"A1\"}],\"opsB\":[{\"type\":\"remove\",\"key\":\"color\"},{\"type\":\"add\",\"key\":\"size\",\"value\":\"20\",\"tag\":\"B1\"}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2318,17 +1977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "OR-Set (Observed-Remove Set CRDT)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(T)", space: "O(T)" },
-        defaultInput: {
-            replicas: 2,
-            ops: [
-                { replica: 0, op: "add", value: "a" },
-                { replica: 0, op: "add", value: "b" },
-                { replica: 1, op: "add", value: "b" },
-                { replica: 0, op: "remove", value: "b" },
-                { replica: 1, op: "add", value: "b" },
-                { replica: 1, op: "remove", value: "a" },
-            ],
-        },
+        defaultInput: JSON.parse("{\"replicas\":2,\"ops\":[{\"replica\":0,\"op\":\"add\",\"value\":\"a\"},{\"replica\":0,\"op\":\"add\",\"value\":\"b\"},{\"replica\":1,\"op\":\"add\",\"value\":\"b\"},{\"replica\":0,\"op\":\"remove\",\"value\":\"b\"},{\"replica\":1,\"op\":\"add\",\"value\":\"b\"},{\"replica\":1,\"op\":\"remove\",\"value\":\"a\"}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2336,16 +1985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "PN-Counter CRDT",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(rounds * n^2)", space: "O(n^2)" },
-        defaultInput: {
-            replicas: 3,
-            ops: [
-                { replica: 0, type: "inc", amount: 5 },
-                { replica: 1, type: "dec", amount: 2 },
-                { replica: 2, type: "inc", amount: 3 },
-                { replica: 0, type: "dec", amount: 1 },
-            ],
-            mergeRounds: 2,
-        },
+        defaultInput: JSON.parse("{\"replicas\":3,\"ops\":[{\"replica\":0,\"type\":\"inc\",\"amount\":5},{\"replica\":1,\"type\":\"dec\",\"amount\":2},{\"replica\":2,\"type\":\"inc\",\"amount\":3},{\"replica\":0,\"type\":\"dec\",\"amount\":1}],\"mergeRounds\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2353,15 +1993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RGA Sequence CRDT (Toy Simulation)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(m log m)", space: "O(m)" },
-        defaultInput: {
-            operations: [
-                { site: 0, counter: 0, after: null, char: "a" },
-                { site: 1, counter: 0, after: 0, char: "b" },
-                { site: 1, counter: 1, after: 0, char: "c" },
-                { site: 0, counter: 1, after: 1, char: "d" },
-                { site: 2, counter: 0, after: 2, char: "e" },
-            ],
-        },
+        defaultInput: JSON.parse("{\"operations\":[{\"site\":0,\"counter\":0,\"after\":null,\"char\":\"a\"},{\"site\":1,\"counter\":0,\"after\":0,\"char\":\"b\"},{\"site\":1,\"counter\":1,\"after\":0,\"char\":\"c\"},{\"site\":0,\"counter\":1,\"after\":1,\"char\":\"d\"},{\"site\":2,\"counter\":0,\"after\":2,\"char\":\"e\"}]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -2369,7 +2001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CRT (Coprime)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k·log m)", space: "O(k)" },
-        defaultInput: { remainders: [2, 3, 2], moduli: [3, 5, 7] },
+        defaultInput: JSON.parse("{\"remainders\":[2,3,2],\"moduli\":[3,5,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2377,7 +2009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CRT (Generalized)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k·log max m)", space: "O(k)" },
-        defaultInput: { remainders: [2, 4, 1], moduli: [4, 6, 3] },
+        defaultInput: JSON.parse("{\"remainders\":[2,4,1],\"moduli\":[4,6,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2385,11 +2017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CSR (Compressed Sparse Row)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(degree) neighbors", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B"], ["A", "C"], ["B", "D"], ["C", "D"]],
-            inspect: "A",
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],\"inspect\":\"A\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2397,10 +2025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CSS Quantum Code Construction",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^(n-kx) * 2^(n-kz))", space: "O(2^n)" },
-        defaultInput: {
-            hx: [[0, 0, 0, 1, 1, 1, 1], [0, 1, 1, 0, 0, 1, 1], [1, 0, 1, 0, 1, 0, 1]],
-            hz: [[0, 0, 0, 1, 1, 1, 1], [0, 1, 1, 0, 0, 1, 1], [1, 0, 1, 0, 1, 0, 1]],
-        },
+        defaultInput: JSON.parse("{\"hx\":[[0,0,0,1,1,1,1],[0,1,1,0,0,1,1],[1,0,1,0,1,0,1]],\"hz\":[[0,0,0,1,1,1,1],[0,1,1,0,0,1,1],[1,0,1,0,1,0,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2408,7 +2033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cube Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 2, 7, 1, 6, 3, 8, 4],
+        defaultInput: JSON.parse("[5,2,7,1,6,3,8,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2416,7 +2041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cubic Spline Interpolation",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n + s log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [1, 1], [2, 0], [3, 2]], samples: 9 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,1],[2,0],[3,2]],\"samples\":9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2424,7 +2049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cuckoo Filter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 17, 9], query: 17 },
+        defaultInput: JSON.parse("{\"keys\":[5,17,9],\"query\":17}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2432,7 +2057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cuckoo Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) lookup", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2440,7 +2065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cycle Canceling Min-Cost Flow",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E^2 U)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 2, 1], [1, 2, 2, 1], [0, 2, 2, 5]], demand: 2 },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,2,1],[1,2,2,1],[0,2,2,5]],\"demand\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2448,7 +2073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cycle Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [4, 3, 2, 5, 1],
+        defaultInput: JSON.parse("[4,3,2,5,1]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2456,7 +2081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Cyclic Buffer",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ops", space: "O(capacity)" },
-        defaultInput: { capacity: 5, writes: [1, 2, 3, 4, 5, 6, 7] },
+        defaultInput: JSON.parse("{\"capacity\":5,\"writes\":[1,2,3,4,5,6,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2464,7 +2089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "CYK Parsing",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n³·|G|)", space: "O(n²)" },
-        defaultInput: { input: "ab" },
+        defaultInput: JSON.parse("{\"input\":\"ab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2472,12 +2097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "D* Lite Replanning",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-            blocked: ["C", "D"],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"blocked\":[\"C\",\"D\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2485,18 +2105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DAG Longest Path (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 3], ["C", 6]],
-                B: [["C", 2], ["D", 4]],
-                C: [["D", 1], ["E", 5]],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",3],[\"C\",6]],\"B\":[[\"C\",2],[\"D\",4]],\"C\":[[\"D\",1],[\"E\",5]],\"D\":[[\"E\",2]],\"E\":[]},\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"start\":\"A\",\"target\":\"E\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2504,7 +2113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DAG Minimum Path Cover",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1], [1, 2], [0, 2]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1],[1,2],[0,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2512,7 +2121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Path Counting in a DAG",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["C", "D"], C: ["D"], D: [] }, start: "A", target: "D" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"C\",\"D\"],\"C\":[\"D\"],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2520,26 +2129,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DAG Shortest Path (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 3], ["C", 6]],
-                B: [["C", 2], ["D", 4]],
-                C: [["D", 1], ["E", 5]],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",3],[\"C\",6]],\"B\":[[\"C\",2],[\"D\",4]],\"C\":[[\"D\",1],[\"E\",5]],\"D\":[[\"E\",2]],\"E\":[]},\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"start\":\"A\",\"target\":\"E\"}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "damerau-levenshtein",
+        name: "Damerau-Levenshtein",
+        category: "string" as AlgorithmCategory,
+        complexity: { time: "O(n * m)", space: "O(n * m)" },
+        defaultInput: JSON.parse("{\"a\":\"abcd\",\"b\":\"abdc\"}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "dary-heap",
         name: "D-ary Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log_d n) ops", space: "O(n)" },
-        defaultInput: { values: [5, 9, 4, 7, 3, 2, 8], degree: 4 },
+        defaultInput: JSON.parse("{\"values\":[5,9,4,7,3,2,8],\"degree\":4}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -2547,7 +2153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dawson's Kayles",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { pins: 7 },
+        defaultInput: JSON.parse("{\"pins\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2555,7 +2161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DBSCAN Clustering",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [1, 0], [0, 1], [5, 5], [6, 5], [9, 9]], eps: 1.5, minPts: 2 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0],[0,1],[5,5],[6,5],[9,9]],\"eps\":1.5,\"minPts\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2563,7 +2169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Decision Tree (CART)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(depth * d * n log n)", space: "O(nodes)" },
-        defaultInput: { points: [[0, 0], [0, 1], [1, 0], [1, 1], [2, 1], [2, 2]], labels: [0, 0, 0, 1, 1, 1], maxDepth: 4 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[0,1],[1,0],[1,1],[2,1],[2,2]],\"labels\":[0,0,0,1,1,1],\"maxDepth\":4}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -2571,19 +2177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Decision Tree ID3",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(m·n·v)", space: "O(n)" },
-        defaultInput: {
-            rows: [
-                { Outlook: "S", Humidity: "H", Play: "N" },
-                { Outlook: "S", Humidity: "H", Play: "N" },
-                { Outlook: "O", Humidity: "H", Play: "Y" },
-                { Outlook: "R", Humidity: "N", Play: "Y" },
-                { Outlook: "R", Humidity: "N", Play: "Y" },
-                { Outlook: "O", Humidity: "N", Play: "Y" },
-                { Outlook: "S", Humidity: "N", Play: "Y" },
-                { Outlook: "R", Humidity: "H", Play: "N" },
-            ],
-            target: "Play",
-        },
+        defaultInput: JSON.parse("{\"rows\":[{\"Outlook\":\"S\",\"Humidity\":\"H\",\"Play\":\"N\"},{\"Outlook\":\"S\",\"Humidity\":\"H\",\"Play\":\"N\"},{\"Outlook\":\"O\",\"Humidity\":\"H\",\"Play\":\"Y\"},{\"Outlook\":\"R\",\"Humidity\":\"N\",\"Play\":\"Y\"},{\"Outlook\":\"R\",\"Humidity\":\"N\",\"Play\":\"Y\"},{\"Outlook\":\"O\",\"Humidity\":\"N\",\"Play\":\"Y\"},{\"Outlook\":\"S\",\"Humidity\":\"N\",\"Play\":\"Y\"},{\"Outlook\":\"R\",\"Humidity\":\"H\",\"Play\":\"N\"}],\"target\":\"Play\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -2591,7 +2185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Decode Ways",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { s: "226" },
+        defaultInput: JSON.parse("{\"s\":\"226\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2599,16 +2193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Deep Q-Network Update (Toy)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(A * d)", space: "O(A * d)" },
-        defaultInput: {
-            w: [0.5, -0.2, 0.1],
-            phiS: [[1, 0, 1], [0, 1, 1]],
-            phiSPrime: [[1, 0, 1], [0, 1, 1]],
-            action: 0,
-            reward: 1,
-            gamma: 0.9,
-            lr: 0.1,
-            done: false,
-        },
+        defaultInput: JSON.parse("{\"w\":[0.5,-0.2,0.1],\"phiS\":[[1,0,1],[0,1,1]],\"phiSPrime\":[[1,0,1],[0,1,1]],\"action\":0,\"reward\":1,\"gamma\":0.9,\"lr\":0.1,\"done\":false}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2616,7 +2201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DEFLATE Compression (Small LZ77 + Huffman Simulator)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n * window * maxMatch + k log k)", space: "O(n + k)" },
-        defaultInput: { text: "TOBEORNOTTOBEORTOBEORNOT", window: 32, minMatch: 3 },
+        defaultInput: JSON.parse("{\"text\":\"TOBEORNOTTOBEORTOBEORNOT\",\"window\":32,\"minMatch\":3}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -2624,7 +2209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Degeneracy Ordering",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\",\"C\",\"D\"],\"C\":[\"A\",\"B\"],\"D\":[\"A\",\"B\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2632,11 +2217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Degree-Constrained MST Heuristic",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-            bound: 2,
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]],\"bound\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2644,7 +2225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Delaunay Triangulation (Incremental)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²) avg, O(n⁴) brute force", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 3], [0, 3], [1, 1]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,3],[0,3],[1,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2652,7 +2233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gorilla Delta Compression (Small XOR Simulator)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(bits)" },
-        defaultInput: { values: [100, 100, 100, 110, 110, 200, 200, 200, 205] },
+        defaultInput: JSON.parse("{\"values\":[100,100,100,110,110,200,200,200,205]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2660,12 +2241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Delta-Stepping (Parallel SSSP)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E + V·(L/Δ))", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-            delta: 2,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"delta\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2673,7 +2249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Denoising Diffusion Step",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(d)", space: "O(d)" },
-        defaultInput: { signal: [-2, -1, 0, 1, 2, 3], alpha: 0.8, seed: 17 },
+        defaultInput: JSON.parse("{\"signal\":[-2,-1,0,1,2,3],\"alpha\":0.8,\"seed\":17}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2681,7 +2257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Density Matrix Renormalization Group",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(N^3)", space: "O(N^2)" },
-        defaultInput: { length: 4, field: 1, keptStates: 4 },
+        defaultInput: JSON.parse("{\"length\":4,\"field\":1,\"keptStates\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2689,16 +2265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Deque",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) both ends", space: "O(n)" },
-        defaultInput: {
-            ops: [
-                ["pushBack", 1],
-                ["pushBack", 2],
-                ["pushFront", 0],
-                ["pushBack", 3],
-                ["popFront", 0],
-                ["popBack", 0],
-            ],
-        },
+        defaultInput: JSON.parse("{\"ops\":[[\"pushBack\",1],[\"pushBack\",2],[\"pushFront\",0],[\"pushBack\",3],[\"popFront\",0],[\"popBack\",0]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2706,7 +2273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Deque Sortable Permutations",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: [3, 1, 2],
+        defaultInput: JSON.parse("[3,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2714,7 +2281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Derangements (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 4 },
+        defaultInput: JSON.parse("{\"n\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2722,7 +2289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DES-Structure Toy Feistel Cipher",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(rounds)", space: "O(rounds)" },
-        defaultInput: { block: 90, key: 45 },
+        defaultInput: JSON.parse("{\"block\":90,\"key\":45}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2730,7 +2297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Deutsch-Jozsa Algorithm",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n * 2^n) simulated", space: "O(2^n) simulated" },
-        defaultInput: { n: 3, balanced: true },
+        defaultInput: JSON.parse("{\"n\":3,\"balanced\":true}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2738,7 +2305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DFS (Iterative)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"E\"],\"D\":[\"B\",\"E\"],\"E\":[\"C\",\"D\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2746,7 +2313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DFS (Recursive)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"E\"],\"D\":[\"B\",\"E\"],\"E\":[\"C\",\"D\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2754,7 +2321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DFS Tree / Edge Classification",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"C\"],\"C\":[]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2762,11 +2329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dial's Bucket Dijkstra",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(C·V + E)", space: "O(C·V)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2774,7 +2337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dictionary Encoding with RLE",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "AAAABBBCCDDDDEEEE" },
+        defaultInput: JSON.parse("{\"text\":\"AAAABBBCCDDDDEEEE\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2782,12 +2345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Difference in Differences",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: {
-            treatedPre: [10, 12, 11, 13],
-            treatedPost: [20, 23, 21, 25],
-            controlPre: [10, 11, 12, 11],
-            controlPost: [14, 16, 15, 16],
-        },
+        defaultInput: JSON.parse("{\"treatedPre\":[10,12,11,13],\"treatedPost\":[20,23,21,25],\"controlPre\":[10,11,12,11],\"controlPost\":[14,16,15,16]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2795,7 +2353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Diffie–Hellman Exchange",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { a: 6, b: 15 },
+        defaultInput: JSON.parse("{\"a\":6,\"b\":15}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2803,7 +2361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Diffusion Transformer (adaLN Conditioning Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * D)", space: "O(T * D)" },
-        defaultInput: { tokens: [[1, 2], [-1, 0.5], [3, -2]], cond: [0.8, -0.3] },
+        defaultInput: JSON.parse("{\"tokens\":[[1,2],[-1,0.5],[3,-2]],\"cond\":[0.8,-0.3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2811,7 +2369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Digit DP",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(digits × states × 10)", space: "O(digits)" },
-        defaultInput: { n: 543 },
+        defaultInput: JSON.parse("{\"n\":543}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2819,18 +2377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dijkstra (Fibonacci)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V log V + E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 2]],
-                B: [["D", 5], ["E", 3]],
-                C: [["B", 1], ["D", 8]],
-                D: [["E", 2], ["F", 6]],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",2]],\"B\":[[\"D\",5],[\"E\",3]],\"C\":[[\"B\",1],[\"D\",8]],\"D\":[[\"E\",2],[\"F\",6]],\"E\":[[\"F\",1]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2838,18 +2385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dijkstra (Heap)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 2]],
-                B: [["D", 5], ["E", 3]],
-                C: [["B", 1], ["D", 8]],
-                D: [["E", 2], ["F", 6]],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",2]],\"B\":[[\"D\",5],[\"E\",3]],\"C\":[[\"B\",1],[\"D\",8]],\"D\":[[\"E\",2],[\"F\",6]],\"E\":[[\"F\",1]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2857,18 +2393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dijkstra (Matrix)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 2]],
-                B: [["D", 5], ["E", 3]],
-                C: [["B", 1], ["D", 8]],
-                D: [["E", 2], ["F", 6]],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",2]],\"B\":[[\"D\",5],[\"E\",3]],\"C\":[[\"B\",1],[\"D\",8]],\"D\":[[\"E\",2],[\"F\",6]],\"E\":[[\"F\",1]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2876,7 +2401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dilithium Signature (Toy Lattice Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { q: 97, a: 13, s: 7, y: 3, message: "hi" },
+        defaultInput: JSON.parse("{\"q\":97,\"a\":13,\"s\":7,\"y\":3,\"message\":\"hi\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2884,20 +2409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dinic's Algorithm",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V²·E)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [
-                ["S", "A", 3],
-                ["S", "B", 2],
-                ["A", "B", 1],
-                ["A", "C", 2],
-                ["B", "C", 3],
-                ["B", "T", 1],
-                ["C", "T", 4],
-            ],
-            vertices: ["S", "A", "B", "C", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"C\",2],[\"B\",\"C\",3],[\"B\",\"T\",1],[\"C\",\"T\",4]],\"vertices\":[\"S\",\"A\",\"B\",\"C\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -2905,13 +2417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DINOv2 (Self-Distillation Loss)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(K)", space: "O(K)" },
-        defaultInput: {
-            teacherLogits: [2, 0.5, -1, 0.2],
-            studentLogits: [0.1, -0.2, 0.3, 0],
-            temperatureTeacher: 0.05,
-            temperatureStudent: 0.1,
-            learningRate: 0.05,
-        },
+        defaultInput: JSON.parse("{\"teacherLogits\":[2,0.5,-1,0.2],\"studentLogits\":[0.1,-0.2,0.3,0],\"temperatureTeacher\":0.05,\"temperatureStudent\":0.1,\"learningRate\":0.05}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2919,7 +2425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Direct Preference Optimization",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(iterations)" },
-        defaultInput: { beta: 0.1, refLogOdds: 0, startLogOdds: 0, iterations: 40, learningRate: 0.5 },
+        defaultInput: JSON.parse("{\"beta\":0.1,\"refLogOdds\":0,\"startLogOdds\":0,\"iterations\":40,\"learningRate\":0.5}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -2927,7 +2433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dirichlet Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(K)", space: "O(K)" },
-        defaultInput: { alphas: [2, 3, 5], counts: [1, 2, 1], seed: 7 },
+        defaultInput: JSON.parse("{\"alphas\":[2,3,5],\"counts\":[1,2,1],\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2935,7 +2441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Discrete Root",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p) / O(p)", space: "O(1)" },
-        defaultInput: { a: 3, k: 7, p: 31 },
+        defaultInput: JSON.parse("{\"a\":3,\"k\":7,\"p\":31}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2943,7 +2449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Disjoint Sparse Table",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) range", space: "O(n log n)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2951,7 +2457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Distinct Subsequences (Count)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { s: "babgbag", t: "bag" },
+        defaultInput: JSON.parse("{\"s\":\"babgbag\",\"t\":\"bag\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2959,7 +2465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Distinct Substrings Count",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { text: "aba" },
+        defaultInput: JSON.parse("{\"text\":\"aba\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -2967,7 +2473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Redlock Distributed Lock (Rule Model)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { masters: 5, acquired: [true, true, true, false, false], elapsed: 120, validity: 1000, drift: 50 },
+        defaultInput: JSON.parse("{\"masters\":5,\"acquired\":[true,true,true,false,false],\"elapsed\":120,\"validity\":1000,\"drift\":50}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -2975,7 +2481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Divide & Conquer DP",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n log n)", space: "O(n)" },
-        defaultInput: { array: [1, 2, 6, 8, 10, 20], groups: 3 },
+        defaultInput: JSON.parse("{\"array\":[1,2,6,8,10,20],\"groups\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2983,7 +2489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Divisor Sieve (Sigma)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { n: 12 },
+        defaultInput: JSON.parse("{\"n\":12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -2991,14 +2497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Do-Calculus (Back-Door Identification)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(V * (E + P * L))", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["Z", "X"], ["Z", "Y"], ["X", "Y"]],
-            treatment: "X",
-            outcome: "Y",
-            adjust: ["Z"],
-            pYGivenXZ: { "0": { Z: 0.3 }, "1": { Z: 0.9 } },
-            pZ: { Z: 1 },
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"Z\",\"X\"],[\"Z\",\"Y\"],[\"X\",\"Y\"]],\"treatment\":\"X\",\"outcome\":\"Y\",\"adjust\":[\"Z\"],\"pYGivenXZ\":{\"0\":{\"Z\":0.3},\"1\":{\"Z\":0.9}},\"pZ\":{\"Z\":1}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3006,7 +2505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dominators (Lengauer–Tarjan)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O((V + E) log(V + E))", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["D"], C: ["D"], D: ["E"], E: [] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"D\"],\"C\":[\"D\"],\"D\":[\"E\"],\"E\":[]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3014,7 +2513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Domineering",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { size: 4 },
+        defaultInput: JSON.parse("{\"size\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3022,7 +2521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weight-Decomposed Low-Rank Adaptation (DoRA, Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(dOut * dIn * r)", space: "O(dOut * dIn)" },
-        defaultInput: { weight: [[3, 0, 1], [0, 4, 2], [1, 2, 5]], rank: 1, seed: 5 },
+        defaultInput: JSON.parse("{\"weight\":[[3,0,1],[0,4,2],[1,2,5]],\"rank\":1,\"seed\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3030,7 +2529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dormand-Prince RK45 Adaptive Integrator",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(s)", space: "O(s)" },
-        defaultInput: { lambda: 1, y0: 1, t0: 0, tEnd: 1, tol: 0.000001, h0: 0.5, maxSteps: 50 },
+        defaultInput: JSON.parse("{\"lambda\":1,\"y0\":1,\"t0\":0,\"tEnd\":1,\"tol\":0.000001,\"h0\":0.5,\"maxSteps\":50}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3038,7 +2537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dot & Cross Product",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { u: [3, 2], v: [1, 4] },
+        defaultInput: JSON.parse("{\"u\":[3,2],\"v\":[1,4]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3046,7 +2545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dot Plot",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(nm)" },
-        defaultInput: { a: "GATT", b: "GCAT" },
+        defaultInput: JSON.parse("{\"a\":\"GATT\",\"b\":\"GCAT\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3054,7 +2553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dots and Boxes",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(e)", space: "O(e)" },
-        defaultInput: { boxes: 2 },
+        defaultInput: JSON.parse("{\"boxes\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3062,7 +2561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Double-Array Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(states)" },
-        defaultInput: { keys: ["cat", "car", "dog"], lookup: "car" },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"car\",\"dog\"],\"lookup\":\"car\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3070,7 +2569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Double Hashing",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(1) expected", space: "O(m)" },
-        defaultInput: { keys: ["cat", "car", "dog", "cow", "bat", "rat"], buckets: 11, probe: "dog" },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"car\",\"dog\",\"cow\",\"bat\",\"rat\"],\"buckets\":11,\"probe\":\"dog\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3078,7 +2577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Double Ratchet (Toy KDF Chains)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(E * M)", space: "O(E * M)" },
-        defaultInput: { seed: 1337, dhOutputs: [101, 202, 303], messagesPerEpoch: 2 },
+        defaultInput: JSON.parse("{\"seed\":1337,\"dhOutputs\":[101,202,303],\"messagesPerEpoch\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3086,7 +2585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Doubly Connected Edge List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) per link", space: "O(edges)" },
-        defaultInput: { vertices: ["A", "B", "C"] },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3094,7 +2593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Doubly Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ends, O(n) search", space: "O(n)" },
-        defaultInput: { values: [10, 20, 30], insert: 15 },
+        defaultInput: JSON.parse("{\"values\":[10,20,30],\"insert\":15}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3102,7 +2601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Douglas Peucker Simplification",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n) avg", space: "O(n)" },
-        defaultInput: { polyline: [[0, 0], [1, 0.2], [2, 1.5], [3, 0.2], [4, 0]], epsilon: 1 },
+        defaultInput: JSON.parse("{\"polyline\":[[0,0],[1,0.2],[2,1.5],[3,0.2],[4,0]],\"epsilon\":1}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3110,7 +2609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DPLL SAT Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(2^n) worst", space: "O(n)" },
-        defaultInput: { clauses: [[1, 2], [-1, 3], [-2, -3], [1, -3]] },
+        defaultInput: JSON.parse("{\"clauses\":[[1,2],[-1,3],[-2,-3],[1,-3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3118,7 +2617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DreamerV3 Rollout (Teaching Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(H * d^2)", space: "O(H * d)" },
-        defaultInput: { h0: [0, 0], actions: [0, 1, 2, 0], gamma: 0.9 },
+        defaultInput: JSON.parse("{\"h0\":[0,0],\"actions\":[0,1,2,0],\"gamma\":0.9}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3126,7 +2625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dropout Regularization",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(trials * d)", space: "O(d)" },
-        defaultInput: { activations: [0.5, 1, 1.5, 2, 2.5, 3], rate: 0.5, seed: 11, trials: 12 },
+        defaultInput: JSON.parse("{\"activations\":[0.5,1,1.5,2,2.5,3],\"rate\":0.5,\"seed\":11,\"trials\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3134,7 +2633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Graph Coloring (DSATUR)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\"],\"D\":[\"A\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3142,7 +2641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Disjoint Set Union",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(α(n)) ops", space: "O(n)" },
-        defaultInput: { size: 6, unions: [[0, 1], [2, 3], [0, 2], [4, 5]] },
+        defaultInput: JSON.parse("{\"size\":6,\"unions\":[[0,1],[2,3],[0,2],[4,5]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3150,11 +2649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DSU on Tree",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            colors: { A: 1, B: 2, C: 1, D: 3 },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"],\"colors\":{\"A\":1,\"B\":2,\"C\":1,\"D\":3}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3162,7 +2657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "DSU Rollback",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n + ops)" },
-        defaultInput: { n: 4, ops: [["union", 0, 1], ["union", 2, 3], ["query", 0, 2], ["undo"], ["query", 2, 3]] },
+        defaultInput: JSON.parse("{\"n\":4,\"ops\":[[\"union\",0,1],[\"union\",2,3],[\"query\",0,2],[\"undo\"],[\"query\",2,3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3170,7 +2665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dual Simplex",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(pivots * m * (n + m))", space: "O(m * (n + m))" },
-        defaultInput: { c: [2, 3], A: [[1, 1], [1, 2]], b: [4, 6] },
+        defaultInput: JSON.parse("{\"c\":[2,3],\"A\":[[1,1],[1,2]],\"b\":[4,6]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3178,7 +2673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dungeon Game",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n)", space: "O(m·n)" },
-        defaultInput: { dungeon: [[-2, -3, 3], [-5, -10, 1], [10, 30, -5]] },
+        defaultInput: JSON.parse("{\"dungeon\":[[-2,-3,3],[-5,-10,1],[10,30,-5]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3186,7 +2681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Duval Lyndon Factorization",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -3194,15 +2689,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dynamic Array",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized append", space: "O(n)" },
-        defaultInput: { appends: [1, 2, 3, 4, 5, 6, 7] },
+        defaultInput: JSON.parse("{\"appends\":[1,2,3,4,5,6,7]}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "dynamic-mst",
+        name: "Dynamic MST",
+        category: "mst" as AlgorithmCategory,
+        complexity: { time: "O(V + E) per update", space: "O(V + E)" },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",5],[\"B\",\"D\",6]],\"updates\":[{\"op\":\"insert\",\"a\":\"A\",\"b\":\"D\",\"w\":1},{\"op\":\"delete\",\"a\":\"B\",\"b\":\"C\"},{\"op\":\"setWeight\",\"a\":\"C\",\"b\":\"D\",\"w\":8}]}") as unknown,
+        visualType: "graph" as LayoutType,
     },
     {
         id: "dynamic-segment-tree",
         name: "Dynamic Segment Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log MAX) ops", space: "O(ops·log MAX)" },
-        defaultInput: { inserts: [7, 3, 10, 5] },
+        defaultInput: JSON.parse("{\"inserts\":[7,3,10,5]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3210,7 +2713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Dynamo Vector Reconciliation",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: { aVector: [2, 1], bVector: [1, 2], aValue: "red", bValue: "blue", aTime: 10, bTime: 20 },
+        defaultInput: JSON.parse("{\"aVector\":[2,1],\"bVector\":[1,2],\"aValue\":\"red\",\"bValue\":\"blue\",\"aTime\":10,\"bTime\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3218,7 +2721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "E91 Protocol (Toy Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(pairs)", space: "O(1)" },
-        defaultInput: { trialsPerSetting: 2000, keyBits: 64, seed: 11, eavesdropper: false },
+        defaultInput: JSON.parse("{\"trialsPerSetting\":2000,\"keyBits\":64,\"seed\":11,\"eavesdropper\":false}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3226,7 +2729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ear Decomposition",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\",\"A\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3234,7 +2737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Earley Parsing",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { input: "ab" },
+        defaultInput: JSON.parse("{\"input\":\"ab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3242,7 +2745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ECDSA Signature (Tiny Curve)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { message: "HI" },
+        defaultInput: JSON.parse("{\"message\":\"HI\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3250,7 +2753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ed25519 Signature (Toy Schnorr Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { p: 101, g: 2, secret: 23, nonce: 17, message: "hello" },
+        defaultInput: JSON.parse("{\"p\":101,\"g\":2,\"secret\":23,\"nonce\":17,\"message\":\"hello\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3258,7 +2761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Edge List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(E) iterate", space: "O(E)" },
-        defaultInput: { edges: [["A", "B", 4], ["A", "C", 2], ["B", "D", 5], ["C", "D", 8]] },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"D\",5],[\"C\",\"D\",8]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3266,7 +2769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Edit Distance",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { a: "kitten", b: "sitting" },
+        defaultInput: JSON.parse("{\"a\":\"kitten\",\"b\":\"sitting\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3274,11 +2777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Edmonds Arborescence",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E V)", space: "O(V + E)" },
-        defaultInput: {
-            root: "0",
-            vertices: ["0", "1", "2"],
-            edges: [["0", "1", 1], ["0", "2", 5], ["1", "2", 1], ["2", "1", 4]],
-        },
+        defaultInput: JSON.parse("{\"root\":\"0\",\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[\"0\",\"1\",1],[\"0\",\"2\",5],[\"1\",\"2\",1],[\"2\",\"1\",4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3286,12 +2785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Edmonds-Karp",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V·E²)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3], ["S", "B", 2], ["A", "B", 1], ["A", "T", 2], ["B", "T", 3]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3299,7 +2793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Eertree (Palindromic Tree)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n·σ)" },
-        defaultInput: { text: "ababa" },
+        defaultInput: JSON.parse("{\"text\":\"ababa\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3307,7 +2801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Egg Drop",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(eggs·moves)", space: "O(eggs)" },
-        defaultInput: { eggs: 2, floors: 10 },
+        defaultInput: JSON.parse("{\"eggs\":2,\"floors\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3315,7 +2809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Power Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: { A: [[2, 1], [1, 2]], iterations: 50, tolerance: 1e-10 },
+        defaultInput: JSON.parse("{\"A\":[[2,1],[1,2]],\"iterations\":50,\"tolerance\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3323,7 +2817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Elastic Net Regression",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(sweeps * d^2 * n)", space: "O(d)" },
-        defaultInput: { X: [[1, 0], [0, 1], [1, 1], [2, 1]], y: [1, 2, 3, 5], lambda1: 0.3, lambda2: 0.5, sweeps: 6 },
+        defaultInput: JSON.parse("{\"X\":[[1,0],[0,1],[1,1],[2,1]],\"y\":[1,2,3,5],\"lambda1\":0.3,\"lambda2\":0.5,\"sweeps\":6}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3331,7 +2825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ElGamal Encryption",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { p: 467, g: 2, x: 127, message: 42, seed: 20261118 },
+        defaultInput: JSON.parse("{\"p\":467,\"g\":2,\"x\":127,\"message\":42,\"seed\":20261118}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3339,7 +2833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ElGamal Encryption (Toy)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { p: 11, g: 2, x: 3, m: 5, k: 4 },
+        defaultInput: JSON.parse("{\"p\":11,\"g\":2,\"x\":3,\"m\":5,\"k\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3347,7 +2841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Elias Gamma Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log m)", space: "O(n log m)" },
-        defaultInput: { numbers: [1, 2, 3, 4, 5] },
+        defaultInput: JSON.parse("{\"numbers\":[1,2,3,4,5]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -3355,7 +2849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Elliptic Curve Point Addition",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { px: 5, py: 1, qx: 6, qy: 3 },
+        defaultInput: JSON.parse("{\"px\":5,\"py\":1,\"qx\":6,\"qy\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3363,7 +2857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Entanglement Swapping (Four-Qubit Simulation)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(16)" },
-        defaultInput: { measure: -1 },
+        defaultInput: JSON.parse("{\"measure\":-1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3371,21 +2865,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ephemeral Diffie-Hellman (Tiny Field)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log exponent)", space: "O(1)" },
-        defaultInput: { p: 23, g: 5, a: 6, b: 15 },
+        defaultInput: JSON.parse("{\"p\":23,\"g\":5,\"a\":6,\"b\":15}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "eppstein-k-shortest",
+        name: "Eppstein's K Shortest Paths",
+        category: "shortest-path" as AlgorithmCategory,
+        complexity: { time: "O(E log V + k * E)", space: "O(V + E + k)" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",1],[\"C\",2],[\"D\",5]],\"B\":[[\"D\",4],[\"E\",6]],\"C\":[[\"D\",2],[\"E\",3]],\"D\":[[\"E\",1]],\"E\":[]},\"start\":\"A\",\"target\":\"E\",\"k\":3}") as unknown,
+        visualType: "graph" as LayoutType,
     },
     {
         id: "esau-williams-capacitated-mst",
         name: "Esau-Williams Capacitated MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V^2 log V)", space: "O(V + E)" },
-        defaultInput: {
-            root: "0",
-            capacity: 2,
-            vertices: ["0", "1", "2", "3"],
-            edges: [["0", "1", 1], ["0", "2", 1], ["0", "3", 10], ["1", "2", 1], ["2", "3", 1], ["1", "3", 5]],
-            demand: [0, 1, 1, 1],
-        },
+        defaultInput: JSON.parse("{\"root\":\"0\",\"capacity\":2,\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[\"0\",\"1\",1],[\"0\",\"2\",1],[\"0\",\"3\",10],[\"1\",\"2\",1],[\"2\",\"3\",1],[\"1\",\"3\",5]],\"demand\":[0,1,1,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3393,7 +2889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Euclid's GCD",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log min(a, b))", space: "O(1)" },
-        defaultInput: { a: 48, b: 36 },
+        defaultInput: JSON.parse("{\"a\":48,\"b\":36}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3401,7 +2897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Euclidean MST via Delaunay",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [1, 0], [0, 1], [2, 0]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0],[0,1],[2,0]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3409,7 +2905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Euclid's Game",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(log min(a,b))", space: "O(log min(a,b))" },
-        defaultInput: { a: 12, b: 7 },
+        defaultInput: JSON.parse("{\"a\":12,\"b\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3417,7 +2913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Euler's Totient",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(√n)", space: "O(1)" },
-        defaultInput: { n: 12 },
+        defaultInput: JSON.parse("{\"n\":12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3425,7 +2921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Euler Tour Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { links: [[1, 2], [3, 4]], query: [1, 2] },
+        defaultInput: JSON.parse("{\"links\":[[1,2],[3,4]],\"query\":[1,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3433,7 +2929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Even Perfect Numbers",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(2^p)", space: "O(1)" },
-        defaultInput: { p: 5 },
+        defaultInput: JSON.parse("{\"p\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3441,17 +2937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Event-Time Watermark",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n log w)", space: "O(w)" },
-        defaultInput: {
-            events: [
-                { id: "e1", timestamp: 1000, value: 5 },
-                { id: "e2", timestamp: 5000, value: 3 },
-                { id: "e3", timestamp: 2000, value: 7 },
-                { id: "e4", timestamp: 6000, value: 2 },
-                { id: "e5", timestamp: 8000, value: 4 },
-            ],
-            windowSize: 4000,
-            allowedLateness: 2000,
-        },
+        defaultInput: JSON.parse("{\"events\":[{\"id\":\"e1\",\"timestamp\":1000,\"value\":5},{\"id\":\"e2\",\"timestamp\":5000,\"value\":3},{\"id\":\"e3\",\"timestamp\":2000,\"value\":7},{\"id\":\"e4\",\"timestamp\":6000,\"value\":2},{\"id\":\"e5\",\"timestamp\":8000,\"value\":4}],\"windowSize\":4000,\"allowedLateness\":2000}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3459,7 +2945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exactly-Once Stream Processing",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(u)" },
-        defaultInput: { records: ["a", "b", "c", "b", "a", "d"], failSinks: [] },
+        defaultInput: JSON.parse("{\"records\":[\"a\",\"b\",\"c\",\"b\",\"a\",\"d\"],\"failSinks\":[]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3467,17 +2953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Expectation and Variance",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            values: [1, 2, 3, 4, 5, 6],
-            probabilities: [
-                0.16666666666666666,
-                0.16666666666666666,
-                0.16666666666666666,
-                0.16666666666666666,
-                0.16666666666666666,
-                0.16666666666666666,
-            ],
-        },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5,6],\"probabilities\":[0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666,0.16666666666666666]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3485,12 +2961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Expectation-Maximization (Gaussian Mixture)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(n)" },
-        defaultInput: {
-            data: [1, 1.2, 1.5, 0.9, 1.1, 5, 5.3, 4.8, 5.5, 5.1],
-            iterations: 8,
-            variance: 1,
-            initialMeans: [2, 4],
-        },
+        defaultInput: JSON.parse("{\"data\":[1,1.2,1.5,0.9,1.1,5,5.3,4.8,5.5,5.1],\"iterations\":8,\"variance\":1,\"initialMeans\":[2,4]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3498,7 +2969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Expectiminimax",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
-        defaultInput: { leaves: [10, 0, 8, 4] },
+        defaultInput: JSON.parse("{\"leaves\":[10,0,8,4]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3506,7 +2977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Expert-Choice Routing",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(E * n log n)", space: "O(E * k)" },
-        defaultInput: { affinity: [[0.9, 0.1, 0.8], [0.7, 0.6, 0.2], [0.3, 0.95, 0.5], [0.4, 0.8, 0.9]], k: 2 },
+        defaultInput: JSON.parse("{\"affinity\":[[0.9,0.1,0.8],[0.7,0.6,0.2],[0.3,0.95,0.5],[0.4,0.8,0.9]],\"k\":2}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3514,7 +2985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Explicit Euler Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { lambda: -1, y0: 1, h: 0.1, steps: 10 },
+        defaultInput: JSON.parse("{\"lambda\":-1,\"y0\":1,\"h\":0.1,\"steps\":10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3522,7 +2993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exponential Backoff with Jitter",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(retries)", space: "O(retries)" },
-        defaultInput: { base: 0.1, cap: 5, retries: 10, seed: 123, strategy: "full" },
+        defaultInput: JSON.parse("{\"base\":0.1,\"cap\":5,\"retries\":10,\"seed\":123,\"strategy\":\"full\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3530,7 +3001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exponential Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { lambda: 1, maxX: 6, steps: 12 },
+        defaultInput: JSON.parse("{\"lambda\":1,\"maxX\":6,\"steps\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3538,7 +3009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exponential Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log i)", space: "O(1)" },
-        defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16], target: 12 },
+        defaultInput: JSON.parse("{\"array\":[2,4,6,8,10,12,14,16],\"target\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3546,7 +3017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exponential Smoothing",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { series: [3, 5, 4, 7, 6, 8, 7, 9, 10, 8], alpha: 0.4 },
+        defaultInput: JSON.parse("{\"series\":[3,5,4,7,6,8,7,9,10,8],\"alpha\":0.4}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3554,7 +3025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Expression Tree Evaluation",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { postfix: ["3", "4", "+", "2", "*", "7", "/"] },
+        defaultInput: JSON.parse("{\"postfix\":[\"3\",\"4\",\"+\",\"2\",\"*\",\"7\",\"/\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -3562,7 +3033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Extended Euclid",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log min(a, b))", space: "O(1)" },
-        defaultInput: { a: 48, b: 36 },
+        defaultInput: JSON.parse("{\"a\":48,\"b\":36}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3570,7 +3041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Extendible Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) avg", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3578,7 +3049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "External K-Way Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 1, 6, 2, 4, 3],
+        defaultInput: JSON.parse("[5,1,6,2,4,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3586,7 +3057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Factorial Prime Exponent",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log_p n)", space: "O(1)" },
-        defaultInput: { n: 25, p: 5 },
+        defaultInput: JSON.parse("{\"n\":25,\"p\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3594,7 +3065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Farey Sequence",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { order: 4 },
+        defaultInput: JSON.parse("{\"order\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3602,7 +3073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Feasible Circulation with Demands",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1"], edges: [[0, 1, 1, 2], [1, 0, 0, 2]], demand: [0, 0] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\"],\"edges\":[[0,1,1,2],[1,0,0,2]],\"demand\":[0,0]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3610,17 +3081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Federated Averaging (FedAvg)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(rounds * clients * steps * d)", space: "O(clients * d)" },
-        defaultInput: {
-            dim: 2,
-            rounds: 3,
-            lr: 0.3,
-            localSteps: 2,
-            clients: [
-                { samples: 10, target: [1, 1] },
-                { samples: 20, target: [-1, 2] },
-                { samples: 30, target: [3, -2] },
-            ],
-        },
+        defaultInput: JSON.parse("{\"dim\":2,\"rounds\":3,\"lr\":0.3,\"localSteps\":2,\"clients\":[{\"samples\":10,\"target\":[1,1]},{\"samples\":20,\"target\":[-1,2]},{\"samples\":30,\"target\":[3,-2]}]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3628,7 +3089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fenwick Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { array: [2, 1, 3, 4, 5, 1], update: [3, 2] },
+        defaultInput: JSON.parse("{\"array\":[2,1,3,4,5,1],\"update\":[3,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3636,7 +3097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fenwick Tree 2D",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log^2 n) ops", space: "O(nm)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3644,7 +3105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fenwick Tree (Range)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { n: 6, update: [2, 4, 3], query: [1, 5] },
+        defaultInput: JSON.parse("{\"n\":6,\"update\":[2,4,3],\"query\":[1,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3652,7 +3113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fermat Factorization",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(n))", space: "O(1)" },
-        defaultInput: { n: 77 },
+        defaultInput: JSON.parse("{\"n\":77}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3660,7 +3121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fermat's Little Theorem",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(p)", space: "O(1)" },
-        defaultInput: { a: 3, p: 7 },
+        defaultInput: JSON.parse("{\"a\":3,\"p\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3668,15 +3129,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FFT (Cooley-Tukey)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { values: [1, 2, 3, 4] },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4]}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "fibonacci-fast-doubling",
+        name: "Fibonacci Fast Doubling",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(log n)", space: "O(1)" },
+        defaultInput: JSON.parse("{\"n\":10}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "fibonacci-heap",
         name: "Fibonacci Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) insert amortized", space: "O(n)" },
-        defaultInput: { inserts: [7, 3, 9, 5, 2] },
+        defaultInput: JSON.parse("{\"inserts\":[7,3,9,5,2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3684,7 +3153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fibonacci Nim",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { stones: 10 },
+        defaultInput: JSON.parse("{\"stones\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3692,15 +3161,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fibonacci Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 5, 7, 9, 11, 13], target: 9 },
+        defaultInput: JSON.parse("{\"array\":[1,3,5,7,9,11,13],\"target\":9}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "fictitious-play",
+        name: "Fictitious Play",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(rounds * a^2)", space: "O(a)" },
+        defaultInput: JSON.parse("{\"payoffsA\":[[4,1],[3,0]],\"payoffsB\":[[3,1],[2,0]],\"rounds\":20}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "finger-tree",
         name: "Finger Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ends, O(log n) split", space: "O(n)" },
-        defaultInput: { pushes: [1, 2, 3, 4, 5], splitAt: 2 },
+        defaultInput: JSON.parse("{\"pushes\":[1,2,3,4,5],\"splitAt\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3708,7 +3185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Finite-Difference Derivative",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { func: "x2", x: 1, h: 0.1, method: "all" },
+        defaultInput: JSON.parse("{\"func\":\"x2\",\"x\":1,\"h\":0.1,\"method\":\"all\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3716,7 +3193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "First Missing Positive Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [3, 4, -1, 1] },
+        defaultInput: JSON.parse("{\"array\":[3,4,-1,1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3724,7 +3201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fisher Exact Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: { table: [3, 1, 1, 3] },
+        defaultInput: JSON.parse("{\"table\":[3,1,1,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3732,7 +3209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FISTA (Fast Iterative Shrinkage-Thresholding)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k * n^2)", space: "O(n^2)" },
-        defaultInput: { A: [[1, 0], [0, 1]], b: [2, -3], lambda: 0.5, L: 1, iterations: 40 },
+        defaultInput: JSON.parse("{\"A\":[[1,0],[0,1]],\"b\":[2,-3],\"lambda\":0.5,\"L\":1,\"iterations\":40}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3740,7 +3217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Five-Qubit Code",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^n * g)", space: "O(2^n)" },
-        defaultInput: { logical: 0, errorQubit: 2, errorType: "X" },
+        defaultInput: JSON.parse("{\"logical\":0,\"errorQubit\":2,\"errorType\":\"X\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3748,7 +3225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fixed-Point Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(I)", space: "O(I)" },
-        defaultInput: { fn: "cos", x0: 1, tolerance: 1e-10, maxIterations: 60 },
+        defaultInput: JSON.parse("{\"fn\":\"cos\",\"x0\":1,\"tolerance\":1e-10,\"maxIterations\":60}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3756,7 +3233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FKS Perfect Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) worst static", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3764,12 +3241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FlashAttention-2 (Tiled Online Softmax)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * d)", space: "O(n * d)" },
-        defaultInput: {
-            Q: [[1, 0], [0, 1], [1, 1], [1, -1]],
-            K: [[1, 0.5], [0.5, 1], [1, 1], [-0.5, 1]],
-            V: [[1, 0], [0, 1], [1, 1], [0.5, -0.5]],
-            block: 2,
-        },
+        defaultInput: JSON.parse("{\"Q\":[[1,0],[0,1],[1,1],[1,-1]],\"K\":[[1,0.5],[0.5,1],[1,1],[-0.5,1]],\"V\":[[1,0],[0,1],[1,1],[0.5,-0.5]],\"block\":2}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3777,7 +3249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FlashAttention-3 (Tiled Online Softmax)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * dk)", space: "O(n * dk)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1], [1, 0]], tileK: 2, seed: 11 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1],[1,0]],\"tileK\":2,\"seed\":11}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3785,12 +3257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Flash Decoding (Split-KV Merge Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d)", space: "O(n + blocks)" },
-        defaultInput: {
-            query: [1, 0.5],
-            keys: [[1, 0], [0, 1], [-1, 0.5], [0.5, -0.5], [1, 1], [-0.5, 1]],
-            values: [[1, 0], [0, 1], [0, 1], [1, 0], [0.5, 0.5], [1, 1]],
-            blockSize: 3,
-        },
+        defaultInput: JSON.parse("{\"query\":[1,0.5],\"keys\":[[1,0],[0,1],[-1,0.5],[0.5,-0.5],[1,1],[-0.5,1]],\"values\":[[1,0],[0,1],[0,1],[1,0],[0.5,0.5],[1,1]],\"blockSize\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3798,7 +3265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Flash Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3806,7 +3273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FlashInfer (Paged Attention Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { query: 2, keys: [1, 2, 3, 4], values: [0.5, 1, 1.5, 2], pageSize: 2 },
+        defaultInput: JSON.parse("{\"query\":2,\"keys\":[1,2,3,4],\"values\":[0.5,1,1.5,2],\"pageSize\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3814,7 +3281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fleury Eulerian Trail",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E * (V + E))", space: "O(V + E)" },
-        defaultInput: { edges: [["A", "B"], ["A", "C"], ["B", "C"], ["C", "D"]] },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"C\"],[\"C\",\"D\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3822,12 +3289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Flood Fill (BFS)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(rows × cols)", space: "O(rows × cols)" },
-        defaultInput: {
-            grid: [[1, 1, 2, 2], [1, 1, 2, 1], [3, 1, 1, 1], [3, 3, 3, 4]],
-            startRow: 1,
-            startCol: 1,
-            newColor: 9,
-        },
+        defaultInput: JSON.parse("{\"grid\":[[1,1,2,2],[1,1,2,1],[3,1,1,1],[3,3,3,4]],\"startRow\":1,\"startCol\":1,\"newColor\":9}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3835,12 +3297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Flood Fill (DFS)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(rows × cols)", space: "O(rows × cols)" },
-        defaultInput: {
-            grid: [[1, 1, 2, 2], [1, 1, 2, 1], [3, 1, 1, 1], [3, 3, 3, 4]],
-            startRow: 1,
-            startCol: 1,
-            newColor: 9,
-        },
+        defaultInput: JSON.parse("{\"grid\":[[1,1,2,2],[1,1,2,1],[3,1,1,1],[3,3,3,4]],\"startRow\":1,\"startCol\":1,\"newColor\":9}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3848,7 +3305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Flow Matching",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n*steps)", space: "O(n)" },
-        defaultInput: { sources: [[0, 0], [1, 0], [0, 1], [1, 1]], targets: [[1, 1], [2, 0.5], [0.5, 2], [2, 2]], steps: 4 },
+        defaultInput: JSON.parse("{\"sources\":[[0,0],[1,0],[0,1],[1,1]],\"targets\":[[1,1],[2,0.5],[0.5,2],[2,2]],\"steps\":4}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3856,7 +3313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Floyd Duplicate Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 4, 2, 2] },
+        defaultInput: JSON.parse("{\"array\":[1,3,4,2,2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3864,10 +3321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Floyd-Warshall",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V³)", space: "O(V²)" },
-        defaultInput: {
-            graph: { A: [["B", 3], ["C", 8]], B: [["C", 2], ["D", 7]], C: [["D", 1], ["A", -4]], D: [["C", 5]] },
-            vertices: ["A", "B", "C", "D"],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",3],[\"C\",8]],\"B\":[[\"C\",2],[\"D\",7]],\"C\":[[\"D\",1],[\"A\",-4]],\"D\":[[\"C\",5]]},\"vertices\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -3875,7 +3329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "FM-Index Search",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(n)" },
-        defaultInput: { text: "banana", pattern: "ana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\",\"pattern\":\"ana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -3883,7 +3337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Falcon / GPV Preimage Core",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { message: "hello", seed: 2026, n: 4, q: 97, bound: 1 },
+        defaultInput: JSON.parse("{\"message\":\"hello\",\"seed\":2026,\"n\":4,\"q\":97,\"bound\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3891,7 +3345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Focal Loss",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { probabilities: [0.95, 0.9, 0.6, 0.3, 0.1, 0.02], labels: [1, 0, 1, 0, 1, 0], gamma: 2, alpha: 0.25 },
+        defaultInput: JSON.parse("{\"probabilities\":[0.95,0.9,0.6,0.3,0.1,0.02],\"labels\":[1,0,1,0,1,0],\"gamma\":2,\"alpha\":0.25}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3899,12 +3353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ford-Fulkerson",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3], ["S", "B", 2], ["A", "B", 1], ["A", "T", 2], ["B", "T", 3]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3912,7 +3361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Format-Preserving Encryption (Feistel Network Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(1)" },
-        defaultInput: { digits: "123456", key: 7, rounds: 4 },
+        defaultInput: JSON.parse("{\"digits\":\"123456\",\"key\":7,\"rounds\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3920,7 +3369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Forward Propagation",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(L * n^2)", space: "O(L * n)" },
-        defaultInput: { x: [0.5, 0.8] },
+        defaultInput: JSON.parse("{\"x\":[0.5,0.8]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -3928,7 +3377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fractal Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log_B N) amortized", space: "O(n)" },
-        defaultInput: { keys: [3, 1, 4, 2], lookup: 4 },
+        defaultInput: JSON.parse("{\"keys\":[3,1,4,2],\"lookup\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3936,7 +3385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fractional Cascading",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n + k)", space: "O(n)" },
-        defaultInput: { a: [1, 3, 5, 7, 9], b: [2, 4, 6, 8, 10], target: 6 },
+        defaultInput: JSON.parse("{\"a\":[1,3,5,7,9],\"b\":[2,4,6,8,10],\"target\":6}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3944,7 +3393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Fredkin Gate (Controlled Swap)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(2^n)" },
-        defaultInput: { state: 5 },
+        defaultInput: JSON.parse("{\"state\":5}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -3952,7 +3401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Free List Allocator",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(blocks)", space: "O(blocks)" },
-        defaultInput: { total: 10, ops: [["alloc", 3], ["alloc", 4], ["free", 0], ["alloc", 2]] },
+        defaultInput: JSON.parse("{\"total\":10,\"ops\":[[\"alloc\",3],[\"alloc\",4],[\"free\",0],[\"alloc\",2]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3960,7 +3409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Freivalds' Check",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k·n²)", space: "O(n)" },
-        defaultInput: { trials: 3, seed: 5 },
+        defaultInput: JSON.parse("{\"trials\":3,\"seed\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3968,7 +3417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Friends Pairing (Count)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 4 },
+        defaultInput: JSON.parse("{\"n\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -3976,7 +3425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Frodo-Style LWE KEM",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { q: 97, n: 4, k: 2, seed: 20261118 },
+        defaultInput: JSON.parse("{\"q\":97,\"n\":4,\"k\":2,\"seed\":20261118}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3984,7 +3433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Funnel Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log N) amortized", space: "O(n)" },
-        defaultInput: { keys: [4, 1, 6, 2] },
+        defaultInput: JSON.parse("{\"keys\":[4,1,6,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -3992,7 +3441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gabow SCC",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["C", "E"], C: ["A", "F"], D: ["C"], E: ["D"], F: ["F"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"C\",\"E\"],\"C\":[\"A\",\"F\"],\"D\":[\"C\"],\"E\":[\"D\"],\"F\":[\"F\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4000,7 +3449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gabriel Graph (Proximity)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [2, 0], [1, 2]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[2,0],[1,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4008,12 +3457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gale-Shapley Stable Marriage",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2)", space: "O(V^2)" },
-        defaultInput: {
-            men: ["m0", "m1", "m2"],
-            women: ["w0", "w1", "w2"],
-            menPref: [["w0", "w1", "w2"], ["w1", "w0", "w2"], ["w0", "w1", "w2"]],
-            womenPref: [["m1", "m0", "m2"], ["m0", "m1", "m2"], ["m0", "m1", "m2"]],
-        },
+        defaultInput: JSON.parse("{\"men\":[\"m0\",\"m1\",\"m2\"],\"women\":[\"w0\",\"w1\",\"w2\"],\"menPref\":[[\"w0\",\"w1\",\"w2\"],[\"w1\",\"w0\",\"w2\"],[\"w0\",\"w1\",\"w2\"]],\"womenPref\":[[\"m1\",\"m0\",\"m2\"],[\"m0\",\"m1\",\"m2\"],[\"m0\",\"m1\",\"m2\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4021,7 +3465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gamma Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(I) per CDF", space: "O(1)" },
-        defaultInput: { shape: 2, scale: 1, samples: 40 },
+        defaultInput: JSON.parse("{\"shape\":2,\"scale\":1,\"samples\":40}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4029,7 +3473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gap Buffer",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) at gap, O(n) move", space: "O(n)" },
-        defaultInput: { items: [4, 1, 7, 3, 6] },
+        defaultInput: JSON.parse("{\"items\":[4,1,7,3,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4037,13 +3481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "GARCH(1,1) Model",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            returns: [0.01, -0.02, 0.015, -0.008, 0.02, -0.012, 0.006, -0.004],
-            mu: 0,
-            omega: 0.0001,
-            alpha: 0.1,
-            beta: 0.85,
-        },
+        defaultInput: JSON.parse("{\"returns\":[0.01,-0.02,0.015,-0.008,0.02,-0.012,0.006,-0.004],\"mu\":0,\"omega\":0.0001,\"alpha\":0.1,\"beta\":0.85}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4051,13 +3489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gated Delta Net",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * d^2)", space: "O(d^2)" },
-        defaultInput: {
-            keys: [[1, 0], [0, 1], [1, 1]],
-            values: [[0.5, 0], [0, 0.7], [0.3, -0.2]],
-            queries: [[1, 0], [0, 1], [1, 1]],
-            alpha: 0.9,
-            beta: 0.8,
-        },
+        defaultInput: JSON.parse("{\"keys\":[[1,0],[0,1],[1,1]],\"values\":[[0.5,0],[0,0.7],[0.3,-0.2]],\"queries\":[[1,0],[0,1],[1,1]],\"alpha\":0.9,\"beta\":0.8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4065,7 +3497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gauss-Newton Least Squares",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iters * m * p^3)", space: "O(m * p)" },
-        defaultInput: { a0: 1, b0: 0, iterations: 12 },
+        defaultInput: JSON.parse("{\"a0\":1,\"b0\":0,\"iterations\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4073,7 +3505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gauss-Seidel Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n^2)" },
-        defaultInput: { a: [[4, 1], [1, 3]], b: [1, 2], iterations: 15, tolerance: 1e-12 },
+        defaultInput: JSON.parse("{\"a\":[[4,1],[1,3]],\"b\":[1,2],\"iterations\":15,\"tolerance\":1e-12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4081,7 +3513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Boson Sampling (Two-Mode Core)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(samples)", space: "O(1)" },
-        defaultInput: { samples: 2000, squeeze0: 1, squeeze1: 2, angle: 0.7853981633974483, threshold: 0.5, seed: 7 },
+        defaultInput: JSON.parse("{\"samples\":2000,\"squeeze0\":1,\"squeeze1\":2,\"angle\":0.7853981633974483,\"threshold\":0.5,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4089,7 +3521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Elimination",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { matrix: [[2, 1, -1], [-3, -1, 2], [-2, 1, 2]], b: [8, -11, -3] },
+        defaultInput: JSON.parse("{\"matrix\":[[2,1,-1],[-3,-1,2],[-2,1,2]],\"b\":[8,-11,-3]}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -4097,7 +3529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Elimination (GF(2))",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { matrix: [[1, 1, 0], [0, 1, 1], [1, 0, 1]], b: [1, 0, 1] },
+        defaultInput: JSON.parse("{\"matrix\":[[1,1,0],[0,1,1],[1,0,1]],\"b\":[1,0,1]}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -4105,7 +3537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Mechanism (Differential Privacy)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(releases)", space: "O(releases)" },
-        defaultInput: { value: 0.6, sensitivity: 0.1, epsilon: 1, delta: 0.00001, releases: 40, seed: 17 },
+        defaultInput: JSON.parse("{\"value\":0.6,\"sensitivity\":0.1,\"epsilon\":1,\"delta\":0.00001,\"releases\":40,\"seed\":17}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -4113,13 +3545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Mixture EM",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(n)" },
-        defaultInput: {
-            data: [0, 0.2, 0.5, 1, 9.5, 10, 10.2, 10.5],
-            iterations: 12,
-            initMeans: [1, 9],
-            initVariances: [2, 2],
-            initWeights: [0.5, 0.5],
-        },
+        defaultInput: JSON.parse("{\"data\":[0,0.2,0.5,1,9.5,10,10.2,10.5],\"iterations\":12,\"initMeans\":[1,9],\"initVariances\":[2,2],\"initWeights\":[0.5,0.5]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -4127,7 +3553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gaussian Quadrature",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { n: 2 },
+        defaultInput: JSON.parse("{\"n\":2}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -4135,13 +3561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gelman-Rubin Diagnostic",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(m * n)", space: "O(m)" },
-        defaultInput: {
-            chains: [
-                [1, 1.1, 0.9, 1, 1.2, 0.8, 1, 1.1, 0.95, 1.05],
-                [1.1, 0.9, 1, 1.2, 0.8, 1, 0.95, 1.05, 1, 1.1],
-                [0.9, 1, 1.1, 0.8, 1.2, 1, 1.05, 0.95, 1.1, 1],
-            ],
-        },
+        defaultInput: JSON.parse("{\"chains\":[[1,1.1,0.9,1,1.2,0.8,1,1.1,0.95,1.05],[1.1,0.9,1,1.2,0.8,1,0.95,1.05,1,1.1],[0.9,1,1.1,0.8,1.2,1,1.05,0.95,1.1,1]]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4149,7 +3569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Genetic Algorithm",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(g·n)", space: "O(n)" },
-        defaultInput: { popSize: 6, generations: 4, seed: 42 },
+        defaultInput: JSON.parse("{\"popSize\":6,\"generations\":4,\"seed\":42}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4157,7 +3577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Genome Reversal Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [4, 2, 1, 3],
+        defaultInput: JSON.parse("[4,2,1,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4165,7 +3585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Genome Transposition Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [3, 1, 2, 5, 4],
+        defaultInput: JSON.parse("[3,1,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4173,7 +3593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Geography Game",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(n)" },
-        defaultInput: { start: "A" },
+        defaultInput: JSON.parse("{\"start\":\"A\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4181,7 +3601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Geometric Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(K)", space: "O(K)" },
-        defaultInput: { p: 0.3, kMax: 12, support: "trials" },
+        defaultInput: JSON.parse("{\"p\":0.3,\"kMax\":12,\"support\":\"trials\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4189,7 +3609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gibbs Sampling",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(1)" },
-        defaultInput: { sweeps: 10, seed: 21 },
+        defaultInput: JSON.parse("{\"sweeps\":10,\"seed\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4197,17 +3617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Girvan–Newman (Edge Betweenness)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E²·V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
-            cuts: 1,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\",\"E\",\"F\"],\"E\":[\"D\",\"F\"],\"F\":[\"D\",\"E\"]},\"cuts\":1}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4215,7 +3625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "GJK Convex Polygon Distance",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n+m)" },
-        defaultInput: { a: [[0, 0], [2, 0], [2, 2], [0, 2]], b: [[4, 1], [5, 1], [5, 2], [4, 2]] },
+        defaultInput: JSON.parse("{\"a\":[[0,0],[2,0],[2,2],[0,2]],\"b\":[[4,1],[5,1],[5,2],[4,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4223,7 +3633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "GMRES",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m^2*n)", space: "O(m*n)" },
-        defaultInput: { matrix: [[4, 1, 1], [1, 3, 0], [1, 0, 2]], vector: [6, 4, 5], iterations: 3 },
+        defaultInput: JSON.parse("{\"matrix\":[[4,1,1],[1,3,0],[1,0,2]],\"vector\":[6,4,5],\"iterations\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4231,7 +3641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gnome Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 3, 4, 1, 2],
+        defaultInput: JSON.parse("[5,3,4,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4239,7 +3649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Go Atari Capture",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { size: 3 },
+        defaultInput: JSON.parse("{\"size\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4247,7 +3657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Goldbach Partitions",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log log n)", space: "O(n)" },
-        defaultInput: { n: 20 },
+        defaultInput: JSON.parse("{\"n\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4255,7 +3665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Goldberg–Radzik Shortest Path",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V·E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: [["B", 2], ["C", 4]], B: [["C", -1]], C: [["D", 2]], D: [] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",4]],\"B\":[[\"C\",-1]],\"C\":[[\"D\",2]],\"D\":[]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4263,7 +3673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Golden-Section Search",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(1)" },
-        defaultInput: { a: 0, b: 5, iters: 7 },
+        defaultInput: JSON.parse("{\"a\":0,\"b\":5,\"iters\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4271,7 +3681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Goldwasser-Micali (toy parameters)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(bits * log n)", space: "O(bits)" },
-        defaultInput: { p: 11, q: 23, bits: [1, 0, 1, 1, 0, 0, 1], seed: 29 },
+        defaultInput: JSON.parse("{\"p\":11,\"q\":23,\"bits\":[1,0,1,1,0,0,1],\"seed\":29}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4279,7 +3689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gomory-Hu Tree",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2", "3"], edges: [[0, 1, 3], [1, 2, 2], [2, 3, 4], [0, 2, 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1,3],[1,2,2],[2,3,4],[0,2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4287,7 +3697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gossip Protocol",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { nodes: 5, rounds: 6, seed: 31 },
+        defaultInput: JSON.parse("{\"nodes\":5,\"rounds\":6,\"seed\":31}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4295,11 +3705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "GPTQ Quantization",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(d^3)", space: "O(d^2)" },
-        defaultInput: {
-            weights: [0.2, -0.5, 0.8, -0.1],
-            hessian: [[2, 0.3, 0.1, 0], [0.3, 2, 0.2, 0.1], [0.1, 0.2, 2, 0.3], [0, 0.1, 0.3, 2]],
-            bits: 2,
-        },
+        defaultInput: JSON.parse("{\"weights\":[0.2,-0.5,0.8,-0.1],\"hessian\":[[2,0.3,0.1,0],[0.3,2,0.2,0.1],[0.1,0.2,2,0.3],[0,0.1,0.3,2]],\"bits\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4307,7 +3713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gradient Boosting",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(rounds * n)", space: "O(n)" },
-        defaultInput: { y: [2, 4, 6, 8], rounds: 4, learningRate: 0.5 },
+        defaultInput: JSON.parse("{\"y\":[2,4,6,8],\"rounds\":4,\"learningRate\":0.5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4315,7 +3721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gradient Descent (1-D)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(1)" },
-        defaultInput: { start: 0, lr: 0.4, steps: 8 },
+        defaultInput: JSON.parse("{\"start\":0,\"lr\":0.4,\"steps\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4323,7 +3729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Center / Periphery (Eccentricity)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·(V + E))", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\",\"E\"],\"E\":[\"D\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4331,11 +3737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Graph of Thoughts (Best-First Aggregation)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(V log V + E)", space: "O(V)" },
-        defaultInput: {
-            scores: [1, 3, 2, 5, 2, 4, 6, 1],
-            edges: [[0, 1], [0, 2], [1, 3], [1, 4], [2, 4], [2, 5], [3, 6], [4, 6], [4, 7], [5, 7]],
-            maxExpansions: 8,
-        },
+        defaultInput: JSON.parse("{\"scores\":[1,3,2,5,2,4,6,1],\"edges\":[[0,1],[0,2],[1,3],[1,4],[2,4],[2,5],[3,6],[4,6],[4,7],[5,7]],\"maxExpansions\":8}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4343,7 +3745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Gray Code Generation",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(2^n)" },
-        defaultInput: { bits: 3 },
+        defaultInput: JSON.parse("{\"bits\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4351,7 +3753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Greedy Best-First Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^m)", space: "O(b^m)" },
-        defaultInput: { start: "A", goal: "G" },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4359,7 +3761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Greedy Coloring (Welsh–Powell)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\"],\"D\":[\"A\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4367,7 +3769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximal Independent Set (Greedy)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4375,7 +3777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Green Hackenbush Stalk",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { edges: 5 },
+        defaultInput: JSON.parse("{\"edges\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4383,7 +3785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Greenwald–Khanna Quantiles",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n log 1/ε)", space: "O(1/ε log n)" },
-        defaultInput: { stream: [7, 2, 9, 4, 1, 8, 3, 6, 5, 10], eps: 0.2 },
+        defaultInput: JSON.parse("{\"stream\":[7,2,9,4,1,8,3,6,5,10],\"eps\":0.2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4391,7 +3793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Grid File",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) point avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -4399,7 +3801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Grid Paths with Obstacles",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n)", space: "O(m·n)" },
-        defaultInput: { obstacleGrid: [[0, 0, 0], [0, 1, 0], [0, 0, 0]] },
+        defaultInput: JSON.parse("{\"obstacleGrid\":[[0,0,0],[0,1,0],[0,0,0]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4407,7 +3809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Groth16 zk-SNARK (Toy Pairing Check)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { u: 2, v: 3, w: 6, x: 5, y: 30 },
+        defaultInput: JSON.parse("{\"u\":2,\"v\":3,\"w\":6,\"x\":5,\"y\":30}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4415,7 +3817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Grouped-Query Attention (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(H * n^2 * dk)", space: "O(n^2)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1]], qHeads: 4, kvHeads: 2, dk: 2, seed: 11 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1]],\"qHeads\":4,\"kvHeads\":2,\"dk\":2,\"seed\":11}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -4423,7 +3825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Grover's Search (Ideal Small Simulator)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(sqrt(N) * N)", space: "O(N)" },
-        defaultInput: { qubits: 3, marked: 5 },
+        defaultInput: JSON.parse("{\"qubits\":3,\"marked\":5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4431,7 +3833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "GRU Cell Step",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * d_h * (d_h + d_x))", space: "O(T * d_h)" },
-        defaultInput: { h0: [0, 0], sequence: [[1, 0], [0, 1], [-1, 0.5]] },
+        defaultInput: JSON.parse("{\"h0\":[0,0],\"sequence\":[[1,0],[0,1],[-1,0.5]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4439,7 +3841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hadamard Gate",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { bit: 0 },
+        defaultInput: JSON.parse("{\"bit\":0}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4447,7 +3849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Half-Plane Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { lines: [[0, 0, 6, 0], [6, 0, 6, 4], [6, 4, 0, 4], [0, 4, 0, 0], [1, 1, 4, 3]] },
+        defaultInput: JSON.parse("{\"lines\":[[0,0,6,0],[6,0,6,4],[6,4,0,4],[0,4,0,0],[1,1,4,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4455,7 +3857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hamiltonian Cycle (Backtracking)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V!)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "D"], B: ["A", "C"], C: ["B", "D"], D: ["C", "A"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\",\"A\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4463,7 +3865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hamiltonian Monte Carlo",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps * leapfrogSteps)", space: "O(steps)" },
-        defaultInput: { steps: 60, stepSize: 0.3, leapfrogSteps: 5, seed: 7 },
+        defaultInput: JSON.parse("{\"steps\":60,\"stepSize\":0.3,\"leapfrogSteps\":5,\"seed\":7}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -4471,7 +3873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hamming Code (7,4)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { data: [1, 0, 1, 1], error: 6 },
+        defaultInput: JSON.parse("{\"data\":[1,0,1,1],\"error\":6}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4479,7 +3881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HAMT",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log32 n) ops", space: "O(n)" },
-        defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
+        defaultInput: JSON.parse("{\"words\":[\"car\",\"cat\",\"dog\",\"dot\"],\"search\":\"cat\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -4487,7 +3889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hash Map (Chaining)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) average", space: "O(n + m)" },
-        defaultInput: { keys: ["cat", "dog", "car", "cow", "bat"], buckets: 3, probe: "dog" },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"dog\",\"car\",\"cow\",\"bat\"],\"buckets\":3,\"probe\":\"dog\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4495,7 +3897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hash Map (Open Addressing)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) average", space: "O(m)" },
-        defaultInput: { keys: ["cat", "car", "dog", "cow", "bat"], buckets: 6, probe: "dog" },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"car\",\"dog\",\"cow\",\"bat\"],\"buckets\":6,\"probe\":\"dog\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4503,7 +3905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hash Set",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) average", space: "O(n)" },
-        defaultInput: { keys: ["cat", "dog", "cat", "bird", "dog"], buckets: 4 },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"dog\",\"cat\",\"bird\",\"dog\"],\"buckets\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4511,7 +3913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hashed Array Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) index", space: "O(n)" },
-        defaultInput: { items: [4, 1, 7, 3, 6] },
+        defaultInput: JSON.parse("{\"items\":[4,1,7,3,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4519,7 +3921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Heap Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(1)" },
-        defaultInput: [6, 4, 8, 1, 9, 3, 7, 2],
+        defaultInput: JSON.parse("[6,4,8,1,9,3,7,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4527,10 +3929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Heavy-Light Decomposition",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -4538,7 +3937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hensel Lifting",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p) per lift", space: "O(1)" },
-        defaultInput: { p: 7, r: 3, power: 2, target: 2 },
+        defaultInput: JSON.parse("{\"p\":7,\"r\":3,\"power\":2,\"target\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4546,7 +3945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HHL Linear System (Small Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { a: [[2, 1], [1, 2]], b: [1, 0] },
+        defaultInput: JSON.parse("{\"a\":[[2,1],[1,2]],\"b\":[1,0]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4554,7 +3953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hidden Markov Model (Forward Algorithm)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * K^2)", space: "O(T * K)" },
-        defaultInput: { pi: [0.6, 0.4], A: [[0.7, 0.3], [0.4, 0.6]], B: [[0.5, 0.5], [0.1, 0.9]], observations: [0, 1, 1] },
+        defaultInput: JSON.parse("{\"pi\":[0.6,0.4],\"A\":[[0.7,0.3],[0.4,0.6]],\"B\":[[0.5,0.5],[0.1,0.9]],\"observations\":[0,1,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4562,7 +3961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hierarchical Agglomerative Clustering",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { points: [[0, 0], [0.5, 0], [5, 0], [5.5, 0]], k: 2 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[0.5,0],[5,0],[5.5,0]],\"k\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4570,7 +3969,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hierholzer Eulerian",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "D"], B: ["C"], C: ["A"], D: ["E"], E: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"D\"],\"B\":[\"C\"],\"C\":[\"A\"],\"D\":[\"E\"],\"E\":[\"A\"]}}") as unknown,
+        visualType: "graph" as LayoutType,
+    },
+    {
+        id: "highest-label-push-relabel",
+        name: "Highest-Label Push-Relabel",
+        category: "flow" as AlgorithmCategory,
+        complexity: { time: "O(V^2 * sqrt(E))", space: "O(V + E)" },
+        defaultInput: JSON.parse("{\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4578,7 +3985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hilbert Curve Point Ordering",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[0.1, 0.1], [0.9, 0.1], [0.9, 0.9], [0.1, 0.9]], order: 2 },
+        defaultInput: JSON.parse("{\"points\":[[0.1,0.1],[0.9,0.1],[0.9,0.9],[0.1,0.9]],\"order\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4586,7 +3993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hill Cipher (2 by 2)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(m)", space: "O(m)" },
-        defaultInput: { key: [[3, 3], [2, 5]], message: "ACT" },
+        defaultInput: JSON.parse("{\"key\":[[3,3],[2,5]],\"message\":\"ACT\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -4594,7 +4001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hill Climbing",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(steps·neighbors)", space: "O(1)" },
-        defaultInput: { steps: 10 },
+        defaultInput: JSON.parse("{\"steps\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4602,12 +4009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hinted Handoff",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(W*R + H)", space: "O(H + R*K)" },
-        defaultInput: {
-            nodes: [0, 1, 2, 3],
-            down: [2],
-            replicationFactor: 3,
-            writes: [{ key: "a", value: 1 }, { key: "b", value: 2 }, { key: "a", value: 3 }, { key: "c", value: 4 }],
-        },
+        defaultInput: JSON.parse("{\"nodes\":[0,1,2,3],\"down\":[2],\"replicationFactor\":3,\"writes\":[{\"key\":\"a\",\"value\":1},{\"key\":\"b\",\"value\":2},{\"key\":\"a\",\"value\":3},{\"key\":\"c\",\"value\":4}]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4615,7 +4017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hirschberg",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(min(n,m))" },
-        defaultInput: { a: "GATT", b: "GCAT" },
+        defaultInput: JSON.parse("{\"a\":\"GATT\",\"b\":\"GCAT\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4623,7 +4025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HITS Hubs and Authorities",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] }, iterations: 3 },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"C\"],\"C\":[]},\"iterations\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4631,7 +4033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HKDF (Toy Keyed Hash)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O((inputWords + blocks) * words)", space: "O(blocks)" },
-        defaultInput: { ikm: [1, 2, 3, 4], salt: 160, info: 17, length: 3 },
+        defaultInput: JSON.parse("{\"ikm\":[1,2,3,4],\"salt\":160,\"info\":17,\"length\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4639,7 +4041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HMAC (Toy Hash Construction)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(|key| + |message|)", space: "O(|message|)" },
-        defaultInput: { key: "secret", message: "HELLO" },
+        defaultInput: JSON.parse("{\"key\":\"secret\",\"message\":\"HELLO\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4647,7 +4049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hoeffding's Inequality",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(g)", space: "O(g)" },
-        defaultInput: { n: 100, lower: 0, upper: 1, deviation: 0.1, grid: [0, 0.05, 0.1, 0.2, 0.3, 0.5] },
+        defaultInput: JSON.parse("{\"n\":100,\"lower\":0,\"upper\":1,\"deviation\":0.1,\"grid\":[0,0.05,0.1,0.2,0.3,0.5]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4655,7 +4057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hollow Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8], decrease: [8, 1] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8],\"decrease\":[8,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4663,7 +4065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hopcroft Minimization",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {  },
+        defaultInput: JSON.parse("{}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4671,11 +4073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hopcroft-Karp Matching",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·√V)", space: "O(V + E)" },
-        defaultInput: {
-            left: ["A", "B", "C"],
-            right: ["1", "2", "3"],
-            edges: [["A", "1"], ["A", "2"], ["B", "1"], ["B", "3"], ["C", "2"], ["C", "3"]],
-        },
+        defaultInput: JSON.parse("{\"left\":[\"A\",\"B\",\"C\"],\"right\":[\"1\",\"2\",\"3\"],\"edges\":[[\"A\",\"1\"],[\"A\",\"2\"],[\"B\",\"1\"],[\"B\",\"3\"],[\"C\",\"2\"],[\"C\",\"3\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4683,7 +4081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hopscotch Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) lookup", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4691,16 +4089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Horizontal Pod Autoscaler",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(pods + window)", space: "O(pods + window)" },
-        defaultInput: {
-            values: [80, 90, 70, 95],
-            target: 70,
-            current: 4,
-            minReplicas: 2,
-            maxReplicas: 10,
-            tolerance: 0.1,
-            recent: [5, 5, 5],
-            window: 3,
-        },
+        defaultInput: JSON.parse("{\"values\":[80,90,70,95],\"target\":70,\"current\":4,\"minReplicas\":2,\"maxReplicas\":10,\"tolerance\":0.1,\"recent\":[5,5,5],\"window\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4708,7 +4097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Horspool Search",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm) worst, O(n) avg", space: "O(σ)" },
-        defaultInput: { text: "ababcabcab", pattern: "abc" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabcab\",\"pattern\":\"abc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -4716,15 +4105,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HotStuff Consensus (Three-Phase View)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { nodes: 4, crash: -1, value: "block-1" },
+        defaultInput: JSON.parse("{\"nodes\":4,\"crash\":-1,\"value\":\"block-1\"}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "hough-transform",
+        name: "Hough Transform (Line Detection)",
+        category: "geometry" as AlgorithmCategory,
+        complexity: { time: "O(n * T)", space: "O(T * D)" },
+        defaultInput: JSON.parse("{\"points\":[[0,3],[1,3],[2,3],[3,3],[4,3],[5,3],[1,0],[4,7]],\"previewEvery\":15}") as unknown,
+        visualType: "point" as LayoutType,
     },
     {
         id: "house-robber-circular",
         name: "House Robber (Circular)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { nums: [2, 3, 2] },
+        defaultInput: JSON.parse("{\"nums\":[2,3,2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4732,7 +4129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "House Robber (Linear)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { nums: [2, 7, 9, 3, 1] },
+        defaultInput: JSON.parse("{\"nums\":[2,7,9,3,1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4740,7 +4137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Householder QR Decomposition",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m n^2)", space: "O(m^2 + m n)" },
-        defaultInput: { a: [[12, -51, 4], [6, 167, -68], [-4, 24, -41]] },
+        defaultInput: JSON.parse("{\"a\":[[12,-51,4],[6,167,-68],[-4,24,-41]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4748,7 +4145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HQC KEM (Toy Syndrome Decoding Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2 * m) toy", space: "O(m * n) toy" },
-        defaultInput: { p: 0, q: 5 },
+        defaultInput: JSON.parse("{\"p\":0,\"q\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4756,7 +4153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Huffman Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { text: "aabcccdddd" },
+        defaultInput: JSON.parse("{\"text\":\"aabcccdddd\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -4764,7 +4161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hungarian Algorithm",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { costs: [[8, 4, 7], [5, 2, 3], [9, 4, 8]] },
+        defaultInput: JSON.parse("{\"costs\":[[8,4,7],[5,2,3],[9,4,8]]}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -4772,17 +4169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hybrid Logical Clock",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: {
-            wall: [1, 1, 2, 2, 3, 5],
-            events: [
-                { kind: "local", node: "A", wall: 1 },
-                { kind: "send", node: "A", wall: 1 },
-                { kind: "receive", node: "B", wall: 2, remote: [1, 1] },
-                { kind: "local", node: "B", wall: 2 },
-                { kind: "receive", node: "A", wall: 3, remote: [2, 1] },
-                { kind: "send", node: "C", wall: 5 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"wall\":[1,1,2,2,3,5],\"events\":[{\"kind\":\"local\",\"node\":\"A\",\"wall\":1},{\"kind\":\"send\",\"node\":\"A\",\"wall\":1},{\"kind\":\"receive\",\"node\":\"B\",\"wall\":2,\"remote\":[1,1]},{\"kind\":\"local\",\"node\":\"B\",\"wall\":2},{\"kind\":\"receive\",\"node\":\"A\",\"wall\":3,\"remote\":[2,1]},{\"kind\":\"send\",\"node\":\"C\",\"wall\":5}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4790,7 +4177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hyena Operator (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { x: [1, 2, 3, 1], h1: [0.5, 0.25, 0.125, 0.0625], h2: [0.25, 0.5, 0.25, 0.125] },
+        defaultInput: JSON.parse("{\"x\":[1,2,3,1],\"h1\":[0.5,0.25,0.125,0.0625],\"h2\":[0.25,0.5,0.25,0.125]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4798,7 +4185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Hypergeometric Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { N: 12, K: 5, n: 4 },
+        defaultInput: JSON.parse("{\"N\":12,\"K\":5,\"n\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4806,7 +4193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "HyperLogLog",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) add", space: "O(m)" },
-        defaultInput: { keys: ["a", "b", "c", "d", "e", "f"] },
+        defaultInput: JSON.parse("{\"keys\":[\"a\",\"b\",\"c\",\"d\",\"e\",\"f\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4814,7 +4201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "IDA* Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
-        defaultInput: { start: "A", goal: "G" },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4822,7 +4209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Importance Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(samples)", space: "O(batches)" },
-        defaultInput: { samples: 4000, proposalHalfWidth: 4, seed: 12345, batches: 8 },
+        defaultInput: JSON.parse("{\"samples\":4000,\"proposalHalfWidth\":4,\"seed\":12345,\"batches\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4830,11 +4217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Incidence Matrix",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(V) edge check", space: "O(V·E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B"], ["A", "C"], ["B", "D"], ["C", "D"]],
-            inspect: 2,
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"D\"],[\"C\",\"D\"]],\"inspect\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4842,7 +4225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Inclusion-Exclusion Counting",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { n: 30, divisors: [2, 3] },
+        defaultInput: JSON.parse("{\"n\":30,\"divisors\":[2,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4850,7 +4233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Incremental 2D Linear Programming",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n) expected", space: "O(n)" },
-        defaultInput: { objective: [1, 1], bounds: { x: 6, y: 3 } },
+        defaultInput: JSON.parse("{\"objective\":[1,1],\"bounds\":{\"x\":6,\"y\":3}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4858,11 +4241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Independent Component Analysis",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n*d*iterations*k)", space: "O(k*d)" },
-        defaultInput: {
-            samples: [[1, 0.2], [-1, -0.3], [0.5, 1], [-0.4, -1.2], [1.2, 0.1], [-1.1, 0.4]],
-            components: 2,
-            maxIter: 50,
-        },
+        defaultInput: JSON.parse("{\"samples\":[[1,0.2],[-1,-0.3],[0.5,1],[-0.4,-1.2],[1.2,0.1],[-1.1,0.4]],\"components\":2,\"maxIter\":50}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4870,7 +4249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Insertion Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 2, 9, 1, 6, 4],
+        defaultInput: JSON.parse("[5,2,9,1,6,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4878,7 +4257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Instrumental Variables",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { x: [1, 2, 3, 4, 5], z: [1, 1, 2, 2, 3], y: [2.1, 4.2, 5.8, 8.1, 10.2] },
+        defaultInput: JSON.parse("{\"x\":[1,2,3,4,5],\"z\":[1,1,2,2,3],\"y\":[2.1,4.2,5.8,8.1,10.2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4886,7 +4265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Integer Square Root (Newton)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { n: 50 },
+        defaultInput: JSON.parse("{\"n\":50}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4894,7 +4273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Interior-Point Barrier Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k * j)", space: "O(1)" },
-        defaultInput: { t0: 1, mu: 10, outer: 6 },
+        defaultInput: JSON.parse("{\"t0\":1,\"mu\":10,\"outer\":6}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4902,7 +4281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Interleaving String",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { s1: "aabcc", s2: "dbbca", s3: "aadbbcbcac" },
+        defaultInput: JSON.parse("{\"s1\":\"aabcc\",\"s2\":\"dbbca\",\"s3\":\"aadbbcbcac\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4910,15 +4289,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Interpolation Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log log n)", space: "O(1)" },
-        defaultInput: { array: [10, 20, 30, 40, 50, 60, 70, 80], target: 60 },
+        defaultInput: JSON.parse("{\"array\":[10,20,30,40,50,60,70,80],\"target\":60}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "interval-dp",
+        name: "Interval DP (Merge Stones)",
+        category: "dynamic-programming" as AlgorithmCategory,
+        complexity: { time: "O(n^3)", space: "O(n^2)" },
+        defaultInput: JSON.parse("{\"stones\":[4,3,3,4]}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "interval-heap",
         name: "Interval Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4926,7 +4313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Matrix Chain Multiplication",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { dims: [30, 35, 15, 5, 10] },
+        defaultInput: JSON.parse("{\"dims\":[30,35,15,5,10]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4934,7 +4321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Interval Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n + k) query", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -4942,7 +4329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Introsort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(log n)" },
-        defaultInput: [9, 2, 6, 1, 8, 3, 7, 4],
+        defaultInput: JSON.parse("[9,2,6,1,8,3,7,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4950,7 +4337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Inverse Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k*n^3)", space: "O(n^2)" },
-        defaultInput: { matrix: [[2, 1], [1, 2]], shift: 3.2, iterations: 8 },
+        defaultInput: JSON.parse("{\"matrix\":[[2,1],[1,2]],\"shift\":3.2,\"iterations\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4958,7 +4345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Inverse Transform Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(outcomes + n * log(outcomes))", space: "O(outcomes + n)" },
-        defaultInput: { values: [0, 1, 2], probabilities: [0.2, 0.3, 0.5], samples: 20, seed: 12345 },
+        defaultInput: JSON.parse("{\"values\":[0,1,2],\"probabilities\":[0.2,0.3,0.5],\"samples\":20,\"seed\":12345}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -4966,19 +4353,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Inverted Index",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(total tokens + query postings)", space: "O(term-document pairs)" },
-        defaultInput: {
-            documents: ["the quick brown fox", "the lazy brown dog", "quick red fox jumps", "the quick red fox"],
-            query: "quick fox",
-            operator: "AND",
-        },
+        defaultInput: JSON.parse("{\"documents\":[\"the quick brown fox\",\"the lazy brown dog\",\"quick red fox jumps\",\"the quick red fox\"],\"query\":\"quick fox\",\"operator\":\"AND\"}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "isap",
+        name: "Improved Shortest Augmenting Path (ISAP)",
+        category: "flow" as AlgorithmCategory,
+        complexity: { time: "O(V^2 * E)", space: "O(V + E)" },
+        defaultInput: JSON.parse("{\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
+        visualType: "graph" as LayoutType,
     },
     {
         id: "iterative-deepening-dfs",
         name: "Iterative Deepening DFS",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["D"], C: ["E"], D: [], E: [] }, start: "A", target: "E" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"D\"],\"C\":[\"E\"],\"D\":[],\"E\":[]},\"start\":\"A\",\"target\":\"E\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -4986,7 +4377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jacobi Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n^2)" },
-        defaultInput: { a: [[4, 1], [1, 3]], b: [1, 2], iterations: 20 },
+        defaultInput: JSON.parse("{\"a\":[[4,1],[1,3]],\"b\":[1,2],\"iterations\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -4994,7 +4385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jacobi Symbol",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log a log n)", space: "O(1)" },
-        defaultInput: { a: 10, n: 21 },
+        defaultInput: JSON.parse("{\"a\":10,\"n\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5002,7 +4393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jaro-Winkler",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n+m)" },
-        defaultInput: { a: "MARTHA", b: "MARHTA" },
+        defaultInput: JSON.parse("{\"a\":\"MARTHA\",\"b\":\"MARHTA\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -5010,10 +4401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Johnson's Algorithm",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V·E log V)", space: "O(V²)" },
-        defaultInput: {
-            graph: { A: [["B", 3], ["C", 8]], B: [["C", 2], ["D", 7]], C: [["D", 1], ["A", -4]], D: [["C", 5]] },
-            vertices: ["A", "B", "C", "D"],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",3],[\"C\",8]],\"B\":[[\"C\",2],[\"D\",7]],\"C\":[[\"D\",1],[\"A\",-4]],\"D\":[[\"C\",5]]},\"vertices\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5021,7 +4409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Josephus Problem",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 7, k: 3 },
+        defaultInput: JSON.parse("{\"n\":7,\"k\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5029,7 +4417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jump Game (Min Jumps)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { nums: [2, 3, 1, 1, 4] },
+        defaultInput: JSON.parse("{\"nums\":[2,3,1,1,4]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5037,7 +4425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jump Point Search",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V)" },
-        defaultInput: { size: 5, wall: 2, gap: [2, 2], start: [0, 2], goal: [4, 2] },
+        defaultInput: JSON.parse("{\"size\":5,\"wall\":2,\"gap\":[2,2],\"start\":[0,2],\"goal\":[4,2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5045,7 +4433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Jump Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(√n)", space: "O(1)" },
-        defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16, 18], target: 14 },
+        defaultInput: JSON.parse("{\"array\":[2,4,6,8,10,12,14,16,18],\"target\":14}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5053,7 +4441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "K-Core Decomposition",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C"], C: ["A", "B"], D: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\"],\"D\":[\"A\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5061,7 +4449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "K-D Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(sqrt n) range avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5069,7 +4457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "K-Means (Lloyd)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(k·n·i)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [1, 0], [0, 1], [5, 5], [6, 5], [5, 6]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0],[0,1],[5,5],[6,5],[5,6]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5077,11 +4465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "k-means++ Seeding",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * k)", space: "O(n)" },
-        defaultInput: {
-            points: [[0, 0], [1, 0.2], [0.3, 1], [8, 8], [9, 8.4], [8.5, 9], [-7, 8], [-6.5, 8.6]],
-            k: 3,
-            seed: 7,
-        },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0.2],[0.3,1],[8,8],[9,8.4],[8.5,9],[-7,8],[-6.5,8.6]],\"k\":3,\"seed\":7}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5089,12 +4473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "K-Nearest Neighbors",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {
-            points: [[0, 0], [1, 0], [2, 0], [0, 2], [1, 2], [2, 2]],
-            labels: [-1, -1, -1, 1, 1, 1],
-            query: [1.4, 1.1],
-            k: 3,
-        },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0],[2,0],[0,2],[1,2],[2,2]],\"labels\":[-1,-1,-1,1,1,1],\"query\":[1.4,1.1],\"k\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5102,7 +4481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kaczmarz Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(m*n)" },
-        defaultInput: { matrix: [[2, 1], [1, 3]], b: [5, 10], iterations: 18 },
+        defaultInput: JSON.parse("{\"matrix\":[[2,1],[1,3]],\"b\":[5,10],\"iterations\":18}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5110,7 +4489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kadane's Algorithm",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [-2, 1, -3, 4, -1, 2, 1, -5, 4] },
+        defaultInput: JSON.parse("{\"array\":[-2,1,-3,4,-1,2,1,-5,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5118,7 +4497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kadane (2D)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(rows·cols²)", space: "O(rows)" },
-        defaultInput: { grid: [[1, 2, -1], [-3, 4, 2], [1, -5, 3]] },
+        defaultInput: JSON.parse("{\"grid\":[[1,2,-1],[-3,4,2],[1,-5,3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5126,7 +4505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kademlia DHT",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(q * (n + k))", space: "O(n * k)" },
-        defaultInput: { ids: [1, 7, 12, 40, 90, 130, 200, 255], target: 77, k: 2, alpha: 2, bitWidth: 8 },
+        defaultInput: JSON.parse("{\"ids\":[1,7,12,40,90,130,200,255],\"target\":77,\"k\":2,\"alpha\":2,\"bitWidth\":8}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5134,13 +4513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kalman Filter",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            measurements: [10.2, 9.8, 10.5, 9.9, 10.1, 10.3, 9.7, 10],
-            initialEstimate: 10,
-            initialP: 1,
-            Q: 0.01,
-            R: 0.5,
-        },
+        defaultInput: JSON.parse("{\"measurements\":[10.2,9.8,10.5,9.9,10.1,10.3,9.7,10],\"initialEstimate\":10,\"initialP\":1,\"Q\":0.01,\"R\":0.5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5148,7 +4521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kaplan-Meier Estimator",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { times: [1, 2, 2, 3, 4, 5, 5, 8, 9, 12], events: [1, 1, 0, 1, 0, 1, 1, 0, 1, 1] },
+        defaultInput: JSON.parse("{\"times\":[1,2,2,3,4,5,5,8,9,12],\"events\":[1,1,0,1,0,1,1,0,1,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5156,7 +4529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Karatsuba Multiplication",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^1.585)", space: "O(log n)" },
-        defaultInput: { a: 12, b: 34 },
+        defaultInput: JSON.parse("{\"a\":12,\"b\":34}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5164,10 +4537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Karger-Klein-Tarjan Randomized MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V + E) expected", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5175,7 +4545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Karger Random Contraction",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 3], [1, 2, 2], [0, 2, 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,3],[1,2,2],[0,2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5183,10 +4553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Karp Minimum Mean Cycle",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
-        defaultInput: {
-            graph: { A: [["B", 4]], B: [["C", 1]], C: [["A", 1]], D: [["C", 2]] },
-            vertices: ["A", "B", "C", "D"],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4]],\"B\":[[\"C\",1]],\"C\":[[\"A\",1]],\"D\":[[\"C\",2]]},\"vertices\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5194,12 +4561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Katz Centrality",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k * E)", space: "O(V)" },
-        defaultInput: {
-            edges: [["A", "B"], ["A", "C"], ["B", "C"], ["C", "D"], ["D", "E"]],
-            alpha: 0.4,
-            beta: 1,
-            iterations: 500,
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\"],[\"A\",\"C\"],[\"B\",\"C\"],[\"C\",\"D\"],[\"D\",\"E\"]],\"alpha\":0.4,\"beta\":1,\"iterations\":500}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5207,7 +4569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kayles",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { pins: 8 },
+        defaultInput: JSON.parse("{\"pins\":8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5215,7 +4577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "KDB-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5223,7 +4585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kernel of a Polygon",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 3], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,3],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5231,7 +4593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "KKT Conditions (Active-Set QP)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * (d+m)^3)", space: "O((d+m)^2)" },
-        defaultInput: { Q: [[2, 0], [0, 2]], c: [-2, -4], A: [[1, 1]], b: [2], start: [0, 0], maxIter: 20 },
+        defaultInput: JSON.parse("{\"Q\":[[2,0],[0,2]],\"c\":[-2,-4],\"A\":[[1,1]],\"b\":[2],\"start\":[0,0],\"maxIter\":20}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5239,7 +4601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kullback-Leibler Divergence",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(k)" },
-        defaultInput: { p: [0.5, 0.25, 0.25], q: [0.3333333333333333, 0.3333333333333333, 0.3333333333333333] },
+        defaultInput: JSON.parse("{\"p\":[0.5,0.25,0.25],\"q\":[0.3333333333333333,0.3333333333333333,0.3333333333333333]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5247,7 +4609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "KLL Sketch",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) update", space: "O(k log n)" },
-        defaultInput: { values: [7, 2, 9, 4, 6] },
+        defaultInput: JSON.parse("{\"values\":[7,2,9,4,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5255,11 +4617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "KMB Steiner Tree Approximation",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(T V^2)", space: "O(V^2)" },
-        defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [["0", "1", 1], ["1", "2", 1], ["2", "3", 1], ["0", "3", 10]],
-            terminals: ["0", "3"],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[\"0\",\"1\",1],[\"1\",\"2\",1],[\"2\",\"3\",1],[\"0\",\"3\",10]],\"terminals\":[\"0\",\"3\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5267,7 +4625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Knapsack (0/1)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·W)", space: "O(n·W)" },
-        defaultInput: { weights: [2, 3, 4, 5], values: [3, 4, 5, 6], capacity: 5 },
+        defaultInput: JSON.parse("{\"weights\":[2,3,4,5],\"values\":[3,4,5,6],\"capacity\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5275,7 +4633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Knapsack (Unbounded)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·W)", space: "O(W)" },
-        defaultInput: { weights: [2, 3, 4], values: [3, 4, 5], capacity: 8 },
+        defaultInput: JSON.parse("{\"weights\":[2,3,4],\"values\":[3,4,5],\"capacity\":8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5283,7 +4641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Knapsack (Bounded)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·W·count)", space: "O(W)" },
-        defaultInput: { weights: [2, 3, 4], values: [3, 4, 5], counts: [2, 2, 2], capacity: 8 },
+        defaultInput: JSON.parse("{\"weights\":[2,3,4],\"values\":[3,4,5],\"counts\":[2,2,2],\"capacity\":8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5291,7 +4649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "KMP",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(m)" },
-        defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"ababcab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -5299,7 +4657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Knuth's Optimization",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { freq: [4, 2, 6, 3] },
+        defaultInput: JSON.parse("{\"freq\":[4,2,6,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5307,7 +4665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kolmogorov-Arnold Network (Spline Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(edges * knots)", space: "O(knots)" },
-        defaultInput: { knots: [0, 0.5, 1], values: [[0, 1, 0], [1, 0, 1]], x: [0.25, 0.75] },
+        defaultInput: JSON.parse("{\"knots\":[0,0.5,1],\"values\":[[0,1,0],[1,0,1]],\"x\":[0.25,0.75]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5315,12 +4673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kolmogorov-Smirnov Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {
-            sample: [0.11, 0.29, 0.33, 0.42, 0.55, 0.61, 0.78, 0.83, 0.91, 0.97, 0.12, 0.48],
-            a: 0,
-            b: 1,
-            alpha: 0.05,
-        },
+        defaultInput: JSON.parse("{\"sample\":[0.11,0.29,0.33,0.42,0.55,0.61,0.78,0.83,0.91,0.97,0.12,0.48],\"a\":0,\"b\":1,\"alpha\":0.05}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5328,7 +4681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Konig Min Vertex Cover",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: { left: ["a", "b"], right: ["x", "y"], edges: [["a", "x"], ["a", "y"], ["b", "x"]] },
+        defaultInput: JSON.parse("{\"left\":[\"a\",\"b\"],\"right\":[\"x\",\"y\"],\"edges\":[[\"a\",\"x\"],[\"a\",\"y\"],[\"b\",\"x\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5336,7 +4689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kosaraju SCC",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["C", "E"], C: ["A", "F"], D: ["C"], E: ["D"], F: ["F"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"C\",\"E\"],\"C\":[\"A\",\"F\"],\"D\":[\"C\"],\"E\":[\"D\"],\"F\":[\"F\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5344,20 +4697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kruskal's MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V)" },
-        defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"C\",1],[\"B\",\"D\",5],[\"C\",\"D\",8],[\"C\",\"E\",10],[\"D\",\"E\",2],[\"D\",\"F\",6],[\"E\",\"F\",3]],\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5365,7 +4705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kruskal-Wallis Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(N log N)", space: "O(N)" },
-        defaultInput: { groups: [[7, 9, 6, 8], [12, 14, 11, 13], [4, 5, 3, 6]] },
+        defaultInput: JSON.parse("{\"groups\":[[7,9,6,8],[12,14,11,13],[4,5,3,6]]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5373,7 +4713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kth Smallest in Sorted Matrix",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n log(max−min))", space: "O(1)" },
-        defaultInput: { matrix: [[1, 5, 9], [10, 11, 13], [12, 13, 15]], k: 5 },
+        defaultInput: JSON.parse("{\"matrix\":[[1,5,9],[10,11,13],[12,13,15]],\"k\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5381,11 +4721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kuhn Bipartite Matching",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V * E)", space: "O(V + E)" },
-        defaultInput: {
-            left: ["A", "B", "C", "D"],
-            right: ["1", "2", "3", "4"],
-            edges: [["A", "1"], ["A", "2"], ["B", "1"], ["B", "3"], ["C", "2"], ["C", "4"], ["D", "3"], ["D", "4"]],
-        },
+        defaultInput: JSON.parse("{\"left\":[\"A\",\"B\",\"C\",\"D\"],\"right\":[\"1\",\"2\",\"3\",\"4\"],\"edges\":[[\"A\",\"1\"],[\"A\",\"2\"],[\"B\",\"1\"],[\"B\",\"3\"],[\"C\",\"2\"],[\"C\",\"4\"],[\"D\",\"3\"],[\"D\",\"4\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5393,7 +4729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Kyber KEM (Toy LWE Step)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1) toy", space: "O(1) toy" },
-        defaultInput: { bit: 1 },
+        defaultInput: JSON.parse("{\"bit\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5401,7 +4737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "L-BFGS (Limited-Memory BFGS)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m * n) per iteration", space: "O(m * n)" },
-        defaultInput: { H: [[4, 1], [1, 3]], b: [1, 2], x0: [0, 0], m: 5, maxIterations: 100, tolerance: 1e-9 },
+        defaultInput: JSON.parse("{\"H\":[[4,1],[1,3]],\"b\":[1,2],\"x0\":[0,0],\"m\":5,\"maxIterations\":100,\"tolerance\":1e-9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5409,16 +4745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Label Propagation Communities",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\",\"E\",\"F\"],\"E\":[\"D\",\"F\"],\"F\":[\"D\",\"E\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5426,7 +4753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Label Propagation Connected Components",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(D*(n+m))", space: "O(n+m)" },
-        defaultInput: { nodes: 8, edges: [[0, 1], [1, 2], [3, 4], [4, 5], [2, 5], [6, 7]] },
+        defaultInput: JSON.parse("{\"nodes\":8,\"edges\":[[0,1],[1,2],[3,4],[4,5],[2,5],[6,7]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5434,7 +4761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lagrange Interpolation",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(1)" },
-        defaultInput: { points: [[0, 1], [1, 3], [2, 7]], at: 3 },
+        defaultInput: JSON.parse("{\"points\":[[0,1],[1,3],[2,7]],\"at\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5442,7 +4769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lamport Clock",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { processes: 3 },
+        defaultInput: JSON.parse("{\"processes\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5450,7 +4777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lamport One-Time Signature (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { message: "hello" },
+        defaultInput: JSON.parse("{\"message\":\"hello\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5458,7 +4785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lanczos Algorithm",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m * n^2)", space: "O(m * n)" },
-        defaultInput: { matrix: [[4, 1, 0], [1, 3, 1], [0, 1, 2]], steps: 3 },
+        defaultInput: JSON.parse("{\"matrix\":[[4,1,0],[1,3,1],[0,1,2]],\"steps\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5466,7 +4793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Langevin Monte Carlo (MALA)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { steps: 120, step: 0.6, seed: 7 },
+        defaultInput: JSON.parse("{\"steps\":120,\"step\":0.6,\"seed\":7}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5474,7 +4801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Laplace Mechanism (Differential Privacy)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(s)", space: "O(s)" },
-        defaultInput: { trueValue: 50, sensitivity: 10, epsilon: 1, seed: 12345, samples: 8 },
+        defaultInput: JSON.parse("{\"trueValue\":50,\"sensitivity\":10,\"epsilon\":1,\"seed\":12345,\"samples\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5482,7 +4809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Largest Empty Circle",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n⁴)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 3], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,3],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5490,7 +4817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Las Vegas (Randomized Quicksort)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n) expected", space: "O(log n)" },
-        defaultInput: { array: [7, 2, 9, 1, 5, 8, 3] },
+        defaultInput: JSON.parse("{\"array\":[7,2,9,1,5,8,3]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5498,15 +4825,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lasso Regression",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(sweeps * d^2 * n)", space: "O(d)" },
-        defaultInput: { X: [[1, 0], [0, 1], [1, 1], [2, 1]], y: [1, 2, 3, 5], lambda: 0.5, sweeps: 4 },
+        defaultInput: JSON.parse("{\"X\":[[1,0],[0,1],[1,1],[2,1]],\"y\":[1,2,3,5],\"lambda\":0.5,\"sweeps\":4}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "late-move-reductions",
+        name: "Late Move Reductions",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(b^(d/2))", space: "O(d)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2,9,1,4,8,2,7,5,1],\"lateAfter\":1}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "latin-hypercube-sampling",
         name: "Latin Hypercube Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n d)", space: "O(n d)" },
-        defaultInput: { samples: 8, dimensions: 2, seed: 1 },
+        defaultInput: JSON.parse("{\"samples\":8,\"dimensions\":2,\"seed\":1}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5514,7 +4849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lattice Points (Gauss Circle)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(r²)", space: "O(r²)" },
-        defaultInput: { radius: 2 },
+        defaultInput: JSON.parse("{\"radius\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5522,7 +4857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Law of Large Numbers",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 100, seed: 42, distribution: "dice", p: 0.5 },
+        defaultInput: JSON.parse("{\"n\":100,\"seed\":42,\"distribution\":\"dice\",\"p\":0.5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5530,16 +4865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Law of Total Probability",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(k)" },
-        defaultInput: {
-            outcomes: [
-                { group: "B1", inA: true, mass: 0.15 },
-                { group: "B1", inA: false, mass: 0.1 },
-                { group: "B2", inA: true, mass: 0.2 },
-                { group: "B2", inA: false, mass: 0.05 },
-                { group: "B3", inA: true, mass: 0.25 },
-                { group: "B3", inA: false, mass: 0.25 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"outcomes\":[{\"group\":\"B1\",\"inA\":true,\"mass\":0.15},{\"group\":\"B1\",\"inA\":false,\"mass\":0.1},{\"group\":\"B2\",\"inA\":true,\"mass\":0.2},{\"group\":\"B2\",\"inA\":false,\"mass\":0.05},{\"group\":\"B3\",\"inA\":true,\"mass\":0.25},{\"group\":\"B3\",\"inA\":false,\"mass\":0.25}]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5547,7 +4873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Layer Normalization",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(d)", space: "O(d)" },
-        defaultInput: { x: [1, 2, 3, 4, 5], gamma: [1, 1, 1, 1, 1], beta: [0, 0, 0, 0, 0], eps: 0.00001 },
+        defaultInput: JSON.parse("{\"x\":[1,2,3,4,5],\"gamma\":[1,1,1,1,1],\"beta\":[0,0,0,0,0],\"eps\":0.00001}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5555,11 +4881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LCA (Binary Lifting)",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(log V) / query", space: "O(V log V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            query: ["D", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"],\"query\":[\"D\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5567,11 +4889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LCA (Euler + Sparse Table)",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(1) / query", space: "O(V log V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            query: ["D", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"],\"query\":[\"D\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5579,11 +4897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LCA (Tarjan Offline)",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((V + Q)·α(V))", space: "O(V + Q)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            queries: [["D", "H"], ["D", "E"]],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"],\"queries\":[[\"D\",\"H\"],[\"D\",\"E\"]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5591,7 +4905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LCP Array (Kasai)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "banana", suffixArray: [5, 3, 1, 0, 4, 2] },
+        defaultInput: JSON.parse("{\"text\":\"banana\",\"suffixArray\":[5,3,1,0,4,2]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -5599,7 +4913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LCP RMQ Queries",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log n) prep, O(1) query", space: "O(n log n)" },
-        defaultInput: { text: "banana", a: 1, b: 3 },
+        defaultInput: JSON.parse("{\"text\":\"banana\",\"a\":1,\"b\":3}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -5607,7 +4921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Common Subsequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { a: "abcde", b: "ace" },
+        defaultInput: JSON.parse("{\"a\":\"abcde\",\"b\":\"ace\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5615,7 +4929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Leaky Bucket Rate Limiter",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n + drains)", space: "O(n)" },
-        defaultInput: { capacity: 3, drainInterval: 1, arrivals: [0, 0.5, 1, 1.2, 1.5, 2, 2.1, 3] },
+        defaultInput: JSON.parse("{\"capacity\":3,\"drainInterval\":1,\"arrivals\":[0,0.5,1,1.2,1.5,2,2.1,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5623,7 +4937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Learning Rate Warmup with Cosine Decay",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { steps: 20, warmup: 4, maxLr: 0.001, minLr: 0.00001 },
+        defaultInput: JSON.parse("{\"steps\":20,\"warmup\":4,\"maxLr\":0.001,\"minLr\":0.00001}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5631,13 +4945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lease Mechanism (Teaching Model)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(k)" },
-        defaultInput: {
-            attempts: [
-                { owner: "A", time: 0, duration: 5 },
-                { owner: "B", time: 2, duration: 5 },
-                { owner: "A", time: 6, duration: 5 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"attempts\":[{\"owner\":\"A\",\"time\":0,\"duration\":5},{\"owner\":\"B\",\"time\":2,\"duration\":5},{\"owner\":\"A\",\"time\":6,\"duration\":5}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5645,7 +4953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Least Squares via Normal Equations",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m n^2 + n^3)", space: "O(m n + n^2)" },
-        defaultInput: { a: [[1, 0], [1, 1], [1, 2], [1, 3]], b: [1, 2, 4, 5] },
+        defaultInput: JSON.parse("{\"a\":[[1,0],[1,1],[1,2],[1,3]],\"b\":[1,2,4,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5653,7 +4961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Leftist Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { inserts: [5, 3, 8, 1, 9, 4] },
+        defaultInput: JSON.parse("{\"inserts\":[5,3,8,1,9,4]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5661,7 +4969,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Legendre Symbol (Euler)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { a: 5, p: 11 },
+        defaultInput: JSON.parse("{\"a\":5,\"p\":11}") as unknown,
+        visualType: "grid" as LayoutType,
+    },
+    {
+        id: "lenstra-elliptic-curve-factorization",
+        name: "Lenstra Elliptic Curve Factorization",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "L_n[1/2, 1/2 + o(1)]", space: "O(log n)" },
+        defaultInput: JSON.parse("{\"n\":455839,\"a\":1,\"x\":3,\"y\":1,\"B1\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5669,7 +4985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Levenberg-Marquardt Optimization",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * (m d^2 + d^3))", space: "O(m d + d^2)" },
-        defaultInput: { aTrue: 0.6, xs: [0, 0.5, 1, 1.5, 2], iterations: 12, lambda: 0.01 },
+        defaultInput: JSON.parse("{\"aTrue\":0.6,\"xs\":[0,0.5,1,1.5,2],\"iterations\":12,\"lambda\":0.01}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5677,7 +4993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Levenshtein Automaton",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(m)" },
-        defaultInput: { pattern: "apple", words: ["apple", "apply", "ape"], k: 1 },
+        defaultInput: JSON.parse("{\"pattern\":\"apple\",\"words\":[\"apple\",\"apply\",\"ape\"],\"k\":1}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -5685,7 +5001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lexicographic BFS",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "D"], C: ["A", "E"], D: ["B", "E"], E: ["C", "D"] }, start: "A" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"D\"],\"C\":[\"A\",\"E\"],\"D\":[\"B\",\"E\"],\"E\":[\"C\",\"D\"]},\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5693,7 +5009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LF-Mapping Inversion",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { bwt: "annb$aa" },
+        defaultInput: JSON.parse("{\"bwt\":\"annb$aa\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5701,7 +5017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LFU Cache",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(capacity)" },
-        defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c", "c"] },
+        defaultInput: JSON.parse("{\"capacity\":2,\"accesses\":[\"a\",\"b\",\"a\",\"c\",\"c\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5709,7 +5025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Li Chao Segment Tree (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(log C)", space: "O(C)" },
-        defaultInput: { lines: [{ m: 2, b: 1 }, { m: 1, b: 2 }, { m: -1, b: 5 }], queries: [0, 1, 2] },
+        defaultInput: JSON.parse("{\"lines\":[{\"m\":2,\"b\":1},{\"m\":1,\"b\":2},{\"m\":-1,\"b\":5}],\"queries\":[0,1,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5717,7 +5033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Library Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 3, 4, 1, 2],
+        defaultInput: JSON.parse("[5,3,4,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5725,7 +5041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Line Arrangement (Incremental)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { lines: [{ m: 1, b: 0 }, { m: -1, b: 4 }, { m: 0, b: 1 }] },
+        defaultInput: JSON.parse("{\"lines\":[{\"m\":1,\"b\":0},{\"m\":-1,\"b\":4},{\"m\":0,\"b\":1}]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5733,7 +5049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Line–Circle Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { line: [[0, 0], [4, 2]], center: [2, 1], r: 2 },
+        defaultInput: JSON.parse("{\"line\":[[0,0],[4,2]],\"center\":[2,1],\"r\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5741,7 +5057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Line Graph Construction",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E²)", space: "O(E²)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A"], C: ["A"], D: ["A"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\"],\"C\":[\"A\"],\"D\":[\"A\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -5749,7 +5065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d * d_v)", space: "O(d * d_v + n * d_v)" },
-        defaultInput: { queries: [[1, 0], [0, 1]], keys: [[1, 0], [0, 1], [0.5, 0.5]], values: [[2, 0], [0, 3], [1, 1]] },
+        defaultInput: JSON.parse("{\"queries\":[[1,0],[0,1]],\"keys\":[[1,0],[0,1],[0.5,0.5]],\"values\":[[2,0],[0,3],[1,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5757,7 +5073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Congruence Solver",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log m)", space: "O(1)" },
-        defaultInput: { a: 4, b: 8, m: 12 },
+        defaultInput: JSON.parse("{\"a\":4,\"b\":8,\"m\":12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5765,7 +5081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Diophantine (2 vars)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log min(a, b))", space: "O(1)" },
-        defaultInput: { a: 6, b: 9, c: 30 },
+        defaultInput: JSON.parse("{\"a\":6,\"b\":9,\"c\":30}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5773,7 +5089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Discriminant Analysis (Fisher, Two Classes)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { class0: [[0, 0], [1, 0], [0, 1], [1, 1]], class1: [[4, 4], [5, 4], [4, 5], [5, 5]] },
+        defaultInput: JSON.parse("{\"class0\":[[0,0],[1,0],[0,1],[1,1]],\"class1\":[[4,4],[5,4],[4,5],[5,5]]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5781,7 +5097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) avg", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5789,7 +5105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Regression (Normal Equation)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { xs: [1, 2, 3, 4, 5, 6], ys: [2.1, 3.9, 6.2, 8.1, 9.8, 12.2] },
+        defaultInput: JSON.parse("{\"xs\":[1,2,3,4,5,6],\"ys\":[2.1,3.9,6.2,8.1,9.8,12.2]}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -5797,7 +5113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [5, 3, 8, 1, 9, 2, 7, 4], target: 7 },
+        defaultInput: JSON.parse("{\"array\":[5,3,8,1,9,2,7,4],\"target\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5805,7 +5121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linear Sieve",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 60 },
+        defaultInput: JSON.parse("{\"n\":60}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5813,7 +5129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Link-Cut Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { links: [[1, 2], [2, 3], [3, 4]], weights: { "1-2": 5, "2-3": 2, "3-4": 7 } },
+        defaultInput: JSON.parse("{\"links\":[[1,2],[2,3],[3,4]],\"weights\":{\"1-2\":5,\"2-3\":2,\"3-4\":7}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5821,7 +5137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Linked Hash Map",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) average", space: "O(n)" },
-        defaultInput: { keys: ["one", "two", "three", "four"], buckets: 4 },
+        defaultInput: JSON.parse("{\"keys\":[\"one\",\"two\",\"three\",\"four\"],\"buckets\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5829,7 +5145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Increasing Subsequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { array: [3, 1, 4, 1, 5, 9, 2, 6] },
+        defaultInput: JSON.parse("{\"array\":[3,1,4,1,5,9,2,6]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5837,7 +5153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LL(1) Parsing",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { input: "a+a" },
+        defaultInput: JSON.parse("{\"input\":\"a+a\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5845,7 +5161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LMS Signature (Toy Hash-Chain Merkle Model)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(LEN * BASE + log LEN)", space: "O(LEN)" },
-        defaultInput: { messageDigits: [3, 7, 1, 12], seed: 7 },
+        defaultInput: JSON.parse("{\"messageDigits\":[3,7,1,12],\"seed\":7}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -5853,7 +5169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lock-Free Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) expected", space: "O(n)" },
-        defaultInput: { ops: [["enq", 1], ["enq", 2], ["deq"], ["enq", 3]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"enq\",1],[\"enq\",2],[\"deq\"],[\"enq\",3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5861,7 +5177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lock-Free Stack",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) expected", space: "O(n)" },
-        defaultInput: { ops: [["push", 1], ["push", 2], ["pop"], ["push", 3]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"push\",1],[\"push\",2],[\"pop\"],[\"push\",3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5869,14 +5185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Log-Structured Merge Read Path",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(t)" },
-        defaultInput: {
-            key: "k47",
-            memtable: { b: "2" },
-            levels: [
-                [{ id: "s0", minKey: "a", maxKey: "m", keys: { a: "1", c: "3" } }],
-                [{ id: "s1", minKey: "k", maxKey: "z", keys: { k47: "47", z: "26" } }],
-            ],
-        },
+        defaultInput: JSON.parse("{\"key\":\"k47\",\"memtable\":{\"b\":\"2\"},\"levels\":[[{\"id\":\"s0\",\"minKey\":\"a\",\"maxKey\":\"m\",\"keys\":{\"a\":\"1\",\"c\":\"3\"}}],[{\"id\":\"s1\",\"minKey\":\"k\",\"maxKey\":\"z\",\"keys\":{\"k47\":\"47\",\"z\":\"26\"}}]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5884,12 +5193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Logistic Regression (Gradient Descent)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n * d)", space: "O(n)" },
-        defaultInput: {
-            points: [[0, 0], [0, 1], [1, 0], [1, 1], [2, 1], [2, 2]],
-            labels: [0, 0, 0, 1, 1, 1],
-            epochs: 60,
-            learningRate: 0.5,
-        },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[0,1],[1,0],[1,1],[2,1],[2,2]],\"labels\":[0,0,0,1,1,1],\"epochs\":60,\"learningRate\":0.5}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -5897,7 +5201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lognormal Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(samples)", space: "O(samples)" },
-        defaultInput: { mu: 0, sigma: 0.5, x: 1, samples: 41 },
+        defaultInput: JSON.parse("{\"mu\":0,\"sigma\":0.5,\"x\":1,\"samples\":41}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5905,7 +5209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Arithmetic Subsequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { nums: [3, 6, 9, 12] },
+        defaultInput: JSON.parse("{\"nums\":[3,6,9,12]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5913,7 +5217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Bitonic Subsequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { nums: [1, 11, 2, 10, 4, 5, 2, 1] },
+        defaultInput: JSON.parse("{\"nums\":[1,11,2,10,4,5,2,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5921,7 +5225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Common Prefix (DP)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { a: "ababca", b: "abacab" },
+        defaultInput: JSON.parse("{\"a\":\"ababca\",\"b\":\"abacab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5929,7 +5233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Common Substring",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { a: "abacaba", b: "cabac" },
+        defaultInput: JSON.parse("{\"a\":\"abacaba\",\"b\":\"cabac\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5937,7 +5241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Palindromic Subsequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { s: "bbbab" },
+        defaultInput: JSON.parse("{\"s\":\"bbbab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5945,7 +5249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Palindromic Substring",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { s: "babad" },
+        defaultInput: JSON.parse("{\"s\":\"babad\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5953,7 +5257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Longest Valid Parentheses (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { s: ")()())" },
+        defaultInput: JSON.parse("{\"s\":\")()())\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5961,7 +5265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lookahead Decoding (Parallel Verification Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(w)", space: "O(w)" },
-        defaultInput: { start: 2, draft: [7, 2, 3, 8, 1], vocab: 10, a: 3, b: 1 },
+        defaultInput: JSON.parse("{\"start\":2,\"draft\":[7,2,3,8,1],\"vocab\":10,\"a\":3,\"b\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5969,7 +5273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LoRA (Low-Rank Adaptation Merge)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(rows * cols * rank)", space: "O(rows * cols)" },
-        defaultInput: { W: [[1, 2, 3], [4, 5, 6]], B: [[1, 0], [0, 1]], A: [[1, 2, 3], [0, 1, 1]] },
+        defaultInput: JSON.parse("{\"W\":[[1,2,3],[4,5,6]],\"B\":[[1,0],[0,1]],\"A\":[[1,2,3],[0,1,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5977,7 +5281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Loser Tree Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 1, 5, 2, 4, 3],
+        defaultInput: JSON.parse("[6,1,5,2,4,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -5985,7 +5289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LOUDS Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) nav", space: "2n + 1 bits" },
-        defaultInput: { children: [[2, 1], [0], [1], [0]], query: 2 },
+        defaultInput: JSON.parse("{\"children\":[[2,1],[0],[1],[0]],\"query\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -5993,16 +5297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Louvain Community Detection",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C"],
-                C: ["A", "B", "D"],
-                D: ["C", "E", "F"],
-                E: ["D", "F"],
-                F: ["D", "E"],
-            },
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\",\"E\",\"F\"],\"E\":[\"D\",\"F\"],\"F\":[\"D\",\"E\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6010,12 +5305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lifelong Planning A* (LPA*)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V) first search; less per repair", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            goal: "D",
-            changes: [["C", "D", 6]],
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"goal\":\"D\",\"changes\":[[\"C\",\"D\",6]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6023,7 +5313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LR(0) Parsing",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { input: "aaa" },
+        defaultInput: JSON.parse("{\"input\":\"aaa\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6031,7 +5321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LRU Cache",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(capacity)" },
-        defaultInput: { capacity: 2, accesses: ["a", "b", "a", "c"] },
+        defaultInput: JSON.parse("{\"capacity\":2,\"accesses\":[\"a\",\"b\",\"a\",\"c\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6039,7 +5329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LSM Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) write amortized", space: "O(n)" },
-        defaultInput: { puts: [["a", 1], ["b", 2], ["c", 3], ["d", 4]], get: "c" },
+        defaultInput: JSON.parse("{\"puts\":[[\"a\",1],[\"b\",2],[\"c\",3],[\"d\",4]],\"get\":\"c\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6047,16 +5337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LSM Tree Compaction",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(total entries * log runs)", space: "O(total entries)" },
-        defaultInput: {
-            runs: [
-                [[1, "a"], [3, "c"], [5, "e"]],
-                [[2, "b"], [4, "d"], [6, "f"]],
-                [[3, "C"], [5, "E"], [7, "g"]],
-                [[1, "A"], [8, "h"], [9, "i"]],
-                [[2, "B"], [4, "D"], [10, "j"]],
-            ],
-            threshold: 2,
-        },
+        defaultInput: JSON.parse("{\"runs\":[[[1,\"a\"],[3,\"c\"],[5,\"e\"]],[[2,\"b\"],[4,\"d\"],[6,\"f\"]],[[3,\"C\"],[5,\"E\"],[7,\"g\"]],[[1,\"A\"],[8,\"h\"],[9,\"i\"]],[[2,\"B\"],[4,\"D\"],[10,\"j\"]]],\"threshold\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6064,7 +5345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LSTM Cell Step",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { sequence: [0.5, 1, -0.5], weights: [1, 1, 1, 1], biases: [0, 0, 0, 0], h0: 0, c0: 0 },
+        defaultInput: JSON.parse("{\"sequence\":[0.5,1,-0.5],\"weights\":[1,1,1,1],\"biases\":[0,0,0,0],\"h0\":0,\"c0\":0}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6072,7 +5353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LU Decomposition",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { matrix: [[4, 2], [2, 3]] },
+        defaultInput: JSON.parse("{\"matrix\":[[4,2],[2,3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6080,7 +5361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LU Decomposition with Partial Pivoting",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { matrix: [[0, 2, 1], [1, -2, -3], [3, -1, 2]] },
+        defaultInput: JSON.parse("{\"matrix\":[[0,2,1],[1,-2,-3],[3,-1,2]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6088,7 +5369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lucas-Lehmer Mersenne Test",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(p^2 log p)", space: "O(1)" },
-        defaultInput: { p: 5 },
+        defaultInput: JSON.parse("{\"p\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6096,7 +5377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lucas Sequences",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { P: 3, Q: 1, n: 4 },
+        defaultInput: JSON.parse("{\"P\":3,\"Q\":1,\"n\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6104,7 +5385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Lucas's Theorem",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log_p n)", space: "O(1)" },
-        defaultInput: { n: 10, k: 3 },
+        defaultInput: JSON.parse("{\"n\":10,\"k\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6112,7 +5393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LWE Encryption",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { message: 1, q: 97, n: 4, seed: 20261118 },
+        defaultInput: JSON.parse("{\"message\":1,\"q\":97,\"n\":4,\"seed\":20261118}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6120,7 +5401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LZ4-Style Compression",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "abcabcabcabcabcabc", minMatch: 4 },
+        defaultInput: JSON.parse("{\"text\":\"abcabcabcabcabcabc\",\"minMatch\":4}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6128,7 +5409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LZ77 Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·w)", space: "O(n)" },
-        defaultInput: { text: "abcababcab", window: 6 },
+        defaultInput: JSON.parse("{\"text\":\"abcababcab\",\"window\":6}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6136,7 +5417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LZ78 Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { text: "abababa" },
+        defaultInput: JSON.parse("{\"text\":\"abababa\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6144,7 +5425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LZMA Compression",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n * window * maxMatch + 256 * t)", space: "O(n + t)" },
-        defaultInput: { text: "to be or not to be that is the question to be or not to be", window: 4096 },
+        defaultInput: JSON.parse("{\"text\":\"to be or not to be that is the question to be or not to be\",\"window\":4096}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6152,7 +5433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "LZW Coding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "abababa" },
+        defaultInput: JSON.parse("{\"text\":\"abababa\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6160,7 +5441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "M-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6168,7 +5449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maglev Consistent Hashing",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(tableSize * backendCount)", space: "O(tableSize + backendCount)" },
-        defaultInput: { backends: ["backend-apple", "backend-banana", "backend-cherry"], tableSize: 13 },
+        defaultInput: JSON.parse("{\"backends\":[\"backend-apple\",\"backend-banana\",\"backend-cherry\"],\"tableSize\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6176,7 +5457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Majority Vote Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [2, 2, 1, 2, 3, 2, 2] },
+        defaultInput: JSON.parse("{\"array\":[2,2,1,2,3,2,2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6184,7 +5465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mamba-2 (SSD Scan Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { x: [1, 2, 3, 4], a: [0.9, 0.8, 0.7, 0.6], b: [1, 1, 1, 1], c: [1, 1, 1, 1], h0: 0 },
+        defaultInput: JSON.parse("{\"x\":[1,2,3,4],\"a\":[0.9,0.8,0.7,0.6],\"b\":[1,1,1,1],\"c\":[1,1,1,1],\"h0\":0}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6192,7 +5473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mamba Selective State Space",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(L)", space: "O(1)" },
-        defaultInput: { sequence: [1, -0.5, 2, -1.5, 0.5, -2] },
+        defaultInput: JSON.parse("{\"sequence\":[1,-0.5,2,-1.5,0.5,-2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6200,7 +5481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Manacher",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "babadcdabab" },
+        defaultInput: JSON.parse("{\"text\":\"babadcdabab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6208,7 +5489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mann-Whitney U Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(N log N + C(N,n1))", space: "O(N)" },
-        defaultInput: { x: [5, 8, 6, 9, 7], y: [3, 4, 1, 2, 0] },
+        defaultInput: JSON.parse("{\"x\":[5,8,6,9,7],\"y\":[3,4,1,2,0]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6216,7 +5497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MapReduce Word Count",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(k)" },
-        defaultInput: { lines: ["the quick brown fox", "the quick blue fox"] },
+        defaultInput: JSON.parse("{\"lines\":[\"the quick brown fox\",\"the quick blue fox\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6224,7 +5505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Marching Squares Isocontour",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(rows·cols)", space: "O(rows·cols)" },
-        defaultInput: { field: [[0, 0, 0], [0, 1, 0], [0, 0, 0]], iso: 0.5 },
+        defaultInput: JSON.parse("{\"field\":[[0,0,0],[0,1,0],[0,0,0]],\"iso\":0.5}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6232,7 +5513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Markov Chain Stationary Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: { transition: [[0.9, 0.1], [0.2, 0.8]], iterations: 20 },
+        defaultInput: JSON.parse("{\"transition\":[[0.9,0.1],[0.2,0.8]],\"iterations\":20}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6240,7 +5521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Matrix Exponentiation",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(d³ log k)", space: "O(d²)" },
-        defaultInput: { matrix: [[1, 1], [1, 0]], exponent: 7 },
+        defaultInput: JSON.parse("{\"matrix\":[[1,1],[1,0]],\"exponent\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6248,7 +5529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Matrix Product States (TT-SVD)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n * 2^(3n/2))", space: "O(n * chi^2)" },
-        defaultInput: { qubits: 4, bondDimension: 4, state: "ghz" },
+        defaultInput: JSON.parse("{\"qubits\":4,\"bondDimension\":4,\"state\":\"ghz\"}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6256,7 +5537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Matrix-Tree Theorem Counting",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V^2)" },
-        defaultInput: { vertices: ["A", "B", "C"], edges: [["A", "B", 1], ["B", "C", 1], ["A", "C", 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",1],[\"A\",\"C\",1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6264,7 +5545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Max Closure of a Directed Graph",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: { vertices: ["A", "B", "C"], weights: [5, -3, 4], arcs: [["A", "B"], ["A", "C"]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\"],\"weights\":[5,-3,4],\"arcs\":[[\"A\",\"B\"],[\"A\",\"C\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6272,7 +5553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Max Collinear Points",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [1, 1], [2, 2], [0, 2], [2, 0], [3, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,1],[2,2],[0,2],[2,0],[3,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6280,14 +5561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximal Rectangle (Binary Matrix)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n)", space: "O(n)" },
-        defaultInput: {
-            matrix: [
-                ["1", "0", "1", "0", "0"],
-                ["1", "0", "1", "1", "1"],
-                ["1", "1", "1", "1", "1"],
-                ["1", "0", "0", "1", "0"],
-            ],
-        },
+        defaultInput: JSON.parse("{\"matrix\":[[\"1\",\"0\",\"1\",\"0\",\"0\"],[\"1\",\"0\",\"1\",\"1\",\"1\"],[\"1\",\"1\",\"1\",\"1\",\"1\"],[\"1\",\"0\",\"0\",\"1\",\"0\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6295,7 +5569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximal Square",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n)", space: "O(m·n)" },
-        defaultInput: { matrix: [["1", "1", "0"], ["1", "1", "1"], ["0", "1", "1"]] },
+        defaultInput: JSON.parse("{\"matrix\":[[\"1\",\"1\",\"0\"],[\"1\",\"1\",\"1\"],[\"0\",\"1\",\"1\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6303,7 +5577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximum Density Subgraph",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E^2 log V)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2", "3"], edges: [[0, 1], [0, 2], [1, 2]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1],[0,2],[1,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6311,7 +5585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Maximum Likelihood Estimation",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n + g)", space: "O(g)" },
-        defaultInput: { data: [0.5, 1.2, 0.3, 2, 0.8, 1.5], min: 0.2, max: 3, steps: 25 },
+        defaultInput: JSON.parse("{\"data\":[0.5,1.2,0.3,2,0.8,1.5],\"min\":0.2,\"max\":3,\"steps\":25}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6319,7 +5593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "McEliece Encryption (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n^2)" },
-        defaultInput: { message: 11, errorPosition: 3, perm: [2, 5, 0, 6, 1, 3, 4] },
+        defaultInput: JSON.parse("{\"message\":11,\"errorPosition\":3,\"perm\":[2,5,0,6,1,3,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6327,7 +5601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MCTS-UCT",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(sims)", space: "O(arms)" },
-        defaultInput: { sims: 9 },
+        defaultInput: JSON.parse("{\"sims\":9}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6335,7 +5609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Measurement-Based Quantum Computing",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1) for three qubits", space: "O(1) for three qubits" },
-        defaultInput: { theta: 1.0471975511965976, seed: 2026 },
+        defaultInput: JSON.parse("{\"theta\":1.0471975511965976,\"seed\":2026}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6343,7 +5617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Median of Medians Select",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { array: [9, 3, 7, 1, 5, 8, 2, 6, 4], k: 5 },
+        defaultInput: JSON.parse("{\"array\":[9,3,7,1,5,8,2,6,4],\"k\":5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6351,7 +5625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Median of Two Sorted Arrays",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log(min(n, m)))", space: "O(1)" },
-        defaultInput: { a: [1, 2, 3, 4], b: [5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"a\":[1,2,3,4],\"b\":[5,6,7,8]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6359,7 +5633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Medusa Decoding (Tree Verification)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(branch^depth)", space: "O(branch^depth)" },
-        defaultInput: { lastToken: 4, vocabSize: 12, depth: 3, branch: 2 },
+        defaultInput: JSON.parse("{\"lastToken\":4,\"vocabSize\":12,\"depth\":3,\"branch\":2}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6367,7 +5641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merge-Insertion Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 3, 1, 4, 2],
+        defaultInput: JSON.parse("[5,3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6375,7 +5649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merge Sort (Bottom-Up)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
+        defaultInput: JSON.parse("[6,3,8,1,7,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6383,7 +5657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merge Sort (Top-Down)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
+        defaultInput: JSON.parse("[6,3,8,1,7,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6391,7 +5665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merge Sort Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log^2 n) query", space: "O(n log n)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6399,7 +5673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merkle Patricia Trie",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(total key length)", space: "O(total key length)" },
-        defaultInput: { entries: [["do", "dog"], ["dog", "puppy"], ["doge", "coin"], ["horse", "stallion"]] },
+        defaultInput: JSON.parse("{\"entries\":[[\"do\",\"dog\"],[\"dog\",\"puppy\"],[\"doge\",\"coin\"],[\"horse\",\"stallion\"]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6407,7 +5681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merkle Signature Scheme",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(d * w + log N)", space: "O(N)" },
-        defaultInput: { message: "sign this", seed: 77, leafIndex: 2 },
+        defaultInput: JSON.parse("{\"message\":\"sign this\",\"seed\":77,\"leafIndex\":2}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6415,7 +5689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merkle Tree Anti-Entropy",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n + d * n)", space: "O(n)" },
-        defaultInput: { keys: ["a", "b", "c", "d"], replicaA: ["1", "2", "3", "4"], replicaB: ["1", "9", "3", "4"] },
+        defaultInput: JSON.parse("{\"keys\":[\"a\",\"b\",\"c\",\"d\"],\"replicaA\":[\"1\",\"2\",\"3\",\"4\"],\"replicaB\":[\"1\",\"9\",\"3\",\"4\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6423,7 +5697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Merkle Tree Proof",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { leaves: ["a", "b", "c", "d"], prove: 2 },
+        defaultInput: JSON.parse("{\"leaves\":[\"a\",\"b\",\"c\",\"d\"],\"prove\":2}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6431,7 +5705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Metaphone",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { word: "Thompson" },
+        defaultInput: JSON.parse("{\"word\":\"Thompson\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6439,7 +5713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Metropolis-Hastings Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { steps: 120, step: 1, seed: 42 },
+        defaultInput: JSON.parse("{\"steps\":120,\"step\":1,\"seed\":42}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6447,7 +5721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Midpoint Circle Rasterization",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: { center: [0, 0], radius: 3 },
+        defaultInput: JSON.parse("{\"center\":[0,0],\"radius\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6455,7 +5729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Miller-Rabin",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k·log³ n)", space: "O(1)" },
-        defaultInput: { n: 29 },
+        defaultInput: JSON.parse("{\"n\":29}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6463,7 +5737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min-Conflicts Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(iterations × n)", space: "O(n)" },
-        defaultInput: { seed: 42 },
+        defaultInput: JSON.parse("{\"seed\":42}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6471,12 +5745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min-Cost Max-Flow",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(f·V·E)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3, 2], ["S", "B", 2, 1], ["A", "B", 1, 1], ["A", "T", 2, 3], ["B", "T", 3, 2]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3,2],[\"S\",\"B\",2,1],[\"A\",\"B\",1,1],[\"A\",\"T\",2,3],[\"B\",\"T\",3,2]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6484,12 +5753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Minimum Cut",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E·f)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3], ["S", "B", 2], ["A", "B", 1], ["A", "T", 2], ["B", "T", 3]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6497,7 +5761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min-Cut Cactus",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^2 E)", space: "O(V^2)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 1], [1, 2, 1], [0, 2, 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,1],[1,2,1],[0,2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6505,7 +5769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min Enclosing Circle (Welzl)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n) expected", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [2, 3], [5, 1], [1, 2]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[2,3],[5,1],[1,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6513,7 +5777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min Enclosing Rectangle (Rotating Calipers)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [3, 1], [1, 2], [4, 3], [2, 0]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[3,1],[1,2],[4,3],[2,0]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6521,7 +5785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min-Max Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 9] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,9]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6529,7 +5793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min Path Sum (Grid)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(m·n)", space: "O(m·n)" },
-        defaultInput: { grid: [[1, 3, 1], [1, 5, 1], [4, 2, 1]] },
+        defaultInput: JSON.parse("{\"grid\":[[1,3,1],[1,5,1],[4,2,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6537,7 +5801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
-        defaultInput: { ops: [["enq", 4], ["enq", 2], ["enq", 7], ["deq"], ["enq", 1]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"enq\",4],[\"enq\",2],[\"enq\",7],[\"deq\"],[\"enq\",1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6545,7 +5809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Min Stack",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) all ops", space: "O(n)" },
-        defaultInput: { pushes: [5, 3, 8, 2] },
+        defaultInput: JSON.parse("{\"pushes\":[5,3,8,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6553,7 +5817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MinHash + LSH",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k·n)", space: "O(k)" },
-        defaultInput: { a: [1, 2, 3, 4], b: [3, 4, 5, 6] },
+        defaultInput: JSON.parse("{\"a\":[1,2,3,4],\"b\":[3,4,5,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6561,7 +5825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MinHash Sketch",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) update", space: "O(k)" },
-        defaultInput: { values: [7, 2, 9, 4, 6] },
+        defaultInput: JSON.parse("{\"values\":[7,2,9,4,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6569,13 +5833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mini-Batch Gradient Descent",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n)", space: "O(n)" },
-        defaultInput: {
-            xs: [0, 1, 2, 3, 4, 5, 6, 7],
-            ys: [1, 3, 5, 7, 9, 11, 13, 15],
-            learningRate: 0.05,
-            batchSize: 2,
-            epochs: 12,
-        },
+        defaultInput: JSON.parse("{\"xs\":[0,1,2,3,4,5,6,7],\"ys\":[1,3,5,7,9,11,13,15],\"learningRate\":0.05,\"batchSize\":2,\"epochs\":12}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6583,7 +5841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Minimax",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
-        defaultInput: { leaves: [3, 5, 2, 6, 1, 4, 7, 2, 8, 1, 9, 3, 5, 4, 2, 8, 6, 3, 2, 7, 1, 4, 9, 5, 3, 8, 6] },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2,8,1,9,3,5,4,2,8,6,3,2,7,1,4,9,5,3,8,6]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6591,16 +5849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Minimax Path via MST",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 3]],
-                B: [["A", 4], ["C", 1]],
-                C: [["A", 3], ["B", 1], ["D", 2]],
-                D: [["C", 2]],
-            },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",3]],\"B\":[[\"A\",4],[\"C\",1]],\"C\":[[\"A\",3],[\"B\",1],[\"D\",2]],\"D\":[[\"C\",2]]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6608,10 +5857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Minimum Bottleneck Spanning Tree",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log E)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6619,18 +5865,31 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Minimum Diameter Spanning Tree",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(2^E V)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]]}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "minimum-spanning-forest",
+        name: "Minimum Spanning Forest",
+        category: "mst" as AlgorithmCategory,
+        complexity: { time: "O(E log E)", space: "O(V + E)" },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"A\",\"C\",5],[\"D\",\"E\",3],[\"E\",\"F\",4],[\"D\",\"F\",6],[\"C\",\"D\",9]]}") as unknown,
+        visualType: "graph" as LayoutType,
+    },
+    {
+        id: "minkowski-sum",
+        name: "Minkowski Sum (Convex Polygons)",
+        category: "geometry" as AlgorithmCategory,
+        complexity: { time: "O(n + m)", space: "O(n + m)" },
+        defaultInput: JSON.parse("{\"a\":[[0,0],[2,0],[2,2],[0,2]],\"b\":[[0,0],[1,0],[1,1],[0,1]]}") as unknown,
+        visualType: "point" as LayoutType,
     },
     {
         id: "misere-nim",
         name: "Misère Nim",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(p)", space: "O(1)" },
-        defaultInput: { piles: [1, 2, 3] },
+        defaultInput: JSON.parse("{\"piles\":[1,2,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6638,7 +5897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Misra–Gries Summary",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n·k)", space: "O(k)" },
-        defaultInput: { stream: ["a", "b", "a", "c", "a", "b", "a", "d"], k: 2 },
+        defaultInput: JSON.parse("{\"stream\":[\"a\",\"b\",\"a\",\"c\",\"a\",\"b\",\"a\",\"d\"],\"k\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6646,12 +5905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mixture-of-Experts Routing",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * E * d + n * k * d)", space: "O(n * E + n * d)" },
-        defaultInput: {
-            tokens: [[1, 0], [0, 1], [1, 1]],
-            routerW: [[1, 0], [0, 1], [0.5, 0.5]],
-            topK: 2,
-            capacityFactor: 1,
-        },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1]],\"routerW\":[[1,0],[0,1],[0.5,0.5]],\"topK\":2,\"capacityFactor\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6659,7 +5913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ML-DSA (Toy Ring Multiplication)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { n: 4, q: 17, a: [1, 2, 3, 4], b: [5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"n\":4,\"q\":17,\"a\":[1,2,3,4],\"b\":[5,6,7,8]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6667,7 +5921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ML-KEM (Rounding and Reconciliation Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { coefficients: [0, 1664, 800, 2500, 3328, 100], bits: [0, 1, 1, 0, 1, 0], d: 10 },
+        defaultInput: JSON.parse("{\"coefficients\":[0,1664,800,2500,3328,100],\"bits\":[0,1,1,0,1,0],\"d\":10}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6675,7 +5929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Möbius Inversion",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { n: 40 },
+        defaultInput: JSON.parse("{\"n\":40}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6683,7 +5937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Modular Gaussian Elimination",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { mod: 7, rows: [[2, 1, 5], [1, 3, 6]] },
+        defaultInput: JSON.parse("{\"mod\":7,\"rows\":[[2,1,5],[1,3,6]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6691,7 +5945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Modular Inverse",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log min(a, m))", space: "O(1)" },
-        defaultInput: { a: 3, m: 11 },
+        defaultInput: JSON.parse("{\"a\":3,\"m\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6699,7 +5953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Modular Tetration (Euler)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log m)", space: "O(1)" },
-        defaultInput: { a: 2, b: 3, c: 2, mod: 7 },
+        defaultInput: JSON.parse("{\"a\":2,\"b\":3,\"c\":2,\"mod\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6707,7 +5961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Moment Generating Function",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps * outcomes)", space: "O(steps)" },
-        defaultInput: { values: [0, 1], probabilities: [0.4, 0.6], tMin: -2, tMax: 2, steps: 9 },
+        defaultInput: JSON.parse("{\"values\":[0,1],\"probabilities\":[0.4,0.6],\"tMin\":-2,\"tMax\":2,\"steps\":9}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6715,7 +5969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Momentum SGD",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T)", space: "O(T)" },
-        defaultInput: { target: 1, start: 4, lr: 0.05, momentum: 0.9, steps: 24 },
+        defaultInput: JSON.parse("{\"target\":1,\"start\":4,\"lr\":0.05,\"momentum\":0.9,\"steps\":24}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6723,7 +5977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Monkey Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n · n!)", space: "O(n)" },
-        defaultInput: [3, 1, 4, 2],
+        defaultInput: JSON.parse("[3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6731,7 +5985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Monotonic Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(k)" },
-        defaultInput: { values: [2, 5, 3, 7, 1, 8, 4], window: 3 },
+        defaultInput: JSON.parse("{\"values\":[2,5,3,7,1,8,4],\"window\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6739,7 +5993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Monotonic Queue DP",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { costs: [0, 3, 1, 2, 5, 1, 2, 1], window: 3 },
+        defaultInput: JSON.parse("{\"costs\":[0,3,1,2,5,1,2,1],\"window\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6747,7 +6001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Monotonic Stack",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { values: [4, 5, 2, 10, 8] },
+        defaultInput: JSON.parse("{\"values\":[4,5,2,10,8]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6755,7 +6009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Monte Carlo (π)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(N)", space: "O(1)" },
-        defaultInput: { samples: 60 },
+        defaultInput: JSON.parse("{\"samples\":60}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6763,7 +6017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Montgomery Reduction",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log R)", space: "O(1)" },
-        defaultInput: { m: 13, R: 16, T: 100 },
+        defaultInput: JSON.parse("{\"m\":13,\"R\":16,\"T\":100}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6771,7 +6025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Moore's Nim",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(m^p)", space: "O(p)" },
-        defaultInput: { piles: [3, 4, 5], k: 2 },
+        defaultInput: JSON.parse("{\"piles\":[3,4,5],\"k\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6779,7 +6033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Morris Counter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(log log n)" },
-        defaultInput: { events: 20, seed: 17 },
+        defaultInput: JSON.parse("{\"events\":20,\"seed\":17}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6787,25 +6041,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Morris Traversal",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            left: { A: "B", B: "D", C: "E", D: null, E: null },
-            right: { A: "C", B: null, C: null, D: null, E: null },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"left\":{\"A\":\"B\",\"B\":\"D\",\"C\":\"E\",\"D\":null,\"E\":null},\"right\":{\"A\":\"C\",\"B\":null,\"C\":null,\"D\":null,\"E\":null}}") as unknown,
         visualType: "tree" as LayoutType,
+    },
+    {
+        id: "morton-order",
+        name: "Morton Order (Z-Order Curve)",
+        category: "geometry" as AlgorithmCategory,
+        complexity: { time: "O(n log n)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,1],[2,0],[3,2],[1,3],[4,4],[2,2],[0,3]]}") as unknown,
+        visualType: "point" as LayoutType,
     },
     {
         id: "mos-on-trees",
         name: "Mo's on Trees",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O((n+q)√n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            values: { A: 1, B: 2, C: 1, D: 3, E: 2 },
-            queries: [["D", "E"], ["B", "C"]],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"values\":{\"A\":1,\"B\":2,\"C\":1,\"D\":3,\"E\":2},\"queries\":[[\"D\",\"E\"],[\"B\",\"C\"]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6813,7 +6065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Move-To-Front",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·σ)", space: "O(σ)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6821,10 +6073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MST Sensitivity Analysis",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6832,19 +6081,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "MST Verification (Tarjan)",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E alpha(V))", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-            tree: [0, 1, 2],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]],\"tree\":[0,1,2]}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "mtdf",
+        name: "MTD(f) Search",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(k * b^(d/2))", space: "O(d)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2],\"guess\":0}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "multi-head-self-attention",
         name: "Multi-Head Self-Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(heads * n^2 * dk)", space: "O(heads * n^2)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1]], heads: 2, dk: 2, seed: 11 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1]],\"heads\":2,\"dk\":2,\"seed\":11}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -6852,7 +6105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multi-Paxos",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n*m) messages", space: "O(n+m)" },
-        defaultInput: { acceptors: 5, proposals: [7, 3, 9], failed: [4] },
+        defaultInput: JSON.parse("{\"acceptors\":5,\"proposals\":[7,3,9],\"failed\":[4]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6860,7 +6113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multi-Query Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(heads * n^2 * dk)", space: "O(heads * n^2)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1]], heads: 2, dk: 2, seed: 23 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1]],\"heads\":2,\"dk\":2,\"seed\":23}") as unknown,
         visualType: "matrix" as LayoutType,
     },
     {
@@ -6868,7 +6121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multi-Source BFS",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["B", "D"], D: ["C", "E"], E: ["D"] }, sources: ["A", "E"] },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"A\",\"C\"],\"C\":[\"B\",\"D\"],\"D\":[\"C\",\"E\"],\"E\":[\"D\"]},\"sources\":[\"A\",\"E\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6876,12 +6129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multiclass Perceptron",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n * C * d)", space: "O(C * d)" },
-        defaultInput: {
-            points: [[-0.1, 0.1], [0.2, -0.1], [3, 0.1], [2.8, 0.3], [0.1, 3], [-0.1, 2.8]],
-            labels: [0, 0, 1, 1, 2, 2],
-            classes: 3,
-            epochs: 15,
-        },
+        defaultInput: JSON.parse("{\"points\":[[-0.1,0.1],[0.2,-0.1],[3,0.1],[2.8,0.3],[0.1,3],[-0.1,2.8]],\"labels\":[0,0,1,1,2,2],\"classes\":3,\"epochs\":15}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6889,7 +6137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multigrid V-Cycle",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(N) per V-cycle", space: "O(N)" },
-        defaultInput: { finest: 7, cycles: 6, sweeps: 2 },
+        defaultInput: JSON.parse("{\"finest\":7,\"cycles\":6,\"sweeps\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -6897,7 +6145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Multiplicative Order Finding",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(n) + log n)", space: "O(1)" },
-        defaultInput: { a: 2, n: 11 },
+        defaultInput: JSON.parse("{\"a\":2,\"n\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6905,7 +6153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mutual Information",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n + r * c)", space: "O(r * c)" },
-        defaultInput: { pairs: [[0, 0], [0, 0], [0, 1], [1, 1], [1, 1], [1, 2], [2, 2], [2, 2], [2, 1], [2, 2]] },
+        defaultInput: JSON.parse("{\"pairs\":[[0,0],[0,0],[0,1],[1,1],[1,1],[1,2],[2,2],[2,2],[2,1],[2,2]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6913,7 +6161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Myers Bit-Parallel Approx",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O((n·m)/w)", space: "O(σ)" },
-        defaultInput: { text: "ababcab", pattern: "abc", k: 1 },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\",\"k\":1}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -6921,7 +6169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Myers Diff O(ND)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(ND)", space: "O(D²)" },
-        defaultInput: { a: "abcab", b: "acbab" },
+        defaultInput: JSON.parse("{\"a\":\"abcab\",\"b\":\"acbab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -6929,7 +6177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Mysticeti DAG Consensus (Simulation)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n^2 * rounds)", space: "O(n^2 * rounds)" },
-        defaultInput: { nodes: 4, rounds: 3, crash: [] },
+        defaultInput: JSON.parse("{\"nodes\":4,\"rounds\":3,\"crash\":[]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6937,7 +6185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nagamochi-Ibaraki Min Cut",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E + V^2 log V)", space: "O(V^2)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 3], [1, 2, 2], [0, 2, 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,3],[1,2,2],[0,2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6945,21 +6193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Naive Bayes Classifier",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d + c * d)", space: "O(c * d)" },
-        defaultInput: {
-            samples: [
-                [0, 0, 0],
-                [0.5, 0.3, 0],
-                [0.2, 0.7, 0],
-                [3, 3, 1],
-                [3.4, 2.8, 1],
-                [2.8, 3.3, 1],
-                [0, 5, 2],
-                [0.4, 5.2, 2],
-                [0.3, 4.6, 2],
-            ],
-            query: [0.2, 4.8],
-            epsilon: 0.000001,
-        },
+        defaultInput: JSON.parse("{\"samples\":[[0,0,0],[0.5,0.3,0],[0.2,0.7,0],[3,3,1],[3.4,2.8,1],[2.8,3.3,1],[0,5,2],[0.4,5.2,2],[0.3,4.6,2]],\"query\":[0.2,4.8],\"epsilon\":0.000001}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -6967,19 +6201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nakamoto Consensus (Longest-Chain Rule)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            blocks: [
-                { id: "G", parent: null, work: 1 },
-                { id: "A", parent: "G", work: 1 },
-                { id: "B", parent: "A", work: 1 },
-                { id: "C", parent: "B", work: 1 },
-                { id: "X", parent: "A", work: 1 },
-                { id: "Y", parent: "X", work: 1 },
-                { id: "Z", parent: "Y", work: 1 },
-                { id: "W", parent: "Z", work: 1 },
-            ],
-            previousTip: "B",
-        },
+        defaultInput: JSON.parse("{\"blocks\":[{\"id\":\"G\",\"parent\":null,\"work\":1},{\"id\":\"A\",\"parent\":\"G\",\"work\":1},{\"id\":\"B\",\"parent\":\"A\",\"work\":1},{\"id\":\"C\",\"parent\":\"B\",\"work\":1},{\"id\":\"X\",\"parent\":\"A\",\"work\":1},{\"id\":\"Y\",\"parent\":\"X\",\"work\":1},{\"id\":\"Z\",\"parent\":\"Y\",\"work\":1},{\"id\":\"W\",\"parent\":\"Z\",\"work\":1}],\"previousTip\":\"B\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -6987,7 +6209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Narwhal and Tusk",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(rounds * n^2)", space: "O(rounds * n)" },
-        defaultInput: { nodes: 4, rounds: 4, seed: 3, offline: [] },
+        defaultInput: JSON.parse("{\"nodes\":4,\"rounds\":4,\"seed\":3,\"offline\":[]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -6995,7 +6217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Natural Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [1, 3, 2, 4, 6, 5],
+        defaultInput: JSON.parse("[1,3,2,4,6,5]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7003,7 +6225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "nCr via Factorial Table",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n + log p)", space: "O(n)" },
-        defaultInput: { n: 5, k: 2, mod: 13 },
+        defaultInput: JSON.parse("{\"n\":5,\"k\":2,\"mod\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7011,7 +6233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nearly Sorted Array Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [3, 1, 2, 4, 6, 5], target: 5, k: 1 },
+        defaultInput: JSON.parse("{\"array\":[3,1,2,4,6,5],\"target\":5,\"k\":1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7019,15 +6241,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Needleman-Wunsch",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(nm)" },
-        defaultInput: { a: "GATT", b: "GCAT" },
+        defaultInput: JSON.parse("{\"a\":\"GATT\",\"b\":\"GCAT\"}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "negamax",
+        name: "Negamax Search",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(b^d)", space: "O(d)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2]}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "negative-binomial-distribution",
         name: "Negative Binomial Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(K)", space: "O(K)" },
-        defaultInput: { r: 2, p: 0.5, maxK: 10 },
+        defaultInput: JSON.parse("{\"r\":2,\"p\":0.5,\"maxK\":10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7035,7 +6265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nelder-Mead Simplex Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(n^2)" },
-        defaultInput: { func: "quadratic", start: [0, 0], step: 1, iterations: 60 },
+        defaultInput: JSON.parse("{\"func\":\"quadratic\",\"start\":[0,0],\"step\":1,\"iterations\":60}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7043,7 +6273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nelder–Mead Simplex",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t·n)", space: "O(n)" },
-        defaultInput: { iters: 5 },
+        defaultInput: JSON.parse("{\"iters\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7051,7 +6281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nesterov Accelerated Gradient",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(iterations)" },
-        defaultInput: { start: 5, learningRate: 0.1, momentum: 0.9, iterations: 12 },
+        defaultInput: JSON.parse("{\"start\":5,\"learningRate\":0.1,\"momentum\":0.9,\"iterations\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7059,7 +6289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Network Simplex",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 2, 1], [1, 2, 2, 1], [0, 2, 2, 5]], demand: 2 },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,2,1],[1,2,2,1],[0,2,2,5]],\"demand\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7067,7 +6297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "NewHope KEM (Toy Ring-LWE)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { message: 1, n: 8, q: 97, seed: 20261118 },
+        defaultInput: JSON.parse("{\"message\":1,\"n\":8,\"q\":97,\"seed\":20261118}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7075,7 +6305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Newton–Raphson Root",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(t)" },
-        defaultInput: { start: 1, iters: 5 },
+        defaultInput: JSON.parse("{\"start\":1,\"iters\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7083,7 +6313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Newton's Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(d) per iteration", space: "O(d + iterations)" },
-        defaultInput: { coefficients: [-2, 0, 1], initialGuess: 1.5, tolerance: 1e-10, maxIterations: 30 },
+        defaultInput: JSON.parse("{\"coefficients\":[-2,0,1],\"initialGuess\":1.5,\"tolerance\":1e-10,\"maxIterations\":30}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7091,7 +6321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nim Game",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(p)", space: "O(1)" },
-        defaultInput: { piles: [3, 4, 5] },
+        defaultInput: JSON.parse("{\"piles\":[3,4,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7099,7 +6329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Nimble",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(c)", space: "O(c)" },
-        defaultInput: { coins: [1, 4, 6] },
+        defaultInput: JSON.parse("{\"coins\":[1,4,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7107,7 +6337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Node Kayles",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(2^n)" },
-        defaultInput: { vertices: 5 },
+        defaultInput: JSON.parse("{\"vertices\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7115,7 +6345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Normal Distribution CDF Approximation",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(samples)", space: "O(samples)" },
-        defaultInput: { z: 1, samples: 41 },
+        defaultInput: JSON.parse("{\"z\":1,\"samples\":41}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7123,14 +6353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "NTRU Encryption (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(N^3)", space: "O(N^2)" },
-        defaultInput: {
-            p: 3,
-            q: 97,
-            f: [1, 3, 3, 0, 0, 0, 0],
-            g: [1, -1, 1, 0, 0, 0, 0],
-            r: [0, 1, 0, -1, 0, 1, 0],
-            m: [1, 0, 1, 1, 0, 1, 0],
-        },
+        defaultInput: JSON.parse("{\"p\":3,\"q\":97,\"f\":[1,3,3,0,0,0,0],\"g\":[1,-1,1,0,0,0,0],\"r\":[0,1,0,-1,0,1,0],\"m\":[1,0,1,1,0,1,0]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7138,15 +6361,31 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Number Theoretic Transform",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { values: [1, 2, 3, 4] },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4]}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "null-move-pruning",
+        name: "Null Move Pruning",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(b^(d/2))", space: "O(d)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2,9,1],\"r\":1}") as unknown,
+        visualType: "tree" as LayoutType,
+    },
+    {
+        id: "number-field-sieve",
+        name: "Number Field Sieve",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "L_n[1/3, (64/9)^(1/3)]", space: "O(B pi(B))" },
+        defaultInput: JSON.parse("{\"n\":253,\"B\":40,\"aMax\":6000,\"bMax\":5}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "nuts-sampler",
         name: "No-U-Turn Sampler (NUTS)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(2^depth)", space: "O(2^depth)" },
-        defaultInput: { mean: 0, sigma: 1, q0: 0.5, stepSize: 0.4, maxDepth: 4, iterations: 1, seed: 7 },
+        defaultInput: JSON.parse("{\"mean\":0,\"sigma\":1,\"q0\":0.5,\"stepSize\":0.4,\"maxDepth\":4,\"iterations\":1,\"seed\":7}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7154,7 +6393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "1-out-of-2 Oblivious Transfer (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log N)", space: "O(log N)" },
-        defaultInput: { m0: 42, m1: 99, choice: 0, x0: 100, x1: 200, k: 7 },
+        defaultInput: JSON.parse("{\"m0\":42,\"m1\":99,\"choice\":0,\"x0\":100,\"x1\":200,\"k\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7162,7 +6401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Octree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7170,7 +6409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Odd-Even Transposition Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7178,7 +6417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "One-Time Pad",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { plaintext: "ATTACKDAWN", key: "STREAM" },
+        defaultInput: JSON.parse("{\"plaintext\":\"ATTACKDAWN\",\"key\":\"STREAM\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7186,7 +6425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "One-Way ANOVA",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(N)", space: "O(k)" },
-        defaultInput: { groups: [[6, 8, 4, 5, 7], [8, 12, 9, 11, 10], [13, 9, 11, 8, 12]] },
+        defaultInput: JSON.parse("{\"groups\":[[6,8,4,5,7],[8,12,9,11,10],[13,9,11,8,12]]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7194,7 +6433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Online Bipartite Matching (Ranking)",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E)", space: "O(V + E)" },
-        defaultInput: { left: ["a", "b"], arrivals: ["x", "y"], edges: [["x", "a"], ["y", "a"], ["y", "b"]] },
+        defaultInput: JSON.parse("{\"left\":[\"a\",\"b\"],\"arrivals\":[\"x\",\"y\"],\"edges\":[[\"x\",\"a\"],[\"y\",\"a\"],[\"y\",\"b\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7202,7 +6441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "OPAQUE (OPRF Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log exponent)", space: "O(1)" },
-        defaultInput: { p: 101, k: 13, password: "hunter2", r: 7 },
+        defaultInput: JSON.parse("{\"p\":101,\"k\":13,\"password\":\"hunter2\",\"r\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7210,7 +6449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Optimal BST",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n³)", space: "O(n²)" },
-        defaultInput: { keys: ["10", "12", "20"], freq: [34, 8, 50] },
+        defaultInput: JSON.parse("{\"keys\":[\"10\",\"12\",\"20\"],\"freq\":[34,8,50]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7218,7 +6457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Optimal Game Strategy (Pick Ends)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { nums: [8, 15, 3, 7] },
+        defaultInput: JSON.parse("{\"nums\":[8,15,3,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7226,7 +6465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Order-Statistic Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7234,7 +6473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ordinary Least Squares",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { points: [[1, 2], [2, 4], [3, 5], [4, 4], [5, 7], [6, 8]] },
+        defaultInput: JSON.parse("{\"points\":[[1,2],[2,4],[3,5],[4,4],[5,7],[6,8]]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7242,7 +6481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Orthogonal List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(nonzeros)", space: "O(nonzeros)" },
-        defaultInput: { entries: [[0, 1, 5], [1, 0, 3], [2, 2, 7]] },
+        defaultInput: JSON.parse("{\"entries\":[[0,1,5],[1,0,3],[2,2,7]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7250,12 +6489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Orthogonal Matching Pursuit (OMP)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k * m * n + k^3)", space: "O(m * n + k^2)" },
-        defaultInput: {
-            A: [[1, 0, 0, 0, 0.5, 0.5], [0, 1, 0, 0, 0.5, -0.5], [0, 0, 1, 0, 0.5, 0.5], [0, 0, 0, 1, 0.5, -0.5]],
-            y: [1.5, 0.5, 1.5, 0.5],
-            K: 2,
-            tol: 1e-8,
-        },
+        defaultInput: JSON.parse("{\"A\":[[1,0,0,0,0.5,0.5],[0,1,0,0,0.5,-0.5],[0,0,1,0,0.5,0.5],[0,0,0,1,0.5,-0.5]],\"y\":[1.5,0.5,1.5,0.5],\"K\":2,\"tol\":1e-8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7263,12 +6497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Transactional Outbox Pattern",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(k + p * k)", space: "O(k)" },
-        defaultInput: {
-            events: ["order-created", "payment-charged", "email-queued", "audit-logged"],
-            rollback: [],
-            failAttempts: [3],
-            maxPasses: 5,
-        },
+        defaultInput: JSON.parse("{\"events\":[\"order-created\",\"payment-charged\",\"email-queued\",\"audit-logged\"],\"rollback\":[],\"failAttempts\":[3],\"maxPasses\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7276,12 +6505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Paged Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * d)", space: "O(n * d + n^2)" },
-        defaultInput: {
-            queries: [[1, 0], [0, 1]],
-            keys: [[1, 0], [0, 1], [0.5, 0.5]],
-            values: [[1, 0], [0, 1], [0.5, 0.5]],
-            blockSize: 2,
-        },
+        defaultInput: JSON.parse("{\"queries\":[[1,0],[0,1]],\"keys\":[[1,0],[0,1],[0.5,0.5]],\"values\":[[1,0],[0,1],[0.5,0.5]],\"blockSize\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7289,7 +6513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "PageRank (Power Iteration)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["C"], C: ["A"] }, damping: 0.85, iterations: 3 },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"C\"],\"C\":[\"A\"]},\"damping\":0.85,\"iterations\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7297,7 +6521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Paging Algorithms Race",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n·f)", space: "O(f)" },
-        defaultInput: { refs: [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5], frames: 3 },
+        defaultInput: JSON.parse("{\"refs\":[1,2,3,4,1,2,5,1,2,3,4,5],\"frames\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7305,7 +6529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Paillier Additive Homomorphism (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(log n)" },
-        defaultInput: { a: 5, b: 7, p: 7, q: 11, r: 2 },
+        defaultInput: JSON.parse("{\"a\":5,\"b\":7,\"p\":7,\"q\":11,\"r\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7313,15 +6537,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pairing Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) insert amortized", space: "O(n)" },
-        defaultInput: { inserts: [5, 3, 8, 1, 9] },
+        defaultInput: JSON.parse("{\"inserts\":[5,3,8,1,9]}") as unknown,
         visualType: "tree" as LayoutType,
+    },
+    {
+        id: "palindrome-partitioning",
+        name: "Palindrome Partitioning (All Cuts)",
+        category: "dynamic-programming" as AlgorithmCategory,
+        complexity: { time: "O(n^2 + n*P)", space: "O(n^2)" },
+        defaultInput: JSON.parse("{\"s\":\"aab\"}") as unknown,
+        visualType: "text" as LayoutType,
     },
     {
         id: "palindrome-partitioning-min-cuts",
         name: "Palindrome Partitioning (Min Cuts)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { s: "aab" },
+        defaultInput: JSON.parse("{\"s\":\"aab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7329,7 +6561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Palindromic Factorization",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { text: "ababa" },
+        defaultInput: JSON.parse("{\"text\":\"ababa\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -7337,7 +6569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pancake Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7345,7 +6577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Parallel BFS",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(V + E) work, O(diameter) depth", space: "O(V)" },
-        defaultInput: { adjacency: [[1, 2], [3], [3, 4], [4], []], source: 0 },
+        defaultInput: JSON.parse("{\"adjacency\":[[1,2],[3],[3,4],[4],[]],\"source\":0}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7353,7 +6585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Parallel Merge Sort",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n log n) work, O(log n) depth", space: "O(n)" },
-        defaultInput: { array: [38, 27, 43, 3, 9, 82, 10, 19, 51, 4], workers: 4 },
+        defaultInput: JSON.parse("{\"array\":[38,27,43,3,9,82,10,19,51,4],\"workers\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7361,7 +6593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Parallel PageRank (Jacobi Iteration)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(iterations * (n + m))", space: "O(n + m)" },
-        defaultInput: { nodes: 4, edges: [[0, 1], [0, 2], [1, 2], [2, 0]], damping: 0.85, iterations: 30, tol: 1e-10 },
+        defaultInput: JSON.parse("{\"nodes\":4,\"edges\":[[0,1],[0,2],[1,2],[2,0]],\"damping\":0.85,\"iterations\":30,\"tol\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7369,7 +6601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Parallel Prefix Scan",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n log n) work, O(log n) depth", space: "O(n)" },
-        defaultInput: { values: [1, 2, 3, 4, 5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5,6,7,8]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7377,7 +6609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Parallel Radix Sort",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(d * (n + b))", space: "O(n + b)" },
-        defaultInput: { values: [170, 45, 75, 90, 802, 24, 2, 66], digits: 3 },
+        defaultInput: JSON.parse("{\"values\":[170,45,75,90,802,24,2,66],\"digits\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7385,11 +6617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pareto Bicriteria Shortest Path",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(L·(V + E))", space: "O(L·V)" },
-        defaultInput: {
-            graph: { A: [["B", 2, 5], ["C", 4, 1], ["D", 6, 1]], B: [["D", 2, 1]], C: [["D", 1, 5]], D: [] },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2,5],[\"C\",4,1],[\"D\",6,1]],\"B\":[[\"D\",2,1]],\"C\":[[\"D\",1,5]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7397,7 +6625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Particle Filter",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(steps * particles)", space: "O(particles)" },
-        defaultInput: { particles: 20, observations: [0.5, 1.2, 0.3, 1.8, 1.1], processNoise: 0.5, obsVar: 0.5, seed: 7 },
+        defaultInput: JSON.parse("{\"particles\":20,\"observations\":[0.5,1.2,0.3,1.8,1.1],\"processNoise\":0.5,\"obsVar\":0.5,\"seed\":7}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7405,7 +6633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Particle Swarm Optimization",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t·n)", space: "O(n)" },
-        defaultInput: { particles: 4, iters: 5, seed: 7 },
+        defaultInput: JSON.parse("{\"particles\":4,\"iters\":5,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7413,7 +6641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Patience Diff",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log n) avg", space: "O(n)" },
-        defaultInput: { a: ["a", "b", "c"], b: ["a", "c", "b"] },
+        defaultInput: JSON.parse("{\"a\":[\"a\",\"b\",\"c\"],\"b\":[\"a\",\"c\",\"b\"]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -7421,7 +6649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Patience Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 3, 8, 1, 7, 2, 5, 4],
+        defaultInput: JSON.parse("[6,3,8,1,7,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7429,7 +6657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Patricia Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) ops", space: "O(n k)" },
-        defaultInput: { words: ["car", "cat", "dog", "dot"], search: "cat" },
+        defaultInput: JSON.parse("{\"words\":[\"car\",\"cat\",\"dog\",\"dot\"],\"search\":\"cat\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7437,7 +6665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pauli Gates",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(g)", space: "O(1)" },
-        defaultInput: { state: "0", gates: ["X", "Y", "Z"] },
+        defaultInput: JSON.parse("{\"state\":\"0\",\"gates\":[\"X\",\"Y\",\"Z\"]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7445,10 +6673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Single-Decree Paxos",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(rounds * acceptors)", space: "O(acceptors)" },
-        defaultInput: {
-            acceptorCount: 5,
-            ballots: [{ number: 1, value: 42 }, { number: 2, value: 99 }, { number: 3, value: 7 }],
-        },
+        defaultInput: JSON.parse("{\"acceptorCount\":5,\"ballots\":[{\"number\":1,\"value\":42},{\"number\":2,\"value\":99},{\"number\":3,\"value\":7}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7456,7 +6681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "PBKDF2 with HMAC-SHA256",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(blocks * iterations)", space: "O(blocks * 32)" },
-        defaultInput: { password: "password", salt: "salt", iterations: 2, dkLen: 32 },
+        defaultInput: JSON.parse("{\"password\":\"password\",\"salt\":\"salt\",\"iterations\":2,\"dkLen\":32}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7464,7 +6689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Peak Finding 1D",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [1, 3, 7, 9, 5, 2] },
+        defaultInput: JSON.parse("{\"array\":[1,3,7,9,5,2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7472,7 +6697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Peak Finding 2D",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(1)" },
-        defaultInput: { matrix: [[1, 2, 3], [4, 5, 6], [7, 8, 9]] },
+        defaultInput: JSON.parse("{\"matrix\":[[1,2,3],[4,5,6],[7,8,9]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7480,7 +6705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pearson Correlation",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { points: [[1, 2], [2, 4], [3, 5], [4, 4], [5, 6]] },
+        defaultInput: JSON.parse("{\"points\":[[1,2],[2,4],[3,5],[4,4],[5,6]]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7488,7 +6713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Perceptron",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n * d)", space: "O(d)" },
-        defaultInput: { points: [[0, 0], [0, 1], [1, 0], [1, 1]], labels: [-1, 1, 1, 1], epochs: 10 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[0,1],[1,0],[1,1]],\"labels\":[-1,1,1,1],\"epochs\":10}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7496,7 +6721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Perfect Hashing (FKS)",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(m + p^2 * s)", space: "O(m)" },
-        defaultInput: { keys: [12, 25, 38, 41, 57, 63, 79, 84], seed: 987 },
+        defaultInput: JSON.parse("{\"keys\":[12,25,38,41,57,63,79,84],\"seed\":987}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7504,7 +6729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Permutation Rank (Factoradic)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { perm: [2, 0, 1] },
+        defaultInput: JSON.parse("{\"perm\":[2,0,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7512,7 +6737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Exact Two-Sample Permutation Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(C(m, n1) * m)", space: "O(C(m, n1))" },
-        defaultInput: { groupA: [1, 2, 3, 4], groupB: [5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"groupA\":[1,2,3,4],\"groupB\":[5,6,7,8]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7520,7 +6745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Persistent Array",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log versions) read", space: "O(writes)" },
-        defaultInput: { size: 3, writes: [[0, 0, 7], [1, 1, 9]], read: [1, 0] },
+        defaultInput: JSON.parse("{\"size\":3,\"writes\":[[0,0,7],[1,1,9]],\"read\":[1,0]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7528,7 +6753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Persistent BST",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) per version", space: "O(log n) per update" },
-        defaultInput: { keys: [3, 1, 4], queryVersion: 1, query: 1 },
+        defaultInput: JSON.parse("{\"keys\":[3,1,4],\"queryVersion\":1,\"query\":1}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7536,7 +6761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Persistent DSU",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(ops·log n)" },
-        defaultInput: { size: 5, unions: [[0, 1], [2, 3], [0, 2]] },
+        defaultInput: JSON.parse("{\"size\":5,\"unions\":[[0,1],[2,3],[0,2]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7544,7 +6769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Persistent Segment Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) per update", space: "O(n log n)" },
-        defaultInput: { array: [1, 2, 3, 4], updates: [[1, 9], [2, 7]] },
+        defaultInput: JSON.parse("{\"array\":[1,2,3,4],\"updates\":[[1,9],[2,7]]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7552,7 +6777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Persistent Stack",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) per version", space: "O(versions)" },
-        defaultInput: { pushes: [1, 2, 3], branchFrom: 1 },
+        defaultInput: JSON.parse("{\"pushes\":[1,2,3],\"branchFrom\":1}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7560,7 +6785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Phi-Accrual Failure Detector",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(w) per tick", space: "O(w)" },
-        defaultInput: { ticks: 20, interval: 5, jitter: 1, threshold: 8, windowSize: 10, crashAt: 8, seed: 42 },
+        defaultInput: JSON.parse("{\"ticks\":20,\"interval\":5,\"jitter\":1,\"threshold\":8,\"windowSize\":10,\"crashAt\":8,\"seed\":42}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7568,7 +6793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pick's Theorem (Lattice Points)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { points: [[0, 0], [4, 0], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7576,7 +6801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Piece Table",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) insert", space: "O(n)" },
-        defaultInput: { items: [4, 1, 7, 3, 6] },
+        defaultInput: JSON.parse("{\"items\":[4,1,7,3,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7584,7 +6809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pigeonhole Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n + k)", space: "O(k)" },
-        defaultInput: [4, 1, 3, 2, 1],
+        defaultInput: JSON.parse("[4,1,3,2,1]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7592,7 +6817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Playfair Cipher",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { plaintext: "ATTACKATDAWN", keyword: "PLAYFAIR" },
+        defaultInput: JSON.parse("{\"plaintext\":\"ATTACKATDAWN\",\"keyword\":\"PLAYFAIR\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7600,7 +6825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "PLONK SNARK (Toy Identity Check)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(d)", space: "O(d)" },
-        defaultInput: { h: [2, 3, 1], zeta: 11 },
+        defaultInput: JSON.parse("{\"h\":[2,3,1],\"zeta\":11}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7608,7 +6833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pohlig-Hellman Discrete Log",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(q)) per factor", space: "O(1)" },
-        defaultInput: { p: 11, g: 2, h: 9 },
+        defaultInput: JSON.parse("{\"p\":11,\"g\":2,\"h\":9}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7616,7 +6841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Point In Convex Polygon",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 4], [0, 4]], query: [3, 1] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,4],[0,4]],\"query\":[3,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7624,7 +6849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Point in Polygon (Ray)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 3], [2, 5], [0, 3]], point: [2, 1] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,3],[2,5],[0,3]],\"point\":[2,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7632,7 +6857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Point in Polygon (Winding)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 3], [2, 5], [0, 3]], point: [2, 1] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,3],[2,5],[0,3]],\"point\":[2,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7640,7 +6865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Point–Line Duality Transform",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { points: [[1, 2], [2, 1], [3, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[1,2],[2,1],[3,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7648,7 +6873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Point Segment Distance",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { point: [1, 1], a: [0, 0], b: [4, 0] },
+        defaultInput: JSON.parse("{\"point\":[1,1],\"a\":[0,0],\"b\":[4,0]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7656,7 +6881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Poisson Disk Sampling",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { width: 4, height: 4, radius: 1.2 },
+        defaultInput: JSON.parse("{\"width\":4,\"height\":4,\"radius\":1.2}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7664,7 +6889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Poisson Distribution PMF",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(k)" },
-        defaultInput: { lambda: 4, maxK: 12 },
+        defaultInput: JSON.parse("{\"lambda\":4,\"maxK\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7672,21 +6897,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Policy Gradient (REINFORCE)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(episodes * actions)", space: "O(episodes * actions)" },
-        defaultInput: {
-            theta: [0, 0, 0],
-            rewards: [1, 0, -1],
-            draws: [0.2, 0.6, 0.9, 0.3, 0.7],
-            learningRate: 0.3,
-            baseline: true,
-        },
+        defaultInput: JSON.parse("{\"theta\":[0,0,0],\"rewards\":[1,0,-1],\"draws\":[0.2,0.6,0.9,0.3,0.7],\"learningRate\":0.3,\"baseline\":true}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "pollard-kangaroo",
+        name: "Pollard Kangaroo Discrete Log",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(sqrt(bound))", space: "O(1)" },
+        defaultInput: JSON.parse("{\"p\":101,\"g\":2,\"x\":13,\"bound\":25}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "pollard-p-minus-1",
         name: "Pollard p-1 Factoring",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(B log n)", space: "O(1)" },
-        defaultInput: { n: 91, B: 3 },
+        defaultInput: JSON.parse("{\"n\":91,\"B\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7694,7 +6921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pollard's Rho",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^(1/4))", space: "O(1)" },
-        defaultInput: { n: 91 },
+        defaultInput: JSON.parse("{\"n\":91}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7702,7 +6929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pollard Rho Discrete Log",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(p)) expected", space: "O(1)" },
-        defaultInput: { p: 11, g: 2, h: 7 },
+        defaultInput: JSON.parse("{\"p\":11,\"g\":2,\"h\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7710,7 +6937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polygon Area (Shoelace)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 3], [0, 3]] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,3],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7718,7 +6945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polygon Centroid",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 3], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,3],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7726,7 +6953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polygon Triangulation (Ear Clipping)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [4, 3], [2, 2], [0, 3]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[4,3],[2,2],[0,3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7734,7 +6961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polynomial Inversion",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { coeffs: [1, 1, 0, 1] },
+        defaultInput: JSON.parse("{\"coeffs\":[1,1,0,1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7742,7 +6969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polynomial Log/Exp",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { coeffs: [1, 1, 0, 1] },
+        defaultInput: JSON.parse("{\"coeffs\":[1,1,0,1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7750,7 +6977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polynomial Long Division",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n*m)", space: "O(n)" },
-        defaultInput: { dividend: [1, 2, 3, 4], divisor: [1, 1] },
+        defaultInput: JSON.parse("{\"dividend\":[1,2,3,4],\"divisor\":[1,1]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7758,15 +6985,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Polyphase Merge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 2, 6, 1, 4, 3],
+        defaultInput: JSON.parse("[5,2,6,1,4,3]") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "popcount-swar",
+        name: "Popcount (SWAR)",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(1)", space: "O(1)" },
+        defaultInput: JSON.parse("{\"value\":3033198794}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "porter-stemmer",
         name: "Porter Stemmer",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { word: "caresses" },
+        defaultInput: JSON.parse("{\"word\":\"caresses\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -7774,7 +7009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Poseidon Hash (Toy Field)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(r*t^2)", space: "O(r*t)" },
-        defaultInput: { input: 17, seed: 20261118, rounds: 6 },
+        defaultInput: JSON.parse("{\"input\":17,\"seed\":20261118,\"rounds\":6}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7782,15 +7017,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Practical Byzantine Fault Tolerance",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n^2) messages", space: "O(n)" },
-        defaultInput: { replicas: 4, faulty: 1, request: "SET x=7" },
+        defaultInput: JSON.parse("{\"replicas\":4,\"faulty\":1,\"request\":\"SET x=7\"}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "pratt-parser",
+        name: "Pratt Parser",
+        category: "string" as AlgorithmCategory,
+        complexity: { time: "O(n)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"expr\":\"1 + 2 * 3 - 4\"}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "preconditioned-conjugate-gradient",
         name: "Preconditioned Conjugate Gradient",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n)" },
-        defaultInput: { A: [[4, 1], [1, 3]], b: [1, 2], MInv: [0.25, 0.3333333333333333], iterations: 40, tolerance: 1e-10 },
+        defaultInput: JSON.parse("{\"A\":[[4,1],[1,3]],\"b\":[1,2],\"MInv\":[0.25,0.3333333333333333],\"iterations\":40,\"tolerance\":1e-10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7798,7 +7041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prefix-Function Automaton",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m·σ)", space: "O(m·σ)" },
-        defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"ababcab\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7806,7 +7049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prefix Tuning",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * (n + p) * d)", space: "O(n * (n + p))" },
-        defaultInput: { tokens: [[1, 0], [0, 1]], prefix: [[0.5, 0.2], [-0.1, 0.4]] },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1]],\"prefix\":[[0.5,0.2],[-0.1,0.4]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7814,19 +7057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pregel (BSP Vertex-Centric Processing)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(S * (V + E))", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D", "E"],
-            edges: [
-                { source: "A", target: "B", weight: 4 },
-                { source: "A", target: "C", weight: 2 },
-                { source: "C", target: "B", weight: 1 },
-                { source: "B", target: "D", weight: 5 },
-                { source: "C", target: "D", weight: 8 },
-                { source: "D", target: "E", weight: 2 },
-            ],
-            source: "A",
-            maxSupersteps: 10,
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"edges\":[{\"source\":\"A\",\"target\":\"B\",\"weight\":4},{\"source\":\"A\",\"target\":\"C\",\"weight\":2},{\"source\":\"C\",\"target\":\"B\",\"weight\":1},{\"source\":\"B\",\"target\":\"D\",\"weight\":5},{\"source\":\"C\",\"target\":\"D\",\"weight\":8},{\"source\":\"D\",\"target\":\"E\",\"weight\":2}],\"source\":\"A\",\"maxSupersteps\":10}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7834,21 +7065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prim's MST (Heap)",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            start: "A",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"C\",1],[\"B\",\"D\",5],[\"C\",\"D\",8],[\"C\",\"E\",10],[\"D\",\"E\",2],[\"D\",\"F\",6],[\"E\",\"F\",3]],\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7856,21 +7073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prim's MST (Matrix)",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(V²)", space: "O(V)" },
-        defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-            start: "A",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"C\",1],[\"B\",\"D\",5],[\"C\",\"D\",8],[\"C\",\"E\",10],[\"D\",\"E\",2],[\"D\",\"F\",6],[\"E\",\"F\",3]],\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],\"start\":\"A\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7878,7 +7081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prime Counting (Meissel-Lehmer)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n^(2/3))", space: "O(sqrt(n))" },
-        defaultInput: { n: 30 },
+        defaultInput: JSON.parse("{\"n\":30}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7886,7 +7089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Primitive Root Search",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(p log p)", space: "O(1)" },
-        defaultInput: { p: 11 },
+        defaultInput: JSON.parse("{\"p\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7894,15 +7097,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Principal Component Analysis",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d^2 + k * d^2)", space: "O(n * d + d^2)" },
-        defaultInput: { points: [[0, 0], [1, 0.8], [2, 1.6], [3, 2.5], [4, 3.1], [1, 2.2]], iterations: 12 },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[1,0.8],[2,1.6],[3,2.5],[4,3.1],[1,2.2]],\"iterations\":12}") as unknown,
         visualType: "point" as LayoutType,
+    },
+    {
+        id: "principal-variation-search",
+        name: "Principal Variation Search",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(b^(d/2))", space: "O(d)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2]}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "priority-queue",
         name: "Priority Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { inserts: [5, 3, 8, 1, 9], extractCount: 2 },
+        defaultInput: JSON.parse("{\"inserts\":[5,3,8,1,9],\"extractCount\":2}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7910,7 +7121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Private Information Retrieval (two-server XOR)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { database: [1, 0, 1, 1, 0, 0, 1, 0], index: 3, seed: 13 },
+        defaultInput: JSON.parse("{\"database\":[1,0,1,1,0,0,1,0],\"index\":3,\"seed\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7918,7 +7129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Probability DP",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(k)" },
-        defaultInput: { target: 3 },
+        defaultInput: JSON.parse("{\"target\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7926,7 +7137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Probability Generating Function",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 4, p: 0.5, s: 0.5 },
+        defaultInput: JSON.parse("{\"n\":4,\"p\":0.5,\"s\":0.5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7934,7 +7145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Broken Profile (Plug DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(N·2^M·M)", space: "O(N·2^M)" },
-        defaultInput: { rows: 2, cols: 3 },
+        defaultInput: JSON.parse("{\"rows\":2,\"cols\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -7942,7 +7153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Project Selection Problem",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: { vertices: ["P1", "P2", "C"], weights: [5, 4, -6], arcs: [["P2", "P1"], ["P1", "C"]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"P1\",\"P2\",\"C\"],\"weights\":[5,4,-6],\"arcs\":[[\"P2\",\"P1\"],[\"P1\",\"C\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -7950,7 +7161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Proof-Number Search",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(nodes)", space: "O(nodes)" },
-        defaultInput: { extra: false },
+        defaultInput: JSON.parse("{\"extra\":false}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -7958,7 +7169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Proof of Stake",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n) per round", space: "O(n)" },
-        defaultInput: { stakes: [5, 3, 2, 1], seed: 20261118, rounds: 8 },
+        defaultInput: JSON.parse("{\"stakes\":[5,3,2,1],\"seed\":20261118,\"rounds\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7966,7 +7177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Proof of Work",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(16^difficulty) hashes", space: "O(window)" },
-        defaultInput: { block: "block-1", difficulty: 2, maxNonce: 200000 },
+        defaultInput: JSON.parse("{\"block\":\"block-1\",\"difficulty\":2,\"maxNonce\":200000}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -7974,24 +7185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Propensity Score Matching",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * n + T * C)", space: "O(n)" },
-        defaultInput: {
-            units: [
-                { id: "T0", x: 1.6, z: 1, y: 8.1 },
-                { id: "T1", x: 1.3, z: 1, y: 7 },
-                { id: "T2", x: 1.8, z: 1, y: 8.8 },
-                { id: "T3", x: 1.1, z: 1, y: 6.2 },
-                { id: "T4", x: 1.5, z: 1, y: 7.7 },
-                { id: "C0", x: 0.2, z: 0, y: 2.1 },
-                { id: "C1", x: 0.5, z: 0, y: 3.4 },
-                { id: "C2", x: 0.7, z: 0, y: 4 },
-                { id: "C3", x: 0.9, z: 0, y: 4.8 },
-                { id: "C4", x: 0.4, z: 0, y: 3 },
-                { id: "C5", x: 0.6, z: 0, y: 3.7 },
-                { id: "C6", x: 0.8, z: 0, y: 4.3 },
-            ],
-            learningRate: 0.1,
-            iterations: 500,
-        },
+        defaultInput: JSON.parse("{\"units\":[{\"id\":\"T0\",\"x\":1.6,\"z\":1,\"y\":8.1},{\"id\":\"T1\",\"x\":1.3,\"z\":1,\"y\":7},{\"id\":\"T2\",\"x\":1.8,\"z\":1,\"y\":8.8},{\"id\":\"T3\",\"x\":1.1,\"z\":1,\"y\":6.2},{\"id\":\"T4\",\"x\":1.5,\"z\":1,\"y\":7.7},{\"id\":\"C0\",\"x\":0.2,\"z\":0,\"y\":2.1},{\"id\":\"C1\",\"x\":0.5,\"z\":0,\"y\":3.4},{\"id\":\"C2\",\"x\":0.7,\"z\":0,\"y\":4},{\"id\":\"C3\",\"x\":0.9,\"z\":0,\"y\":4.8},{\"id\":\"C4\",\"x\":0.4,\"z\":0,\"y\":3},{\"id\":\"C5\",\"x\":0.6,\"z\":0,\"y\":3.7},{\"id\":\"C6\",\"x\":0.8,\"z\":0,\"y\":4.3}],\"learningRate\":0.1,\"iterations\":500}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -7999,7 +7193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Proximal Gradient Descent (L1)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(1)" },
-        defaultInput: { a: 3, lambda: 1, step: 0.5, iterations: 12 },
+        defaultInput: JSON.parse("{\"a\":3,\"lambda\":1,\"step\":0.5,\"iterations\":12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8007,7 +7201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Proxmap Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8015,7 +7209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prüfer Decode",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { code: ["1", "3"], labels: ["1", "2", "3", "4"] },
+        defaultInput: JSON.parse("{\"code\":[\"1\",\"3\"],\"labels\":[\"1\",\"2\",\"3\",\"4\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8023,7 +7217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Prüfer Encode",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { parentMap: { "2": "1", "3": "1", "4": "3" }, ids: ["1", "2", "3", "4"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"2\":\"1\",\"3\":\"1\",\"4\":\"3\"},\"ids\":[\"1\",\"2\",\"3\",\"4\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8031,7 +7225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Pseudoflow (Hochbaum)",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2", "3"], edges: [[0, 1, 5], [0, 2, 4], [1, 2, 2], [1, 3, 3], [2, 3, 6]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1,5],[0,2,4],[1,2,2],[1,3,3],[2,3,6]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8039,12 +7233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Push-Relabel",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V²·E)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [["S", "A", 3], ["S", "B", 2], ["A", "B", 1], ["A", "T", 2], ["B", "T", 3]],
-            vertices: ["S", "A", "B", "T"],
-            source: "S",
-            sink: "T",
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"S\",\"A\",3],[\"S\",\"B\",2],[\"A\",\"B\",1],[\"A\",\"T\",2],[\"B\",\"T\",3]],\"vertices\":[\"S\",\"A\",\"B\",\"T\"],\"source\":\"S\",\"sink\":\"T\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8052,7 +7241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Q-Gram Filter",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·q)", space: "O(n)" },
-        defaultInput: { text: "ababcab", pattern: "abc", q: 2 },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\",\"q\":2}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -8060,25 +7249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Q-Learning",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(transitions * actions)", space: "O(states * actions)" },
-        defaultInput: {
-            numStates: 6,
-            numActions: 2,
-            alpha: 0.5,
-            gamma: 0.9,
-            transitions: [
-                [0, 1, 0, 1],
-                [1, 1, 0, 2],
-                [2, 1, 0, 3],
-                [3, 1, 0, 4],
-                [4, 1, 1, 6],
-                [0, 1, 0, 1],
-                [1, 1, 0, 2],
-                [2, 1, 0, 3],
-                [3, 1, 1, 6],
-                [0, 0, 0, 0],
-                [1, 1, 1, 6],
-            ],
-        },
+        defaultInput: JSON.parse("{\"numStates\":6,\"numActions\":2,\"alpha\":0.5,\"gamma\":0.9,\"transitions\":[[0,1,0,1],[1,1,0,2],[2,1,0,3],[3,1,0,4],[4,1,1,6],[0,1,0,1],[1,1,0,2],[2,1,0,3],[3,1,1,6],[0,0,0,0],[1,1,1,6]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8086,14 +7257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "QLoRA (Teaching Model)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(m * n * r)", space: "O(m * n + r * (m + n))" },
-        defaultInput: {
-            W: [[0.8, -0.4], [0.2, 0.6]],
-            x: [1, 0.5],
-            y: [0.3, -0.2],
-            A: [[0.1, -0.1]],
-            B: [[0.2], [-0.15]],
-            lr: 0.01,
-        },
+        defaultInput: JSON.parse("{\"W\":[[0.8,-0.4],[0.2,0.6]],\"x\":[1,0.5],\"y\":[0.3,-0.2],\"A\":[[0.1,-0.1]],\"B\":[[0.2],[-0.15]],\"lr\":0.01}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8101,7 +7265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quadratic Probing",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(1) average", space: "O(m)" },
-        defaultInput: { keys: ["cat", "car", "dog", "cow", "bat"], size: 11, probe: "dog" },
+        defaultInput: JSON.parse("{\"keys\":[\"cat\",\"car\",\"dog\",\"cow\",\"bat\"],\"size\":11,\"probe\":\"dog\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8109,18 +7273,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quadratic Programming Active Set",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k*(n+w)^3)", space: "O((n+w)^2)" },
-        defaultInput: {
-            problem: { G: [[1, 0], [0, 1]], c: [-1, -2], A: [[1, 1], [-1, 0], [0, -1]], b: [2, 0, 0] },
-            start: [0, 0],
-        },
+        defaultInput: JSON.parse("{\"problem\":{\"G\":[[1,0],[0,1]],\"c\":[-1,-2],\"A\":[[1,1],[-1,0],[0,-1]],\"b\":[2,0,0]},\"start\":[0,0]}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "quadratic-sieve",
+        name: "Quadratic Sieve",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "L_n[1/2, 1+o(1)]", space: "O(B pi(B))" },
+        defaultInput: JSON.parse("{\"n\":8051,\"B\":20}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "quadtree",
         name: "Quadtree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8128,7 +7297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quake Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 6] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8136,7 +7305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Amplitude Estimation",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(t * 2^t) simulated", space: "O(2^t) simulated" },
-        defaultInput: { t: 5, k: 2 },
+        defaultInput: JSON.parse("{\"t\":5,\"k\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8144,7 +7313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Annealing",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(S * n * 2^n)", space: "O(2^n)" },
-        defaultInput: { n: 2, h: [0.8, -0.5], couplings: [[0, 1, 1]], steps: 200, totalTime: 10 },
+        defaultInput: JSON.parse("{\"n\":2,\"h\":[0.8,-0.5],\"couplings\":[[0,1,1]],\"steps\":200,\"totalTime\":10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8152,7 +7321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Approximate Optimization Algorithm (Exact Small Simulator)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(layers * N)", space: "O(N)" },
-        defaultInput: { qubits: 3, edges: [[0, 1], [1, 2], [2, 0]], gamma: 0.5, beta: 0.5, layers: 1 },
+        defaultInput: JSON.parse("{\"qubits\":3,\"edges\":[[0,1],[1,2],[2,0]],\"gamma\":0.5,\"beta\":0.5,\"layers\":1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8160,7 +7329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Circuit Simulator",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(g * 2^n)", space: "O(2^n)" },
-        defaultInput: { qubits: 2, gates: [{ gate: "H", target: 0 }, { gate: "CNOT", target: 1, control: 0 }] },
+        defaultInput: JSON.parse("{\"qubits\":2,\"gates\":[{\"gate\":\"H\",\"target\":0},{\"gate\":\"CNOT\",\"target\":1,\"control\":0}]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8168,7 +7337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Counting",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^t * 2^n * 2^t) simulated", space: "O(2^(t+n)) simulated" },
-        defaultInput: { n: 2, t: 6, marked: [2] },
+        defaultInput: JSON.parse("{\"n\":2,\"t\":6,\"marked\":[2]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8176,7 +7345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Fourier Transform",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n 2^n)", space: "O(2^n)" },
-        defaultInput: { amplitudes: [1, 0, 0, 0] },
+        defaultInput: JSON.parse("{\"amplitudes\":[1,0,0,0]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8184,7 +7353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Kernel Estimation",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(N^2 * 2^q)", space: "O(N^2 + 2^q)" },
-        defaultInput: { data: [[0, 0], [1, 0], [0, 1]] },
+        defaultInput: JSON.parse("{\"data\":[[0,0],[1,0],[0,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8192,7 +7361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum LDPC Code (Steane [[7,1,3]])",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(r * n)", space: "O(r * n)" },
-        defaultInput: { errorQubit: 3, errorType: "X" },
+        defaultInput: JSON.parse("{\"errorQubit\":3,\"errorType\":\"X\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8200,7 +7369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Minimum Finding (Small Simulator)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(rounds * iterations * N)", space: "O(N)" },
-        defaultInput: { values: [5, 3, 8, 1, 9, 2, 7, 4] },
+        defaultInput: JSON.parse("{\"values\":[5,3,8,1,9,2,7,4]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8208,7 +7377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Monte Carlo (Amplitude Estimation Core)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(m * 2^m + 4^m)", space: "O(2^(m+1))" },
-        defaultInput: { a: 0.25, precision: 4 },
+        defaultInput: JSON.parse("{\"a\":0.25,\"precision\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8216,7 +7385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Phase Estimation",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(t * 2^t) simulated", space: "O(2^t) simulated" },
-        defaultInput: { t: 3, k: 3 },
+        defaultInput: JSON.parse("{\"t\":3,\"k\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8224,7 +7393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Random Number Generator",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(b)", space: "O(b)" },
-        defaultInput: { bits: 8, seed: 12345 },
+        defaultInput: JSON.parse("{\"bits\":8,\"seed\":12345}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8232,7 +7401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Teleportation (Toy Simulator)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(8)" },
-        defaultInput: { alpha: 0.7071067811865476, beta: 0.7071067811865476 },
+        defaultInput: JSON.parse("{\"alpha\":0.7071067811865476,\"beta\":0.7071067811865476}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8240,7 +7409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quantum Walk",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(t^2) classical simulation", space: "O(t)" },
-        defaultInput: { steps: 4, initial: "right" },
+        defaultInput: JSON.parse("{\"steps\":4,\"initial\":\"right\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8248,7 +7417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quasi-Monte Carlo (Halton Sequence)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(samples * log samples)", space: "O(samples)" },
-        defaultInput: { samples: 200, showEvery: 20 },
+        defaultInput: JSON.parse("{\"samples\":200,\"showEvery\":20}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -8256,7 +7425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Qubitization Walk Operator",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^m)", space: "O(2^m)" },
-        defaultInput: { lambda: 0.5, alpha: 1, bits: 3 },
+        defaultInput: JSON.parse("{\"lambda\":0.5,\"alpha\":1,\"bits\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -8264,7 +7433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Queue (Array)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) enqueue/dequeue", space: "O(n)" },
-        defaultInput: { enqueues: [5, 3, 8], dequeueCount: 2 },
+        defaultInput: JSON.parse("{\"enqueues\":[5,3,8],\"dequeueCount\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8272,7 +7441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Queue (Linked)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) enqueue/dequeue", space: "O(n)" },
-        defaultInput: { enqueues: [5, 3, 8], dequeueCount: 2 },
+        defaultInput: JSON.parse("{\"enqueues\":[5,3,8],\"dequeueCount\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8280,7 +7449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "QUIC Handshake",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(packets sent)", space: "O(flights * messages)" },
-        defaultInput: { clientNonce: "client-random", serverNonce: "server-random", lossPattern: [true, false, false] },
+        defaultInput: JSON.parse("{\"clientNonce\":\"client-random\",\"serverNonce\":\"server-random\",\"lossPattern\":[true,false,false]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8288,7 +7457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quick Sort (3-Way)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(log n)" },
-        defaultInput: [5, 3, 5, 1, 5, 2, 5, 4],
+        defaultInput: JSON.parse("[5,3,5,1,5,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8296,7 +7465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quick Sort (Hoare)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(log n)" },
-        defaultInput: [9, 2, 6, 1, 8, 3, 7, 4],
+        defaultInput: JSON.parse("[9,2,6,1,8,3,7,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8304,7 +7473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quick Sort (Lomuto)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(log n)" },
-        defaultInput: [8, 3, 6, 1, 7, 2, 5, 4],
+        defaultInput: JSON.parse("[8,3,6,1,7,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8312,23 +7481,39 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quickest Flow (Time-Expanded)",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(T V E^2)", space: "O(T(V + E))" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 1, 1], [1, 2, 1, 1]], demand: 2 },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,1,1],[1,2,1,1]],\"demand\":2}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "quickhull",
+        name: "QuickHull",
+        category: "geometry" as AlgorithmCategory,
+        complexity: { time: "O(n log n) average", space: "O(n)" },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,1],[2,4],[1,2],[5,3],[3,0],[5,5],[0,3]]}") as unknown,
+        visualType: "point" as LayoutType,
     },
     {
         id: "quickselect",
         name: "Quickselect",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n) avg, O(n²) worst", space: "O(1)" },
-        defaultInput: { array: [7, 2, 9, 1, 5, 6], k: 3 },
+        defaultInput: JSON.parse("{\"array\":[7,2,9,1,5,6],\"k\":3}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "quiescence-search",
+        name: "Quiescence Search",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(extended tree)", space: "O(capture chain depth)" },
+        defaultInput: JSON.parse("{\"root\":{\"type\":\"max\",\"children\":[{\"type\":\"min\",\"children\":[{\"type\":\"horizon\",\"v\":2,\"captures\":[{\"type\":\"horizon\",\"v\":5,\"captures\":[{\"type\":\"horizon\",\"v\":4}]}]},{\"type\":\"horizon\",\"v\":6}]},{\"type\":\"min\",\"children\":[{\"type\":\"horizon\",\"v\":1,\"captures\":[{\"type\":\"horizon\",\"v\":7}]},{\"type\":\"horizon\",\"v\":8}]}]}}") as unknown,
+        visualType: "tree" as LayoutType,
     },
     {
         id: "quorum-read-write",
         name: "Quorum Read/Write",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(W + R) messages", space: "O(N)" },
-        defaultInput: { replicas: 5, writeQuorum: 3, readQuorum: 3, writes: [10, 20, 30] },
+        defaultInput: JSON.parse("{\"replicas\":5,\"writeQuorum\":3,\"readQuorum\":3,\"writes\":[10,20,30]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8336,7 +7521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Quotient Filter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 17, 9], query: 17 },
+        defaultInput: JSON.parse("{\"keys\":[5,17,9],\"query\":17}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8344,7 +7529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "R-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8352,7 +7537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rabin Cryptosystem",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { p: 23, q: 47, message: 389 },
+        defaultInput: JSON.parse("{\"p\":23,\"q\":47,\"message\":389}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8360,7 +7545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rabin-Karp (Double)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(1)" },
-        defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"ababcab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -8368,7 +7553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rabin-Karp (Single)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(1)" },
-        defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"ababcab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -8376,7 +7561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Radix Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log C) amortized", space: "O(n)" },
-        defaultInput: { keys: [1, 4, 6, 7] },
+        defaultInput: JSON.parse("{\"keys\":[1,4,6,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8384,7 +7569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Radix Sort (LSD)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(d(n + b))", space: "O(n + b)" },
-        defaultInput: [170, 45, 75, 90, 802, 24, 2, 66],
+        defaultInput: JSON.parse("[170,45,75,90,802,24,2,66]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8392,7 +7577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Radix Sort (MSD)",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(d × n)", space: "O(n)" },
-        defaultInput: [170, 45, 75, 90, 802, 24, 2, 66],
+        defaultInput: JSON.parse("[170,45,75,90,802,24,2,66]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8400,7 +7585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Raft Consensus (Toy Simulation)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { nodes: 5, crash: -1, entry: "x=1" },
+        defaultInput: JSON.parse("{\"nodes\":5,\"crash\":-1,\"entry\":\"x=1\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8408,7 +7593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Random Circuit Sampling (Exact Small Simulation)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(depth * n * 2^n + samples * 2^n)", space: "O(2^n)" },
-        defaultInput: { qubits: 3, depth: 2, samples: 2000, seed: 12345 },
+        defaultInput: JSON.parse("{\"qubits\":3,\"depth\":2,\"samples\":2000,\"seed\":12345}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8416,14 +7601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Random Forest (Toy)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(trees * depth * n log n)", space: "O(trees * nodes + n)" },
-        defaultInput: {
-            xs: [0, 1, 2, 3, 4, 5, 6, 7],
-            labels: [0, 0, 0, 1, 1, 1, 1, 1],
-            numTrees: 3,
-            maxDepth: 2,
-            seed: 7,
-            sampleRatio: 1,
-        },
+        defaultInput: JSON.parse("{\"xs\":[0,1,2,3,4,5,6,7],\"labels\":[0,0,0,1,1,1,1,1],\"numTrees\":3,\"maxDepth\":2,\"seed\":7,\"sampleRatio\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8431,7 +7609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Randomized Kaczmarz Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n)", space: "O(m * n + m)" },
-        defaultInput: { A: [[2, 1, 0], [1, 3, 1], [0, 1, 2]], b: [4, 6, 0], iterations: 30, seed: 1, x0: [0, 0, 0] },
+        defaultInput: JSON.parse("{\"A\":[[2,1,0],[1,3,1],[0,1,2]],\"b\":[4,6,0],\"iterations\":30,\"seed\":1,\"x0\":[0,0,0]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8439,7 +7617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Randomized SVD",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m n l + m l^2 + l^3)", space: "O(m n + m l + n l)" },
-        defaultInput: { rank: 2, oversample: 2, powerIterations: 1, seed: 7 },
+        defaultInput: JSON.parse("{\"rank\":2,\"oversample\":2,\"powerIterations\":1,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8447,7 +7625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Range Tree 2D",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log^2 n + k)", space: "O(n log n)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8455,7 +7633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rank-Select Bitvector",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) rank", space: "n + o(n) bits" },
-        defaultInput: { bits: [1, 0, 1, 1, 0, 0, 1, 0], rankAt: 5, selectK: 3 },
+        defaultInput: JSON.parse("{\"bits\":[1,0,1,1,0,0,1,0],\"rankAt\":5,\"selectK\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8463,7 +7641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rayleigh Quotient Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^3)", space: "O(n^2)" },
-        defaultInput: { a: [[2, 1], [1, 3]], x0: [1, 0], maxIter: 20, tol: 1e-12 },
+        defaultInput: JSON.parse("{\"a\":[[2,1],[1,3]],\"x0\":[1,0],\"maxIter\":20,\"tol\":1e-12}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8471,7 +7649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RBFS Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(d)" },
-        defaultInput: { start: "A", goal: "G" },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8479,7 +7657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RC4 Stream Cipher",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(256 + n)", space: "O(256)" },
-        defaultInput: { key: "Key", plaintext: "Plaintext" },
+        defaultInput: JSON.parse("{\"key\":\"Key\",\"plaintext\":\"Plaintext\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8487,14 +7665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Read Repair",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r)", space: "O(r)" },
-        defaultInput: {
-            replicas: [
-                { value: "blue", version: 3 },
-                { value: "blue", version: 3 },
-                { value: "blue", version: 3 },
-                { value: "red", version: 2 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"replicas\":[{\"value\":\"blue\",\"version\":3},{\"value\":\"blue\",\"version\":3},{\"value\":\"blue\",\"version\":3},{\"value\":\"red\",\"version\":2}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8502,7 +7673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rectangle Union (Klee Measure Sweep)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { rects: [[0, 0, 2, 2], [1, 1, 3, 3], [2, 0, 4, 1]] },
+        defaultInput: JSON.parse("{\"rects\":[[0,0,2,2],[1,1,3,3],[2,0,4,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8510,7 +7681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rectified Flow (Straight-Line Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(m * n)", space: "O(m * n)" },
-        defaultInput: { pairs: [{ x0: [-2, -1], x1: [2, 1] }, { x0: [-1, 2], x1: [3, -2] }], steps: 4 },
+        defaultInput: JSON.parse("{\"pairs\":[{\"x0\":[-2,-1],\"x1\":[2,1]},{\"x0\":[-1,2],\"x1\":[3,-2]}],\"steps\":4}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -8518,7 +7689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Recursive Doubling Allreduce",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(log(p) * m)", space: "O(p * m)" },
-        defaultInput: { values: [1, 2, 3, 4, 5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5,6,7,8]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8526,7 +7697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Red-Black Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { inserts: [7, 3, 18, 10, 22, 8, 11] },
+        defaultInput: JSON.parse("{\"inserts\":[7,3,18,10,22,8,11]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8534,7 +7705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Reed-Solomon Erasure Coding",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(k * n)", space: "O(n)" },
-        defaultInput: { data: [12, 45, 200, 77], parityShards: 2, erased: [1] },
+        defaultInput: JSON.parse("{\"data\":[12,45,200,77],\"parityShards\":2,\"erased\":[1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8542,7 +7713,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Regex Matching (DP)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { s: "aab", p: "c*a*b" },
+        defaultInput: JSON.parse("{\"s\":\"aab\",\"p\":\"c*a*b\"}") as unknown,
+        visualType: "grid" as LayoutType,
+    },
+    {
+        id: "regret-matching",
+        name: "Regret Matching",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(rounds * a)", space: "O(a)" },
+        defaultInput: JSON.parse("{\"payoffsA\":[[4,1],[3,0]],\"payoffsB\":[[3,1],[2,0]],\"rounds\":30,\"seed\":12345}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8550,7 +7729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rejection Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(trials)", space: "O(bins)" },
-        defaultInput: { exponent: 1, samples: 400, bins: 12, seed: 7 },
+        defaultInput: JSON.parse("{\"exponent\":1,\"samples\":400,\"bins\":12,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8558,7 +7737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Reliable Multicast",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(m*n)", space: "O(m*n)" },
-        defaultInput: { receivers: 4, messages: 2, missed: [[1, 1], [3, 2]] },
+        defaultInput: JSON.parse("{\"receivers\":4,\"messages\":2,\"missed\":[[1,1],[3,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8566,7 +7745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rendezvous Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) pick", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8574,11 +7753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Replacement Paths",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E·(E log V))", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8586,7 +7761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Replacement Selection Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8594,10 +7769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rerooting DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8605,7 +7777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Reservoir Sampling",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(k)" },
-        defaultInput: { k: 3, stream: [5, 1, 8, 3, 7, 2, 6, 4], seed: 13 },
+        defaultInput: JSON.parse("{\"k\":3,\"stream\":[5,1,8,3,7,2,6,4],\"seed\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8613,12 +7785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Resource Constrained Shortest Path",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(R·(V + E))", space: "O(R·V)" },
-        defaultInput: {
-            graph: { A: [["B", 2, 3], ["C", 4, 1]], B: [["D", 2, 1]], C: [["D", 1, 1]], D: [] },
-            start: "A",
-            target: "D",
-            budget: 3,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2,3],[\"C\",4,1]],\"B\":[[\"D\",2,1]],\"C\":[[\"D\",1,1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"budget\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8626,7 +7793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RetNet (Retention Recurrence)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { q: [1, 0.5, 2], k: [2, 1, 3], v: [1, 2, 0.5], gamma: 0.5 },
+        defaultInput: JSON.parse("{\"q\":[1,0.5,2],\"k\":[2,1,3],\"v\":[1,2,0.5],\"gamma\":0.5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8634,7 +7801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Retrograde Analysis",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(V+E)", space: "O(V)" },
-        defaultInput: { states: 3 },
+        defaultInput: JSON.parse("{\"states\":3}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8642,10 +7809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Reverse-Delete MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E^2)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["A", "B", "C", "D"],
-            edges: [["A", "B", 1], ["B", "C", 2], ["C", "D", 3], ["A", "C", 4], ["A", "D", 8]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\",\"D\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"C\",\"D\",3],[\"A\",\"C\",4],[\"A\",\"D\",8]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8653,7 +7817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Revised Simplex",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(K * (m^3 + m * n))", space: "O(m^2 + m * n)" },
-        defaultInput: { A: [[1, 1], [1, 0], [0, 1]], b: [4, 3, 3], c: [3, 5] },
+        defaultInput: JSON.parse("{\"A\":[[1,1],[1,0],[0,1]],\"b\":[4,3,3],\"c\":[3,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8661,7 +7825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Richardson Extrapolation",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(levels^2)", space: "O(levels^2)" },
-        defaultInput: { func: "sin", x: 1, h: 0.1, levels: 4 },
+        defaultInput: JSON.parse("{\"func\":\"sin\",\"x\":1,\"h\":0.1,\"levels\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8669,7 +7833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ridge Regression",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { points: [{ x: 1, y: 2 }, { x: 2, y: 3.8 }, { x: 3, y: 6.1 }, { x: 4, y: 8 }], lambda: 1 },
+        defaultInput: JSON.parse("{\"points\":[{\"x\":1,\"y\":2},{\"x\":2,\"y\":3.8},{\"x\":3,\"y\":6.1},{\"x\":4,\"y\":8}],\"lambda\":1}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -8677,7 +7841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ring All-Reduce",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O((p - 1) * n)", space: "O(n)" },
-        defaultInput: { workers: 4 },
+        defaultInput: JSON.parse("{\"workers\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8685,7 +7849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ring Leader Election",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n) messages", space: "O(n)" },
-        defaultInput: { processIds: [0, 1, 2, 3, 4], initiator: 1, down: [2] },
+        defaultInput: JSON.parse("{\"processIds\":[0,1,2,3,4],\"initiator\":1,\"down\":[2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8693,7 +7857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RMSProp Optimizer",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n)", space: "O(n)" },
-        defaultInput: { points: [[0, 1], [1, 3], [2, 5], [3, 7], [4, 9]], learningRate: 0.08, decay: 0.9, epochs: 40 },
+        defaultInput: JSON.parse("{\"points\":[[0,1],[1,3],[2,5],[3,7],[4,9]],\"learningRate\":0.08,\"decay\":0.9,\"epochs\":40}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -8701,7 +7865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Roaring Bitmap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(k) ops", space: "O(k)" },
-        defaultInput: { values: [3, 1, 4, 6], query: 4 },
+        defaultInput: JSON.parse("{\"values\":[3,1,4,6],\"query\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8709,7 +7873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Robin Hood Hashing",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) expected", space: "O(n)" },
-        defaultInput: { keys: [12, 5, 21, 8], query: 21 },
+        defaultInput: JSON.parse("{\"keys\":[12,5,21,8],\"query\":21}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8717,7 +7881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rod Cutting",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { prices: [1, 5, 8, 9], n: 4 },
+        defaultInput: JSON.parse("{\"prices\":[1,5,8,9],\"n\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8725,10 +7889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rolling Hash (2D)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(rows·cols)", space: "O(rows·cols)" },
-        defaultInput: {
-            grid: [["a", "b", "a", "c"], ["b", "a", "c", "a"], ["a", "b", "a", "c"], ["c", "a", "b", "a"]],
-            pattern: [["a", "c"], ["c", "a"]],
-        },
+        defaultInput: JSON.parse("{\"grid\":[[\"a\",\"b\",\"a\",\"c\"],[\"b\",\"a\",\"c\",\"a\"],[\"a\",\"b\",\"a\",\"c\"],[\"c\",\"a\",\"b\",\"a\"]],\"pattern\":[[\"a\",\"c\"],[\"c\",\"a\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8736,7 +7897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Romberg Integration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(2^k)", space: "O(k^2)" },
-        defaultInput: { func: "x^2", a: 0, b: 1, levels: 5 },
+        defaultInput: JSON.parse("{\"func\":\"x^2\",\"a\":0,\"b\":1,\"levels\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8744,7 +7905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rope",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) index", space: "O(n)" },
-        defaultInput: { chunks: ["hel", "lo ", "wor", "ld"], index: 7 },
+        defaultInput: JSON.parse("{\"chunks\":[\"hel\",\"lo \",\"wor\",\"ld\"],\"index\":7}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8752,7 +7913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rotary Position Embedding",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d + n^2 * d)", space: "O(n * d)" },
-        defaultInput: { vectors: [[1, 0, 1, 0], [0, 1, 0, 1], [1, 1, -1, 0.5]], startPosition: 0, base: 10000 },
+        defaultInput: JSON.parse("{\"vectors\":[[1,0,1,0],[0,1,0,1],[1,1,-1,0.5]],\"startPosition\":0,\"base\":10000}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8760,7 +7921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rotated Array Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { array: [4, 5, 6, 7, 0, 1, 2], target: 0 },
+        defaultInput: JSON.parse("{\"array\":[4,5,6,7,0,1,2],\"target\":0}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8768,7 +7929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Rotating Calipers",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [5, 2], [4, 4], [0, 4], [-1, 2]] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[5,2],[4,4],[0,4],[-1,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8776,7 +7937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Round Robin Scheduling",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(d)", space: "O(p)" },
-        defaultInput: { processes: [{ id: "P1", burst: 5 }, { id: "P2", burst: 3 }, { id: "P3", burst: 7 }], quantum: 2 },
+        defaultInput: JSON.parse("{\"processes\":[{\"id\":\"P1\",\"burst\":5},{\"id\":\"P2\",\"burst\":3},{\"id\":\"P3\",\"burst\":7}],\"quantum\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8784,7 +7945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RSA Encryption and Decryption (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log e + log d)", space: "O(1)" },
-        defaultInput: { p: 11, q: 13, e: 7, m: 42 },
+        defaultInput: JSON.parse("{\"p\":11,\"q\":13,\"e\":7,\"m\":42}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8792,7 +7953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RSA Key Generation",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log phi)", space: "O(1)" },
-        defaultInput: { p: 61, q: 53, e: 17, message: 42 },
+        defaultInput: JSON.parse("{\"p\":61,\"q\":53,\"e\":17,\"message\":42}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8800,7 +7961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RSA Signature (PKCS#1 v1.5, Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(1)" },
-        defaultInput: { message: "HI" },
+        defaultInput: JSON.parse("{\"message\":\"HI\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8808,7 +7969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Run-Length Encoding",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "aaabbbcddd" },
+        defaultInput: JSON.parse("{\"text\":\"aaabbbcddd\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8816,7 +7977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Runge-Kutta 4",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { lambda: -1, y0: 1, tEnd: 2, steps: 8 },
+        defaultInput: JSON.parse("{\"lambda\":-1,\"y0\":1,\"tEnd\":2,\"steps\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8824,7 +7985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Runs via Lyndon",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -8832,7 +7993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "RWKV (WKV Linear-Attention Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(t)", space: "O(1)" },
-        defaultInput: { keys: [0.5, -0.3, 0.8, 0.1, -0.6, 0.4], values: [1, 0.2, 0.7, -0.4, 0.5, 0.9], decay: -0.5 },
+        defaultInput: JSON.parse("{\"keys\":[0.5,-0.3,0.8,0.1,-0.6,0.4],\"values\":[1,0.2,0.7,-0.4,0.5,0.9],\"decay\":-0.5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8840,7 +8001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "S4 Structured State Space (Recurrence)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * N)", space: "O(N)" },
-        defaultInput: { stateSize: 4, steps: 8, dt: 0.1, seed: 7 },
+        defaultInput: JSON.parse("{\"stateSize\":4,\"steps\":8,\"dt\":0.1,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8848,7 +8009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Saddleback Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(1)" },
-        defaultInput: { matrix: [[1, 4, 7, 10], [2, 5, 8, 11], [3, 6, 9, 12]], target: 5 },
+        defaultInput: JSON.parse("{\"matrix\":[[1,4,7,10],[2,5,8,11],[3,6,9,12]],\"target\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8856,7 +8017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Saga Compensating Transaction",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { steps: 5, failAt: 3 },
+        defaultInput: JSON.parse("{\"steps\":5,\"failAt\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8864,7 +8025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SAM 2 (Mask Propagation Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations * rows * cols)", space: "O(rows * cols)" },
-        defaultInput: { rows: 4, cols: 4, prompt: [[0, 0, 1], [0, 1, 1], [3, 3, 0]], iterations: 3 },
+        defaultInput: JSON.parse("{\"rows\":4,\"cols\":4,\"prompt\":[[0,0,1],[0,1,1],[3,3,0]],\"iterations\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8872,7 +8033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SAM Occurrences",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n) build, O(m) query", space: "O(n)" },
-        defaultInput: { text: "ababa", pattern: "aba" },
+        defaultInput: JSON.parse("{\"text\":\"ababa\",\"pattern\":\"aba\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -8880,7 +8041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Samplesort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 2, 5, 1, 4, 3],
+        defaultInput: JSON.parse("[6,2,5,1,4,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8888,7 +8049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Scaled Dot-Product Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * d)", space: "O(n^2)" },
-        defaultInput: { queries: [[1, 0], [0, 1]], keys: [[1, 0], [0, 1]], values: [[1, 0], [0, 1]] },
+        defaultInput: JSON.parse("{\"queries\":[[1,0],[0,1]],\"keys\":[[1,0],[0,1]],\"values\":[[1,0],[0,1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8896,7 +8057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Scapegoat Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -8904,7 +8065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SCC Condensation Graph",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B"], B: ["A", "C"], C: ["D"], D: ["C"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"A\",\"C\"],\"C\":[\"D\"],\"D\":[\"C\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8912,7 +8073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Schnorr Signature (Toy Prime Field)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log p)", space: "O(1)" },
-        defaultInput: { secret: 23, nonce: 17, message: "hello" },
+        defaultInput: JSON.parse("{\"secret\":23,\"nonce\":17,\"message\":\"hello\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8920,7 +8081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Schwartz–Zippel Identity",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k·d)", space: "O(k)" },
-        defaultInput: { trials: 5, seed: 9 },
+        defaultInput: JSON.parse("{\"trials\":5,\"seed\":9}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8928,7 +8089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Secant Method",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(1)" },
-        defaultInput: { a: 1, b: 2, iterations: 8 },
+        defaultInput: JSON.parse("{\"a\":1,\"b\":2,\"iterations\":8}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -8936,20 +8097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Second Best MST",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(E·V)", space: "O(V + E)" },
-        defaultInput: {
-            edges: [
-                ["A", "B", 4],
-                ["A", "C", 2],
-                ["B", "C", 1],
-                ["B", "D", 5],
-                ["C", "D", 8],
-                ["C", "E", 10],
-                ["D", "E", 2],
-                ["D", "F", 6],
-                ["E", "F", 3],
-            ],
-            vertices: ["A", "B", "C", "D", "E", "F"],
-        },
+        defaultInput: JSON.parse("{\"edges\":[[\"A\",\"B\",4],[\"A\",\"C\",2],[\"B\",\"C\",1],[\"B\",\"D\",5],[\"C\",\"D\",8],[\"C\",\"E\",10],[\"D\",\"E\",2],[\"D\",\"F\",6],[\"E\",\"F\",3]],\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8957,11 +8105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Second Shortest Path",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -8969,7 +8113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Secretary Problem",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { values: [3, 1, 7, 2, 8, 4, 6, 5] },
+        defaultInput: JSON.parse("{\"values\":[3,1,7,2,8,4,6,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8977,16 +8121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segment Anything (Prompt-Guided Mask Selection Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(c * p)", space: "O(c * p)" },
-        defaultInput: {
-            masks: [
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [0, 1, 1, 0, 1, 1, 0, 0, 0],
-                [0, 1, 1, 1, 1, 1, 0, 0, 0],
-                [1, 1, 1, 1, 1, 1, 0, 0, 0],
-            ],
-            predictedIoU: [0.2, 0.85, 0.7, 0.55],
-            reference: [0, 1, 1, 0, 1, 1, 0, 0, 0],
-        },
+        defaultInput: JSON.parse("{\"masks\":[[0,0,0,0,0,0,0,0,0],[0,1,1,0,1,1,0,0,0],[0,1,1,1,1,1,0,0,0],[1,1,1,1,1,1,0,0,0]],\"predictedIoU\":[0.2,0.85,0.7,0.55],\"reference\":[0,1,1,0,1,1,0,0,0]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -8994,7 +8129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segment Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { a: [0, 0], b: [6, 4], c: [1, 3], d: [5, 1] },
+        defaultInput: JSON.parse("{\"a\":[0,0],\"b\":[6,4],\"c\":[1,3],\"d\":[5,1]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9002,7 +8137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segment Tree (Iterative)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { array: [2, 1, 3, 4, 5], query: [1, 3] },
+        defaultInput: JSON.parse("{\"array\":[2,1,3,4,5],\"query\":[1,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9010,7 +8145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segment Tree (Lazy)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) range ops", space: "O(n)" },
-        defaultInput: { array: [2, 1, 3, 4, 5], update: [1, 3, 2], query: [0, 4] },
+        defaultInput: JSON.parse("{\"array\":[2,1,3,4,5],\"update\":[1,3,2],\"query\":[0,4]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9018,7 +8153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segment Tree (Recursive)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { array: [2, 1, 3, 4, 5], query: [1, 3] },
+        defaultInput: JSON.parse("{\"array\":[2,1,3,4,5],\"query\":[1,3]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9026,7 +8161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Segmented Sieve",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log log n)", space: "O(sqrt(n))" },
-        defaultInput: { limit: 30 },
+        defaultInput: JSON.parse("{\"limit\":30}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9034,7 +8169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Selection Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [7, 2, 9, 1, 5, 8],
+        defaultInput: JSON.parse("[7,2,9,1,5,8]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9042,7 +8177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Self-Consistency Decoding (Majority-Vote Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(s)", space: "O(k)" },
-        defaultInput: { samples: ["A", "B", "A", "A", "C", "B", "A"] },
+        defaultInput: JSON.parse("{\"samples\":[\"A\",\"B\",\"A\",\"A\",\"C\",\"B\",\"A\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9050,7 +8185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Selinger Join Ordering",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(3^n)", space: "O(2^n)" },
-        defaultInput: { cardinalities: [100, 40, 25, 15], selectivity: 0.1 },
+        defaultInput: JSON.parse("{\"cardinalities\":[100,40,25,15],\"selectivity\":0.1}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9058,7 +8193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Set Horspool",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m) average", space: "O(patterns)" },
-        defaultInput: { text: "ababcab", patterns: ["ab", "bc"] },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"patterns\":[\"ab\",\"bc\"]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9066,7 +8201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SHA-256 Compression",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(64)", space: "O(64)" },
-        defaultInput: { message: "abc" },
+        defaultInput: JSON.parse("{\"message\":\"abc\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9074,7 +8209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SHA-3 Keccak-f[1600] Round",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(25)", space: "O(25)" },
-        defaultInput: {  },
+        defaultInput: JSON.parse("{}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9082,7 +8217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shamir Secret Sharing",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t^2)", space: "O(n)" },
-        defaultInput: { secret: 7, mod: 13 },
+        defaultInput: JSON.parse("{\"secret\":7,\"mod\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9090,7 +8225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shamir Threshold Signature (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n*t + t^2)", space: "O(n)" },
-        defaultInput: { secret: 42, threshold: 3, shares: 5, message: "SIGN" },
+        defaultInput: JSON.parse("{\"secret\":42,\"threshold\":3,\"shares\":5,\"message\":\"SIGN\"}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9098,15 +8233,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shannon Entropy",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { weights: [0.5, 0.25, 0.125, 0.125], base: 2 },
+        defaultInput: JSON.parse("{\"weights\":[0.5,0.25,0.125,0.125],\"base\":2}") as unknown,
         visualType: "grid" as LayoutType,
+    },
+    {
+        id: "shapley-value",
+        name: "Shapley Value",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(n! * n)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"weights\":[4,3,2],\"quota\":5}") as unknown,
+        visualType: "array" as LayoutType,
     },
     {
         id: "shear-sort",
         name: "Shear Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(1)" },
-        defaultInput: [7, 3, 5, 1, 6, 2, 4, 8],
+        defaultInput: JSON.parse("[7,3,5,1,6,2,4,8]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9114,7 +8257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shell Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(1)" },
-        defaultInput: [23, 3, 41, 7, 11, 13, 17, 29],
+        defaultInput: JSON.parse("[23,3,41,7,11,13,17,29]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9122,7 +8265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shift-Or Bitap",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n·m/w)", space: "O(σ)" },
-        defaultInput: { text: "ababcab", pattern: "abc" },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9130,7 +8273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shor Nine-Qubit Error-Correcting Code",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { logical: 0, errorQubit: 4, errorType: "X" },
+        defaultInput: JSON.parse("{\"logical\":0,\"errorQubit\":4,\"errorType\":\"X\"}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9138,7 +8281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shor Factorization (Toy)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(r*log N)", space: "O(r)" },
-        defaultInput: { n: 15, a: 7 },
+        defaultInput: JSON.parse("{\"n\":15,\"a\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9146,7 +8289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shortest Common Supersequence",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { a: "abac", b: "cab" },
+        defaultInput: JSON.parse("{\"a\":\"abac\",\"b\":\"cab\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9154,7 +8297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shortest Cycle / Girth (BFS)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·(V + E))", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B", "D"], D: ["C"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\",\"D\"],\"D\":[\"C\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9162,18 +8305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shortest Path in a DAG",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 3], ["C", 6]],
-                B: [["C", 2], ["D", 4]],
-                C: [["D", 1], ["E", 5]],
-                D: [["E", 2]],
-                E: [],
-            },
-            vertices: ["A", "B", "C", "D", "E"],
-            start: "A",
-            target: "E",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",3],[\"C\",6]],\"B\":[[\"C\",2],[\"D\",4]],\"C\":[[\"D\",1],[\"E\",5]],\"D\":[[\"E\",2]],\"E\":[]},\"vertices\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"start\":\"A\",\"target\":\"E\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9181,7 +8313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shortest Path in Polygon (Funnel)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 4], [0, 4]], start: [0.5, 2], goal: [3.5, 2] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,4],[0,4]],\"start\":[0.5,2],\"goal\":[3.5,2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9189,7 +8321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shortest Unique Substring",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n²)" },
-        defaultInput: { text: "ababc" },
+        defaultInput: JSON.parse("{\"text\":\"ababc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9197,7 +8329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Shunting-Yard",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { expr: "3+4*2" },
+        defaultInput: JSON.parse("{\"expr\":\"3+4*2\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9205,7 +8337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sieve of Eratosthenes",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log log n)", space: "O(n)" },
-        defaultInput: { n: 60 },
+        defaultInput: JSON.parse("{\"n\":60}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9213,7 +8345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sieve of Atkin",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { limit: 30 },
+        defaultInput: JSON.parse("{\"limit\":30}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9221,7 +8353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sieve of Sundaram",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { limit: 30 },
+        defaultInput: JSON.parse("{\"limit\":30}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9229,7 +8361,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Signal Protocol (Symmetric-Key Ratchet Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { chainKey: 12345, messages: 5, deliver: [0, 1, 3, 2, 4] },
+        defaultInput: JSON.parse("{\"chainKey\":12345,\"messages\":5,\"deliver\":[0,1,3,2,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9237,7 +8369,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Simon's Problem (Small Oracle Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n^3)", space: "O(n^2)" },
-        defaultInput: { bits: 3, hidden: 5 },
+        defaultInput: JSON.parse("{\"bits\":3,\"hidden\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9245,7 +8377,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Simplex Method (LP)",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(2^n) worst", space: "O(m·n)" },
-        defaultInput: { objective: [3, 2], constraints: [[1, 1, 4], [1, 2, 6]] },
+        defaultInput: JSON.parse("{\"objective\":[3,2],\"constraints\":[[1,1,4],[1,2,6]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9253,7 +8385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Simpson's Rule",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { a: 0, b: 1, n: 8, fn: "x2" },
+        defaultInput: JSON.parse("{\"a\":0,\"b\":1,\"n\":8,\"fn\":\"x2\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9261,7 +8393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Simulated Annealing",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(1)" },
-        defaultInput: { iterations: 15 },
+        defaultInput: JSON.parse("{\"iterations\":15}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9269,7 +8401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Singly Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) front ops, O(n) search", space: "O(n)" },
-        defaultInput: { values: [10, 20, 30], insert: 15 },
+        defaultInput: JSON.parse("{\"values\":[10,20,30],\"insert\":15}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9277,7 +8409,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sinkhorn Algorithm",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * m * n)", space: "O(m * n)" },
-        defaultInput: { matrix: [[4, 1, 2], [1, 8, 1], [2, 1, 4]], iterations: 20 },
+        defaultInput: JSON.parse("{\"matrix\":[[4,1,2],[1,8,1],[2,1,4]],\"iterations\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9285,7 +8417,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Skew Binary List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) cons, O(log n) index", space: "O(n)" },
-        defaultInput: { pushes: [1, 2, 3, 4], index: 2 },
+        defaultInput: JSON.parse("{\"pushes\":[1,2,3,4],\"index\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9293,7 +8425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Skew Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { inserts: [5, 3, 8, 1, 9] },
+        defaultInput: JSON.parse("{\"inserts\":[5,3,8,1,9]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9301,7 +8433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Skip List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) expected", space: "O(n) expected" },
-        defaultInput: { values: [3, 6, 7, 9, 12, 19, 17], search: 12 },
+        defaultInput: JSON.parse("{\"values\":[3,6,7,9,12,19,17],\"search\":12}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9309,7 +8441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Skyline Divide & Conquer",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { buildings: [[1, 4, 3], [2, 5, 5], [6, 2, 7]] },
+        defaultInput: JSON.parse("{\"buildings\":[[1,4,3],[2,5,5],[6,2,7]]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9317,7 +8449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Skyline Problem Sweep",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { buildings: [[0, 2, 3], [1, 4, 2], [3, 5, 4]] },
+        defaultInput: JSON.parse("{\"buildings\":[[0,2,3],[1,4,2],[3,5,4]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9325,7 +8457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Slab Allocator",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(objects)" },
-        defaultInput: { slabSize: 4, ops: [["alloc"], ["alloc"], ["free", 0], ["alloc"], ["alloc"], ["alloc"]] },
+        defaultInput: JSON.parse("{\"slabSize\":4,\"ops\":[[\"alloc\"],[\"alloc\"],[\"free\",0],[\"alloc\"],[\"alloc\"],[\"alloc\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9333,7 +8465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sleep Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n + t)", space: "O(n)" },
-        defaultInput: [4, 2, 5, 1, 3],
+        defaultInput: JSON.parse("[4,2,5,1,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9341,7 +8473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SLH-DSA Teaching Core (Toy FORS)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(k * 2^a + k * a)", space: "O(k * 2^a)" },
-        defaultInput: { message: "hello" },
+        defaultInput: JSON.parse("{\"message\":\"hello\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9349,7 +8481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Slice Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations * (steps + shrinks))", space: "O(iterations)" },
-        defaultInput: { mean: 0, sigma: 1, width: 2, iterations: 14, seed: 11 },
+        defaultInput: JSON.parse("{\"mean\":0,\"sigma\":1,\"width\":2,\"iterations\":14,\"seed\":11}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9357,12 +8489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sliding Window Attention",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n*w*d)", space: "O(n*w)" },
-        defaultInput: {
-            queries: [[1, 0], [0, 1], [1, 1], [0, -1]],
-            keys: [[1, 0], [0, 1], [1, 1], [0, -1]],
-            values: [[1, 0], [0, 1], [1, 1], [0, -1]],
-            window: 2,
-        },
+        defaultInput: JSON.parse("{\"queries\":[[1,0],[0,1],[1,1],[0,-1]],\"keys\":[[1,0],[0,1],[1,1],[0,-1]],\"values\":[[1,0],[0,1],[1,1],[0,-1]],\"window\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9370,7 +8497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Slow Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n^(log n))", space: "O(n)" },
-        defaultInput: [3, 1, 2],
+        defaultInput: JSON.parse("[3,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9378,15 +8505,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SMA* Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^d)", space: "O(memory)" },
-        defaultInput: { start: "A", goal: "G", memory: 3 },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\",\"memory\":3}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "smawk-algorithm",
+        name: "SMAWK Algorithm",
+        category: "dynamic-programming" as AlgorithmCategory,
+        complexity: { time: "O(R + C)", space: "O(R + C)" },
+        defaultInput: JSON.parse("{\"rows\":4,\"cols\":5}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "smith-waterman-alignment",
         name: "Smith-Waterman",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(nm)", space: "O(nm)" },
-        defaultInput: { a: "GATT", b: "GCAT" },
+        defaultInput: JSON.parse("{\"a\":\"GATT\",\"b\":\"GCAT\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9394,7 +8529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Smooth Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(1)" },
-        defaultInput: [8, 3, 6, 1, 7, 2, 5, 4],
+        defaultInput: JSON.parse("[8,3,6,1,7,2,5,4]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9402,7 +8537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Snappy Compression",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n * window * matchLength)", space: "O(n)" },
-        defaultInput: { text: "aaaaaaaaaabbbbbbbbbbccccccccccaaaaaaaaaabbbbbbbbbb" },
+        defaultInput: JSON.parse("{\"text\":\"aaaaaaaaaabbbbbbbbbbccccccccccaaaaaaaaaabbbbbbbbbb\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9410,7 +8545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Snort",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { size: 4 },
+        defaultInput: JSON.parse("{\"size\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9418,7 +8553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Snowflake ID Generation",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(1) per id", space: "O(k)" },
-        defaultInput: { workerId: 1, workerBits: 5, seqBits: 12, epoch: 1699999999000, now: 1700000000000, count: 5 },
+        defaultInput: JSON.parse("{\"workerId\":1,\"workerBits\":5,\"seqBits\":12,\"epoch\":1699999999000,\"now\":1700000000000,\"count\":5}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9426,7 +8561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Soft Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized extract", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1], error: 0.25 },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1],\"error\":0.25}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9434,22 +8569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Softmax Regression",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n * c * d)", space: "O(c * d)" },
-        defaultInput: {
-            samples: [
-                [0, 0, 0],
-                [0.5, 0.2, 0],
-                [0.2, 0.6, 0],
-                [3, 3, 1],
-                [3.4, 2.8, 1],
-                [2.8, 3.3, 1],
-                [0, 4, 2],
-                [0.4, 4.2, 2],
-                [0.3, 3.6, 2],
-            ],
-            learningRate: 0.1,
-            epochs: 60,
-            classCount: 3,
-        },
+        defaultInput: JSON.parse("{\"samples\":[[0,0,0],[0.5,0.2,0],[0.2,0.6,0],[3,3,1],[3.4,2.8,1],[2.8,3.3,1],[0,4,2],[0.4,4.2,2],[0.3,3.6,2]],\"learningRate\":0.1,\"epochs\":60,\"classCount\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9457,7 +8577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Solovay-Strassen Test",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(k log^3 n)", space: "O(1)" },
-        defaultInput: { n: 13, bases: [2, 5] },
+        defaultInput: JSON.parse("{\"n\":13,\"bases\":[2,5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9465,7 +8585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sorted Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) insert", space: "O(n)" },
-        defaultInput: { values: [5, 10, 20, 30], insert: 15 },
+        defaultInput: JSON.parse("{\"values\":[5,10,20,30],\"insert\":15}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9473,7 +8593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SOS DP (Sum Over Subsets)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·2^n)", space: "O(2^n)" },
-        defaultInput: { arr: [1, 2, 3, 4, 5, 6, 7, 8] },
+        defaultInput: JSON.parse("{\"arr\":[1,2,3,4,5,6,7,8]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9481,7 +8601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Soundex",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { word: "Euler" },
+        defaultInput: JSON.parse("{\"word\":\"Euler\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9489,7 +8609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Spaghetti Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n^2) replay (O(n) physically)", space: "O(n)" },
-        defaultInput: { values: [3, 1, 4, 1, 5, 9, 2, 6] },
+        defaultInput: JSON.parse("{\"values\":[3,1,4,1,5,9,2,6]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9497,7 +8617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Spanning Tree Enumeration",
         category: "mst" as AlgorithmCategory,
         complexity: { time: "O(2^E V)", space: "O(V + E)" },
-        defaultInput: { vertices: ["A", "B", "C"], edges: [["A", "B", 1], ["B", "C", 2], ["A", "C", 3]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"A\",\"B\",\"C\"],\"edges\":[[\"A\",\"B\",1],[\"B\",\"C\",2],[\"A\",\"C\",3]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9505,7 +8625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sparse Set",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) ops", space: "O(u)" },
-        defaultInput: { values: [3, 1, 4, 6], query: 4 },
+        defaultInput: JSON.parse("{\"values\":[3,1,4,6],\"query\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9513,7 +8633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sparse Table",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) RMQ", space: "O(n log n)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9521,7 +8641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Spearman Rank Correlation",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { x: [1, 2, 3, 4, 5, 6, 7, 8], y: [3, 1, 4, 5, 2, 8, 7, 6] },
+        defaultInput: JSON.parse("{\"x\":[1,2,3,4,5,6,7,8],\"y\":[3,1,4,5,2,8,7,6]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9529,7 +8649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Speculative Decoding (Greedy Verification)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(k)" },
-        defaultInput: { start: 0, draft: [3, 5, 2, 7], transitions: { "0": 3, "3": 5, "5": 6, "6": 8, "8": 1 } },
+        defaultInput: JSON.parse("{\"start\":0,\"draft\":[3,5,2,7],\"transitions\":{\"0\":3,\"3\":5,\"5\":6,\"6\":8,\"8\":1}}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9537,18 +8657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SPFA",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V × E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 5]],
-                B: [["C", -3], ["D", 2]],
-                C: [["D", 6], ["E", 1]],
-                D: [["E", -2], ["F", 3]],
-                E: [["F", 2]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",5]],\"B\":[[\"C\",-3],[\"D\",2]],\"C\":[[\"D\",6],[\"E\",1]],\"D\":[[\"E\",-2],[\"F\",3]],\"E\":[[\"F\",2]],\"F\":[]},\"start\":\"A\",\"target\":\"F\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9556,7 +8665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SPHINCS-Style Hash Signature (Toy)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(w * L + log t)", space: "O(L * log t)" },
-        defaultInput: { message: "hello", leafIndex: 0 },
+        defaultInput: JSON.parse("{\"message\":\"hello\",\"leafIndex\":0}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9564,7 +8673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Splay Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 3, 1, 4, 2],
+        defaultInput: JSON.parse("[5,3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9572,7 +8681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Splay Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) amortized", space: "O(n)" },
-        defaultInput: { values: [8, 3, 10, 1, 6, 14], access: 6 },
+        defaultInput: JSON.parse("{\"values\":[8,3,10,1,6,14],\"access\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9580,7 +8689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sponge Construction (Absorb and Squeeze Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(blocks * permute)", space: "O(state)" },
-        defaultInput: { message: [65, 66, 67, 68, 69], outputBlocks: 2, domain: 1 },
+        defaultInput: JSON.parse("{\"message\":[65,66,67,68,69],\"outputBlocks\":2,\"domain\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9588,7 +8697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sprague-Grundy",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n·moves)", space: "O(n)" },
-        defaultInput: { maxTokens: 20 },
+        defaultInput: JSON.parse("{\"maxTokens\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9596,7 +8705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sprouts",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(moves)", space: "O(spots)" },
-        defaultInput: { spots: 2 },
+        defaultInput: JSON.parse("{\"spots\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9604,7 +8713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sqrt Decomposition",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(sqrt n) query", space: "O(n)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9612,7 +8721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sqrt Decomposition Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(√n)", space: "O(1)" },
-        defaultInput: { array: [2, 4, 6, 8, 10, 12, 14, 16, 18], target: 14 },
+        defaultInput: JSON.parse("{\"array\":[2,4,6,8,10,12,14,16,18],\"target\":14}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9620,7 +8729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stabilizer Formalism (Tableau Simulation)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(4^n)", space: "O(4^n)" },
-        defaultInput: { n: 2, initial: "bell", gates: [{ type: "H", q: 0 }] },
+        defaultInput: JSON.parse("{\"n\":2,\"initial\":\"bell\",\"gates\":[{\"type\":\"H\",\"q\":0}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9628,7 +8737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stack (Array)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) push/pop", space: "O(n)" },
-        defaultInput: { pushes: [5, 3, 8], popCount: 2 },
+        defaultInput: JSON.parse("{\"pushes\":[5,3,8],\"popCount\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9636,7 +8745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stack (Linked)",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) push/pop", space: "O(n)" },
-        defaultInput: { pushes: [5, 3, 8], popCount: 2 },
+        defaultInput: JSON.parse("{\"pushes\":[5,3,8],\"popCount\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9644,7 +8753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stack Permutation Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: [3, 1, 2],
+        defaultInput: JSON.parse("[3,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9652,7 +8761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Staircase Nim",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(p)", space: "O(1)" },
-        defaultInput: { piles: [2, 1, 3] },
+        defaultInput: JSON.parse("{\"piles\":[2,1,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9660,7 +8769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "STARK Proof (FRI Folding Step)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(N log N)", space: "O(N)" },
-        defaultInput: { coefficients: [3, 5, 7, 11], domainSize: 8, challenge: 12345 },
+        defaultInput: JSON.parse("{\"coefficients\":[3,5,7,11],\"domainSize\":8,\"challenge\":12345}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9668,7 +8777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Static Array",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) access", space: "O(n)" },
-        defaultInput: { values: [5, 3, 8, 1, 9] },
+        defaultInput: JSON.parse("{\"values\":[5,3,8,1,9]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9676,7 +8785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Steane Code (Hamming Syndrome)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1) per syndrome", space: "O(2^7) state vector" },
-        defaultInput: { codeword: 7, errorQubit: 4 },
+        defaultInput: JSON.parse("{\"codeword\":7,\"errorQubit\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9684,7 +8793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Steque",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(n)" },
-        defaultInput: { ops: [["push", 1], ["push", 2], ["enqueue", 3], ["pop"], ["enqueue", 4]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"push\",1],[\"push\",2],[\"enqueue\",3],[\"pop\"],[\"enqueue\",4]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9692,15 +8801,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stern-Brocot Tree Search",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(a + b)", space: "O(1)" },
-        defaultInput: { a: 3, b: 5 },
+        defaultInput: JSON.parse("{\"a\":3,\"b\":5}") as unknown,
         visualType: "array" as LayoutType,
+    },
+    {
+        id: "stirling-numbers",
+        name: "Stirling Numbers of the Second Kind",
+        category: "math" as AlgorithmCategory,
+        complexity: { time: "O(n*k)", space: "O(n*k)" },
+        defaultInput: JSON.parse("{\"n\":8,\"k\":4}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "stochastic-gradient-descent",
         name: "Stochastic Gradient Descent",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(epochs * n)", space: "O(n)" },
-        defaultInput: { points: [0, 1, 2, 3, 4], targets: [1, 3, 5, 7, 9], epochs: 8, learningRate: 0.05 },
+        defaultInput: JSON.parse("{\"points\":[0,1,2,3,4],\"targets\":[1,3,5,7,9],\"epochs\":8,\"learningRate\":0.05}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9708,7 +8825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stock III (Two Transactions)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { prices: [3, 3, 5, 0, 0, 3, 1, 4] },
+        defaultInput: JSON.parse("{\"prices\":[3,3,5,0,0,3,1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9716,7 +8833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stock with Cooldown",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { prices: [1, 2, 3, 0, 2] },
+        defaultInput: JSON.parse("{\"prices\":[1,2,3,0,2]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9724,7 +8841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stock with Transaction Fee",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { prices: [1, 3, 2, 8, 4, 9], fee: 2 },
+        defaultInput: JSON.parse("{\"prices\":[1,3,2,8,4,9],\"fee\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9732,7 +8849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stoer-Wagner Min Cut",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E + V^2 log V)", space: "O(V^2)" },
-        defaultInput: { vertices: ["0", "1", "2"], edges: [[0, 1, 3], [1, 2, 2], [0, 2, 1]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\"],\"edges\":[[0,1,3],[1,2,2],[0,2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9740,7 +8857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Stooge Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n^2.7)", space: "O(n)" },
-        defaultInput: [4, 1, 3, 2],
+        defaultInput: JSON.parse("[4,1,3,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9748,7 +8865,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Strand Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9756,7 +8873,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Student's t-Test",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { sample: [9, 10, 11, 12, 13], mu0: 10 },
+        defaultInput: JSON.parse("{\"sample\":[9,10,11,12,13],\"mu0\":10}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9764,7 +8881,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sublist Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n × m)", space: "O(1)" },
-        defaultInput: { list: [1, 2, 3, 4, 5], pattern: [3, 4] },
+        defaultInput: JSON.parse("{\"list\":[1,2,3,4,5],\"pattern\":[3,4]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9772,7 +8889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Subset Construction",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(2^n)" },
-        defaultInput: { regex: "a(b|c)" },
+        defaultInput: JSON.parse("{\"regex\":\"a(b|c)\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9780,7 +8897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Subset Sum",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·T)", space: "O(n·T)" },
-        defaultInput: { numbers: [2, 3, 7, 8, 10], target: 11 },
+        defaultInput: JSON.parse("{\"numbers\":[2,3,7,8,10],\"target\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9788,7 +8905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Successive Over-Relaxation",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n^2)" },
-        defaultInput: { a: [[4, 1], [1, 3]], b: [1, 2], omega: 1.5, iterations: 50 },
+        defaultInput: JSON.parse("{\"a\":[[4,1],[1,3]],\"b\":[1,2],\"omega\":1.5,\"iterations\":50}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9796,7 +8913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Array (DC3)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9804,7 +8921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Array (Doubling)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n log² n)", space: "O(n)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9812,7 +8929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Array Search",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(m log n)", space: "O(n)" },
-        defaultInput: { text: "banana", pattern: "ana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\",\"pattern\":\"ana\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9820,7 +8937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Automaton",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "ababa" },
+        defaultInput: JSON.parse("{\"text\":\"ababa\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9828,7 +8945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Tree (Ukkonen)",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n) / O(n²) naive", space: "O(n)" },
-        defaultInput: { text: "banana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9836,7 +8953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suffix Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(|s|) query", space: "O(n²) worst" },
-        defaultInput: { text: "banana", query: "ana" },
+        defaultInput: JSON.parse("{\"text\":\"banana\",\"query\":\"ana\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9844,7 +8961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sunday Quick Search",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n/m) avg, O(nm) worst", space: "O(σ)" },
-        defaultInput: { text: "ababcabcab", pattern: "abc" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabcab\",\"pattern\":\"abc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -9852,7 +8969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Superdense Coding",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { bits: "10" },
+        defaultInput: JSON.parse("{\"bits\":\"10\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9860,13 +8977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Smooth-Margin Support Vector Machine",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(iterations * n * d)", space: "O(d)" },
-        defaultInput: {
-            points: [[1, 1], [1, 2], [2, 1], [2, 2], [-1, -1], [-1, -2], [-2, -1], [-2, -2]],
-            labels: [1, 1, 1, 1, -1, -1, -1, -1],
-            lr: 0.01,
-            C: 1,
-            iterations: 20,
-        },
+        defaultInput: JSON.parse("{\"points\":[[1,1],[1,2],[2,1],[2,2],[-1,-1],[-1,-2],[-2,-1],[-2,-2]],\"labels\":[1,1,1,1,-1,-1,-1,-1],\"lr\":0.01,\"C\":1,\"iterations\":20}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9874,7 +8985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Surface Code Error Correction (Small Toy Simulator)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^n * p)", space: "O(n + p)" },
-        defaultInput: { rows: 3, cols: 3, errors: [4] },
+        defaultInput: JSON.parse("{\"rows\":3,\"cols\":3,\"errors\":[4]}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9882,7 +8993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sutherland–Hodgman Polygon Clipping",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n)" },
-        defaultInput: { subject: [[1, 1], [5, 1], [3, 5]], window: { minX: 0, minY: 0, maxX: 4, maxY: 4 } },
+        defaultInput: JSON.parse("{\"subject\":[[1,1],[5,1],[3,5]],\"window\":{\"minX\":0,\"minY\":0,\"maxX\":4,\"maxY\":4}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9890,12 +9001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Suurballe Edge-Disjoint Pair",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [["0", "1", 1], ["0", "2", 2], ["1", "3", 2], ["2", "3", 1], ["1", "2", 1]],
-            source: "0",
-            sink: "3",
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[\"0\",\"1\",1],[\"0\",\"2\",2],[\"1\",\"3\",2],[\"2\",\"3\",1],[\"1\",\"2\",1]],\"source\":\"0\",\"sink\":\"3\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9903,7 +9009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SVD Power Iteration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(iterations * n^2)", space: "O(n^2)" },
-        defaultInput: { a: [[3, 1], [1, 2]], iterations: 30 },
+        defaultInput: JSON.parse("{\"a\":[[3,1],[1,2]],\"iterations\":30}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9911,7 +9017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SWAP Gate",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(2^n)" },
-        defaultInput: { initial: "01", hadamard: false },
+        defaultInput: JSON.parse("{\"initial\":\"01\",\"hadamard\":false}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9919,7 +9025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Sweep-Line Intersection",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O((n+k) log n)", space: "O(n)" },
-        defaultInput: { segments: [[[0, 0], [6, 4]], [[1, 3], [5, 1]], [[2, 1], [7, 2]]] },
+        defaultInput: JSON.parse("{\"segments\":[[[0,0],[6,4]],[[1,3],[5,1]],[[2,1],[7,2]]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -9927,7 +9033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "SWIM Membership Protocol",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(rounds * n * k)", space: "O(n^2)" },
-        defaultInput: { nodes: 8, failed: 5, flaky: -1, rounds: 32, indirectK: 2, suspectThreshold: 2 },
+        defaultInput: JSON.parse("{\"nodes\":8,\"failed\":5,\"flaky\":-1,\"rounds\":32,\"indirectK\":2,\"suspectThreshold\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9935,7 +9041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Switch Transformer Routing (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * E * d)", space: "O(n * E)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1], [2, 0], [0, 2], [1, 2]], experts: 3, capacityFactor: 1, seed: 13 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1],[2,0],[0,2],[1,2]],\"experts\":3,\"capacityFactor\":1,\"seed\":13}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9943,7 +9049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Symplectic Integrator",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(S)", space: "O(S)" },
-        defaultInput: { q0: 1, p0: 0, dt: 0.05, steps: 200, omega: 1 },
+        defaultInput: JSON.parse("{\"q0\":1,\"p0\":0,\"dt\":0.05,\"steps\":200,\"omega\":1}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9951,7 +9057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "T-Digest",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) update", space: "O(c)" },
-        defaultInput: { values: [7, 2, 9, 4, 6] },
+        defaultInput: JSON.parse("{\"values\":[7,2,9,4,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9959,12 +9065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "t-SNE (KL Gradient Step)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * d + iterations * n^2)", space: "O(n^2)" },
-        defaultInput: {
-            points: [[0, 0], [0.1, 0.2], [0.2, -0.1], [5, 5], [5.1, 4.8], [4.9, 5.2]],
-            perplexity: 2,
-            iterations: 4,
-            seed: 3,
-        },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[0.1,0.2],[0.2,-0.1],[5,5],[5.1,4.8],[4.9,5.2]],\"perplexity\":2,\"iterations\":4,\"seed\":3}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -9972,7 +9073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "T-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 9, 4], query: 8 },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,9,4],\"query\":8}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -9980,7 +9081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tabu Search",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(t·n)", space: "O(tabu)" },
-        defaultInput: { start: 8, iters: 6, tenure: 2 },
+        defaultInput: JSON.parse("{\"start\":8,\"iters\":6,\"tenure\":2}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -9988,7 +9089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tango Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n log log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -9996,17 +9097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tarjan Articulation Points",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: {
-            graph: {
-                A: ["B", "C"],
-                B: ["A", "C", "D"],
-                C: ["A", "B"],
-                D: ["B", "E", "G"],
-                E: ["D", "F"],
-                F: ["E", "G"],
-                G: ["D", "F"],
-            },
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\",\"D\"],\"C\":[\"A\",\"B\"],\"D\":[\"B\",\"E\",\"G\"],\"E\":[\"D\",\"F\"],\"F\":[\"E\",\"G\"],\"G\":[\"D\",\"F\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10014,7 +9105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tarjan Bridges",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["A", "C", "D"], C: ["A", "B"], D: ["B", "E"], E: ["D"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\",\"D\"],\"C\":[\"A\",\"B\"],\"D\":[\"B\",\"E\"],\"E\":[\"D\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10022,7 +9113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tarjan SCC",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B"], B: ["C", "E"], C: ["A", "F"], D: ["C"], E: ["D"], F: ["F"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"C\",\"E\"],\"C\":[\"A\",\"F\"],\"D\":[\"C\"],\"E\":[\"D\"],\"F\":[\"F\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10030,7 +9121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "TCP BBR Congestion Control",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(rounds)", space: "O(rounds)" },
-        defaultInput: { capacity: 10, baseRtt: 4, rounds: 24 },
+        defaultInput: JSON.parse("{\"capacity\":10,\"baseRtt\":4,\"rounds\":24}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10038,7 +9129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "TCP CUBIC Congestion Control",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(rounds)", space: "O(rounds)" },
-        defaultInput: { wMax: 10, beta: 0.2, C: 0.4, rounds: 12, losses: [6] },
+        defaultInput: JSON.parse("{\"wMax\":10,\"beta\":0.2,\"C\":0.4,\"rounds\":12,\"losses\":[6]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10046,7 +9137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "TCP Congestion Control (Reno)",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(rounds)", space: "O(rounds)" },
-        defaultInput: { ssthresh: 8, rounds: 12, lossRound: 6, lossType: "timeout" },
+        defaultInput: JSON.parse("{\"ssthresh\":8,\"rounds\":12,\"lossRound\":6,\"lossType\":\"timeout\"}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10054,7 +9145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Temporal Difference Learning",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(sweeps * states)", space: "O(states)" },
-        defaultInput: { states: 5, alpha: 0.3, gamma: 0.9, sweeps: 40 },
+        defaultInput: JSON.parse("{\"states\":5,\"alpha\":0.3,\"gamma\":0.9,\"sweeps\":40}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10062,7 +9153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tendermint Consensus (one height)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n^2) messages", space: "O(n)" },
-        defaultInput: { validators: 4, faulty: 1, block: "BLK-42" },
+        defaultInput: JSON.parse("{\"validators\":4,\"faulty\":1,\"block\":\"BLK-42\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10070,7 +9161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ternary Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(log₃ n)", space: "O(1)" },
-        defaultInput: { array: [2, 5, 8, 11, 14, 17, 20, 23], target: 17 },
+        defaultInput: JSON.parse("{\"array\":[2,5,8,11,14,17,20,23],\"target\":17}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10078,7 +9169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Ternary Search Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(L + log n)", space: "O(total chars)" },
-        defaultInput: { words: ["cat", "car", "cup", "dog"], search: "car" },
+        defaultInput: JSON.parse("{\"words\":[\"cat\",\"car\",\"cup\",\"dog\"],\"search\":\"car\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10086,7 +9177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Test-Time Training (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * d^2)", space: "O(d^2)" },
-        defaultInput: { tokens: [[1, 0], [0, 1], [1, 1]], eta: 0.05, seed: 3 },
+        defaultInput: JSON.parse("{\"tokens\":[[1,0],[0,1],[1,1]],\"eta\":0.05,\"seed\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10094,7 +9185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "TFHE Bootstrapping (Toy Noise Refresh Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(dim) toy", space: "O(dim) toy" },
-        defaultInput: { bit: 1, seed: 11 },
+        defaultInput: JSON.parse("{\"bit\":1,\"seed\":11}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10102,7 +9193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Theta* (Any-Angle)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V)" },
-        defaultInput: { size: 5, wall: 2, gap: [2, 2], start: [0, 2], goal: [4, 2] },
+        defaultInput: JSON.parse("{\"size\":5,\"wall\":2,\"gap\":[2,2],\"start\":[0,2],\"goal\":[4,2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10110,7 +9201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Thompson NFA",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(|regex|)", space: "O(|regex|)" },
-        defaultInput: { regex: "a(b|c)" },
+        defaultInput: JSON.parse("{\"regex\":\"a(b|c)\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10118,7 +9209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Thompson Sampling",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(rounds * arms)", space: "O(arms)" },
-        defaultInput: { rates: [0.15, 0.75, 0.4], rounds: 40, seed: 17 },
+        defaultInput: JSON.parse("{\"rates\":[0.15,0.75,0.4],\"rounds\":40,\"seed\":17}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10126,7 +9217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Threaded Binary Tree",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { values: ["4", "2", "6", "1", "3", "5", "7"] },
+        defaultInput: JSON.parse("{\"values\":[\"4\",\"2\",\"6\",\"1\",\"3\",\"5\",\"7\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10134,7 +9225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Three-Phase Commit",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(participants)", space: "O(participants)" },
-        defaultInput: { votes: [true, true, true, true] },
+        defaultInput: JSON.parse("{\"votes\":[true,true,true,true]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10142,7 +9233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tiered Vector",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(sqrt n) insert", space: "O(n)" },
-        defaultInput: { items: [4, 1, 7, 3, 6] },
+        defaultInput: JSON.parse("{\"items\":[4,1,7,3,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10150,11 +9241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tikhonov Regularization",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(m*n^2 + n^3)", space: "O(n^2)" },
-        defaultInput: {
-            matrix: [[1, 1], [1, 1.0001], [1, 0.9999]],
-            b: [2, 2.0001, 1.9999],
-            lambdas: [0, 0.001, 0.01, 0.1, 1],
-        },
+        defaultInput: JSON.parse("{\"matrix\":[[1,1],[1,1.0001],[1,0.9999]],\"b\":[2,2.0001,1.9999],\"lambdas\":[0,0.001,0.01,0.1,1]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10162,7 +9249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tiling (Domino + Tromino)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { n: 3 },
+        defaultInput: JSON.parse("{\"n\":3}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10170,7 +9257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tim Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [6, 2, 8, 1, 4, 9, 3, 7],
+        defaultInput: JSON.parse("[6,2,8,1,4,9,3,7]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10178,12 +9265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Time-Dependent FIFO Shortest Path",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["D", 2]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-            depart: 0,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"D\",2]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"depart\":0}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10191,7 +9273,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Toffoli Gate",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { initial: "110", superposeControls: false },
+        defaultInput: JSON.parse("{\"initial\":\"110\",\"superposeControls\":false}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10199,7 +9281,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Token Bucket Rate Limiter",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { capacity: 2, refillRate: 1, arrivals: [0, 0.2, 0.5, 1, 1.1, 1.2, 2, 2.5] },
+        defaultInput: JSON.parse("{\"capacity\":2,\"refillRate\":1,\"arrivals\":[0,0.2,0.5,1,1.1,1.2,2,2.5]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10207,7 +9289,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tonelli-Shanks",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(log² p)", space: "O(1)" },
-        defaultInput: { n: 5, p: 41 },
+        defaultInput: JSON.parse("{\"n\":5,\"p\":41}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10215,7 +9297,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Top Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { chain: [1, 2, 3, 4], weights: [5, 2, 7] },
+        defaultInput: JSON.parse("{\"chain\":[1,2,3,4],\"weights\":[5,2,7]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10223,7 +9305,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Topological Sort (DFS)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["D"], C: ["D"], D: ["E"], E: [] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"D\"],\"C\":[\"D\"],\"D\":[\"E\"],\"E\":[]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10231,7 +9313,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Topological Sort (Kahn)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: [], B: ["A"], C: ["A"], D: ["B", "C"], E: ["D"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[],\"B\":[\"A\"],\"C\":[\"A\"],\"D\":[\"B\",\"C\"],\"E\":[\"D\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10239,17 +9321,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Total-Order Broadcast (Teaching Simulation)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r * m log m)", space: "O(r * m)" },
-        defaultInput: {
-            messages: [
-                { id: "m1", seq: 3 },
-                { id: "m2", seq: 1 },
-                { id: "m3", seq: 5 },
-                { id: "m4", seq: 2 },
-                { id: "m5", seq: 4 },
-            ],
-            replicas: 3,
-            seed: 1,
-        },
+        defaultInput: JSON.parse("{\"messages\":[{\"id\":\"m1\",\"seq\":3},{\"id\":\"m2\",\"seq\":1},{\"id\":\"m3\",\"seq\":5},{\"id\":\"m4\",\"seq\":2},{\"id\":\"m5\",\"seq\":4}],\"replicas\":3,\"seed\":1}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10257,7 +9329,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tournament Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 3, 1, 4, 2],
+        defaultInput: JSON.parse("[5,3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10265,7 +9337,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Transformer Block",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n^2 * d + n * d * d_ff)", space: "O(n^2)" },
-        defaultInput: { Q: [[1, 0], [0, 1]], K: [[1, 1], [0, 1]], V: [[1, 2], [3, 4]], W: [[1, -1], [1, 1]], b: [0, 0] },
+        defaultInput: JSON.parse("{\"Q\":[[1,0],[0,1]],\"K\":[[1,1],[0,1]],\"V\":[[1,2],[3,4]],\"W\":[[1,-1],[1,1]],\"b\":[0,0]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10273,7 +9345,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Transitive Closure (Warshall)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V³)", space: "O(V²)" },
-        defaultInput: { graph: { A: ["B"], B: ["C"], C: [] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\"],\"B\":[\"C\"],\"C\":[]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10281,7 +9353,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Transitive Reduction (DAG)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V·(V + E))", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C"], B: ["C"], C: [] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\"],\"B\":[\"C\"],\"C\":[]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10289,15 +9361,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Transportation Problem",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(S D)", space: "O(S D)" },
-        defaultInput: { supply: [3, 2], demand: [2, 3], cost: [[1, 3], [2, 1]] },
+        defaultInput: JSON.parse("{\"supply\":[3,2],\"demand\":[2,3],\"cost\":[[1,3],[2,1]]}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "transposition-table",
+        name: "Transposition Table",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(b^(d/2)) with reuse", space: "O(positions stored)" },
+        defaultInput: JSON.parse("{\"leaves\":[3,5,2,6,1,4,7,2]}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "trapezoidal-map-point-location",
         name: "Trapezoidal Map Point Location",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { segments: [[[0, 2], [4, 2]]], query: [3, 3] },
+        defaultInput: JSON.parse("{\"segments\":[[[0,2],[4,2]]],\"query\":[3,3]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10305,7 +9385,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Trapezoidal Rule",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { a: 0, b: 1, n: 8, fn: "x2" },
+        defaultInput: JSON.parse("{\"a\":0,\"b\":1,\"n\":8,\"fn\":\"x2\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10313,7 +9393,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Treap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) expected", space: "O(n)" },
-        defaultInput: { keys: [30, 20, 40, 10, 35], priorities: [5, 9, 6, 2, 4] },
+        defaultInput: JSON.parse("{\"keys\":[30,20,40,10,35],\"priorities\":[5,9,6,2,4]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10321,7 +9401,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Treblecross",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { size: 7, marks: [2, 3] },
+        defaultInput: JSON.parse("{\"size\":7,\"marks\":[2,3]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10329,10 +9409,15 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Center",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
+        visualType: "tree" as LayoutType,
+    },
+    {
+        id: "tree-centroid",
+        name: "Tree Centroid",
+        category: "tree" as AlgorithmCategory,
+        complexity: { time: "O(V^2)", space: "O(V)" },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10340,11 +9425,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Coloring DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·k)", space: "O(n·k)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            costs: { A: [5, 1, 4], B: [2, 6, 3], C: [4, 2, 7], D: [1, 5, 2] },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"],\"costs\":{\"A\":[5,1,4],\"B\":[2,6,3],\"C\":[4,2,7],\"D\":[1,5,2]}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10352,10 +9433,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Diameter",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10363,7 +9441,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Dominating Set DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "A" }, ids: ["A", "B", "C", "D"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"A\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10371,11 +9449,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree DP (Independent Set)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E" },
-            ids: ["A", "B", "C", "D", "E", "F", "G"],
-            weights: { A: 3, B: 2, C: 4, D: 5, E: 1, F: 2, G: 6 },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\"],\"weights\":{\"A\":3,\"B\":2,\"C\":4,\"D\":5,\"E\":1,\"F\":2,\"G\":6}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10383,10 +9457,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree DP (Rerooting)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10394,7 +9465,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Edge Cover DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B" }, ids: ["A", "B", "C", "D"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10402,10 +9473,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Edit Distance",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: {
-            t1: { parentMap: { B: "A", C: "B" }, ids: ["A", "B", "C"] },
-            t2: { parentMap: { Y: "X", Z: "Y" }, ids: ["X", "Y", "Z"] },
-        },
+        defaultInput: JSON.parse("{\"t1\":{\"parentMap\":{\"B\":\"A\",\"C\":\"B\"},\"ids\":[\"A\",\"B\",\"C\"]},\"t2\":{\"parentMap\":{\"Y\":\"X\",\"Z\":\"Y\"},\"ids\":[\"X\",\"Y\",\"Z\"]}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10413,10 +9481,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Euler Tour",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(V)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10424,7 +9489,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Hashing",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10432,10 +9497,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Isomorphism",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: {
-            treeA: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
-            treeB: { parentMap: { X: "R", Y: "R", Z: "X", W: "X" }, ids: ["R", "X", "Y", "Z", "W"] },
-        },
+        defaultInput: JSON.parse("{\"treeA\":{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]},\"treeB\":{\"parentMap\":{\"X\":\"R\",\"Y\":\"R\",\"Z\":\"X\",\"W\":\"X\"},\"ids\":[\"R\",\"X\",\"Y\",\"Z\",\"W\"]}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10443,7 +9505,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree K-Dominating Set",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(2^n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "C" }, ids: ["A", "B", "C", "D", "E"], k: 1 },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"k\":1}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10451,13 +9513,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Knapsack DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·W²)", space: "O(n·W)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B" },
-            ids: ["A", "B", "C", "D"],
-            weight: { A: 2, B: 1, C: 3, D: 2 },
-            value: { A: 3, B: 2, C: 4, D: 2 },
-            capacity: 4,
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"],\"weight\":{\"A\":2,\"B\":1,\"C\":3,\"D\":2},\"value\":{\"A\":3,\"B\":2,\"C\":4,\"D\":2},\"capacity\":4}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10465,11 +9521,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Max Subtree Sum",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "C" },
-            ids: ["A", "B", "C", "D", "E"],
-            values: { A: -5, B: 4, C: 3, D: 2, E: -1 },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"values\":{\"A\":-5,\"B\":4,\"C\":3,\"D\":2,\"E\":-1}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10477,7 +9529,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Maximum Matching DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "C" }, ids: ["A", "B", "C", "D", "E"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10485,22 +9537,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree of Thoughts (Beam Search Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(V log V)", space: "O(V)" },
-        defaultInput: {
-            nodes: [
-                { id: "a", parent: "", score: 0 },
-                { id: "b", parent: "a", score: 3 },
-                { id: "c", parent: "a", score: 1 },
-                { id: "d", parent: "b", score: 4 },
-                { id: "e", parent: "b", score: 2 },
-                { id: "f", parent: "c", score: 5 },
-                { id: "g", parent: "c", score: 0 },
-                { id: "h", parent: "d", score: 9, goal: true },
-                { id: "i", parent: "d", score: 2 },
-                { id: "j", parent: "f", score: 1 },
-                { id: "k", parent: "f", score: 8 },
-            ],
-            beamWidth: 2,
-        },
+        defaultInput: JSON.parse("{\"nodes\":[{\"id\":\"a\",\"parent\":\"\",\"score\":0},{\"id\":\"b\",\"parent\":\"a\",\"score\":3},{\"id\":\"c\",\"parent\":\"a\",\"score\":1},{\"id\":\"d\",\"parent\":\"b\",\"score\":4},{\"id\":\"e\",\"parent\":\"b\",\"score\":2},{\"id\":\"f\",\"parent\":\"c\",\"score\":5},{\"id\":\"g\",\"parent\":\"c\",\"score\":0},{\"id\":\"h\",\"parent\":\"d\",\"score\":9,\"goal\":true},{\"id\":\"i\",\"parent\":\"d\",\"score\":2},{\"id\":\"j\",\"parent\":\"f\",\"score\":1},{\"id\":\"k\",\"parent\":\"f\",\"score\":8}],\"beamWidth\":2}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10508,12 +9545,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Partition DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B" },
-            ids: ["A", "B", "C", "D", "E"],
-            weight: { A: 1, B: 2, C: 1, D: 1, E: 1 },
-            limit: 3,
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"],\"weight\":{\"A\":1,\"B\":2,\"C\":1,\"D\":1,\"E\":1},\"limit\":3}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10521,7 +9553,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Path Cover",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(2^m)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10529,10 +9561,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Pattern Matching",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n)" },
-        defaultInput: {
-            text: { parentMap: { B: "A", C: "A", D: "B" }, ids: ["A", "B", "C", "D"] },
-            pattern: { parentMap: { D: "B" }, ids: ["B", "D"] },
-        },
+        defaultInput: JSON.parse("{\"text\":{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"]},\"pattern\":{\"parentMap\":{\"D\":\"B\"},\"ids\":[\"B\",\"D\"]}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10540,7 +9569,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Perfect Matching Greedy",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "B", D: "C" }, ids: ["A", "B", "C", "D"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"B\",\"D\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10548,7 +9577,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Reconstruction",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { preorder: ["3", "9", "20", "15", "7"], inorder: ["9", "3", "15", "20", "7"] },
+        defaultInput: JSON.parse("{\"preorder\":[\"3\",\"9\",\"20\",\"15\",\"7\"],\"inorder\":[\"9\",\"3\",\"15\",\"20\",\"7\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10556,7 +9585,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Serialize Deserialize",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B" }, ids: ["A", "B", "C", "D"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10564,7 +9593,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 3, 1, 4, 2],
+        defaultInput: JSON.parse("[5,3,1,4,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10572,11 +9601,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Steiner Subtree",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(t·h)", space: "O(n)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "F", H: "C" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            terminals: ["D", "E", "G"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"F\",\"H\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"],\"terminals\":[\"D\",\"E\",\"G\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10584,7 +9609,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Traversals",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10592,7 +9617,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Tree Vertex Cover DP",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { parentMap: { B: "A", C: "A", D: "B", E: "B" }, ids: ["A", "B", "C", "D", "E"] },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10600,7 +9625,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Trial Division Factorization",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(sqrt(n))", space: "O(1)" },
-        defaultInput: { n: 91 },
+        defaultInput: JSON.parse("{\"n\":91}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10608,7 +9633,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Triangle Counting",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(m·√m)", space: "O(V + E)" },
-        defaultInput: { graph: { A: ["B", "C", "D"], B: ["A", "C", "D"], C: ["A", "B"], D: ["A", "B"] } },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[\"B\",\"C\",\"D\"],\"B\":[\"A\",\"C\",\"D\"],\"C\":[\"A\",\"B\"],\"D\":[\"A\",\"B\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10616,7 +9641,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(L) ops", space: "O(total chars)" },
-        defaultInput: { words: ["cat", "car", "cart", "dog"], search: "car" },
+        defaultInput: JSON.parse("{\"words\":[\"cat\",\"car\",\"cart\",\"dog\"],\"search\":\"car\"}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10624,7 +9649,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Triple DES (Toy Feistel EDE Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(1) toy", space: "O(1) toy" },
-        defaultInput: { plaintext: 165, k1: 18, k2: 52 },
+        defaultInput: JSON.parse("{\"plaintext\":165,\"k1\":18,\"k2\":52}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10632,7 +9657,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Trotter-Suzuki Decomposition",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(n) matrix products", space: "O(1)" },
-        defaultInput: { a: 1, b: 0.7, time: 1, order: 1, slices: [1, 2, 4, 8, 16] },
+        defaultInput: JSON.parse("{\"a\":1,\"b\":0.7,\"time\":1,\"order\":1,\"slices\":[1,2,4,8,16]}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10640,7 +9665,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Trust-Region Method (Dogleg Step)",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(k)", space: "O(1)" },
-        defaultInput: { a: 4, b: 1, d: 2, start: [3, 4], delta: 10, maxIter: 8 },
+        defaultInput: JSON.parse("{\"a\":4,\"b\":1,\"d\":2,\"start\":[3,4],\"delta\":10,\"maxIter\":8}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -10648,7 +9673,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Turning Turtles",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(n^2)", space: "O(n)" },
-        defaultInput: { coins: [true, false, true, false] },
+        defaultInput: JSON.parse("{\"coins\":[true,false,true,false]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10656,7 +9681,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Twin Prime Sieve",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(n log log n)", space: "O(n)" },
-        defaultInput: { limit: 20 },
+        defaultInput: JSON.parse("{\"limit\":20}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10664,7 +9689,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Two-Phase Commit",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { votes: [true, true, true] },
+        defaultInput: JSON.parse("{\"votes\":[true,true,true]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10672,7 +9697,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Two-Pointer Pair Sum Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: { array: [1, 2, 3, 4, 5, 11], target: 15 },
+        defaultInput: JSON.parse("{\"array\":[1,2,3,4,5,11],\"target\":15}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10680,7 +9705,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Two-Queue Stack",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) push, O(1) pop", space: "O(n)" },
-        defaultInput: { ops: [["push", 1], ["push", 2], ["pop"], ["push", 3]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"push\",1],[\"push\",2],[\"pop\"],[\"push\",3]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10688,7 +9713,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "2-SAT (Implication Graph)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V + E)" },
-        defaultInput: { clauses: [["x0", "x1"], ["nx0", "x1"], ["nx0", "nx1"]] },
+        defaultInput: JSON.parse("{\"clauses\":[[\"x0\",\"x1\"],[\"nx0\",\"x1\"],[\"nx0\",\"nx1\"]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10696,7 +9721,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Two-Stack Queue",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) amortized", space: "O(n)" },
-        defaultInput: { ops: [["enq", 1], ["enq", 2], ["deq"], ["enq", 3], ["deq"]] },
+        defaultInput: JSON.parse("{\"ops\":[[\"enq\",1],[\"enq\",2],[\"deq\"],[\"enq\",3],[\"deq\"]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10704,7 +9729,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "2-3 Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 7, 4] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,7,4]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10712,7 +9737,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "2-3 Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 9], query: 8 },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,9],\"query\":8}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10720,7 +9745,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Two-Way Matching",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(1)" },
-        defaultInput: { text: "ababcab", pattern: "abc" },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"pattern\":\"abc\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -10728,7 +9753,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "UB-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10736,7 +9761,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "ULID Generation",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(1) per ULID", space: "O(1)" },
-        defaultInput: { timestamps: [1600000000000, 1600000000000, 1600000000001, 1600000000002], seed: 42 },
+        defaultInput: JSON.parse("{\"timestamps\":[1600000000000,1600000000000,1600000000001,1600000000002],\"seed\":42}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10744,7 +9769,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "UMAP (Fuzzy Graph Union Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(k^2)", space: "O(k^2)" },
-        defaultInput: { directed: [[0, 0.9, 0.2, 0.05], [0.3, 0, 0.8, 0.1], [0.15, 0.6, 0, 0.85], [0.02, 0.1, 0.7, 0]] },
+        defaultInput: JSON.parse("{\"directed\":[[0,0.9,0.2,0.05],[0.3,0,0.8,0.1],[0.15,0.6,0,0.85],[0.02,0.1,0.7,0]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10752,7 +9777,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Uniform-Cost Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(b^(C*/ε))", space: "O(b^(C*/ε))" },
-        defaultInput: { start: "A", goal: "G" },
+        defaultInput: JSON.parse("{\"start\":\"A\",\"goal\":\"G\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10760,7 +9785,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Union-Find Deletions",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(alpha n) amortized", space: "O(n + deletes)" },
-        defaultInput: { n: 3, ops: [["union", 0, 1], ["delete", 0], ["union", 0, 2]] },
+        defaultInput: JSON.parse("{\"n\":3,\"ops\":[[\"union\",0,1],[\"delete\",0],[\"union\",0,2]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10768,7 +9793,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Unrolled Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(√n) search", space: "O(n)" },
-        defaultInput: { values: [1, 2, 3, 4, 5, 6, 7, 8], search: 5 },
+        defaultInput: JSON.parse("{\"values\":[1,2,3,4,5,6,7,8],\"search\":5}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10776,7 +9801,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "van Emde Boas Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log log U)", space: "O(U)" },
-        defaultInput: { keys: [2, 5, 11], query: 6 },
+        defaultInput: JSON.parse("{\"keys\":[2,5,11],\"query\":6}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10784,7 +9809,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Variational Inference (ELBO)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(iterations)", space: "O(1)" },
-        defaultInput: { rho: 0.8, mean: [1.5, -0.5], iterations: 12 },
+        defaultInput: JSON.parse("{\"rho\":0.8,\"mean\":[1.5,-0.5],\"iterations\":12}") as unknown,
         visualType: "point" as LayoutType,
     },
     {
@@ -10792,7 +9817,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Variational Quantum Classifier (One-Qubit Model)",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(epochs * n)", space: "O(n)" },
-        defaultInput: { hiddenTheta: 0, theta0: 1.2, learningRate: 0.15, epochs: 30 },
+        defaultInput: JSON.parse("{\"hiddenTheta\":0,\"theta0\":1.2,\"learningRate\":0.15,\"epochs\":30}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10800,7 +9825,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Variational Quantum Eigensolver",
         category: "quantum" as AlgorithmCategory,
         complexity: { time: "O(samples)", space: "O(samples)" },
-        defaultInput: { a: 0.5, b: 0.8, c: 0.6, samples: 24 },
+        defaultInput: JSON.parse("{\"a\":0.5,\"b\":0.8,\"c\":0.6,\"samples\":24}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10808,7 +9833,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Vector Clock",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { processes: 3 },
+        defaultInput: JSON.parse("{\"processes\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10816,13 +9841,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Vectorized Query Execution",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: {
-            columns: { region: ["A", "B", "A", "C", "B", "A", "C", "A"], sales: [12, 7, 25, 4, 18, 30, 9, 11] },
-            predicate: { column: "region", op: "eq", value: "A" },
-            measure: "sales",
-            aggregate: "sum",
-            batchSize: 4,
-        },
+        defaultInput: JSON.parse("{\"columns\":{\"region\":[\"A\",\"B\",\"A\",\"C\",\"B\",\"A\",\"C\",\"A\"],\"sales\":[12,7,25,4,18,30,9,11]},\"predicate\":{\"column\":\"region\",\"op\":\"eq\",\"value\":\"A\"},\"measure\":\"sales\",\"aggregate\":\"sum\",\"batchSize\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10830,7 +9849,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Velocity Verlet Integration",
         category: "numerical-optimization" as AlgorithmCategory,
         complexity: { time: "O(steps)", space: "O(steps)" },
-        defaultInput: { x0: 1, v0: 0, k: 1, dt: 0.1, steps: 40 },
+        defaultInput: JSON.parse("{\"x0\":1,\"v0\":0,\"k\":1,\"dt\":0.1,\"steps\":40}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10838,7 +9857,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Vertex-Split Disjoint Paths",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V E^2)", space: "O(V + E)" },
-        defaultInput: { vertices: ["0", "1", "2", "3"], edges: [[0, 1], [0, 2], [1, 3], [2, 3], [1, 2]] },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1],[0,2],[1,3],[2,3],[1,2]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10846,18 +9865,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Graph Isomorphism (VF2)",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(V!·V)", space: "O(V)" },
-        defaultInput: {
-            g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] },
-            g2: { X: ["Y", "Z"], Y: ["X", "Z"], Z: ["X", "Y"] },
-        },
+        defaultInput: JSON.parse("{\"g1\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\"]},\"g2\":{\"X\":[\"Y\",\"Z\"],\"Y\":[\"X\",\"Z\"],\"Z\":[\"X\",\"Y\"]}}") as unknown,
         visualType: "graph" as LayoutType,
+    },
+    {
+        id: "vickrey-auction",
+        name: "Vickrey Second-Price Auction",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(n log n)", space: "O(n)" },
+        defaultInput: JSON.parse("{\"valuations\":[10,7,5],\"bids\":[9,8,4]}") as unknown,
+        visualType: "array" as LayoutType,
     },
     {
         id: "viewstamped-replication",
         name: "Viewstamped Replication",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(r) messages per request", space: "O(r)" },
-        defaultInput: { replicas: 3, requests: ["A", "B", "C"], crashSeq: 2 },
+        defaultInput: JSON.parse("{\"replicas\":3,\"requests\":[\"A\",\"B\",\"C\"],\"crashSeq\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10865,7 +9889,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Vigenere Cipher",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { plaintext: "ATTACKATDAWN", keyword: "LEMON" },
+        defaultInput: JSON.parse("{\"plaintext\":\"ATTACKATDAWN\",\"keyword\":\"LEMON\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10873,11 +9897,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Virtual Tree",
         category: "tree" as AlgorithmCategory,
         complexity: { time: "O(k log k)", space: "O(k)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C" },
-            ids: ["A", "B", "C", "D", "E", "F"],
-            important: ["D", "E", "F"],
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\"],\"important\":[\"D\",\"E\",\"F\"]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10885,7 +9905,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Visibility Polygon",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { polygon: [[0, 0], [4, 0], [4, 4], [0, 4]], viewpoint: [2, 2] },
+        defaultInput: JSON.parse("{\"polygon\":[[0,0],[4,0],[4,4],[0,4]],\"viewpoint\":[2,2]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10893,13 +9913,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Viterbi Decoding",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(T * S^2)", space: "O(T * S)" },
-        defaultInput: {
-            states: ["Rain", "Sun"],
-            observations: ["walk", "shop", "clean"],
-            start: [0.6, 0.4],
-            trans: [[0.7, 0.3], [0.4, 0.6]],
-            emit: [[0.1, 0.4, 0.5], [0.6, 0.3, 0.1]],
-        },
+        defaultInput: JSON.parse("{\"states\":[\"Rain\",\"Sun\"],\"observations\":[\"walk\",\"shop\",\"clean\"],\"start\":[0.6,0.4],\"trans\":[[0.7,0.3],[0.4,0.6]],\"emit\":[[0.1,0.4,0.5],[0.6,0.3,0.1]]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10907,7 +9921,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "VList",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) cons average", space: "O(n)" },
-        defaultInput: { pushes: [1, 2, 3, 4, 5], index: 3 },
+        defaultInput: JSON.parse("{\"pushes\":[1,2,3,4,5],\"index\":3}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10915,7 +9929,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Voronoi Diagram (Fortune)",
         category: "geometry" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { points: [[0, 0], [4, 0], [2, 3], [1, 1]] },
+        defaultInput: JSON.parse("{\"points\":[[0,0],[4,0],[2,3],[1,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -10923,7 +9937,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "VP-Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) NN avg", space: "O(n)" },
-        defaultInput: { points: [[2, 3], [5, 1], [7, 6], [1, 7]], query: [4, 2] },
+        defaultInput: JSON.parse("{\"points\":[[2,3],[5,1],[7,6],[1,7]],\"query\":[4,2]}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -10931,7 +9945,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wald Confidence Interval",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { successes: 45, trials: 100, confidence: 0.95 },
+        defaultInput: JSON.parse("{\"successes\":45,\"trials\":100,\"confidence\":0.95}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10939,7 +9953,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "WalkSAT Search",
         category: "searching" as AlgorithmCategory,
         complexity: { time: "O(flips × clauses)", space: "O(n)" },
-        defaultInput: { seed: 7 },
+        defaultInput: JSON.parse("{\"seed\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10947,7 +9961,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wasserstein Distance (1D)",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O((n + m) log(n + m))", space: "O(n + m)" },
-        defaultInput: { xs: [0, 1, 2, 3, 4], ys: [2, 3, 4, 5, 6] },
+        defaultInput: JSON.parse("{\"xs\":[0,1,2,3,4],\"ys\":[2,3,4,5,6]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10955,7 +9969,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wavelet Matrix",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log s) rank", space: "O(n log s)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10963,7 +9977,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wavelet Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log s) rank", space: "O(n log s)" },
-        defaultInput: { array: [5, 2, 8, 1, 7, 3], range: [1, 4] },
+        defaultInput: JSON.parse("{\"array\":[5,2,8,1,7,3],\"range\":[1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10971,7 +9985,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weak Heap",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n)", space: "O(n)" },
-        defaultInput: { keys: [5, 2, 8, 1, 4] },
+        defaultInput: JSON.parse("{\"keys\":[5,2,8,1,4]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -10979,7 +9993,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weak Heap Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: [5, 1, 4, 2, 3],
+        defaultInput: JSON.parse("[5,1,4,2,3]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10987,7 +10001,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weibull Distribution",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(bins + samples)", space: "O(bins)" },
-        defaultInput: { shape: 2, scale: 1.5, xMax: 7.5, bins: 16, samples: 300, seed: 42 },
+        defaultInput: JSON.parse("{\"shape\":2,\"scale\":1.5,\"xMax\":7.5,\"bins\":16,\"samples\":300,\"seed\":42}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -10995,7 +10009,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weight-Balanced Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) ops", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -11003,19 +10017,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weighted A*",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: {
-            graph: {
-                A: [["B", 4], ["C", 2]],
-                B: [["D", 5], ["E", 3]],
-                C: [["B", 1], ["D", 8]],
-                D: [["E", 2], ["F", 6]],
-                E: [["F", 1]],
-                F: [],
-            },
-            start: "A",
-            target: "F",
-            weight: 2,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",4],[\"C\",2]],\"B\":[[\"D\",5],[\"E\",3]],\"C\":[[\"B\",1],[\"D\",8]],\"D\":[[\"E\",2],[\"F\",6]],\"E\":[[\"F\",1]],\"F\":[]},\"start\":\"A\",\"target\":\"F\",\"weight\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11023,10 +10025,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weighted Blossom Matching",
         category: "flow" as AlgorithmCategory,
         complexity: { time: "O(V^3)", space: "O(V + E)" },
-        defaultInput: {
-            vertices: ["0", "1", "2", "3"],
-            edges: [[0, 1, 5], [1, 2, 5], [2, 3, 5], [0, 3, 1], [0, 2, 1], [1, 3, 1]],
-        },
+        defaultInput: JSON.parse("{\"vertices\":[\"0\",\"1\",\"2\",\"3\"],\"edges\":[[0,1,5],[1,2,5],[2,3,5],[0,3,1],[0,2,1],[1,3,1]]}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11034,13 +10033,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weighted Fair Queuing",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(p log p)", space: "O(p)" },
-        defaultInput: {
-            flows: [
-                { id: "A", weight: 1, packets: [4, 2, 6] },
-                { id: "B", weight: 2, packets: [3, 3] },
-                { id: "C", weight: 1, packets: [5, 5, 5] },
-            ],
-        },
+        defaultInput: JSON.parse("{\"flows\":[{\"id\":\"A\",\"weight\":1,\"packets\":[4,2,6]},{\"id\":\"B\",\"weight\":2,\"packets\":[3,3]},{\"id\":\"C\",\"weight\":1,\"packets\":[5,5,5]}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11048,7 +10041,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weighted Interval Scheduling",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n log n)", space: "O(n)" },
-        defaultInput: { jobs: [{ s: 1, e: 3, w: 5 }, { s: 2, e: 5, w: 6 }, { s: 4, e: 6, w: 5 }] },
+        defaultInput: JSON.parse("{\"jobs\":[{\"s\":1,\"e\":3,\"w\":5},{\"s\":2,\"e\":5,\"w\":6},{\"s\":4,\"e\":6,\"w\":5}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11056,7 +10049,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Weisfeiler–Lehman Refinement",
         category: "graph" as AlgorithmCategory,
         complexity: { time: "O(k·(V + E))", space: "O(V + E)" },
-        defaultInput: { g1: { A: ["B", "C"], B: ["A", "C"], C: ["A", "B"] }, g2: { X: ["Y"], Y: ["X", "Z"], Z: ["Y"] } },
+        defaultInput: JSON.parse("{\"g1\":{\"A\":[\"B\",\"C\"],\"B\":[\"A\",\"C\"],\"C\":[\"A\",\"B\"]},\"g2\":{\"X\":[\"Y\"],\"Y\":[\"X\",\"Z\"],\"Z\":[\"Y\"]}}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11064,7 +10057,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Widest Path (Max Capacity)",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(E log V)", space: "O(V + E)" },
-        defaultInput: { graph: { A: [["B", 5], ["C", 3]], B: [["D", 2]], C: [["D", 4]], D: [] }, start: "A", target: "D" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",5],[\"C\",3]],\"B\":[[\"D\",2]],\"C\":[[\"D\",4]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11072,7 +10065,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wiggle Sort",
         category: "sorting" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(1)" },
-        defaultInput: [3, 1, 2],
+        defaultInput: JSON.parse("[3,1,2]") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11080,7 +10073,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wildcard Matching",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n·m)", space: "O(n·m)" },
-        defaultInput: { s: "aa", p: "a*" },
+        defaultInput: JSON.parse("{\"s\":\"aa\",\"p\":\"a*\"}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11088,7 +10081,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wilson Score Confidence Interval",
         category: "statistics-probability" as AlgorithmCategory,
         complexity: { time: "O(log 1/tol)", space: "O(1)" },
-        defaultInput: { successes: 45, trials: 100, confidence: 0.95 },
+        defaultInput: JSON.parse("{\"successes\":45,\"trials\":100,\"confidence\":0.95}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11096,7 +10089,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wilson Theorem Prime Test",
         category: "math" as AlgorithmCategory,
         complexity: { time: "O(p)", space: "O(1)" },
-        defaultInput: { p: 7 },
+        defaultInput: JSON.parse("{\"p\":7}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11104,7 +10097,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Winternitz One-Time Signature (Toy Hash Core)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(k * w) toy", space: "O(k) toy" },
-        defaultInput: { digits: [3, 5, 2], chainLength: 8, seed: 7 },
+        defaultInput: JSON.parse("{\"digits\":[3,5,2],\"chainLength\":8,\"seed\":7}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11112,7 +10105,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Word Break (Count)",
         category: "dynamic-programming" as AlgorithmCategory,
         complexity: { time: "O(n²)", space: "O(n)" },
-        defaultInput: { s: "catsanddog", dict: ["cat", "cats", "and", "sand", "dog"] },
+        defaultInput: JSON.parse("{\"s\":\"catsanddog\",\"dict\":[\"cat\",\"cats\",\"and\",\"sand\",\"dog\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11120,13 +10113,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Word2vec CBOW (Forward and Update)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(V * d)", space: "O(V * d)" },
-        defaultInput: {
-            tokens: ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"],
-            center: 3,
-            window: 2,
-            dim: 2,
-            learningRate: 0.05,
-        },
+        defaultInput: JSON.parse("{\"tokens\":[\"the\",\"quick\",\"brown\",\"fox\",\"jumps\",\"over\",\"the\",\"lazy\",\"dog\"],\"center\":3,\"window\":2,\"dim\":2,\"learningRate\":0.05}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11134,7 +10121,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Word2vec Skip-Gram",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(n * window)", space: "O(n * window)" },
-        defaultInput: { tokens: ["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"], window: 2 },
+        defaultInput: JSON.parse("{\"tokens\":[\"the\",\"quick\",\"brown\",\"fox\",\"jumps\",\"over\",\"the\",\"lazy\",\"dog\"],\"window\":2}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11142,7 +10129,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Work-Stealing Deque",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) owner ops", space: "O(n)" },
-        defaultInput: { pushes: [1, 2, 3, 4], steals: 2 },
+        defaultInput: JSON.parse("{\"pushes\":[1,2,3,4],\"steals\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11150,7 +10137,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Work-Stealing Scheduler",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(T + p*s)", space: "O(n + p)" },
-        defaultInput: { tasks: [3, 2, 4, 1, 5, 2, 3, 1], workers: 4, seed: 7 },
+        defaultInput: JSON.parse("{\"tasks\":[3,2,4,1,5,2,3,1],\"workers\":4,\"seed\":7}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11158,17 +10145,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Write-Ahead Log Recovery",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(L)", space: "O(L + P)" },
-        defaultInput: {
-            pages: { A: 5, B: 10, C: 0 },
-            log: [
-                { type: "BEGIN", tx: "T1" },
-                { type: "UPDATE", tx: "T1", page: "A", old: 5, value: 8 },
-                { type: "BEGIN", tx: "T2" },
-                { type: "UPDATE", tx: "T2", page: "B", old: 10, value: 20 },
-                { type: "COMMIT", tx: "T1" },
-                { type: "UPDATE", tx: "T2", page: "C", old: 0, value: 3 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"pages\":{\"A\":5,\"B\":10,\"C\":0},\"log\":[{\"type\":\"BEGIN\",\"tx\":\"T1\"},{\"type\":\"UPDATE\",\"tx\":\"T1\",\"page\":\"A\",\"old\":5,\"value\":8},{\"type\":\"BEGIN\",\"tx\":\"T2\"},{\"type\":\"UPDATE\",\"tx\":\"T2\",\"page\":\"B\",\"old\":10,\"value\":20},{\"type\":\"COMMIT\",\"tx\":\"T1\"},{\"type\":\"UPDATE\",\"tx\":\"T2\",\"page\":\"C\",\"old\":0,\"value\":3}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11176,21 +10153,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Write-Back Cache",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(1) per operation", space: "O(capacity + addresses)" },
-        defaultInput: {
-            capacity: 4,
-            initialMemory: [[0, 10], [1, 11], [2, 12], [3, 13], [4, 14], [5, 15], [6, 16], [7, 17]],
-            ops: [
-                { op: "write", addr: 0, value: 100 },
-                { op: "write", addr: 0, value: 101 },
-                { op: "read", addr: 0 },
-                { op: "write", addr: 4, value: 200 },
-                { op: "read", addr: 4 },
-                { op: "write", addr: 1, value: 111 },
-                { op: "write", addr: 5, value: 222 },
-                { op: "flush" },
-                { op: "read", addr: 0 },
-            ],
-        },
+        defaultInput: JSON.parse("{\"capacity\":4,\"initialMemory\":[[0,10],[1,11],[2,12],[3,13],[4,14],[5,15],[6,16],[7,17]],\"ops\":[{\"op\":\"write\",\"addr\":0,\"value\":100},{\"op\":\"write\",\"addr\":0,\"value\":101},{\"op\":\"read\",\"addr\":0},{\"op\":\"write\",\"addr\":4,\"value\":200},{\"op\":\"read\",\"addr\":4},{\"op\":\"write\",\"addr\":1,\"value\":111},{\"op\":\"write\",\"addr\":5,\"value\":222},{\"op\":\"flush\"},{\"op\":\"read\",\"addr\":0}]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11198,7 +10161,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wu-Manber",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n + m) avg", space: "O(σ²)" },
-        defaultInput: { text: "ababcab", patterns: ["ab", "bc"] },
+        defaultInput: JSON.parse("{\"text\":\"ababcab\",\"patterns\":[\"ab\",\"bc\"]}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -11206,7 +10169,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Wythoff's Game",
         category: "game" as AlgorithmCategory,
         complexity: { time: "O(1)", space: "O(1)" },
-        defaultInput: { a: 8, b: 13 },
+        defaultInput: JSON.parse("{\"a\":8,\"b\":13}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11214,7 +10177,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "X-Fast Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log log U)", space: "O(n log U)" },
-        defaultInput: { keys: [2, 5, 11], query: 6 },
+        defaultInput: JSON.parse("{\"keys\":[2,5,11],\"query\":6}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11222,7 +10185,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "X25519 Key Exchange",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(log k)", space: "O(log k)" },
-        defaultInput: { aliceSecret: 5, bobSecret: 7, baseU: 2 },
+        defaultInput: JSON.parse("{\"aliceSecret\":5,\"bobSecret\":7,\"baseU\":2}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11230,7 +10193,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "XMSS (Toy Hash-Based Signature)",
         category: "cryptography-security" as AlgorithmCategory,
         complexity: { time: "O(L*d*w)", space: "O(L)" },
-        defaultInput: { message: 5, leafIndex: 0, w: 4, digits: 2, leaves: 4 },
+        defaultInput: JSON.parse("{\"message\":5,\"leafIndex\":0,\"w\":4,\"digits\":2,\"leaves\":4}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11238,7 +10201,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Xor Filter",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(1) lookup", space: "O(n)" },
-        defaultInput: { keys: [5, 17, 9], query: 17 },
+        defaultInput: JSON.parse("{\"keys\":[5,17,9],\"query\":17}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11246,7 +10209,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "XOR Linked List",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(n) traversal", space: "O(n)" },
-        defaultInput: { values: [10, 20, 30, 40] },
+        defaultInput: JSON.parse("{\"values\":[10,20,30,40]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11254,7 +10217,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Y-Fast Trie",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log log U)", space: "O(n)" },
-        defaultInput: { keys: [2, 5, 11, 14], query: 12 },
+        defaultInput: JSON.parse("{\"keys\":[2,5,11,14],\"query\":12}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11262,7 +10225,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "YaRN Context Extension (Teachable Core)",
         category: "ml-ai" as AlgorithmCategory,
         complexity: { time: "O(dim)", space: "O(dim)" },
-        defaultInput: { dim: 8, base: 10000, scale: 4, origMaxPos: 2048, alpha: 1, beta: 4 },
+        defaultInput: JSON.parse("{\"dim\":8,\"base\":10000,\"scale\":4,\"origMaxPos\":2048,\"alpha\":1,\"beta\":4}") as unknown,
         visualType: "array" as LayoutType,
     },
     {
@@ -11270,12 +10233,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Yen's K Shortest Paths",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(k·V·(E log V))", space: "O(k·V + E)" },
-        defaultInput: {
-            graph: { A: [["B", 2], ["C", 5]], B: [["C", 1], ["D", 4]], C: [["D", 1]], D: [] },
-            start: "A",
-            target: "D",
-            k: 3,
-        },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",2],[\"C\",5]],\"B\":[[\"C\",1],[\"D\",4]],\"C\":[[\"D\",1]],\"D\":[]},\"start\":\"A\",\"target\":\"D\",\"k\":3}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11283,7 +10241,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Z-Algorithm",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(n)", space: "O(n)" },
-        defaultInput: { text: "ababcabababcab", pattern: "ababcab" },
+        defaultInput: JSON.parse("{\"text\":\"ababcabababcab\",\"pattern\":\"ababcab\"}") as unknown,
         visualType: "text" as LayoutType,
     },
     {
@@ -11291,11 +10249,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Z-Algorithm on Tree",
         category: "string" as AlgorithmCategory,
         complexity: { time: "O(V·depth)", space: "O(V)" },
-        defaultInput: {
-            parentMap: { B: "A", C: "A", D: "B", E: "B", F: "C", G: "E", H: "G" },
-            ids: ["A", "B", "C", "D", "E", "F", "G", "H"],
-            labels: { A: "a", B: "b", C: "a", D: "b", E: "a", F: "c", G: "b", H: "a" },
-        },
+        defaultInput: JSON.parse("{\"parentMap\":{\"B\":\"A\",\"C\":\"A\",\"D\":\"B\",\"E\":\"B\",\"F\":\"C\",\"G\":\"E\",\"H\":\"G\"},\"ids\":[\"A\",\"B\",\"C\",\"D\",\"E\",\"F\",\"G\",\"H\"],\"labels\":{\"A\":\"a\",\"B\":\"b\",\"C\":\"a\",\"D\":\"b\",\"E\":\"a\",\"F\":\"c\",\"G\":\"b\",\"H\":\"a\"}}") as unknown,
         visualType: "tree" as LayoutType,
     },
     {
@@ -11303,10 +10257,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Zab Atomic Broadcast (Teaching Simulation)",
         category: "parallel-distributed" as AlgorithmCategory,
         complexity: { time: "O(n + m)", space: "O(n + m)" },
-        defaultInput: {
-            servers: [{ id: 0, epoch: 1 }, { id: 1, epoch: 1 }, { id: 2, epoch: 1 }, { id: 3, epoch: 1 }],
-            proposals: ["a", "b", "c"],
-        },
+        defaultInput: JSON.parse("{\"servers\":[{\"id\":0,\"epoch\":1},{\"id\":1,\"epoch\":1},{\"id\":2,\"epoch\":1},{\"id\":3,\"epoch\":1}],\"proposals\":[\"a\",\"b\",\"c\"]}") as unknown,
         visualType: "grid" as LayoutType,
     },
     {
@@ -11314,7 +10265,7 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "0-1 BFS",
         category: "shortest-path" as AlgorithmCategory,
         complexity: { time: "O(V + E)", space: "O(V)" },
-        defaultInput: { graph: { A: [["B", 0], ["C", 1]], B: [["D", 1]], C: [["D", 0]], D: [] }, start: "A", target: "D" },
+        defaultInput: JSON.parse("{\"graph\":{\"A\":[[\"B\",0],[\"C\",1]],\"B\":[[\"D\",1]],\"C\":[[\"D\",0]],\"D\":[]},\"start\":\"A\",\"target\":\"D\"}") as unknown,
         visualType: "graph" as LayoutType,
     },
     {
@@ -11322,15 +10273,23 @@ export const MANIFEST: AlgorithmMeta[] = [
         name: "Zip Tree",
         category: "data-structures" as AlgorithmCategory,
         complexity: { time: "O(log n) expected", space: "O(n)" },
-        defaultInput: { keys: [5, 3, 7, 2, 6], search: 6 },
+        defaultInput: JSON.parse("{\"keys\":[5,3,7,2,6],\"search\":6}") as unknown,
         visualType: "tree" as LayoutType,
+    },
+    {
+        id: "zobrist-hashing",
+        name: "Zobrist Hashing",
+        category: "game" as AlgorithmCategory,
+        complexity: { time: "O(1) per move", space: "O(pieces * squares)" },
+        defaultInput: JSON.parse("{\"moves\":[{\"player\":1,\"square\":0},{\"player\":-1,\"square\":4},{\"player\":1,\"square\":8},{\"player\":-1,\"square\":2}],\"seed\":2654435761}") as unknown,
+        visualType: "grid" as LayoutType,
     },
     {
         id: "zstandard-compression",
         name: "Zstandard-Style Compression",
         category: "production-systems" as AlgorithmCategory,
         complexity: { time: "O(n * maxMatch + n log n)", space: "O(n)" },
-        defaultInput: { text: "compress compress compress repeat repeat repeat", minMatch: 4, window: 64 },
+        defaultInput: JSON.parse("{\"text\":\"compress compress compress repeat repeat repeat\",\"minMatch\":4,\"window\":64}") as unknown,
         visualType: "text" as LayoutType,
     },
 ];
@@ -11358,11 +10317,13 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "aes-gcm-encryption": () => import("./algo/cryptography-security/aes-gcm-encryption"),
     "aho-corasick": () => import("./algo/string/aho-corasick"),
     "akaike-information-criterion": () => import("./algo/statistics-probability/akaike-information-criterion"),
+    "aks-primality-test": () => import("./algo/math/aks-primality-test"),
     "aks-sorting-network": () => import("./algo/sort/aks-sorting-network"),
     "alibi-attention": () => import("./algo/ml-ai/alibi-attention"),
     "aliens-trick": () => import("./algo/dp/aliens-trick"),
     "alpha-beta": () => import("./algo/game/alpha-beta"),
     "alpha-shapes": () => import("./algo/geo/alpha-shapes"),
+    "alpha-zero-mcts": () => import("./algo/game/alpha-zero-mcts"),
     "alt-landmark-routing": () => import("./algo/path/alt-landmark-routing"),
     "american-flag-sort": () => import("./algo/sort/american-flag-sort"),
     "amplitude-amplification": () => import("./algo/quantum/amplitude-amplification"),
@@ -11395,6 +10356,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "bandit-ucb": () => import("./algo/special/bandit-ucb"),
     "bankers-queue": () => import("./algo/ds/bankers-queue"),
     "bareiss-fraction-free": () => import("./algo/math/bareiss-fraction-free"),
+    "barrett-reduction": () => import("./algo/math/barrett-reduction"),
     "baseball-elimination": () => import("./algo/flow/baseball-elimination"),
     "basis-pursuit": () => import("./algo/numerical-optimization/basis-pursuit"),
     "batch-gradient-descent": () => import("./algo/ml-ai/batch-gradient-descent"),
@@ -11439,6 +10401,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "bipartite-b-matching": () => import("./algo/flow/bipartite-b-matching"),
     "bipartite-check-two-coloring": () => import("./algo/graph/bipartite-check-two-coloring"),
     "bisection-method": () => import("./algo/special/bisection-method"),
+    "bit-reversal": () => import("./algo/math/bit-reversal"),
     "bitmap-index": () => import("./algo/production-systems/bitmap-index"),
     "bitmask-tsp": () => import("./algo/dp/bitmask-tsp"),
     "bitonic-array-search": () => import("./algo/search/bitonic-array-search"),
@@ -11471,6 +10434,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "brodal-heap": () => import("./algo/ds/brodal-heap"),
     "bron-kerbosch-maximal-cliques": () => import("./algo/graph/bron-kerbosch-maximal-cliques"),
     "brotli-compression": () => import("./algo/production-systems/brotli-compression"),
+    "brzozowski-derivative": () => import("./algo/string/brzozowski-derivative"),
     "bsp-tree": () => import("./algo/ds/bsp-tree"),
     bst: () => import("./algo/ds/bst"),
     "bubble-sort": () => import("./algo/sort/bubble-sort"),
@@ -11501,9 +10465,11 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "causal-broadcast": () => import("./algo/parallel-distributed/causal-broadcast"),
     "central-limit-theorem": () => import("./algo/statistics-probability/central-limit-theorem"),
     "centroid-decomposition": () => import("./algo/tree/centroid-decomposition"),
+    cfr: () => import("./algo/game/cfr"),
     "cfs-scheduler": () => import("./algo/production-systems/cfs-scheduler"),
     "chacha20-poly1305": () => import("./algo/cryptography-security/chacha20-poly1305"),
     "chain-of-thought": () => import("./algo/ml-ai/chain-of-thought"),
+    "chan-convex-hull": () => import("./algo/geo/chan-convex-hull"),
     "chandy-lamport-snapshot": () => import("./algo/parallel-distributed/chandy-lamport-snapshot"),
     "change-data-capture": () => import("./algo/parallel-distributed/change-data-capture"),
     "change-point-detection": () => import("./algo/statistics-probability/change-point-detection"),
@@ -11594,6 +10560,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "dag-minimum-path-cover": () => import("./algo/flow/dag-minimum-path-cover"),
     "dag-path-counting": () => import("./algo/path/dag-path-counting"),
     "dag-shortest-dp": () => import("./algo/dp/dag-shortest-dp"),
+    "damerau-levenshtein": () => import("./algo/string/damerau-levenshtein"),
     "dary-heap": () => import("./algo/ds/dary-heap"),
     "dawsons-kayles": () => import("./algo/game/dawsons-kayles"),
     "dbscan-clustering": () => import("./algo/geo/dbscan-clustering"),
@@ -11663,6 +10630,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "dungeon-game": () => import("./algo/dp/dungeon-game"),
     "duval-lyndon": () => import("./algo/string/duval-lyndon"),
     "dynamic-array": () => import("./algo/ds/dynamic-array"),
+    "dynamic-mst": () => import("./algo/mst/dynamic-mst"),
     "dynamic-segment-tree": () => import("./algo/ds/dynamic-segment-tree"),
     "dynamo-vector-reconciliation": () => import("./algo/parallel-distributed/dynamo-vector-reconciliation"),
     "e91-protocol": () => import("./algo/quantum/e91-protocol"),
@@ -11684,6 +10652,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "elliptic-curve-point-addition": () => import("./algo/math/elliptic-curve-point-addition"),
     "entanglement-swapping": () => import("./algo/quantum/entanglement-swapping"),
     "ephemeral-diffie-hellman": () => import("./algo/cryptography-security/ephemeral-diffie-hellman"),
+    "eppstein-k-shortest": () => import("./algo/path/eppstein-k-shortest"),
     "esau-williams-capacitated-mst": () => import("./algo/mst/esau-williams-capacitated-mst"),
     "euclid-gcd": () => import("./algo/math/euclid-gcd"),
     "euclidean-mst-delaunay": () => import("./algo/mst/euclidean-mst-delaunay"),
@@ -11716,9 +10685,11 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "fermat-factorization": () => import("./algo/math/fermat-factorization"),
     "fermat-little": () => import("./algo/math/fermat-little"),
     "fft-cooley-tukey": () => import("./algo/math/fft-cooley-tukey"),
+    "fibonacci-fast-doubling": () => import("./algo/math/fibonacci-fast-doubling"),
     "fibonacci-heap": () => import("./algo/ds/fibonacci-heap"),
     "fibonacci-nim": () => import("./algo/game/fibonacci-nim"),
     "fibonacci-search": () => import("./algo/search/fibonacci-search"),
+    "fictitious-play": () => import("./algo/game/fictitious-play"),
     "finger-tree": () => import("./algo/ds/finger-tree"),
     "finite-difference-derivative": () => import("./algo/numerical-optimization/finite-difference-derivative"),
     "first-missing-positive-search": () => import("./algo/search/first-missing-positive-search"),
@@ -11819,6 +10790,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "hidden-markov-model-forward": () => import("./algo/ml-ai/hidden-markov-model-forward"),
     "hierarchical-agglomerative-clustering": () => import("./algo/geo/hierarchical-agglomerative-clustering"),
     "hierholzer-eulerian": () => import("./algo/graph/hierholzer-eulerian"),
+    "highest-label-push-relabel": () => import("./algo/flow/highest-label-push-relabel"),
     "hilbert-curve-point-ordering": () => import("./algo/geo/hilbert-curve-point-ordering"),
     "hill-cipher": () => import("./algo/cryptography-security/hill-cipher"),
     "hill-climbing": () => import("./algo/special/hill-climbing"),
@@ -11835,6 +10807,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "horizontal-pod-autoscaler": () => import("./algo/production-systems/horizontal-pod-autoscaler"),
     "horspool-search": () => import("./algo/string/horspool-search"),
     "hotstuff-consensus": () => import("./algo/parallel-distributed/hotstuff-consensus"),
+    "hough-transform": () => import("./algo/geo/hough-transform"),
     "house-robber-circular": () => import("./algo/dp/house-robber-circular"),
     "house-robber-linear": () => import("./algo/dp/house-robber-linear"),
     "householder-qr": () => import("./algo/numerical-optimization/householder-qr"),
@@ -11857,6 +10830,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "interior-point-barrier-method": () => import("./algo/numerical-optimization/interior-point-barrier-method"),
     "interleaving-string": () => import("./algo/dp/interleaving-string"),
     "interpolation-search": () => import("./algo/search/interpolation-search"),
+    "interval-dp": () => import("./algo/dp/interval-dp"),
     "interval-heap": () => import("./algo/ds/interval-heap"),
     "interval-matrix-chain": () => import("./algo/dp/interval-matrix-chain"),
     "interval-tree": () => import("./algo/ds/interval-tree"),
@@ -11864,6 +10838,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "inverse-iteration": () => import("./algo/numerical-optimization/inverse-iteration"),
     "inverse-transform-sampling": () => import("./algo/statistics-probability/inverse-transform-sampling"),
     "inverted-index": () => import("./algo/production-systems/inverted-index"),
+    isap: () => import("./algo/flow/isap"),
     "iterative-deepening-dfs": () => import("./algo/graph/iterative-deepening-dfs"),
     "jacobi-iteration": () => import("./algo/numerical-optimization/jacobi-iteration"),
     "jacobi-symbol": () => import("./algo/math/jacobi-symbol"),
@@ -11922,6 +10897,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "largest-empty-circle-voronoi": () => import("./algo/geo/largest-empty-circle-voronoi"),
     "las-vegas": () => import("./algo/special/las-vegas"),
     "lasso-regression": () => import("./algo/ml-ai/lasso-regression"),
+    "late-move-reductions": () => import("./algo/game/late-move-reductions"),
     "latin-hypercube-sampling": () => import("./algo/statistics-probability/latin-hypercube-sampling"),
     "lattice-points-gauss-circle": () => import("./algo/geo/lattice-points-gauss-circle"),
     "law-of-large-numbers": () => import("./algo/statistics-probability/law-of-large-numbers"),
@@ -11939,6 +10915,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "least-squares-normal-equations": () => import("./algo/numerical-optimization/least-squares-normal-equations"),
     "leftist-heap": () => import("./algo/ds/leftist-heap"),
     "legendre-symbol-euler-criterion": () => import("./algo/math/legendre-symbol-euler-criterion"),
+    "lenstra-elliptic-curve-factorization": () => import("./algo/math/lenstra-elliptic-curve-factorization"),
     "levenberg-marquardt": () => import("./algo/numerical-optimization/levenberg-marquardt"),
     "levenshtein-automaton-search": () => import("./algo/string/levenshtein-automaton-search"),
     "lexicographic-bfs": () => import("./algo/graph/lexicographic-bfs"),
@@ -12050,6 +11027,8 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "minimax-path-mst": () => import("./algo/path/minimax-path-mst"),
     "minimum-bottleneck-spanning-tree": () => import("./algo/mst/minimum-bottleneck-spanning-tree"),
     "minimum-diameter-spanning-tree": () => import("./algo/mst/minimum-diameter-spanning-tree"),
+    "minimum-spanning-forest": () => import("./algo/mst/minimum-spanning-forest"),
+    "minkowski-sum": () => import("./algo/geo/minkowski-sum"),
     "misere-nim": () => import("./algo/game/misere-nim"),
     "misra-gries-summary": () => import("./algo/special/misra-gries-summary"),
     "mixture-of-experts-routing": () => import("./algo/ml-ai/mixture-of-experts-routing"),
@@ -12070,10 +11049,12 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "moores-nim": () => import("./algo/game/moores-nim"),
     "morris-counter": () => import("./algo/special/morris-counter"),
     "morris-traversal": () => import("./algo/tree/morris-traversal"),
+    "morton-order": () => import("./algo/geo/morton-order"),
     "mos-on-trees": () => import("./algo/tree/mos-on-trees"),
     "move-to-front-transform": () => import("./algo/string/move-to-front-transform"),
     "mst-sensitivity-analysis": () => import("./algo/mst/mst-sensitivity-analysis"),
     "mst-verification-tarjan": () => import("./algo/mst/mst-verification-tarjan"),
+    mtdf: () => import("./algo/game/mtdf"),
     "multi-head-self-attention": () => import("./algo/ml-ai/multi-head-self-attention"),
     "multi-paxos": () => import("./algo/parallel-distributed/multi-paxos"),
     "multi-query-attention": () => import("./algo/ml-ai/multi-query-attention"),
@@ -12093,6 +11074,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "ncr-precompute-factorials": () => import("./algo/math/ncr-precompute-factorials"),
     "nearly-sorted-array-search": () => import("./algo/search/nearly-sorted-array-search"),
     "needleman-wunsch-alignment": () => import("./algo/string/needleman-wunsch-alignment"),
+    negamax: () => import("./algo/game/negamax"),
     "negative-binomial-distribution": () => import("./algo/statistics-probability/negative-binomial-distribution"),
     "nelder-mead": () => import("./algo/numerical-optimization/nelder-mead"),
     "nelder-mead-simplex": () => import("./algo/special/nelder-mead-simplex"),
@@ -12107,6 +11089,8 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "normal-distribution-cdf-approximation": () => import("./algo/statistics-probability/normal-distribution-cdf-approximation"),
     "ntru-encryption": () => import("./algo/cryptography-security/ntru-encryption"),
     ntt: () => import("./algo/math/ntt"),
+    "null-move-pruning": () => import("./algo/game/null-move-pruning"),
+    "number-field-sieve": () => import("./algo/math/number-field-sieve"),
     "nuts-sampler": () => import("./algo/statistics-probability/nuts-sampler"),
     "oblivious-transfer-1-2": () => import("./algo/cryptography-security/oblivious-transfer-1-2"),
     octree: () => import("./algo/ds/octree"),
@@ -12127,6 +11111,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "paging-algorithms-race": () => import("./algo/special/paging-algorithms-race"),
     "paillier-additive-homomorphism": () => import("./algo/cryptography-security/paillier-additive-homomorphism"),
     "pairing-heap": () => import("./algo/ds/pairing-heap"),
+    "palindrome-partitioning": () => import("./algo/dp/palindrome-partitioning"),
     "palindrome-partitioning-min-cuts": () => import("./algo/dp/palindrome-partitioning-min-cuts"),
     "palindromic-factorization": () => import("./algo/string/palindromic-factorization"),
     "pancake-sort": () => import("./algo/sort/pancake-sort"),
@@ -12171,6 +11156,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "poisson-disk-sampling": () => import("./algo/geo/poisson-disk-sampling"),
     "poisson-distribution-pmf": () => import("./algo/statistics-probability/poisson-distribution-pmf"),
     "policy-gradient-reinforce": () => import("./algo/ml-ai/policy-gradient-reinforce"),
+    "pollard-kangaroo": () => import("./algo/math/pollard-kangaroo"),
     "pollard-p-minus-1": () => import("./algo/math/pollard-p-minus-1"),
     "pollard-rho": () => import("./algo/math/pollard-rho"),
     "pollard-rho-discrete-log": () => import("./algo/math/pollard-rho-discrete-log"),
@@ -12181,9 +11167,11 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "polynomial-log-exp": () => import("./algo/math/polynomial-log-exp"),
     "polynomial-long-division": () => import("./algo/math/polynomial-long-division"),
     "polyphase-merge-sort": () => import("./algo/sort/polyphase-merge-sort"),
+    "popcount-swar": () => import("./algo/math/popcount-swar"),
     "porter-stemmer": () => import("./algo/string/porter-stemmer"),
     "poseidon-hash": () => import("./algo/cryptography-security/poseidon-hash"),
     "practical-byzantine-fault-tolerance": () => import("./algo/parallel-distributed/practical-byzantine-fault-tolerance"),
+    "pratt-parser": () => import("./algo/string/pratt-parser"),
     "preconditioned-conjugate-gradient": () => import("./algo/numerical-optimization/preconditioned-conjugate-gradient"),
     "prefix-function-auto": () => import("./algo/string/prefix-function-auto"),
     "prefix-tuning": () => import("./algo/ml-ai/prefix-tuning"),
@@ -12193,6 +11181,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "prime-counting-meissel-lehmer": () => import("./algo/math/prime-counting-meissel-lehmer"),
     "primitive-root-search": () => import("./algo/math/primitive-root-search"),
     "principal-component-analysis": () => import("./algo/ml-ai/principal-component-analysis"),
+    "principal-variation-search": () => import("./algo/game/principal-variation-search"),
     "priority-queue": () => import("./algo/ds/priority-queue"),
     "private-information-retrieval": () => import("./algo/cryptography-security/private-information-retrieval"),
     "probability-dp": () => import("./algo/dp/probability-dp"),
@@ -12214,6 +11203,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     qlora: () => import("./algo/ml-ai/qlora"),
     "quadratic-probing": () => import("./algo/search/quadratic-probing"),
     "quadratic-programming-active-set": () => import("./algo/numerical-optimization/quadratic-programming-active-set"),
+    "quadratic-sieve": () => import("./algo/math/quadratic-sieve"),
     quadtree: () => import("./algo/ds/quadtree"),
     "quake-heap": () => import("./algo/ds/quake-heap"),
     "quantum-amplitude-estimation": () => import("./algo/quantum/quantum-amplitude-estimation"),
@@ -12239,7 +11229,9 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "quick-sort-hoare": () => import("./algo/sort/quick-sort-hoare"),
     "quick-sort-lomuto": () => import("./algo/sort/quick-sort-lomuto"),
     "quickest-flow-time-expanded": () => import("./algo/flow/quickest-flow-time-expanded"),
+    quickhull: () => import("./algo/geo/quickhull"),
     quickselect: () => import("./algo/search/quickselect"),
+    "quiescence-search": () => import("./algo/game/quiescence-search"),
     "quorum-read-write": () => import("./algo/parallel-distributed/quorum-read-write"),
     "quotient-filter": () => import("./algo/ds/quotient-filter"),
     "r-tree": () => import("./algo/ds/r-tree"),
@@ -12266,6 +11258,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "red-black-tree": () => import("./algo/ds/red-black-tree"),
     "reed-solomon-erasure-coding": () => import("./algo/production-systems/reed-solomon-erasure-coding"),
     "regex-matching-dp": () => import("./algo/dp/regex-matching-dp"),
+    "regret-matching": () => import("./algo/game/regret-matching"),
     "rejection-sampling": () => import("./algo/statistics-probability/rejection-sampling"),
     "reliable-multicast": () => import("./algo/parallel-distributed/reliable-multicast"),
     "rendezvous-hashing": () => import("./algo/ds/rendezvous-hashing"),
@@ -12330,6 +11323,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "shamir-secret-sharing": () => import("./algo/math/shamir-secret-sharing"),
     "shamir-threshold-signature": () => import("./algo/cryptography-security/shamir-threshold-signature"),
     "shannon-entropy": () => import("./algo/statistics-probability/shannon-entropy"),
+    "shapley-value": () => import("./algo/game/shapley-value"),
     "shear-sort": () => import("./algo/sort/shear-sort"),
     "shell-sort": () => import("./algo/sort/shell-sort"),
     "shift-or-bitap": () => import("./algo/string/shift-or-bitap"),
@@ -12363,6 +11357,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "sliding-window-attention": () => import("./algo/ml-ai/sliding-window-attention"),
     "slow-sort": () => import("./algo/sort/slow-sort"),
     "sma-star-search": () => import("./algo/search/sma-star-search"),
+    "smawk-algorithm": () => import("./algo/dp/smawk-algorithm"),
     "smith-waterman-alignment": () => import("./algo/string/smith-waterman-alignment"),
     "smooth-sort": () => import("./algo/sort/smooth-sort"),
     "snappy-compression": () => import("./algo/production-systems/snappy-compression"),
@@ -12399,6 +11394,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "steane-code": () => import("./algo/quantum/steane-code"),
     steque: () => import("./algo/ds/steque"),
     "stern-brocot-tree": () => import("./algo/math/stern-brocot-tree"),
+    "stirling-numbers": () => import("./algo/math/stirling-numbers"),
     "stochastic-gradient-descent": () => import("./algo/ml-ai/stochastic-gradient-descent"),
     "stock-III-two-transactions": () => import("./algo/dp/stock-III-two-transactions"),
     "stock-with-cooldown": () => import("./algo/dp/stock-with-cooldown"),
@@ -12468,11 +11464,13 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "transitive-closure": () => import("./algo/graph/transitive-closure"),
     "transitive-reduction": () => import("./algo/graph/transitive-reduction"),
     "transportation-problem": () => import("./algo/flow/transportation-problem"),
+    "transposition-table": () => import("./algo/game/transposition-table"),
     "trapezoidal-map-point-location": () => import("./algo/geo/trapezoidal-map-point-location"),
     "trapezoidal-rule": () => import("./algo/numerical-optimization/trapezoidal-rule"),
     treap: () => import("./algo/ds/treap"),
     treblecross: () => import("./algo/game/treblecross"),
     "tree-center": () => import("./algo/tree/tree-center"),
+    "tree-centroid": () => import("./algo/tree/tree-centroid"),
     "tree-coloring-dp": () => import("./algo/tree/tree-coloring-dp"),
     "tree-diameter": () => import("./algo/tree/tree-diameter"),
     "tree-dominating-set-dp": () => import("./algo/tree/tree-dominating-set-dp"),
@@ -12529,6 +11527,7 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "verlet-integration": () => import("./algo/numerical-optimization/verlet-integration"),
     "vertex-split-disjoint-paths": () => import("./algo/flow/vertex-split-disjoint-paths"),
     "vf2-isomorphism": () => import("./algo/graph/vf2-isomorphism"),
+    "vickrey-auction": () => import("./algo/game/vickrey-auction"),
     "viewstamped-replication": () => import("./algo/parallel-distributed/viewstamped-replication"),
     "vigenere-cipher": () => import("./algo/cryptography-security/vigenere-cipher"),
     "virtual-tree": () => import("./algo/tree/virtual-tree"),
@@ -12579,5 +11578,6 @@ export const LOADERS: Record<string, () => Promise<{ default: AlgorithmModule }>
     "zab-consensus": () => import("./algo/parallel-distributed/zab-consensus"),
     "zero-one-bfs": () => import("./algo/path/zero-one-bfs"),
     "zip-tree": () => import("./algo/ds/zip-tree"),
+    "zobrist-hashing": () => import("./algo/game/zobrist-hashing"),
     "zstandard-compression": () => import("./algo/production-systems/zstandard-compression"),
 };

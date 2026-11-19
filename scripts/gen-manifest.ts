@@ -67,8 +67,7 @@ const lines: string[] = [
     " * with: bun scripts/gen-manifest.ts",
     " */",
     "",
-    'import type { AlgorithmCategory, AlgorithmComplexity, LayoutType } from "@/types";',
-    'import type { AlgorithmModule } from "@/types";',
+    'import type { AlgorithmCategory, AlgorithmComplexity, AlgorithmModule, LayoutType } from "@/types";',
     "",
     "/** Everything the sidebar, search, and info panel need - no run code. */",
     "export interface AlgorithmMeta {",
@@ -90,7 +89,7 @@ for (const { meta } of entries) {
         `        name: ${JSON.stringify(meta.name)},`,
         `        category: ${JSON.stringify(meta.category)} as AlgorithmCategory,`,
         `        complexity: ${block(meta.complexity, 8)},`,
-        `        defaultInput: ${block(meta.defaultInput, 8)},`,
+        `        defaultInput: JSON.parse(${JSON.stringify(JSON.stringify(meta.defaultInput))}) as unknown,`,
         `        visualType: ${JSON.stringify(meta.visualType)} as LayoutType,`,
         "    },",
     );

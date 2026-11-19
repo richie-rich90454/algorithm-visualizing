@@ -98,6 +98,7 @@ const module: AlgorithmModule = {
     run,
     pseudocode: [
         "let n = 2^k and rev[0] = 0",
+        "derive each reversed index from the previous one using halves",
         "for i = 1 to n-1: rev[i] = (rev[i >> 1] >> 1) or ((i and 1) << (k-1))",
         "for i = 0 to n-1: if i < rev[i] then swap array[i], array[rev[i]]",
         "done: array is in bit-reversed index order",
