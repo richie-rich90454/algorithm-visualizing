@@ -2,7 +2,7 @@
 
 ## Tagline
 
-Watch 1991 algorithms think, one step at a time
+Watch 2028 algorithms think, one step at a time
 
 ## Description
 

@@ -19,6 +19,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - CI runs the Vitest package script, the manifest test derives its expected count from the registry, and the documentation now reports the live catalog size.
 
+## [0.15.0] - 2026-11-19
+
+### Added
+
+- Wave I of the research backlogs: 37 verified modules across machine learning, statistics, production systems, strings, mathematics, geometry, game theory, quantum computing, and cryptography. The catalog crossed 2,000 modules and now has 2,028 modules in 20 categories with 5,931 automated tests.
+
+### Changed
+
+- Regenerated the manifest, VitePress documentation, media kit, and all public counts for the expanded catalog.
+
 ## [0.14.0] - 2026-11-19
 
 ### Added
@@ -186,7 +196,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Quality gate and manifest consistency checks as required CI steps.
 - Baseline: 771 algorithm modules across 13 categories, roughly 1,561 automated tests, lazy-loaded modules, and a live demo on GitHub Pages.
 
-[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/richie-rich90454/algorithm-visualizing/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.15.0
 [0.14.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.14.0
 [0.13.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.13.0
 [0.12.0]: https://github.com/richie-rich90454/algorithm-visualizing/releases/tag/v0.12.0
