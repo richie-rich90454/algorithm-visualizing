@@ -89,17 +89,18 @@ function cellShortcuts(
     weightOf: (edge: WeightedEdge) => number,
 ): Array<{ a: string; b: string; distance: number }> {
     const adjacency = new Map<string, AdjEntry[]>();
-    const ids = new Set(boundary);
-    for (const id of ids) {
-        adjacency.set(id, []);
-    }
+    // Include interior nodes so shortest paths may pass through a cell's
+    // interior; only boundary pairs are emitted as shortcuts.
     for (const edge of edges) {
-        if (ids.has(edge.u) && ids.has(edge.v)) {
-            const id = edgeKey(edge.u, edge.v);
-            const w = weightOf(edge);
-            adjacency.get(edge.u)?.push({ to: edge.v, w, id });
-            adjacency.get(edge.v)?.push({ to: edge.u, w, id });
-        }
+        if (!adjacency.has(edge.u)) adjacency.set(edge.u, []);
+        if (!adjacency.has(edge.v)) adjacency.set(edge.v, []);
+        const id = edgeKey(edge.u, edge.v);
+        const w = weightOf(edge);
+        adjacency.get(edge.u)?.push({ to: edge.v, w, id });
+        adjacency.get(edge.v)?.push({ to: edge.u, w, id });
+    }
+    for (const id of boundary) {
+        if (!adjacency.has(id)) adjacency.set(id, []);
     }
     const result: Array<{ a: string; b: string; distance: number }> = [];
     for (let i = 0; i < boundary.length; i += 1) {
@@ -284,7 +285,7 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
     // Build the overlay graph from crossing edges and the customized shortcuts.
     const overlay = new Map<string, AdjEntry[]>();
-    const overlayNodes = new Set<string>();
+    const overlayNodes = new Set<string>([start, target]);
     for (const node of nodes) {
         overlay.set(node, []);
     }
