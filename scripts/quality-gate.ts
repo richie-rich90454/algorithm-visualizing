@@ -17,7 +17,7 @@ const REQUIRED_FIELDS = [
 ] as const;
 const BRITISH = /\b(?:colour|behaviour|centre|organise|realise|normalise|analyse|favourite|neighbour|generalise|labelled|travelling|modelling)\b/gi;
 // French source titles in reference lists are proper nouns, not British spellings.
-const FOREIGN_TITLES = /\bd'analyse\b/gi;
+const FOREIGN_TITLES = /\bd'analyse\b|de l'analyse\b|Object Modelling by Registration\b/gi;
 const MARKER = /\b(?:TODO|FIXME|XXX|HACK|placeholder)\b/i;
 const MOJIBAKE = /\uFFFD|\u00EF\u00BF\u00BD|\u00E2\u20AC[\u0080-\u009F\u2018-\u201D]/;
 
