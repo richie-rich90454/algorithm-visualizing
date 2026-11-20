@@ -25,6 +25,26 @@ type ExportSource = Pick<
     "id" | "name" | "complexity" | "pseudocode" | "defaultInput"
 >;
 
+/**
+ * @returns A literal of `value` valid in the target language. JSON's true /
+ * false / null are not valid Python or C++ literals, so translate them. The
+ * value is already JSON, so JSON.stringify is a safe starting point.
+ */
+function literal(value: unknown, language: ExportLanguage): string {
+    const json = JSON.stringify(value) ?? "null";
+    if (language === "python") {
+        return json
+            .replace(/\btrue\b/g, "True")
+            .replace(/\bfalse\b/g, "False")
+            .replace(/\bnull\b/g, "None");
+    }
+    // JSON booleans are valid JavaScript; C++ accepts true/false and nullptr.
+    if (language === "cpp") {
+        return json.replace(/\bnull\b/g, "nullptr");
+    }
+    return json;
+}
+
 /** @returns A snake_case identifier for Python and C++. */
 function snake(id: string): string {
     return id.replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_+|_+$/g, "").toLowerCase() || "algorithm";
@@ -54,25 +74,25 @@ function commentLines(lines: string[], marker: string, indent: string): string[]
 }
 
 /** @returns The shared header that marks the output as an educational sketch. */
-function header(module: ExportSource, marker: string): string {
+function header(module: ExportSource, marker: string, language: ExportLanguage): string {
     return [
         `${marker} ${module.name} - educational source sketch`,
         `${marker} Pseudocode-derived, NOT the canonical implementation.`,
         `${marker} Time: ${module.complexity.time} | Space: ${module.complexity.space}`,
-        `${marker} Expected input shape: ${JSON.stringify(module.defaultInput)}`,
+        `${marker} Expected input shape: ${literal(module.defaultInput, language)}`,
     ].join("\n");
 }
 
 /** @returns Readable Python derived from the module's pseudocode. */
 function python(module: ExportSource): string {
     return [
-        header(module, "#"),
+        header(module, "#", "python"),
         "",
         `def ${snake(module.id)}(data):`,
         `    """${module.name}: pseudocode-derived sketch, not canonical source.`,
         "",
         `    Args:`,
-        `        data: Input with the shape ${JSON.stringify(module.defaultInput)}.`,
+        `        data: Input with the shape ${literal(module.defaultInput, "python")}.`,
         `    """`,
         ...commentLines(module.pseudocode ?? [], "#", "    "),
         "    # Replace these comments with the real algorithm body.",
@@ -80,7 +100,7 @@ function python(module: ExportSource): string {
         "",
         "",
         'if __name__ == "__main__":',
-        `    result = ${snake(module.id)}(${JSON.stringify(module.defaultInput)})`,
+        `    result = ${snake(module.id)}(${literal(module.defaultInput, "python")})`,
         "    print(result)",
         "",
     ].join("\n");
@@ -88,8 +108,9 @@ function python(module: ExportSource): string {
 
 /** @returns Readable JavaScript derived from the module's pseudocode. */
 function javascript(module: ExportSource): string {
+    const language: ExportLanguage = "javascript";
     return [
-        header(module, "//"),
+        header(module, "//", language),
         "",
         `function ${camel(module.id)}(data) {`,
         ...commentLines(module.pseudocode ?? [], "//", "    "),
@@ -97,7 +118,7 @@ function javascript(module: ExportSource): string {
         "    return data;",
         "}",
         "",
-        `const result = ${camel(module.id)}(${JSON.stringify(module.defaultInput)});`,
+        `const result = ${camel(module.id)}(${literal(module.defaultInput, language)});`,
         "console.log(result);",
         "",
     ].join("\n");
@@ -106,8 +127,9 @@ function javascript(module: ExportSource): string {
 /** @returns Readable Java derived from the module's pseudocode. */
 function java(module: ExportSource): string {
     const name = className(module.id);
+    const language: ExportLanguage = "java";
     return [
-        header(module, "//"),
+        header(module, "//", language),
         "",
         `public class ${name} {`,
         "    public Object run(Object data) {",
@@ -117,7 +139,7 @@ function java(module: ExportSource): string {
         "    }",
         "",
         `    public static void main(String[] args) {`,
-        `        Object data = null; // Set to ${JSON.stringify(module.defaultInput)}`,
+        `        Object data = null; // Set to ${literal(module.defaultInput, language)}`,
         `        System.out.println(new ${name}().run(data));`,
         "    }",
         "}",
@@ -127,12 +149,13 @@ function java(module: ExportSource): string {
 
 /** @returns Readable C++ derived from the module's pseudocode. */
 function cpp(module: ExportSource): string {
+    const language: ExportLanguage = "cpp";
     return [
-        header(module, "//"),
+        header(module, "//", language),
         "",
         "#include <iostream>",
         "",
-        `// data uses the shape ${JSON.stringify(module.defaultInput)}`,
+        `// data uses the shape ${literal(module.defaultInput, language)}`,
         `auto ${snake(module.id)}(auto data) {`,
         ...commentLines(module.pseudocode ?? [], "//", "    "),
         "    // Replace these comments with the real algorithm body.",

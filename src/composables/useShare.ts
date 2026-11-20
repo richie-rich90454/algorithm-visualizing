@@ -24,8 +24,10 @@ export function readDeepLink(): DeepLink {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("algo");
     const raw = params.get("step");
-    const parsed = raw === null ? 0 : Number.parseInt(raw, 10);
-    return { id, step: Number.isFinite(parsed) && parsed >= 0 ? parsed : 0 };
+    // Require a whole non-negative integer: parseInt would accept "4abc" and
+    // "1e3", producing a surprising step from a malformed shared link.
+    const parsed = raw === null ? 0 : Number(raw);
+    return { id, step: Number.isInteger(parsed) && parsed >= 0 ? parsed : 0 };
 }
 
 /** @returns A shareable URL for an algorithm and step. */
@@ -101,6 +103,13 @@ export function applyShareMetadata(meta: AlgorithmMeta | null): void {
     }
     if (!meta) {
         document.title = "Algorithmic Visualization Engine";
+        // Restore the default description so returning to the gallery does not
+        // leave an algorithm-specific description on the page.
+        const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+        if (description) {
+            description.content =
+                "Explore 3000 interactive algorithms across 20 categories with step-by-step visualization. A free, offline-capable resource for computer science education.";
+        }
         return;
     }
     const content = shareContent(meta);

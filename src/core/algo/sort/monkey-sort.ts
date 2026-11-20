@@ -45,6 +45,31 @@ import type { AlgorithmModule, EntityState, VisualEntity, VisualFrame } from "@/
 const MAX_SHUFFLES = 400;
 
 /**
+ * Deterministic 32-bit PRNG (mulberry32). Monkey sort is intrinsically random,
+ * but the visualization must replay identically for the same input so deep
+ * links and tests stay reproducible. The seed is derived from the input values.
+ */
+function mulberry32(seed: number): () => number {
+    let a = seed >>> 0;
+    return () => {
+        a = (a + 0x6d2b79f5) >>> 0;
+        let t = a;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+/** Derive a stable seed from the array values so a given input shuffles the same way. */
+function seedFrom(values: number[]): number {
+    let h = 2166136261 >>> 0;
+    for (const value of values) {
+        h = Math.imul(h ^ (value | 0), 16777619) >>> 0;
+    }
+    return h || 1;
+}
+
+/**
  * Build the array of bar entities for a frame.
  *
  * @param arr The current array values, in display order.
@@ -74,6 +99,7 @@ function makeBars(arr: number[], states: Map<number, EntityState> = new Map()): 
 function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     // Work on a copy – the generator must never mutate its caller's input.
     const arr = Array.isArray(input) ? [...(input as number[])] : [3, 1, 4, 2];
+    const random = mulberry32(seedFrom(arr));
 
     let step = 0;
     let shuffles = 0;
@@ -128,9 +154,10 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
         };
         step += 1;
 
-        // Fisher–Yates shuffle: a uniformly random permutation.
+        // Fisher–Yates shuffle with a seeded PRNG: a uniformly random
+        // permutation that is deterministic for a given input.
         for (let i = n - 1; i > 0; i -= 1) {
-            const j = Math.floor(Math.random() * (i + 1));
+            const j = Math.floor(random() * (i + 1));
             const atI = arr[i];
             const atJ = arr[j];
             if (atI !== undefined && atJ !== undefined) {
@@ -184,7 +211,7 @@ const module: AlgorithmModule = {
             "Each shuffle produces some permutation of the original multiset of values.",
             "The loop ends only when the current permutation is sorted."
         ],
-        "correctness": "Every permutation has a nonzero chance of being produced, so with probability one a sorted permutation is eventually drawn and the check terminates. There is no deterministic progress guarantee, which is precisely the lesson.",
+        "correctness": "Every permutation has a nonzero chance of being produced, so in the unbounded algorithm a sorted permutation is eventually drawn with probability one. There is no deterministic progress guarantee, and in practice the expected number of shuffles grows as n!, so this visualization caps shuffles at MAX_SHUFFLES and honestly reports a gave-up run rather than looping forever. That gap between almost-sure termination and practical runtime is precisely the lesson. The shuffle uses a seed derived from the input so a given input replays identically.",
         "complexityRationale": "There are n! permutations and each is equally likely, so the expected number of shuffles is n!, each costing O(n), giving O(n * n!) expected time. Only the array and a shuffling buffer are stored, O(n) space.",
         "uses": [
             "Teaching why brute-force randomness is not an algorithm",

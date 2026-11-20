@@ -72,10 +72,10 @@ export function classify(value: unknown): FieldKind {
         }
         if (value.every(Array.isArray)) {
             const flat = value.flat();
-            if (flat.every((item) => typeof item === "number")) {
+            if (flat.length > 0 && flat.every((item) => typeof item === "number")) {
                 return "numberMatrix";
             }
-            if (flat.every((item) => typeof item === "string")) {
+            if (flat.length > 0 && flat.every((item) => typeof item === "string")) {
                 return "stringMatrix";
             }
         }
@@ -288,7 +288,9 @@ export function buildInput(
 /** @returns A same-shaped input with numbers and arrays randomized. */
 export function randomizeInput(input: unknown): unknown {
     if (typeof input === "number") {
-        const span = Math.max(5, Math.abs(Math.trunc(input)));
+        // Clamp to a safe range: 2 * MAX_SAFE_INTEGER is not exactly
+        // representable, which would yield imprecise randomized values.
+        const span = Math.min(1_000_000_000, Math.max(5, Math.abs(Math.trunc(input))));
         return Math.floor(Math.random() * (2 * span + 1)) - span;
     }
     if (Array.isArray(input)) {

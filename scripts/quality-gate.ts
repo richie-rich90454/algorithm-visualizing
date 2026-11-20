@@ -16,12 +16,18 @@ const REQUIRED_FIELDS = [
     "visualType",
 ] as const;
 const BRITISH = /\b(?:colour|behaviour|centre|organise|realise|normalise|analyse|favourite|neighbour|generalise|labelled|travelling|modelling)\b/gi;
-// French source titles in reference lists are proper nouns, not British spellings.
-const FOREIGN_TITLES = /\bd'analyse\b|de l'analyse\b|Object Modelling by Registration\b|Modelling Extremal Events\b/gi;
 const MARKER = /\b(?:TODO|FIXME|XXX|HACK)\b/i;
-// "placeholder" is the standard term for the learned embedding in textual inversion.
-const TECHNICAL_TERMS = /\bplaceholder (?:embedding|token|text)/gi;
 const MOJIBAKE = /\uFFFD|\u00EF\u00BF\u00BD|\u00E2\u20AC[\u0080-\u009F\u2018-\u201D]/;
+
+// Exemptions are data, not code: add a proper noun or standard technical term
+// to scripts/content/quality-exemptions.json rather than editing this script.
+const exemptions = (await Bun.file(path.join(import.meta.dir, "content", "quality-exemptions.json"))
+    .json()) as { properTitles?: string[]; technicalTerms?: string[] };
+const escapeRegex = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const titleList = exemptions.properTitles ?? [];
+const termList = exemptions.technicalTerms ?? [];
+const FOREIGN_TITLES = new RegExp(titleList.map(escapeRegex).join("|"), "gi");
+const TECHNICAL_TERMS = new RegExp(termList.map(escapeRegex).join("|"), "gi");
 
 type ModuleShape = {
     id?: unknown;
