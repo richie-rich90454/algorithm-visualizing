@@ -8,8 +8,29 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#0f172a" />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <script>
+            // Apply the saved or system theme before first paint to avoid a
+            // flash of the wrong colors, and keep the browser chrome in sync.
+            (function () {
+                try {
+                    var saved = localStorage.getItem("algoviz-theme");
+                    var theme =
+                        saved === "light" || saved === "dark"
+                            ? saved
+                            : window.matchMedia("(prefers-color-scheme: dark)").matches
+                              ? "dark"
+                              : "light";
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.content = theme === "dark" ? "#0f172a" : "#ffffff";
+                } catch (e) {
+                    /* storage or matchMedia unavailable: CSS defaults apply */
+                }
+            })();
+        </script>
 
         <title>Algorithm Visualization Engine - 3000 Interactive Algorithms for Computer Science Education</title>
         <meta name="description" content="Explore 3000 interactive algorithms across 20 categories with step-by-step algorithm visualization. A free, offline-capable resource for computer science education covering data structures, sorting, graph algorithms, and more." />

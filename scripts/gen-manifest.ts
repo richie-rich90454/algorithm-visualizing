@@ -12,7 +12,6 @@ type Meta = {
     name: string;
     category: string;
     complexity: { time: string; space: string };
-    defaultInput: unknown;
     visualType: string;
 };
 
@@ -75,7 +74,6 @@ const lines: string[] = [
     "    name: string;",
     "    category: AlgorithmCategory;",
     "    complexity: AlgorithmComplexity;",
-    "    defaultInput: unknown;",
     "    visualType: LayoutType;",
     "}",
     "",
@@ -89,7 +87,6 @@ for (const { meta } of entries) {
         `        name: ${JSON.stringify(meta.name)},`,
         `        category: ${JSON.stringify(meta.category)} as AlgorithmCategory,`,
         `        complexity: ${block(meta.complexity, 8)},`,
-        `        defaultInput: JSON.parse(${JSON.stringify(JSON.stringify(meta.defaultInput))}) as unknown,`,
         `        visualType: ${JSON.stringify(meta.visualType)} as LayoutType,`,
         "    },",
     );

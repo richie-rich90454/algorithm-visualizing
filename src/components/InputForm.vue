@@ -41,7 +41,7 @@ const error = ref("");
 const notice = ref("");
 
 /** The shape of the loaded algorithm's default input. */
-const shape = computed<InputShape>(() => inputShape(store.algorithm?.defaultInput ?? null));
+const shape = computed<InputShape>(() => inputShape(store.defaultInput ?? null));
 
 /** Refill the editors from the loaded algorithm's default input. */
 function populate(value: unknown): void {
@@ -57,22 +57,24 @@ function populate(value: unknown): void {
     notice.value = "";
 }
 
-// Rebuild the form whenever a different algorithm is selected.
+// Rebuild the form once the loaded module's default input is available. The
+// default now comes from the lazy-loaded module (not the eager manifest), so
+// watch the value itself rather than the selected id which changes first.
 watch(
-    () => store.algorithm?.id,
-    () => populate(store.algorithm?.defaultInput ?? null),
+    () => store.defaultInput,
+    () => populate(store.defaultInput ?? null),
     { immediate: true },
 );
 
 /** Restore the default values without running the algorithm. */
 function useDefault(): void {
-    populate(store.algorithm?.defaultInput ?? null);
+    populate(store.defaultInput ?? null);
     notice.value = "Default values restored. Select Run to apply them.";
 }
 
 /** Fill the editors with a same-shaped randomized input. */
 function useRandom(): void {
-    const random = randomizeInput(store.algorithm?.defaultInput ?? null);
+    const random = randomizeInput(store.defaultInput ?? null);
     populate(random);
     notice.value = "Random values generated. Select Run to apply them.";
 }

@@ -45,7 +45,6 @@ describe("manifest", () => {
                 "name",
                 "category",
                 "complexity",
-                "defaultInput",
                 "visualType",
             ]) {
                 const mine = JSON.stringify((meta as unknown as Record<string, unknown>)[key]);

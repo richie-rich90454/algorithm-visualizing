@@ -518,6 +518,7 @@ function renderAlgorithmPage(
     meta: AlgorithmMeta,
     pseudocode: string[] | undefined,
     education: AlgorithmEducation | undefined,
+    defaultInput: unknown,
 ): string {
     const label = categoryLabel(meta.category);
     const title = `${meta.name} - ${SITE_NAME}`;
@@ -562,7 +563,7 @@ function renderAlgorithmPage(
         `| Space complexity | \`${meta.complexity.space}\` |\n\n` +
         `<a class="cta" href="${visualizerHref}">Open in the interactive visualizer</a>\n\n` +
         `## Pseudocode\n\n${renderPseudocode(pseudocode)}\n` +
-        `## Default input\n\n${renderDefaultInput(meta.defaultInput)}\n` +
+        `## Default input\n\n${renderDefaultInput(defaultInput)}\n` +
         renderEducation(education);
     return frontmatter(title, description, pageHead(title, description, "article", structuredData)) + body;
 }
@@ -660,10 +661,12 @@ interface LoadFailure {
 async function loadModuleContent(): Promise<{
     pseudocode: Map<string, string[]>;
     education: Map<string, AlgorithmEducation>;
+    defaultInputs: Map<string, unknown>;
     failures: LoadFailure[];
 }> {
     const pseudocode = new Map<string, string[]>();
     const education = new Map<string, AlgorithmEducation>();
+    const defaultInputs = new Map<string, unknown>();
     const failures: LoadFailure[] = [];
     for (let offset = 0; offset < MANIFEST.length; offset += LOAD_CONCURRENCY) {
         const batch = MANIFEST.slice(offset, offset + LOAD_CONCURRENCY);
@@ -676,6 +679,9 @@ async function loadModuleContent(): Promise<{
                         return;
                     }
                     const module = (await loader()).default;
+                    if (module && "defaultInput" in module) {
+                        defaultInputs.set(meta.id, (module as { defaultInput: unknown }).defaultInput);
+                    }
                     if (Array.isArray(module?.pseudocode)) {
                         pseudocode.set(meta.id, module.pseudocode.map(String));
                     }
@@ -692,7 +698,7 @@ async function loadModuleContent(): Promise<{
             }),
         );
     }
-    return { pseudocode, education, failures };
+    return { pseudocode, education, defaultInputs, failures };
 }
 
 function verify(
@@ -753,7 +759,7 @@ function verify(
 async function main(): Promise<void> {
     await rm(DOCS_DIR, { recursive: true, force: true });
 
-    const { pseudocode, education, failures } = await loadModuleContent();
+    const { pseudocode, education, defaultInputs, failures } = await loadModuleContent();
     const groups = groupByCategory(MANIFEST);
     const categories = orderedCategories(groups);
     const files = new Map<string, string>();
@@ -767,7 +773,7 @@ async function main(): Promise<void> {
     for (const meta of MANIFEST) {
         files.set(
             `algorithms/${meta.id}/index.md`,
-            renderAlgorithmPage(meta, pseudocode.get(meta.id), education.get(meta.id)),
+            renderAlgorithmPage(meta, pseudocode.get(meta.id), education.get(meta.id), defaultInputs.get(meta.id)),
         );
         routes.add(`/algorithms/${meta.id}/`);
     }

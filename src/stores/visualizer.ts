@@ -103,6 +103,11 @@ export const useVisualizerStore = defineStore("visualizer", () => {
     /** Metadata of the second algorithm in compare mode. */
     const compareAlgorithm = computed(() => (compareId.value ? getAlgorithm(compareId.value) : null));
 
+    /** Default input of the loaded module, read from the lazy-loaded chunk.
+     *  Kept off the eager manifest so 3000 input objects are not bundled into
+     *  the initial download. */
+    const defaultInput = computed(() => loadedModule.value?.defaultInput ?? null);
+
     /** True while a second algorithm is loaded for side-by-side comparison. */
     const isCompareMode = computed(() => compareId.value !== null && compareModule.value !== null);
 
@@ -323,6 +328,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
         totalSteps,
         algorithm,
         loadedModule,
+        defaultInput,
         currentInput,
         compareId,
         compareFrame,
