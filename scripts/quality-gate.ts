@@ -17,7 +17,7 @@ const REQUIRED_FIELDS = [
 ] as const;
 const BRITISH = /\b(?:colour|behaviour|centre|organise|realise|normalise|analyse|favourite|neighbour|generalise|labelled|travelling|modelling)\b/gi;
 // French source titles in reference lists are proper nouns, not British spellings.
-const FOREIGN_TITLES = /\bd'analyse\b|de l'analyse\b|Object Modelling by Registration\b/gi;
+const FOREIGN_TITLES = /\bd'analyse\b|de l'analyse\b|Object Modelling by Registration\b|Modelling Extremal Events\b/gi;
 const MARKER = /\b(?:TODO|FIXME|XXX|HACK)\b/i;
 // "placeholder" is the standard term for the learned embedding in textual inversion.
 const TECHNICAL_TERMS = /\bplaceholder (?:embedding|token|text)/gi;
