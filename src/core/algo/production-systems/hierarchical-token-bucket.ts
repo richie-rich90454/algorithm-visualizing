@@ -44,7 +44,7 @@ interface HtbInput {
     packets?: Packet[];
 }
 
-/** Build one bar per bucket with a focus colour. */
+/** Build one bar per bucket with a focus color. */
 function makeBars(
     names: string[],
     tokens: number[],

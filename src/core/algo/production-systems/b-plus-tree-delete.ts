@@ -21,7 +21,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each B+ tree node is a tree node labelled with its keys.
+ *   - Each B+ tree node is a tree node labeled with its keys.
  *   - Edges join a parent node to each of its children.
  *   - The node on the current search or repair path is highlighted.
  *   - meta carries the sorted leaf keys, the tree height and repair counts.
