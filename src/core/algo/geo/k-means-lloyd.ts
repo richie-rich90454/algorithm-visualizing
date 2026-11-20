@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "K-means partitions points into k clusters by alternating two simple steps. The assignment step gives each point to the nearest centroid, and the update step moves each centroid to the mean of its assigned points. Each step reduces the within-cluster sum of squared distances, so the process settles at a local optimum.",
+        "invariants": [
+            "After assignment, every point belongs to the centroid with the smallest squared distance.",
+            "After update, each centroid equals the arithmetic mean of its assigned points.",
+            "The total squared error never increases from one iteration to the next."
+        ],
+        "correctness": "The assignment step chooses, for each point, the cluster center minimizing that point's contribution to the objective, so it cannot increase the sum of squares. The update step minimizes the same quadratic objective for a fixed assignment, since the mean of a set minimizes squared deviations. Alternating two non-increasing steps must converge to a fixed point where neither step changes the assignment, a local minimum of the objective.",
+        "complexityRationale": "One iteration computes k distances for each of n points and then averages within clusters, costing O(k*n). Running i iterations gives O(k*n*i) time, and storing assignments and centroids uses O(n + k) space.",
+        "uses": [
+            "Customer segmentation in marketing analytics",
+            "Vector quantization and color palette generation",
+            "Image segmentation in computer vision"
+        ],
+        "references": [
+            "Lloyd, Least Squares Quantization in PCM, IEEE Transactions on Information Theory 28 (1982)",
+            "Hartigan and Wong, A K-Means Clustering Algorithm, Applied Statistics 28 (1979)"
+        ],
+        "workedExample": "Points (0,0), (1,1), (2,0), (8,8), (9,9), (10,8) with initial centroids (1,1) and (9,9). Assignment gives the first three points to the first centroid and the last three to the second. Updating gives centroids (1, 0.33) and (9, 8.33); a further iteration changes no assignments, so the algorithm has converged."
+    },
+
     id: "k-means-lloyd",
     name: "K-Means (Lloyd)",
     category: "geometry",

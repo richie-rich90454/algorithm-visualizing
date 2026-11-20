@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Turning Turtles shows coins as heads or tails in a row. A move flips a head to tails and may also flip one coin to its left. It is equivalent to a Nim-like game where the value is the xor of the head positions, so the winning strategy is to restore a zero xor.",
+        "invariants": [
+            "Every move turns a head to tails.",
+            "The optional extra flip must be to a square left of the chosen head.",
+            "The game value is the xor of the 1-indexed head squares."
+        ],
+        "correctness": "Flipping a head at position c reduces the head set much like lowering a Nim heap from c, and the optional left flip adjusts lower-order contributions. The Sprague-Grundy value of the row is the xor of head squares, so a move to zero xor leaves a P-position and no move from zero xor stays at zero.",
+        "complexityRationale": "The demo searches head flips and optional left toggles, costing O(n^2) time in the worst case and O(n) space for the row state.",
+        "uses": [
+            "Another coin-sliding game equivalent to Nim",
+            "Teaching how an optional extra move changes strategy",
+            "A compact xor-invariant example"
+        ],
+        "references": [
+            "Conway, On Numbers and Games",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "The row H T H T has heads at squares 1 and 3, whose xor is 2. Flip the head at 3 to tails and toggle the head at 1 to tails as the optional left flip. No heads remain, the xor is zero, and the opponent faces a losing row."
+    },
     id: "turning-turtles",
     name: "Turning Turtles",
     category: "game",

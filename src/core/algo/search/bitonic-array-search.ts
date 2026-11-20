@@ -173,6 +173,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A bitonic array rises to one peak then falls. The algorithm first finds the peak by climbing toward the larger neighbor, then binary-searches the ascending left side and the descending right side with reversed comparison logic.",
+        "invariants": [
+            "The peak index separates an increasing prefix from a decreasing suffix.",
+            "If the target is present, it lies in one of the two sorted halves."
+        ],
+        "correctness": "Comparing A[mid] with A[mid+1] always moves toward the peak, which is found in O(log n); standard binary search works on the increasing side and inverted comparisons work on the decreasing side. Trying both sides finds the target if present.",
+        "complexityRationale": "The peak hunt and each binary search take O(log n), so three logarithmic phases give O(log n) total. Only index pointers are stored, O(1) space.",
+        "uses": [
+            "Searching bitonic sensor or ranking data",
+            "Teaching search on non-monotonic but structured arrays",
+            "Preprocessing for tournament-style rankings"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "For [1, 3, 8, 12, 9, 5, 2] and target 9, the peak is 12 at index 3; the left half has no 9, while binary search on the decreasing right half finds 9 at index 4."
+    },
     id: "bitonic-array-search",
     name: "Bitonic Array Search",
     category: "searching",

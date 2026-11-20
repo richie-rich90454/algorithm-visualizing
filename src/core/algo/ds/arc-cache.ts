@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "ARC, the Adaptive Replacement Cache, keeps two lists: one for recently used entries and one for frequently used entries. Two ghost lists remember keys evicted from each side. When a ghost entry is hit, ARC shifts its target size toward that side, so the cache tunes itself to the workload's mix of recency and frequency.",
+        "invariants": [
+            "T1 holds recently seen entries and T2 holds entries seen at least twice.",
+            "B1 and B2 hold only keys, not values, recording recent evictions.",
+            "The sum of T1 and T2 sizes never exceeds capacity."
+        ],
+        "correctness": "A hit in T1 or T2 promotes the entry to T2, so repeated use is rewarded. A hit in a ghost list adjusts the target toward that list, changing the next eviction to favor the access pattern that produced the hit. Since every miss evicts one entry and inserts one entry, the protected size stays within capacity.",
+        "complexityRationale": "Each access does a constant number of hash lookups and list moves, so time is O(1) amortized. All four lists hold at most capacity entries plus ghosts, giving O(capacity) space.",
+        "uses": [
+            "Storage and database buffer caches",
+            "Web and CDN object caches with mixed workloads",
+            "Replacement policies where plain LRU is too fragile"
+        ],
+        "references": [
+            "Nimrod Megiddo and Dharmendra S. Modha, \"ARC: A Self-Tuning, Low Overhead Replacement Cache\", FAST 2003",
+            "Alan Jay Smith, survey of cache memory design and evaluation, 1982"
+        ],
+        "workedExample": "With capacity 2 and accesses a, b, a, c, b: a and b fill T1, then the second a moves it to T2. Inserting c evicts b from T1 into ghost B1. The later b hits B1 and grows the recency target p, showing this workload favors recently used entries."
+    },
     id: "arc-cache",
     name: "ARC Cache",
     category: "data-structures",

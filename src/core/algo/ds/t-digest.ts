@@ -111,6 +111,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A t-digest compresses a stream into small centroids storing a mean and a weight. It keeps centroids near the tails small and those near the middle large, so tail quantiles stay accurate while memory stays bounded.",
+        "invariants": [
+            "Each centroid represents a group of values with a mean and count.",
+            "Centroid ranges are ordered by value.",
+            "The size-versus-quantile bound keeps tail clusters small."
+        ],
+        "correctness": "Merging only neighboring centroids preserves value order, so a centroid mean approximates its group values. Quantiles are estimated by walking centroids in order and interpolating by weight, and the size bound guarantees small error near the tails where precision matters most.",
+        "complexityRationale": "Inserting finds the nearest among a bounded set of candidate centroids, O(log n); the digest holds at most c centroids, O(c) space independent of stream length.",
+        "uses": [
+            "Latency percentile monitoring such as p99 in metrics systems",
+            "Streaming quantiles in databases",
+            "Approximate histograms for observability"
+        ],
+        "references": [
+            "Dunning, T-Digest: Efficient Estimates of Distributions, 2013",
+            "Cormode et al., Quantiles over Data Streams, survey"
+        ],
+        "workedExample": "Stream 7, 2, 9, 4, 6 into small centroids, merging those that fit the size bound; estimating the median and extremes from centroid means reports counts seen alongside each estimate."
+    },
     id: "t-digest",
     name: "T-Digest",
     category: "data-structures",

@@ -112,6 +112,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A sparse set stores elements in a dense array and records each element index in a sparse array indexed by value. Membership is a round-trip check; deletion swaps the element with the last dense entry and updates its index, keeping the dense array packed.",
+        "invariants": [
+            "The dense array holds exactly the set members with no gaps.",
+            "Sparse of value gives that value dense index.",
+            "Membership holds iff the sparse index is in range and dense at that index round-trips."
+        ],
+        "correctness": "Adding appends to dense and records the index so the round-trip succeeds. Deletion swaps with the last element and updates that element sparse index, preserving the bijection between dense positions and members, so membership, add, and delete are all exact and O(1).",
+        "complexityRationale": "Each operation is a constant number of array accesses, O(1). The sparse array is sized to the universe u and dense holds up to n elements, O(u) space.",
+        "uses": [
+            "Fixed-universe sets in backtracking and constraint solvers",
+            "Fast membership with iteration over present elements",
+            "Bitset alternative for modest universes"
+        ],
+        "references": [
+            "Briggs and Torczon, An Efficient Representation for Sparse Sets, ACM LOPLAS 1993",
+            "cp-algorithms, Sparse Set"
+        ],
+        "workedExample": "Add 3, 1, 4, 6 to dense [3,1,4,6] with sparse indices set; membership of 4 round-trips correctly. Deleting 1 swaps 6 into its slot and updates sparse of 6, keeping the dense prefix packed."
+    },
     id: "sparse-set",
     name: "Sparse Set",
     category: "data-structures",

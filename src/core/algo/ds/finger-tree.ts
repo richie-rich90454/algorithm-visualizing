@@ -96,6 +96,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A finger tree is a persistent sequence with small digits at the two ends and a recursive measured spine in the middle. Pushes and pops touch only the outer digits, so they are constant time, while splits and concatenations recurse down the measured middle. Annotating nodes with a monoid such as size or sum supports fast search.",
+        "invariants": [
+            "Each digit holds between one and four elements.",
+            "Each spine node stores the aggregate measure of its subtree.",
+            "The concatenation of digits and spine yields the full sequence in order."
+        ],
+        "correctness": "Pushing onto a digit preserves order and only overflows when the digit is full, in which case part of it is pushed into the spine. The stored measures let a search decide which branch contains a target by comparing prefix aggregates. Rebuilding after a split keeps the sequence and its measures consistent.",
+        "complexityRationale": "End operations are amortized O(1) because they touch outer digits, and split or concat recurse through O(log n) spine levels. Persistent structure shares nodes, using O(n) space per version plus O(log n) new nodes.",
+        "uses": [
+            "Functional sequences and deques",
+            "Priority search queues",
+            "Text editors and persistent vector-like structures"
+        ],
+        "references": [
+            "Ralf Hinze and Ross Paterson, \"Finger Trees: A Simple General-Purpose Data Structure\", JFP 2006",
+            "Chris Okasaki, Purely Functional Data Structures, Chapter 9"
+        ],
+        "workedExample": "Push 1, 2, 3, 4, 5 onto an empty finger tree: the right digit fills to four, so pushing 5 spills a group into the spine and leaves a smaller right digit. Splitting at position 2 searches the spine using prefix sums and returns [1, 2] and [3, 4, 5]."
+    },
     id: "finger-tree",
     name: "Finger Tree",
     category: "data-structures",

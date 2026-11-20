@@ -152,6 +152,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bead sort models each positive integer as a stack of beads hanging on vertical poles. Gravity lets the beads slide down so each row is packed, and reading the number of beads in each row from bottom to top gives the sorted values. It uses no comparisons at all.",
+        "invariants": [
+            "Beads in a column never pass one another; the count of beads per pole is unchanged.",
+            "Each horizontal level holds at least as many beads as the level above it."
+        ],
+        "correctness": "A value v contributes a bead to each of its v lowest rows. After gravity acts, row r contains exactly the count of input values at least r, which is nonincreasing as r rises; counting those rows bottom to top reads the values in sorted order.",
+        "complexityRationale": "The diagram has n poles and max rows, so filling and reading it costs O(n * max), where max is the largest value. The same number of bead cells is stored, giving O(n * max) space.",
+        "uses": [
+            "Teaching non-comparison sorting physically",
+            "Explaining the pigeonhole principle with an abacus analogy",
+            "Illustrating gravity-style parallel computation"
+        ],
+        "references": [
+            "O'Connor and Dvorak, Bead Sort, Australian Journal of Information Technology, 2003",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "Values [4, 1, 3, 2] become bead stacks on four poles. After gravity, the bottom row holds 4 beads, the next holds 3, then 2, then 1; counting row by row from the top produces [1, 2, 3, 4]."
+    },
     id: "bead-sort",
     name: "Bead Sort",
     category: "sorting",

@@ -140,6 +140,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tournament sort plays a single-elimination bracket: winners rise to the root and the champion is emitted. Replacing the champion with the next candidate and replaying only its path finds the next smallest in O(log n).",
+        "invariants": [
+            "Every internal node stores the smaller of its two children.",
+            "The root always holds the smallest unemitted value."
+        ],
+        "correctness": "The tournament tree invariant makes the root the minimum of all candidates; after emitting it, replaying the changed path restores the invariant, so repeated extraction yields values in ascending order.",
+        "complexityRationale": "Building the tree costs O(n) and each of n extractions replays a path of length O(log n), so O(n log n) time. The tree array stores O(n) nodes.",
+        "uses": [
+            "Priority queues with a tournament structure",
+            "Selection and k-way merging",
+            "Teaching heap-like structures through brackets"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1 (tournament replacement)",
+            "CLRS, Introduction to Algorithms, Chapter 6 (heaps)"
+        ],
+        "workedExample": "For [5, 3, 1, 4, 2], the bracket champion is 1; replace it with the next input and replay its path to find 2, then 3, 4, 5, emitting [1, 2, 3, 4, 5]."
+    },
     id: "tournament-sort",
     name: "Tournament Sort",
     category: "sorting",

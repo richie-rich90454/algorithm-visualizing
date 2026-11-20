@@ -161,6 +161,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The circle through three non-collinear points is centered where the perpendicular bisectors of two chords meet. A perpendicular bisector is the set of points equidistant from a chord's endpoints, so their intersection is equidistant from all three points and is the unique circumcenter.",
+        "invariants": [
+            "The computed center is equidistant from all three input points.",
+            "The radius equals that common distance.",
+            "The center lies on the perpendicular bisector of every chord."
+        ],
+        "correctness": "The locus of points equidistant from two vertices is exactly the perpendicular bisector of the segment joining them. Intersecting the bisectors of two chords therefore gives the unique point equidistant from all three vertices, provided they are not collinear. That point and the common distance define the unique circle through the three points.",
+        "complexityRationale": "The construction solves two small linear systems using constant arithmetic, so time is O(1). Only a handful of coordinates are stored, so space is O(1).",
+        "uses": [
+            "Finding the empty-circle test in Delaunay triangulation",
+            "Placing a facility equidistant from three locations",
+            "Computing circle geometry in computer-aided design"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Section 6.2",
+            "Weisstein, Circumcircle, MathWorld"
+        ],
+        "workedExample": "For the right triangle (0,0), (4,0), (0,3), the bisector of the horizontal chord is x = 2 and the other bisector meets it at y = 1.5. The circumcenter is (2, 1.5) and the radius is 2.5, which is half the hypotenuse of length 5."
+    },
+
     id: "circumcenter-circle-through-3-points",
     name: "Circumcenter (Circle Through 3 Points)",
     category: "geometry",

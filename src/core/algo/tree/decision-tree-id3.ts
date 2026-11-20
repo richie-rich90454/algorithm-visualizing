@@ -207,6 +207,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "ID3 builds a decision tree by choosing the attribute that most reduces uncertainty about the label. It measures uncertainty with entropy and picks the attribute with the largest information gain, then recurses on each branch until a branch is pure or no attributes remain.",
+        "invariants": [
+            "Entropy is computed from the class frequencies at each node.",
+            "Information gain is entropy before the split minus the weighted entropy after it.",
+            "A node with a single class becomes a leaf with that label."
+        ],
+        "correctness": "Entropy is minimized when all examples in a node share one label, so reducing entropy measures progress toward a correct classification. Information gain quantifies exactly the expected reduction in entropy from knowing an attribute's value, and choosing the maximum is the greedy ID3 rule. Recursing until purity guarantees that every training example reaching a leaf has the correct label, so the resulting tree classifies the training set consistently.",
+        "complexityRationale": "At each node the algorithm evaluates m attributes over n examples with up to v values, costing O(m*n*v); summed over the tree this is the usual O(m*n*v) bound for small depth. Storing the tree and example subsets uses O(n) space.",
+        "uses": [
+            "Building interpretable classifiers from categorical data",
+            "Medical diagnosis rule learning",
+            "Teaching information theory and entropy in machine learning"
+        ],
+        "references": [
+            "Quinlan, Induction of Decision Trees, Machine Learning 1 (1986)",
+            "Mitchell, Machine Learning, Chapter 3"
+        ],
+        "workedExample": "On the standard 14-example tennis data, the overall entropy is 0.940. Splitting on Humidity gives information gain 0.595, larger than Outlook at 0.247, so Humidity is the root. Its Sunny branch is all No and becomes a leaf, while the other branch splits further."
+    },
+
     id: "decision-tree-id3",
     name: "Decision Tree ID3",
     category: "tree",

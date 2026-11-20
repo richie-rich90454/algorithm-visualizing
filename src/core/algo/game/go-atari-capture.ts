@@ -154,6 +154,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In Go a connected group survives by having empty adjacent points called liberties. A group with a single liberty is in atari and is captured when the opponent fills that last liberty. This demo flood-fills the group's orthogonal neighbors to count liberties and shows the capturing move.",
+        "invariants": [
+            "A group is a maximal orthogonally connected set of same-color stones.",
+            "Liberties are the empty points adjacent to any stone of the group.",
+            "Filling the final liberty removes the whole group from the board."
+        ],
+        "correctness": "The flood fill enumerates exactly the connected stones, and scanning their neighbors gives exactly the liberties. A group with one liberty can be captured by playing there, and removal follows the Go rule that a zero-liberty group is taken off the board, so the depicted capture is legal.",
+        "complexityRationale": "Flood fill and neighbor scanning examine each of the n by n points a constant number of times, giving O(n^2) time and O(n^2) board storage.",
+        "uses": [
+            "Teaching Go life-and-death basics",
+            "A small board-state example for flood fill",
+            "A component counting routine in Go engine libraries"
+        ],
+        "references": [
+            "Berlekamp and Wolfe, Mathematical Go: Chilling Gets the Last Point",
+            "Russell, Go: A Complete Introduction to the Game"
+        ],
+        "workedExample": "On a 3x3 board a black stone sits in the center with white stones on three of its four sides. The flood fill finds one liberty at (2,1). White fills that point, the black group drops to zero liberties, and the stone is removed."
+    },
     id: "go-atari-capture",
     name: "Go Atari Capture",
     category: "game",

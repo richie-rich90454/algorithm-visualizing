@@ -107,6 +107,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Circular Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A circular linked list makes the last node point back to the first, forming a ring with no true beginning or end. Any node can serve as the entry point, and traversing long enough wraps around. This is ideal for round-robin scheduling and any loop that must cycle through elements forever.",
+        "invariants": [
+            "The last node's next pointer targets the first node.",
+            "Every node has exactly one outgoing next pointer.",
+            "A full traversal visits each node once before returning to the start."
+        ],
+        "correctness": "Following next pointers from any node visits all nodes before repeating because the structure is a single cycle. Insertion after the tail rewires two pointers and keeps the ring closed. Deletion bypasses a node without breaking the cycle, so traversal correctness is preserved.",
+        "complexityRationale": "Insertion or deletion at a known node is O(1) pointer rewiring; search is O(n) because it may wrap the whole ring. Storage is one node per element, O(n).",
+        "uses": [
+            "Round-robin CPU schedulers",
+            "Game loops and rotating buffers",
+            "Josephus-style elimination problems"
+        ],
+        "references": [
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.3",
+            "Donald Knuth, The Art of Computer Programming, Vol. 1, Section 2.3"
+        ],
+        "workedExample": "Insert 7, 3, 9, 1 into a circular list: 7 points to 3, 3 to 9, 9 to 1, and 1 back to 7. Starting at 7 and taking four next steps visits 3, 9, 1, then returns to 7, confirming the ring. Deleting 9 rewires 3 to point directly to 1."
+    },
     id: "circular-linked-list",
     name: "Circular Linked List",
     category: "data-structures",

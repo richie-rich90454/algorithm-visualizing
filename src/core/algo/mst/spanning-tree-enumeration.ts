@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Spanning tree enumeration lists every spanning tree of a tiny graph by testing each subset of V-1 edges. A subset is a spanning tree exactly when it is connected and has no cycle. Recording each one's weight also reveals the minimum spanning tree and previews Kirchhoff's count.",
+        "invariants": [
+            "Every spanning tree has exactly V-1 edges.",
+            "A subset of V-1 edges is a tree iff it is connected.",
+            "The lightest valid subset is the minimum spanning tree."
+        ],
+        "correctness": "Because all spanning trees have V-1 edges, enumerating those subsets covers every candidate. A connected subset with V-1 edges is necessarily acyclic, so the connectivity filter gives exactly the spanning trees, and comparing their weights identifies the minimum correctly.",
+        "complexityRationale": "Testing all subsets of E edges costs O(2^E V) on small graphs, with O(V + E) space for the candidate tree and union-find.",
+        "uses": [
+            "A brute-force reference for verifying MST algorithms",
+            "Computing exact tree counts on tiny graphs",
+            "Teaching enumeration and connectivity checks"
+        ],
+        "references": [
+            "Kirchhoff, Matrix-Tree theorem (1847)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, spanning trees"
+        ],
+        "workedExample": "The triangle with edges 1, 2, 3 has three subsets of two edges, and each connects all three vertices, so there are three spanning trees with weights 3, 4, and 5. The lightest is the MST and the count of three agrees with the Matrix-Tree theorem."
+    },
     id: "spanning-tree-enumeration",
     name: "Spanning Tree Enumeration",
     category: "mst",

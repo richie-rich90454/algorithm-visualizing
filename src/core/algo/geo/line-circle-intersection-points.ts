@@ -140,6 +140,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "To find where a line meets a circle, drop a perpendicular from the circle center to the line. That gives the closest point on the line; if its distance from the center exceeds the radius there is no intersection, otherwise stepping along the line by the remaining horizontal-leg length gives one or two points.",
+        "invariants": [
+            "The closest point m lies on the line and minimizes distance to the center.",
+            "The step length h satisfies h^2 = r^2 - |m - c|^2.",
+            "Every reported point is on the line and at distance r from the center."
+        ],
+        "correctness": "Projecting the center onto the line gives the foot m, and the radius, the perpendicular distance |m - c|, and half the chord form a right triangle. The step length h is therefore the positive square root of r^2 - |m - c|^2. Moving plus or minus h along the unit direction from m produces exactly the points at distance r from the center on that line; a negative radicand means no real intersection.",
+        "complexityRationale": "A fixed number of dot products and square roots are computed, so time is O(1). Only a few coordinates are stored, so space is O(1).",
+        "uses": [
+            "Ray-circle intersection in ray tracers",
+            "Computing entry and exit points in circular collision zones",
+            "Clipping paths against circular boundaries"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Section 6.4",
+            "Weisstein, Line-Circle Intersection, MathWorld"
+        ],
+        "workedExample": "A circle centered at (0,0) with radius 5 and the line through (0,3) and (4,3). The closest point is m = (0,3) with distance 3, so h = sqrt(25 - 9) = 4 and the intersections are (4,3) and (-4,3)."
+    },
+
     id: "line-circle-intersection-points",
     name: "Line–Circle Intersection",
     category: "geometry",

@@ -132,6 +132,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cycle sort finds where each element belongs by counting how many elements are smaller, then rotates whole cycles directly into place. Each value is written at most once, the theoretical minimum for sorting by writes. It shines when writes are costly.",
+        "invariants": [
+            "Every element written to its final position is never moved again.",
+            "The number of writes equals the number of elements not already in place."
+        ],
+        "correctness": "Counting smaller elements gives the exact destination index of a value in sorted order. Following the permutation cycles and placing each value at that index closes each cycle with all members correct, so the final array is sorted.",
+        "complexityRationale": "Counting destinations requires O(n) comparisons per element, so O(n^2) time, but writes are at most n, the minimum possible. The algorithm uses O(1) auxiliary storage.",
+        "uses": [
+            "Flash memory and EEPROM where writes wear out cells",
+            "Teaching minimal-write sorting",
+            "Situations where reading is cheap and writing is expensive"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1 (minimum-write sorting)",
+            "Sedgewick and Wayne, Algorithms, Section 2.1"
+        ],
+        "workedExample": "Start [4, 3, 2, 5, 1]. The value 4 belongs at index 3; rotate the cycle by moving 5, 1, 3, and 4 into their homes. After all cycles close the array reads [1, 2, 3, 4, 5] with only one write per misplaced value."
+    },
     id: "cycle-sort",
     name: "Cycle Sort",
     category: "sorting",

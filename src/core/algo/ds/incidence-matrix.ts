@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Incidence Matrix module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An incidence matrix has one row per vertex and one column per edge. Entry v,e is 1 when vertex v is an endpoint of edge e, or -1 and +1 for the tail and head of a directed edge. This makes finding all edges at a vertex a single row scan, at the cost of V times E space.",
+        "invariants": [
+            "Each column has exactly two nonzero entries for an undirected edge.",
+            "For a directed edge the column holds -1 at the tail and +1 at the head.",
+            "The row sum of absolute values gives the vertex degree."
+        ],
+        "correctness": "Writing the endpoints into a column records exactly which vertices the edge touches, so scanning a row reports precisely the incident edges. Degrees follow by counting nonzeros in the row. The sign convention for directed edges preserves direction information.",
+        "complexityRationale": "Edge checks and incident-edge queries scan a column or row, O(V) worst case. The matrix has V rows and E columns, O(V E) space, which is large for sparse graphs.",
+        "uses": [
+            "Network flow and circuit analysis",
+            "Representing directed graphs for linear algebra",
+            "Bipartite incidence in combinatorial optimization"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22",
+            "Frank Harary, Graph Theory, Chapter 2"
+        ],
+        "workedExample": "Vertices A, B, C and edges e1=A-B, e2=B-C give a 3 by 2 matrix: column e1 has 1 at A and B, column e2 has 1 at B and C. Row B has two nonzeros, so B's degree is 2; scanning row A finds only e1."
+    },
     id: "incidence-matrix",
     name: "Incidence Matrix",
     category: "data-structures",

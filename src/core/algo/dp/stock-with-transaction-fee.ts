@@ -116,6 +116,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Stock with transaction fee charges a fixed cost each time a trade is completed. Two states track the best balance while holding a stock and while flat. Buying reduces cash by the price; selling adds the price back but subtracts the fee, so the charge is applied exactly once per round trip.",
+        "invariants": [
+            "hold is the best balance while owning a stock after the current day.",
+            "cash is the best flat balance after selling and paying any fee.",
+            "The fee is deducted only on a sell, once per completed transaction."
+        ],
+        "correctness": "If a sale is optimal on a day, the balance becomes hold plus that day's price minus the fee, so placing the fee on the sell counts each transaction once. Buying from cash spends the price without a fee. Maximizing both states daily yields the optimal profit by induction.",
+        "complexityRationale": "A single pass over n prices updating two variables is O(n) time and O(1) space.",
+        "uses": [
+            "Modeling trading commissions in profit maximization",
+            "State-machine DP with per-transition costs",
+            "Extending stock problems with fees and constraints"
+        ],
+        "references": [
+            "LeetCode problem 714, Best Time to Buy and Sell Stock with Transaction Fee",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For prices [1,3,2,8,4,9] with fee 2, buying at 1 and selling at 8 nets 5 after the fee, then buying at 4 and selling at 9 nets another 3. The DP reports total profit 8."
+    },
     id: "stock-with-transaction-fee",
     name: "Stock with Transaction Fee",
     category: "dynamic-programming",

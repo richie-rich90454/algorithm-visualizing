@@ -199,6 +199,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bucket Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bucket sort spreads values into ordered buckets by range, sorts each bucket, then concatenates them. With values uniformly spread over [0, 1), buckets fill evenly and the per-bucket sorts are tiny. It is the classic distribution sort that beats the comparison bound on average.",
+        "invariants": [
+            "Every value lands in the bucket whose range contains it, and buckets are ordered by range.",
+            "Elements within a bucket keep their original relative order when the bucket sort is stable."
+        ],
+        "correctness": "All values in an earlier bucket are smaller than all values in a later bucket, so concatenating sorted buckets yields a globally sorted sequence. Sorting each bucket correctly orders the values inside that range.",
+        "complexityRationale": "With n values and roughly n buckets under a uniform distribution, each bucket holds O(1) values, so insertion sorting all buckets costs O(n) total; a skewed distribution degenerates to O(n^2). The buckets and output array use O(n) space.",
+        "uses": [
+            "Sorting uniformly distributed floating-point values",
+            "Histogram equalization and graphics pipelines",
+            "Preprocessing for radix-style distributions"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 8",
+            "Sedgewick and Wayne, Algorithms, Section 5.2"
+        ],
+        "workedExample": "For [0.42, 0.32, 0.67, 0.10] with ten buckets, values fall into buckets 4, 3, 6, and 1. Each bucket holds one value; reading buckets in order gives [0.10, 0.32, 0.42, 0.67]."
+    },
     id: "bucket-sort",
     name: "Bucket Sort",
     category: "sorting",

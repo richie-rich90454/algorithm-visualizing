@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The CSR module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Compressed Sparse Row stores a sparse graph or matrix in three arrays: rowPtr gives where each row starts, col lists column indices, and val holds weights. Neighbors of a vertex occupy one contiguous slice of col, which is cache-friendly. It is the standard format for sparse linear algebra and graph analytics.",
+        "invariants": [
+            "rowPtr[v] to rowPtr[v+1] delimits vertex v's neighbor slice.",
+            "col holds only nonzero column indices, sorted by row.",
+            "The last rowPtr entry equals the number of stored nonzeros."
+        ],
+        "correctness": "Packing edges by source row makes the slice between consecutive rowPtr entries exactly the neighbor list of that vertex. Reading that slice returns all and only the nonzeros in row v. The invariant that rowPtr entries are cumulative counts guarantees no edge is skipped or duplicated.",
+        "complexityRationale": "Listing neighbors scans one contiguous slice, O(degree) with excellent locality. The three arrays store O(V + E) entries, avoiding the wasted cells of a dense matrix.",
+        "uses": [
+            "Sparse matrix-vector multiplication",
+            "Graph analytics in frameworks like GraphBLAS",
+            "Scientific computing and recommender systems"
+        ],
+        "references": [
+            "Yousef Saad, Iterative Methods for Sparse Linear Systems, Chapter 1",
+            "Timothy A. Davis, Direct Methods for Sparse Linear Systems, Section 2.7"
+        ],
+        "workedExample": "For edges 0-1, 0-2, 1-2, CSR has rowPtr [0, 2, 3, 3], col [1, 2, 2], val [1, 1, 1]. Vertex 0's neighbors are col[0..1] = 1, 2; vertex 1's is col[2] = 2. The final rowPtr entry 3 equals the three stored edges."
+    },
     id: "csr",
     name: "CSR (Compressed Sparse Row)",
     category: "data-structures",

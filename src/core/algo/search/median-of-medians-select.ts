@@ -150,6 +150,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Median of medians finds the kth smallest in worst-case linear time by choosing a guaranteed-good pivot. It splits the array into groups of five, takes each median, and uses the median of those medians as the pivot.",
+        "invariants": [
+            "The chosen pivot is larger than at least 30 percent and smaller than at least 30 percent of the elements.",
+            "The kth element stays in the partition side selected by comparing k with the pivot rank."
+        ],
+        "correctness": "Because the pivot discards a constant fraction of elements every round, the recurrence T(n) <= T(n/5) + T(7n/10) + O(n) solves to O(n); recursing only into the side containing k preserves the target.",
+        "complexityRationale": "Group medians cost O(n), the pivot recursion covers n/5 elements, and the partition recursion covers at most 7n/10, giving O(n) worst case. Group copies need O(n) space here.",
+        "uses": [
+            "Worst-case linear selection",
+            "Choosing pivots for deterministic quicksort",
+            "Teaching recurrence analysis with the 30 percent lemma"
+        ],
+        "references": [
+            "Blum, Floyd, Pratt, Rivest, and Tarjan, Time Bounds for Selection, Journal of Computer and System Sciences, 1973",
+            "CLRS, Introduction to Algorithms, Chapter 9"
+        ],
+        "workedExample": "For [9,3,7,1,5,8,2,6,4] and k=5, groups of five yield medians 5 and 4; one becomes the pivot. Partitioning discards a large fraction and the search narrows until the fifth value 5 is returned."
+    },
     id: "median-of-medians-select",
     name: "Median of Medians Select",
     category: "searching",

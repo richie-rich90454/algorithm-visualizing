@@ -182,6 +182,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Counting Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "When keys are small integers, count how many times each key appears, convert the counts to cumulative positions, then place each input item directly at its position while decrementing the count.",
+        "invariants": [
+            "The count array holds the number of occurrences of each key before prefix sums.",
+            "After prefix sums, each count is the last free position for that key."
+        ],
+        "correctness": "The prefix sum of counts gives the exclusive upper bound of each key's block in sorted order. Writing items from right to left with decrementing counters fills exactly that block, preserving stability and producing sorted output.",
+        "complexityRationale": "Counting and prefix sums take O(n + k) where k is the key range; placement takes O(n). Space is O(n + k). When k grows much larger than n, comparison sorts are preferable.",
+        "uses": [
+            "Sorting bytes, digits, or small enumerated keys",
+            "The inner pass of radix sort",
+            "Histogram-based preprocessing"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 8",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "Start [2, 0, 2, 1] with range 0..2. Counts are [1, 1, 2]. Prefix positions are [1, 2, 4]. Place right to left: 2 -> index 3, 1 -> index 1, 0 -> index 0, 2 -> index 2. Result [0, 1, 2, 2]."
+    },
     id: "counting-sort",
     name: "Counting Sort",
     category: "sorting",

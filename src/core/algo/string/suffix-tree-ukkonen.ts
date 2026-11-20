@@ -181,6 +181,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Suffix Tree (Ukkonen) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A suffix tree is a compressed trie of all suffixes of a string. This educational version inserts each suffix into the trie: walking down, it follows matching edge labels and splits an edge when a suffix diverges, creating a new leaf. Full Ukkonen achieves the same online with suffix links in linear time.",
+        "invariants": [
+            "Every root-to-leaf path spells exactly one suffix.",
+            "Edge labels are nonempty substrings and no node has two edges starting with the same character."
+        ],
+        "correctness": "Inserting a suffix either follows existing edges or splits one where the new suffix differs, which maintains the compressed-trie property. After all suffixes are inserted the tree has one leaf per suffix and supports substring search by walking labels.",
+        "complexityRationale": "Naively inserting n suffixes of length up to n costs O(n^2) time; full Ukkonen's suffix links and active point reduce this to O(n), with O(n) space for the compressed tree.",
+        "uses": [
+            "Fast substring search and repeated-substring detection",
+            "Genome indexing",
+            "Longest common substring between strings"
+        ],
+        "references": [
+            "Ukkonen, On-Line Construction of Suffix Trees, 1995",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"banana\", inserting suffixes one by one builds a tree where the root branches on 'a', 'b', and 'n'; the repeated \"ana\" causes shared paths and edge splits, ending with six leaves representing all suffixes."
+    },
     id: "suffix-tree-ukkonen",
     name: "Suffix Tree (Ukkonen)",
     category: "string",

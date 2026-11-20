@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The XOR Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An xor linked list stores one pointer per node holding the xor of the previous and next addresses. Walking forward recovers the next node as previous xor stored, and walking backward uses next xor stored. It halves pointer overhead at the cost of needing a neighbor to go backward.",
+        "invariants": [
+            "Each stored field equals the previous address xor the next address.",
+            "Traversal keeps the previous and current addresses.",
+            "The ends use zero as the missing neighbor."
+        ],
+        "correctness": "Since xor is its own inverse, previous xor (previous xor next) yields next, so a forward step recovers the successor; similarly next xor stored yields the predecessor. Traversal from an end therefore visits every node once using only two addresses in hand.",
+        "complexityRationale": "Each step is a constant number of xor operations, O(n) traversal. One pointer per node instead of two gives O(n) space with half the overhead of a doubly linked list.",
+        "uses": [
+            "Memory-constrained embedded systems",
+            "Demonstrating pointer bit tricks",
+            "Dense in-memory graphs with bidirectional traversal"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.4 on xor linked lists",
+            "Memory-efficient doubly linked lists (classic programming technique)"
+        ],
+        "workedExample": "Values 10, 20, 30, 40 with each node storing previous xor next; starting with previous 0, node 10 field gives 20, shifting recovers 30 then 40, holding only two addresses throughout."
+    },
     id: "xor-linked-list",
     name: "XOR Linked List",
     category: "data-structures",

@@ -158,6 +158,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The minimal subtree spanning a set of terminal nodes is the union of the paths from each terminal to the root, with branches that lead to no terminal pruned away. Marking ancestors of every terminal keeps exactly the nodes needed to connect them.",
+        "invariants": [
+            "Every terminal is included in the kept set.",
+            "Every kept node lies on a path from some terminal to the root or between terminals.",
+            "Nodes and leaves not needed to connect terminals are removed."
+        ],
+        "correctness": "In a tree the union of the root-to-terminal paths for all terminals contains every simple path between any two terminals, because their lowest common ancestor lies on both paths. Removing branches that contain no terminal cannot disconnect any two terminals, since those branches are dead ends. What remains is the smallest connected subgraph containing all terminals, which is the Steiner subtree for this tree setting.",
+        "complexityRationale": "Marking each terminal's ancestor chain costs O(k*h) where h is the tree height, up to O(n*k); pruning is a single traversal costing O(n). Storage for markers uses O(n) space.",
+        "uses": [
+            "Finding the minimal network connecting given sites",
+            "Pruning phylogenetic trees to selected species",
+            "Computing relevant subgraphs in routing"
+        ],
+        "references": [
+            "Garey and Johnson, Computers and Intractability, Steiner tree chapter",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "In a tree where terminals D, E, and G lie in one branch and H is an unrelated leaf, the union of their root paths keeps seven nodes and drops H, leaving the smallest subtree that connects all three terminals."
+    },
+
     id: "tree-steiner-subtree",
     name: "Tree Steiner Subtree",
     category: "tree",

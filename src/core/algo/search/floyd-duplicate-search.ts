@@ -178,6 +178,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The array of values in 1..n is treated as a linked list where each value points to the next index. The repeated value creates a cycle; Floyd's tortoise and hare find a meeting point, then two pointers starting from the entry and the meeting point converge on the duplicated value.",
+        "invariants": [
+            "Following pointers from index 0 eventually enters the cycle created by the duplicate.",
+            "The cycle entry corresponds to the value that appears twice."
+        ],
+        "correctness": "The tortoise and hare meet inside the cycle; the standard cycle-entry theorem says a pointer from the start and one from the meeting point advance in lockstep to the entry, which here is the duplicated number.",
+        "complexityRationale": "Both pointer phases traverse O(n) links, so O(n) time. Only two index variables are stored, O(1) space.",
+        "uses": [
+            "Detecting duplicates under a strict space budget",
+            "Cycle detection in linked structures",
+            "The classic find-the-duplicate-number interview problem"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.3.3 (cycle detection)",
+            "Garey and Johnson, Computers and Intractability, problem on repeated values"
+        ],
+        "workedExample": "For [1, 3, 4, 2, 2], start at index 0 and follow values; the tortoise and hare meet inside the cycle, and walking a pointer from index 0 to meet one from the meeting point lands on the value 2."
+    },
     id: "floyd-duplicate-search",
     name: "Floyd Duplicate Search",
     category: "searching",

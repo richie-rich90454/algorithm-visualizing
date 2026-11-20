@@ -162,6 +162,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Longest Common Prefix DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This DP computes the longest common prefix of every pair of suffixes of two strings. The recurrence is simple: if the current characters match, the value is one plus the value for the suffixes one step to the right; otherwise it is zero. Filling from the ends makes the right-hand neighbor available.",
+        "invariants": [
+            "lcp[i][j] equals the length of the common prefix of a[i..] and b[j..].",
+            "The last row and column are zero because an empty suffix has no prefix."
+        ],
+        "correctness": "By backward induction, a match at (i,j) extends the common prefix of (i+1,j+1) by exactly one and a mismatch makes it zero. Filling bottom up from the ends means each dependency is already known, so every entry is correct and the maximum is the answer.",
+        "complexityRationale": "The table has (n+1)(m+1) cells, each filled in O(1) from its diagonal neighbor, giving O(nm) time and O(nm) space.",
+        "uses": [
+            "Finding repeated substrings",
+            "The DP core of longest-common-substring and suffix-prefix problems",
+            "Approximate matching heuristics"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, dynamic programming chapter",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For a=\"ababca\", b=\"abacab\", the suffixes \"abca\" and \"acab\" give LCP 1 (only 'a' matches), while \"ababca\" and \"abacab\" share \"aba\" so that cell is 3, the maximum."
+    },
     id: "longest-common-prefix-dp",
     name: "Longest Common Prefix (DP)",
     category: "string",

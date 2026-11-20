@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dynamic Segment Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A dynamic segment tree allocates nodes only where updates actually touch a coordinate, so it can represent a huge index range without preallocating it. Nodes are created on demand along the path to an updated point. This is the go-to structure when the coordinate space is enormous but the number of operations is small.",
+        "invariants": [
+            "A node exists only if some update created it.",
+            "Each node covers a subinterval of the full coordinate range.",
+            "Internal node values equal the aggregate of their children."
+        ],
+        "correctness": "Creating the missing children along an update path extends the tree only where data exists, and recomputing aggregates bottom-up keeps each node correct. A range query that ignores null nodes returns the aggregate of exactly the stored points in range. Answers therefore match a full segment tree over the sparse data.",
+        "complexityRationale": "Each update or query creates or visits O(log MAX) nodes for coordinate bound MAX, giving O(log MAX) time. Total space is O(ops * log MAX) because only touched paths are stored.",
+        "uses": [
+            "Sparse range updates over large coordinates",
+            "Competitive programming with 64-bit index spaces",
+            "Event sweeps over sparse time lines"
+        ],
+        "references": [
+            "Steven Halim, Competitive Programming 3, dynamic segment tree section",
+            "CLRS, Introduction to Algorithms, Chapter 14"
+        ],
+        "workedExample": "Over range [0, 15], inserting value 7 creates only the path root, [8,15], [8,11], [8,9], and leaf 7; no other nodes exist. Inserting 3 adds its own path, and a query over [2,7] combines just the nodes that were created."
+    },
     id: "dynamic-segment-tree",
     name: "Dynamic Segment Tree",
     category: "data-structures",

@@ -150,6 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Treblecross is played on a one-dimensional strip where players place X marks. The first player to create three consecutive X marks wins immediately. Much of the strategy is spotting immediate threats: if placing an X would complete a triple, that square is an instant win.",
+        "invariants": [
+            "An X may be placed only on an empty square.",
+            "A square is a winning move if it completes a run of three X marks.",
+            "If no immediate win exists, the position is quiet and play continues."
+        ],
+        "correctness": "The scan checks every empty square with an exact three-window test, so it identifies all and only moves that immediately complete three in a row. Taking such a square wins at once by the rules, so the computed winning reply is correct whenever one exists.",
+        "complexityRationale": "Scanning n squares and testing a constant-size window costs O(n) time and O(n) space for the mark set.",
+        "uses": [
+            "A small achievement game for threat-detection demos",
+            "Teaching immediate-win scans in game engines",
+            "A one-dimensional analog of three-in-a-row games"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Guy, Treblecross and related games (research literature)"
+        ],
+        "workedExample": "On a strip of size 7 with existing X marks at squares 2 and 3, squares 1 and 4 each complete a triple of X marks. The scan finds square 1 as the first winning move; placing an X there creates X X X and the mover wins immediately."
+    },
     id: "treblecross",
     name: "Treblecross",
     category: "game",

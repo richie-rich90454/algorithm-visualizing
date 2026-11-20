@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Fermat Little Theorem module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Fermat's little theorem says that for a prime p and a not divisible by p, raising a to the power p-1 gives 1 modulo p. The visualization walks the residues a^1, a^2, up to a^(p-1) and highlights the final value. Seeing the sequence land on 1 makes the theorem concrete and shows why it underpins primality tests and modular inverses.",
+        "invariants": [
+            "Each residue is the previous one multiplied by a modulo p.",
+            "For prime p none of the residues a^k with 0 < k < p is zero.",
+            "The residue at exponent p-1 equals 1 when p is prime."
+        ],
+        "correctness": "The nonzero residues modulo a prime form a multiplicative group of order p-1, so by Lagrange's theorem every element raised to the group order is the identity. Therefore a^(p-1) = 1 mod p. If the final residue is not 1, p cannot be prime, which the visualization uses to report compositeness.",
+        "complexityRationale": "Walking the powers one multiplication at a time takes O(p) steps, while a single direct exponentiation would take O(log p). Only the running residue is stored, so space is O(1).",
+        "uses": [
+            "Founding Fermat primality testing",
+            "Computing modular inverses as a^(p-2) mod p",
+            "Basis of the RSA correctness argument"
+        ],
+        "references": [
+            "Fermat, letter to Frenicle de Bessy (1640)",
+            "Cormen et al., Introduction to Algorithms, Section 31.3"
+        ],
+        "workedExample": "Take a = 3 and p = 7. The powers mod 7 are 3, 2, 6, 4, 5, 1, so 3^6 = 1 mod 7, confirming the theorem."
+    },
     id: "fermat-little",
     name: "Fermat's Little Theorem",
     category: "math",

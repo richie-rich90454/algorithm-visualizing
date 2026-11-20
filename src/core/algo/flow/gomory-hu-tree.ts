@@ -204,6 +204,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Gomory-Hu tree is a weighted tree on the same vertices that encodes the minimum cut value between every pair: the minimum edge weight on the tree path between two vertices equals their min cut in the original graph. It replaces many separate max-flow computations with a compact structure that answers all pair queries by a path minimum.",
+        "invariants": [
+            "Each tree edge carries the min cut value of the partition it induces.",
+            "For any pair, the lightest edge on the tree path equals the graph min cut for that pair.",
+            "The tree always spans all vertices with exactly V-1 edges."
+        ],
+        "correctness": "The construction repeatedly picks a pair, computes its min cut with a max-flow call, and contracts one side while placing a tree edge of that cut value. The cut-equivalence invariant is preserved at each contraction, so when all vertices are placed the tree represents every pair's min cut. Answering a query by the path minimum is then correct.",
+        "complexityRationale": "Building the tree uses V-1 max-flow computations, each about O(E^2) on the shrinking graph, for roughly O(V E^2). The tree, components, and adjacency data use O(V + E) space.",
+        "uses": [
+            "Answering many pairwise connectivity queries in networks",
+            "All-pairs min-cut analysis without storing a full table",
+            "Network reliability and vulnerability studies"
+        ],
+        "references": [
+            "Gomory and Hu, Multi-Terminal Network Flows (1961)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, multi-terminal flows chapter"
+        ],
+        "workedExample": "Graph edges 0-1 weight 3, 1-2 weight 2, 2-3 weight 4, 0-2 weight 1. The minimum cut separating 0 from 3 has capacity 3, realized by the partition {0,1} versus {2,3}. The Gomory-Hu tree places an edge of weight 3 splitting those sides, and queries such as cut(0,3) read off the minimum edge on the tree path."
+    },
     id: "gomory-hu-tree",
     name: "Gomory-Hu Tree",
     category: "flow",

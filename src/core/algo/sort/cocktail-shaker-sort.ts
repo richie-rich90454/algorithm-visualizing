@@ -233,6 +233,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Cocktail Shaker Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cocktail shaker sort is bubble sort that sweeps in both directions. A forward pass floats the largest remaining value to the right; a backward pass sinks the smallest remaining value to the left. The sorted region grows from both ends, cutting the number of passes.",
+        "invariants": [
+            "After a forward pass the largest unsorted value is fixed at the right boundary.",
+            "After a backward pass the smallest unsorted value is fixed at the left boundary."
+        ],
+        "correctness": "Each forward pass is a full bubble pass, so its maximum settles correctly; each backward pass is the mirror, settling the minimum. When a pass makes no swaps every adjacent pair is ordered, so the array is sorted.",
+        "complexityRationale": "Each pass scans O(n) adjacent pairs and at most O(n) passes occur, giving O(n^2) worst and average time; a sorted array finishes in one pass, O(n). Only swap flags and indices are kept, so space is O(1).",
+        "uses": [
+            "Teaching two-pointer inward scanning",
+            "Sorting small or nearly sorted lists stably",
+            "Baseline for comparing bidirectional sorting networks"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2",
+            "Sedgewick and Wayne, Algorithms, Section 2.1"
+        ],
+        "workedExample": "Start [5, 1, 8, 3]. A forward pass swaps 5 with 1 and 8 with 3, pushing 8 to the end: [1, 5, 3, 8]. A backward pass swaps 5 with 3, leaving [1, 3, 5, 8]."
+    },
     id: "cocktail-shaker-sort",
     name: "Cocktail Shaker Sort",
     category: "sorting",

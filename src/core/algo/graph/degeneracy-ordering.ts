@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The degeneracy of a graph is the smallest d such that every subgraph has a vertex of degree at most d. The ordering peels the graph like an onion, repeatedly removing a minimum-degree vertex and recording it. Because each vertex has few later neighbors, greedy coloring along the reverse order uses only d+1 colors.",
+        "invariants": [
+            "At each peel step the chosen vertex has minimum degree in the surviving graph.",
+            "The largest minimum degree seen during peeling equals the degeneracy.",
+            "Every vertex has at most d neighbors that appear after it in the peel order."
+        ],
+        "correctness": "Peeling removes a minimum-degree vertex, so if the largest degree at removal is d, every subgraph also contains a vertex of degree at most d, proving the bound. Conversely the subgraph surviving just before that removal has minimum degree d, so the degeneracy cannot be smaller, making the recorded value exact.",
+        "complexityRationale": "With bucketed degree lists each vertex and edge is touched a constant number of times, giving O(V + E) time and O(V + E) space for degrees and the surviving set.",
+        "uses": [
+            "Bounding the colors needed by greedy graph coloring",
+            "k-core decomposition and sparse graphorientation",
+            "Analyzing the sparsity of real-world networks"
+        ],
+        "references": [
+            "Matula and Beck, Smallest-Last Ordering and Clustering and Graph Coloring Algorithms (1983)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, graph coloring"
+        ],
+        "workedExample": "The diamond A-B-C-D with A and B joined to C and D peels C or D first at degree 2, then the rest. The largest minimum degree observed is 2, so the degeneracy is 2 and a reverse-order greedy coloring needs at most 3 colors."
+    },
     id: "degeneracy-ordering",
     name: "Degeneracy Ordering",
     category: "graph",

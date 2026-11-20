@@ -141,6 +141,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Monte Carlo module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Monte Carlo methods estimate quantities by random sampling. To estimate pi, scatter points uniformly in the unit square and count the fraction landing inside the quarter circle x^2+y^2 <= 1. That fraction approximates the area ratio pi/4, so pi is about four times the inside fraction. More samples give a tighter estimate.",
+        "invariants": [
+            "Each sample is an independent uniformly random point in [0,1)^2.",
+            "A point is inside exactly when x^2+y^2 <= 1.",
+            "The running estimate uses only the samples seen so far."
+        ],
+        "correctness": "By the law of large numbers, the observed fraction of inside points converges to the true probability pi/4 as the number of samples grows, so four times that fraction converges to pi. With N samples the standard error of the estimate is on the order of 1/sqrt(N).",
+        "complexityRationale": "Each sample needs two random numbers, two squarings and a comparison, constant work, so N samples take O(N) time. Only counters and the current estimate are stored, O(1) space, with the grid serving only for display.",
+        "uses": [
+            "Numerical integration in higher dimensions",
+            "Financial option pricing and risk analysis",
+            "Particle-transport simulation in physics",
+            "Computer graphics path tracing and global illumination"
+        ],
+        "references": [
+            "Metropolis and Ulam, The Monte Carlo Method, Journal of the American Statistical Association, 1949",
+            "Robert and Casella, Monte Carlo Statistical Methods, 2004"
+        ],
+        "workedExample": "Throw four points: (0.3,0.4) is inside (0.25<=1), (0.9,0.9) is outside (1.62>1), (0.1,0.2) is inside, and (0.8,0.5) is inside (0.89<=1). Three of four are inside, giving pi about 4·3/4=3.0. With many more points the estimate approaches 3.14159."
+    },
     id: "monte-carlo",
     name: "Monte Carlo (π)",
     category: "math",

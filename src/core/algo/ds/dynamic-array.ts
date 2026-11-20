@@ -140,6 +140,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dynamic Array module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A dynamic array keeps a backing buffer larger than its logical size and doubles that buffer when an append would overflow. The occasional expensive copy is paid for by the many cheap appends since the last growth, giving amortized O(1) insertion. Random access stays O(1) because elements are contiguous.",
+        "invariants": [
+            "size is always at most capacity.",
+            "Elements 0..size-1 occupy the front of the buffer.",
+            "Capacity grows geometrically on overflow."
+        ],
+        "correctness": "Before appending, checking size against capacity ensures a write stays in bounds; resizing copies existing elements in order to the new buffer, preserving their positions. Doubling guarantees the next overflow is at least size appends away, so the amortized argument holds.",
+        "complexityRationale": "Appends are O(1) unless a resize occurs, and a resize copies O(n) elements; doubling makes total copies over m appends O(m), so amortized O(1). The buffer is O(n) space with at most a constant factor of slack.",
+        "uses": [
+            "Vectors and ArrayLists in standard libraries",
+            "Building lists of unknown length",
+            "Stacks and buffers built on contiguous storage"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 17 on amortized analysis",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.4"
+        ],
+        "workedExample": "Start with capacity 2. Append 1, 2 fill it; appending 3 triggers a resize to capacity 4 and copies 1, 2; appending 4, 5 fill again; appending 6 resizes to 8. Over six appends only two copies occurred, showing amortized constant cost."
+    },
     id: "dynamic-array",
     name: "Dynamic Array",
     category: "data-structures",

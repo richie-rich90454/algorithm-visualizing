@@ -167,6 +167,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Merge-insertion sort, also called Ford-Johnson, pairs elements, sorts the winners, then inserts the losers in a carefully chosen Jacobsthal order. That ordering makes each binary insertion as short as possible, yielding the fewest comparisons known for small inputs.",
+        "invariants": [
+            "Paired losers are never larger than their winners, so they can be inserted into an already sorted main chain.",
+            "The main chain stays sorted after each binary insertion."
+        ],
+        "correctness": "Sorting the larger element of each pair first establishes an ordered backbone; every loser is no larger than its partner and is inserted by binary search into the backbone by Jacobsthal groups. Induction on the groups gives a fully sorted chain with near-optimal comparisons.",
+        "complexityRationale": "Recurrence analysis of the pairing and Jacobsthal insertions gives O(n log n) comparisons with a small constant, the best known for small n. The auxiliary chains need O(n) space.",
+        "uses": [
+            "Minimizing comparisons when comparisons are expensive",
+            "Sorting small arrays in library implementations",
+            "Studying optimal comparison counts"
+        ],
+        "references": [
+            "Ford and Johnson, A Tournament Problem, American Mathematical Monthly, 1959",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3.3"
+        ],
+        "workedExample": "Pair [5, 3], [1, 4], [2, 6]; winners 5, 4, 6 sort to [4, 5, 6]. Insert losers in Jacobsthal order: 3 into the lower end, then 1 to the front, then 2, ending at [1, 2, 3, 4, 5, 6]."
+    },
     id: "merge-insertion-sort",
     name: "Merge-Insertion Sort",
     category: "sorting",

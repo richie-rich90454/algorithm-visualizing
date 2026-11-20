@@ -196,6 +196,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Flood Fill (DFS) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Flood fill recolors a connected region of same-colored cells. The depth-first version recurses into each matching orthogonal neighbor as soon as it is found, producing a spiral-like exploration rather than the ripple of the queue-based version.",
+        "invariants": [
+            "A cell is recolored only when it matches the original target color.",
+            "Recursion visits each cell of the region at most once.",
+            "All four orthogonal neighbors of a recolored cell are considered."
+        ],
+        "correctness": "Recursing into matching neighbors reaches every cell connected to the start through same-colored cells, and coloring on entry prevents revisiting. Cells outside the connected region cannot be reached through matching neighbors, so exactly the target region changes color.",
+        "complexityRationale": "Every cell in the region is visited once, O(rows * cols) time, and the recursion stack can reach the region size, O(rows * cols) space in the worst case.",
+        "uses": [
+            "Paint bucket and magic-wand tools",
+            "Connected component detection in raster images",
+            "A canonical example of recursive grid traversal"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search",
+            "Gonzalez and Woods, Digital Image Processing"
+        ],
+        "workedExample": "From cell (1,1) with target color 1, recursion dives through adjacent color-1 cells before backtracking, recoloring each to 9. When all connected color-1 cells are done, the boundary cells of colors 2, 3, and 4 stop the recursion and remain unchanged."
+    },
     id: "flood-fill-dfs",
     name: "Flood Fill (DFS)",
     category: "graph",

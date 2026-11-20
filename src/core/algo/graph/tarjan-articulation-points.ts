@@ -182,6 +182,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tarjan Articulation Points module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An articulation point is a vertex whose removal increases the number of connected components. Tarjan's one-pass DFS uses discovery times and lowlink values. A non-root vertex is critical when a child cannot reach above it, and the root is critical when it has more than one DFS child.",
+        "invariants": [
+            "low[v] is the oldest vertex reachable from v's subtree through a back edge.",
+            "A root with at least two DFS children splits the graph when removed.",
+            "A non-root v is an articulation point exactly when some child has low at least disc[v]."
+        ],
+        "correctness": "If a child's lowlink is at least the parent's discovery time, the child's subtree has no back edge above the parent, so removing the parent detaches it. The root case differs because separate child subtrees have no back edges between them, so two children already imply disconnection. These conditions are necessary and sufficient, so the reported set is exact.",
+        "complexityRationale": "One DFS examines each edge once, O(V + E) time, with O(V) space for discovery, lowlink, and parent bookkeeping.",
+        "uses": [
+            "Finding critical vertices in communication and transport networks",
+            "Reliability analysis and network hardening",
+            "A companion to biconnected component decomposition"
+        ],
+        "references": [
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search"
+        ],
+        "workedExample": "In the graph with a central cluster around B and D, DFS shows that removing B separates the A-C side from the rest, and removing D separates the E-F-G side. Both have a child whose lowlink reaches only to themselves, so B and D are articulation points."
+    },
     id: "tarjan-articulation-points",
     name: "Tarjan Articulation Points",
     category: "graph",

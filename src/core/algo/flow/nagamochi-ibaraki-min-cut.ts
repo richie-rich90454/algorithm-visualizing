@@ -123,6 +123,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Nagamochi-Ibaraki finds a global minimum cut in an undirected weighted graph without running max flow. It repeatedly grows a maximum adjacency ordering and measures the cut made by the last two vertices, then contracts those two and recurses. The lightest cut seen over all phases is the global minimum cut.",
+        "invariants": [
+            "The maximum adjacency search order has a monotone prefix property about cut values.",
+            "The cut of the last added vertex in a phase is a minimum cut separating it from the rest of the current graph.",
+            "The global minimum cut is never destroyed by contracting the last pair unless it is already recorded."
+        ],
+        "correctness": "The maximum adjacency ordering guarantees the last vertex's phase cut is the minimum cut isolating that vertex. Because contracting the last two vertices cannot decrease the global minimum cut, and any global min cut either crosses that phase cut or survives contraction, tracking the lightest phase cut over all contractions yields the global minimum cut.",
+        "complexityRationale": "Each maximum adjacency phase costs O(E + V log V) with a priority queue and there are V-1 phases, giving O(V E + V^2 log V). Weights and contracted adjacency use O(V^2) space.",
+        "uses": [
+            "Global minimum cut in undirected weighted graphs",
+            "Network reliability and connectivity analysis",
+            "A deterministic alternative to randomized contraction"
+        ],
+        "references": [
+            "Nagamochi and Ibaraki, A Linear-Time Algorithm for Finding a Sparse k-Connected Spanning Subgraph (1992)",
+            "Stoer and Wagner, A Simple Min-Cut Algorithm (1997)"
+        ],
+        "workedExample": "Triangle 0-1 weight 3, 1-2 weight 2, 0-2 weight 1. The maximum adjacency ordering from 0 adds 1 then 2, and the phase cut isolating 2 has weight 2+1 = 3. After contraction the remaining phase cut is also at least 3, so the global minimum cut is 3, isolating vertex 2."
+    },
     id: "nagamochi-ibaraki-min-cut",
     name: "Nagamochi-Ibaraki Min Cut",
     category: "flow",

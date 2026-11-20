@@ -174,6 +174,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In an ordinary matching every vertex is used at most once. Here each left and right vertex has a capacity b, so it may be matched up to b times. Replacing each vertex by b copies turns the problem into an ordinary bipartite matching, which is solved by finding augmenting paths in a flow network.",
+        "invariants": [
+            "No vertex carries more than its capacity b of matched edges.",
+            "The residual graph reverses every matched unit, allowing later augmentations to reassign units.",
+            "The flow value always equals the current b-matching size."
+        ],
+        "correctness": "Each unit of flow corresponds to one matched edge between a left and right vertex. Source-to-left and right-to-sink arcs enforce the capacities, so any integral flow is a valid b-matching. By the integrality of max flow and the augmenting-path theorem, stopping when no augmenting path remains yields a maximum b-matching.",
+        "complexityRationale": "Expanding capacities into b copies gives at most V vertices and E edges, and each unit augmentation search costs O(E), for roughly O(V E^2) in the worst case. The network and residual arcs use O(V + E) space.",
+        "uses": [
+            "Assigning multiple tasks per worker under per-worker limits",
+            "Course seating with per-section capacity",
+            "Bandwidth reservation where each endpoint has a degree limit"
+        ],
+        "references": [
+            "Kleinberg and Tardos, Algorithm Design,Chapter 7",
+            "Ahuja, Magnanti, and Orlin, Network Flows, b-matching section"
+        ],
+        "workedExample": "Left L0 has capacity 2, L1 has capacity 1; right R0 has capacity 1, R1 has capacity 2, and all four edges exist. Match L0-R0 and L0-R1 (L0 is full), then L1-R1 (R1 is now full). Three units flow; no left or right vertex exceeds its capacity, so the maximum b-matching size is 3."
+    },
     id: "bipartite-b-matching",
     name: "Bipartite b-Matching",
     category: "flow",

@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A skew binary list stores elements in chunks whose sizes follow skew binary numbers. Cons is O(1): if the two smallest chunks have equal size they merge into one chunk of size 2w+1, otherwise a new singleton is added; indexing skips whole chunks in O(log n).",
+        "invariants": [
+            "At most one chunk of each size appears in the representation.",
+            "Chunk sizes follow the skew binary sequence.",
+            "Older chunks are never mutated so versions share structure."
+        ],
+        "correctness": "The merge rule preserves the skew binary representation and yields O(1) worst-case cons. Indexing skips chunk sizes rather than single elements, reaching the target chunk in O(log n) steps and then indexing inside it, so random access is correct and fast.",
+        "complexityRationale": "Cons merges at most a constant number of chunks, O(1); indexing skips O(log n) chunks. Storage is one node per element, O(n), with persistence sharing unchanged chunks.",
+        "uses": [
+            "Purely functional lists with efficient indexing",
+            "Persistent random access sequences",
+            "Backtracking algorithms needing cheap versioned prepends"
+        ],
+        "references": [
+            "Okasaki, Skew Binary Random Access Lists, Journal of Functional Programming 2000",
+            "Okasaki, Purely Functional Data Structures, Chapter 8"
+        ],
+        "workedExample": "Push 1, 2, 3, 4 into chunks of sizes 1 then 3 then a new 1; indexing position 2 skips the size-3 chunk start and reads the third element while cons stays O(1)."
+    },
     id: "skew-binary-list",
     name: "Skew Binary List",
     category: "data-structures",

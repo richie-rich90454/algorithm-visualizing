@@ -61,8 +61,7 @@ onBeforeUnmount(() => {
     color: var(--color-text-secondary);
 }
 
-.search-input:focus {
-    outline: none;
+.search-input:focus-visible {
     border-color: var(--state-active-border);
 }
 </style>

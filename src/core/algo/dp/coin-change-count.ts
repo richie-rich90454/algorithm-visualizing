@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Coin change counting asks how many combinations of given denominations sum to an amount, where order does not matter. The DP keeps dp[a] as the number of ways using coins processed so far. Iterating coins on the outside and amounts upward makes each coin extend existing counts without creating permutations of the same combination.",
+        "invariants": [
+            "dp[a] counts combinations of the coin types seen so far that total a.",
+            "dp[0] equals one, the empty combination.",
+            "Processing one coin at a time prevents counting the same multiset in different orders."
+        ],
+        "correctness": "When a new coin is added, every way to make a-coin using previous coins extends to a new way to make a, so adding dp[a-coin] updates the count. Because coins are processed in a fixed outer order, each multiset is formed exactly once. Therefore dp[amount] is the number of distinct combinations.",
+        "complexityRationale": "There are n coins and amount inner iterations, giving O(n*amount) time. A single array of length amount plus one is needed, so space is O(amount).",
+        "uses": [
+            "Counting payment combinations in point-of-sale systems",
+            "Combinatorial enumeration with bounded item types",
+            "Counting solutions to integer sum equations"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With coins [1,2,5] and amount 5, dp[0]=1. After coin 1 all amounts have one way; adding 2 raises dp[5] to 3 (five ones, three ones plus a two, two plus two plus one); adding 5 makes dp[5]=4 including the single five."
+    },
     id: "coin-change-count",
     name: "Coin Change (Count Ways)",
     category: "dynamic-programming",

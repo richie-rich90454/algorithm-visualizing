@@ -194,6 +194,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Prefix-Function Automaton module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This turns the KMP failure function into a full deterministic automaton. For every state, which is a matched prefix length, and every character, a precomputed table gives the next state directly, replacing KMP's fallback loop with a single lookup.",
+        "invariants": [
+            "aut[state][c] is the length of the longest prefix of the pattern that is a suffix of the matched prefix plus c.",
+            "The accepting state m means a full pattern occurrence has just ended."
+        ],
+        "correctness": "The table is built by following prefix-function links until a transition on c is found, yielding exactly the longest border extended by c. Scanning the text therefore updates the matched length identically to KMP, and reaching state m means the last m characters equal the pattern.",
+        "complexityRationale": "Building the table fills (m+1)·sigma entries, each following links in amortized O(1) time, giving O(m·sigma) build time; scanning is O(n) with one lookup per character and O(m·sigma) space.",
+        "uses": [
+            "Linear-time substring search with constant-time transitions",
+            "Speeding up multi-pattern search alongside Aho-Corasick",
+            "Streaming pattern detectors"
+        ],
+        "references": [
+            "Knuth, Morris, and Pratt, Fast Pattern Matching in Strings, 1977",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "For pattern \"ababcab\" with prefix function [0,0,1,2,0,1,2], scanning text \"ababcabababcab\" moves to the next state with one lookup per character and reaches state 7 at the two occurrences starting at indices 0 and 7."
+    },
     id: "prefix-function-auto",
     name: "Prefix-Function Automaton",
     category: "string",

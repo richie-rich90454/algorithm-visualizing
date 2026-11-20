@@ -185,6 +185,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Splay sort inserts every key into a splay tree, which rotates the most recently accessed node to the root, then reads the tree in order. Repeated or nearby keys stay near the top, giving adaptivity on skewed inputs.",
+        "invariants": [
+            "The tree is always a valid binary search tree.",
+            "After each access, the accessed node becomes the root."
+        ],
+        "correctness": "The search tree invariant means an in-order walk visits keys in ascending order; splaying changes shape but preserves the in-order sequence, so the walk still emits sorted output.",
+        "complexityRationale": "Each insertion and splay is O(log n) amortized, so n insertions plus the walk cost O(n log n) amortized. The tree nodes need O(n) space.",
+        "uses": [
+            "Teaching self-adjusting data structures via sorting",
+            "Sorting streams with temporal locality",
+            "Cache-friendly access patterns for repeated keys"
+        ],
+        "references": [
+            "Sleator and Tarjan, Self-Adjusting Binary Search Trees, JACM, 1985",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.2"
+        ],
+        "workedExample": "Insert [5, 3, 1, 4, 2] one by one, splaying each new key to the root; the final in-order walk visits 1, 2, 3, 4, 5 in order regardless of the tree's rotated shape."
+    },
     id: "splay-sort",
     name: "Splay Sort",
     category: "sorting",

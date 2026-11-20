@@ -154,6 +154,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The DFS (Iterative) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This is depth-first search without recursion. An explicit stack holds vertices to explore: pop the top vertex, mark it visited, and push its unvisited neighbors. The traversal reaches the same depth-first order as the recursive version while making the hidden call stack visible and controllable.",
+        "invariants": [
+            "The stack contains vertices that have been discovered but not fully explored.",
+            "A vertex is visited at most once.",
+            "Exploration proceeds as deep as possible along the most recently pushed branch."
+        ],
+        "correctness": "Pushing unvisited neighbors and always expanding the top of the stack simulates the recursive call stack exactly, so the order of first visits matches recursive DFS. Marking on pop ensures each vertex is processed once, and the search ends when the stack is empty, meaning every reachable vertex has been visited.",
+        "complexityRationale": "Each vertex is pushed once and each edge inspected a constant number of times, giving O(V + E) time; the explicit stack uses O(V) space.",
+        "uses": [
+            "Avoiding recursion depth limits on large graphs",
+            "Teaching the equivalence of implicit and explicit stacks",
+            "A basis for iterative implementations of DFS-based algorithms"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)"
+        ],
+        "workedExample": "From A with neighbors B and C, push B then C; popping C explores its branch before B, giving a depth-first order such as A, C, E, D, B depending on neighbor order. The explicit stack makes that choice of next vertex obvious at each step."
+    },
     id: "dfs-iterative",
     name: "DFS (Iterative)",
     category: "graph",

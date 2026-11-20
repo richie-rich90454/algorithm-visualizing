@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Solovay-Strassen is a probabilistic primality test that compares Euler's criterion with the Jacobi symbol. For a prime n these always agree for any base a; a disagreement proves n composite. Testing several random bases makes the chance of a composite surviving at most one in two to the power of the number of bases.",
+        "invariants": [
+            "A base where a^((n-1)/2) differs from the Jacobi symbol proves compositeness.",
+            "For a prime n the two values agree for every coprime base.",
+            "Surviving all chosen bases makes n a strong probable prime."
+        ],
+        "correctness": "Euler's criterion for primes states that the Legendre symbol equals a^((n-1)/2) mod n, and the Jacobi symbol generalizes Legendre to composite moduli. A prime therefore always passes, while for any composite at least half of bases expose a mismatch. The randomized test is thus one-sided with bounded error.",
+        "complexityRationale": "Each base needs one modular exponentiation plus a Jacobi computation, O(log^3 n) time; with k bases the total is O(k log^3 n). Only a few residues are stored, so space is O(1).",
+        "uses": [
+            "Probabilistic primality screening",
+            "Historical foundation for Miller-Rabin",
+            "Teaching the link between Euler's criterion and the Jacobi symbol"
+        ],
+        "references": [
+            "Solovay and Strassen, A fast Monte-Carlo test for primality (1977)",
+            "Cormen et al., Introduction to Algorithms, Section 31.4"
+        ],
+        "workedExample": "For n = 13 and base 2, Euler gives 2^6 = 64 = 12 = -1 mod 13, and the Jacobi symbol (2|13) = -1 since 13 mod 8 = 5. They agree, so base 2 passes and 13 remains probably prime."
+    },
     id: "solovay-strassen-test",
     name: "Solovay-Strassen Test",
     category: "math",

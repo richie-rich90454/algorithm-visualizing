@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A ball tree groups points into nested spheres, each described by a center and radius. Splitting picks the dimension with the largest spread and divides points by the median, then wraps each half in the smallest ball that contains it. A nearest-neighbor query prunes any ball whose radius plus the current best distance cannot contain a closer point.",
+        "invariants": [
+            "Every point in a child lies inside that child's bounding ball.",
+            "Children are formed by a median split along the widest dimension.",
+            "The query visits the nearer ball first."
+        ],
+        "correctness": "The triangle inequality says any point in a ball is at least distance(query, center) - radius away. If that lower bound is no better than the current best, no point in the ball can improve the answer, so pruning is safe. Visiting nearer balls first tightens the bound early without affecting correctness.",
+        "complexityRationale": "A balanced split gives height O(log n), and pruning usually eliminates most balls, so nearest-neighbor search averages O(log n). Building computes a center and radius per node, using O(n) space.",
+        "uses": [
+            "Nearest-neighbor search in metric spaces",
+            "Machine-learning classification such as k-NN",
+            "Astronomy and spatial databases"
+        ],
+        "references": [
+            "Peter N. Yianilos, \"Data Structures and Algorithms for Nearest Neighbor Search in General Metric Spaces\", SODA 1993",
+            "Jon Louis Bentley, \"Multidimensional Binary Search Trees Used for Associative Searching\", CACM 1975"
+        ],
+        "workedExample": "Index points (0,0), (1,1), (8,8), (9,9). The widest split is on x, giving a left ball around (0.5,0.5) and a right ball around (8.5,8.5). Querying (0,1) enters the left ball first, finds distance about 1, and prunes the right ball because its lower bound far exceeds 1."
+    },
     id: "ball-tree",
     name: "Ball Tree",
     category: "data-structures",

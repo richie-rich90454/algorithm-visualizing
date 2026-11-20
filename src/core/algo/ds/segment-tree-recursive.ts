@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Segment Tree (recursive) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A recursive segment tree splits the array into halves until leaves hold single elements, with each internal node combining its children aggregates. A range query returns a node aggregate when fully covered, skips nodes outside, and recurses only on partial overlaps.",
+        "invariants": [
+            "Each node covers a contiguous interval and stores its aggregate.",
+            "Children partition the parent interval.",
+            "A query visits O(log n) canonical nodes that exactly cover the range."
+        ],
+        "correctness": "Fully covered nodes contribute their exact aggregates, and the visited nodes are disjoint and union to the query range, so their combination is the range aggregate. Nodes outside the range are skipped safely because they contain no queried elements.",
+        "complexityRationale": "Building visits O(n) nodes and a query or point update descends O(log n) levels touching O(log n) canonical nodes. The recursive tree uses a node array of size O(4n).",
+        "uses": [
+            "Range minimum and sum queries",
+            "Competitive programming range structures",
+            "Static and dynamic aggregation over intervals"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14",
+            "cp-algorithms, Segment Tree"
+        ],
+        "workedExample": "Array [2,1,3,4,5] splits into halves until leaves; query [1,3] returns canonical node aggregates for indices 1, 2, 3 and combines them to 1+3+4=8."
+    },
     id: "segment-tree-recursive",
     name: "Segment Tree (Recursive)",
     category: "data-structures",

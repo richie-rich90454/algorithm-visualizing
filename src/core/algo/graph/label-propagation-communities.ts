@@ -135,6 +135,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Label propagation is a strikingly simple community detector. Every vertex starts with a unique label, then each sweep updates every vertex to the most frequent label among its neighbors. Dense groups quickly agree on one label while sparse bridges fail to convert either side.",
+        "invariants": [
+            "A vertex's label is always one that appeared among its neighbors or its own previous label.",
+            "Labels never split a dense group once it has converged.",
+            "The process stops when a full sweep changes no label."
+        ],
+        "correctness": "The update is a local majority rule that increases agreement along dense internal edges and is resisted across sparse bridges. When a fixed point is reached, every vertex's label matches the local majority, so the resulting groups are stable communities under the method's definition, even though the algorithm is heuristic rather than optimizing a global objective.",
+        "complexityRationale": "Each sweep scans all edges once, O(V + E), and the number of sweeps k is usually small, giving O(k(V + E)); labels and adjacency use O(V + E) space.",
+        "uses": [
+            "Fast community detection in very large networks",
+            "A baseline for comparing modularity-based methods",
+            "Clustering users in social and citation graphs"
+        ],
+        "references": [
+            "Raghavan, Albert, and Kumara, Near Linear Time Algorithm to Detect Community Structures in Large-Scale Networks (2007)",
+            "Newman, Networks: An Introduction, community detection chapter"
+        ],
+        "workedExample": "The barbell graph has two triangles joined by one edge. Starting from unique labels, the left triangle quickly settles on one shared label and the right on another; the bridge edge is too sparse to flip either side, yielding communities {A,B,C} and {D,E,F}."
+    },
     id: "label-propagation-communities",
     name: "Label Propagation Communities",
     category: "graph",

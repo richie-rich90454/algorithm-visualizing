@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Fermat factorization exploits the identity n = a^2 - b^2 = (a-b)(a+b). If n has two factors close together, then a is just above the square root of n and a^2 - n quickly becomes a perfect square b^2. The visualization increases a from ceil(sqrt(n)) until the difference is square, then reads off the factor pair.",
+        "invariants": [
+            "The running value a^2 - n is nonnegative once a >= ceil(sqrt(n)).",
+            "If a^2 - n is a perfect square b^2 then (a-b)*(a+b) = n.",
+            "Each increment of a moves to the next possible difference of squares."
+        ],
+        "correctness": "Every odd factorization of n corresponds to some representation as a difference of squares, so searching a upward eventually finds one when the factors are close. The identity makes the resulting pair multiply back to n, and the algorithm checks that product before reporting. If the step cap is reached it stops honestly without a false claim.",
+        "complexityRationale": "The number of a values tried is about (p+q)/2 - sqrt(n), which is O(sqrt(n)) in the worst case when factors are far apart. Only a few integer variables are needed, so space is O(1).",
+        "uses": [
+            "Factoring integers whose factors are near the square root",
+            "A first example of difference-of-squares factoring",
+            "Pedagogical contrast with trial division and Pollard rho"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.4",
+            "Crandall and Pomerance, Prime Numbers, Section 5.1"
+        ],
+        "workedExample": "For n = 77 start at a = 9: 81 - 77 = 4 = 2^2. Thus b = 2 and the factors are a-b = 7 and a+b = 11, and indeed 7*11 = 77."
+    },
     id: "fermat-factorization",
     name: "Fermat Factorization",
     category: "math",

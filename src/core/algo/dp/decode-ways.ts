@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Decode Ways counts how many letter decodings a digit string has under the mapping 1 to A through 26 to Z. For each position the last chunk is either a valid single digit or a valid two-digit number, so the count satisfies dp[i] = single*dp[i-1] plus pair*dp[i-2]. Zero digits restrict which chunks are allowed.",
+        "invariants": [
+            "dp[i] counts decodings of the prefix ending at position i.",
+            "dp[0] is one for the empty prefix.",
+            "A chunk is valid only if it lies in 1..9 as one digit or 10..26 as two."
+        ],
+        "correctness": "Every decoding of the prefix has a final chunk of length one or two; if that chunk is invalid it contributes nothing, otherwise the remaining prefix can be decoded in dp[i-length] ways. The two cases are disjoint, so their sum is exact. Induction over positions yields dp[n].",
+        "complexityRationale": "Each of n positions checks a constant number of chunks, giving O(n) time. The dp array uses O(n) space, reducible to O(1) with two rolling values.",
+        "uses": [
+            "Counting interpretations of digit-encoded messages",
+            "Parsing ambiguous numeric codes",
+            "A standard one-dimensional string DP example"
+        ],
+        "references": [
+            "LeetCode problem 91, Decode Ways",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s = 226 the valid decodings are 2-2-6 (BBF), 2-26 (BZ), and 22-6 (VF). Position 2 can be a single 2 or part of 22, giving dp values 1, 2, 1; the final 6 then yields dp[3] = 3."
+    },
     id: "decode-ways",
     name: "Decode Ways",
     category: "dynamic-programming",

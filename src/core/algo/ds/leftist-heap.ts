@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Leftist Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A leftist heap is a meldable heap that keeps its right spine short. Each node stores a rank equal to the length of its right path, and the invariant requires the left child's rank to be at least the right child's. Merging recurses down the right spine and swaps children when needed, giving logarithmic time.",
+        "invariants": [
+            "rank(left) >= rank(right) at every node.",
+            "The rank of a node is one plus the rank of its right child.",
+            "Heap order makes the root the minimum."
+        ],
+        "correctness": "The rank invariant forces the right spine to contain at most O(log n) nodes because a spine of length r implies at least 2^r - 1 nodes. Merge compares roots, recurses into the right spine of the larger root, and swaps children to restore the rank rule. Thus every merge step halves the subtree size.",
+        "complexityRationale": "Merge follows one right spine, O(log n), and insert and extract-min reduce to merges. One node per key with a rank field uses O(n) space.",
+        "uses": [
+            "Meldable priority queues",
+            "Heap merge in graph algorithms",
+            "Functional priority queues"
+        ],
+        "references": [
+            "Clark Crane, \"Linear Lists and Priority Queues as Balanced Binary Trees\", Stanford TR 1972",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 2.4 exercises"
+        ],
+        "workedExample": "Insert 5, 3, 8, 1: merging singletons compares roots and swaps children when the right rank exceeds the left, keeping right spines short. The root becomes 1. Extract-min merges the subtrees of 1, again following only short right paths."
+    },
     id: "leftist-heap",
     name: "Leftist Heap",
     category: "data-structures",

@@ -130,6 +130,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Meissel-Lehmer method counts primes up to n without listing them all. It sieves only small primes, then uses Legendre's partial sieve function phi to count numbers surviving those small primes, and corrects for composites built from larger primes. The result is the prime counting function pi(n) in sublinear time.",
+        "invariants": [
+            "phi(x, a) counts integers up to x not divisible by the first a primes.",
+            "The correction term accounts exactly for products of two large primes.",
+            "pi(n) equals phi(n, a) plus a minus one minus the correction."
+        ],
+        "correctness": "Legendre's identity expresses pi(n) in terms of phi with a cutoff a; choosing a = pi(n^(1/3)) keeps the remaining terms manageable. The Meissel correction enumerates the semiprimes with both factors above the cutoff, so the final combination equals the exact prime count. Each component is computed by exact sieving or counting.",
+        "complexityRationale": "Sieving to n^(2/3) and evaluating phi with recursion yields the stated O(n^(2/3)) time. The small-prime table needs O(sqrt(n)) space.",
+        "uses": [
+            "Computing pi(n) for very large n",
+            "Analytic number theory computations",
+            "Estimating prime density without enumerating primes"
+        ],
+        "references": [
+            "Lehmer, On the exact number of primes less than a given limit (1959)",
+            "Crandall and Pomerance, Prime Numbers, Section 3.6"
+        ],
+        "workedExample": "For n = 30 sieve small primes and set a = pi(cube root of 30) = 2. Count phi(30, 2) = 10 survivors, add a minus one, subtract the semiprime correction, and obtain pi(30) = 10."
+    },
     id: "prime-counting-meissel-lehmer",
     name: "Prime Counting (Meissel-Lehmer)",
     category: "math",

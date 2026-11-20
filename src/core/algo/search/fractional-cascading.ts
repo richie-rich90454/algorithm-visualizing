@@ -166,6 +166,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Fractional cascading speeds up searching for the same key across multiple sorted lists. After one binary search in the first list, precomputed bridge pointers tell roughly where to look in the next list, so the follow-up is a short walk rather than a fresh search.",
+        "invariants": [
+            "Each bridge pointer maps a position in one list to a nearby position in the next.",
+            "The target's true position is within a bounded number of steps of the bridged position."
+        ],
+        "correctness": "Sortedness plus the bridge construction guarantees the target lies in the short scanned window, so descending the lists in order finds it in every list that contains it.",
+        "complexityRationale": "The first search costs O(log n) and each of the k remaining lists needs only O(1) walking, so O(log n + k) total. Augmenting lists with bridges uses O(n) space.",
+        "uses": [
+            "Point location in geometric subdivisions",
+            "Multi-index database lookups",
+            "Searching the same key in layered indexes"
+        ],
+        "references": [
+            "Chazelle and Guibas, Fractional Cascading: I. A Data Structuring Technique, Algorithmica, 1986",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "Search 6 in A [1,3,5,7,9] and B [2,4,6,8,10]: binary search in A lands near 5 and 7; a bridge points into B near 4, and a short walk finds 6 without searching B from scratch."
+    },
     id: "fractional-cascading",
     name: "Fractional Cascading",
     category: "searching",

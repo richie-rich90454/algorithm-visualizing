@@ -104,6 +104,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Col is a partisan coloring game on a strip. Left paints a cell blue and Right paints a cell red, but no two same-color cells may be adjacent. A move therefore hands the opponent a region where your color is forbidden, splitting the board into independent pieces.",
+        "invariants": [
+            "Same-colored pieces never share an edge.",
+            "Painting a cell removes its neighbors from that player's future use.",
+            "Disjoint empty regions can be evaluated independently as a sum of games."
+        ],
+        "correctness": "Each legal move is exactly a paint that respects the no-adjacent-same-color rule, and the game ends when the player to move has no legal cell. Because painted cells fence out one color locally, the position decomposes into independent subgames whose values combine under disjunctive sum theory, so the illustrated line's winner is determined by the final count of available moves.",
+        "complexityRationale": "The visualization walks a single illustrated legal line over n cells, costing O(n) time and O(n) space for the strip state. Solving arbitrary Col positions is much harder because the game is PSPACE-complete in general.",
+        "uses": [
+            "Introducing partisan games and combinatorial game values",
+            "Teaching disjunctive sums and forbidden-move regions",
+            "A testbed for game-tree visualization"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Conway, On Numbers and Games"
+        ],
+        "workedExample": "On a 1x4 strip Left paints cell 0, which blocks Left from cell 1 but not Right. Right paints cell 3, then Left paints cell 2. Cell 1 is now adjacent to Left at 0 and 2, so Right has no legal claim and loses; the last legal paint wins for Left."
+    },
     id: "col",
     name: "Col",
     category: "game",

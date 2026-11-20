@@ -158,6 +158,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The multiplicative order of a modulo n is the smallest positive exponent k with a^k = 1 (mod n). Because k divides Euler's phi(n), the search starts from phi(n) and repeatedly tests whether dividing by a prime factor still yields exponent one. Each successful division shrinks k until no further factor works, leaving the true minimal order.",
+        "invariants": [
+            "The order always divides phi(n).",
+            "After each successful division the current exponent still satisfies a^exponent = 1.",
+            "No prime factor of the current exponent can be removed while keeping exponent one."
+        ],
+        "correctness": "The order divides the group order phi(n), and testing divisor reductions examines exactly the possible smaller orders. If a^exponent stays 1 after dividing by a factor, the order divides the smaller value; otherwise the factor is essential. Exhausting the factors leaves the least exponent with value one, which is the order.",
+        "complexityRationale": "Factoring phi(n) by trial division costs O(sqrt(n)), and each candidate reduction is one modular exponentiation of O(log n) steps, giving the stated O(sqrt(n) + log n) bound. Space is O(1).",
+        "uses": [
+            "Determining cycle lengths in modular arithmetic",
+            "Cryptanalysis of discrete-log based systems",
+            "Analyzing pseudorandom generator periods"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 3",
+            "Cormen et al., Introduction to Algorithms, Section 31.3"
+        ],
+        "workedExample": "For a = 2 and n = 11, phi(11) = 10 with factors 2 and 5. Test 10/2 = 5: 2^5 = 32 = -1 mod 11, so keep 10. Test 10/5 = 2: 2^2 = 4, so keep 10. The multiplicative order is 10."
+    },
     id: "multiplicative-order-finding",
     name: "Multiplicative Order Finding",
     category: "math",

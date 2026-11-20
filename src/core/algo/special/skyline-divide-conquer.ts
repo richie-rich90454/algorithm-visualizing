@@ -115,6 +115,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The skyline problem computes the outline formed by a set of buildings. Divide and conquer splits the buildings in two, recursively computes each half's silhouette as key points (x, height), and merges them by sweeping left to right, taking the maximum of the two heights at each x and emitting a point whenever the height changes.",
+        "invariants": [
+            "A silhouette is a sequence of key points with non-decreasing x that ends at height 0.",
+            "At any x the merged height is the maximum of the two halves' heights, equal to the tallest building covering x.",
+            "Consecutive points with the same height are removed."
+        ],
+        "correctness": "A single building gives the base case of a left point at its height and a right point at zero. The merge processes key points from both halves in x order; because the upper envelope of two silhouettes is their pointwise maximum, keeping the larger active height and emitting only on changes yields the combined silhouette. Induction over the recursion proves correctness.",
+        "complexityRationale": "The split is balanced and merging two silhouettes is linear in their combined size, giving T(n)=2T(n/2)+O(n), which solves to O(n log n) time. The recursive silhouettes use O(n) space.",
+        "uses": [
+            "Computer graphics and architectural visualization",
+            "Constructing city skylines from building data",
+            "Geographic information systems and terrain profiles",
+            "CAD, image compositing and horizontal visibility problems"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms (CLRS), Chapter 4",
+            "Bentley, Programming Pearls (the skyline problem)"
+        ],
+        "workedExample": "Buildings [1,4,3], [2,5,5] and [6,2,7], given as left, height and right, split into two halves. The first two yield (1,4),(2,5),(5,0); the last yields (6,2),(7,0). Merging the sweeps gives the full skyline (1,4),(2,5),(5,0),(6,2),(7,0) in O(n log n)."
+    },
     id: "skyline-divide-conquer",
     name: "Skyline Divide & Conquer",
     category: "geometry",

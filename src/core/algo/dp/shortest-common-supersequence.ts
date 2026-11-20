@@ -180,6 +180,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The SCS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The shortest common supersequence is the shortest string containing two given strings as subsequences. Its length is |a| + |b| minus the length of their longest common subsequence, because shared characters need appear only once. Building the LCS table and backtracking lets the reconstruction merge the two strings around those shared characters.",
+        "invariants": [
+            "The LCS table records shared characters in order.",
+            "Every character of both strings appears in the supersequence.",
+            "Shared characters are written once, unshared characters appended from the appropriate string."
+        ],
+        "correctness": "Any common supersequence must contain an LCS, and writing the non-common characters around it yields a supersequence of length |a| + |b| - |LCS|, so this length is achievable. No shorter string can contain both subsequences because they must overlap at most on their common subsequence. Hence the constructed string is shortest.",
+        "complexityRationale": "Computing the LCS table costs O(n*m) and the reconstruction is linear in the output length, so time is O(n*m). The table uses O(n*m) space.",
+        "uses": [
+            "Genome assembly and sequence merging",
+            "Combining ordered lists with minimal duplication",
+            "String merging problems in bioinformatics"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5"
+        ],
+        "workedExample": "For a = abac and b = cab, an LCS is ab of length 2, so the SCS has length 4 + 3 - 2 = 5. One result is cabac, which contains both strings as subsequences."
+    },
     id: "shortest-common-supersequence",
     name: "Shortest Common Supersequence",
     category: "dynamic-programming",

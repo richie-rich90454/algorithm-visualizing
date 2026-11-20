@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Goldberg-Radzik finds single-source shortest paths when edges may be negative as long as no negative cycle exists. Each round runs a depth-first search over reachable vertices to get an order, then relaxes edges in that order so improvements propagate quickly. A round with no change certifies that all distances are optimal.",
+        "invariants": [
+            "Distances only decrease over successive rounds.",
+            "A round with no relaxation means the distance labels satisfy every edge inequality.",
+            "If a change persists after enough rounds in a reachable region, a negative cycle exists."
+        ],
+        "correctness": "When no edge can relax a distance, the labels satisfy d[v] at most d[u] plus w for every edge, which is the certificate of shortest paths in the absence of negative cycles, so the distances are optimal. The DFS ordering accelerates propagation but the repeated relaxation still converges to that fixed point.",
+        "complexityRationale": "Each of up to V rounds scans E edges, giving O(V E) worst case, with O(V + E) space for distances and the DFS stack.",
+        "uses": [
+            "Shortest paths with negative edges but no negative cycles",
+            "A practical alternative to Bellman-Ford",
+            "Difference-constraint systems and scheduling models"
+        ],
+        "references": [
+            "Goldberg and Radzik, A Heuristic Improvement of the Bellman-Ford Algorithm (1993)",
+            "Bellman, On a Routing Problem (1958)"
+        ],
+        "workedExample": "For edges A-B 2, B-C -1, and C-D 2, the DFS order lets one round propagate A 0, B 2, C 1, D 3. A following round changes nothing, certifying optimality; a negative cycle would keep producing decreases."
+    },
     id: "goldberg-radzik-shortest-path",
     name: "Goldberg–Radzik Shortest Path",
     category: "shortest-path",

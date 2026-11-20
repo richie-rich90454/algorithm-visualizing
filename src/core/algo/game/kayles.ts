@@ -159,6 +159,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Kayles is played on a row of pins. A move knocks down one pin or two adjacent pins, splitting the row into independent segments. The game is solved with Grundy numbers: the value of a move is the xor of the Grundy values of the segments it leaves.",
+        "invariants": [
+            "A move removes either one pin or two neighboring pins.",
+            "G(n) is the mex of the xor values of all resulting segment pairs.",
+            "G(n) equal to zero identifies a losing P-position."
+        ],
+        "correctness": "Removing pins creates two independent subrows whose combined value is the xor of their Grundy numbers. Taking the mex over all moves implements the Sprague-Grundy recursion, so the computed G values correctly classify each row. A winning move is one whose leftover segments xor to zero.",
+        "complexityRationale": "Computing G up to n examines O(n) moves per value with constant-time lookups, for O(n^2) time and O(n) memo storage.",
+        "uses": [
+            "A classic octal game with a periodic Grundy sequence",
+            "Teaching mex and xor over split game components",
+            "Verifying impartial game solvers against known values"
+        ],
+        "references": [
+            "Dudeney, Amusements in Mathematics (1917)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "For a row of 8 pins the computed G(8) is nonzero, so the first player wins. The winning move knocks down pins 3 and 4; the two resulting segments have Grundy values that xor to zero, leaving the opponent a P-position."
+    },
     id: "kayles",
     name: "Kayles",
     category: "game",

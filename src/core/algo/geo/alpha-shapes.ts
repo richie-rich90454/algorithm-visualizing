@@ -171,6 +171,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "An alpha shape is a tunable version of the convex hull. Instead of always wrapping every point with a tight convex boundary, it leaves concave notches where the points are sparse. It is derived from the Delaunay triangulation by discarding simplices whose circumradius exceeds alpha.",
+        "invariants": [
+            "A simplex survives only if its circumradius is at most alpha, or for an edge its half-length is at most alpha.",
+            "Every surviving triangle is a Delaunay triangle of the input sites.",
+            "Increasing alpha can only add simplices, so the shape grows monotonically."
+        ],
+        "correctness": "The alpha complex is the subcomplex of the Delaunay triangulation made of simplices with circumradius at most alpha. Delaunay triangles have empty circumcircles, so keeping only those small enough traces the boundary of the union of radius-alpha disks centered on the sites. The reported edges are exactly the boundary of that union, which is the alpha shape.",
+        "complexityRationale": "The demo forms the Delaunay triangulation by testing every triple with an empty-circle check, which costs O(n^4) over all triples and points. Filtering the surviving simplices is lower order, and only O(n) auxiliary storage is needed beyond the emitted shape.",
+        "uses": [
+            "Reconstructing the outline of a scattered point cloud",
+            "Extracting coastlines or terrain boundaries from sampled data",
+            "Describing molecular shapes in computational chemistry"
+        ],
+        "references": [
+            "Edelsbrunner, Kirkpatrick, and Zomorodian, Alpha Shapes, Discrete & Computational Geometry 10 (1993)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 9"
+        ],
+        "workedExample": "Six sites at (0,0), (2,0), (1,1), (3,1), (0,2), (2,2) with alpha = 1.5. The empty-circle test keeps the Delaunay triangles around the dense part of the cloud, while a triangle with circumradius above 1.5 near (3,1) is dropped. The remaining boundary edges form a slightly concave outline instead of the full convex hull."
+    },
+
     id: "alpha-shapes",
     name: "Alpha Shapes",
     category: "geometry",

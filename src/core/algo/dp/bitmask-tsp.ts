@@ -239,6 +239,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bitmask TSP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Held-Karp solves the traveling salesman problem exactly by storing the cheapest tour that visits a subset of cities and ends at a particular city. The subset is a bitmask and the endpoint is recorded separately. Extending a tour by one unvisited city builds larger subsets, and the final step closes the cycle back to the start.",
+        "invariants": [
+            "dp[mask][v] is the minimum cost of a path from the start visiting exactly mask and ending at v.",
+            "The start city is always in mask.",
+            "Every extension adds exactly one previously unvisited city."
+        ],
+        "correctness": "An optimal tour visiting a set and ending at v must arrive from some previous endpoint u in the set without the last city, so trying all u captures the optimal substructure. Processing masks in increasing order makes those values final. Closing with the return edge yields the minimum cycle, which is the TSP optimum.",
+        "complexityRationale": "There are O(2^n) masks and O(n) endpoints, each considering O(n) extensions, giving O(2^n * n^2) time. The table stores O(2^n * n) values.",
+        "uses": [
+            "Exact routing for small delivery or tour instances",
+            "A benchmark for approximation algorithms on tiny cases",
+            "Teaching subset DP and exponential complexity"
+        ],
+        "references": [
+            "Held and Karp, A dynamic programming approach to sequencing problems (1962)",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For four cities starting at A, dp grows from {A} to {A,B,C,D}. The best full tour A-B-D-C-A costs 10+25+30+15 = 80, which the DP finds by extending states and closing at A."
+    },
     id: "bitmask-tsp",
     name: "Bitmask TSP (Held-Karp)",
     category: "dynamic-programming",

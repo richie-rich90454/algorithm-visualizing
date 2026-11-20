@@ -1,0 +1,86 @@
+name: New algorithm request
+description: Propose a new algorithm module for the catalog
+title: "[Algorithm]: "
+labels: ["new-algorithm", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose an algorithm. Provide the details below so a contributor can implement it as a module with a test.
+  - type: input
+    id: name
+    attributes:
+      label: Algorithm name
+      description: The canonical name, plus any common variants.
+      placeholder: "e.g. Hopcroft-Karp (bipartite matching)"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Which of the 20 categories does it belong to?
+      options:
+        - Sorting
+        - Searching
+        - Graph Traversal
+        - Shortest Path
+        - Minimum Spanning Trees
+        - Network Flow
+        - Tree Algorithms
+        - String Algorithms
+        - Number Theory
+        - Dynamic Programming
+        - Game Theory
+        - Computational Geometry
+        - Data Structures
+    validations:
+      required: true
+  - type: textarea
+    id: pseudocode
+    attributes:
+      label: Pseudocode
+      description: Textbook-style pseudocode, 5 to 12 lines, imperative and language-agnostic.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: complexity
+    attributes:
+      label: Complexity
+      description: Time and space complexity in Big-O notation, with a short justification.
+      placeholder: |
+        Time: O(E sqrt(V))
+        Space: O(V + E)
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification and reference
+      description: How should the result be verified? Include a reference implementation, brute-force check, or known correct output for the default input.
+    validations:
+      required: true
+  - type: textarea
+    id: citations
+    attributes:
+      label: Source citations
+      description: Primary textbook, paper, or other authoritative source. Include section or page numbers if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: uses
+    attributes:
+      label: Real-world uses
+      description: One or two concrete applications of the algorithm.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched the catalog and this algorithm is not already present.
+          required: true
+        - label: The algorithm is classical or has a citable source, and I have provided that citation.
+          required: true

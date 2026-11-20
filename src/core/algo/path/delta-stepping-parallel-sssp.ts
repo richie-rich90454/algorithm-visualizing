@@ -188,6 +188,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Delta-Stepping partitions vertices into buckets by distance so that whole buckets can be relaxed in parallel. With bucket width delta, light edges of weight at most delta stay within a bucket and are processed first, while heavy edges jump to later buckets, allowing independent work within each bucket.",
+        "invariants": [
+            "Bucket k holds tentative distances in the interval [k*delta, (k+1)*delta).",
+            "Light-edge relaxations within a bucket are settled before moving on.",
+            "A vertex is removed from its bucket exactly once when finalized."
+        ],
+        "correctness": "Because light edges cannot skip ahead more than one bucket and are processed to a fixed point before the bucket closes, every vertex in the bucket has its final distance. Heavy edges only insert vertices into later buckets, so processing buckets in order is equivalent to Dijkstra's ordering, giving correct shortest distances.",
+        "complexityRationale": "The bound is O(E + V (L/delta)) for maximum edge weight L, with O(V + E) space for buckets and distance labels.",
+        "uses": [
+            "Parallel and GPU single-source shortest paths",
+            "Large graph processing where Dijkstra's priority queue is a bottleneck",
+            "A bridge between Dijkstra and Bellman-Ford style relaxation"
+        ],
+        "references": [
+            "Meyer and Sanders, Delta-Stepping: A Parallel Single Source Shortest Path Algorithm (1998)",
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs (1959)"
+        ],
+        "workedExample": "With delta 2, bucket 0 starts with A at 0. Relaxing light edges settles A then B at 2; C at 3 lands in bucket 1, and D at 4 in bucket 2. Processing buckets in order finalizes distances 0, 2, 3, 4."
+    },
     id: "delta-stepping-parallel-sssp",
     name: "Delta-Stepping (Parallel SSSP)",
     category: "shortest-path",

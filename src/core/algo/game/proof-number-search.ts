@@ -171,6 +171,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Proof-number search proves or disproves a game position by expanding the most promising nodes first. Each node stores a proof number, the leaves needed to prove it, and a disproof number, the leaves needed to refute it. OR nodes take the minimum proof number while AND nodes take the sum, guiding the search toward the smallest decisive tree.",
+        "invariants": [
+            "A proven win has proof number zero and a proven loss has disproof number zero.",
+            "OR nodes combine children with min for proof and sum for disproof.",
+            "AND nodes combine children with sum for proof and min for disproof."
+        ],
+        "correctness": "The combination rules mirror the logic of the node type: an OR node is proved as soon as one child is proved, while an AND node needs every child proved. Propagating these numbers from terminals therefore gives the minimum number of leaf expansions needed to settle the root, so when the root proof number reaches zero the position is proven won.",
+        "complexityRationale": "The work is proportional to the number of expanded nodes, O(nodes), which is typically far smaller than a full game tree. The tree and number fields use O(nodes) space.",
+        "uses": [
+            "Solving hard endgames in games such as checkers and Go",
+            "Best-first adversarial search when wins are rare",
+            "Any AND-OR proof search with a cost on expansions"
+        ],
+        "references": [
+            "Allis, van der Meulen, and van de Herik, Proof-Number Search (1994)",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, game solving"
+        ],
+        "workedExample": "The OR root has an AND child A and a winning leaf B. The leaf B has proof number zero, so the OR root's proof number is the minimum of its children and becomes zero through B. The root is proven as a first-player win without expanding A fully."
+    },
     id: "proof-number-search",
     name: "Proof-Number Search",
     category: "game",

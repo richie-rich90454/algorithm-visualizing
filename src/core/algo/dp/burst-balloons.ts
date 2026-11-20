@@ -131,6 +131,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Burst Balloons asks for the maximum coins obtained by bursting balloons, where bursting one multiplies its value by its current neighbors. The trick is to think about which balloon is burst last in an interval; adding sentinel ones at both ends fixes the neighbors. Then interval DP chooses the last balloon to maximize the sum of left and right subproblems plus the final reward.",
+        "invariants": [
+            "dp[l][r] is the maximum coins from bursting balloons strictly between l and r.",
+            "Balloons l and r are still unburst when any balloon inside is popped.",
+            "Intervals are filled in increasing length so inner solutions are final."
+        ],
+        "correctness": "The last balloon burst inside an interval has the sentinels or interval boundaries as its neighbors at that moment, giving a fixed reward of val[l]*val[k]*val[r]. The balloons on each side of k are then independent subproblems, so trying every k and taking the maximum captures the optimal last burst. Induction over interval length proves correctness.",
+        "complexityRationale": "There are O(n^2) intervals and O(n) choices of last balloon in each, costing O(n^3) time. The DP table uses O(n^2) space.",
+        "uses": [
+            "Interval DP with a choose-the-last-element trick",
+            "Optimal evaluation order in chained multiplicative expressions",
+            "Competitive programming examples of reversing intuition"
+        ],
+        "references": [
+            "LeetCode problem 312, Burst Balloons",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "With nums [3,1,5,8] padded by ones, dp over intervals eventually considers bursting 5 last between 1 and 8. The reward 1*5*8 plus the best left and right intervals gives the maximum coin total."
+    },
     id: "burst-balloons",
     name: "Burst Balloons",
     category: "dynamic-programming",

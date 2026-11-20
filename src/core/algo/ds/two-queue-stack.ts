@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A stack can be built from two FIFO queues by rotating the queues on every push so the newest element always sits at the front. A pop is then a plain dequeue from the active queue.",
+        "invariants": [
+            "After each push the active queue front is the newest element.",
+            "The standby queue temporarily buffers elements during a rotation.",
+            "The combined contents preserve insertion order apart from the front."
+        ],
+        "correctness": "Enqueuing the new value then moving all earlier elements behind it makes the newest element first in line, so dequeuing returns the most recently pushed element. Repeating the rotation keeps this true after every push, giving LIFO order from FIFO primitives.",
+        "complexityRationale": "Each push moves all existing elements between the two queues, O(n); a pop is a single dequeue, O(1). Two queues hold all n elements, O(n) space.",
+        "uses": [
+            "Implementing stacks when only queue primitives are available",
+            "Pedagogical exercises on abstract data types",
+            "Constrained APIs built from FIFO building blocks"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Sections 2.2.2 and 2.2.3",
+            "Implementing a Stack Using Two Queues (canonical computer science exercise)"
+        ],
+        "workedExample": "Operations push 1, push 2, pop, push 3. Pushing 2 rotates so 2 is at the front and pop returns 2; pushing 3 rotates again so the next pop returns 3, while 1 remains behind."
+    },
     id: "two-queue-stack",
     name: "Two-Queue Stack",
     category: "data-structures",

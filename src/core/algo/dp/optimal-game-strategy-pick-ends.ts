@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In the pick-ends game two players alternately take a coin from either end of a row, and both play optimally. Interval DP stores dp[l][r], the most coins the current player can secure from that range. Taking an end leaves the opponent the worse of their two replies, so the recurrence uses min on the continuation and max on the choice.",
+        "invariants": [
+            "dp[l][r] is the maximum the player to move can obtain from coins l..r.",
+            "Single-coin intervals have value equal to that coin.",
+            "The opponent's response is chosen to minimize the current player's remainder."
+        ],
+        "correctness": "If the player takes the left coin, the opponent will respond to leave the smaller of the two resulting subgame values for the player, which is the min term. The same holds for taking the right coin. Maximizing over the two choices gives the optimal guaranteed amount, and induction over interval length proves correctness.",
+        "complexityRationale": "There are O(n^2) intervals with constant work each, costing O(n^2) time. The dp table uses O(n^2) space.",
+        "uses": [
+            "Two-player optimal play in combinatorial games",
+            "Game AI evaluating pick and response strategies",
+            "Minimax expressed as interval DP"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 5"
+        ],
+        "workedExample": "For coins [8,15,3,7], taking 15 first leaves the opponent the ends 8 and 3; they pick 8 and the first player then gets 7, totaling 22. The DP confirms 22 is the most the first player can guarantee."
+    },
     id: "optimal-game-strategy-pick-ends",
     name: "Optimal Game Strategy (Pick Ends)",
     category: "dynamic-programming",

@@ -196,6 +196,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Prim (Matrix) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Prim's algorithm grows a minimum spanning tree one vertex at a time from a start vertex. At each step it adds the cheapest edge connecting the tree to a vertex outside it. This matrix variant scans the entire outside set to find the cheapest frontier edge, giving O(V^2), which is ideal for dense graphs.",
+        "invariants": [
+            "Vertices in the tree are permanently included and never reconsidered.",
+            "Each outside vertex's key is the cheapest edge connecting it to the tree.",
+            "The edge chosen at each step is the lightest crossing the current cut."
+        ],
+        "correctness": "The lightest edge crossing the cut between the tree and the rest is safe by the cut property, so adding it keeps the tree contained in some MST. Repeating until all vertices are included yields a spanning tree that is minimum because every added edge was safe.",
+        "complexityRationale": "V iterations each scan O(V) outside vertices for the minimum key, O(V^2) time, with O(V) space for key, parent, and in-tree arrays.",
+        "uses": [
+            "Minimum spanning trees on dense graphs",
+            "Network design with a natural starting hub",
+            "A stepping stone to the heap-based Prim algorithm"
+        ],
+        "references": [
+            "Prim, Shortest Connection Networks and Some Generalizations (1957)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees"
+        ],
+        "workedExample": "Starting at A, keys for B and C are 4 and 2, so C is added first through A-C. Keys update using C's edges; next B joins through B-C of weight 1, then D through B-D or C-D. The accumulated edges form the MST."
+    },
     id: "prim-matrix",
     name: "Prim's MST (Matrix)",
     category: "mst",

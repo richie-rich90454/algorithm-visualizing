@@ -86,6 +86,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An LRU cache evicts the entry that has gone unused the longest. It pairs a hash map for O(1) lookup with a doubly linked list that orders entries by recency. A hit moves the entry to the front, and an overflow drops the tail.",
+        "invariants": [
+            "The list runs from most recently used at the front to least at the tail.",
+            "Every cached key has exactly one list node.",
+            "Cache size never exceeds capacity."
+        ],
+        "correctness": "Promoting a hit to the front makes the list an accurate recency order. When insertion exceeds capacity, the tail is by definition the least recently used entry, so evicting it is correct. Hash lookup finds entries without scanning the list.",
+        "complexityRationale": "Hash access and list splicing at known nodes are O(1), so all operations are O(1). Storage is O(capacity) keys and nodes.",
+        "uses": [
+            "CPU and database page caches",
+            "Web and object caches",
+            "Memoization with bounded memory"
+        ],
+        "references": [
+            "Alan Jay Smith, survey of cache memory design and evaluation, 1982",
+            "Nimrod Megiddo and Dharmendra Modha, \"ARC\" paper, FAST 2003"
+        ],
+        "workedExample": "With capacity 2 and accesses a, b, a, c: a and b fill the cache with b at tail; the second a moves a to front, leaving b at tail. Inserting c evicts b, so the cache holds a and c with a most recent."
+    },
     id: "lru-cache",
     name: "LRU Cache",
     category: "data-structures",

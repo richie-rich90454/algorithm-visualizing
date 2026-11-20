@@ -156,6 +156,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "WalkSAT is a stochastic local search for satisfiability. From a complete assignment it repeatedly picks an unsatisfied clause and flips one of its variables, using randomness to escape local minima.",
+        "invariants": [
+            "Every state is a complete truth assignment.",
+            "A flipped variable belongs to the chosen unsatisfied clause."
+        ],
+        "correctness": "WalkSAT is incomplete: it finds a satisfying assignment if the random walk reaches one, but it can stall and need restarts. Each step is a legal local repair of an unsatisfied clause.",
+        "complexityRationale": "A bounded run of f flips each scanning c clauses costs O(f * c) time; only the current assignment is stored, O(n) space.",
+        "uses": [
+            "Finding satisfying assignments heuristically",
+            "Local search on constraint problems",
+            "Baseline for comparing systematic SAT solvers"
+        ],
+        "references": [
+            "Selman, Kautz, and Cohen, Local Search Strategies for Satisfiability Testing, DIMACS Series, 1996",
+            "Biere et al., Handbook of Satisfiability, IOS Press, 2009"
+        ],
+        "workedExample": "Starting all false on a four-clause formula, pick the first unsatisfied clause with the seeded generator and flip one of its three variables; repeat until all clauses are satisfied or the flip budget runs out."
+    },
     id: "walksat-search",
     name: "WalkSAT Search",
     category: "searching",

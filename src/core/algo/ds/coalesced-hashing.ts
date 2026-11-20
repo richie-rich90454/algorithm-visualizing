@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Coalesced hashing uses one table split into a primary area and a cellar area. Keys hash into the primary area, and any collision chains into a free cellar slot instead of a separate linked list. Because all nodes live in the same array, it uses space efficiently while keeping chains short.",
+        "invariants": [
+            "A key's home address lies in the primary area.",
+            "Overflow keys are linked through cellar slots only.",
+            "No slot holds more than one key."
+        ],
+        "correctness": "Following the link from a home slot visits every key that hashed there, so lookup finds a key exactly when it is somewhere on that chain. Inserting into a free cellar slot never disturbs existing chains. Because every key starts from its home address, search terminates at the chain end.",
+        "complexityRationale": "With a lightly loaded cellar, chains are short and operations take expected O(1). The entire structure is one array of table slots, O(n) space with no per-node allocation.",
+        "uses": [
+            "Hash tables where memory locality matters",
+            "File and database indexes with fixed records",
+            "Embedded systems avoiding pointer allocation"
+        ],
+        "references": [
+            "W. A. Martin and R. S. P. Ness, \"An Optimized Hash Table for Use with Disc Storage\", 1972",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "With a table of size 7 and home = key mod 7, insert 12 and 5 both target slot 5: 12 lands there and 5 chains into a cellar slot. Key 21 targets slot 0. Query 5 hashes to slot 5, follows its cellar link, and finds 5 after two probes."
+    },
     id: "coalesced-hashing",
     name: "Coalesced Hashing",
     category: "data-structures",

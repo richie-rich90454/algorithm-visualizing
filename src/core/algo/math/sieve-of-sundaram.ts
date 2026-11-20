@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The sieve of Sundaram generates odd primes by removing numbers of the form i + j + 2ij. For every remaining k, the value 2k+1 is prime. It is a compact alternative to Eratosthenes that works only on roughly half the range, because it targets odd composites directly.",
+        "invariants": [
+            "Every removed k corresponds to an odd composite 2k+1.",
+            "A surviving k means 2k+1 has no nontrivial odd factorization.",
+            "The value k = 1 maps to the prime 2 by special handling."
+        ],
+        "correctness": "Any odd composite can be written as (2i+1)(2j+1) = 2(i+j+2ij)+1, so it is removed when its k is crossed out. Conversely a removed k yields such a factorization, so its mapped value is composite. Therefore survivors map to primes, plus 2 added by hand.",
+        "complexityRationale": "Crossing out the values i+j+2ij up to the bound m = (limit-1)/2 costs O(m log m) work, reported as O(n log n). The boolean table uses O(n) space.",
+        "uses": [
+            "Generating odd primes with a compact sieve",
+            "Teaching an alternative characterization of primes",
+            "Precomputing primes for small to moderate limits"
+        ],
+        "references": [
+            "Sundaram, A sieve for prime numbers (1934)",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.2.6"
+        ],
+        "workedExample": "For limit 20, m = 9. Remove k values 4 (from i=j=1), 7, and 10 and beyond; surviving k are 1, 2, 3, 5, 6, 8, 9. Mapping by 2k+1 gives 3, 5, 7, 11, 13, 17, 19, plus 2 by hand."
+    },
     id: "sieve-of-sundaram",
     name: "Sieve of Sundaram",
     category: "math",

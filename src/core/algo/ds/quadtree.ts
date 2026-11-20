@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A quadtree recursively splits the plane into four quadrants. Points descend into the quadrant containing them, subdividing a leaf when it overflows. A nearest-neighbor query visits only quadrants whose bounding square could hold a point closer than the best one found.",
+        "invariants": [
+            "Each point belongs to exactly one leaf.",
+            "A node square contains all points below it.",
+            "A quadrant whose closest boundary is farther than the current best distance is pruned."
+        ],
+        "correctness": "If the distance from the query to a quadrant square already exceeds the best point distance, every point inside that square is at least that far by the triangle inequality. Discarding it cannot lose the nearest point, so the nearest among visited quadrants is globally nearest.",
+        "complexityRationale": "Balanced subdivision yields O(log n) expected depth and query nodes; clustered inputs can degrade to O(n). One node per subdivision plus one per point gives O(n) space.",
+        "uses": [
+            "Collision detection and visibility culling in games",
+            "Spatial joins in geographic databases",
+            "Image compression by quadtree decomposition"
+        ],
+        "references": [
+            "Finkel and Bentley, Quad Trees: A Data Structure for Retrieval on Composite Keys, Acta Informatica 1974",
+            "Samet, Foundations of Multidimensional and Metric Data Structures"
+        ],
+        "workedExample": "Insert points such as (2,3), (5,1), (7,6), (1,7) into a square, each going to a quadrant with overflow causing further splits. Query (4,2) descends only into quadrants overlapping its search disk and reports the closest point."
+    },
     id: "quadtree",
     name: "Quadtree",
     category: "data-structures",

@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Square root decomposition cuts the array into blocks of about sqrt(n) elements and stores one sum per block. A range query scans the partial edge blocks element by element and takes whole covered blocks from their stored sums.",
+        "invariants": [
+            "Each block sum equals the sum of its elements.",
+            "Raw elements and block sums stay consistent after updates.",
+            "The query whole blocks plus edge elements cover the range exactly."
+        ],
+        "correctness": "Edge elements are read directly and whole blocks contribute their stored sums; since the decomposition partitions the array, the collected pieces are disjoint and cover exactly the queried range. An update fixes one element and its block sum, maintaining the invariant.",
+        "complexityRationale": "A query touches at most two partial blocks of size sqrt(n) plus O(sqrt(n)) whole blocks, O(sqrt(n)); an update is O(1) plus recomputing one block. Storage is the array plus one sum per block, O(n).",
+        "uses": [
+            "Range sum and range update on static arrays",
+            "Competitive programming fallback when segment trees are overkill",
+            "Simple batched aggregation"
+        ],
+        "references": [
+            "cp-algorithms, Sqrt Decomposition",
+            "Classic block decomposition techniques in competitive programming literature"
+        ],
+        "workedExample": "Array [5,2,8,1,7,3] split into two blocks of three; query [1,4] reads edge elements directly and takes the full middle block sum, adding to 18; updating one slot recomputes only its block sum."
+    },
     id: "sqrt-decomposition-array",
     name: "Sqrt Decomposition",
     category: "data-structures",

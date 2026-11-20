@@ -160,6 +160,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Fibonacci search probes at an offset given by a Fibonacci number instead of halving the interval. Each comparison steps down Fibonacci levels, avoiding division entirely, which was valuable on early hardware.",
+        "invariants": [
+            "The remaining interval length is bounded by a Fibonacci number.",
+            "The probe offset uses F(k-2), so discarding a side leaves a Fibonacci-sized remainder."
+        ],
+        "correctness": "A probe at offset F(k-2) splits a range of F(k) so that either side has size at most F(k-1); stepping down k by one or two maintains the bound, so the search converges to a single position.",
+        "complexityRationale": "Fibonacci numbers grow geometrically, so k is O(log n) and each iteration is constant work, giving O(log n) time. Only a few counters are stored, O(1) space.",
+        "uses": [
+            "Searching where division is expensive",
+            "Golden-section style search demonstrations",
+            "Teaching alternative divide-and-conquer probes"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (Fibonacci search)",
+            "Sedgewick and Wayne, Algorithms, Section 1.1 exercises"
+        ],
+        "workedExample": "For [1, 3, 5, 7, 9, 11, 13] and target 9, the smallest covering Fibonacci number is 13; probing at offset 5 lands on 7, too small, so the offset moves forward and the next probe finds 9."
+    },
     id: "fibonacci-search",
     name: "Fibonacci Search",
     category: "searching",

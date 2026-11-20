@@ -182,6 +182,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The FFT (Cooley-Tukey) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The fast Fourier transform evaluates a polynomial at the complex roots of unity far faster than direct evaluation. Cooley-Tukey splits the input by even and odd indices, solves each half, and recombines with twiddle factors; the iterative version does a bit-reversal shuffle then log n butterfly stages. The result is the same transform in O(n log n) instead of O(n^2).",
+        "invariants": [
+            "After bit reversal the array is ordered so butterflies combine the correct pairs.",
+            "Each butterfly stage combines values for roots of unity of one fixed order.",
+            "After all log n stages the array holds the full discrete Fourier transform."
+        ],
+        "correctness": "The DFT of a sequence separates into the DFTs of its even and odd subsequences multiplied by twiddle factors, a direct algebraic identity. Recursing or iterating over stages applies this split until size-one transforms, then recombines bottom-up. The bit-reversal permutation merely reorders work without changing values, so the final array is the exact transform.",
+        "complexityRationale": "There are log n stages and each stage performs n/2 butterflies with constant work, giving O(n log n) time. The array of complex stand-ins requires O(n) space.",
+        "uses": [
+            "Fast polynomial multiplication and convolution",
+            "Signal processing and spectral analysis",
+            "Multiplying large integers by convolution"
+        ],
+        "references": [
+            "Cooley and Tukey, An algorithm for the machine calculation of complex Fourier series (1965)",
+            "Cormen et al., Introduction to Algorithms, Chapter 30"
+        ],
+        "workedExample": "For values [1, 2, 3, 4] bit reversal gives [1, 3, 2, 4]. The first butterfly stage pairs (1,2) and (3,4); the second stage combines them with roots of unity to produce the four frequency samples of the transform."
+    },
     id: "fft-cooley-tukey",
     name: "FFT (Cooley-Tukey)",
     category: "math",

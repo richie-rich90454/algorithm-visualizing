@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A buddy allocator keeps free blocks in power-of-two sizes. An allocation rounds its request up to the next power of two and splits a larger block until the right size appears. When a block is freed, it merges with its buddy if that buddy is also free, which limits fragmentation.",
+        "invariants": [
+            "Every block size is a power of two.",
+            "Two buddies are adjacent blocks whose addresses differ by their size, found by XOR.",
+            "A block is either wholly free or wholly allocated."
+        ],
+        "correctness": "Repeated halving always produces a block of the smallest power of two at least the request, so a fit is guaranteed. The XOR test identifies the unique buddy, and coalescing only merges when both halves are free, never overwriting live data. Hence allocations never overlap and free space is maximized.",
+        "complexityRationale": "Splitting or coalescing touches one level of the power-of-two tree, O(log n) worst case and often constant. Blocks partition the heap, so space overhead is O(n) plus internal rounding waste up to a factor of two.",
+        "uses": [
+            "Kernel page and slab allocators",
+            "Fast general-purpose memory allocators",
+            "GPU and embedded memory pools"
+        ],
+        "references": [
+            "Donald E. Knuth, The Art of Computer Programming, Vol. 1, Section 2.5",
+            "Andrew Hunter, \"A Memory Allocator\" notes, 2001"
+        ],
+        "workedExample": "Start with one free block of size 8 and request 3: round to 4, split 8 into two blocks of 4, allocate one. Request 2 rounds to 2, splits the other 4 into two 2s, allocate one. Freeing that 2 and finding its buddy free coalesces them back to a 4."
+    },
     id: "buddy-allocator",
     name: "Buddy Allocator",
     category: "data-structures",

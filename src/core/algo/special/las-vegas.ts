@@ -160,6 +160,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Las Vegas module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Las Vegas algorithm always returns the correct answer; only its running time is random. Randomized quicksort is the classic example: it picks a random pivot at each partition, making consistently bad partitions very unlikely. The result is always a correctly sorted array, with expected O(n log n) time.",
+        "invariants": [
+            "After a partition the pivot sits in its final position, with no larger element to its left and no smaller one to its right.",
+            "Partitioning never changes the multiset of elements, only their order.",
+            "Recursive calls always operate on disjoint subranges."
+        ],
+        "correctness": "Lomuto partitioning places the pivot correctly and maintains the left/right ordering invariant, so by induction each recursively sorted subarray is correct and the whole array is sorted. Randomizing the pivot does not affect correctness, since any pivot yields a valid partition; it only changes the probability of unbalanced splits.",
+        "complexityRationale": "Each partition scans its subarray once, costing O(size). With random pivots the expected recursion depth is O(log n), giving expected O(n log n) time; the O(n^2) worst case occurs only with negligible probability. The recursion stack uses O(log n) expected space.",
+        "uses": [
+            "General-purpose sorting in standard libraries",
+            "Sorting records by key in databases",
+            "Depth sorting in graphics",
+            "A teaching example of randomized algorithms and expected analysis"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms (CLRS), Chapter 7",
+            "Motwani and Raghavan, Randomized Algorithms, Chapter 1"
+        ],
+        "workedExample": "On [7,2,9,1,5,8,3], a random pivot of 5 is moved to the end and partitioning puts elements at most 5 to its left and the rest to its right, fixing 5 in place. Recursing on each side with fresh random pivots eventually yields [1,2,3,5,7,8,9], always correctly sorted."
+    },
     id: "las-vegas",
     name: "Las Vegas (Randomized Quicksort)",
     category: "sorting",

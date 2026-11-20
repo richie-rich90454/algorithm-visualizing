@@ -200,6 +200,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Project selection chooses a subset of projects with profits and costs, subject to prerequisites: taking a project forces taking the ones it depends on. It maps directly to maximum-weight closure, and therefore to a minimum cut where infinite arcs encode each prerequisite.",
+        "invariants": [
+            "An infinite arc from a project to its prerequisite forbids taking one without the other.",
+            "Positive weights go to the source side and negative costs to the sink side of the cut.",
+            "Net profit equals the sum of positive weights minus the cut capacity."
+        ],
+        "correctness": "Any feasible project set is a closed set in the dependency graph, and any closed set respects all prerequisites. The min-cut reduction makes maximizing closure weight equivalent to minimizing cut capacity, so the minimum cut identifies the feasible set with the greatest net profit.",
+        "complexityRationale": "The network has one vertex per project plus source and sink and E prerequisite arcs, and one max flow costs about O(V E^2). The dependency graph and flow network use O(V + E) space.",
+        "uses": [
+            "Capital budgeting with prerequisite constraints",
+            "Selecting research or engineering portfolios",
+            "Feature selection with dependency rules"
+        ],
+        "references": [
+            "Picard, Maximal Closure of a Graph and Applications to Combinatorial Problems (1976)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, project selection"
+        ],
+        "workedExample": "Projects P1 profit 5, P2 profit 4, and cost C of 6, with arcs P2 to P1 and P1 to C. Choosing P2 forces P1 which forces C, giving 5+4-6 = 3. The empty set scores 0 and {P1,C} scores -1, so {P1,P2,C} with net profit 3 is optimal."
+    },
     id: "project-selection-problem",
     name: "Project Selection Problem",
     category: "flow",

@@ -142,6 +142,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bloom Filter module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Bloom filter is a compact probabilistic set. Insertion sets k bits at k hash positions; a membership test checks those same bits. If any bit is clear the item is definitely absent, while if all are set it is probably present. The structure trades a small false-positive rate for far less memory than storing the keys themselves.",
+        "invariants": [
+            "A bit, once set to 1, is never cleared because the filter has no deletions.",
+            "If a key was inserted, all k of its bits are set, so there are no false negatives.",
+            "The k hash positions for a given key are deterministic."
+        ],
+        "correctness": "Insertion sets every bit a query will test, so an inserted key can never be reported absent. A false positive happens when other keys happen to set all k positions of a non-member; with m bits, k hashes and n items the false-positive rate is approximately (1-e^(-kn/m))^k. The demo labels a positive probe as only 'possibly present' for this reason.",
+        "complexityRationale": "Both insert and query compute k hashes and touch k bits, O(k) time independent of how many items are stored. The bit array uses O(m) bits, much less than retaining the keys.",
+        "uses": [
+            "Avoiding expensive database and disk lookups",
+            "Web crawlers checking whether a URL was already fetched",
+            "Spell checkers and browser safety lists",
+            "Network routing and light-client cryptocurrency filters (BIP37)"
+        ],
+        "references": [
+            "Bloom, Space/Time Trade-offs in Hash Coding with Allowable Errors, Communications of the ACM, 1970",
+            "Mitzenmacher and Upfal, Probability and Computing, Chapter 11"
+        ],
+        "workedExample": "With m=20 and k=3, inserting \"apple\", \"banana\" and \"cherry\" sets three bits per key via double hashing. Probing \"banana\" finds all three of its bits set and reports 'may be present', correctly. A never-inserted key whose three hash positions were all set by other keys would be the false-positive case."
+    },
     id: "bloom-filter",
     name: "Bloom Filter",
     category: "data-structures",

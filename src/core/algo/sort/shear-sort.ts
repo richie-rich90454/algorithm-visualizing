@@ -155,6 +155,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Shear sort lays values on a mesh and alternates sorting rows in opposite directions with sorting columns top to bottom. The alternating shears push small values toward one corner and large values toward the opposite corner.",
+        "invariants": [
+            "After a row phase, every row is sorted in its designated direction.",
+            "Each column phase makes columns nonincreasing top to bottom."
+        ],
+        "correctness": "Alternating sorted rows with sorted columns shrinks the set of possible inversions; after enough shear phases the mesh is sorted in snake order. Each local sort preserves the value multiset.",
+        "complexityRationale": "A constant number of phases sorts a mesh of n cells; each phase sorts rows or columns in local work, giving O(n log n) comparisons in the visualization. The mesh array uses O(n) space.",
+        "uses": [
+            "Sorting on mesh-connected parallel processors",
+            "Teaching local-to-global ordering",
+            "Image-processing hardware with row and column passes"
+        ],
+        "references": [
+            "Hirschberg, Fast Sorting on a Mesh-Connected Array of Processors, IEEE Transactions on Computers, 1992",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3"
+        ],
+        "workedExample": "On a 2 by 4 mesh holding [7, 3, 5, 1] and [6, 2, 4, 8], a row phase sorts one row left to right and the other right to left; a column phase orders columns top to bottom. Repeated shears end in snake order [1, 2, 3, 4, 5, 6, 7, 8]."
+    },
     id: "shear-sort",
     name: "Shear Sort",
     category: "sorting",

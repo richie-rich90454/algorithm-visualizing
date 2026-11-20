@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The assignment problem pairs workers with jobs at minimum cost. Bitmask DP encodes which jobs are already assigned as a bit pattern, so dp[mask] is the cheapest way to fill those positions. Building masks by popcount lets each state be computed from states with one fewer assigned job.",
+        "invariants": [
+            "dp[mask] is the minimum cost of assigning jobs in mask to the first popcount(mask) workers.",
+            "Every transition assigns exactly one new job.",
+            "Masks with k bits are all finalized before any mask with k+1 bits is used."
+        ],
+        "correctness": "Any assignment of k workers corresponds to a mask and a last-assigned job, so considering every choice of that job enumerates all optimal substructures. The recurrence takes the minimum over those choices, and processing masks by popcount guarantees each source is final. Hence the full mask holds the true minimum cost.",
+        "complexityRationale": "There are 2^n masks and each tries up to n jobs, costing O(n^2 * 2^n) time including indexing. The DP array over masks uses O(2^n) space.",
+        "uses": [
+            "Assigning tasks to agents with minimal cost",
+            "Minimum weight perfect matching in small bipartite graphs",
+            "Scheduling problems with a small number of jobs"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 24",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With cost matrix [[9,2,7],[6,4,3],[5,8,1]] the DP builds all eight masks. The full mask picks job 1 for worker 0, job 0 for worker 1, and job 2 for worker 2, for a total cost of 2+6+1 = 9."
+    },
     id: "assignment-bitmask-dp",
     name: "Assignment (Bitmask DP)",
     category: "dynamic-programming",

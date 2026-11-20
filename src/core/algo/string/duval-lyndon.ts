@@ -182,6 +182,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Duval Lyndon module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Lyndon word is strictly smaller than all of its rotations. Duval's algorithm computes the unique non-increasing factorization of a string into Lyndon words using three pointers i, j, and k that compare characters and emit a factor whenever the order breaks.",
+        "invariants": [
+            "The candidate starting at i has been compared up to j with offset k, and while text[k] equals text[j] the candidate repeats a Lyndon prefix.",
+            "When text[k] is less than text[j] the candidate is still Lyndon; when greater, the factor boundary is found."
+        ],
+        "correctness": "The Chen-Fox-Lyndon theorem guarantees a unique non-increasing factorization. Duval's comparisons detect exactly when the candidate stops being Lyndon and emit the maximal repeated Lyndon prefix; the three pointers only move forward, so every emitted block is a Lyndon word and their concatenation is the input.",
+        "complexityRationale": "Each character is compared a constant number of times because i, j, and k never decrease, giving O(n) time. Only a few integer pointers are stored, so auxiliary space is O(1).",
+        "uses": [
+            "Computing minimal rotations and canonical forms",
+            "String periodicity and run detection",
+            "The first stage of the runs algorithm"
+        ],
+        "references": [
+            "Duval, Factorizing Words over an Ordered Alphabet, 1983",
+            "Crochemore et al., Algorithms on Strings"
+        ],
+        "workedExample": "For \"banana\", Duval emits \"b\", then \"an\", \"an\", and \"a\": four Lyndon factors in non-increasing order that concatenate back to \"banana\"."
+    },
     id: "duval-lyndon",
     name: "Duval Lyndon Factorization",
     category: "string",

@@ -102,6 +102,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Horspool is a simplified Boyer-Moore variant that compares right to left but uses only the bad-character rule, keyed on the text character aligned with the pattern's last position. After each attempt it shifts by the precomputed distance for that character, skipping alignments that cannot match.",
+        "invariants": [
+            "The shift table gives, for each character, the distance from its rightmost occurrence in the pattern's non-final positions to the end.",
+            "Shifting by that value never skips a valid occurrence of the pattern."
+        ],
+        "correctness": "On a mismatch, the text character at the pattern's last position either is absent from the earlier pattern positions or occurs at a known offset, so no occurrence can begin before the computed shift. Every skipped alignment is therefore impossible and every full comparison is a true match.",
+        "complexityRationale": "Preprocessing the shift table costs O(m + sigma). Searches take O(n) on average with typical shifts and O(nm) in the worst case; space is O(sigma) for the table.",
+        "uses": [
+            "Fast exact string search in editors and tools",
+            "A lightweight default substring search",
+            "Searching logs and network payloads"
+        ],
+        "references": [
+            "Horspool, Practical Fast Searching in Strings, 1980",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings"
+        ],
+        "workedExample": "Pattern \"abc\" in text \"ababcabcab\": the table maps 'a' to 2 and 'b' to 1, and any other character forces a shift of the full length 3. A mismatch at the first window shifts the pattern forward until the window \"abc\" matches."
+    },
     id: "horspool-search",
     name: "Horspool Search",
     category: "string",

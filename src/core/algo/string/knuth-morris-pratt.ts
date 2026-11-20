@@ -217,6 +217,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The KMP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "When a mismatch occurs, use the pattern's prefix function to skip comparisons that cannot match. The prefix table records, for each position, the length of the longest proper prefix that is also a suffix.",
+        "invariants": [
+            "The matched prefix length before reading text character i is the longest prefix of the pattern ending at i-1.",
+            "The prefix function value gives the next candidate length after a mismatch without moving backward in the text."
+        ],
+        "correctness": "Any candidate start skipped by the prefix function cannot produce a match because it would require a border longer than the one recorded. Therefore no possible occurrence is missed, and when the length equals the pattern length an occurrence is found at the computed offset.",
+        "complexityRationale": "The text index never decreases and the matched length increases by at most n total, giving O(n + m) time for text length n and pattern length m. Space is O(m) for the prefix table.",
+        "uses": [
+            "Linear-time substring search",
+            "Streaming pattern detection",
+            "A building block for more complex string indexes"
+        ],
+        "references": [
+            "Knuth, Morris, and Pratt, Fast Pattern Matching in Strings, 1977",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "Search pattern ABABC in text ABABABC. The prefix table for ABABC is [0,0,1,2,3]. After matching ABAB, a mismatch at C falls back to length 2 using the border AB, and the search continues without rechecking earlier text."
+    },
     id: "knuth-morris-pratt",
     name: "KMP",
     category: "string",

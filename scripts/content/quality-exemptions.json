@@ -1,0 +1,14 @@
+{
+    "purpose": "Proper nouns, published titles, and standard technical terms that the quality gate must not flag as British spellings or placeholder markers. Keep this as data so new references never require a source edit.",
+    "properTitles": [
+        "d'analyse",
+        "de l'analyse",
+        "Object Modelling by Registration",
+        "Modelling Extremal Events"
+    ],
+    "technicalTerms": [
+        "placeholder embedding",
+        "placeholder token",
+        "placeholder text"
+    ]
+}

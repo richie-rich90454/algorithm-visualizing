@@ -178,6 +178,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Pollard's Rho module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pollard's rho finds a nontrivial factor of a composite n using a pseudo-random walk modulo n. Iterating f(x) = x^2 + c eventually cycles, forming a rho-shaped path. By running a slow tortoise and a fast hare and taking gcd of their difference with n, a collision modulo a hidden prime factor shows up as a shared divisor.",
+        "invariants": [
+            "The walked values are all reduced modulo n.",
+            "A collision modulo a prime factor p but not modulo n makes gcd difference with n a proper divisor.",
+            "A full cycle without a factor triggers a restart with new parameters."
+        ],
+        "correctness": "The sequence is eventually periodic modulo each prime factor, and by the birthday paradox it repeats modulo the smaller factor p sooner than modulo n. At that repeat the tortoise and hare differ by a multiple of p, so the gcd with n is at least p and less than n. The reported split is verified by multiplication.",
+        "complexityRationale": "Finding a repeat modulo the smallest factor p takes O(sqrt(p)) expected steps, which is O(n^(1/4)) for a balanced composite. Only a few integers are stored, so space is O(1).",
+        "uses": [
+            "Factoring large composites in general-purpose routines",
+            "Pairing with Miller-Rabin for complete factorization",
+            "A classic application of cycle detection and birthday bounds"
+        ],
+        "references": [
+            "Pollard, A Monte Carlo method for factorization (1975)",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.4"
+        ],
+        "workedExample": "For n = 91 = 7*13, walk x <- x^2 + c mod 91 with tortoise and hare. When their values agree modulo 7 but not modulo 91, gcd of the difference with 91 is 7, giving the factor pair 7 and 13."
+    },
     id: "pollard-rho",
     name: "Pollard's Rho",
     category: "math",

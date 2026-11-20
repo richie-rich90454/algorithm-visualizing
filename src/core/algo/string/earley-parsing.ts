@@ -90,6 +90,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Earley parses any context-free grammar in O(n^3) by building a chart of items, which are productions with a dot showing how much has been recognized, for each input position. It repeatedly predicts new items, scans terminals against the input, and completes items whose dot has reached the end.",
+        "invariants": [
+            "An item A→·AB style entry at chart position k means the part before the dot has been recognized and the parser is at input position k expecting the rest.",
+            "Scanning advances the dot by consuming a matching symbol; completion propagates finished items back to the items that predicted them."
+        ],
+        "correctness": "Every parser action corresponds to a valid step of a top-down derivation: prediction expands a nonterminal, scanning consumes a terminal, and completion records a finished production. The fixed point of these operations contains exactly the items derivable from the input, so a completed start item at the final position means acceptance.",
+        "complexityRationale": "There are O(n) chart entries, each with O(|G|) items, and completion can combine items across positions, giving O(n^3) worst-case time (O(n^2) for unambiguous grammars) and O(n^2) space.",
+        "uses": [
+            "Parsing arbitrary context-free grammars, including ambiguous ones",
+            "Natural-language processing with grammars that are not LL or LR",
+            "Incremental and error-recovering parsers"
+        ],
+        "references": [
+            "Earley, An Efficient Context-Free Parsing Algorithm, 1970",
+            "Grune and Jacobs, Parsing Techniques, Earley parsing chapter"
+        ],
+        "workedExample": "Grammar S→AB, A→a, B→b on \"ab\": E0 predicts S→·AB; scanning 'a' yields A→a· and predicts B→·b; scanning 'b' yields B→b· and completion adds S→AB·, so the final chart holds the completed start item and the input is accepted."
+    },
     id: "earley-parsing",
     name: "Earley Parsing",
     category: "string",

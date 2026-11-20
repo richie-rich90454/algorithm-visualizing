@@ -94,6 +94,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An LFU cache evicts the least frequently used entry. It groups keys into frequency buckets and a hit moves the key to the next higher bucket. On a miss at capacity, the cache drops the least recently used entry from the lowest nonempty bucket.",
+        "invariants": [
+            "A key in bucket f has been accessed f times since insertion.",
+            "A pointer tracks the current minimum frequency.",
+            "Total cached keys never exceeds capacity."
+        ],
+        "correctness": "Moving a hit to the next bucket accurately raises its frequency, so bucket membership always reflects access counts. Evicting from the lowest bucket removes a least-frequently-used key, with recency as a tie-break. Therefore the cache retains the most frequently used entries.",
+        "complexityRationale": "Hash lookup plus constant-time list moves give O(1) per access. Storing keys, frequencies, and buckets uses O(capacity) space.",
+        "uses": [
+            "Caches where access frequency matters more than recency",
+            "CDN and database buffer policies",
+            "Query-result caching"
+        ],
+        "references": [
+            "Alan Jay Smith, survey of cache memory design and evaluation, 1982",
+            "Nimrod Megiddo and Dharmendra Modha, \"ARC\" paper, FAST 2003, for comparison"
+        ],
+        "workedExample": "With capacity 2 and accesses a, b, a, c, c: a and b start at frequency 1; the second a moves to bucket 2. Inserting c evicts b from bucket 1. The second c moves to bucket 2, leaving a and c cached with frequencies 2 and 2."
+    },
     id: "lfu-cache",
     name: "LFU Cache",
     category: "data-structures",

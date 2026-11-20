@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Bresenham's algorithm draws a straight line on a pixel grid using only integer arithmetic. It steps one pixel at a time along the axis with the larger span and carries an error accumulator that decides when to step in the other axis. There is no floating point slope and no rounding of a computed y value.",
+        "invariants": [
+            "The chosen pixel is the closest grid point to the ideal line at the current column.",
+            "The error term stays within a bounded integer range, often held as 2*error - dy.",
+            "Every iteration advances exactly one pixel along the dominant axis."
+        ],
+        "correctness": "At each column the two candidate pixels straddle the true line, and the sign of the error tells which one is nearer. Updating the error by the constant slope numerator preserves that comparison from step to step. Choosing the nearer pixel at every column therefore reproduces the rounding of the ideal line, producing a straight one-pixel-wide raster line.",
+        "complexityRationale": "The loop runs once per column, so time is O(dx) where dx is the larger coordinate difference, which is also the number of pixels emitted. Only a few integer variables are kept, so auxiliary space is O(1).",
+        "uses": [
+            "Drawing lines in raster graphics and game engines",
+            "Plotting discrete trajectories on a display grid",
+            "Hardware line drawing in plotters and early GPUs"
+        ],
+        "references": [
+            "Bresenham, Algorithm for Computer Control of a Digital Plotter, IBM Systems Journal 4 (1965)",
+            "Foley et al., Computer Graphics: Principles and Practice, Chapter 3"
+        ],
+        "workedExample": "From (0,0) to (5,3), dx = 5 and dy = 3. Starting with error 0, add dy each column and subtract dx whenever the error passes the halfway point, which yields pixels (0,0), (1,1), (2,1), (3,2), (4,2), (5,3), six in total."
+    },
+
     id: "bresenham-line-rasterization",
     name: "Bresenham Line Rasterization",
     category: "geometry",

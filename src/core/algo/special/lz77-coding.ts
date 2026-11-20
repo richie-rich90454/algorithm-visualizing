@@ -93,6 +93,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LZ77 compresses by replacing repeated substrings with back-references into a sliding window of recently seen text. At each position it finds the longest match in the window and emits a triple of offset, length and the next character instead of the literal text. Decoding replays the triples, copying each match from already reconstructed output.",
+        "invariants": [
+            "The offset always points into the already-decoded prefix, within the window size.",
+            "A triple plus its matched length consumes exactly that much input text.",
+            "Decoding the emitted triples reproduces the original string exactly."
+        ],
+        "correctness": "Every back-reference points into the already-decoded output, so the decoder can reconstruct each copied substring deterministically, and the trailing next character advances the stream. By induction over the triples, the decoded output equals the input, which the demo verifies with a round trip.",
+        "complexityRationale": "For each of n positions the encoder scans up to w window offsets and compares up to w characters, O(n·w) time. The token list holds at most n triples, O(n) space.",
+        "uses": [
+            "DEFLATE used by gzip, ZIP and PNG, combined with Huffman coding",
+            "The LZ4 and Snappy fast compressor family",
+            "Network and storage compression protocols",
+            "Archival formats and match-finding in LZMA"
+        ],
+        "references": [
+            "Ziv and Lempel, A Universal Algorithm for Sequential Data Compression, IEEE Transactions on Information Theory, 1977",
+            "Ziv and Lempel, Compression of Individual Sequences via Variable-Rate Coding, 1978"
+        ],
+        "workedExample": "For \"abcababcab\" with window 6, the first three characters have no history and emit (0,0,'a'), (0,0,'b'), (0,0,'c'). At position 3 the substring \"ab\" matches 3 characters back, giving (3,2,'a'). At position 6 a longer match gives (3,3,'b'). Replaying the five triples reconstructs the text."
+    },
     id: "lz77-coding",
     name: "LZ77 Coding",
     category: "string",

@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Linear hashing grows a hash file one bucket at a time in round-robin order, avoiding a directory. A split pointer marks the next bucket to split; when a bucket overflows, that bucket is divided using one more hash bit, and the pointer advances. When the pointer passes all buckets, the level doubles.",
+        "invariants": [
+            "Buckets before the split pointer have been split at the current level.",
+            "A key's target bucket depends on the split pointer and hash level.",
+            "Only one bucket splits per overflow event."
+        ],
+        "correctness": "The split rule sends keys whose next hash bit is 1 to the new bucket and keeps the rest, so after a split every key is still found by the lookup rule that consults the split pointer. Advancing the pointer gradually converts all buckets without a global rebuild. Lookups remain correct at every stage of growth.",
+        "complexityRationale": "Lookup is one or two bucket reads, expected O(1), and splits are incremental rather than a full rehash. Space is O(n) across buckets.",
+        "uses": [
+            "Dynamic hash files without a directory",
+            "Database indexes that grow incrementally",
+            "Disk-based key-value stores"
+        ],
+        "references": [
+            "W. Litwin, \"Linear Hashing: A New Tool for File and Table Addressing\", VLDB 1980",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "Start with two buckets and split pointer 0. Inserting until bucket 0 overflows splits it into buckets 0 and 2, moving keys with the extra hash bit set. The pointer advances to 1; a query uses the pointer to decide whether to apply the extra bit, so both old and new keys are found."
+    },
     id: "linear-hashing",
     name: "Linear Hashing",
     category: "data-structures",

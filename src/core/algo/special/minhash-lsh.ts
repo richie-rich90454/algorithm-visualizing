@@ -97,6 +97,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "MinHash estimates set similarity, measured by Jaccard, from compact signatures. For several random hash functions it records the minimum hash value of each set; two sets match on a component when the element achieving that minimum is shared. Locality-sensitive hashing then groups components into bands so that similar pairs are likely to land in a common band and become candidates.",
+        "invariants": [
+            "For each hash, two sets share the same minimum value with probability equal to their Jaccard similarity.",
+            "Each signature has exactly one value per hash function.",
+            "The expected agreement fraction equals the true Jaccard similarity."
+        ],
+        "correctness": "For a random hash, the probability that two sets have the same minimum is exactly their Jaccard similarity, so the fraction of k matching components is an unbiased estimator whose variance falls as k grows. Banding b bands of r rows makes the candidate probability 1-(1-s^r)^b, high for similar pairs and low for dissimilar ones.",
+        "complexityRationale": "Computing k min-hashes over sets of size up to s costs O(k·s) time, and storing k integers per set is O(k) space. Banding adds O(b·r)=O(k) work, independent of the number of items.",
+        "uses": [
+            "Near-duplicate document and web-page detection",
+            "Crawl deduplication and clustering large corpora",
+            "Recommender systems finding similar users or items",
+            "Plagiarism detection and entity resolution"
+        ],
+        "references": [
+            "Broder, Charikar, Frieze and Mitzenmacher, Min-Wise Independent Permutations, 2000",
+            "Indyk and Motwani, Approximate Nearest Neighbors: Towards Removing the Curse of Dimensionality, STOC 1998"
+        ],
+        "workedExample": "For A={1,2,3,4} and B={3,4,5,6} the true Jaccard is 2/6≈0.33. The six (ax+b mod 7) min-hashes agree in three of six positions, estimating 0.5. With bands of three rows, neither band matches on all three components, so the pair is not flagged as a candidate in this run."
+    },
     id: "minhash-lsh",
     name: "MinHash + LSH",
     category: "data-structures",

@@ -152,6 +152,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Probability DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Probability DP computes expected values with recurrences over states. The classic example is the expected number of coin flips to get k consecutive heads. Let E[i] be the expected remaining flips with a streak of i; a flip costs one, then moves to E[i+1] on heads or resets to E[0] on tails. Solving the equations backward gives the answer.",
+        "invariants": [
+            "E[target] is zero because the goal is already reached.",
+            "Each state's expectation is one plus the probability-weighted expectations of its successors.",
+            "Solving from high streak values down expresses E[i] in terms of E[0]."
+        ],
+        "correctness": "The law of total expectation gives E[i] = 1 + p*E[i+1] + (1-p)*E[0] for the two coin outcomes. Backward substitution expresses every E[i] as a linear function of E[0], and the equation at the start determines E[0] uniquely. Hence the computed value is the true expected number of flips.",
+        "complexityRationale": "There are k+1 streak states and each is solved with constant work, giving O(k) time. Storing the expectation coefficients uses O(k) space, reducible to O(1) with a running expression.",
+        "uses": [
+            "Expected waiting times in stochastic processes",
+            "Reinforcement learning value iteration on small chains",
+            "Reliability and gambling probability calculations"
+        ],
+        "references": [
+            "Grinstead and Snell, Introduction to Probability, Chapter 11",
+            "Bertsekas, Dynamic Programming and Optimal Control, Vol. 1"
+        ],
+        "workedExample": "For three consecutive heads the backward equations give E[0] = 14, so on average 14 flips are needed. For two heads the same method gives 6 flips."
+    },
     id: "probability-dp",
     name: "Probability DP",
     category: "dynamic-programming",

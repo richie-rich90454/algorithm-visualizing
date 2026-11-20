@@ -191,6 +191,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A maximum matching can be built greedily on a tree by processing nodes deepest first. When an unmatched node has an unmatched parent, pairing them is safe because the deepest node has no remaining children to pair with.",
+        "invariants": [
+            "Processed deepest nodes are either matched or have no available partner.",
+            "No vertex is ever matched twice.",
+            "The matching edges are disjoint and cover as many vertices as the greedy rule allows."
+        ],
+        "correctness": "Consider a deepest currently unmatched node. All its children are already processed, so its only possible partner is its parent; if the parent is unmatched, taking that edge cannot conflict with any future choice because the parent's other children are already settled. Pairing them therefore extends a maximum matching, and by induction over decreasing depth the greedy result is maximum. When all n vertices, with n even, end matched, the matching is perfect.",
+        "complexityRationale": "Ordering nodes by depth and scanning once costs O(n log n) to sort or O(n) with bucket ordering by depth, and the matching array uses O(n) space.",
+        "uses": [
+            "Pairing nodes in a tree-shaped hierarchy",
+            "Finding perfect matchings when they exist",
+            "Competitive programming greedy tree problems"
+        ],
+        "references": [
+            "Bondy and Murty, Graph Theory, Chapter 5 (matchings)",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "For the path A-B-C-D, processing deepest first pairs D with C, then B with A. All four vertices are matched, so the greedy matching {C-D, A-B} is perfect."
+    },
+
     id: "tree-perfect-matching-greedy",
     name: "Tree Perfect Matching Greedy",
     category: "tree",

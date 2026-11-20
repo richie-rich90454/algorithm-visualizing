@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A primitive root modulo a prime p is a generator whose powers produce every nonzero residue. Instead of testing all p-1 powers, the search checks only the prime factors q of p-1: a candidate g is a primitive root exactly when g^((p-1)/q) is never 1 for any such q. The first candidate passing every factor test is the smallest primitive root.",
+        "invariants": [
+            "The order of any element divides p-1.",
+            "Rejecting g when g^((p-1)/q) = 1 rules out orders dividing (p-1)/q.",
+            "Passing all factor tests means the order is exactly p-1."
+        ],
+        "correctness": "If the order of g were a proper divisor of p-1, it would divide (p-1)/q for some prime factor q, making g^((p-1)/q) = 1. Conversely if every such power is not 1, the order cannot be proper and must be p-1, so g generates the group. Testing candidates in order finds the smallest generator.",
+        "complexityRationale": "Factoring p-1 plus testing each candidate against each prime factor uses O(log p) modular exponentiations of O(log p) cost; for the first small generator the header bound O(p log p) is conservative. Space is O(1).",
+        "uses": [
+            "Finding generators for cryptographic groups",
+            "Setting up Diffie-Hellman parameters",
+            "Constructing finite-field multiplicative tables"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 3",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 2"
+        ],
+        "workedExample": "For p = 11, p-1 = 10 with factors 2 and 5. Test g = 2: 2^5 = 32 = -1 and 2^2 = 4, neither is 1, so 2 passes and is the smallest primitive root modulo 11."
+    },
     id: "primitive-root-search",
     name: "Primitive Root Search",
     category: "math",

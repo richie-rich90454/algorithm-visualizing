@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A weight-balanced tree keeps each subtree size, or weight, within a fixed ratio of its sibling. When an insertion makes a child too heavy, single or double rotations restore the ratio, guaranteeing logarithmic depth.",
+        "invariants": [
+            "At every node each child weight is at most a fixed multiple of the other.",
+            "Stored subtree weights are correct.",
+            "Rotations preserve BST key order."
+        ],
+        "correctness": "Rotations preserve in-order key sequence while rebalancing weights; the heavier subtree is split so the ratio returns within bound. Because the bound forces every child to be a constant fraction smaller, height is O(log n) and search is correct.",
+        "complexityRationale": "Insert updates weights along one path and rotates a constant number of times per level, O(log n); search is O(log n). One node plus a weight per key gives O(n) space.",
+        "uses": [
+            "Balanced ordered dictionaries with simple invariants",
+            "Functional maps such as OCaml Map",
+            "Databases needing deterministic balancing"
+        ],
+        "references": [
+            "Nievergelt and Reingold, Binary Search Trees of Bounded Balance, SIAM Journal on Computing 1973",
+            "Adams, Efficient Sets: A Balancing Act, 1993"
+        ],
+        "workedExample": "Insert 5, 3, 7, 2, 6; adding 2 makes the left subtree of 5 too heavy, so a rotation reshapes that part; search for 6 then descends a short balanced path to find it."
+    },
     id: "weight-balanced-tree",
     name: "Weight-Balanced Tree",
     category: "data-structures",

@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 2-3 heap arranges keys in a balanced structure where every internal node has two or three children and all leaves share one depth. Group minima bubble up so the global minimum sits in the leftmost parent, giving a priority queue with a working-set flavor.",
+        "invariants": [
+            "Each internal node has two or three children.",
+            "All leaves are at the same depth.",
+            "A parent carries its group minimum and is no larger than child minima."
+        ],
+        "correctness": "Because each parent stores its group minimum and parents are ordered by those minima, the leftmost parent holds the global minimum. Insert regroups leaves to keep sizes and ordering, and extraction removes the minimum and regroups survivors while preserving balance.",
+        "complexityRationale": "The tree is height balanced so insert and extract touch O(log n) levels. One node per key plus parent grouping gives O(n) space.",
+        "uses": [
+            "Meldable priority queues with balanced structure",
+            "Event scheduling",
+            "Priority queues with working-set access patterns"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapters 18 and 19 on B-trees and heaps",
+            "Bayer and McCreight, Organization and Maintenance of Large Ordered Indexes, Acta Informatica 1972"
+        ],
+        "workedExample": "Keys 5, 2, 8, 1, 7, 4 are sorted and grouped by threes; each parent carries its group minimum, so the leftmost parent holds 1. Extracting 1 removes it and regroups survivors while keeping two or three children per node."
+    },
     id: "two-three-heap",
     name: "2-3 Heap",
     category: "data-structures",

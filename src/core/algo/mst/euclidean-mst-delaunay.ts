@@ -191,6 +191,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "For points in the plane with straight-line distances, the Euclidean minimum spanning tree is guaranteed to be a subgraph of the Delaunay triangulation. Instead of comparing every pair of points, the algorithm builds the triangulation and runs Kruskal's greedy scan over its short edges only.",
+        "invariants": [
+            "Every Euclidean MST edge is present in the Delaunay triangulation.",
+            "Edges are considered in nondecreasing length order.",
+            "An edge is accepted only when it joins different components."
+        ],
+        "correctness": "The Delaunay property guarantees that any edge of the Euclidean MST appears in the triangulation, so restricting Kruskal to triangulation edges cannot discard a needed edge. Running Kruskal on that superset therefore produces the same minimum spanning tree as running it on the complete graph.",
+        "complexityRationale": "Building the Delaunay triangulation costs O(n log n) and dominates sorting its O(n) edges and the union-find steps, giving O(n log n) with O(n) space for points and edges.",
+        "uses": [
+            "Clustering and nearest-neighbor structure discovery in computational geometry",
+            "Approximating the Euclidean TSP with a tree lower bound",
+            "Mesh generation and geographic network design"
+        ],
+        "references": [
+            "Delaunay, Sur la sphere vide (1934)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Delaunay chapter"
+        ],
+        "workedExample": "For points (0,0), (1,0), (0,1), (2,0), the triangulation includes the short unit edges. Kruskal accepts edges of length 1 joining the points into a tree and rejects any longer edge that would form a cycle, yielding the Euclidean MST."
+    },
     id: "euclidean-mst-delaunay",
     name: "Euclidean MST via Delaunay",
     category: "mst",

@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A UB-tree maps multidimensional points to a single Z-order value by interleaving coordinate bits and stores those values in a B-tree. Nearby points tend to get nearby Z-values, so range queries scan contiguous keys.",
+        "invariants": [
+            "Each point has a unique Z-value from bit interleaving.",
+            "The B-tree stores Z-values in sorted order.",
+            "Splits keep neighboring Z-values on nearby pages."
+        ],
+        "correctness": "Interleaving bits is a deterministic mapping from points to keys, so every inserted point is retrievable by its Z-value. Range queries examine neighboring Z-values and refine by true distance, and pruning by Z-range cannot exclude a point whose Z-value lies outside the searched range.",
+        "complexityRationale": "Computing a Z-value is O(d) for dimension d and B-tree insertion and lookup are O(log n) with page fanout. Storage is one key per point, O(n) space.",
+        "uses": [
+            "Multidimensional indexing in databases",
+            "Spatial range queries over points",
+            "Mapping geometry to B-tree friendly keys"
+        ],
+        "references": [
+            "Bayer and McCreight, Organization and Maintenance of Large Ordered Indexes, 1972",
+            "Morton, A Computer Oriented Geodetic Data Base, 1966"
+        ],
+        "workedExample": "Points (2,3), (5,1), (7,6), (1,7) get Z-values by interleaving coordinate bits and are inserted into a B-tree; a query near (4,2) scans neighboring Z-values and reports the nearest after distance refinement."
+    },
     id: "ub-tree",
     name: "UB-Tree",
     category: "data-structures",

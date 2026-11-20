@@ -136,6 +136,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sleep sort starts one timer per value, with the delay proportional to the value, and appends values to output as timers fire. Smaller values wake first, so wake-up order is sorted. It is a joke that only works with timers and nonnegative inputs.",
+        "invariants": [
+            "Each value is scheduled exactly once.",
+            "Timers fire in nondecreasing delay order."
+        ],
+        "correctness": "Because delay is a monotone function of value, a smaller value's timer always fires before a larger one's; appending on wake-up therefore emits values in sorted order, barring timer skew.",
+        "complexityRationale": "Scheduling n timers is O(n) and wall-clock time is proportional to the largest value t, so O(n + t) in the model. Storing timers and output uses O(n) space.",
+        "uses": [
+            "Classroom joke illustrating concurrency",
+            "Discussing timer precision and scheduling skew",
+            "Contrasting sorting with external physical processes"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2 (sorting folklore)",
+            "Sedgewick and Wayne, Algorithms, Section 2.5 exercises"
+        ],
+        "workedExample": "For [4, 2, 5, 1, 3], timers wake in order 1, 2, 3, 4, 5, producing [1, 2, 3, 4, 5]; negative values would need negative delays and break the method."
+    },
     id: "sleep-sort",
     name: "Sleep Sort",
     category: "sorting",

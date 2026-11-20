@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A tiered vector groups elements into a two-level hierarchy of blocks so an insert or delete shifts elements only within one small block. Choosing block size about sqrt(n) keeps both shift cost and block count balanced.",
+        "invariants": [
+            "Elements are stored in contiguous blocks.",
+            "Blocks are linked in order.",
+            "Insert and delete close gaps inside a single block without moving other blocks."
+        ],
+        "correctness": "Shifting within a block preserves the relative order of all other elements, so after insertion the sequence is the original with one value added at the right position. Reading blocks in order yields exactly the current sequence, so membership and length checks are correct.",
+        "complexityRationale": "A shift touches at most one block of size O(sqrt(n)), O(sqrt(n)) time, and indexing skips whole blocks. Storage is the elements plus block metadata, O(n).",
+        "uses": [
+            "Editable sequences with frequent middle insertions",
+            "Text and list buffers",
+            "Persistent vectors in functional settings"
+        ],
+        "references": [
+            "Okasaki, Purely Functional Random-Access Lists, FPCA 1995",
+            "Brodnik et al., Resizable Arrays in Optimal Time and Space, 1999"
+        ],
+        "workedExample": "Items 4, 1, 7, 3, 6 packed into blocks; inserting a value shifts only its block, deleting the first closes the gap in that block, and reading blocks back verifies the final order."
+    },
     id: "tiered-vector",
     name: "Tiered Vector",
     category: "data-structures",

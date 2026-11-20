@@ -65,6 +65,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gibbs sampling is a Markov chain Monte Carlo method for sampling a joint distribution when each variable is easy to sample conditionally on the others. It repeatedly resamples one variable from its full conditional distribution while holding the rest fixed. Over many sweeps, the distribution of the sampled states converges to the target joint distribution.",
+        "invariants": [
+            "Each draw comes from the correct conditional P(X|Y) or P(Y|X).",
+            "The chain's state (X,Y) is always a valid assignment in {0,1}^2.",
+            "The running mean accumulates the X values actually sampled."
+        ],
+        "correctness": "Alternating draws from the full conditionals defines a Markov chain whose stationary distribution is the target joint; under standard irreducibility conditions the chain converges to it. Consequently long-run averages such as the empirical P(X=1) converge to the true marginal by the ergodic theorem.",
+        "complexityRationale": "Each sweep updates two binary variables with a constant-time draw, so t sweeps cost O(t). Only the current state and a single accumulator are stored, O(1) space.",
+        "uses": [
+            "Bayesian posterior sampling in tools such as BUGS and Stan",
+            "Latent-variable and topic models like latent Dirichlet allocation",
+            "Image restoration and computer vision",
+            "Bioinformatics and high-dimensional Monte Carlo integration"
+        ],
+        "references": [
+            "Geman and Geman, Stochastic Relaxation, Gibbs Distributions, and the Bayesian Restoration of Images, IEEE TPAMI, 1984",
+            "Robert and Casella, Monte Carlo Statistical Methods, Chapter 10"
+        ],
+        "workedExample": "Start at (X,Y)=(0,0). Sweep 1 draws X with probability 0.3+0.5·0=0.3, then Y with probability 0.4+0.3·X given the new X. Repeating the alternation produces a sequence of states; the fraction of sweeps with X=1 approaches the true marginal of X implied by the two conditionals."
+    },
     id: "gibbs-sampling",
     name: "Gibbs Sampling",
     category: "math",

@@ -134,6 +134,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hill Climbing module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Hill climbing is a local search that evaluates neighboring solutions and moves to the best one that improves the objective. It repeats until no neighbor is better, at which point it has reached a local optimum. It is fast and simple but greedy, so it can get stuck on a peak that is not the global best.",
+        "invariants": [
+            "The objective value never decreases from one step to the next.",
+            "The search stops only when no immediate neighbor improves the objective.",
+            "Each visited position is recorded in order."
+        ],
+        "correctness": "Because the algorithm accepts only improving moves and the objective is bounded above, it terminates at a point where no neighbor is better, a local optimum. It does not promise a global optimum. For the demo's concave parabola the local peak at x=3 is also the global maximum, but on a rugged landscape the result would depend on the start.",
+        "complexityRationale": "Each iteration evaluates a constant number of neighbors, two in one dimension, so s steps cost O(s·neighbors). Only the current position, the best value and the visited history are kept; working space is O(1) beyond the history.",
+        "uses": [
+            "Optimization when the search space is large or poorly understood",
+            "Routing and scheduling heuristics",
+            "Tuning controller parameters and solving constraint puzzles",
+            "A baseline for more robust local-search methods and game AI"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 4",
+            "Aarts and Lenstra, Local Search in Combinatorial Optimization, 1997"
+        ],
+        "workedExample": "For f(x)=-x^2+6x starting at x=0 (f=0), the neighbors give f(-1)=-7 and f(1)=5, so move to x=1. Next f(2)=8 beats f(0)=0, so move to x=2. Then f(3)=9 beats f(1)=5, so move to x=3. Both neighbors of 3 give 8, which is worse, so stop at the peak x=3, f=9."
+    },
     id: "hill-climbing",
     name: "Hill Climbing",
     category: "math",

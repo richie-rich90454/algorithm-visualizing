@@ -135,6 +135,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A soft heap is an approximate priority queue that deliberately raises, or corrupts, some keys within a controlled error budget. That relaxation allows O(1) amortized extract-min at the cost of occasionally returning a key slightly larger than the true minimum.",
+        "invariants": [
+            "A corrupted key is never smaller than its true value.",
+            "The number of corrupted keys is bounded by the error rate times insertions.",
+            "Heap order holds on the stored possibly raised keys."
+        ],
+        "correctness": "Corruption only increases keys, so any extracted key is at least its true value, making the error one-sided and bounded by the budget. On small inputs no key needs corrupting so extractions are exact, and in general the bound limits the fraction of wrong keys.",
+        "complexityRationale": "Maintaining size-ranked lists and spending the corruption budget gives O(1) amortized extract and insert. Each inserted key occupies one node, O(n) space.",
+        "uses": [
+            "Approximate selection and streaming quantiles",
+            "Linear-time minimum spanning tree algorithms",
+            "Settings where bounded error is acceptable for speed"
+        ],
+        "references": [
+            "Chazelle, The Soft Heap: An Approximate Priority Queue with Optimal Error Rate, JCSS 2000",
+            "Kaplan, Tarjan, and Zwick, Soft Heaps Simplified, 2013"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1 with error 0.25; on this tiny input no key is raised, so extractions return 1, 2, 5, 8 exactly and the corruption count stays zero."
+    },
     id: "soft-heap",
     name: "Soft Heap",
     category: "data-structures",

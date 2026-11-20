@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "One directed depth-first search can classify every edge by the color of its target when it is crossed. A tree edge reaches a fresh vertex, a back edge reaches an ancestor still on the recursion stack, a forward edge jumps to a finished descendant, and a cross edge links two finished subtrees.",
+        "invariants": [
+            "Discovery and finish timestamps give every vertex an interval of activity.",
+            "A gray target means the edge points to an ancestor and reveals a cycle.",
+            "Tree edges form a DFS forest over all vertices."
+        ],
+        "correctness": "At the moment an edge is examined, the target's color records its relationship in the DFS tree: white means undiscovered so the edge is a tree edge, gray means an active ancestor so it is a back edge, and black means finished, which is a forward edge if the target is a descendant and a cross edge otherwise. Timestamps distinguish the last two cases, so the classification is exact.",
+        "complexityRationale": "A single DFS touches each edge once and each vertex a constant number of times, O(V + E); colors, timestamps, and the four edge lists use O(V + E) space.",
+        "uses": [
+            "Cycle detection in directed graphs",
+            "Compilers analyzing control-flow and call graphs",
+            "A first step in many DFS-based graph algorithms"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, depth-first search",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)"
+        ],
+        "workedExample": "For edges A to B, B to C, and A to C, DFS from A marks A-B and B-C as tree edges. When A to C is examined, C is already finished and is a descendant of A, so that edge is classified as a forward edge."
+    },
     id: "dfs-tree-edge-classification",
     name: "DFS Tree / Edge Classification",
     category: "graph",

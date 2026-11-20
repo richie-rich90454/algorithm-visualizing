@@ -124,6 +124,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In a k-sorted array each element is at most k positions from its sorted slot. For k=1 the algorithm steps two indices at a time and checks the three positions i-1, i, and i+1, which must contain the target if it is nearby.",
+        "invariants": [
+            "Any occurrence of the target near index i lies in the checked window.",
+            "Indices advance monotonically, so no position is revisited."
+        ],
+        "correctness": "Because no element moves more than k slots, a target whose sorted rank is near i must appear within k positions of i; checking that window at each step cannot miss it, and exhausting the array proves absence.",
+        "complexityRationale": "The scan advances two positions at a time and checks a constant window, so O(n) time overall and O(1) space.",
+        "uses": [
+            "Searching almost sorted logs",
+            "Teaching k-sorted array properties",
+            "Simple cases before using a heap for larger k"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "LeetCode 581 style nearly sorted array problems"
+        ],
+        "workedExample": "In [3,1,2,4,6,5] for target 5, check windows around indices 0, 2, and 4; the window at index 4 contains 5 at index 5 and the search returns 5."
+    },
     id: "nearly-sorted-array-search",
     name: "Nearly Sorted Array Search",
     category: "searching",

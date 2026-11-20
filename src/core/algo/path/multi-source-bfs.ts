@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Multi-source BFS grows one shared wavefront from all sources at once. Every source enters the same queue with distance zero and its own owner label. The first wavefront to reach a vertex claims it, so the result partitions the graph into regions of vertices assigned to their nearest source.",
+        "invariants": [
+            "The queue is processed in nondecreasing distance from the nearest source.",
+            "The first source to reach a vertex is a nearest source.",
+            "Each non-source vertex is claimed exactly once."
+        ],
+        "correctness": "BFS processes vertices by distance, so when a wavefront first reaches an unvisited vertex no closer source exists, making its distance and owner correct. Extending from claimed vertices continues the wavefront, so all vertices are assigned to a nearest source, forming a Voronoi-like partition.",
+        "complexityRationale": "One queue pass over vertices and edges costs O(V + E), with O(V) space for distances, owners, and the queue.",
+        "uses": [
+            "Nearest-facility assignment on graphs",
+            "Widest-first or multi-agent flood simulations",
+            "Computing Voronoi regions on grid and road networks"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search",
+            "Okabe, Boots, Sugihara, and Chiu, Spatial Tessellations"
+        ],
+        "workedExample": "On the line A-B-C-D-E with sources A and E, A claims A, B, and C while E claims E and D. Each vertex's owner is the nearer source, and the boundary falls between C and D."
+    },
     id: "multi-source-bfs",
     name: "Multi-Source BFS",
     category: "shortest-path",

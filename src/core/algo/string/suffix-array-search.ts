@@ -84,6 +84,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A suffix array lists all suffixes in sorted order, so a pattern's occurrences form a contiguous block. Binary search compares the pattern with a middle suffix to narrow the range; after finding one match, neighbors are scanned to collect all occurrences.",
+        "invariants": [
+            "The suffixes are in lexicographic order, so the suffixes beginning with the pattern form a contiguous interval.",
+            "Binary search maintains that any match lies within the current bounds."
+        ],
+        "correctness": "Comparing the pattern with a suffix orders them lexicographically, so discarding the half on the wrong side cannot remove a suffix starting with the pattern. When bounds meet, any matching suffix plus its neighbors gives all occurrences because matches are contiguous.",
+        "complexityRationale": "Each binary-search step compares the pattern to a suffix in O(m) with O(log n) steps, giving O(m log n) time, and collecting k matches adds O(km); the suffix array uses O(n) space.",
+        "uses": [
+            "Full-text substring search with a suffix array",
+            "Counting occurrences in large documents",
+            "The query step of suffix-array-based indexes"
+        ],
+        "references": [
+            "Manber and Myers, Suffix Arrays: A New Method for On-Line String Searches, 1990",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For text \"banana\" and pattern \"ana\", binary search over [5,3,1,0,4,2] locates the block containing suffixes \"ana\" and \"anana\", reporting starts 3 and 1."
+    },
     id: "suffix-array-search",
     name: "Suffix Array Search",
     category: "string",

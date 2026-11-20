@@ -165,6 +165,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Fenwick Tree (range) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Two ordinary Fenwick trees can support both range updates and range queries. A range add of delta on [l, r] becomes a point add of delta at l and -delta at r+1 in the first tree, with a companion term in the second tree. Prefix sums from both trees then combine to give the value at any position.",
+        "invariants": [
+            "BIT1 tracks the difference array of applied updates.",
+            "BIT2 tracks delta times index to correct the linear term.",
+            "Prefix sum at i equals i times sum(BIT1, i) minus sum(BIT2, i)."
+        ],
+        "correctness": "Encoding a range add as two point adds makes the difference array represent exactly the added amounts. The prefix of the difference array gives the value at a point, and the second tree removes the extra accumulation that would otherwise grow with position. Combining the two reproduces the true array value.",
+        "complexityRationale": "A range update is two point updates per tree and a range query is two prefix queries, each O(log n), so operations are O(log n). Two trees of size n use O(n) space.",
+        "uses": [
+            "Range-add and range-sum problems",
+            "Batch increments in analytics counters",
+            "Competitive programming range updates"
+        ],
+        "references": [
+            "Peter M. Fenwick, \"A New Data Structure for Cumulative Frequency Tables\", 1994",
+            "Steven Halim, Competitive Programming 3, range-update Fenwick section"
+        ],
+        "workedExample": "Add 3 to positions 2-4 of a length-6 array: BIT1 gets +3 at 2 and -3 at 5; BIT2 gets +6 at 2 and -15 at 5. Prefix sum at 3 is 3 * sum(BIT1,3) - sum(BIT2,3) = 3*3 - 6 = 3, the value at position 3."
+    },
     id: "fenwick-tree-range",
     name: "Fenwick Tree (Range)",
     category: "data-structures",

@@ -104,6 +104,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Myers' bit-parallel algorithm searches a pattern with up to k mismatches by packing an entire dynamic-programming column into one machine word. Equality masks per character and a few bit operations update all DP cells at once, so each text character costs only a handful of word operations.",
+        "invariants": [
+            "The bit vector encodes the vertical deltas of the current DP column, from which the edit distance at each pattern position is read via the count of set bits.",
+            "A reported window's score never exceeds k."
+        ],
+        "correctness": "The bit recurrence is an algebraic rewriting of the Levenshtein DP recurrence, so the vector after each character represents the exact edit distances between the pattern and the text suffix ending there. When the high bit indicates distance at most k, a full approximate match ends at that position.",
+        "complexityRationale": "Each text character uses a constant number of word operations, giving O(n) time when the pattern fits in a word or O(n·ceil(m/w)) generally, reported as O((n·m)/w). Equality masks need O(sigma) words of space.",
+        "uses": [
+            "Fast approximate search in genome sequencers",
+            "Typo-tolerant search in large text",
+            "Spelling correction and pattern discovery"
+        ],
+        "references": [
+            "Myers, A Fast Bit-Vector Algorithm for Approximate String Matching Based on Dynamic Programming, 1999",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings"
+        ],
+        "workedExample": "Searching \"abc\" with k=1 in \"ababcab\": equality masks mark where each character matches a pattern position, and sliding the bit state reveals windows such as \"aba\" at index 0 whose edit distance to \"abc\" is at most 1."
+    },
     id: "myers-bitparallel-approx",
     name: "Myers Bit-Parallel Approx",
     category: "string",

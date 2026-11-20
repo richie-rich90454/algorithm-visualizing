@@ -140,6 +140,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This algorithm finds the smallest absent positive integer by using the array itself as a hash table. Each value v in range is swapped to index v-1 until no more placements are possible; the first index holding the wrong value reveals the answer.",
+        "invariants": [
+            "Every value currently in its home index v-1 stays there.",
+            "Swapping a value into place does not evict a correctly placed value."
+        ],
+        "correctness": "After cyclic placement, index i holds i+1 for every positive i+1 present in the array, so the first index where this fails is exactly the smallest missing positive.",
+        "complexityRationale": "Each element is swapped into its final home at most once, so O(n) total swaps and comparisons. Only a temporary variable is used, O(1) space.",
+        "uses": [
+            "Finding gaps in integer identifiers",
+            "Memory-constrained array problems",
+            "Teaching in-place hashing with the input as storage"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2 (hashing)",
+            "LeetCode 41, First Missing Positive, problem and editorial"
+        ],
+        "workedExample": "For [3, 4, -1, 1], swap 3 to index 2 and 4 to index 3, then 1 to index 0, giving [1, -1, 3, 4]; index 1 holds -1 instead of 2, so the answer is 2."
+    },
     id: "first-missing-positive-search",
     name: "First Missing Positive Search",
     category: "searching",

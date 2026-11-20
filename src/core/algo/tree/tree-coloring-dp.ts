@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The minimum-cost coloring of a tree is found with dynamic programming over three colors. For each node and color, the DP stores the cheapest way to color its subtree given that the node uses that color, forcing each child to pick a different one.",
+        "invariants": [
+            "dp[u][c] is the minimum cost of coloring u's subtree with u fixed to color c.",
+            "A child contributes the minimum over colors different from its parent's color.",
+            "Leaves contribute only their own color cost."
+        ],
+        "correctness": "Given the color of u, each child subtree is independent except for the constraint that the child's color must differ from u's, so the optimal total adds the minimum valid child DP value for each child. Trying all three colors at u and taking the minimum yields the best coloring of the subtree rooted at u. By induction over postorder this gives the global minimum at the root.",
+        "complexityRationale": "Each node evaluates three colors and three child choices per edge, so time is O(n) for a fixed number of colors. The DP table uses O(3n) = O(n) space.",
+        "uses": [
+            "Assigning limited resources so neighbors differ",
+            "Frequency assignment in wireless networks",
+            "Scheduling with conflict constraints on tree topologies"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15 (dynamic programming)",
+            "Garey and Johnson, Computers and Intractability, graph coloring chapter"
+        ],
+        "workedExample": "For a chain A-B-C-D with the default costs, the DP chooses colors that differ along every edge and backtracks to A = 1, B = 0, C = 0, D = 2 with total cost 9, which is the minimum."
+    },
+
     id: "tree-coloring-dp",
     name: "Tree Coloring DP",
     category: "tree",

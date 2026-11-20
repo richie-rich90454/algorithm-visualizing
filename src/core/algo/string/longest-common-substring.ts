@@ -170,6 +170,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Longest Common Substring module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest common substring is the longest contiguous block appearing in both strings. The DP defines dp[i][j] as the length of the common suffix ending at a[i] and b[j]: matching characters extend the diagonal by one, mismatches reset to zero, and the largest cell is the answer.",
+        "invariants": [
+            "dp[i][j] is the length of the longest common suffix of a[..i] and b[..j].",
+            "A positive value means the last dp[i][j] characters of the two prefixes are identical."
+        ],
+        "correctness": "If a[i-1] equals b[j-1], any common suffix ending there is one longer than the common suffix ending at (i-1,j-1); otherwise no common suffix can include both positions, so the value is zero. Filling row by row computes every cell correctly and a traceback along the winning diagonal recovers the substring.",
+        "complexityRationale": "There are (n+1)(m+1) cells filled in O(1) each, so time is O(nm); storing the table for traceback uses O(nm) space, reducible to O(min(n,m)) if only the length is needed.",
+        "uses": [
+            "Detecting shared code or plagiarism",
+            "Biological sequence motif finding",
+            "Comparing text for repeated passages"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, dynamic programming chapter",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For a=\"abacaba\", b=\"cabac\", the largest DP value is 4 at the cells for \"abac\", so the longest common substring is \"abac\"."
+    },
     id: "longest-common-substring",
     name: "Longest Common Substring",
     category: "string",

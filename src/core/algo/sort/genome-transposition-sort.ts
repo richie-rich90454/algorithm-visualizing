@@ -142,6 +142,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Genome transposition sort models the mutation that cuts a block of genes and pastes it elsewhere. Each step locates the needed block and transposes it toward its sorted home. Comparing reversal and transposition distance is a live biology question.",
+        "invariants": [
+            "A transposition preserves gene order inside the moved block.",
+            "Already fixed genes at the ends stay there for the rest of the run."
+        ],
+        "correctness": "Cutting and reinserting a block can move the next needed gene into position without changing the multiset of genes; repeating for each position sorts the order by induction. Every step fixes at least one gene, so the process terminates.",
+        "complexityRationale": "Each transposition searches and moves O(n) genes and at most n are needed, so O(n^2) time. The array is edited in place with O(1) extra storage.",
+        "uses": [
+            "Modeling transposition mutations in genomes",
+            "Comparing rearrangement distances in bioinformatics",
+            "Teaching non-swap sorting operations"
+        ],
+        "references": [
+            "Pevzner, Computational Molecular Biology, MIT Press, 2000",
+            "Kececioglu and Ravi, Of Mice and Men: Algorithms for Genome Rearrangements, SODA 1995"
+        ],
+        "workedExample": "For [3, 1, 2, 5, 4], cut the block [1, 2] and paste it before 3 to get [1, 2, 3, 5, 4]; then transpose the block [4] before 5, ending at [1, 2, 3, 4, 5]."
+    },
     id: "genome-transposition-sort",
     name: "Genome Transposition Sort",
     category: "sorting",

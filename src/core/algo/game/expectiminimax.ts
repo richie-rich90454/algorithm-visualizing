@@ -153,6 +153,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Expectiminimax extends minimax to games with chance. MAX nodes choose the highest value, MIN nodes choose the lowest, and chance nodes replace the choice with a probability-weighted average. It is the natural search rule for games involving dice or random events.",
+        "invariants": [
+            "Chance nodes back up the mean of their children's utilities.",
+            "MAX nodes back up the maximum child value and MIN nodes the minimum.",
+            "The root value is the expected utility under optimal play of the deciding players."
+        ],
+        "correctness": "For a fixed chance outcome, MAX and MIN choices are the minimax ones. Averaging over chance outcomes before the deciding node combines those cases linearly because expectation commutes with the outer max, so backing up means at chance nodes and max at decision nodes yields the optimal expected utility.",
+        "complexityRationale": "The full tree has O(b^d) nodes just like minimax, and recursion uses O(d) stack space. Chance nodes do not reduce the tree size, only the backup operator.",
+        "uses": [
+            "Game AI for dice games and card games with randomness",
+            "Decision making under uncertainty with an adversary",
+            "A foundation for stochastic dynamic programming examples"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, adversarial search chapter",
+            "Michie, Advice and Trees (1966)"
+        ],
+        "workedExample": "MAX chooses between chance nodes C1 with leaf utilities 10 and 0, and C2 with 8 and 4. The expected values are 5 and 6. MAX picks C2, so the root value is 6, the higher expected payoff."
+    },
     id: "expectiminimax",
     name: "Expectiminimax",
     category: "game",

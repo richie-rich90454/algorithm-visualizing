@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Sprague-Grundy module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Sprague-Grundy theorem says every impartial game position is equivalent to a Nim heap of a certain size called its Grundy number. The number is the mex, the smallest nonnegative value not present, of the Grundy numbers of all reachable positions. A position is losing exactly when its Grundy number is zero.",
+        "invariants": [
+            "G of a terminal position is zero.",
+            "G of a position is the mex of the Grundy values of its options.",
+            "The Grundy value of a sum of independent games is the xor of their values."
+        ],
+        "correctness": "The mex rule is exactly the definition that makes a position equivalent to a Nim heap of that size, because its options reach every smaller Grundy value and no option reaches the value itself. By induction on finite game depth the assigned numbers are correct, and xor combines independent components by the Sprague-Grundy theorem.",
+        "complexityRationale": "Computing Grundy values up to n for m possible moves examines O(n*m) options with constant-time lookups, using O(n) storage for the table.",
+        "uses": [
+            "Solving all finite impartial games by reduction to Nim",
+            "Analyzing subtraction and take-away games",
+            "Computing winning moves in game engines"
+        ],
+        "references": [
+            "Sprague, Uber mathematische Kampfspiele (1935)",
+            "Grundy, Mathematics and Games (1939)"
+        ],
+        "workedExample": "In the subtraction game where a move removes 1, 2, or 3 tokens, G(0)=0 and each later value is the mex of the previous three: the sequence 0,1,2,3,0,1,2,3 repeats with period 4. For 20 tokens G(20)=0, so the first player to move loses."
+    },
     id: "sprague-grundy",
     name: "Sprague-Grundy",
     category: "game",

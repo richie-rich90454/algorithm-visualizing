@@ -173,6 +173,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Comb Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Comb sort compares elements separated by a gap rather than only neighbors. It begins with a gap near n/1.3 and shrinks by 1.3 each pass until the gap is 1. Large gaps let small values travel toward the front quickly, removing the turtles that slow bubble sort.",
+        "invariants": [
+            "At the end of a pass, any pair gap apart that was compared is in order.",
+            "When the gap reaches 1, the remaining passes are ordinary bubble passes."
+        ],
+        "correctness": "Swapping out-of-order pairs separated by the gap monotonically reduces inversions; a gap-1 pass with no swaps certifies sortedness. Repeating with a shrinking gap sequence eventually reaches gap 1, where the bubble sort argument applies.",
+        "complexityRationale": "Each pass scans up to n pairs and the gap shrinks geometrically, so the number of passes is O(log n) and total work is often near O(n log n), though the worst case remains O(n^2). Only the gap and swap flag are stored, so space is O(1).",
+        "uses": [
+            "Improving on bubble sort with a one-line change",
+            "Teaching the effect of comparison distance",
+            "Small scripts needing a simple in-place sort"
+        ],
+        "references": [
+            "Lacey and Box, A Fast, Simple Sort Algorithm, Computer Journal, 1991",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2"
+        ],
+        "workedExample": "For [8, 4, 1, 7, 3, 9, 2, 6] the first gap is about 6; comparing 8 with 2 and swapping moves 2 toward the front. As the gap shrinks to 3 then 1, the array settles to [1, 2, 3, 4, 6, 7, 8, 9]."
+    },
     id: "comb-sort",
     name: "Comb Sort",
     category: "sorting",

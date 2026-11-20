@@ -141,6 +141,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Interleaving String decides whether a third string s3 can be formed by merging s1 and s2 while preserving each one's character order. The DP cell dp[i][j] asks whether the first i characters of s1 and first j of s2 can form the first i+j of s3. A cell is true if its top or left predecessor is true and the newly consumed character matches.",
+        "invariants": [
+            "dp[i][j] records a valid interleaving of the two prefixes.",
+            "The first row and column handle using only one source string.",
+            "Each step consumes exactly one character from one of the two strings."
+        ],
+        "correctness": "The last character of a valid interleaving came from either s1 or s2, so checking the corresponding predecessor and character match covers all possibilities. The edge cases seed prefixes made from a single string. Induction over i and j therefore makes dp[n][m] true exactly when an interleaving exists.",
+        "complexityRationale": "Filling an n by m table with constant work per cell takes O(n*m) time. The table uses O(n*m) space, reducible to O(m) with one row.",
+        "uses": [
+            "Checking merge feasibility in sequence alignment",
+            "Validating shuffle or interleaving of two data streams",
+            "A two-string DP pattern used in many string problems"
+        ],
+        "references": [
+            "LeetCode problem 97, Interleaving String",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s1 = aabcc, s2 = dbbca, and s3 = aadbbcbcac, the DP follows a path of matches consuming from each string in turn and reaches dp[5][5] true, so s3 is a valid interleaving."
+    },
     id: "interleaving-string",
     name: "Interleaving String",
     category: "dynamic-programming",

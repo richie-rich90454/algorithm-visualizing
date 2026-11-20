@@ -129,6 +129,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Greedy best-first search orders its frontier only by a heuristic estimate of distance to the goal. It always expands the node that looks closest, ignoring the cost already paid, so it is fast but can be led astray.",
+        "invariants": [
+            "The frontier is ordered by heuristic value h.",
+            "Each expanded node is the current minimum-h node."
+        ],
+        "correctness": "Greedy best first is not optimal and not complete in general: it may follow a misleading heuristic into a dead end. It does guarantee expanding the locally best-looking node at each step.",
+        "complexityRationale": "In the worst case it may explore most of the graph, O(b^m) time where b is branching and m is maximum depth. The frontier and visited set use O(b^m) space.",
+        "uses": [
+            "Route planning when a good heuristic is known",
+            "Game AI pathfinding under time limits",
+            "Baseline for comparing with A star"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3",
+            "Hart, Nilsson, and Raphael, A Formal Basis for the Heuristic Determination of Minimum Cost Paths, IEEE Transactions on Systems Science and Cybernetics, 1968"
+        ],
+        "workedExample": "From A with goal G, if node B has a lower heuristic than node C, expand B first even if the path to B is longer; if B is a dead end, the search backtracks to C only after wasted work."
+    },
     id: "greedy-best-first-search",
     name: "Greedy Best-First Search",
     category: "searching",

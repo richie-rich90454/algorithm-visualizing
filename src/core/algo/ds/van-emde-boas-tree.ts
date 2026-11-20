@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A van Emde Boas tree recursively splits a fixed universe of size U into sqrt(U) clusters plus a summary of which clusters are nonempty, with min and max stored separately. Successor and predecessor walk the summary to the right cluster instead of scanning keys, giving O(log log U).",
+        "invariants": [
+            "Global min and max are stored at the root.",
+            "The summary marks exactly the nonempty clusters.",
+            "Each cluster stores its own minimum."
+        ],
+        "correctness": "For a successor query below min the answer is min; otherwise look in the query cluster and, if none, use the summary to find the next nonempty cluster and its minimum. Because the summary records exactly the clusters containing keys, skipping empty clusters cannot miss the true successor.",
+        "complexityRationale": "Recursion halves the number of bits each level, so depth is O(log log U) and each level does constant work. Space is O(U) for the flat universe representation.",
+        "uses": [
+            "Successor and predecessor queries on bounded integer keys",
+            "Priority queues with small universes",
+            "Timers and event wheels in operating systems"
+        ],
+        "references": [
+            "van Emde Boas, Kaas, and Zijlstra, Design and Implementation of an Efficient Priority Queue, Mathematical Systems Theory 1977",
+            "CLRS, Introduction to Algorithms, Chapter 20 on van Emde Boas trees"
+        ],
+        "workedExample": "Keys 2, 5, 11 in a small universe with min 2 and max 11. Querying the successor of 6 checks the summary, finds the cluster holding 11, and returns 11 without scanning intermediate keys."
+    },
     id: "van-emde-boas-tree",
     name: "van Emde Boas Tree",
     category: "data-structures",

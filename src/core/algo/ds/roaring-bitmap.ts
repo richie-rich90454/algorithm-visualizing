@@ -112,6 +112,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Roaring bitmap divides the universe into chunks by high bits and stores each chunk in its cheapest form: a sorted array when sparse, a bitmap when dense. Membership checks only the relevant container, and the representation switches automatically as density grows.",
+        "invariants": [
+            "Each value belongs to exactly one container keyed by its high bits.",
+            "A container representation matches its density.",
+            "Contained values are sorted or set at their bit position."
+        ],
+        "correctness": "A query selects the container for the value high bits and checks presence there; no other container can hold it, so the verdict is exact. Converting a container between array and bitmap preserves its element set, so density changes never lose values.",
+        "complexityRationale": "Selecting a container and testing membership are expected O(1); each container covers a fixed chunk so per-operation work is bounded. Space adapts from sparse arrays to dense bitmaps, O(k) for k values.",
+        "uses": [
+            "Inverted indexes in search engines",
+            "Analytics on large integer sets",
+            "Fast set operations in column stores"
+        ],
+        "references": [
+            "Chambi, Lemire, Kucherov, and Bisson, Better Bitmap Performance with Roaring Bitmaps, SPE 2016",
+            "Lemire, Roaring Bitmaps (canonical reference)"
+        ],
+        "workedExample": "Add 3, 1, 4, 6 into small containers, with a dense chunk becoming a bitmap and a sparse one staying an array. Query 4 finds the value in its container; a value outside all containers is reported absent."
+    },
     id: "roaring-bitmap",
     name: "Roaring Bitmap",
     category: "data-structures",

@@ -205,6 +205,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tonelli-Shanks module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tonelli-Shanks finds a square root of n modulo an odd prime p, handling the difficult case when p-1 has a large power of two factor. It splits p-1 into 2^s times an odd q, finds a quadratic non-residue to seed a subgroup, and iteratively adjusts the candidate until its square equals n. It generalizes the simple exponent formula that works only when p is 3 mod 4.",
+        "invariants": [
+            "The target n is a quadratic residue modulo p.",
+            "The non-residue z generates the needed two-power subgroup.",
+            "Each iteration reduces the order of the error term until it becomes one."
+        ],
+        "correctness": "Euler's criterion first guarantees a solution exists. The algorithm writes the current root and an error term in the two-power subgroup; multiplying by a suitable power of z shrinks the error's order each step until it is one, at which point the candidate squares to n. The returned value is therefore a true square root, and its negation is the other.",
+        "complexityRationale": "Each iteration performs modular multiplications and one exponentiation, costing O(log p) each, and there are O(log p) iterations, giving O(log^2 p) time. Only a few residues are stored, so space is O(1).",
+        "uses": [
+            "Decoding quadratic-residue codes",
+            "Point decompression in elliptic-curve cryptography",
+            "Solving quadratic congruences modulo primes"
+        ],
+        "references": [
+            "Tonelli, Bit quadratiche Reste (1891)",
+            "Shanks, Five mathematical problems (1971)"
+        ],
+        "workedExample": "Solve x^2 = 5 mod 41. Here 41 is 1 mod 4 so the simple formula fails; Tonelli-Shanks splits 40 = 2^3 * 5, finds a non-residue, and converges to x = 13, since 13^2 = 169 = 4*41 + 5."
+    },
     id: "tonelli-shanks",
     name: "Tonelli-Shanks",
     category: "math",

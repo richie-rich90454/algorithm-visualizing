@@ -201,6 +201,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Knuth Optimization module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Knuth's optimization speeds up interval DPs whose cost satisfies the quadrangle inequality. It exploits the fact that the optimal split point moves monotonically as the interval endpoints shift. Restricting each cell's search to the range between neighboring optima shrinks an O(n^3) computation to O(n^2).",
+        "invariants": [
+            "The optimal split satisfies opt[i][j-1] <= opt[i][j] <= opt[i+1][j].",
+            "Every searched range contains the true optimal k for that interval.",
+            "Intervals are filled in increasing length so referenced opt values are final."
+        ],
+        "correctness": "The quadrangle inequality implies the monotonicity bounds on optimal split points, so the true optimum for (i,j) lies between the optima of the two smaller neighboring intervals. Searching only that window cannot miss it. Since those neighboring optima were computed earlier by increasing length, induction proves each cell's value is correct.",
+        "complexityRationale": "Instead of O(n) splits per interval, each cell scans only the bounded monotone range, reducing total work from O(n^3) to O(n^2). The dp and opt tables require O(n^2) space.",
+        "uses": [
+            "Optimal binary search tree construction",
+            "Interval DP with quadrangle-inequality costs",
+            "Speeding up segmentation and grouping recurrences"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5",
+            "Cormen et al., Introduction to Algorithms, Section 15.4"
+        ],
+        "workedExample": "For frequencies [4,2,6,3] building an optimal BST, the DP fills intervals by length. For interval (0,3) the search for the root considers only k between opt[0][2] and opt[1][3], instead of all four keys, yet still finds the minimum weighted search cost."
+    },
     id: "knuth-optimization",
     name: "Knuth's Optimization",
     category: "dynamic-programming",

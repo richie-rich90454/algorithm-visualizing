@@ -86,6 +86,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An arena allocator carves out a large block of memory and satisfies each allocation by bumping a pointer forward. There is no per-object free list or header; when the arena is finished, all its objects are reclaimed at once by resetting the pointer. This makes allocation extremely cheap when objects share a lifetime.",
+        "invariants": [
+            "The bump pointer always points just past the last allocated byte.",
+            "Allocations in an arena are contiguous and never overlap.",
+            "All objects in one arena are freed together."
+        ],
+        "correctness": "Because each allocation advances the pointer by exactly the requested size, returned blocks cannot overlap. Checking remaining space before bumping prevents an allocation from running past the arena end; when it does not fit, a fresh arena is started. Resetting the pointer marks the whole arena free at once.",
+        "complexityRationale": "Allocation is a compare and an addition, O(1) per request, and freeing the arena is O(1). Space is O(used) bytes, with wasted tail space only in partially filled arenas.",
+        "uses": [
+            "Per-request or per-frame scratch memory in servers and game engines",
+            "Parser and compiler temporary objects",
+            "Request pools in high-throughput allocators"
+        ],
+        "references": [
+            "Andrew Hunter, \"A Memory Allocator\" notes, 2001",
+            "Donald E. Knuth, The Art of Computer Programming, Vol. 1, Section 2.5"
+        ],
+        "workedExample": "With arena size 8 and requests 2, 3, 2, the bump pointer advances 0->2->5->7. All three blocks fit in one arena, leaving 1 byte unused. A reset returns the pointer to 0 so the next allocation reuses the same arena from the start."
+    },
     id: "arena-allocator",
     name: "Arena Allocator",
     category: "data-structures",

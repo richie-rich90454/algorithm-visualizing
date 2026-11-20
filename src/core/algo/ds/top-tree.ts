@@ -114,6 +114,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A top tree compresses a dynamic tree into a hierarchy of clusters. Rake merges attach side subtrees to a path, compress merges join path pieces, and each cluster stores an aggregate such as the maximum edge weight on its path.",
+        "invariants": [
+            "Each cluster represents a connected subtree with two boundary vertices.",
+            "A parent aggregate combines its children aggregates.",
+            "Merging rules preserve the represented tree."
+        ],
+        "correctness": "Compress merging two adjacent path clusters makes the parent aggregate the appropriate combination, here the larger child maximum. Since every edge belongs to exactly one leaf cluster and merges only combine neighboring clusters, the root aggregate equals the true maximum over the whole path.",
+        "complexityRationale": "A balanced cluster hierarchy has O(log n) height, so link, cut, and aggregate queries take O(log n). One cluster per merge plus leaf clusters gives O(n) space.",
+        "uses": [
+            "Dynamic path aggregates in network flow",
+            "Dynamic maximum and minimum path queries",
+            "Incremental tree algorithms in graph databases"
+        ],
+        "references": [
+            "Alstrup, Holm, de Lichtenberg, and Thorup, Maintaining Information in Fully Dynamic Trees with Top Trees, ACM TALG 2005",
+            "Tarjan, Dynamic Trees, SIAM Journal on Computing 1983"
+        ],
+        "workedExample": "Chain 1-2-3-4 with weights 5, 2, 7 starts as edge clusters; compress merges take the larger maximum so the root cluster carries 7 for the path, while a rake would attach side subtrees."
+    },
     id: "top-tree",
     name: "Top Tree",
     category: "data-structures",

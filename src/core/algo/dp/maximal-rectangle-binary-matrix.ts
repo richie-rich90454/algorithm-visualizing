@@ -140,6 +140,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Maximal rectangle finds the all-ones rectangle of largest area in a binary matrix. Treating each row as the bottom of a histogram, heights[c] counts consecutive ones ending at that row in column c. For every row the largest rectangle in that histogram is computed with a monotone stack, and the global best is tracked.",
+        "invariants": [
+            "heights[c] equals the number of consecutive ones ending at the current row in column c.",
+            "For a fixed row, any all-ones rectangle ending there corresponds to a histogram rectangle.",
+            "The stack-based histogram scan considers every possible bar height as the limiting height."
+        ],
+        "correctness": "Any all-ones rectangle has a bottom row; at that row its width and limiting height form a rectangle in the histogram, so scanning every row's histogram covers every candidate. The monotone-stack histogram algorithm computes the maximal rectangle exactly by popping when a shorter bar bounds the span. Hence the tracked maximum is correct.",
+        "complexityRationale": "Each row updates n heights and the histogram scan pushes and pops each column once, O(n) per row, giving O(m*n) time. The heights array and stack use O(n) space.",
+        "uses": [
+            "Finding free rectangular regions in grid layouts",
+            "Image analysis of binary masks",
+            "A reduction from grid DP to stack-based histogram scan"
+        ],
+        "references": [
+            "LeetCode problem 85, Maximal Rectangle",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.2"
+        ],
+        "workedExample": "In the sample matrix the third row has heights [3,1,3,2,2]. Its largest histogram rectangle has area 3*2 = 6 from the last three columns of height 2, which is the maximal all-ones rectangle."
+    },
     id: "maximal-rectangle-binary-matrix",
     name: "Maximal Rectangle (Binary Matrix)",
     category: "dynamic-programming",

@@ -162,6 +162,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Backtracking CSP search assigns variables one at a time and undoes choices that lead to conflict. Each variable tries its domain values in turn; inconsistent values are rejected immediately and exhausting a domain forces a step back.",
+        "invariants": [
+            "Every assignment on the current stack is consistent with all previously assigned variables.",
+            "Variables are assigned in a fixed order, so stack depth equals the number of assigned variables."
+        ],
+        "correctness": "The search tries every consistent combination in depth-first order; if a solution exists it lies on some branch that is eventually explored, and any returned complete assignment satisfies all constraints by construction.",
+        "complexityRationale": "With n variables and d values the worst case explores d^n combinations, O(d^n) time. The assignment stack and remaining-value lists use O(n) space.",
+        "uses": [
+            "Solving small constraint satisfaction problems",
+            "Implementing map coloring and puzzle solvers",
+            "Foundation for forward-checking solvers"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 6",
+            "Knuth, The Art of Computer Programming, Vol. 4B, Section 7.2.2"
+        ],
+        "workedExample": "For X != Y and Y < Z over {1,2}, try X=1, then Y=1 is rejected as equal, then Y=2 forces Z above 2 and fails; backtrack to X=2, Y=1, Z=2, which satisfies both constraints."
+    },
     id: "backtracking-csp-search",
     name: "Backtracking CSP Search",
     category: "searching",

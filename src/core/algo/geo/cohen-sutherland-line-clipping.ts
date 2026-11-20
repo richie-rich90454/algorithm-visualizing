@@ -149,6 +149,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Cohen-Sutherland clipping assigns each endpoint a 4-bit outcode recording which sides of the clipping rectangle it lies outside. If both outcodes are zero the segment is entirely inside; if their bitwise AND is nonzero both ends share an outside side and the segment is entirely out. Otherwise the segment is cut against one boundary at a time until one of those tests succeeds.",
+        "invariants": [
+            "An outcode bit is set exactly when the endpoint violates that boundary.",
+            "Each clip operation replaces an outside endpoint with a point on the boundary, clearing its violating bit.",
+            "The visible subsegment is preserved at every step."
+        ],
+        "correctness": "A shared set bit means both endpoints lie beyond the same half-plane, and a convex rectangle cannot be reached between them, so rejection is safe. When both codes are zero the whole segment lies in the convex intersection of the four half-planes, so acceptance is safe. Otherwise clipping one endpoint at a violated boundary moves it onto that boundary without removing any visible portion, and each pass clears at least one bit, so the loop terminates at a correct accept or reject decision.",
+        "complexityRationale": "At most four boundaries can be violated, so only a constant number of clip iterations run and time is O(1) per segment. A handful of integers and coordinates are stored, giving O(1) space.",
+        "uses": [
+            "Rejecting off-screen lines in a 2D graphics pipeline",
+            "Viewport clipping in windowing systems",
+            "Preprocessing segments before rasterization"
+        ],
+        "references": [
+            "Foley et al., Computer Graphics: Principles and Practice, Chapter 3",
+            "Cohen and Sutherland, A 2D Clip and Windowing Algorithm, 1973"
+        ],
+        "workedExample": "Clipping the segment from (-1,2) to (6,3) against a window with 0 <= x <= 4 gives outcodes with the left bit set for the first endpoint and the right bit set for the second. Clipping to x = 0 gives (0, 15/7) and clipping to x = 4 gives (4, 19/7), the visible portion of the line."
+    },
+
     id: "cohen-sutherland-line-clipping",
     name: "Cohen–Sutherland Line Clipping",
     category: "geometry",

@@ -141,6 +141,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Genome reversal sort transforms one gene order into another using whole-segment reversals, a mutation seen in biology. Each step finds the gene that belongs next and flips the block from its current position into place. It connects sorting to evolutionary distance.",
+        "invariants": [
+            "Once a prefix is correctly ordered, later reversals never disturb it.",
+            "Each reversal is a legal genome operation preserving the set of genes."
+        ],
+        "correctness": "Reversing the segment containing the target gene can place it at the correct boundary while leaving the fixed prefix untouched; induction over positions sorts the entire order. The process terminates because the correct prefix grows by at least one gene.",
+        "complexityRationale": "Finding a gene and reversing a segment both scan O(n) genes, and up to n reversals are needed, giving O(n^2) time. Only indices are stored, so space is O(1) beyond the input.",
+        "uses": [
+            "Estimating reversal distance between genomes",
+            "Teaching bioinformatics mutation models",
+            "Planning rearrangements in comparative genomics"
+        ],
+        "references": [
+            "Kececioglu and Sankoff, Exact and Approximation Algorithms for Sorting by Reversals, Algorithmica, 1995",
+            "Pevzner, Computational Molecular Biology, chapter on genome rearrangements"
+        ],
+        "workedExample": "Start [4, 2, 1, 3]. Find 1 at position two and reverse the segment [2, 1] into [4, 1, 2, 3]; then reverse appropriate prefixes so 1, 2, 3, 4 line up, ending at [1, 2, 3, 4]."
+    },
     id: "genome-reversal-sort",
     name: "Genome Reversal Sort",
     category: "sorting",

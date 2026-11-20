@@ -113,6 +113,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Welsh-Powell is a greedy graph coloring heuristic that handles the most constrained vertices first. It sorts vertices by descending degree, then assigns each the smallest color not used by already-colored neighbors. Coloring hubs early tends to reduce the number of colors needed.",
+        "invariants": [
+            "No two adjacent vertices receive the same color.",
+            "Vertices are processed in nonincreasing degree order.",
+            "Each vertex gets the smallest feasible color at its turn."
+        ],
+        "correctness": "Choosing the smallest color absent from already-colored neighbors guarantees a proper coloring regardless of order, so correctness does not depend on the heuristic. Termination after all vertices are colored is immediate, giving a valid coloring.",
+        "complexityRationale": "Sorting costs O(V log V) and scanning neighbor colors for each vertex costs O(V^2) overall; the order and color arrays use O(V) space.",
+        "uses": [
+            "Exam timetabling and resource scheduling",
+            "Register allocation heuristics in compilers",
+            "A simple baseline for graph coloring"
+        ],
+        "references": [
+            "Welsh and Powell, An Upper Bound for the Chromatic Number of a Graph (1967)",
+            "Jensen and Toft, Graph Coloring Problems"
+        ],
+        "workedExample": "The hub graph has A of degree 3 colored first with color 0. B takes color 1, C sees colors 0 and 1 and takes color 2, and D sees only color 0 so it reuses color 1. The result A=0, B=1, C=2, D=1 is proper and uses three colors."
+    },
     id: "greedy-coloring-welsh-powell",
     name: "Greedy Coloring (Welsh–Powell)",
     category: "graph",

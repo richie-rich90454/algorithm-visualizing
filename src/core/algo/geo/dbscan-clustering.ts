@@ -146,6 +146,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "DBSCAN groups together points that are densely packed and marks sparse points as noise. A core point has at least minPts neighbors within radius eps; it absorbs its reachable neighbors by a flood fill, while points that are near a core but not core themselves become border points and isolated points become noise.",
+        "invariants": [
+            "Every point is eventually labeled core, border, or noise exactly once.",
+            "A cluster is a maximal set of points connected through chains of core points.",
+            "No point within eps of a core point is left as noise."
+        ],
+        "correctness": "A point with enough neighbors is core by definition, so the count test is exact. Flood filling from an unvisited core point reaches precisely every point density-connected to it, because each step follows an eps-neighborhood of a core point. Marking reachable non-core points as border and everything else noise respects the DBSCAN definitions, so the discovered clusters are exactly the density-connected components.",
+        "complexityRationale": "The straightforward version scans all n points to find each point's eps-neighborhood, costing O(n^2) time. Storing labels and neighbor lists uses O(n) space; spatial indexes can reduce the search in production.",
+        "uses": [
+            "Clustering GPS traces and location data",
+            "Detecting outliers or anomalies in sensor readings",
+            "Finding dense regions in spatial databases"
+        ],
+        "references": [
+            "Ester, Kriegel, Sander, and Xu, A Density-Based Algorithm for Discovering Clusters, KDD 1996",
+            "Han, Kamber, and Pei, Data Mining: Concepts and Techniques, Chapter 10"
+        ],
+        "workedExample": "Points (0,0), (1,0), (2,0), (3,0), (10,0) with eps = 1.5 and minPts = 3. The middle two points each see three points including themselves and are core; the endpoints are border and the far point at (10,0) is noise. Flood fill from (1,0) absorbs the endpoints, producing one cluster of four points."
+    },
+
     id: "dbscan-clustering",
     name: "DBSCAN Clustering",
     category: "geometry",

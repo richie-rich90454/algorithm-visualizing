@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pollard's p-1 method finds a factor of n when one prime factor p has the property that p-1 is smooth. It raises a base to increasingly high powers of small primes modulo n; if p-1 divides that exponent, Fermat's theorem makes the base congruent to 1 modulo p, so gcd(base-1, n) reveals p.",
+        "invariants": [
+            "The running base is a^k modulo n for a growing smooth exponent k.",
+            "A nontrivial gcd of base minus one with n gives a proper factor.",
+            "If the smoothness bound is exhausted without success, the method honestly reports failure."
+        ],
+        "correctness": "When p-1 divides the accumulated exponent, Fermat's theorem gives base = 1 mod p while base need not be 1 mod the other factor. Therefore gcd(base-1, n) is divisible by p but not by n, exposing a nontrivial factor. If p-1 is not smooth enough the method simply finds nothing.",
+        "complexityRationale": "The exponentiation chain runs up to the bound B over small prime powers, costing O(B log n) modular operations. Only the running base and a gcd are stored, so space is O(1).",
+        "uses": [
+            "Factoring integers with a smooth prime-minus-one factor",
+            "A first example of special-purpose factoring algorithms",
+            "Illustrating the risks of smooth parameters in cryptography"
+        ],
+        "references": [
+            "Pollard, Theorems on factorization and primality testing (1974)",
+            "Crandall and Pomerance, Prime Numbers, Section 5.4"
+        ],
+        "workedExample": "For n = 91 = 7*13 with bound B = 3, raise 2 to powers of 2 and 3 and test gcd(2^k-1, 91). When the exponent reaches a multiple of 6, which is 7-1, the gcd reveals 7 and the cofactor 13."
+    },
     id: "pollard-p-minus-1",
     name: "Pollard p-1 Factoring",
     category: "math",

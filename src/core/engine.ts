@@ -87,6 +87,12 @@ export class StepEngine {
         this.currentIndex = 0;
     }
 
+    /** Drop all buffered frames (used when a load fails or is abandoned). */
+    clear(): void {
+        this.frames = [];
+        this.currentIndex = 0;
+    }
+
     /** Total number of frames in the loaded run. */
     get totalFrames(): number {
         return this.frames.length;

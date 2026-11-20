@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Euclid GCD module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Replace the larger of two numbers by its remainder modulo the smaller, and repeat. The pair shrinks quickly until the remainder is zero, at which point the other number is the greatest common divisor.",
+        "invariants": [
+            "gcd(a, b) equals gcd(b, a mod b) at every step.",
+            "The second argument strictly decreases, so the loop terminates."
+        ],
+        "correctness": "Any common divisor of a and b also divides a mod b, and any divisor of b and a mod b also divides a, so the sets of common divisors are identical. When the remainder is zero, b divides a and is therefore the greatest common divisor.",
+        "complexityRationale": "Lamé's theorem bounds the number of divisions by five times the number of decimal digits of the smaller input, so time is O(log min(a, b)) and space is O(1).",
+        "uses": [
+            "Reducing fractions to lowest terms",
+            "Computing modular inverses with the extended version",
+            "Cryptographic key generation and RSA"
+        ],
+        "references": [
+            "Euclid, Elements, Book X",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.2",
+            "CLRS, Introduction to Algorithms, Chapter 31"
+        ],
+        "workedExample": "gcd(48, 18): 48 mod 18 = 12, gcd(18, 12); 18 mod 12 = 6, gcd(12, 6); 12 mod 6 = 0, so the answer is 6."
+    },
     id: "euclid-gcd",
     name: "Euclid's GCD",
     category: "math",

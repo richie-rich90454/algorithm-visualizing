@@ -152,6 +152,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The 0/1 Knapsack module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The 0/1 knapsack problem picks a subset of items, each used at most once, to maximize value without exceeding capacity. The DP cell dp[i][w] is the best value using the first i items with capacity w. For each item the choice is skip it or take it, leading to the max recurrence over items and capacities.",
+        "invariants": [
+            "dp[i][w] is the maximum value from the first i items within capacity w.",
+            "dp[0][w] and dp[i][0] are zero.",
+            "Taking an item requires w - weight[i] >= 0 and adds its value."
+        ],
+        "correctness": "An optimal solution either excludes item i, leaving dp[i-1][w], or includes it, leaving dp[i-1][w-weight[i]] plus its value. These cover all cases and are independent of later items, so the maximum is optimal. Induction over i gives the correct value at dp[n][W].",
+        "complexityRationale": "Filling (n+1) by (W+1) cells with constant work is O(n*W) time, pseudo-polynomial in the numeric capacity. The table uses O(n*W) space, reducible to O(W) by iterating capacities backward.",
+        "uses": [
+            "Selecting projects under a budget",
+            "Cargo and resource allocation with weight limits",
+            "Foundation for many subset-selection DPs"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.1",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With weights [2,3,4,5], values [3,4,5,6], and capacity 5, the best choice is items 0 and 1 with total weight 5 and value 7. The DP reports 7 at dp[4][5]."
+    },
     id: "knapsack-01",
     name: "Knapsack (0/1)",
     category: "dynamic-programming",

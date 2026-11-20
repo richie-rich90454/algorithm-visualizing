@@ -232,6 +232,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The SPFA module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "SPFA is a queue-based optimization of Bellman-Ford. Instead of relaxing every edge in every round, it only relaxes edges out of vertices whose distance just improved. A vertex is enqueued when it changes, and if any vertex is enqueued V+1 times a negative cycle is detected.",
+        "invariants": [
+            "Only vertices with changed distances sit in the queue.",
+            "Whenever a distance decreases, the vertex is re-enqueued.",
+            "A vertex enqueued V+1 times lies on or reaches a negative cycle."
+        ],
+        "correctness": "Relaxing exactly the edges out of changed vertices is sufficient because only a changed distance can improve a neighbor. When the queue empties no edge can relax, giving the Bellman-Ford optimality condition. Repeated enqueues beyond V indicate endless improvement, which only a negative cycle can cause.",
+        "complexityRationale": "The worst case is O(V E) matching Bellman-Ford, though typical graphs are much faster; the queue, distance array, and in-queue flags use O(V) space.",
+        "uses": [
+            "Shortest paths with negative edges in practice",
+            "Difference constraint systems",
+            "A faster typical-case replacement for Bellman-Ford"
+        ],
+        "references": [
+            "Moore, A Fast Algorithm for Multipath Routing (1959)",
+            "Bellman, On a Routing Problem (1958)"
+        ],
+        "workedExample": "From A, only A is queued; relaxing its edges queues B and C. When B's negative edge improves C, C is enqueued again. Processing continues until no distance changes, producing correct shortest distances to F; more than V enqueues would signal a negative cycle."
+    },
     id: "spfa",
     name: "SPFA",
     category: "shortest-path",

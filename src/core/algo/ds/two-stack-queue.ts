@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A queue can be built from two stacks: enqueues push onto the in-stack and dequeues pop from the out-stack. When the out-stack empties, pour all elements from the in-stack over, reversing their order so the oldest lands on top.",
+        "invariants": [
+            "Elements in the out-stack are in dequeue order.",
+            "Elements in the in-stack are in arrival order.",
+            "Each element moves from in to out at most once."
+        ],
+        "correctness": "Pouring reverses the in-stack so the earliest enqueued element lands on top of the out-stack and is returned next. Since elements are poured once and the out-stack preserves that reversed order, successive pops follow FIFO order.",
+        "complexityRationale": "Each element is pushed once, popped once, and moved once, so any sequence takes linear total work and each operation is O(1) amortized, though a single pour costs O(n). Two stacks hold all n elements, O(n) space.",
+        "uses": [
+            "Functional queues with amortized guarantees",
+            "Implementing FIFO where only stacks exist",
+            "Persistent queue structures"
+        ],
+        "references": [
+            "Hood and Melville, Real-Time Queue Operations in Pure Lisp, 1981",
+            "Okasaki, Purely Functional Data Structures, Chapter 2 on batched queues"
+        ],
+        "workedExample": "Operations enq 1, enq 2, deq, enq 3, deq. In-stack holds 1, 2; the first deq pours them so out-stack tops 1 and returns it; enq 3 goes to in-stack and the next deq returns 2, preserving FIFO."
+    },
     id: "two-stack-queue",
     name: "Two-Stack Queue",
     category: "data-structures",

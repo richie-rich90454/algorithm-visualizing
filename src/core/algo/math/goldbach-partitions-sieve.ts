@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Goldbach's conjecture says every even integer greater than 2 is the sum of two primes. This visualization sieves the primes up to n, then for each prime p tests whether n - p is also prime. Each such pair is one Goldbach partition, and counting them shows how the number of representations tends to grow with n.",
+        "invariants": [
+            "The sieve marks exactly the primes up to n.",
+            "A recorded pair (p, n-p) consists of two primes summing to n.",
+            "Each partition is counted once by iterating primes in increasing order."
+        ],
+        "correctness": "The sieve correctly identifies primes, so testing n-p for primality is reliable. Any pair found genuinely sums to n, and because p ranges over all primes up to n every distinct partition is examined. The reported count and list therefore enumerate exactly the Goldbach partitions of n.",
+        "complexityRationale": "Sieving to n costs O(n log log n), and testing each of the O(n / log n) primes with a table lookup is O(1), so the sieve dominates. The prime table uses O(n) space.",
+        "uses": [
+            "Exploring Goldbach's conjecture empirically",
+            "Generating prime-pair decompositions for even numbers",
+            "Teaching sieve reuse for additive number theory"
+        ],
+        "references": [
+            "Goldbach, letter to Euler (1742)",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 2"
+        ],
+        "workedExample": "For n = 20 the prime pairs are 3+17 and 7+13, giving two partitions. Both entries are prime and sum to 20, so the Goldbach partition count is 2."
+    },
     id: "goldbach-partitions-sieve",
     name: "Goldbach Partitions",
     category: "math",

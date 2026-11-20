@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A fully persistent array keeps every value a slot ever held, stamped with the version that wrote it. Reading slot i at version v scans that slot history backward for the newest stamp at or before v, so older versions never change.",
+        "invariants": [
+            "Each slot history is ordered by version stamp.",
+            "No history entry is ever overwritten or deleted.",
+            "Reading version v uses only writes with stamp at most v."
+        ],
+        "correctness": "Because writes are appended rather than mutated, each slot history is a time-ordered log. The newest entry with stamp at most v is exactly the value of that slot immediately after version v, which is the definition of the array at version v, so every version reads correctly.",
+        "complexityRationale": "A write appends one stamped entry, O(1); a read scans the slot history, O(log versions) with binary search. Space grows by one entry per write, O(writes).",
+        "uses": [
+            "Versioned configuration snapshots",
+            "Undo and redo in editors",
+            "Functional arrays in pure languages"
+        ],
+        "references": [
+            "Driscoll, Sleator, and Tarjan, Making Data Structures Persistent, JCSS 1989",
+            "Okasaki, Purely Functional Data Structures, Chapter 3"
+        ],
+        "workedExample": "In a size-3 array, write version 0 slot 0 to 7 and version 1 slot 0 to 9. Reading slot 0 at version 0 finds stamp 0 with value 7, while version 1 finds stamp 1 with value 9, leaving the old version intact."
+    },
     id: "persistent-array",
     name: "Persistent Array",
     category: "data-structures",

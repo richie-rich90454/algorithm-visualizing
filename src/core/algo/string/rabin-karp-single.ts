@@ -188,6 +188,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Rabin-Karp (Single) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rabin-Karp compares a pattern to text windows by their polynomial hashes instead of character by character. A rolling update recomputes the next window's hash in constant time, so most alignments are rejected with one integer comparison and only hash hits are checked directly.",
+        "invariants": [
+            "A window's hash is the sum of character codes weighted by powers of the base, modulo a large prime.",
+            "Sliding removes the leading character's contribution and appends the new trailing character."
+        ],
+        "correctness": "Equal strings always have equal hashes, so no occurrence is skipped, and when hashes differ the strings differ. Direct verification on a hash match eliminates false positives from collisions, so every reported index is a true occurrence.",
+        "complexityRationale": "Pattern and initial window hashing take O(m), each of the O(n) slides is O(1), and verification happens only on hits, giving O(n+m) average time and O(nm) worst case with heavy collisions; auxiliary space is O(1).",
+        "uses": [
+            "Substring search in text editors",
+            "Multi-pattern hashing",
+            "The foundation of the 2D rolling-hash technique"
+        ],
+        "references": [
+            "Karp and Rabin, Efficient Randomized Pattern-Matching Algorithms, 1987",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "For pattern \"ababcab\" and text \"ababcabababcab\", the first window's hash equals the pattern hash and direct comparison confirms a match at index 0; the rolling update then tests each later window in O(1)."
+    },
     id: "rabin-karp-single",
     name: "Rabin-Karp (Single)",
     category: "string",

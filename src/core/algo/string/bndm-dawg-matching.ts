@@ -105,6 +105,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "BNDM scans a text window from right to left while maintaining a bit mask of which pattern prefixes match the suffix read so far. A precomputed mask per character tells which positions that character can occupy in the pattern. When the mask becomes zero, no prefix matches and the window can be shifted safely.",
+        "invariants": [
+            "After reading j characters backward, bit i of the state is set exactly when the pattern prefix of length i+1 matches the characters just read.",
+            "The rightmost set bit records the longest matched prefix, which determines the safe shift distance."
+        ],
+        "correctness": "The update D = (D << 1) & charMask exactly simulates extending every currently matching prefix by one character to the left. If D becomes zero, no pattern prefix matches the read suffix, so no occurrence can start in the skipped region. When the full-prefix bit is set, the window spells the pattern and is reported as a verified match.",
+        "complexityRationale": "Each character update is a constant number of bit operations, so a window costs O(m) in the worst case but O(1) amortized per alignment, giving O(n) typical time. Masks use O(m·sigma) space, or O(sigma) machine words for the bit-parallel state.",
+        "uses": [
+            "Fast exact pattern search in large texts",
+            "Substring search in bioinformatics pipelines",
+            "The bit-parallel engine behind several grep-like tools"
+        ],
+        "references": [
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings, Chapter 4",
+            "Baeza-Yates and Gonnet, A New Approach to Text Searching, 1992"
+        ],
+        "workedExample": "Text \"ababcab\", pattern \"cab\" scanned backward: reading 'b' sets the bit where 'b' appears in \"cab\", reading 'a' extends the matched prefix to \"ab\", and reading 'c' completes \"cab\" so the top bit is set and a match is reported at index 4."
+    },
     id: "bndm-dawg-matching",
     name: "BNDM",
     category: "string",

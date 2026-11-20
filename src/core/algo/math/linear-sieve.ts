@@ -161,6 +161,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Linear Sieve module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The linear sieve finds all primes up to n in guaranteed linear time by ensuring every composite is marked exactly once. It keeps a growing prime list and, for each integer i, walks the primes writing i times p. The walk stops as soon as p divides i, which guarantees the smallest prime factor writes each composite first and only once.",
+        "invariants": [
+            "Every composite is marked by its smallest prime factor.",
+            "The inner loop stops at the first prime dividing i, preventing duplicate marks.",
+            "The prime list contains exactly the primes discovered so far in increasing order."
+        ],
+        "correctness": "For a composite x with smallest prime factor p, it is written when i = x/p and the loop reaches p; no earlier i times a smaller prime can produce x because p is smallest. The loop never reaches a prime larger than the smallest factor of i, so x is not written again. Thus every composite is marked once and the survivors are prime.",
+        "complexityRationale": "Because each composite is produced exactly once, the total number of inner-loop iterations is O(n), giving linear time. Storing the prime list and the smallest-prime-factor table takes O(n) space.",
+        "uses": [
+            "Generating primes with a strict linear-time guarantee",
+            "Computing smallest prime factors for fast factorization",
+            "Precomputing multiplicative functions such as phi and mu"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.2.6",
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 2"
+        ],
+        "workedExample": "Sieving to 10: at i = 2 mark 4; at i = 3 mark 6 and 9; at i = 4 mark 8 but stop when prime 2 divides 4; at i = 5 mark 10. Each composite 4, 6, 8, 9, 10 is written once, leaving primes 2, 3, 5, 7."
+    },
     id: "linear-sieve",
     name: "Linear Sieve",
     category: "math",

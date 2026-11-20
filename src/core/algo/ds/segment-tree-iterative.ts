@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Segment Tree (iterative) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The iterative segment tree pads the array to a power of two and stores the tree in a flat array where node i has children 2i and 2i+1. A range query walks two pointers inward from the leaves, taking a node whenever it is fully inside the range.",
+        "invariants": [
+            "Each node stores the aggregate of its segment.",
+            "Padded leaves cover the whole array.",
+            "The taken query nodes are disjoint and cover the range exactly."
+        ],
+        "correctness": "Every internal node equals the combination of its children, so a taken node contributes exactly its segment aggregate. The two pointers stop at canonical nodes that partition the query range, so summing them gives the correct answer with no double counting.",
+        "complexityRationale": "Building fills O(n) nodes bottom-up and a query or update touches O(log n) levels. The flat array holds at most twice the next power of two leaves, O(n) space.",
+        "uses": [
+            "Fast range sum and range minimum queries",
+            "Competitive programming range templates",
+            "Bottom-up aggregation for suffix structures"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14 on augmenting data structures",
+            "cp-algorithms, Segment Tree (iterative variant)"
+        ],
+        "workedExample": "Array [2,1,3,4,5] padded to eight leaves with parents holding sums. Query [1,3] takes canonical nodes for indices 1, 2, 3 and sums them to 1+3+4=8 without recursion."
+    },
     id: "segment-tree-iterative",
     name: "Segment Tree (Iterative)",
     category: "data-structures",

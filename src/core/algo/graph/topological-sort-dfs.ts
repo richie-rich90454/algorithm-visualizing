@@ -167,6 +167,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Topological Sort (DFS) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A topological order lists vertices so every directed edge points forward. The DFS approach runs depth-first search and prepends each vertex to the output only after all its successors are finished. That guarantees successors appear later, and encountering a gray vertex during the search reveals a cycle, making ordering impossible.",
+        "invariants": [
+            "A vertex is added to the output only after its entire subtree finishes.",
+            "Prepending finished vertices makes every edge point from earlier to later.",
+            "A back edge to a gray vertex certifies a directed cycle."
+        ],
+        "correctness": "If there were an edge u to v with u appearing after v in the output, u would have finished before v, which cannot happen because DFS finishes u only after exploring v. Therefore every edge is forward. Conversely a back edge means a cycle exists and no topological order can satisfy all edges.",
+        "complexityRationale": "One DFS touches each vertex and edge once, O(V + E) time, with O(V) space for colors, recursion, and the output list.",
+        "uses": [
+            "Ordering tasks with prerequisite constraints",
+            "Build systems and course scheduling",
+            "A first pass in shortest-path algorithms on DAGs"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, topological sort",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)"
+        ],
+        "workedExample": "For graph A to B and C, both to D, and D to E, DFS starting at A explores to E and finishes E first, then D, then B, then C, then A. Prepending each finish gives A, B, C, D, E (up to sibling order), with all edges pointing forward."
+    },
     id: "topological-sort-dfs",
     name: "Topological Sort (DFS)",
     category: "graph",

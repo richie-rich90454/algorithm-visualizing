@@ -211,6 +211,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The DAG Shortest DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Shortest paths in a directed acyclic graph can be found by DP over a topological order rather than a priority queue. Each vertex's distance is the minimum over incoming edges of the predecessor distance plus the edge weight. Because every predecessor is finalized first, each edge is relaxed exactly once.",
+        "invariants": [
+            "dist[v] is the minimum path weight from the start to v.",
+            "Topological order ensures all possible predecessors of v are settled before v.",
+            "Unreachable vertices keep infinite distance."
+        ],
+        "correctness": "Any shortest path to v ends with an edge u to v where the prefix to u is itself shortest, so the recurrence over all in-neighbors captures the optimum. Topological processing makes those prefix values available, giving correct distances by induction. This is why the method works without repeated relaxation.",
+        "complexityRationale": "A topological sort costs O(V + E) and relaxing each edge once is O(E), so total time is O(V + E). Distances and parent pointers take O(V) space.",
+        "uses": [
+            "Path finding in dependency graphs and spreadsheets",
+            "Shortest route in acyclic road or pipeline networks",
+            "Compilation and data-flow analysis"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 24.2",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "In the graph with A to B weight 3, B to D weight 4, D to E weight 2, and A to C weight 6, C to E weight 5, the DP finds A-B-D-E with cost 9, shorter than A-C-E at 11."
+    },
     id: "dag-shortest-dp",
     name: "DAG Shortest Path (DP)",
     category: "dynamic-programming",

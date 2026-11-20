@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Klee's measure problem for rectangles asks for the area of their union. A sweep line passes over the rectangle edges; between consecutive x coordinates the set of covering rectangles is constant, so the covered height is fixed. The union area is the sum over vertical slabs of slab width times covered height.",
+        "invariants": [
+            "Between two consecutive x events, no rectangle starts or ends.",
+            "The covered height in a slab is the length of the union of active y-intervals.",
+            "Overlapping slabs are disjoint in x, so their areas add without double counting."
+        ],
+        "correctness": "All rectangle boundary x coordinates are event points, and within a slab each rectangle either covers the whole slab in y or not at all. Merging the active y-intervals therefore gives exactly the vertical extent covered in that slab, and multiplying by the slab width gives its covered area. The slabs partition the x-axis, so summing their areas yields the union area of all rectangles.",
+        "complexityRationale": "There are O(n) x slabs and merging y-intervals costs O(n log n) or O(n^2) in the simple implementation used here, giving O(n^2) time on tiny inputs. The active interval list uses O(n) space.",
+        "uses": [
+            "Computing covered area in VLSI layout",
+            "Measuring union of geographic footprints",
+            "Estimating union of intervals in scheduling"
+        ],
+        "references": [
+            "Klee, Measures of Unions of Rectangles, 1977",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "Rectangles [0,2] by [0,1] and [1,3] by [0,2] give x events 0, 1, 2, 3. The slabs of width 1 have covered heights 1, 2, and 1, so the union area is 1 + 2 + 1 = 4."
+    },
+
     id: "rectangle-union-klee-measure-sweep",
     name: "Rectangle Union (Klee Measure Sweep)",
     category: "geometry",

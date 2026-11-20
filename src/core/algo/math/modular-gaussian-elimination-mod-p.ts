@@ -140,6 +140,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Modular Gaussian elimination solves a linear system over the finite field F_p. It works like ordinary elimination but division means multiplying by a modular inverse, and all entries are reduced modulo p. Because F_p is a field, every nonzero pivot can be normalized, so a consistent system is reduced to a form where the solution is read directly.",
+        "invariants": [
+            "Every row operation preserves the solution set over F_p.",
+            "A normalized pivot is exactly 1 modulo p.",
+            "An all-zero row in the coefficient part with nonzero right side means inconsistency."
+        ],
+        "correctness": "Scaling by the inverse of a nonzero pivot and adding multiples of rows are invertible operations over a field, so the solution set is unchanged. Reducing to row-echelon or reduced form yields an equivalent system whose unknowns are determined by back-substitution. Hence the reported vector satisfies A*x = b modulo p when one exists.",
+        "complexityRationale": "Normalizing and clearing columns for an n-by-n system costs O(n^3) field operations, each a constant-time modular multiply. The augmented tableau uses O(n^2) space.",
+        "uses": [
+            "Solving linear systems over finite fields in cryptography",
+            "Coding theory decoder computations",
+            "Secret sharing reconstruction over F_p"
+        ],
+        "references": [
+            "Strang, Linear Algebra and Its Applications, Chapter 2",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 2"
+        ],
+        "workedExample": "Over F_7 solve 2x + y = 5 and x + 3y = 6. The inverse of 2 mod 7 is 4, so x + 4y = 6; subtracting from the second row gives (3-4)y = 0, so -y = 0 and y = 0, hence x = 6. Both original equations check out mod 7."
+    },
     id: "modular-gaussian-elimination-mod-p",
     name: "Modular Gaussian Elimination",
     category: "math",

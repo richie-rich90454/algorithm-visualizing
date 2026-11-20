@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The closest point on a segment to a query point is found by projecting the point onto the segment's supporting line, then clamping the projection parameter to the segment. If the projection falls inside, the perpendicular foot is closest; otherwise the nearest endpoint wins.",
+        "invariants": [
+            "The projection parameter t = dot(AP, AB) / |AB|^2 is clamped to [0,1].",
+            "The reported closest point lies on the segment.",
+            "The distance is the Euclidean distance from P to that closest point."
+        ],
+        "correctness": "The perpendicular foot minimizes distance to the infinite line, and its parameter t is derived from the orthogonality condition dot(P - (A + t*AB), AB) = 0. If t is in [0,1] the foot lies on the segment and is the global minimum there. If t is outside, the squared distance is monotonic along the segment, so the nearer endpoint is the minimum. Either case yields the exact closest point and distance.",
+        "complexityRationale": "One dot product, one squared length, and a clamp are constant work, so time and space are O(1).",
+        "uses": [
+            "Measuring distances in geographic information systems",
+            "Collision proximity queries in games",
+            "Snapping a cursor to the nearest line segment"
+        ],
+        "references": [
+            "O'Rourke, Computational Geometry in C, Section 1.4",
+            "Ericson, Real-Time Collision Detection, Chapter 5"
+        ],
+        "workedExample": "Segment A = (0,0) to B = (4,0) and point P = (2,3): t = dot((2,3),(4,0))/16 = 0.5, so the closest point is (2,0) and the distance is 3. For P = (6,3), t = 1.5 clamps to 1, giving closest point (4,0) and distance sqrt(13)."
+    },
+
     id: "point-segment-distance",
     name: "Point Segment Distance",
     category: "geometry",

@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The shortest path between two points inside a simple polygon bends only at reflex vertices. The funnel algorithm maintains a sleeve of triangles between start and goal and a convex funnel whose apex is the start; as it advances, it updates the funnel with tangents to new vertices until the goal is reached.",
+        "invariants": [
+            "The funnel is convex and its apex is the current path start.",
+            "All vertices of the sleeve processed so far lie on or above the funnel chain.",
+            "The shortest path to any reached vertex follows the lower chain of the funnel."
+        ],
+        "correctness": "Any shortest path in a simple polygon is a sequence of straight segments whose intermediate bend points are reflex vertices, and it lies within the sleeve of triangles between start and goal. The funnel invariant maintains the shortest path to the current front of the sweep, because extending with a tangent either keeps the old chain or replaces its tail with a shorter route around a new vertex. When the goal is added, its lower-chain path is the globally shortest path.",
+        "complexityRationale": "After triangulation and sleeve computation, each triangle is processed once with constant work per popped funnel vertex, giving O(n) time for the funnel stage. The funnel and sleeve use O(n) space.",
+        "uses": [
+            "Pathfinding for characters in game environments",
+            "Robot motion planning inside polygonal rooms",
+            "Computing shortest routes in geographic corridors"
+        ],
+        "references": [
+            "Lee and Preparata, Euclidean Shortest Paths in the Presence of Rectilinear Barriers, Networks 14 (1984)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 15"
+        ],
+        "workedExample": "Inside a convex square, start (0.5,0.5) and goal (1.5,0.5) have a sleeve consisting of a single triangle and no reflex vertices. The funnel algorithm returns the direct segment, which is the shortest path."
+    },
+
     id: "shortest-path-in-polygon-funnel",
     name: "Shortest Path in Polygon (Funnel)",
     category: "geometry",

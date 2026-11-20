@@ -262,6 +262,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Prim (Heap) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Grow one connected tree from a seed vertex. At each step add the cheapest edge that connects a vertex in the tree to one outside it, using a heap to find that edge quickly.",
+        "invariants": [
+            "The selected edges form a tree spanning the current grown set.",
+            "The heap key for each outside vertex is the cheapest edge connecting it to the tree."
+        ],
+        "correctness": "The cheapest edge crossing the cut between the grown tree and the remaining vertices is safe by the cut property, so adding it keeps the tree optimal. Induction over the V-1 additions gives a minimum spanning tree.",
+        "complexityRationale": "With adjacency lists and a binary heap, each edge causes at most one key decrease, giving O(E log V) time and O(V + E) space. A dense-matrix version is O(V^2).",
+        "uses": [
+            "MST on dense or well-connected graphs",
+            "Approximate Euclidean MST construction",
+            "Prim-Dijkstra style network design"
+        ],
+        "references": [
+            "Prim, Shortest Connection Networks and Some Generalizations, 1957",
+            "CLRS, Introduction to Algorithms, Chapter 23"
+        ],
+        "workedExample": "Start at A. Cheapest outgoing edge is A-B=1, add B. Now cheapest crossing edge is B-C=2, add C. All vertices are connected with total weight 3."
+    },
     id: "prim-heap",
     name: "Prim's MST (Heap)",
     category: "mst",

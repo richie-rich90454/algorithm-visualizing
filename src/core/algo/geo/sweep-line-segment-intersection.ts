@@ -237,6 +237,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Sweep-Line Segment Intersection module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Bentley-Ottmann reports all crossings among segments by sweeping a line from left to right. The segments currently hit by the sweep line are kept ordered vertically; only neighbors in that order can be next to intersect, and whenever two neighbors swap order they must cross at that moment.",
+        "invariants": [
+            "The sweep-line status is sorted by the y coordinate of each segment at the current x.",
+            "Only adjacent segments in the status can intersect next.",
+            "The event queue always contains the next endpoint or neighbor intersection in x order."
+        ],
+        "correctness": "Between events the vertical order of segments cannot change, so a new intersection can only occur between segments that are adjacent in the status. Computing intersection x coordinates for adjacent pairs and processing the smallest keeps the sweep correct, and the swap of two intersecting segments restores the order for the next slab. Every crossing is generated as an adjacency event exactly once, so all intersections are reported.",
+        "complexityRationale": "There are n endpoint events and k reported intersections, each handled with O(log n) status operations, giving O((n + k) log n) time. The status and event queue use O(n + k) space; this demo uses a simple sorted list in place of a balanced tree.",
+        "uses": [
+            "Reporting all crossings in a set of line segments",
+            "Detecting intersections in VLSI design rules",
+            "Preprocessing planar subdivisions for map data"
+        ],
+        "references": [
+            "Bentley and Ottmann, Algorithms for Reporting and Counting Geometric Intersections, IEEE Transactions on Computers 28 (1979)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2"
+        ],
+        "workedExample": "Segment A runs from (0,0) to (4,4) and segment B from (0,4) to (4,0). At x = 0 the status has A below B; as the sweep advances they become neighbors and swap at (2,2), so that intersection is reported."
+    },
+
     id: "sweep-line-segment-intersection",
     name: "Sweep-Line Intersection",
     category: "geometry",

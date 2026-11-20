@@ -66,6 +66,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A doubly connected edge list represents a planar subdivision with half-edges. Each directed edge knows its origin, its twin in the opposite direction, the next half-edge around its face, and its incident face. Walking next pointers traces face boundaries, which is what makes planar queries efficient.",
+        "invariants": [
+            "Every undirected edge has exactly two twin half-edges.",
+            "Following next from a half-edge stays on the same face.",
+            "Around each vertex, half-edges are ordered by angle."
+        ],
+        "correctness": "Because each half-edge is assigned to one face and next links within that face, traversing next returns to the start after visiting the full boundary. Twins encode both sides of every edge, so no incidence is lost. Counting vertices, edges, and faces then satisfies Euler's formula for a connected planar graph.",
+        "complexityRationale": "Each half-edge stores a constant number of pointers, so space is O(E). Traversing one face takes time proportional to its boundary length; looking up an incident edge is O(1) given a half-edge.",
+        "uses": [
+            "GIS and map overlay operations",
+            "Planar graph algorithms and face traversal",
+            "Computational geometry and mesh processing"
+        ],
+        "references": [
+            "M. de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2",
+            "F. P. Preparata and M. I. Shamos, Computational Geometry: An Introduction"
+        ],
+        "workedExample": "A triangle with vertices A, B, C has six half-edges: A->B, B->C, C->A bound the inner face, and their twins bound the outer face. Starting at A->B and following next visits B->C then C->A and returns to A->B, tracing the triangle once."
+    },
     id: "doubly-connected-edge-list",
     name: "Doubly Connected Edge List",
     category: "data-structures",

@@ -162,6 +162,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Search (Recursive) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Recursive binary search compares the middle element with the target and calls itself on the surviving half. The base case is an empty interval, meaning the target is absent. Recursion makes the divide-and-conquer structure explicit.",
+        "invariants": [
+            "If the target is present, it lies within the current [lo, hi] interval.",
+            "Each recursive call strictly reduces the interval size."
+        ],
+        "correctness": "Because the array is sorted, if the middle value is smaller than the target the target can only be to the right, and larger means only to the left; the recursive step preserves the search region. An empty interval proves absence.",
+        "complexityRationale": "Each call halves the interval, so at most O(log n) recursive calls doing O(1) work each. Each stack frame holds lo and hi, giving O(log n) space.",
+        "uses": [
+            "Teaching divide and conquer with a minimal example",
+            "Lookup in sorted arrays under functional style",
+            "Introducing recursion depth and base cases"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1"
+        ],
+        "workedExample": "Search 11 in [1, 3, 5, 7, 9, 11, 13, 15]: probe 7, recurse right; probe 13, recurse left; probe 11 and return its index 5."
+    },
     id: "binary-search-recursive",
     name: "Binary Search (Recursive)",
     category: "searching",

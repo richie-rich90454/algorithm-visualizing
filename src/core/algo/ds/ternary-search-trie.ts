@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Ternary Search Trie module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A ternary search trie stores each character at a node with three children: less, equal, and greater. A search compares the character and branches left, right, or down, combining trie character routing with BST three-way comparison.",
+        "invariants": [
+            "Characters in a left subtree are smaller and in a right subtree larger.",
+            "The equal child handles a matching character and advances to the next position.",
+            "A terminal marker ends each word."
+        ],
+        "correctness": "Three-way comparison routes a character to the only subtree that can contain a match, just as a BST does, and following equal children advances through the word. A word is present exactly when all its characters are consumed at a terminal node.",
+        "complexityRationale": "Each character comparison costs O(log n) in the number of nodes at that position, so a word of length L takes O(L + log n). Space is three pointers per node, O(total characters).",
+        "uses": [
+            "Memory-efficient autocomplete dictionaries",
+            "Spell checkers",
+            "String symbol tables when a full-alphabet trie is too large"
+        ],
+        "references": [
+            "Bentley and Sedgewick, Fast Algorithms for Sorting and Searching Strings, SODA 1997",
+            "Sedgewick and Wayne, Algorithms, 4th Edition, Section 5.2"
+        ],
+        "workedExample": "Words cat, car, cup, dog share a root splitting c from d; searching car compares c, then a, then r and reaches a terminal marker, while a mismatched branch reports absence."
+    },
     id: "ternary-search-trie",
     name: "Ternary Search Trie",
     category: "data-structures",

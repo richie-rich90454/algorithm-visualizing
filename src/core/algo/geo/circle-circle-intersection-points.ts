@@ -121,6 +121,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Two circles meet where both of their equations hold. Subtracting the equations gives a radical line on which every intersection must lie, so projecting back onto one circle yields zero, one, or two points depending on how far apart the centers are.",
+        "invariants": [
+            "Every reported point is exactly r0 from the first center and r1 from the second.",
+            "The intersection points are symmetric about the line joining the centers.",
+            "Two distinct circles have at most two intersection points."
+        ],
+        "correctness": "Let d be the center distance. With the origin at the first center and the x-axis pointing at the second, a = (r0^2 - r1^2 + d^2)/(2d) locates the radical line and h^2 = r0^2 - a^2 gives the half-chord. A negative h^2 means the circles are disjoint or nested, zero means tangency, and a positive value gives the two points (a, +h) and (a, -h), both satisfying the original equations. Rotating back to world coordinates completes the solution.",
+        "complexityRationale": "A fixed number of arithmetic operations are performed regardless of input size, so time is O(1). Only a constant number of coordinates are stored, so space is O(1).",
+        "uses": [
+            "Computing the overlap of two circular sensor ranges",
+            "Circle collision detection in games",
+            "Constructing lens and Venn diagram geometry"
+        ],
+        "references": [
+            "Weisstein, Circle-Circle Intersection, MathWorld",
+            "O'Rourke, Computational Geometry in C, Section 6.4"
+        ],
+        "workedExample": "Circle 0 is centered at (0,0) with radius 2 and circle 1 at (3,0) with radius 2. Then d = 3, a = (4 - 4 + 9)/6 = 1.5, and h^2 = 4 - 2.25 = 1.75, so the intersections are (1.5, 1.3229) and (1.5, -1.3229)."
+    },
+
     id: "circle-circle-intersection-points",
     name: "Circle–Circle Intersection",
     category: "geometry",

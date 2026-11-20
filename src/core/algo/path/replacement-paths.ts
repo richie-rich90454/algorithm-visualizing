@@ -181,6 +181,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "For each edge on the shortest path, replacement paths find the best route that avoids that edge. This measures how critical each hop is. The straightforward method forbids one path edge at a time and reruns Dijkstra, recording the resulting detour cost.",
+        "invariants": [
+            "The original path is a shortest path before any edge is forbidden.",
+            "Forbidding one edge and rerunning gives the true best avoiding path.",
+            "Restoring the edge before the next test keeps trials independent."
+        ],
+        "correctness": "The best path that avoids a forbidden edge is exactly the shortest path in the graph with that edge removed, which Dijkstra computes. Trying every edge on the original path therefore yields the correct avoidance cost for each hop, and a disconnected result correctly marks the edge as essential.",
+        "complexityRationale": "One Dijkstra per path edge costs O(E (E log V)) naively; specialized methods do better, and the working graph uses O(V + E) space.",
+        "uses": [
+            "Assessing link vulnerability and backup route quality",
+            "Network resilience and failure analysis",
+            "A step toward fast replacement path algorithms"
+        ],
+        "references": [
+            "Nsenkyire, Replacement Paths (research literature)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, shortest paths"
+        ],
+        "workedExample": "The shortest path A-B-C-D is tested by forbidding each of its three edges in turn. Each rerun finds a detour of cost 6, indicating that every hop has an equally good backup in this graph."
+    },
     id: "replacement-paths",
     name: "Replacement Paths",
     category: "shortest-path",

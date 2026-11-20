@@ -146,6 +146,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Search (Lower Bound) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Find the first index whose value is greater than or equal to the target. Move the lower bound up when the middle value is too small, otherwise move the upper bound down. The two bounds converge on the answer.",
+        "invariants": [
+            "Every index below low has a value less than the target.",
+            "Every index at or above high has a value greater than or equal to the target."
+        ],
+        "correctness": "The loop shrinks the open interval while preserving both invariants. When low equals high, all indices below it are too small and the index itself satisfies the condition, so it is the first such index; if none exists, the result is n.",
+        "complexityRationale": "Each iteration halves the remaining interval, giving O(log n) comparisons and O(1) space.",
+        "uses": [
+            "Insertion position in a sorted array",
+            "Counting duplicates with upper bound minus lower bound",
+            "Implementing ordered maps and rank queries"
+        ],
+        "references": [
+            "C++ standard library lower_bound specification",
+            "CLRS, Introduction to Algorithms, Chapter 2 exercise"
+        ],
+        "workedExample": "Lower bound of 4 in [1, 3, 4, 4, 7] is index 2. Lower bound of 5 is index 4. Lower bound of 0 is index 0; of 9 is index 5."
+    },
     id: "binary-search-lower-bound",
     name: "Binary Search (Lower Bound)",
     category: "searching",

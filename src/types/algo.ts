@@ -13,7 +13,7 @@
 
 import type { LayoutType, VisualFrame } from "./visual";
 
-/** The thirteen algorithm categories, in the order they appear in the sidebar. */
+/** Algorithm categories, in the order they appear in the sidebar. */
 export type AlgorithmCategory =
     | "sorting"
     | "searching"
@@ -27,7 +27,14 @@ export type AlgorithmCategory =
     | "dynamic-programming"
     | "game"
     | "geometry"
-    | "data-structures";
+    | "data-structures"
+    | "ml-ai"
+    | "cryptography-security"
+    | "parallel-distributed"
+    | "numerical-optimization"
+    | "quantum"
+    | "statistics-probability"
+    | "production-systems";
 
 /** Asymptotic complexity expressed as display strings, e.g. "O(n log n)". */
 export interface AlgorithmComplexity {
@@ -35,6 +42,30 @@ export interface AlgorithmComplexity {
     time: string;
     /** Space complexity in Big-O notation. */
     space: string;
+}
+
+/**
+ * Structured educational writeup for an algorithm.
+ *
+ * Optional on AlgorithmModule so the existing library keeps compiling; a
+ * separate content workstream fills it in module by module. All prose is
+ * written in American English.
+ */
+export interface AlgorithmEducation {
+    /** Plain-language explanation of the core idea. */
+    intuition: string;
+    /** Properties that remain true after each step of the algorithm. */
+    invariants: string[];
+    /** A correctness argument or proof sketch. */
+    correctness: string;
+    /** Why the stated time and space bounds hold. */
+    complexityRationale: string;
+    /** Concrete situations where the algorithm is used in practice. */
+    uses: string[];
+    /** Citations or suggested further reading, one entry per item. */
+    references: string[];
+    /** A short hand-worked example on a small input. */
+    workedExample: string;
 }
 
 /**
@@ -73,4 +104,10 @@ export interface AlgorithmModule {
      * finished result.
      */
     pseudocode?: string[];
+    /**
+     * Structured educational writeup (intuition, invariants, correctness,
+     * complexity rationale, uses, references, worked example). Optional while
+     * the content library is being filled in.
+     */
+    education?: AlgorithmEducation;
 }

@@ -197,6 +197,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Heavy-Light Decomposition module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Heavy-light decomposition breaks a tree into heavy paths by following the child with the largest subtree at each node. Because any step to a light child at least halves the subtree size, a root-to-node path crosses only O(log n) heavy paths, turning path queries into a few range queries on an array.",
+        "invariants": [
+            "A heavy edge leads to the child with the largest subtree.",
+            "All other edges are light and lead to a subtree at most half the parent's size.",
+            "Nodes on the same heavy path are contiguous in the decomposition order."
+        ],
+        "correctness": "Following heavy edges keeps a path contiguous, so operations along one heavy path can be handled by a segment tree over the flattened array. Each light edge halves the subtree size, so at most O(log n) light edges occur on any root-to-leaf route, meaning a tree path decomposes into O(log n) heavy-path segments. Answering a range query on each segment and combining them gives the correct path answer.",
+        "complexityRationale": "Computing subtree sizes and assigning head pointers takes O(n) time. Each path query touches O(log n) segments with O(log n) work per segment using a segment tree, giving O(log^2 n) per query and O(n) space.",
+        "uses": [
+            "Path sum and path maximum queries on static trees",
+            "Supporting updates along root-to-node paths",
+            "Competitive programming tree query problems"
+        ],
+        "references": [
+            "Sleator and Tarjan, A Data Structure for Dynamic Trees, Journal of Computer and System Sciences 26 (1983)",
+            "Competitive Programming 3, Hall and Li, tree chapter"
+        ],
+        "workedExample": "In a tree where A has children B with a large subtree and C with a single node, the edge A-B is heavy and A-C is light. The path from a deep node in B's subtree to C crosses just the heavy path ending at A plus the light edge to C."
+    },
+
     id: "heavy-light-decomposition",
     name: "Heavy-Light Decomposition",
     category: "tree",

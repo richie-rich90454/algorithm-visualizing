@@ -209,6 +209,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree Diameter module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The diameter of a tree is its longest path. A two-pass trick finds it with just two searches: from any start node find the farthest node A, then from A find the farthest node B; the path A to B is a diameter.",
+        "invariants": [
+            "The farthest vertex from any start is an endpoint of some diameter.",
+            "After the second pass, the predecessor chain from B back to A is a longest path.",
+            "Tree paths are unique, so depth from A equals path length from A."
+        ],
+        "correctness": "In a tree, a vertex farthest from an arbitrary start is guaranteed to be an endpoint of a diameter, because otherwise a longer path would extend beyond it. Running a search from that endpoint visits every vertex at its true path distance, so the farthest vertex B is at maximum distance from A and the unique path between them is a longest path. Hence A and B realize the diameter.",
+        "complexityRationale": "Each breadth-first or depth-first search visits every vertex and edge once, so two passes cost O(n) time. The visited markers, parents, and distance arrays use O(n) space.",
+        "uses": [
+            "Finding the longest path in a network of pipelines or links",
+            "Computing tree radius and centers via the diameter",
+            "Estimating the height of a rooted tree"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (BFS and DFS)",
+            "Harary, Graph Theory, Chapter 4"
+        ],
+        "workedExample": "For a path A-B-C-D-E with an extra leaf F attached to B, a search from A reaches E at distance 4. A second search from E reaches A at distance 4, so the diameter is the path A-B-C-D-E of length 4."
+    },
+
     id: "tree-diameter",
     name: "Tree Diameter",
     category: "tree",

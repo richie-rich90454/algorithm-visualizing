@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A derangement is a permutation where no element appears in its original position. The count satisfies D[i] = (i-1)*(D[i-1] + D[i-2]). The idea is to choose a partner for item i, then either swap them directly or place i in the partner's spot while deranging the rest.",
+        "invariants": [
+            "D[0] = 1 and D[1] = 0 as base cases.",
+            "Every derangement of i items is counted exactly once by the recurrence split.",
+            "All smaller D values are final before D[i] is computed."
+        ],
+        "correctness": "Fix where item i goes, say position j with i-1 choices. If item j goes to position i, the remaining i-2 items form a derangement counted by D[i-2]. Otherwise item i takes j's role and the remaining i-1 items are deranged in D[i-1] ways. Multiplying by the choices and summing gives the recurrence, which counts every derangement once.",
+        "complexityRationale": "Each value from 2 to n is one multiplication and addition, so time is O(n). The array of counts uses O(n) space, reducible to O(1) with three variables.",
+        "uses": [
+            "Counting permutations with no fixed points",
+            "Modeling the hat-check problem in probability",
+            "Combinatorial enumeration with inclusion constraints"
+        ],
+        "references": [
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 8",
+            "Stanley, Enumerative Combinatorics, Vol. 1, Chapter 2"
+        ],
+        "workedExample": "D[0]=1, D[1]=0, D[2]=1*(0+1)=1, D[3]=2*(1+0)=2, D[4]=3*(2+1)=9. There are 9 derangements of four items."
+    },
     id: "derangements-dp",
     name: "Derangements (DP)",
     category: "dynamic-programming",

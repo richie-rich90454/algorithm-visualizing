@@ -109,6 +109,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Adjacency Matrix module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An adjacency matrix is a square grid with one row and column per vertex; cell u,v is 1 or a weight when an edge runs from u to v. Because the cell address is computed directly from the two vertex ids, checking an edge is a single array read. The tradeoff is that the grid has V squared cells whether or not edges exist.",
+        "invariants": [
+            "Cell u,v holds the edge weight or 1 exactly when the edge u->v exists.",
+            "For an undirected graph the matrix is symmetric.",
+            "A zero or absent cell means no edge."
+        ],
+        "correctness": "Setting cell u,v when an edge is inserted creates a one-to-one correspondence between nonzero cells and edges, so reading that cell answers edge existence correctly. Degrees come from counting nonzero entries in a row. Listing neighbors by scanning the row returns exactly the vertices whose cells are set.",
+        "complexityRationale": "Index arithmetic gives O(1) edge test, insertion, and removal. The matrix always allocates V squared cells, so space is O(V²) independent of the number of edges.",
+        "uses": [
+            "Dense graphs where most vertex pairs are connected",
+            "Floyd-Warshall all-pairs shortest paths",
+            "Small fixed-size graphs in games and circuit analysis"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 4.1"
+        ],
+        "workedExample": "For vertices A, B, C with directed edges A->B and B->C, the 3 by 3 matrix has 1 at A,B and B,C and 0 elsewhere. Checking A->C reads cell A,C, finds 0, and reports no edge. The row for A contains one nonzero cell, so the out-degree of A is 1."
+    },
     id: "adjacency-matrix",
     name: "Adjacency Matrix",
     category: "data-structures",

@@ -144,6 +144,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Search (Upper Bound) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Upper bound finds the first index whose value is strictly greater than the target, where the target would be inserted after all existing copies. It probes the middle and moves left only when the middle value is greater than the target.",
+        "invariants": [
+            "All positions strictly before the result hold values less than or equal to the target.",
+            "The answer lies in the current [lo, hi] interval."
+        ],
+        "correctness": "Moving left on a greater midpoint discards that midpoint and everything after it as insertion points; moving right on a less-or-equal midpoint keeps the search after it. When lo and hi meet, that index is the first strictly greater position.",
+        "complexityRationale": "The interval halves each step, giving O(log n) time; only a few index variables are kept, O(1) space.",
+        "uses": [
+            "Counting occurrences as upper bound minus lower bound",
+            "Insertion points in sorted containers",
+            "C++ std::upper_bound and Python bisect_right"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2 (binary search variants)",
+            "Stroustrup, The C++ Programming Language, standard library algorithms"
+        ],
+        "workedExample": "In [1, 3, 3, 3, 5, 7, 9, 11] with target 3, the first index holding a value greater than 3 is 4. Together with lower bound 1, the equal range is [1, 4)."
+    },
     id: "binary-search-upper-bound",
     name: "Binary Search (Upper Bound)",
     category: "searching",

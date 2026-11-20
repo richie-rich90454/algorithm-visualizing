@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A Prufer code uniquely encodes a labeled tree as a short sequence of labels. Decoding repeatedly finds the smallest label that is a leaf and not present in the remaining code, connects it to the next code value, removes it, and finally joins the last two remaining labels.",
+        "invariants": [
+            "At each step the chosen leaf is the smallest label not appearing in the remaining code.",
+            "Exactly one edge is added per code entry, plus one final edge.",
+            "After all entries are consumed, two vertices remain to be joined."
+        ],
+        "correctness": "In a labeled tree the smallest leaf not mentioned in the Prufer code is exactly the vertex that was removed at that encoding step, so reconnecting it to the current code value reverses the encoding. Removing it leaves a smaller tree with the shorter code, so induction reconstructs every edge. The final two vertices form the last edge of the original tree, completing the unique reconstruction.",
+        "complexityRationale": "Scanning for the smallest missing label and updating the code at each of n steps costs O(n^2) with a simple implementation, and the edge list uses O(n) space. A heap-based version achieves O(n log n).",
+        "uses": [
+            "Encoding and decoding labeled trees canonically",
+            "Counting labeled trees via Cayley's formula",
+            "Random tree generation from a random Prufer sequence"
+        ],
+        "references": [
+            "Prufer, Neuer Beweis eines Satzes ueber Permutationen, Archiv der Mathematik und Physik 27 (1918)",
+            "CLRS, Introduction to Algorithms, Chapter 22 (counting labeled trees)"
+        ],
+        "workedExample": "For code [2,2,3] on labels 1 through 5: smallest missing label 1 gives edge (1,2); then 4 gives (4,2); then 2 gives (2,3); finally 3 and 5 are joined. The reconstructed tree has edges (1,2), (4,2), (2,3), (3,5)."
+    },
+
     id: "prufer-decode",
     name: "Prüfer Decode",
     category: "tree",

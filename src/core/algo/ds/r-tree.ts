@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An R-tree groups nearby objects with minimum bounding rectangles in a balanced tree. Insertion descends into the child whose rectangle needs the least enlargement, expanding rectangles along the way, and queries visit only rectangles overlapping the search region.",
+        "invariants": [
+            "A parent bounding rectangle contains all of its children rectangles.",
+            "Leaves hold the actual points or objects.",
+            "The tree is height balanced."
+        ],
+        "correctness": "Every point lies inside its ancestors bounding rectangles, so a rectangle that does not overlap the search region cannot contain a qualifying point and can be pruned. Visiting all overlapping rectangles therefore considers every possible answer and the nearest point among them is globally nearest.",
+        "complexityRationale": "Tree height is O(log n), so insert and typical queries touch O(log n) nodes; heavy rectangle overlap can force extra visits. Each object appears once and each node adds one rectangle, O(n) space.",
+        "uses": [
+            "Spatial indexes in geographic information systems",
+            "Bounding-box collision queries in games",
+            "Multidimensional database indexes such as PostgreSQL GiST"
+        ],
+        "references": [
+            "Guttman, R-Trees: A Dynamic Index Structure for Spatial Searching, SIGMOD 1984",
+            "Samet, Foundations of Multidimensional and Metric Data Structures"
+        ],
+        "workedExample": "Insert points (2,3), (5,1), (7,6), (1,7) into rectangles grouping nearby points. A query near (4,2) visits only rectangles overlapping its search area and reports the closest point."
+    },
     id: "r-tree",
     name: "R-Tree",
     category: "data-structures",

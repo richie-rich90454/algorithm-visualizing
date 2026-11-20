@@ -221,6 +221,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A minimum edge cover picks as few edges as possible so every vertex touches a chosen edge. On a tree a two-state DP tracks whether a node is already covered by the edge to its parent or still needs to be covered by one of its child edges.",
+        "invariants": [
+            "dp1[u] is the minimum cost when u is covered by its parent edge.",
+            "dp0[u] is the minimum cost when u must be covered by a child edge.",
+            "If dp0[u] cannot be satisfied, the state is treated as impossible."
+        ],
+        "correctness": "If u is covered from above, each child may choose whichever of its two states is cheaper. If u is not covered from above, at least one child edge must be chosen, so one child is forced into the state where it covers its parent and the rest choose their cheaper states. Processing children postorder and minimizing over these cases yields the minimum edge cover for u's subtree, and the root must be in state dp0, giving the global optimum.",
+        "complexityRationale": "Each edge is considered once in the postorder DP with constant work, so time is O(n). The two DP values per node use O(n) space; the demo also brute-forces small cases to cross-check.",
+        "uses": [
+            "Selecting the fewest links to connect every node",
+            "Covering network endpoints with minimal cables",
+            "Verifying greedy or matching-based edge cover results"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (matching and covers)",
+            "Bondy and Murty, Graph Theory, Chapter 5"
+        ],
+        "workedExample": "For the path A-B-C, the minimum edge cover uses both edges AB and BC, size 2. The DP forces A to be covered by AB and C by BC, while B is covered by either edge, giving the same answer the brute-force check finds."
+    },
+
     id: "tree-edge-cover-dp",
     name: "Tree Edge Cover DP",
     category: "tree",

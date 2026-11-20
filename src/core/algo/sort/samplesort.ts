@@ -162,6 +162,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Samplesort picks splitters from an oversampled subset of the keys, partitions data into buckets between splitters, then sorts buckets independently. Oversampling makes buckets nearly equal with high probability, which is ideal for parallel machines.",
+        "invariants": [
+            "Splitters are in sorted order and define ordered, disjoint key ranges.",
+            "Every key is placed in the bucket matching its splitter range."
+        ],
+        "correctness": "Buckets are ordered by key range, so sorting inside buckets and concatenating in splitter order yields globally sorted data. Oversampling affects balance but not correctness.",
+        "complexityRationale": "Sampling plus partitioning costs O(n) and sorting p buckets of size about n/p costs O((n/p) log(n/p)) each, giving O(n log n) overall. Splitters and buckets use O(n) space.",
+        "uses": [
+            "Parallel sorting libraries on supercomputers",
+            "Load-balanced MPI sort routines",
+            "Teaching sampling as a balancing tool"
+        ],
+        "references": [
+            "Frazer and Duncan, Samplesort: A Sampling Approach to Minimal Storage Tree Sorting, JACM, 1970",
+            "Blelloch, Leiserson, and Maggs, A Comparison of Sorting Algorithms for the Connection Machine CM-2, 1991"
+        ],
+        "workedExample": "For [6, 2, 5, 1, 4, 3], sample splitters 2 and 4; keys fall into buckets [1], [2, 3], and [4, 5, 6]. Sorting each bucket and reading in order gives [1, 2, 3, 4, 5, 6]."
+    },
     id: "samplesort",
     name: "Samplesort",
     category: "sorting",

@@ -105,6 +105,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Myers' diff finds the shortest edit script of insertions and deletions between two sequences in time proportional to the number of edits D. It explores edit-distance diagonals, tracking for each diagonal the furthest x reached, and greedily extends snakes of matching characters.",
+        "invariants": [
+            "For edit distance d, frontier[k] stores the largest x reachable on diagonal k, where k = x - y, using d edits.",
+            "Extending a snake moves along a diagonal while characters match without increasing d."
+        ],
+        "correctness": "Any edit script of length d corresponds to a path from (0,0) to a frontier; by keeping the furthest x for every k at each d, the algorithm retains enough information to reach the end with the fewest edits. Traceback through the stored frontiers yields a shortest edit script.",
+        "complexityRationale": "Each of the D rounds visits O(D) diagonals, giving O((N+M)D) or O(ND) time where D is the edit distance; storing frontiers for traceback uses O(D^2) space, reducible with divide and conquer.",
+        "uses": [
+            "The diff engine in version-control systems such as git diff",
+            "Computing edit scripts in text comparison",
+            "Sequence alignment when changes are few"
+        ],
+        "references": [
+            "Myers, An O(ND) Difference Algorithm and Its Variations, 1986",
+            "GNU diff documentation"
+        ],
+        "workedExample": "For a=\"abcab\", b=\"acbab\" the edit distance is 2; a shortest script is keep a, delete b, keep c, insert b, keep a, keep b, and the traceback marks that path through the grid."
+    },
     id: "myers-diff-ond",
     name: "Myers Diff O(ND)",
     category: "string",

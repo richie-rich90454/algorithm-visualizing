@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield frame(`Maximum matching size is ${ans}.`, 4, { matching: ans });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A matching is a set of edges with no shared endpoints. On a tree, a two-state DP decides for each node whether it is matched to one of its children or left free, combining the best choices from its children accordingly.",
+        "invariants": [
+            "dp0[u] is the best matching size in u's subtree when u is not matched to a child.",
+            "dp1[u] is the best size when u is matched to exactly one child.",
+            "Each edge is used at most once and no vertex has two matched edges."
+        ],
+        "correctness": "If u is free, every child may independently choose its best state, giving dp0 as the sum of max(dp0, dp1) over children. If u is matched to a child k, that child must be free at its own level, so the value is dp0[k] plus the best free-or-matched choices of all other children. Trying every k and taking the maximum gives dp1, and postorder induction yields the maximum matching at the root.",
+        "complexityRationale": "Each edge contributes constant work in the postorder recurrence, so time is O(n). Two values per node use O(n) space.",
+        "uses": [
+            "Pairing tasks or partners with conflict constraints",
+            "Finding maximum links in a tree network",
+            "Network flow and matching teaching examples"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22 (matching on trees)",
+            "Bondy and Murty, Graph Theory, Chapter 5"
+        ],
+        "workedExample": "For the path A-B-C, either edge AB or BC can be chosen but not both, so the maximum matching size is 1. The DP reaches this by setting dp1 at the root from the best single child choice."
+    },
+
     id: "tree-maximum-matching-dp",
     name: "Tree Maximum Matching DP",
     category: "tree",

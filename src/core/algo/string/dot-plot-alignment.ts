@@ -97,6 +97,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A dot plot is a simple visual comparison of two sequences: write one across the top and one down the side, then place a dot wherever the row and column characters match. Stretches of dots along a diagonal reveal aligned or repeated regions.",
+        "invariants": [
+            "A dot at (i,j) exists exactly when a[i] equals b[j].",
+            "The main diagonal represents positions matched against themselves, and other diagonals correspond to constant shifts between the sequences."
+        ],
+        "correctness": "The grid is defined directly by the equality test, so it is exact by construction. Consecutive dots on a diagonal mean consecutive matching characters, which is precisely a common substring, so counting dots per diagonal surfaces repeats.",
+        "complexityRationale": "Every pair (i,j) is tested once, so both time and space are O(nm) for lengths n and m. That quadratic cost is acceptable for short sequences and gives an immediately readable picture.",
+        "uses": [
+            "Visualizing sequence similarity in bioinformatics",
+            "Spotting repeats and inversions in DNA",
+            "A pedagogical first step before dynamic-programming alignment"
+        ],
+        "references": [
+            "Lipman and Pearson, Rapid and Sensitive Protein Similarity Searches, 1985",
+            "Mount, Bioinformatics: Sequence and Genome Analysis"
+        ],
+        "workedExample": "For a=\"GATT\" and b=\"GCAT\", dots appear where characters match: G with G, A with A on the diagonal, and T with T. The resulting diagonal of shared letters shows that the two sequences are similar."
+    },
     id: "dot-plot-alignment",
     name: "Dot Plot",
     category: "string",

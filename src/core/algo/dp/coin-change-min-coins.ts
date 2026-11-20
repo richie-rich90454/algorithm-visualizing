@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Coin change min coins finds the fewest coins needed to make a target amount. For each amount it tries every coin that fits and takes one plus the best answer for the reduced amount. Processing amounts from small to large guarantees that the reduced subproblem is already solved.",
+        "invariants": [
+            "dp[a] is the minimum number of coins to make amount a, or infinity if impossible.",
+            "dp[0] equals zero because no coins are needed.",
+            "Every candidate uses a coin c <= a so dp[a-c] is defined."
+        ],
+        "correctness": "Any optimal way to make a uses some first coin c, leaving a-c to be made optimally; thus one plus dp[a-c] is a candidate, and taking the minimum over c yields dp[a]. Induction over increasing amounts makes all subproblems final. Hence dp[amount] is the true optimum.",
+        "complexityRationale": "For each of the amount values the algorithm tries up to n coins, costing O(n*amount) time. The one-dimensional table uses O(amount) space.",
+        "uses": [
+            "Making change with the fewest coins at checkout",
+            "Minimum-item resource allocation",
+            "A standard unbounded knapsack special case"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With coins [1,2,5] and amount 5, dp builds from dp[0]=0 to dp[5]=1 using a single 5-coin. Without the 5, dp[5] would be 3 from 2+2+1."
+    },
     id: "coin-change-min-coins",
     name: "Coin Change (Min Coins)",
     category: "dynamic-programming",

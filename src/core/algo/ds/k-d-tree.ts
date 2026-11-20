@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A k-d tree generalizes a binary search tree to k-dimensional points by splitting on a different coordinate at each depth, usually the one with the largest spread. A nearest-neighbor search descends to a leaf and then backtracks, pruning a subtree when the distance to its splitting plane exceeds the current best.",
+        "invariants": [
+            "At depth d, left-child points have a smaller coordinate on the split axis than the node.",
+            "The split axis cycles through the k dimensions.",
+            "A subtree can be pruned when the plane distance exceeds the best distance."
+        ],
+        "correctness": "Any point in the far subtree is at least the plane distance from the query, so if that is no better than the current best, no point there can improve the answer. Descending on the near side first tightens the bound early. Visiting all unpruned subtrees therefore finds the true nearest neighbor.",
+        "complexityRationale": "Balanced splits give O(log n) average query depth, though worst-case nearest search is O(n) in high dimensions. Each point is one node, O(n) space.",
+        "uses": [
+            "Nearest-neighbor search in low dimensions",
+            "Spatial indexes and collision detection",
+            "Computer graphics ray tracing"
+        ],
+        "references": [
+            "Jon Louis Bentley, \"Multidimensional Binary Search Trees Used for Associative Searching\", CACM 1975",
+            "M. de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 5"
+        ],
+        "workedExample": "Index (2,3), (5,4), (8,1) splitting on x at root. Query (3,3) descends left to (2,3), best distance 1, then checks the plane x=5: distance 2 exceeds 1, so the right subtree is pruned and (2,3) is returned."
+    },
     id: "k-d-tree",
     name: "K-D Tree",
     category: "data-structures",

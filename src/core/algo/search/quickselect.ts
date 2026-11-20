@@ -136,6 +136,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Quickselect finds the kth smallest element without sorting everything. It partitions around a pivot with the Lomuto scheme and recurses only into the side that contains k, discarding the other side entirely.",
+        "invariants": [
+            "The kth smallest value lies in the current partition range.",
+            "Elements on the other side of the pivot are already known to be too small or too large."
+        ],
+        "correctness": "Partitioning puts the pivot at its correct rank and splits elements by value; if k matches the pivot rank the answer is found, otherwise the kth element must be in one specific side. Induction on that side yields the answer.",
+        "complexityRationale": "Average partitions shrink the range by a constant factor, giving O(n) expected time; consistently bad pivots give O(n^2). Partitioning is in place, O(1) space, iterative here.",
+        "uses": [
+            "Finding medians and quantiles quickly",
+            "Top-k selection in data analysis",
+            "Foundation of worst-case linear selection variants"
+        ],
+        "references": [
+            "Hoare, Algorithm 63: Partition and Algorithm 65: Find, Communications of the ACM, 1961",
+            "CLRS, Introduction to Algorithms, Chapter 9"
+        ],
+        "workedExample": "For [7,2,9,1,5,6] and k=3, pivot 6 partitions to [2,1,5] and [7,9]; since k=3 falls in the left side, search there: pivot 5 splits [2,1] and the third smallest is 5."
+    },
     id: "quickselect",
     name: "Quickselect",
     category: "searching",

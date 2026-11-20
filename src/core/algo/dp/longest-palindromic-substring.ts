@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest palindromic substring finds the longest contiguous span that reads the same both ways. The DP marks P[l][r] true when the ends match and the inner substring is a palindrome, with short spans as automatic bases. Tracking the longest true entry gives the answer directly.",
+        "invariants": [
+            "P[l][r] is true exactly when s[l..r] is a palindrome.",
+            "All single characters and matching adjacent pairs are palindromes.",
+            "A span is tested only after its inner span has been computed."
+        ],
+        "correctness": "A string of length at least three is a palindrome iff its ends match and the substring between them is a palindrome, so the recurrence characterizes palindromes exactly. Filling by increasing length makes inner values available. Tracking the longest confirmed span therefore returns the longest palindromic substring.",
+        "complexityRationale": "Filling the O(n^2) table with constant work per entry costs O(n^2) time and O(n^2) space. Center-expansion variants trade the table for O(1) extra space.",
+        "uses": [
+            "Text processing and pattern search",
+            "Finding repeated motifs in biological sequences",
+            "String algorithm teaching alongside Manacher's method"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Manacher, A new linear-time on-line algorithm (1975)"
+        ],
+        "workedExample": "For s = babad the DP confirms spans bab and aba of length 3. Either can be reported as the longest palindromic substring."
+    },
     id: "longest-palindromic-substring",
     name: "Longest Palindromic Substring",
     category: "dynamic-programming",

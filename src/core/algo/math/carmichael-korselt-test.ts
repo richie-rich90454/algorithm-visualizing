@@ -116,6 +116,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Carmichael number is a composite n that fools Fermat's little theorem by satisfying a^(n-1) = 1 for every a coprime to n. Korselt's criterion turns this into a factorization test: n must be odd, squarefree, and every prime factor p must have p-1 dividing n-1. The visualization factors n and checks those conditions directly.",
+        "invariants": [
+            "A repeated prime factor immediately disqualifies n.",
+            "For a squarefree n, the divisibility p-1 | n-1 is checked for each prime factor.",
+            "Satisfying every Korselt condition is equivalent to being Carmichael for odd composite n."
+        ],
+        "correctness": "Korselt's criterion is an if-and-only-if characterization, so factoring n and verifying squarefreeness plus p-1 | n-1 exactly decides Carmichael membership. The test never mistakes a prime for a Carmichael number because primes are excluded separately. Any failing condition proves n is not Carmichael.",
+        "complexityRationale": "Factoring by trial division costs O(sqrt(n)), and the divisibility checks run over the prime factors, at most O(log n) of them. Thus time is dominated by factoring at O(sqrt(n)) and space is O(1).",
+        "uses": [
+            "Generating and identifying Carmichael numbers",
+            "Testing the limits of Fermat primality tests",
+            "Teaching Korselt's criterion with concrete factorizations"
+        ],
+        "references": [
+            "Korselt, Probleme arithmetique (1899)",
+            "Crandall and Pomerance, Prime Numbers, Section 3.4"
+        ],
+        "workedExample": "For n = 561 = 3*11*17 it is odd and squarefree. Check 2 | 560, 10 | 560, and 16 | 560, all true. Every Korselt condition holds, so 561 is Carmichael."
+    },
     id: "carmichael-korselt-test",
     name: "Carmichael Korselt Test",
     category: "math",

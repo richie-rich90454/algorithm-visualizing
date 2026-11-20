@@ -210,6 +210,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Floyd-Warshall module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Allow intermediate vertices one at a time. For each candidate intermediate k, update every pair distance with the possibility of going through k. After all k, every possible intermediate has been considered.",
+        "invariants": [
+            "After iteration k, d[i][j] is the shortest path from i to j using only intermediates from the first k vertices."
+        ],
+        "correctness": "A shortest path whose intermediate set is within the first k vertices either avoids k, giving d[i][j], or passes through k, giving d[i][k] + d[k][j]. Taking the minimum covers both cases, so the induction holds and the final matrix is correct.",
+        "complexityRationale": "Three nested loops over vertices give O(V^3) time. The distance matrix uses O(V^2) space, and a predecessor matrix can be kept in the same order to reconstruct paths.",
+        "uses": [
+            "All-pairs shortest paths in dense graphs",
+            "Transitive closure and reachability",
+            "Computing graph centrality measures"
+        ],
+        "references": [
+            "Floyd, Algorithm 97: Shortest Path, 1962",
+            "Warshall, A Theorem on Boolean Matrices, 1962",
+            "CLRS, Introduction to Algorithms, Chapter 25"
+        ],
+        "workedExample": "Vertices A, B, C with A->B=4, B->C=1, A->C=10. Direct distance A to C is 10. Considering B as an intermediate gives 4+1=5, so d[A][C] becomes 5."
+    },
     id: "floyd-warshall",
     name: "Floyd-Warshall",
     category: "shortest-path",

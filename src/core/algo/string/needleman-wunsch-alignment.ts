@@ -135,6 +135,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Needleman-Wunsch aligns two sequences globally using dynamic programming with scores for matches, mismatches, and gaps. Each cell takes the maximum of three predecessor scores, diagonal for a substitution, up for a deletion, and left for an insertion, and a traceback from the bottom-right gives the optimal alignment.",
+        "invariants": [
+            "dp[i][j] is the best score of any global alignment of the first i characters of a and the first j of b.",
+            "The first row and column are initialized with cumulative gap penalties."
+        ],
+        "correctness": "The last operation of an optimal alignment must be one of the three moves, so taking the maximum of the corresponding predecessor scores gives the optimal value at each cell by induction. Tracing back the maximizing predecessors reconstructs an alignment achieving dp[n][m], which is therefore globally optimal.",
+        "complexityRationale": "The (n+1)(m+1) table is filled in O(1) per cell, giving O(nm) time; storing it for traceback uses O(nm) space, or O(min(n,m)) for scores only.",
+        "uses": [
+            "Global protein and DNA sequence alignment",
+            "Measuring sequence similarity in bioinformatics",
+            "Aligning short strings with end-to-end correspondence"
+        ],
+        "references": [
+            "Needleman and Wunsch, A General Method Applicable to the Search for Similarities in Amino Acid Sequences, 1970",
+            "Durbin et al., Biological Sequence Analysis"
+        ],
+        "workedExample": "For a=\"GATT\", b=\"GCAT\" with match +1, mismatch -1, gap -2, the bottom-right cell holds the optimal score and the traceback prints the aligned pair with gaps wherever one sequence skips a character."
+    },
     id: "needleman-wunsch-alignment",
     name: "Needleman-Wunsch",
     category: "string",

@@ -83,6 +83,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A counting Bloom filter replaces each bit of a standard Bloom filter with a small counter. Inserting a key increments k counters, and deleting it decrements them, so the filter supports dynamic sets. Membership still reports present when all k counters are positive, with false positives but no false negatives.",
+        "invariants": [
+            "Each counter equals the number of stored keys hashing to it.",
+            "Counters never go negative.",
+            "A key is reported present only if all k counters are positive."
+        ],
+        "correctness": "Incrementing on insert makes a stored key's counters all positive, so it is never reported absent. Deleting decrements exactly the counters that the key incremented, preserving the count invariant. False positives can occur when other keys set the same counters, but a true member is always found.",
+        "complexityRationale": "Each operation evaluates k hashes and touches k counters, O(k) time. With m counters the space is O(m), typically a few bits per key times the counter width.",
+        "uses": [
+            "Dynamic membership filters with deletions",
+            "Cache and proxy deduplication",
+            "Routing tables that update on the fly"
+        ],
+        "references": [
+            "Li Fan, Pei Cao, Jussara Almeida, and Andrei Z. Broder, \"Summary Cache: A Scalable Wide-Area Web Cache Sharing Protocol\", SIGCOMM 1998",
+            "Burton H. Bloom, \"Space/Time Trade-offs in Hash Coding with Allowable Errors\", CACM 1970"
+        ],
+        "workedExample": "Insert 5 and 17 with k=3 counters: each key increments three hashed counters. Query 17 finds all three counters positive and reports present. Delete 5 by decrementing its counters; a later query for 17 still succeeds, while a query for a never-inserted key whose counters include a zero fails."
+    },
     id: "counting-bloom-filter",
     name: "Counting Bloom Filter",
     category: "data-structures",

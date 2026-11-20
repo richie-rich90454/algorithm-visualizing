@@ -76,6 +76,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Golden-section search finds the minimum of a unimodal function on an interval without using derivatives. It places two interior points so the interval keeps the same golden-ratio proportions after a cut, allowing one interior point to be reused at every step. Comparing the function values at the two points discards the worse outer third.",
+        "invariants": [
+            "The minimizer always remains inside the current bracket [a,b].",
+            "The two interior points sit at golden-ratio positions, so one survives each shrink.",
+            "The bracket width shrinks by a constant factor of 1/PHI each iteration."
+        ],
+        "correctness": "For a unimodal function, if f(c) < f(d) with c < d, the minimum cannot lie to the right of d, so discarding [d,b] preserves it; the symmetric argument applies otherwise. Because the points are placed by the golden ratio, the remaining interval reuses one evaluation. Repeated cuts therefore converge to the minimizer.",
+        "complexityRationale": "Each iteration does one or two function evaluations, thanks to reuse, and constant arithmetic, so t iterations cost O(t). Only the endpoints and interior points are stored, O(1) space. The bracket shrinks geometrically, giving linear convergence in t.",
+        "uses": [
+            "Line search inside larger optimization algorithms",
+            "Hyperparameter tuning when derivatives are unavailable",
+            "Engineering design and model calibration",
+            "Minimizing response surfaces and loss functions"
+        ],
+        "references": [
+            "Brent, Algorithms for Minimization Without Derivatives, Chapter 3",
+            "Press et al., Numerical Recipes, Chapter 10"
+        ],
+        "workedExample": "Minimize f(x)=(x-2)^2 on [0,5]. The interior points are c=5-5/PHI≈1.91 and d=5/PHI≈3.09. Since f(c)≈0.008 is less than f(d)≈1.19, discard [d,5] and keep [0,3.09], reusing c as the new d. Repeating narrows the bracket toward x=2."
+    },
     id: "golden-section-search",
     name: "Golden-Section Search",
     category: "math",

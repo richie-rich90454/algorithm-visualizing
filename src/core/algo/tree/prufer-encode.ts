@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield frame(`Prüfer code is [${code.join(",")}].`, 4, { code }, alive);
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Prufer encoding converts a labeled tree into a sequence of n-2 numbers. It repeatedly removes the smallest leaf, records that leaf's neighbor, and deletes the leaf, continuing until only two vertices remain.",
+        "invariants": [
+            "The removed vertex is always a leaf at the time of removal.",
+            "Each recorded value is the neighbor of the removed leaf.",
+            "After n-2 removals exactly two vertices are left and the code length is n-2."
+        ],
+        "correctness": "Choosing the smallest leaf is a deterministic rule that any decoding process can reverse, because the decoder finds precisely that leaf as the smallest label absent from the remaining code. Recording its neighbor preserves the edge that is lost when the leaf is removed. Repeating until two vertices remain removes all information except the final edge, which is implicit, so the code determines the tree uniquely and decoding restores it.",
+        "complexityRationale": "Finding the smallest leaf at each step scans the label set, costing O(n^2) in this simple implementation, with O(n) space for the tree and code. A priority queue improves this to O(n log n).",
+        "uses": [
+            "Canonical representation of labeled trees",
+            "Counting trees with Cayley's formula n^(n-2)",
+            "Generating random labeled trees for testing"
+        ],
+        "references": [
+            "Prufer, Neuer Beweis eines Satzes ueber Permutationen, Archiv der Mathematik und Physik 27 (1918)",
+            "Stanley, Enumerative Combinatorics, Volume 2, Section 5.5"
+        ],
+        "workedExample": "Tree edges (1,2), (2,3), (3,4): the smallest leaf is 1, whose neighbor is 2, so record 2. Next the smallest leaf is 4, whose neighbor is 3, so record 3. With 2 and 3 left, the Prufer code is [2,3]."
+    },
+
     id: "prufer-encode",
     name: "Prüfer Encode",
     category: "tree",

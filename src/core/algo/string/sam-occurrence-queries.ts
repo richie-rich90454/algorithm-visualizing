@@ -89,6 +89,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A suffix automaton indexes all substrings of a text in linear space. Walking the pattern through its transitions tells whether the pattern occurs, and propagating occurrence counts up the suffix-link tree gives the number of end positions of the reached state, which is the occurrence count.",
+        "invariants": [
+            "Each state represents an equivalence class of substrings with the same end-position set.",
+            "A state's suffix link points to the class of its longest proper suffix, whose end positions are a superset."
+        ],
+        "correctness": "A pattern occurs exactly when it labels a path from the initial state; the reached state represents that pattern's class, and summing terminal counts along suffix links yields the true end-position count. The propagation is correct because end-position sets grow monotonically toward the root.",
+        "complexityRationale": "Building is O(n) with at most 2n states; walking a pattern of length m is O(m) and count propagation is O(n), so queries are O(m) after build with O(n) space.",
+        "uses": [
+            "Counting occurrences of substrings quickly",
+            "Full-text search with a suffix automaton",
+            "Finding repeated substrings in genomics"
+        ],
+        "references": [
+            "Crochemore et al., Algorithms on Strings",
+            "Blumer et al., The Smallest Automaton Recognizing the Subwords of a Text, 1985"
+        ],
+        "workedExample": "For text \"ababa\" and pattern \"aba\", walking a, b, a reaches a state whose propagated end-position count is 2, matching the two occurrences of \"aba\" at indices 0 and 2."
+    },
     id: "sam-occurrence-queries",
     name: "SAM Occurrences",
     category: "string",

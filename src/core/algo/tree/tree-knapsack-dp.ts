@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     yield frame(`Best knapsack value with W=${W} is ${ans}.`, 4, { best: ans, capacity: W });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Tree knapsack chooses nodes under a weight capacity where selecting a node may require considering its children. Dynamic programming runs postorder: each node merges its children's knapsack tables, then decides whether to take the node itself within the remaining capacity.",
+        "invariants": [
+            "dp[u][w] is the best value attainable in u's subtree using capacity w.",
+            "Child tables are merged before the node's own take-or-skip decision.",
+            "A node can be taken at most once and capacity never exceeds W."
+        ],
+        "correctness": "Children subtrees interact only through the shared capacity, so merging their DP tables by convolution enumerates all combinations of child choices. Deciding to take u adds its value and weight to the best compatible child combination, while skipping u keeps the merged child result. Postorder induction yields the optimal value for each subtree, so the root's table contains the global optimum.",
+        "complexityRationale": "Merging two tables of size W costs O(W^2), done once per edge, giving O(n*W^2) time. The DP tables use O(n*W) space if all are retained, or O(W) per active stack frame.",
+        "uses": [
+            "Budgeted selection of interdependent projects",
+            "Resource allocation on hierarchical organizations",
+            "Competitive programming tree knapsack problems"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15 (knapsack DP)",
+            "Competitive Programming 3, Hall and Li, tree DP chapter"
+        ],
+        "workedExample": "Root A has value 3 and weight 2, child B has value 4 and weight 3, and capacity W = 3. Taking A yields value 3, taking B yields value 4, and both exceed capacity, so the DP answers 4."
+    },
+
     id: "tree-knapsack-dp",
     name: "Tree Knapsack DP",
     category: "tree",

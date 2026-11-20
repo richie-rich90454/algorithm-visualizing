@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 2-3 tree is a balanced search tree whose nodes hold either one key with two children or two keys with three children. Overflowing nodes split and promote a key while underfull nodes borrow or merge, so all leaves stay at one depth.",
+        "invariants": [
+            "Every node has two or three children.",
+            "All leaves are at the same depth.",
+            "Keys within a node are sorted and partition child ranges."
+        ],
+        "correctness": "Splitting a four-key overflow and promoting the middle key preserves sorted order and balance, and borrow or merge repairs underflow without changing depth. Search compares within a node then descends into the unique child range containing the key, so it finds the key exactly when present.",
+        "complexityRationale": "All leaves at one depth force height O(log n), so search and update take O(log n). One node per group of one or two keys gives O(n) space.",
+        "uses": [
+            "Balanced ordered indexes",
+            "The structure underlying B-trees",
+            "Dictionaries with guaranteed logarithmic search"
+        ],
+        "references": [
+            "Bayer and McCreight, Organization and Maintenance of Large Ordered Indexes, Acta Informatica 1972",
+            "CLRS, Introduction to Algorithms, Chapter 18 on B-trees"
+        ],
+        "workedExample": "Insert 5, 2, 8, 1, 9; inserting 9 overflows the node holding 5, 8, 9 so 8 is promoted and the node splits into 5 and 9; searching 8 compares at the root and finds it."
+    },
     id: "two-three-tree",
     name: "2-3 Tree",
     category: "data-structures",

@@ -187,6 +187,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Quick Sort (Hoare) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Use two pointers that start at both ends and advance toward each other, swapping a large left value with a small right value. Stop when the pointers cross, then recurse on each side of the crossing.",
+        "invariants": [
+            "All values left of the left pointer are less than or equal to the pivot.",
+            "All values right of the right pointer are greater than or equal to the pivot."
+        ],
+        "correctness": "Each swap moves an out-of-place pair into the correct half. When the pointers cross, no element remains misplaced, and the two subranges can be sorted independently by induction.",
+        "complexityRationale": "Partition is linear in the range size. Average time is O(n log n), worst case O(n^2). Hoare partitioning swaps roughly three times fewer elements than Lomuto on random data and handles duplicates well; stack space is O(log n) on average.",
+        "uses": [
+            "In-place sorting with fewer swaps than Lomuto",
+            "Inputs with many duplicate keys",
+            "Library introsort implementations"
+        ],
+        "references": [
+            "Hoare, Quicksort, Communications of the ACM, 1962",
+            "CLRS, Introduction to Algorithms, Chapter 7"
+        ],
+        "workedExample": "Start [5, 1, 4, 2], pivot 4. Left pointer stops at 5, right pointer stops at 2, swap -> [2, 1, 4, 5]. Pointers cross; recurse on [2, 1] -> [1, 2]. Result [1, 2, 4, 5]."
+    },
     id: "quick-sort-hoare",
     name: "Quick Sort (Hoare)",
     category: "sorting",

@@ -146,6 +146,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Start with any feasible flow, then look for a directed cycle in the residual network whose total cost is negative. Pushing flow around such a cycle lowers total cost without changing the amount delivered. When no negative-cost residual cycle remains, the flow is minimum-cost.",
+        "invariants": [
+            "Every cycle cancellation preserves flow value and feasibility.",
+            "Total cost strictly decreases after each cancellation.",
+            "The residual graph of a minimum-cost flow has no negative-cost directed cycle."
+        ],
+        "correctness": "A negative residual cycle means the current flow can be rerouted more cheaply while delivering the same amount, so the flow cannot be optimal. Conversely, if no negative residual cycle exists, the flow satisfies the min-cost flow optimality condition by the cycle characterization of optimal flows.",
+        "complexityRationale": "Finding a negative cycle with Bellman-Ford costs O(V E) and there can be O(V E U) cancellations for capacity magnitude U, giving the stated high polynomial bound. The residual network and predecessor arrays use O(V + E) space.",
+        "uses": [
+            "Minimum-cost circulation and transportation problems",
+            "Network flow reoptimization after a local change",
+            "Teaching the cycle characterization of optimality"
+        ],
+        "references": [
+            "Ahuja, Magnanti, and Orlin, Network Flows, cycle-canceling algorithms",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, min-cost flow"
+        ],
+        "workedExample": "Vertices 0,1,2 have arcs 0-1 cap 2 cost 1, 1-2 cap 2 cost 1, and 0-2 cap 2 cost 5, with demand 2. The initial feasible flow sends 2 units directly 0-2 for cost 10. The residual cycle 0 to 1 to 2 to 0 costs 1+1-5 = -3, so cancel 2 units around it: now 2 units travel 0-1-2 at cost 4 total, which is optimal."
+    },
     id: "cycle-canceling-min-cost-flow",
     name: "Cycle Canceling Min-Cost Flow",
     category: "flow",

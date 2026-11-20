@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A vp-tree picks a vantage point and splits remaining objects by their median distance from it into inside and outside sets. Queries prune a side using the triangle inequality on the distance to the vantage point, so only promising regions are searched.",
+        "invariants": [
+            "Each node stores a vantage point and a median distance threshold.",
+            "Closer objects go inside and farther ones outside.",
+            "A side is pruned when the distance gap cannot beat the best distance found."
+        ],
+        "correctness": "The distance from the query to an object differs from that object distance to the vantage point by at most dist(query, vantage), giving a lower bound per side by the triangle inequality. If that bound exceeds the best known distance, no object in the side can improve it, so pruning is safe.",
+        "complexityRationale": "Balanced median splits give O(log n) expected depth and visited nodes for well separated data, though worst case can degrade to O(n). One node per object gives O(n) space.",
+        "uses": [
+            "Nearest-neighbor search in metric spaces",
+            "Content-based retrieval over embeddings",
+            "Similarity search without coordinates"
+        ],
+        "references": [
+            "Uhlmann, Satisfying General Proximity and Similarity Queries with Metric Trees, Information Processing Letters 1991",
+            "Yianilos, Data Structures and Algorithms for Nearest Neighbor Search in General Metric Spaces, SODA 1993"
+        ],
+        "workedExample": "Insert points such as (2,3), (5,1), (7,6), (1,7) choosing vantage points and median distances; a query near (4,2) prunes the side whose distance ring cannot contain a closer point."
+    },
     id: "vp-tree",
     name: "VP-Tree",
     category: "data-structures",

@@ -150,6 +150,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Branch and bound explores paths depth first but tracks the cheapest complete solution found so far. Any partial path whose cost already reaches that bound is pruned, because extending it cannot improve the answer.",
+        "invariants": [
+            "The best bound equals the cost of the cheapest goal path seen so far.",
+            "Every expanded partial path has cost below the current bound."
+        ],
+        "correctness": "Pruning is safe because path costs are nondecreasing, so a partial path at or above the best bound cannot lead to a cheaper solution. Exhausting all unpruned paths therefore leaves the optimal path as the best found.",
+        "complexityRationale": "Without effective pruning the search visits O(b^d) paths of depth d; a tight bound cuts large subtrees in practice. The depth-first stack uses O(d) space.",
+        "uses": [
+            "Traveling-salesman and combinatorial optimization",
+            "Knapsack and scheduling solvers",
+            "Any search where a lower bound is cheap to compute"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3",
+            "Lawler and Wood, Branch-and-Bound Methods: A Survey, Operations Research, 1966"
+        ],
+        "workedExample": "From A toward G, suppose a complete path costs 9; a partial path A-B already at cost 9 is pruned because adding edges cannot beat 9. A cheaper path A-D-G with cost 7 then becomes the bound."
+    },
     id: "branch-and-bound-search",
     name: "Branch and Bound Search",
     category: "searching",

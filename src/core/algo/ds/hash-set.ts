@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hash Set module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A hash set stores unique values using hash-table buckets but no associated values. It answers membership questions in expected constant time and rejects duplicates on insertion. It is the natural structure when you only care whether something has been seen.",
+        "invariants": [
+            "Each distinct value appears in exactly one bucket.",
+            "No bucket contains the same value twice.",
+            "Set size equals the number of distinct inserted values."
+        ],
+        "correctness": "Hashing maps a value to its bucket, so membership checks only that bucket. Insertion first compares against existing entries and adds the value only if absent, which enforces uniqueness. Deletion removes the value without affecting others in the bucket.",
+        "complexityRationale": "Expected insert, contains, and delete are O(1) with a low load factor; a pathological hash degrades to O(n) in a bucket. Storage is O(n) for values plus O(m) buckets.",
+        "uses": [
+            "Duplicate detection and visited sets",
+            "Membership tests in graph traversal",
+            "Removing repeats from a stream"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 11",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 3.4"
+        ],
+        "workedExample": "Insert cat, dog, cat, bird, dog into four buckets: the second cat and second dog are rejected as duplicates. Query cat checks its bucket and succeeds; the set size is 3, matching the three distinct values."
+    },
     id: "hash-set",
     name: "Hash Set",
     category: "data-structures",

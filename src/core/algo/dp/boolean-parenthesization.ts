@@ -152,6 +152,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Boolean parenthesization counts how many ways to insert parentheses in a chain of Boolean symbols and operators so the whole expression evaluates to true. Two tables track the number of ways each interval can yield true or false. For every split, the operator decides which combinations of left and right values produce the desired result.",
+        "invariants": [
+            "T[i][j] and F[i][j] count parenthesizations of symbols i..j yielding true and false.",
+            "Single-symbol intervals have exactly one true or false way.",
+            "For every split, the operator's truth table is applied to the left and right counts."
+        ],
+        "correctness": "Any parenthesization has a final operator splitting the interval into two sub-expressions, so enumerating all splits and operators covers every case exactly once. The truth table determines which left and right outcomes combine to the target value, and multiplying counts gives the number of combinations. Filling by increasing interval length makes subinterval counts final.",
+        "complexityRationale": "There are O(n^2) intervals and O(n) splits per interval, each doing constant work, so time is O(n^3). The two tables occupy O(n^2) space.",
+        "uses": [
+            "Counting evaluations in Boolean expression analysis",
+            "Probabilistic reasoning about uncertain logical formulas",
+            "Dynamic programming over interval grammars"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For symbols TFT with operators | and &, base intervals set T[0][0]=1 and F[1][1]=1. Splitting at the AND operator combines left and right counts to fill T[0][2], giving the number of parenthesizations that evaluate true."
+    },
     id: "boolean-parenthesization",
     name: "Boolean Parenthesization",
     category: "dynamic-programming",

@@ -167,6 +167,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Heap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A binary heap is a complete binary tree stored in an array, where every parent is at least its children in a max-heap, or at most in a min-heap. Children of index i live at 2i+1 and 2i+2, so no pointers are needed. Heapify from the last parent down turns an arbitrary array into a heap in linear time.",
+        "invariants": [
+            "Each parent is at least its two children in this max-heap.",
+            "The tree is complete: every level except possibly the last is full.",
+            "Children of i are 2i+1 and 2i+2; the parent of i is floor((i-1)/2)."
+        ],
+        "correctness": "Sift-down swaps a violating parent with its larger child, which fixes that subtree root and cannot break order elsewhere because the child was already largest below it. Processing parents from the last one up guarantees children are heaps first. After heapify the root is the maximum, and extraction plus sift-down restores order.",
+        "complexityRationale": "Heapify touches each node for a sift proportional to its height, and the sum of heights is O(n), so build is linear. Insert and extract climb one path of length O(log n). The compact array uses O(n) space with no pointer overhead.",
+        "uses": [
+            "Priority queues in schedulers",
+            "Heap sort",
+            "Dijkstra and A* frontier management"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 6",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 2.4"
+        ],
+        "workedExample": "Heapify [5, 9, 4, 7, 3, 2]: the last parent is index 1 with child 7, so 9 and 7 stay; the root 5 is compared with 9 and swapped, then with 7, giving [9, 7, 4, 5, 3, 2]. The maximum 9 is now at the root and every parent dominates its children."
+    },
     id: "binary-heap",
     name: "Binary Heap",
     category: "data-structures",

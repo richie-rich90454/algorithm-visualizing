@@ -112,6 +112,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A VList is a persistent sequence of blocks where the newest block doubles in size up to a cap. Cons prepends into the head block so old versions share their tails, and indexing skips whole blocks before looking inside one.",
+        "invariants": [
+            "Block sizes grow geometrically toward the head.",
+            "Older blocks are immutable and shared.",
+            "Every version head is a valid list."
+        ],
+        "correctness": "Prepending into a fresh or partially filled head block never changes older blocks, so past versions remain intact. Indexing skips block lengths from the front then indexes inside the located block, and geometric sizes bound skipped blocks at O(log n).",
+        "complexityRationale": "Cons is O(1) amortized because most pushes append into the head block, and indexing skips O(log n) blocks. Storage is one node per element, O(n), with sharing across versions.",
+        "uses": [
+            "Persistent functional sequences",
+            "Versioned lists with cheap prepend",
+            "Backtracking state in search algorithms"
+        ],
+        "references": [
+            "Okasaki, Purely Functional Data Structures, Chapter 8 on variable-width list structures",
+            "Okasaki, Functional Data Structures literature on persistent sequences"
+        ],
+        "workedExample": "Push 1, 2, 3, 4, 5 into blocks of sizes 1, 2, 4; indexing position 3 skips the first two blocks and reads inside the third, while older versions stay readable."
+    },
     id: "vlist",
     name: "VList",
     category: "data-structures",

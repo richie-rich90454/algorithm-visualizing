@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Rod cutting finds how to cut a rod of length n into pieces maximizing total price given a price table by length. The DP defines dp[L] as the best revenue from a rod of length L. Trying every first cut c combines price[c] with dp[L-c], which is already known because shorter lengths are computed first.",
+        "invariants": [
+            "dp[L] is the maximum revenue obtainable from a rod of length L.",
+            "dp[0] is zero for an empty rod.",
+            "Every candidate first cut leaves a shorter rod whose optimum is final."
+        ],
+        "correctness": "Any optimal cutting pattern begins with some first piece of length c, and the remainder of length L-c must itself be cut optimally. Maximizing price[c] plus dp[L-c] over all feasible c therefore captures the optimum. Induction on L proves correctness, and recording the best c reconstructs the cuts.",
+        "complexityRationale": "For each length up to n the algorithm tries up to n first cuts, costing O(n^2) time. Storing the revenue array and cut choices uses O(n) space.",
+        "uses": [
+            "Cutting stock and material optimization",
+            "A canonical optimal substructure example",
+            "Foundation for more complex partition problems"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.1",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With prices [1,5,8,9] and n = 4, dp builds to dp[4] = 10 by cutting into two pieces of length 2, each worth 5, beating the uncut price of 9."
+    },
     id: "rod-cutting",
     name: "Rod Cutting",
     category: "dynamic-programming",

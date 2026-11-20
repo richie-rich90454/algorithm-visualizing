@@ -120,6 +120,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Run-Length Encoding module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Run-length encoding compresses data by replacing consecutive runs of the same symbol with a count-and-character pair. The string \"aaabbbc\" becomes \"3a3b1c\". It is simple and very effective on data with long runs, such as simple graphics, but it can enlarge data with few adjacent repeats.",
+        "invariants": [
+            "Each emitted pair represents a maximal run of one character.",
+            "Runs are processed left to right and never overlap.",
+            "Repeating each character its recorded count reconstructs the input exactly."
+        ],
+        "correctness": "Every character belongs to exactly one maximal run, so emitting a count and character for each run and decoding by repeating the character that many times rebuilds each run in order and hence the whole string. The demo reports the input versus output length.",
+        "complexityRationale": "Encoding scans each character a constant number of times to find run ends, O(n), and decoding writes each output character once, also O(n). The output takes O(n) space in the worst case when there is no compression.",
+        "uses": [
+            "Bitmap and fax image compression (CCITT Group 3 and 4)",
+            "Compressing simple graphics and icons",
+            "Run detection in sensor and log data",
+            "A preprocessing stage in gzip, bzip2 and video codecs"
+        ],
+        "references": [
+            "Golomb, Run-Length Encodings, IEEE Transactions on Information Theory, 1966",
+            "Sayood, Introduction to Data Compression, Chapter 3"
+        ],
+        "workedExample": "The text \"aaabbbcddd\" has runs aaa, bbb, c and ddd, encoded as 3a3b1c3d, shrinking ten characters to eight. Decoding expands each count-character pair back into its run and recovers \"aaabbbcddd\" exactly."
+    },
     id: "run-length-encoding",
     name: "Run-Length Encoding",
     category: "string",

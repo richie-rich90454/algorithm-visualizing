@@ -149,6 +149,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Strand sort repeatedly pulls an increasing strand from the remaining values and merges it into the output. Because each strand is already sorted, merging is cheap. It is a natural fit for linked lists where extraction needs no extra memory.",
+        "invariants": [
+            "Each extracted strand is increasing.",
+            "The output is sorted after every merge."
+        ],
+        "correctness": "Taking the maximal increasing prefix starting from the smallest available value yields a sorted strand; merging sorted strands preserves sorted order, so after all values are consumed the output is sorted.",
+        "complexityRationale": "In the worst case each pass extracts one element, costing O(n) per pass and O(n^2) total; merging adds comparable work. Lists and output buffers use O(n) space.",
+        "uses": [
+            "Sorting linked lists without random access",
+            "Teaching merge-based list algorithms",
+            "Streaming data with natural increasing runs"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4 (list sorting)",
+            "Sedgewick and Wayne, Algorithms, Section 2.2"
+        ],
+        "workedExample": "From [5, 1, 4, 2, 3], pull strand [1, 4], then [2, 3], then [5]; merge [1, 4] with [2, 3] to [1, 2, 3, 4] and finally merge in [5] for [1, 2, 3, 4, 5]."
+    },
     id: "strand-sort",
     name: "Strand Sort",
     category: "sorting",

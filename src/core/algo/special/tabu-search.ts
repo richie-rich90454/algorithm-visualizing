@@ -63,6 +63,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tabu search is a local search that avoids getting stuck by forbidding, or making tabu, recently visited moves for a fixed tenure. At each step it moves to the best non-tabu neighbor, with an aspiration rule that allows a tabu move when it beats the all-time best. This helps the search escape cycles and local optima.",
+        "invariants": [
+            "The tabu list holds at most tenure recent positions.",
+            "A move is allowed if its target is not tabu or if it satisfies aspiration by beating the best.",
+            "The all-time best position and its fitness never worsen."
+        ],
+        "correctness": "Tabu search is a metaheuristic without a general optimality guarantee. Aspiration ensures an improving move is never discarded, so the best-found solution is monotone, and the tabu list discourages revisiting recent positions, reducing cycling. For the demo's convex quadratic the search reliably reaches the global minimum at x=2.",
+        "complexityRationale": "Each iteration examines a constant number of neighbors and maintains a tabu list of bounded length, O(1) per step and O(t·neighbors) for t steps. Storing the tabu list and a few scalars is O(tabu) space.",
+        "uses": [
+            "Job-shop scheduling and vehicle routing",
+            "Assignment and timetabling problems",
+            "Telecommunication network design and portfolio optimization",
+            "Feature selection and other hard discrete problems"
+        ],
+        "references": [
+            "Glover, Future Paths for Integer Programming and Links to Artificial Intelligence, Computers & Operations Research, 1986",
+            "Glover and Laguna, Tabu Search, Kluwer, 1997"
+        ],
+        "workedExample": "Minimize f(x)=(x-2)^2 on 0..9 from x=8 with tenure 2. Step 1 compares neighbors 7 (f=25) and 9 (f=49), moving to 7 with tabu=[8]. Step 2 skips tabu 8 and moves to 6, tabu=[8,7]. The search continues leftward toward x=2, where f=0."
+    },
     id: "tabu-search",
     name: "Tabu Search",
     category: "math",

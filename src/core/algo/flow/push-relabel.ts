@@ -259,6 +259,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Push-Relabel module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Push-relabel abandons augmenting paths entirely. It starts by saturating all edges out of the source, giving neighbors excess flow. A vertex with excess either pushes it to a neighbor that is lower according to a height labeling, or, if none exists, is relabeled to a greater height so a push becomes possible. When all excess reaches the sink, the flow is maximum.",
+        "invariants": [
+            "Heights respect the valid-labeling condition: h(u) is at most h(v)+1 on every residual arc u-v.",
+            "Excess is conserved except at source and sink, which absorb or supply it.",
+            "The height of any vertex only increases over time."
+        ],
+        "correctness": "A push along an admissible residual arc preserves the height condition because the target is exactly one level lower. Relabeling restores the condition when no admissible arc exists. When no vertex other than source and sink has excess, the flow satisfies conservation and is a feasible flow; the valid labeling then certifies that no augmenting path exists, so the flow is maximum.",
+        "complexityRationale": "The basic variant performs O(V^2) relabels and O(V^2 E) pushes, giving O(V^2 E); gap and highest-label heuristics improve this sharply in practice. Heights, excesses, and residual arcs use O(V + E) space.",
+        "uses": [
+            "Fast maximum flow on large dense networks",
+            "A core engine for image segmentation graph cuts",
+            "Bipartite matching and other flow reductions needing high performance"
+        ],
+        "references": [
+            "Goldberg and Tarjan, A New Approach to the Maximum-Flow Problem (1988)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow chapter"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-T 2, B-T 3. Saturating S-A and S-B gives A excess 3 and B excess 2. A pushes 2 to T and 1 to B; B then pushes its accumulated 3 to T. All excess is drained, total flow is 5, equal to the source out-capacity."
+    },
     id: "push-relabel",
     name: "Push-Relabel",
     category: "flow",

@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An xor filter builds a table where the xor of three hashed slots equals each key fingerprint. Construction peels keys that have a unique slot and assigns values so the relation holds; a query xors three slots and compares with the fingerprint.",
+        "invariants": [
+            "For every stored key the xor of its three slots equals its fingerprint.",
+            "Peeling order guarantees construction succeeds when the table is sized generously.",
+            "A mismatch proves nonmembership."
+        ],
+        "correctness": "A present key has three slots set so their xor is the fingerprint, so the query matches. A nonmember xor combines other keys assignments and matching would require a rare collision, so a mismatch definitively proves absence.",
+        "complexityRationale": "Construction and lookup each do a constant number of hash and xor operations, O(1) expected. The table stores about 1.23 fingerprints per key, O(n) space.",
+        "uses": [
+            "Approximate membership tests with better space than bloom filters",
+            "Key-value store lookups that avoid disk reads",
+            "Network and database filters"
+        ],
+        "references": [
+            "Walzer, Xor Filters: Faster and Smaller Than Bloom and Cuckoo Filters, Journal of Experimental Algorithmics 2020",
+            "XOR Filters (canonical reference)"
+        ],
+        "workedExample": "Add keys 5, 17, 9; peeling assigns each a unique slot lane and sets values so the xor of three slots gives its fingerprint. Query 17 xors its slots and matches, while a key whose xor differs is reported absent."
+    },
     id: "xor-filter",
     name: "Xor Filter",
     category: "data-structures",

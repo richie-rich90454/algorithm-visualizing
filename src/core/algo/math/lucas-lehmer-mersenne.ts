@@ -92,6 +92,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Lucas-Lehmer test decides whether a Mersenne number Mp = 2^p - 1 is prime. Starting from s = 4, it repeatedly replaces s with s^2 - 2 modulo Mp for p-2 iterations. The number is prime exactly when the final residue is zero, making it far faster than general primality tests for these special numbers.",
+        "invariants": [
+            "The sequence is always reduced modulo Mp.",
+            "There are exactly p-2 squarings before the final check.",
+            "The final residue is zero if and only if Mp is prime."
+        ],
+        "correctness": "The test is a specialized theorem for Mersenne numbers: the recurrence tracks powers of a specific element in the multiplicative group of the quadratic extension modulo Mp, and the residue vanishes exactly when that group has the order forcing primality. Therefore the zero condition is equivalent to Mp being prime.",
+        "complexityRationale": "There are O(p) iterations, each squaring a number of O(p) bits, costing O(p^2 log p) with the schoolbook multiplication modeled here. Only one residue and a counter are stored, so space is O(1).",
+        "uses": [
+            "Testing Mersenne numbers for the Great Internet Mersenne Prime Search",
+            "Discovering the largest known primes",
+            "Specialized primality testing for numbers of the form 2^p - 1"
+        ],
+        "references": [
+            "Lucas, Theorie des fonctions numeriques simplement periodiques (1878)",
+            "Crandall and Pomerance, Prime Numbers, Section 4.2"
+        ],
+        "workedExample": "For p = 5, Mp = 31. Starting s = 4, three iterations give 4^2-2 = 14, 14^2-2 = 194 = 8 mod 31, and 8^2-2 = 62 = 0 mod 31. The final residue is zero, so 31 is prime."
+    },
     id: "lucas-lehmer-mersenne",
     name: "Lucas-Lehmer Mersenne Test",
     category: "math",

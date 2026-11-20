@@ -1,0 +1,67 @@
+name: Bug report
+description: Report incorrect visualization, a crash, or another problem
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please fill in as much as you can so we can reproduce it.
+  - type: input
+    id: algorithm
+    attributes:
+      label: Algorithm
+      description: Which algorithm or category is affected? Leave blank if it is a general app issue.
+      placeholder: "e.g. Dijkstra (binary heap)"
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the problem clearly and concisely.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps, including any input values and the step number where the problem appears.
+      placeholder: |
+        1. Open "..."
+        2. Click "..."
+        3. Step to frame N
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Environment
+      description: Browser, operating system, and commit or URL where you saw the issue.
+      placeholder: "Chrome 120 on Windows 11, commit abc1234"
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output or screenshots
+      description: Paste any console errors or attach screenshots if relevant.
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This is not a security vulnerability (those go to the Security tab).
+          required: true

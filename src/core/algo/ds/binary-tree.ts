@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A binary tree is a structure where each node has at most two children, left and right. This demo builds a complete tree by level order and shows the three classic depth-first traversals. Preorder visits the node first, inorder visits it between its subtrees, and postorder visits it last.",
+        "invariants": [
+            "Each node has at most two children.",
+            "Insertion by level order keeps the tree complete.",
+            "A traversal visits every node exactly once."
+        ],
+        "correctness": "Each recursion visits the current node and then calls itself on the left and right children, so every reachable node is output once and no node repeats. The three orders differ only in where the node's own output is placed, which is why inorder on a BST yields sorted keys. Level-order insertion keeps height O(log n).",
+        "complexityRationale": "A traversal touches each of the n nodes once, so time is O(n). The recursion stack can reach the tree height O(log n) for a complete tree, and the nodes themselves occupy O(n) space.",
+        "uses": [
+            "Expression trees and compiler parse trees",
+            "Hierarchical data such as file systems",
+            "Basis for BSTs, heaps, and tries"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Appendix B and Chapter 12",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.3"
+        ],
+        "workedExample": "Build from [8, 3, 10, 1, 6, 9, 14] in level order: root 8, children 3 and 10, then 1 and 6 under 3 and 9 and 14 under 10. Preorder lists 8, 3, 1, 6, 10, 9, 14; inorder lists 1, 3, 6, 8, 9, 10, 14; postorder lists 1, 6, 3, 9, 14, 10, 8."
+    },
     id: "binary-tree",
     name: "Binary Tree",
     category: "data-structures",

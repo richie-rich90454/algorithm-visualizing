@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Adjacency List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An adjacency list keeps one list per vertex containing exactly that vertex's neighbors. Inserting an edge appends to the source list, and listing a vertex's neighbors just reads its own list. This stores only edges that exist, so it is compact for sparse graphs, at the price of scanning a list to test whether a specific edge is present.",
+        "invariants": [
+            "Each vertex maps to the list of its outgoing neighbors.",
+            "For an undirected graph every edge appears in both endpoints' lists.",
+            "Total entries across all lists equals twice the edge count in an undirected graph."
+        ],
+        "correctness": "Appending an edge to the source list records exactly that incidence, so enumerating a vertex's list returns precisely its neighbors. For undirected graphs adding the reverse entry keeps both endpoints consistent. An edge-existence test scans the source list and is correct because every neighbor is present and no non-neighbor is stored.",
+        "complexityRationale": "Storage is proportional to vertices plus edges, giving O(V + E) space. Listing neighbors or testing an edge scans a list of length equal to the degree, so both cost O(degree).",
+        "uses": [
+            "Sparse graph storage in social and road networks",
+            "Breadth-first and depth-first search",
+            "Compiler interference and dependency graphs"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 4.1"
+        ],
+        "workedExample": "For vertices A, B, C with edges A-B, A-C, B-C, the lists are A: [B, C], B: [A, C], C: [A, B]. Querying neighbors of A reads A's list and returns B and C after two entries. Testing A to C succeeds; testing A to a missing vertex scans the whole list and fails."
+    },
     id: "adjacency-list",
     name: "Adjacency List",
     category: "data-structures",

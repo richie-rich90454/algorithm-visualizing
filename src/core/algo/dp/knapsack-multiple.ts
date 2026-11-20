@@ -150,6 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Bounded Knapsack module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bounded knapsack gives each item type a limited number of copies. The DP considers how many copies c of the current type to add, updating dp[w] from dp[w - c*weight] plus c times value. It sits between 0/1 and unbounded knapsack, generalizing both by respecting a per-type count.",
+        "invariants": [
+            "dp[w] is the best value at capacity w with the processed item types.",
+            "For each type the number of copies is at most its count and fits the capacity.",
+            "Processing one type at a time prevents mixing counts across types incorrectly."
+        ],
+        "correctness": "Any solution using the current type takes some number c of copies within its bound; the remaining capacity is filled by earlier types, whose optimum is dp[w-c*weight]. Maximizing over all feasible c captures the optimal substructure. Induction over types gives the correct final value.",
+        "complexityRationale": "For each type and capacity the loop tries up to count copies, costing O(n*W*count) time in the stated bound. A single capacity array uses O(W) space.",
+        "uses": [
+            "Inventory allocation with limited stock",
+            "Budgeting where each option has a maximum quantity",
+            "Generalizing knapsack to bounded multiplicities"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With weights [2,3,4], values [3,4,5], counts [2,2,2], and capacity 8, two copies of weight 3 plus one of weight 2 fill the capacity and reach value 11, which the DP finds within the copy limits."
+    },
     id: "knapsack-multiple",
     name: "Knapsack (Bounded)",
     category: "dynamic-programming",

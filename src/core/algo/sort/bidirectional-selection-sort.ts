@@ -163,6 +163,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bidirectional selection sort finds both the smallest and largest remaining values in one scan. The minimum is swapped to the front and the maximum to the back, so the sorted region grows from both ends. It halves the number of passes of ordinary selection sort while keeping its few writes.",
+        "invariants": [
+            "The prefix before the left boundary and the suffix after the right boundary are sorted and in final position.",
+            "Every element in the unsorted middle lies between the fixed prefix values and the suffix values."
+        ],
+        "correctness": "Each pass selects the true min and max of the unsorted middle and places them at its two ends; neither can belong in the middle. After roughly half as many passes the unsorted middle has at most one element, which is already in place, so the whole array is sorted.",
+        "complexityRationale": "Each pass scans the shrinking middle once, costing O(n) per pass and O(n^2) total comparisons, the same asymptotic bound as selection sort but about half the passes. Only a few index and temporary variables are kept, so space is O(1).",
+        "uses": [
+            "Sorting when writes are more expensive than reads",
+            "Teaching symmetric two-pointer scanning",
+            "Small embedded arrays with tight code size"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1",
+            "Sedgewick and Wayne, Algorithms, Section 2.1"
+        ],
+        "workedExample": "Start [5, 1, 4, 2, 3]. A scan finds min 1 and max 5, so swap 1 to the front and 5 to the back, giving [1, 3, 4, 2, 5]. The middle [3, 4, 2] then yields min 2 and max 4, ending at [1, 2, 3, 4, 5]."
+    },
     id: "bidirectional-selection-sort",
     name: "Bidirectional Selection Sort",
     category: "sorting",

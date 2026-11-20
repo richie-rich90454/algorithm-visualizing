@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A zip tree is a randomized balanced BST where each node gets a random rank and keys satisfy both BST order and a heap order on ranks. Insertion unzips the search path by rank and deletion zips two rank-ordered spines back together.",
+        "invariants": [
+            "Keys satisfy BST order.",
+            "Ranks satisfy heap order with parent rank at least child ranks.",
+            "Unzip and zip preserve both orders."
+        ],
+        "correctness": "Unzipping splits the search path into pieces whose ranks are all below the new node rank, so attaching the new node as their parent restores heap order without changing BST order. Zipping reverses this for deletion, reattaching spines in rank order and preserving both invariants.",
+        "complexityRationale": "Random ranks make the expected path length O(log n), so insert, search, and delete are O(log n) expected. One node per key gives O(n) space.",
+        "uses": [
+            "Randomized ordered map and set implementations",
+            "Implicit and balanced sequence structures",
+            "Competitive programming tree templates"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 13 on balanced search trees",
+            "Seidel and Aragon, Randomized Search Trees, Algorithmica 1996"
+        ],
+        "workedExample": "Keys 5, 3, 7, 2, 6 with random ranks; inserting 6 unzips the path so lower-ranked nodes fall left and right and 6 attaches where its rank fits; searching 6 descends BST comparisons and finds it."
+    },
     id: "zip-tree",
     name: "Zip Tree",
     category: "data-structures",

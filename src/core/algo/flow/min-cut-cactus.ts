@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A minimum cut cactus is a compact graph that represents all global minimum cuts of an undirected graph. Its edges are arranged in directed cycles so that removing any one cactus edge yields a minimum cut of the original graph. On simple graphs the cactus often coincides with the graph itself.",
+        "invariants": [
+            "Every cactus edge lies on a cycle representing a family of minimum cuts.",
+            "Deleting any single cactus edge reproduces a global minimum cut.",
+            "The cactus records all minimum cuts without listing them one by one."
+        ],
+        "correctness": "Every min cut of the original graph corresponds to cutting one edge of the cactus, and conversely each cactus edge defines a min cut. Because the edge weights equal the global minimum cut value on the cycles, all minimum cuts are captured and no non-minimum cut is introduced.",
+        "complexityRationale": "Finding the global minimum cut and enumerating candidate cuts dominates, around O(V^2 E) for the dense scan used here. The cactus adjacency and cut lists use O(V^2) space.",
+        "uses": [
+            "Representing all minimum cuts of a network compactly",
+            "Reliability analysis under multiple failure scenarios",
+            "A preprocessing step for certain Steiner and cut problems"
+        ],
+        "references": [
+            "Diniz, Francez, and others, The Minimum Cut Cactus and its Applications (research literature)",
+            "Ahuja, Magnanti, and Orlin, Network Flows, min-cut structure"
+        ],
+        "workedExample": "Triangle vertices 0,1,2 with unit edges. The global minimum cut has weight 2, achieved by isolating any single vertex, so there are three minimum cuts. The cactus is the triangle itself; removing edge 0-1, 1-2, or 0-2 yields one of those three cuts."
+    },
     id: "min-cut-cactus",
     name: "Min-Cut Cactus",
     category: "flow",

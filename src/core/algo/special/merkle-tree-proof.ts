@@ -120,6 +120,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Merkle tree hashes data blocks into a binary tree so that a single root hash commits to every leaf. To prove a leaf is included, supply only the sibling hash at each level; the verifier recomputes hashes up the path and checks the published root. This makes proofs small, O(log n) hashes, even for enormous trees.",
+        "invariants": [
+            "Each internal node's hash is the hash of its two children's hashes concatenated.",
+            "The root is the hash of the top two children.",
+            "An odd number of leaves is handled by duplicating the last one."
+        ],
+        "correctness": "Because each parent is a cryptographic hash of its children, changing any leaf changes every hash on its path and therefore the root. A verifier holding the root and the sibling hashes can recompute the exact path; a matching root proves the leaf was part of the committed data, assuming collision resistance.",
+        "complexityRationale": "Building the tree hashes n leaves and n-1 internal nodes, O(n). A proof follows one root-to-leaf path and hashes one sibling per level, O(log n) time and O(log n) space; the demo's four-leaf tree needs just two sibling hashes.",
+        "uses": [
+            "Verifying transactions in Bitcoin and other blockchains",
+            "Certificate transparency logs (RFC 6962)",
+            "Git object and commit integrity",
+            "Anti-entropy reconciliation in Dynamo-style stores and package managers"
+        ],
+        "references": [
+            "Merkle, A Digital Signature Based on a Conventional Encryption Function, CRYPTO 87",
+            "Menezes, van Oorschot and Vanstone, Handbook of Applied Cryptography, Chapter 9"
+        ],
+        "workedExample": "Leaves a,b,c,d hash to h(a)..h(d); parents are hab=h(h(a)+h(b)) and hcd=h(h(c)+h(d)), with root h(hab+hcd). To prove leaf c, supply siblings h(d) and hab: recompute hcd, then the root, and compare. A match proves inclusion in two hashes."
+    },
     id: "merkle-tree-proof",
     name: "Merkle Tree Proof",
     category: "data-structures",

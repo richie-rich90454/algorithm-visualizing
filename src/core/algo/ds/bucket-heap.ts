@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A bucket heap groups keys into buckets by priority, with small signal buckets staging updates while large bulk buckets hold the mass. Emptying a signal bucket refills it from the bulks, keeping disk transfers batched. It is a priority queue tuned for external memory.",
+        "invariants": [
+            "Every stored key sits in the bucket matching its priority.",
+            "A pointer tracks the smallest nonempty bucket.",
+            "Bulk buckets remain sorted so refill reads sequentially."
+        ],
+        "correctness": "Insertion places a key in its priority bucket, so the smallest key is in the lowest nonempty bucket. Extraction scans from the tracked pointer to that bucket and removes one item; refilling from bulks preserves order. Therefore each extract returns the global minimum.",
+        "complexityRationale": "A scan is charged across many extractions, yielding amortized subconstant I/Os per operation in the external-memory model. All keys are stored once across buckets, O(n) space.",
+        "uses": [
+            "External-memory event simulation",
+            "Bulk priority queues in databases",
+            "Disk-based sorting pipelines"
+        ],
+        "references": [
+            "J. S. Vitter, \"External Memory Algorithms and Data Structures\", ACM Computing Surveys 2001",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "Insert 6, 2, 9, 1 into buckets indexed by value: buckets 1, 2, 6, 9 each hold one key. The minimum pointer starts at bucket 1, and extracting returns 1; the pointer advances to bucket 2 for the next extract, so no full scan is needed."
+    },
     id: "bucket-heap",
     name: "Bucket Heap",
     category: "data-structures",

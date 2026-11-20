@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Unrolled Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An unrolled linked list stores several elements per node in a small array and chains the nodes together. This keeps the cheap insertion of a linked list while improving cache locality, since one node hop accesses B elements at once.",
+        "invariants": [
+            "Each node holds at most B elements.",
+            "Element order across nodes is sorted and nodes chain in that order.",
+            "Insertion may split a full node."
+        ],
+        "correctness": "Search walks nodes and skips whole blocks whose range cannot contain the key, then scans the candidate block; block ranges bound their contents so no match is skipped. Insertion shifts within one node or splits a full node, preserving global sorted order.",
+        "complexityRationale": "A search visits O(n/B) node hops plus O(B) scanning inside a node, O(n/B + B), which is O(sqrt n) with B near sqrt(n). Each element is stored once, O(n) space.",
+        "uses": [
+            "Cache-friendly ordered lists",
+            "Text editor buffers",
+            "B-tree-like indexes implemented with linked blocks"
+        ],
+        "references": [
+            "Sedgewick and Wayne, Algorithms, 4th Edition, unrolled linked lists",
+            "Chilimbi, Hill, and Larus, Cache-Conscious Structure Layout, 1999"
+        ],
+        "workedExample": "Values 1 through 8 packed into blocks of four; searching 5 skips the first block whose maximum is 4 and scans the second; inserting 3 shifts within the first block and a full block would split."
+    },
     id: "unrolled-linked-list",
     name: "Unrolled Linked List",
     category: "data-structures",

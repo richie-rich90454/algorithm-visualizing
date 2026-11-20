@@ -169,6 +169,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Block sort, also called wiki sort, achieves a stable in-place merge by treating the array as small blocks. It sorts internal blocks, rotates whole blocks into place, then merges block by block using a tiny buffer. This shows that stable merging does not require a full auxiliary array.",
+        "invariants": [
+            "Each block is internally sorted after its local sort.",
+            "The buffer region contains only elements that are out of place relative to the merge front."
+        ],
+        "correctness": "Rotations move correctly sized blocks to their merge positions without disturbing internal order; the two-finger merge then interleaves elements from the left and right runs stably. Every rotation preserves the multiset and each merge step emits the smaller head, so the final array is sorted.",
+        "complexityRationale": "Sorting blocks and merging both scan each element O(log n) times across the run-doubling rounds, giving O(n log n) time. The buffer is bounded by one block, so auxiliary space is O(1).",
+        "uses": [
+            "Stable in-place sorting under memory limits",
+            "Library sort implementations avoiding full buffers",
+            "Studying in-place merge techniques"
+        ],
+        "references": [
+            "Peters, Wiki Sort, 2014 (in-place stable merge sort)",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3], sort small blocks into [1, 5] and [2, 4] with [3] alone, rotate blocks so the smaller heads come first, then merge pairwise to [1, 2, 4, 5] and finally [1, 2, 3, 4, 5]."
+    },
     id: "block-sort",
     name: "Block Sort",
     category: "sorting",

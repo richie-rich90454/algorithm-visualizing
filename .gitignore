@@ -35,5 +35,28 @@ coverage
 # Vitest
 __screenshots__/
 
-# Vite
+# Vite / VitePress generated output
 *.timestamp-*-*.mjs
+.vite/
+
+# Docs are generated from the registry at build time
+docs/
+
+# Working notes (intentionally not committed)
+HANDOFF.md
+
+# Local tooling and temporary artifacts
+.opencode/
+.tmp/
+tmp/
+*.tmp
+*.swp
+.env
+.env.*
+!.env.example
+
+# Test and coverage output
+playwright-report/
+test-results/
+*.lcov
+.nyc_output/

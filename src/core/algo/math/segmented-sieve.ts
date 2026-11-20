@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A segmented sieve finds primes up to a large limit using little memory by sieving in blocks. It first finds base primes up to the square root of the limit, then for each segment marks multiples of those base primes that fall inside it. Survivors are collected as primes, and the segment size keeps memory near O(sqrt(n)).",
+        "invariants": [
+            "Base primes never exceed the square root of the limit.",
+            "Within a segment, a number is marked iff it is a multiple of some base prime.",
+            "Every composite in the segment is crossed out by its smallest base prime factor."
+        ],
+        "correctness": "Any composite up to the limit has a prime factor at most its square root, hence among the base primes. That prime marks the composite in the segment containing it, so all composites are removed. Numbers left unmarked have no small factor and are therefore prime.",
+        "complexityRationale": "Across all segments each integer is marked roughly once per small prime, giving O(n log log n) total time like the classic sieve. Storing base primes and one segment uses O(sqrt(n)) space.",
+        "uses": [
+            "Generating primes up to very large limits with limited memory",
+            "Cache-friendly prime enumeration",
+            "Counting primes in intervals for distributed sieving"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.2.6",
+            "Crandall and Pomerance, Prime Numbers, Section 3.2"
+        ],
+        "workedExample": "Sieve to 30 with base primes 2, 3, 5. In the segment [11, 30] mark multiples of these primes; the survivors 11, 13, 17, 19, 23, 29 are the primes in that block."
+    },
     id: "segmented-sieve",
     name: "Segmented Sieve",
     category: "math",

@@ -163,6 +163,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Marching squares extracts a contour where a scalar field crosses a chosen value. Each grid cell is reduced to a four-bit case index telling which corners are above the threshold, and linear interpolation along crossed edges places the contour endpoints, which are then connected inside the cell.",
+        "invariants": [
+            "The case index is determined solely by the four corner comparisons with the iso value.",
+            "A crossing point lies on a cell edge where the field equals the iso value.",
+            "Each emitted segment separates corners above the threshold from those below."
+        ],
+        "correctness": "Assuming the field varies linearly along each cell edge, a crossing exists exactly when the two endpoint values straddle the iso level, and linear interpolation gives the crossing coordinate. The case index enumerates all possible straddle patterns, so connecting the crossing points according to the case table draws the level set within the cell. Ambiguous saddle cases are resolved consistently with an average-value decider, so neighboring cells join without gaps.",
+        "complexityRationale": "Every cell is examined once with constant work for the index and interpolation, so time is O(cells). Only the current cell's corners and the segment list are held, giving O(cells) space for the output.",
+        "uses": [
+            "Drawing contour lines on topographic maps",
+            "Extracting isosurfaces slices in medical imaging",
+            "Visualizing level sets of scalar simulation data"
+        ],
+        "references": [
+            "Lorensen and Cline, Marching Cubes, Computer Graphics 21 (1987)",
+            "Wikipedia, Marching squares, overview article"
+        ],
+        "workedExample": "A cell with corner values bottom-left 0, bottom-right 0, top-right 1, top-left 1 and iso 0.5 has case bits 0,0,1,1. Crossings occur on the left and right edges at height 0.5, so a horizontal segment from (0,0.5) to (1,0.5) is emitted."
+    },
+
     id: "marching-squares-isocontour",
     name: "Marching Squares Isocontour",
     category: "geometry",

@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An order-statistic tree augments a balanced BST with the size of each subtree. Rank of a key counts left-subtree sizes along the search path, and select of rank k descends by comparing k with the left subtree size. Finding the k-th smallest becomes one root-to-leaf walk.",
+        "invariants": [
+            "Each node size equals one plus the sizes of its two children.",
+            "The in-order sequence of keys is sorted.",
+            "The underlying tree height is logarithmic because it is balanced."
+        ],
+        "correctness": "For rank, every key smaller than x is counted exactly once, when the search turns right through that key subtree. For select, comparing k with the left subtree size decides whether the k-th element is in the left subtree, at the node, or in the right subtree, reducing the problem by one level until it lands on the correct key.",
+        "complexityRationale": "Both rank and select follow a single root-to-leaf path of O(log n) nodes, and insertion updates sizes along that path. Each node stores one extra integer, so space stays O(n).",
+        "uses": [
+            "Order statistic queries in databases",
+            "Percentile computation over live data",
+            "Online selection with an ordered tree"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 14 on order-statistic trees",
+            "Tarjan, Data Structures and Network Algorithms"
+        ],
+        "workedExample": "Insert 5, 3, 7, 2, 6 and search for 6. Subtree sizes let the walk skip the left subtree of 7; rank(6) counts the smaller keys 2, 3, 5, and select(4) walks to 6 in the sorted order 2, 3, 5, 6, 7."
+    },
     id: "order-statistic-tree",
     name: "Order-Statistic Tree",
     category: "data-structures",

@@ -89,6 +89,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "To answer longest-common-prefix queries between any two suffixes quickly, build a suffix array and its LCP array, then answer with a range-minimum query over the LCP values between the two suffixes' ranks. A sparse table preprocesses the LCP array so any minimum is found in O(1).",
+        "invariants": [
+            "The LCP of suffixes at ranks p and q with p < q is the minimum of the LCP entries in positions p+1 through q.",
+            "The sparse table stores minima for overlapping power-of-two blocks, so any range is covered by two blocks whose minimum is the range minimum."
+        ],
+        "correctness": "Moving from one suffix to the next in the suffix array, the common prefix with a fixed suffix changes by the LCP between consecutive suffixes, so the minimum LCP over the interval is exactly the common prefix length. The sparse-table trick returns that minimum because every element in the range is in at least one of the two blocks and no outside element is.",
+        "complexityRationale": "Building the suffix array and LCP takes O(n log n); the sparse table has O(n log n) entries computed in O(1) each and answers a query in O(1), with O(n log n) space.",
+        "uses": [
+            "Fast substring comparison in full-text indexes",
+            "Longest common extension queries in genome analysis",
+            "Accelerating approximate string matching"
+        ],
+        "references": [
+            "Gusfield, Algorithms on Strings, Trees, and Sequences, LCP and RMQ chapter",
+            "Bender et al., The LCA Problem Revisited, 2000"
+        ],
+        "workedExample": "For text \"banana\", the suffixes at ranks of starts 1 and 3 are close in the suffix array; the RMQ over the LCP entries between their ranks yields 3, so LCP(\"anana\",\"ana\") = 3 with matched prefix \"ana\"."
+    },
     id: "lcp-rmq-queries",
     name: "LCP RMQ Queries",
     category: "string",

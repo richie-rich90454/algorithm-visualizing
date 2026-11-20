@@ -84,6 +84,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Brodal heap is a priority queue whose every operation meets its worst-case bound, without relying on amortization. Guide pointers and rank rules limit how many violations a node can accumulate, so a constant amount of repair work is charged to each operation. This demo focuses on inserts and extracts while tracking that no violations are left live.",
+        "invariants": [
+            "Each node's rank bounds the size of its subtree.",
+            "The number of rank violations is bounded by a constant factor of the operation count.",
+            "The minimum pointer always references the smallest key."
+        ],
+        "correctness": "Guide pointers ensure each violation is fixed within a bounded number of future operations, so no single operation is forced into unbounded repair. Heap order is maintained on every link, and the minimum pointer is updated whenever a smaller key arrives. Consequently find-min is O(1) and insert and delete-min are O(log n) in the worst case.",
+        "complexityRationale": "The rank and violation bounds cap the work per operation at O(log n) deterministically, and find-min is a pointer read. All keys and pointers occupy O(n) space.",
+        "uses": [
+            "Real-time systems requiring worst-case guarantees",
+            "Parallel priority queues with deterministic latency",
+            "Optimal theoretical priority queue implementations"
+        ],
+        "references": [
+            "Gerth Stolting Brodal, \"Worst-Case Efficient Priority Queues\", SODA 1996",
+            "CLRS, Introduction to Algorithms, Chapter 19 exercises"
+        ],
+        "workedExample": "Insert 5 into an empty Brodal heap: it becomes the single node and the minimum pointer targets it. Inserting 2 links it as the new root with smaller key and updates the pointer. Extracting 2 removes it and repairs links so 5 becomes the minimum again, with the violation counter still at zero."
+    },
     id: "brodal-heap",
     name: "Brodal Heap",
     category: "data-structures",

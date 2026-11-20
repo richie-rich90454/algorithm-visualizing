@@ -155,6 +155,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Stooge sort swaps its two ends if they are flipped, then recursively sorts the first two-thirds and the last two-thirds of the range. The overlapping recursion fixes the array but at a staggering cost. It is a cautionary tale about plausible-looking divide and conquer.",
+        "invariants": [
+            "After the initial check, the endpoints of the range are in order.",
+            "Each recursive call operates on a range two-thirds the original size."
+        ],
+        "correctness": "Swapping the ends makes the range endpoint order correct; sorting the first two-thirds and then the last two-thirds propagates that correctness across all overlapping subranges, so the whole range ends sorted.",
+        "complexityRationale": "The recurrence T(n) = 2T(2n/3) solves to about n^2.71, worse than quadratic. Recursion depth is logarithmic but the visualization counts O(n) nested frames.",
+        "uses": [
+            "Teaching recurrence analysis and its pitfalls",
+            "Contrasting plausible recursion with efficient recursion",
+            "Classroom example of an intentionally bad algorithm"
+        ],
+        "references": [
+            "Howard, Fischer, and Reeves, Stooge Sort, SIGCSE Bulletin, 1993",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"
+        ],
+        "workedExample": "For [4, 1, 3, 2], swap endpoints 4 and 2, sort the first three and last three elements recursively, and repeat on smaller thirds until the overlapping passes leave [1, 2, 3, 4]."
+    },
     id: "stooge-sort",
     name: "Stooge Sort",
     category: "sorting",

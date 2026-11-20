@@ -142,6 +142,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A rotated sorted array consists of two ascending runs. At each step the algorithm checks which half around the midpoint is properly sorted, then decides whether the target can be inside it. One half is always discarded.",
+        "invariants": [
+            "The target, if present, lies in the current [lo, hi] interval.",
+            "At least one of the two halves around mid is sorted."
+        ],
+        "correctness": "If the target lies within a sorted half's value range it must be searched there; otherwise it lies in the other half, which may contain the rotation pivot. This decision is correct by sortedness of the chosen half, so the search converges like binary search.",
+        "complexityRationale": "Discarding half the candidates each step gives O(log n) time; only index variables are stored, O(1) space.",
+        "uses": [
+            "Searching rotated logs and circular buffers",
+            "Interview-style search problems",
+            "Teaching binary search with a monotone predicate"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "LeetCode 33, Search in Rotated Sorted Array, problem and editorial"
+        ],
+        "workedExample": "For [4,5,6,7,0,1,2] and target 0, mid at 7 sees a sorted left half [4,5,6,7] that cannot contain 0, so search the right half [0,1,2] and find 0 at index 4."
+    },
     id: "rotated-array-search",
     name: "Rotated Array Search",
     category: "searching",

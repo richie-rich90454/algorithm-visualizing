@@ -211,6 +211,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "For a convex polygon in counterclockwise order, testing a point can be faster than scanning every edge. The polygon is treated as a fan of triangles from the first vertex, a wedge test locates which fan sector the point could lie in, and binary search finds the sector followed by a point-in-triangle check.",
+        "invariants": [
+            "The query point must lie inside the wedge at the first vertex to be inside the polygon.",
+            "Fan sectors are ordered angularly, so binary search applies.",
+            "The final sector test is an exact point-in-triangle decision."
+        ],
+        "correctness": "A point inside a convex polygon must lie within the wedge formed by the two edges incident to the first vertex, giving a quick rejection. The fan decomposition partitions the polygon into triangles sharing that vertex, ordered by angle, so the sector containing the point can be found by binary search on orientation tests. Deciding containment in that single triangle then decides containment in the polygon because the fan covers the polygon exactly.",
+        "complexityRationale": "The wedge check is constant time, the sector search performs O(log n) orientation tests, and the final triangle test is constant, giving O(log n) total time. Only a few indices and coordinates are kept, so space is O(1).",
+        "uses": [
+            "Fast hit testing in graphical editors",
+            "Point location within convex game collision shapes",
+            "Querying convex regions in geographic applications"
+        ],
+        "references": [
+            "Dobkin and Kirkpatrick, Fast Detection of Polyhedral Intersection, Theoretical Computer Science 27 (1983)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 6"
+        ],
+        "workedExample": "For the convex square (0,0), (4,0), (4,4), (0,4) and query (2,1), the point lies in the wedge at (0,0). Binary search selects the fan triangle (0,0), (4,0), (4,4), and the triangle test reports inside."
+    },
+
     id: "point-in-convex-polygon-binary",
     name: "Point In Convex Polygon",
     category: "geometry",

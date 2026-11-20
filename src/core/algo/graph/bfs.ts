@@ -158,6 +158,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The BFS module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Explore a graph layer by layer. Start at the source, visit all its neighbors, then all their neighbors, using a queue so vertices are processed in the order discovered.",
+        "invariants": [
+            "The queue holds discovered vertices in nondecreasing distance from the source.",
+            "Once dequeued, a vertex has the shortest possible distance."
+        ],
+        "correctness": "Because edges have unit weight, any vertex at distance d+1 is reached from a vertex at distance d. Processing in queue order means all distance-d vertices are handled first, so the first time a vertex is discovered its distance is minimal.",
+        "complexityRationale": "Every vertex is enqueued at most once and every edge is examined a constant number of times: O(V + E) time and O(V) space for the queue and distance arrays.",
+        "uses": [
+            "Shortest paths in unweighted graphs",
+            "Web crawlers and social-network friend suggestions",
+            "Flood fill and connected-component labeling"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 22",
+            "Sedgewick and Wayne, Algorithms, Section 4.1"
+        ],
+        "workedExample": "From A with edges A-B, A-C, B-D, C-D: visit A, enqueue B and C at distance 1. Visit B, discover D at distance 2. Visit C, D is already discovered. Visit D. Distances are A=0, B=1, C=1, D=2."
+    },
     id: "bfs",
     name: "BFS",
     category: "graph",

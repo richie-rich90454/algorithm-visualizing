@@ -169,6 +169,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tarjan SCC module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tarjan finds strongly connected components in a single depth-first search. It keeps a discovery time and a lowlink per vertex plus a stack of active vertices. A vertex whose lowlink equals its discovery time is the root of an SCC, and everything above it on the stack is popped into one component.",
+        "invariants": [
+            "low[v] is the smallest discovery index reachable from v through the DFS tree and at most one back edge.",
+            "The stack holds vertices not yet assigned to a component.",
+            "Popping at a root yields a maximal mutually reachable set."
+        ],
+        "correctness": "When low[v] equals disc[v], no back edge from v's subtree reaches an ancestor, so the vertices above v on the stack cannot reach outside the group and form an SCC. Any vertex with a lower lowlink still connects upward, so popping is correctly delayed until its root finishes.",
+        "complexityRationale": "One DFS with constant work per edge gives O(V + E) time; index, lowlink, and stack arrays use O(V) space.",
+        "uses": [
+            "Efficient strongly connected component decomposition",
+            "Solving 2-SAT and other implication-graph problems",
+            "Preprocessing directed graphs into DAGs"
+        ],
+        "references": [
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, strongly connected components"
+        ],
+        "workedExample": "In the graph with cycle A-B-C-A, tail D to C, chain E to D, and self-loop F, DFS from A finds the back edge C to A, lowering lowlinks for the cycle. When A finishes, low[A] equals disc[A] and the stack pops {A,B,C} as one SCC; later roots pop {D,E} and {F}."
+    },
     id: "tarjan-scc",
     name: "Tarjan SCC",
     category: "graph",

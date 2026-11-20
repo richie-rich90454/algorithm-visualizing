@@ -280,6 +280,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Introsort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Introsort is quicksort with a depth guard. It partitions like quicksort but counts recursion depth; if a branch gets too deep it switches that branch to heapsort, which is guaranteed O(m log m). Small partitions finish with insertion sort, matching real library implementations.",
+        "invariants": [
+            "Every element stays in the current partition until that partition is finalized.",
+            "If the depth limit is hit, the remaining subarray is finished by a worst-case-safe method."
+        ],
+        "correctness": "Quicksort partitioning keeps left elements smaller than the pivot and right elements larger; induction sorts each side. The heapsort fallback also sorts correctly, so whichever path a subarray takes produces a sorted result.",
+        "complexityRationale": "The depth cap is about 2*log n, so quicksort cannot spend more than O(n log n) on partitioning; heapsort fallback is O(n log n) and insertion sort is linear on tiny ranges. Extra space is O(log n) stack.",
+        "uses": [
+            "The default sort in many language standard libraries",
+            "Sorting untrusted data where worst-case behavior matters",
+            "Teaching adaptive hybrid algorithm design"
+        ],
+        "references": [
+            "Musser, Introspective Sorting and Selection Algorithms, Software Practice and Experience, 1997",
+            "Sedgewick and Wayne, Algorithms, Section 2.5"
+        ],
+        "workedExample": "For [9, 2, 6, 1, 8, 3, 7, 4], partitions quickly split around pivots. If a later partition degenerates past the depth limit, that slice switches to heapsort; slices of a few elements are finished with insertion sort, yielding [1, 2, 3, 4, 6, 7, 8, 9]."
+    },
     id: "introsort",
     name: "Introsort",
     category: "sorting",

@@ -144,6 +144,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Beam search explores level by level like breadth-first search but keeps only the w best candidates at each level, ranked by a heuristic. A wide beam approaches best-first search; a beam of width 1 is greedy hill climbing.",
+        "invariants": [
+            "At every level the beam contains at most w nodes.",
+            "Kept nodes are the highest-ranked candidates among all generated children."
+        ],
+        "correctness": "Beam search is an incomplete heuristic method: it is not guaranteed to find the optimal or even any goal, because pruning can discard the only viable path. Its guarantee is that it explores the locally most promising w nodes by the chosen score.",
+        "complexityRationale": "Each of d levels expands w nodes with branching factor b, so O(w * b * d) time. Only the beam and its children are stored, O(w) space.",
+        "uses": [
+            "Machine translation and language generation decoding",
+            "Speech recognition hypothesis pruning",
+            "Real-time planning under tight memory"
+        ],
+        "references": [
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 3",
+            "Lowerre, The Harpy Speech Recognition System, Carnegie Mellon University, 1976"
+        ],
+        "workedExample": "With beam width 2, expand start A into B and C; if B and C score best among level-one nodes, keep both and prune the rest. Repeat until the goal G is generated or the beam is exhausted."
+    },
     id: "beam-search",
     name: "Beam Search",
     category: "searching",

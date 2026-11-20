@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A path cover partitions the vertices of a DAG into vertex-disjoint directed paths. The key fact is that the minimum number of paths equals the number of vertices minus the size of a maximum matching in a bipartite split of the graph. Splitting each vertex into an in-copy and an out-copy turns each original edge into a matching opportunity.",
+        "invariants": [
+            "A matched pair corresponds to two consecutive vertices on some path.",
+            "Each vertex has at most one outgoing and one incoming matched edge.",
+            "Paths formed by chaining matched pairs are vertex-disjoint."
+        ],
+        "correctness": "Every path cover of k paths induces a matching of size n-k by linking consecutive vertices, so maximum matching gives at least the minimum cover. Conversely, any matching of size m chains the matched pairs into n-m paths, giving a cover of that size. The two bounds meet, so n minus maximum matching is exactly the minimum path cover.",
+        "complexityRationale": "The split graph has O(V) vertices and O(E) edges, and one maximum matching run costs O(V E) with a simple augmenting-path method. The split graph and matching arrays use O(V + E) space.",
+        "uses": [
+            "Scheduling tasks into the fewest chains of dependent jobs",
+            "Minimum number of tests to cover program execution paths",
+            "DAG compression for evolutionary and version-history analysis"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, dynamic programming on DAGs",
+            "Kleinberg and Tardos, Algorithm Design, matching chapter"
+        ],
+        "workedExample": "DAG 0->1, 1->2, 0->2. Split each vertex and match left0-right1 and left1-right2, a matching of size 2. The cover size is 3 minus 2, namely 1: the single path 0->1->2 covers all three vertices."
+    },
     id: "dag-minimum-path-cover",
     name: "DAG Minimum Path Cover",
     category: "flow",

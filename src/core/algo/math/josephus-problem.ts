@@ -83,6 +83,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Josephus problem places n people in a circle and removes every k-th person until one survives. The visualization simulates the circle directly, walking a step counter around the living participants and deleting each selected one. Watching the shrinking circle makes the classic recurrence and its survivors intuitive.",
+        "invariants": [
+            "The living list always contains exactly the people not yet removed.",
+            "The step counter advances only over living people, wrapping around the circle.",
+            "Each iteration removes exactly one person until a single survivor remains."
+        ],
+        "correctness": "Counting only living people and wrapping at the end faithfully models removing every k-th person in a circle. The simulation therefore produces the same elimination order as the problem statement. When one person remains, that person is by definition the survivor.",
+        "complexityRationale": "Each of the n-1 removals advances up to k steps over a shrinking list, costing O(n*k) in a naive list; the stated O(n) bound assumes a fixed small k and O(n) storage for the circle. Space is O(n) for the living list.",
+        "uses": [
+            "Modeling elimination and round-robin protocols",
+            "The classic Josephus permutation in combinatorics",
+            "Teaching circular linked-list simulation"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 1.3.1",
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 1"
+        ],
+        "workedExample": "With n = 7 and k = 3 the removal order is 3, 6, 2, 7, 5, 1, leaving person 4 as the survivor. The closed-form recurrence J(1) = 1 and J(n) = (J(n-1) + k - 1) mod n + 1 gives 4 as well."
+    },
     id: "josephus-problem",
     name: "Josephus Problem",
     category: "math",

@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A bitonic subsequence first increases to a peak and then decreases. The DP computes inc[i], the longest increasing subsequence ending at i, and dec[i], the longest decreasing subsequence starting at i. Combining them at each candidate peak gives inc[i] + dec[i] - 1, subtracting one because the peak is counted twice.",
+        "invariants": [
+            "inc[i] is computed by a forward LIS pass; dec[i] by a reverse LIS pass.",
+            "Each index is considered exactly once as the peak.",
+            "A valid bitonic subsequence consists of an increasing part and a decreasing part meeting at the peak."
+        ],
+        "correctness": "Choosing a peak i, the increasing prefix ending there has length inc[i] and the decreasing suffix starting there has length dec[i]; concatenating them yields a bitonic subsequence. Because the two parts share only the peak, the combined length is their sum minus one. Maximizing over i gives the optimum.",
+        "complexityRationale": "Each of the two LIS-style passes scans O(n^2) pairs, giving O(n^2) time. The inc and dec arrays use O(n) space.",
+        "uses": [
+            "Finding peak-shaped trends in numerical data",
+            "Sequencing problems with rise-then-fall constraints",
+            "A two-pass DP teaching example"
+        ],
+        "references": [
+            "GeeksforGeeks, Longest Bitonic Subsequence",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For [1,11,2,10,4,5,2,1] the peak 11 has inc = 2 and dec = 5, giving a bitonic length of 6. The DP reports the best such combination over all peaks."
+    },
     id: "longest-bitonic-subsequence",
     name: "Longest Bitonic Subsequence",
     category: "dynamic-programming",

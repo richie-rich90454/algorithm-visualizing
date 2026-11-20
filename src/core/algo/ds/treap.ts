@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Treap module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A treap is a BST whose nodes carry random priorities satisfying the heap property: the root has the highest priority and every parent outranks its children. Insertion places the key like a BST then rotates it up, and random priorities balance the tree with high probability.",
+        "invariants": [
+            "Keys satisfy BST order.",
+            "Priorities satisfy heap order.",
+            "Rotations preserve one order while repairing the other."
+        ],
+        "correctness": "A rotation swaps a child with its parent without changing the in-order key sequence, so BST order survives while the higher-priority node moves up. Bubbling a new node until its parent outranks it restores heap order, and random priorities make the shape equivalent to a random insertion order, which is balanced with high probability.",
+        "complexityRationale": "Each operation follows a root-to-leaf path of expected O(log n) length because random priorities give a balanced shape. One node per key gives O(n) space.",
+        "uses": [
+            "Randomized ordered maps and sets",
+            "Priority search trees",
+            "Implicit treaps for sequence manipulation"
+        ],
+        "references": [
+            "Seidel and Aragon, Randomized Search Trees, Algorithmica 1996",
+            "CLRS, Introduction to Algorithms, Chapter 13"
+        ],
+        "workedExample": "Keys 30, 20, 40, 10, 35 with priorities 5, 9, 6, 2, 4; inserting 20 with priority 9 rotates it above 30, so BST order by key and heap order by priority both hold."
+    },
     id: "treap",
     name: "Treap",
     category: "data-structures",

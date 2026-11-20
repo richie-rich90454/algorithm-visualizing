@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "VF2 decides whether two graphs have the same structure by growing a partial mapping one vertex pair at a time. A candidate pair is feasible when degrees match and already-mapped neighbors correspond consistently. Infeasible pairs prune the branch, and success means the mapping covers the whole first graph.",
+        "invariants": [
+            "The partial mapping is one-to-one between vertices of the two graphs.",
+            "Adjacency between mapped vertices is preserved in both directions.",
+            "A pair failing degree or neighbor checks cannot extend to an isomorphism."
+        ],
+        "correctness": "Every extension preserves the mapped subgraph isomorphism, so a complete mapping is a full isomorphism. Feasibility rules only reject pairs that cannot satisfy adjacency or degree requirements, so pruning never discards a valid isomorphism. Exhaustive backtracking therefore finds one iff the graphs are isomorphic.",
+        "complexityRationale": "The worst case tries up to O(V!) pairings with O(V) checks each, but feasibility pruning makes typical graphs much cheaper; the partial mapping uses O(V) space.",
+        "uses": [
+            "Testing graph isomorphism in cheminformatics and pattern matching",
+            "Canonical labeling and database graph queries",
+            "Checking structural equivalence of compiled graphs"
+        ],
+        "references": [
+            "Cordella et al., A (Sub)Graph Isomorphism Algorithm for Matching Large Graphs (2004)",
+            "Ullmann, An Algorithm for Subgraph Isomorphism (1976)"
+        ],
+        "workedExample": "The two triangles each have all degrees equal to two, so mapping A to X passes. Every subsequent neighbor check also passes because both graphs are complete on three vertices, giving the isomorphism A-X, B-Y, C-Z with no backtracking."
+    },
     id: "vf2-isomorphism",
     name: "Graph Isomorphism (VF2)",
     category: "graph",

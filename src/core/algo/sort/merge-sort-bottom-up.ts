@@ -177,6 +177,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Merge Sort (Bottom-Up) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bottom-up merge sort skips recursion and starts with runs of length one. It doubles the run width each round, merging adjacent runs pairwise until one run remains. Every element takes part in exactly one merge per round.",
+        "invariants": [
+            "At the start of a round, every run of the current width is sorted.",
+            "After a round, all runs of twice the width are sorted."
+        ],
+        "correctness": "Merging two adjacent sorted runs produces a sorted run containing exactly their elements; by induction over rounds the run width doubles until it covers the array. The final run is therefore sorted.",
+        "complexityRationale": "There are log n rounds, each merging a total of n elements, so O(n log n) time in all cases. A temporary buffer of size n is needed for each merge, giving O(n) space.",
+        "uses": [
+            "Sorting linked lists without recursion",
+            "Avoiding stack depth on very large arrays",
+            "Teaching merge sort as an iterative process"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Sedgewick and Wayne, Algorithms, Section 2.2"
+        ],
+        "workedExample": "For [6, 3, 8, 1, 7, 2, 5, 4], width 1 merges pairs into [3, 6], [1, 8], [2, 7], [4, 5]; width 2 merges into [1, 3, 6, 8] and [2, 4, 5, 7]; width 4 merges to [1, 2, 3, 4, 5, 6, 7, 8]."
+    },
     id: "merge-sort-bottom-up",
     name: "Merge Sort (Bottom-Up)",
     category: "sorting",

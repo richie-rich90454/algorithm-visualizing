@@ -213,6 +213,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The DAG Longest DP module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The longest path in a directed acyclic graph is easy because a topological order guarantees all predecessors of a vertex are processed first. The DP sets dist[v] to the maximum of dist[u] plus edge weight over incoming edges. Tracking parent pointers then recovers the actual path.",
+        "invariants": [
+            "dist[v] is the maximum weight of any path from the start to v found so far.",
+            "A vertex is finalized only after all its predecessors are finalized.",
+            "Parent pointers always point along a real edge to a predecessor."
+        ],
+        "correctness": "In topological order every incoming neighbor of v appears earlier, so when v is processed all candidate path lengths are final. Taking the maximum over them gives the longest path to v by optimal substructure. Recording the improving parent reconstructs a path achieving that length.",
+        "complexityRationale": "Each vertex is processed once and each edge relaxed once, giving O(V + E) time including the topological ordering. Distances and parents use O(V) space.",
+        "uses": [
+            "Critical path analysis in project scheduling",
+            "Longest dependency chain in build systems",
+            "Maximum-weight layering in acyclic networks"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 24.2",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "In the layered graph A to E, paths include A-B-D-E with weight 3+4+2=9 and A-C-E with weight 6+5=11. The DP reports 11 via A-C-E as the longest."
+    },
     id: "dag-longest-dp",
     name: "DAG Longest Path (DP)",
     category: "dynamic-programming",

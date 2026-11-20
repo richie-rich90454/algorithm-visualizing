@@ -132,6 +132,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sublist search checks whether a pattern appears as a contiguous block inside a longer list. It slides the starting position one step at a time, comparing elements until a mismatch abandons that start or the whole pattern matches.",
+        "invariants": [
+            "All starts before the current one have been fully tested and rejected.",
+            "A match at the current start requires every pattern element to line up in order."
+        ],
+        "correctness": "Trying every possible start covers all contiguous blocks; the element-by-element comparison accepts exactly those where the pattern matches, so returning the first successful start is correct and exhausting starts proves absence.",
+        "complexityRationale": "There are O(n) starts and each may compare O(m) elements, O(n*m) worst case. Only start and match counters are stored, O(1) space.",
+        "uses": [
+            "Checking subsequence presence in linked lists",
+            "Teaching naive pattern matching before KMP",
+            "Simple substring checks on small data"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.3 (linked lists)",
+            "Sedgewick and Wayne, Algorithms, Section 5.1 (substring search)"
+        ],
+        "workedExample": "For list [1,2,3,4,5] and pattern [3,4], starts 0 and 1 mismatch; start 2 matches 3 then 4, so the answer is index 2."
+    },
     id: "sublist-search",
     name: "Sublist Search",
     category: "searching",

@@ -152,6 +152,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Subset Sum module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Subset sum asks whether some subset of a set of numbers adds up exactly to a target. The boolean DP cell reachable[i][s] is true if a subset of the first i numbers sums to s. For each number the choice is skip it or take it, the latter requiring the remainder sum to be reachable with earlier numbers only.",
+        "invariants": [
+            "reachable[i][s] records whether the first i numbers can make sum s.",
+            "reachable[0][0] is true and reachable[0][s] is false for s > 0.",
+            "Taking number a[i] requires reachable[i-1][s-a[i]]."
+        ],
+        "correctness": "Any subset of the first i numbers either excludes the i-th, giving reachable[i-1][s], or includes it, giving reachable[i-1][s-a[i]]. These cases are exhaustive, so the OR is exact. Induction over i makes reachable[n][target] the correct answer, and backtracking finds a witnessing subset.",
+        "complexityRationale": "Filling (n+1) by (target+1) cells costs O(n*T) time, pseudo-polynomial in the numeric target. The table uses O(n*T) space, reducible to O(T) with a single boolean array updated backward.",
+        "uses": [
+            "Partitioning problems and equal-sum splits",
+            "Knapsack-style feasibility checks",
+            "Cryptographic subset-sum constructions"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.1",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For numbers [2,3,7,8,10] and target 11, the DP marks 11 reachable when it reaches 3+8. Backtracking from reachable[5][11] returns the subset {3, 8}."
+    },
     id: "subset-sum",
     name: "Subset Sum",
     category: "dynamic-programming",

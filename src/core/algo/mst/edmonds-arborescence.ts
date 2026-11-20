@@ -166,6 +166,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Edmonds' algorithm finds a minimum-cost directed spanning tree, called an arborescence, rooted at a given vertex so every other vertex has a unique path from the root. It picks the cheapest incoming edge for each vertex, detects any directed cycle among those picks, contracts that cycle, and repeats until no cycle remains.",
+        "invariants": [
+            "Every vertex except the root has exactly one chosen incoming edge.",
+            "A contracted cycle is replaced by a single super-node with adjusted incoming edge costs.",
+            "Expanding contracted cycles restores a valid arborescence."
+        ],
+        "correctness": "The cheapest incoming edge of a vertex belongs to some optimum arborescence by the directed cut property. If those choices form a cycle, contracting it and subtracting the cycle edge entering each node adjusts costs so that optimizing the contracted instance is equivalent to optimizing the original. When no cycle remains the chosen edges form an arborescence of minimum cost.",
+        "complexityRationale": "Each contraction reduces the vertex count by at least one, so at most V rounds each scanning E edges give O(E V) time; the edge list and contraction map use O(V + E) space.",
+        "uses": [
+            "Minimum-cost branching in directed networks",
+            "Communication and logistics networks with one-way links",
+            "A subroutine in directed Steiner and arborescence problems"
+        ],
+        "references": [
+            "Edmonds, Optimum Branchings (1967)",
+            "Chu and Liu, On the Shortest Arborescence of a Directed Graph (1965)"
+        ],
+        "workedExample": "For root 0 with edges 0-1 cost 1, 0-2 cost 5, 1-2 cost 1, and 2-1 cost 4, the cheapest incoming edges are 0-1 for vertex 1 and 1-2 for vertex 2. No cycle among picks remains, so the arborescence is 0-1-2 with total cost 2."
+    },
     id: "edmonds-arborescence",
     name: "Edmonds Arborescence",
     category: "mst",

@@ -165,6 +165,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Topological Sort (Kahn) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Repeatedly remove a vertex with no incoming edges, append it to the ordering, and delete its outgoing edges. If vertices remain, a cycle prevents a valid ordering.",
+        "invariants": [
+            "Every removed vertex has no unremoved predecessors, so it can appear next.",
+            "The remaining graph contains exactly the vertices not yet ordered."
+        ],
+        "correctness": "A vertex with indegree zero has no dependency left among the remaining vertices, so placing it next cannot violate an edge constraint. Removing its outgoing edges exposes newly available vertices. If the process stops early, every remaining vertex has an incoming edge and therefore a cycle exists.",
+        "complexityRationale": "Each vertex enters the queue once and each edge is processed once: O(V + E) time and O(V) space.",
+        "uses": [
+            "Build systems and dependency resolution",
+            "Course prerequisite scheduling",
+            "Compilation order and pipeline staging"
+        ],
+        "references": [
+            "Kahn, Topological sorting of large networks, 1962",
+            "CLRS, Introduction to Algorithms, Chapter 22"
+        ],
+        "workedExample": "Edges A->B, A->C, B->D, C->D. Indegrees are A=0, B=1, C=1, D=2. Remove A, then B and C become available. After both are removed, D has indegree zero. One valid order is A, B, C, D."
+    },
     id: "topological-sort-kahn",
     name: "Topological Sort (Kahn)",
     category: "graph",

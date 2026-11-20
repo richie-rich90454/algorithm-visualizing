@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Monotonic Queue module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A monotonic queue keeps a deque of indices whose values increase. Before reading the minimum, drop indices that left the window from the front, then pop from the back every value greater than the incoming one, since those values can never be the minimum while the new value is alive. The front is always the window minimum.",
+        "invariants": [
+            "Values in the deque are strictly increasing from front to back.",
+            "Every index in the deque lies inside the current window.",
+            "The front index holds the minimum value of the window."
+        ],
+        "correctness": "A value popped from the back is dominated because the new value is smaller and expires later, so the old value can never be a future minimum; removing it cannot change the answer. Expired indices cannot be the current minimum either, so the smallest surviving value at the front is the true window minimum.",
+        "complexityRationale": "Each index enters once and leaves at most once from each end, so n elements cost O(n) total time. The deque holds only window candidates, O(k) space for a window of size k.",
+        "uses": [
+            "Sliding-window minimum and maximum over time series",
+            "The deque step of linear-time dynamic programming",
+            "Moving extrema for rate limiting and signal processing"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10 on deques",
+            "cp-algorithms, Monotonic Queue / finding the minimum on a segment"
+        ],
+        "workedExample": "For values [2,5,3,7,1,8,4] with window 3, the first minimum is 2. When 3 arrives the 5 is popped from the back; when 1 arrives the deque clears to [1], and the front is always the smallest live value."
+    },
     id: "monotonic-queue",
     name: "Monotonic Queue",
     category: "data-structures",

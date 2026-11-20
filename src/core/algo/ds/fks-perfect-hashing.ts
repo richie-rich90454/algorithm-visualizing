@@ -106,6 +106,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "FKS perfect hashing builds a two-level hash table for a static set of keys. The first level distributes keys into buckets; each bucket gets a second-level table sized to the square of its bucket count. Random universal hashing is retried until no collisions remain, giving worst-case O(1) lookups.",
+        "invariants": [
+            "The second-level table for a bucket has size m squared for m keys.",
+            "No two keys in a bucket collide in the second-level table.",
+            "Every key is stored at exactly one second-level slot."
+        ],
+        "correctness": "Squaring the table size makes the probability of a collision within a bucket less than one half, so a few retries almost surely produce a collision-free table. Once that happens, lookup hashes twice and reads a unique slot, so a key is found exactly when present. Static keys never change, so the guarantee persists.",
+        "complexityRationale": "Expected construction time is O(n) because each bucket needs only a few retries. The sum of squared bucket sizes is O(n) in expectation, so space is linear, and lookup is two hashes, O(1) worst case.",
+        "uses": [
+            "Static dictionaries with guaranteed lookup time",
+            "Compiler keyword and symbol tables",
+            "Read-only indexes and routers"
+        ],
+        "references": [
+            "Fredman, Komlos, and Szemeredi, \"Storing a Sparse Table with O(1) Worst Case Access Time\", JACM 1984",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "Keys 12, 5, 21, 8 hash into first-level buckets; suppose two land in bucket 0. That bucket gets a second table of size 4, and hashing with a new function until distinct slots places both without collision. A lookup hashes to bucket 0, then to its unique slot, and finds the key."
+    },
     id: "fks-perfect-hashing",
     name: "FKS Perfect Hashing",
     category: "data-structures",

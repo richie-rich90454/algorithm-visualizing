@@ -96,6 +96,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Misra-Gries finds candidate frequent items, or heavy hitters, in a stream with only k counters. If the item is already counted, increment it; if a slot is free, start a new counter; otherwise decrement every counter by one. Any item occurring more than n/(k+1) times is guaranteed to survive with a positive count.",
+        "invariants": [
+            "The sum of the counters never exceeds the number of processed items.",
+            "All counters are non-negative.",
+            "An item that is truly frequent cannot be silently dropped from the table."
+        ],
+        "correctness": "Each decrement-all step accounts for one occurrence of up to k distinct items using k+1 stream items, so it can eliminate only an item whose total count is at most n/(k+1). Any item occurring more often is never fully removed and appears as a survivor. False positives are possible and can be confirmed with a second pass.",
+        "complexityRationale": "Each stream item either updates one counter or decrements up to k counters, O(k) worst case per item and O(n·k) total. Only k counters are stored, O(k) space, independent of stream length.",
+        "uses": [
+            "Detecting heavy network flows for traffic engineering",
+            "Finding trending items in clickstreams",
+            "Frequency capping in advertising",
+            "Identifying popular keys in databases and text streams"
+        ],
+        "references": [
+            "Misra and Gries, Finding Repeated Elements, Science of Computer Programming, 1982",
+            "Muthukrishnan, Data Streams: Algorithms and Applications, 2005"
+        ],
+        "workedExample": "For [a,b,a,c,a,b,a,d] with k=2: a and b take the two slots; seeing c when full decrements both, removing b. After more a's, d triggers another decrement and leaves only a with a positive count. The true count of a is 4, above 8/3, so a is guaranteed among the survivors."
+    },
     id: "misra-gries-summary",
     name: "Misra–Gries Summary",
     category: "data-structures",

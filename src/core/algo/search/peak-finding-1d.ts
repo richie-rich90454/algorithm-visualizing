@@ -125,6 +125,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 1D peak is an element at least as large as its neighbors. The algorithm compares A[mid] with A[mid+1] and climbs toward the larger side; that side is guaranteed to contain a peak, so half the array is discarded each step.",
+        "invariants": [
+            "The current interval contains at least one peak.",
+            "The interval shrinks by roughly half on every step."
+        ],
+        "correctness": "If A[mid] is less than A[mid+1], following the right neighbor eventually reaches a local maximum because the array is finite; hence the right half contains a peak. Symmetric reasoning covers the left half, so binary search finds one.",
+        "complexityRationale": "Halving the interval on every comparison gives O(log n) time and only a few index variables, O(1) space.",
+        "uses": [
+            "Finding a local maximum in a one-dimensional signal",
+            "Teaching binary search beyond exact-match queries",
+            "First step toward 2D peak finding"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1",
+            "MIT 6.046 lecture notes on peak finding"
+        ],
+        "workedExample": "For [1,3,7,9,5,2], compare at mid value 7 with 9 and move right; the subarray [9,5,2] has 9 as a peak, which the search returns."
+    },
     id: "peak-finding-1d",
     name: "Peak Finding 1D",
     category: "searching",

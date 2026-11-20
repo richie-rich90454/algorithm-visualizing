@@ -78,6 +78,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Treiber stack is a lock-free LIFO where push and pop each perform a single compare-and-swap on the top pointer. On contention a thread simply retries with the updated top, so no thread blocks and the stack remains consistent. The demo drives the successful CAS path and notes reclamation.",
+        "invariants": [
+            "Top points to the most recently pushed live node.",
+            "Each node's next pointer links to the previous top.",
+            "CAS is the only writer of top, preventing torn updates."
+        ],
+        "correctness": "Push creates a node pointing to the current top and CAS-installs it; if another thread changed top, the CAS fails and the thread retries. Pop CAS-advances top to the next node and returns the old top's value, so the most recent push is always the first pop. Retries preserve LIFO order.",
+        "complexityRationale": "Each operation is O(1) expected, with retries under contention. Nodes hold one value and one next pointer, O(n) space, plus deferred reclamation concerns.",
+        "uses": [
+            "Lock-free stacks in runtimes",
+            "Memory reclamation research",
+            "Nonblocking work queues with LIFO semantics"
+        ],
+        "references": [
+            "R. K. Treiber, \"Systems Programming: Coping with Parallelism\", RJ5118, 1986",
+            "Herlihy and Shavit, The Art of Multiprocessor Programming, Chapter 7"
+        ],
+        "workedExample": "Start with top null. Push 1 sets top to node 1; push 2 sets top to node 2 pointing to 1. Pop CAS-advances top back to node 1 and returns 2. A concurrent push that loses the CAS simply retries against the new top."
+    },
     id: "lock-free-stack",
     name: "Lock-Free Stack",
     category: "data-structures",

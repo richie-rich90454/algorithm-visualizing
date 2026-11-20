@@ -141,6 +141,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree Isomorphism module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Two rooted trees are isomorphic when a relabeling of vertices preserves the parent-child structure. The classic test assigns each subtree a canonical code built recursively from the sorted codes of its children; two rooted trees are isomorphic exactly when their root codes match.",
+        "invariants": [
+            "A leaf has the same canonical code everywhere.",
+            "A node's code is the sorted concatenation of its children's codes wrapped in delimiters.",
+            "Isomorphic subtrees always produce identical codes."
+        ],
+        "correctness": "If two subtrees are isomorphic, their children pair up into isomorphic subtrees, which by induction have equal codes; sorting removes any child-order difference, so the parent codes are equal. Conversely equal parent codes imply the same multiset of child codes, and by induction the child subtrees are isomorphic, so a structure-preserving bijection exists. Rooting at the center extends the test to unrooted trees.",
+        "complexityRationale": "Sorting child codes at every node costs O(n log n) total with O(n) space for the codes. Hash-based versions reduce string handling but keep the same broad bound.",
+        "uses": [
+            "Comparing parse trees in compilers",
+            "Detecting duplicate structures in chemical graphs",
+            "Canonicalizing XML or JSON tree documents"
+        ],
+        "references": [
+            "Aho, Sagiv, Szymanski, and Ullman, Finding and Identifying Trees in Linear Time, 1981",
+            "CLRS, Introduction to Algorithms, Chapter 22 (tree isomorphism exercises)"
+        ],
+        "workedExample": "Two rooted trees whose roots each have two leaf children both produce a code with two identical child codes and compare equal, so they are isomorphic. A root with three leaf children produces a different code and is rejected."
+    },
+
     id: "tree-isomorphism",
     name: "Tree Isomorphism",
     category: "tree",

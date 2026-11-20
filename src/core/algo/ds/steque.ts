@@ -99,6 +99,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A steque supports push at the front, pop from the front, and enqueue at the back, but no general dequeue beyond pop. It can be built from two stacks so all three operations are worst-case O(1).",
+        "invariants": [
+            "The front half behaves as a stack and the back half only grows at the tail.",
+            "Pop takes from the front stack, falling back to the back when it is empty.",
+            "Total size is the sum of both halves."
+        ],
+        "correctness": "Pushing onto the front stack and popping from it gives LIFO behavior; enqueuing at the back appends in arrival order. When the front empties, shifting from the back exposes the oldest enqueued item, so the supported operations interleave correctly.",
+        "complexityRationale": "Each operation touches only the top of a stack or the end of a list, O(1) worst case. Each element resides in one half, O(n) space.",
+        "uses": [
+            "Double-ended structures where only one end needs full flexibility",
+            "Work-stealing and deque variants",
+            "Simple schedulers with push, enqueue, and pop"
+        ],
+        "references": [
+            "Hood and Melville, Real-Time Queue Operations in Pure Lisp, 1981",
+            "Brodnik et al., Deques in Constant Time, 1999"
+        ],
+        "workedExample": "Operations push 1, push 2, enqueue 3, pop, enqueue 4. The front stack gets 1 then 2; enqueue 3 goes to the back; pop returns 2; enqueue 4 appends after 3, leaving front [1] and back [3,4]."
+    },
     id: "steque",
     name: "Steque",
     category: "data-structures",

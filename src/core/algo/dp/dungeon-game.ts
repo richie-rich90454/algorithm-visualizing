@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dungeon Game computes the minimum starting health needed to reach the princess in a grid where each cell adds or subtracts health. It works backward from the destination, recording need[i][j] as the health required on entering that cell. At each cell the knight prepares for the cheaper of the right and down exits, clamped to at least one.",
+        "invariants": [
+            "need[i][j] is the least health with which the knight can survive from (i,j) onward.",
+            "The destination needs at least one health on entry.",
+            "Every move goes right or down, so backward filling sees finalized successors."
+        ],
+        "correctness": "From a cell the knight may go right or down, and the successor with the smaller need determines the least required entry health. Subtracting the cell's dungeon value gives the need before the cell, clamped to one. Backward induction from the destination therefore yields need at the start, the minimal initial health.",
+        "complexityRationale": "Each of the m*n cells is computed from two neighbors in constant time, giving O(m*n) time. The need table uses O(m*n) space, reducible to O(n) with a single row.",
+        "uses": [
+            "Resource planning along a path with gains and losses",
+            "Game AI computing minimum required stats",
+            "Backward induction on grid decision problems"
+        ],
+        "references": [
+            "LeetCode problem 174, Dungeon Game",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For the sample dungeon the princess cell has value -5 and needs 6 on entry. Working backward, need at the start cell with -2 becomes 7, so the knight must start with at least 7 health to reach (2,2) alive."
+    },
     id: "dungeon-game",
     name: "Dungeon Game",
     category: "dynamic-programming",

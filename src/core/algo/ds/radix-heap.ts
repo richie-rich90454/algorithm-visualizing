@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A radix heap is an integer priority queue optimized for extracting keys in nondecreasing order. Each bucket is keyed by the highest bit that differs from the last extracted value, so small keys sit in the lowest nonempty bucket and the scan window stays narrow.",
+        "invariants": [
+            "A key bucket index is the most significant bit of key xor last.",
+            "The last extracted value never decreases.",
+            "All keys in a lower bucket are smaller than keys in a higher bucket."
+        ],
+        "correctness": "When last rises to the extracted minimum, redistributing the lowest bucket around the new last reassigns each remaining key to the correct bucket. Because bucket index increases with key magnitude relative to last, the smallest key is always in the lowest nonempty bucket, so extracting from it yields the next minimum.",
+        "complexityRationale": "Each key moves to a strictly lower bucket number over time, at most O(log C) moves for a universe of range C, giving O(log C) amortized extraction. The heap stores n keys in buckets, O(n) space.",
+        "uses": [
+            "Dijkstra with integer edge weights",
+            "Monotone priority queues in event simulation",
+            "Sorting bounded integers by repeated minimum extraction"
+        ],
+        "references": [
+            "Ahuja, Melhorn, Orlin, and Tarjan, Faster Algorithms for the Shortest Path Problem, JACM 1990",
+            "cp-algorithms, Radix Heap"
+        ],
+        "workedExample": "With keys 1, 4, 6, 7 and last starting at 0, buckets are assigned by the highest differing bit. Extracting 1 sets last to 1 and redistributes the low bucket; subsequent extracts return 4, 6, 7 in order."
+    },
     id: "radix-heap",
     name: "Radix Heap",
     category: "data-structures",

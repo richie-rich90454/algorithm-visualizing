@@ -163,6 +163,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Fibonacci Nim is a single-pile subtraction game where the first move may not empty the pile and later moves are capped at twice the previous take. Zeckendorf's theorem makes Fibonacci numbers the cold positions: the winning strategy is always to leave the opponent a Fibonacci number of stones.",
+        "invariants": [
+            "The maximum take after a move of k stones is 2k.",
+            "A Fibonacci number of stones is a losing P-position with perfect play.",
+            "The Zeckendorf representation of the pile size guides the winning take."
+        ],
+        "correctness": "Zeckendorf's theorem gives a unique sum of nonconsecutive Fibonacci numbers for any integer. The winning move removes the smallest term of that representation, which is at most half the remaining pile and therefore legal, leaving the largest Fibonacci number below the original size. Repeating the rule keeps handing Fibonacci positions to the opponent until they must empty the pile and lose under the move limit.",
+        "complexityRationale": "Finding the largest Fibonacci number below n takes O(log n) steps and the strategy uses only constant extra storage.",
+        "uses": [
+            "A showcase of Zeckendorf representation in games",
+            "Teaching how move limits change Nim strategy",
+            "A compact perfect-information game for recursion demos"
+        ],
+        "references": [
+            "Whinihan, Fibonacci Nim (1963)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "With 10 stones the largest Fibonacci number below 10 is 8, so take 2 to leave 8. The opponent may take at most 4; whatever they take, the player responds so the pile again lands on the next lower Fibonacci number, ending at a Fibonacci heap the opponent must clear."
+    },
     id: "fibonacci-nim",
     name: "Fibonacci Nim",
     category: "game",

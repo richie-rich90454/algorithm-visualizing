@@ -81,6 +81,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A genetic algorithm evolves a population of candidate solutions using ideas from natural selection. It scores each individual by fitness, keeps the best one through elitism, and breeds the next generation by selecting parents with tournaments, crossing over their bits, and occasionally flipping a bit through mutation. Over generations, fitter traits tend to spread.",
+        "invariants": [
+            "The all-time best individual is never lost because the elite is carried over unchanged.",
+            "Population size stays constant from one generation to the next.",
+            "Every individual remains a valid 4-bit string representing a value from 0 to 15."
+        ],
+        "correctness": "A genetic algorithm is a metaheuristic with no general optimality guarantee. What does hold is that elitism keeps the best fitness non-decreasing across generations, and mutation gives every bit string a positive chance of appearing eventually, so the search is never permanently confined to a subset. Convergence to the global optimum is empirical.",
+        "complexityRationale": "Each generation evaluates n individuals and breeds n-1 children; tournament selection and crossover are constant time for fixed-length strings, so O(n) per generation and O(g·n) for g generations. The population occupies O(n) space.",
+        "uses": [
+            "Engineering design and scheduling optimization",
+            "Machine-learning hyperparameter tuning",
+            "Evolving neural-network topologies",
+            "Game AI and procedural content generation"
+        ],
+        "references": [
+            "Holland, Adaptation in Natural and Artificial Systems, 1975",
+            "Goldberg, Genetic Algorithms in Search, Optimization, and Machine Learning, 1989"
+        ],
+        "workedExample": "Start with six random 4-bit strings scored by 49-(x-7)^2, which peaks at x=7 with fitness 49. The fittest string is copied over as the elite. Two parents are chosen by tournament, a random crossover point splices their bits, and each child bit flips with probability 0.15. After four generations the best individual approaches 0111 (x=7), fitness 49."
+    },
     id: "genetic-algorithm",
     name: "Genetic Algorithm",
     category: "math",

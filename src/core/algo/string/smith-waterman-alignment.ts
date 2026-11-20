@@ -121,6 +121,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Smith-Waterman finds the best matching subsequence anywhere inside two strings. It uses the Needleman-Wunsch recurrence but floors every cell at zero, so a poor preceding region is discarded; the maximum cell anywhere starts the traceback, which stops when it reaches zero.",
+        "invariants": [
+            "dp[i][j] is the best local alignment score ending at position (i,j) and is never negative.",
+            "The maximum over the whole table is the best local alignment score."
+        ],
+        "correctness": "Flooring at zero lets a new alignment start at any cell, so the DP considers all substring pairs. Taking the maximum as the traceback start and stopping at zero extracts the highest-scoring local alignment, which is optimal by the same induction as global alignment restricted to substrings.",
+        "complexityRationale": "The (n+1)(m+1) table is filled in O(1) per cell, giving O(nm) time and O(nm) space for the full table needed during traceback.",
+        "uses": [
+            "Finding conserved domains in proteins",
+            "Local similarity search underlying BLAST seeding concepts",
+            "Identifying shared motifs between sequences"
+        ],
+        "references": [
+            "Smith and Waterman, Identification of Common Molecular Subsequences, 1981",
+            "Durbin et al., Biological Sequence Analysis"
+        ],
+        "workedExample": "For a=\"GATT\", b=\"GCAT\" with match +2, mismatch -1, gap -2, the best local alignment is \"GAT\" / \"GAT\" with score 6; the traceback starts at the table's maximum and stops at the first zero."
+    },
     id: "smith-waterman-alignment",
     name: "Smith-Waterman",
     category: "string",

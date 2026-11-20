@@ -159,6 +159,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "To find the line passing through the most points, treat each point in turn as an anchor and compute the direction to every other point. Normalizing each direction by the greatest common divisor of its components makes points on the same line share a key, so counting equal keys finds the best line through that anchor.",
+        "invariants": [
+            "The normalized direction pair (dx/g, dy/g) is identical for all points on one line through the anchor.",
+            "Duplicate points at the anchor are counted separately.",
+            "The best count for an anchor includes the anchor itself."
+        ],
+        "correctness": "Two points lie on the same line through the anchor exactly when their displacement vectors are positive scalar multiples, which is equivalent to having the same reduced direction after dividing by the gcd and fixing the sign. Grouping by that key therefore collects precisely the collinear points, and taking the maximum group over all anchors covers every possible line because any line contains at least one of its points as an anchor.",
+        "complexityRationale": "For each of n anchors the algorithm computes and hashes n-1 directions, costing O(n^2) time with gcd operations. Hash maps for one anchor at a time use O(n) space.",
+        "uses": [
+            "Detecting aligned features in image analysis",
+            "Finding recurring slopes in scattered data",
+            "Solving the classic maximum-points-on-a-line problem"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 11 (hash tables)",
+            "Competitive Programming 3, Hall and Li, geometry chapter"
+        ],
+        "workedExample": "For points (0,0), (1,1), (2,2), (1,0), (2,0), (2,1), anchoring at (0,0) gives reduced directions (1,1) twice and (1,0) twice. Including the anchor, the line y = x contains three points, which is the maximum."
+    },
+
     id: "max-collinear-points-line-through-most",
     name: "Max Collinear Points",
     category: "geometry",

@@ -154,6 +154,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Edit Distance module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Edit distance measures how many single-character insertions, deletions, or substitutions turn one string into another. The DP cell dp[i][j] holds the distance between prefixes of the two strings. Matching characters copy the diagonal at no cost; otherwise the cell is one plus the cheapest of delete, insert, and substitute.",
+        "invariants": [
+            "dp[i][j] is the minimum edit distance between a[:i] and b[:j].",
+            "dp[i][0] = i and dp[0][j] = j for conversions involving the empty string.",
+            "Each cell uses only already-computed top, left, and diagonal neighbors."
+        ],
+        "correctness": "The last operation in any optimal conversion is either a deletion, insertion, substitution, or a free match of the final characters, corresponding exactly to the three neighbor cells plus the diagonal. Taking the minimum gives the optimal substructure, and filling by increasing prefixes makes all dependencies final. Thus dp[n][m] is the edit distance.",
+        "complexityRationale": "Filling an n by m table with constant work per cell costs O(n*m) time. The table uses O(n*m) space, or O(m) with two rows.",
+        "uses": [
+            "Spell checkers and fuzzy string search",
+            "DNA and protein sequence alignment",
+            "Diff and plagiarism detection at the character level"
+        ],
+        "references": [
+            "Levenshtein, Binary codes capable of correcting deletions (1966)",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For kitten to sitting, the DP reports distance 3: substitute k with s, substitute e with i, and insert g. Each step is one of the allowed operations."
+    },
     id: "edit-distance",
     name: "Edit Distance",
     category: "dynamic-programming",

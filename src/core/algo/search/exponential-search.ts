@@ -201,6 +201,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Exponential Search module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Exponential search grows a window by doubling an index until the window passes the target, then binary-searches inside the bracket. It is designed for sorted arrays that may be unbounded, where targets near the front should be found fast.",
+        "invariants": [
+            "Before the doubling stops, the value at each checked bound is at most the target.",
+            "The target, if present, lies between the previous bound and the current bound."
+        ],
+        "correctness": "Doubling preserves the lower bound on the target's location; once the bound's value exceeds the target, the target must be in the final window by sortedness, and binary search finds it or proves absence.",
+        "complexityRationale": "Doubling takes O(log i) probes where i is the target index, and the final binary search over a window of size O(i) also takes O(log i), so O(log i) total. Space is O(1).",
+        "uses": [
+            "Searching unbounded or streaming sorted data",
+            "Finding insertion points in growing structures",
+            "Fast lookups when targets cluster near the front"
+        ],
+        "references": [
+            "Bentley and Yao, An Almost Optimal Algorithm for Unbounded Searching, Information Processing Letters, 1976",
+            "CLRS, Introduction to Algorithms, Chapter 2 exercises"
+        ],
+        "workedExample": "In [2, 4, 6, 8, 10, 12, 14, 16] for target 12, probe indices 1, 2, 4, 8; the value at index 8 overshoots, so binary search within indices 4 through 7 finds 12 at index 5."
+    },
     id: "exponential-search",
     name: "Exponential Search",
     category: "searching",

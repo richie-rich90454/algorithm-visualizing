@@ -103,6 +103,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Soundex encodes a name into a letter plus three digits so that names sounding similar get the same code. It keeps the first letter, maps consonants to digit groups, drops vowels and the letters H and W, collapses repeated digits, and pads the result to four characters.",
+        "invariants": [
+            "The code begins with the original first letter followed by at most three digits.",
+            "Vowels and the letters H and W act as separators that reset the collapse rule but are not emitted."
+        ],
+        "correctness": "Consonants with similar pronunciation share a digit group, so different spellings of the same surname converge, and collapsing adjacent equal digits avoids double-counting a sound. Padding yields a fixed-width key suitable for indexing.",
+        "complexityRationale": "The word is scanned once with constant work per character, giving O(n) time and O(1) auxiliary space.",
+        "uses": [
+            "Census and genealogy name indexing",
+            "Fuzzy name lookup in databases",
+            "Deduplicating customer records with spelling variations"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Soundex section",
+            "Russell, U.S. Census Soundex system"
+        ],
+        "workedExample": "\"Euler\" keeps E, maps L to 4 and R to 6, drops the vowels, and pads with zeros to give \"E460\"; \"Euller\" collapses the double L to one 4 and produces the same code."
+    },
     id: "soundex-phonetic-coding",
     name: "Soundex",
     category: "string",

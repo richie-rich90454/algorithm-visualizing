@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Minimum path sum finds the route from the top-left to bottom-right of a grid with the smallest total cell cost, moving only right or down. Each cell stores its own cost plus the cheaper of the top and left accumulated costs. Filling in row-major order makes both predecessors available when a cell is computed.",
+        "invariants": [
+            "dp[i][j] is the minimum sum of any path reaching (i,j).",
+            "The start cell holds just its own value.",
+            "The first row and column have only one possible incoming direction."
+        ],
+        "correctness": "Any path to a cell arrives from above or from the left, so the minimum of those two accumulated sums plus the cell cost is optimal. Induction over row-major order ensures predecessors are final. Therefore dp at the destination is the minimum path sum, and parent pointers recover a path.",
+        "complexityRationale": "Each of the m*n cells does constant work, so time is O(m*n). The table uses O(m*n) space, reducible to O(n) with one row.",
+        "uses": [
+            "Least-cost routing through a weighted grid",
+            "Image seam carving and terrain path planning",
+            "A gateway two-dimensional DP example"
+        ],
+        "references": [
+            "LeetCode problem 64, Minimum Path Sum",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For grid [[1,3,1],[1,5,1],[4,2,1]] the cheapest path goes along the top row then down the last column, with values 1, 3, 1, 1, 1 totaling 7. The DP reports 7 at the bottom-right cell."
+    },
     id: "min-path-sum-grid",
     name: "Min Path Sum (Grid)",
     category: "dynamic-programming",

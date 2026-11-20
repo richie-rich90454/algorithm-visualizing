@@ -122,6 +122,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "ElGamal encryption hides a message using the difficulty of the discrete logarithm. The receiver publishes a generator g and public key h = g^x, keeping x secret. The sender masks the message with h^k using a random k and sends a companion value g^k so the receiver can reconstruct the same mask without learning k.",
+        "invariants": [
+            "The public key h equals g^x mod p.",
+            "The ciphertext pair is c1 = g^k and c2 = m*h^k mod p.",
+            "Decryption multiplies c2 by the inverse of c1^x to recover m."
+        ],
+        "correctness": "Since c1^x = (g^k)^x = h^k mod p, the receiver computes (c1^x)^-1 and c2 times that inverse equals m*h^k*(h^k)^-1 = m. The secret exponent x is needed to form the inverse, so an observer cannot strip the mask without solving a discrete log.",
+        "complexityRationale": "Encryption and decryption each use a handful of modular exponentiations costing O(log p) time with binary exponentiation. Only a few residues are stored, so space is O(1).",
+        "uses": [
+            "Public-key encryption built on discrete logarithms",
+            "Hybrid encryption key encapsulation",
+            "Teaching the structure of asymmetric cryptosystems"
+        ],
+        "references": [
+            "ElGamal, A public key cryptosystem and a signature scheme (1985)",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 8"
+        ],
+        "workedExample": "With p = 11, g = 2, secret x = 3, public h = 8, message m = 5, and random k = 4: c1 = 2^4 = 5, c2 = 5*8^4 mod 11 = 3. The receiver computes (5^3)^-1 = 9^-1 = 5 and 3*5 mod 11 = 5, recovering the message."
+    },
     id: "elgamal-encryption-toy",
     name: "ElGamal Encryption (Toy)",
     category: "math",

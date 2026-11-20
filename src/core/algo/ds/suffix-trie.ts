@@ -143,6 +143,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Suffix Trie module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A suffix trie inserts every suffix of a text as a path from the root with a terminal marker. A substring query walks its characters from the root: a complete path proves presence and a missing edge proves absence.",
+        "invariants": [
+            "Each suffix has a root-to-leaf path.",
+            "Shared prefixes share nodes.",
+            "All leaves are marked as suffix endings."
+        ],
+        "correctness": "A string s is a substring of the text exactly when s is a prefix of some suffix. Following s in the trie checks that prefix condition, so a complete path proves presence and a missing edge proves absence.",
+        "complexityRationale": "Building inserts n suffixes of average length O(n), giving O(n^2) worst-case nodes and time. A query walks one edge per character, O(|s|), independent of text length.",
+        "uses": [
+            "Substring search demonstrations",
+            "Conceptual basis of suffix trees and suffix arrays",
+            "Multiple-pattern matching in strings"
+        ],
+        "references": [
+            "Weiner, Linear Time Algorithm for Finding All Shortest Substrings, 1973",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences, Chapter 3"
+        ],
+        "workedExample": "Text banana yields suffixes banana, anana, nana, ana, na, a; query ana follows a to n to a and finds a path, so ana is a substring while a missing edge would mean absence."
+    },
     id: "suffix-trie",
     name: "Suffix Trie",
     category: "data-structures",

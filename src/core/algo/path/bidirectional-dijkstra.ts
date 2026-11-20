@@ -206,6 +206,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Bidirectional Dijkstra runs two searches at once, one forward from the source and one backward from the target. Each maintains its own frontier ordered by distance from its endpoint. The best meeting vertex minimizes the sum of the two distances, and the algorithm stops when the frontiers can no longer produce a cheaper meeting.",
+        "invariants": [
+            "Each settled vertex has its true distance from that search's endpoint.",
+            "The best meeting vertex gives a valid source-to-target path.",
+            "When the smallest forward plus smallest backward distance exceeds the best meeting, no better path exists."
+        ],
+        "correctness": "Dijkstra settles vertices in increasing distance from its endpoint, so once both frontiers reach a candidate whose sum exceeds the best found meeting, any unexplored pair would be at least as expensive. Therefore the best meeting yields the shortest path, and reconstructing through both predecessor trees gives that path.",
+        "complexityRationale": "Two heap-based searches cost O(E log V) worst case, typically much less because they stop early; both frontiers and bookkeeping use O(V + E) space.",
+        "uses": [
+            "Fast shortest path queries with known endpoints",
+            "Navigation and logistics routing",
+            "A companion to bidirectional BFS for weighted graphs"
+        ],
+        "references": [
+            "Pohl, Bi-directional Search (1971)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, single-source shortest paths"
+        ],
+        "workedExample": "From A forward and D backward on the demo graph, the forward search settles A, B, C and the backward settles D, C. They meet at C with forward distance 3 and backward distance 1, giving total cost 4 and the path A-B-C-D."
+    },
     id: "bidirectional-dijkstra",
     name: "Bidirectional Dijkstra",
     category: "shortest-path",

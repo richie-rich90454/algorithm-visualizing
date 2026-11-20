@@ -125,6 +125,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Word break counting finds how many ways a string can be segmented into words from a dictionary. The DP cell dp[i] holds the number of segmentations of the prefix ending at i. For each dictionary word that ends at i, its starting prefix contributes dp[start], and summing over matching words gives the count.",
+        "invariants": [
+            "dp[i] counts segmentations of s[:i].",
+            "dp[0] is one for the empty prefix.",
+            "Only words that exactly match a suffix ending at i are considered."
+        ],
+        "correctness": "Every segmentation of the prefix ending at i has a final word w ending at i, and the prefix before w can be segmented in dp[i-len(w)] ways. Summing over all such words counts each segmentation by its unique last word, so dp[n] is the total number of ways.",
+        "complexityRationale": "For each end position the algorithm checks dictionary words, costing O(n^2) in the stated bound with a bounded word list. The dp array uses O(n) space.",
+        "uses": [
+            "Counting sentence segmentations in natural language processing",
+            "Tokenization with ambiguous word boundaries",
+            "String segmentation counting problems"
+        ],
+        "references": [
+            "LeetCode problem 139, Word Break",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s = catsanddog with words cat, cats, and, sand, dog, the string splits as cat sand dog or cats and dog, so dp[10] = 2."
+    },
     id: "word-break-count",
     name: "Word Break (Count)",
     category: "dynamic-programming",

@@ -109,6 +109,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Jaro-Winkler measures how similar two strings are on a scale from 0 to 1. Jaro counts matching characters within a sliding window and penalizes transpositions; Winkler then boosts the score when the strings share a common prefix, reflecting that early matches matter more for names.",
+        "invariants": [
+            "A character is matched at most once in each string and matches must lie within floor(max length / 2) - 1 positions.",
+            "The transposition count is half the number of matched characters that appear in a different relative order."
+        ],
+        "correctness": "The matching window bounds how far characters can be displaced, so the score reflects local similarity rather than distant coincidences. Dividing matches by each length and subtracting the transposition fraction gives the Jaro score, and the prefix boost is a monotone adjustment capped at 1, keeping the result a bounded similarity measure.",
+        "complexityRationale": "For each of the n characters of the first string the algorithm searches a window of at most m positions in the second, giving O(n·m) time; two boolean match arrays use O(n+m) space.",
+        "uses": [
+            "Record linkage and deduplication of names and addresses",
+            "Fuzzy matching of customer data",
+            "Spelling and citation matching"
+        ],
+        "references": [
+            "Jaro, Advances in Record Linkage Methodology, 1989",
+            "Winkler, String Comparator Metrics and Enhanced Decision Rules, 1990"
+        ],
+        "workedExample": "For \"MARTHA\" versus \"MARHTA\" all six letters match and only T and H are transposed, giving a high Jaro score; the common prefix \"MAR\" then boosts it further through the Winkler adjustment."
+    },
     id: "jaro-winkler-similarity",
     name: "Jaro-Winkler",
     category: "string",

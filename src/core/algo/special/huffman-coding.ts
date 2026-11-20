@@ -146,6 +146,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Huffman Coding module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Huffman coding builds an optimal prefix-free code for lossless compression. It starts with a leaf for each character weighted by frequency, then repeatedly merges the two lightest nodes into a new parent whose weight is their sum. Labeling left edges 0 and right edges 1 gives frequent characters short codes and rare characters long ones.",
+        "invariants": [
+            "The forest always holds disjoint trees whose root weight equals the sum of its leaves' frequencies.",
+            "Each merge reduces the number of trees by exactly one.",
+            "The final tree's leaves correspond one-to-one with the input characters."
+        ],
+        "correctness": "The two least-frequent characters can be placed as deepest sibling leaves in some optimal tree, so merging them preserves optimality; induction on the number of characters proves the tree minimizes total encoded length, the sum of frequency times code length. Prefix-freeness follows because no leaf is an ancestor of another.",
+        "complexityRationale": "With n distinct characters, each of the n-1 merges removes two minima and inserts one node. A priority queue makes this O(n log n) time. The tree and code table occupy O(n) space.",
+        "uses": [
+            "The canonical Huffman stage of gzip and DEFLATE",
+            "JPEG image coefficient coding",
+            "MP3 and other audio compression formats",
+            "PNG, ZIP, fax and PDF stream compression"
+        ],
+        "references": [
+            "Huffman, A Method for the Construction of Minimum-Redundancy Codes, Proceedings of the IRE, 1952",
+            "Cover and Thomas, Elements of Information Theory, Chapter 5"
+        ],
+        "workedExample": "The text \"aabcccdddd\" has frequencies a:2, b:1, c:3, d:4. Merge b(1)+a(2)=3, then c(3)+that(3)=6, then d(4)+6=10. Labeling left edges 0 and right edges 1, the frequent 'd' lands highest and gets the shortest code, while 'b' gets the longest."
+    },
     id: "huffman-coding",
     name: "Huffman Coding",
     category: "string",

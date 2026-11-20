@@ -108,6 +108,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Cyclic Buffer module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A cyclic buffer, or ring buffer, is a fixed-size array whose read and write positions wrap around modulo the capacity. Writing past the end reuses slots that have been read, so elements never shift. This gives O(1) enqueue and dequeue with no allocation, making it the standard FIFO for streams.",
+        "invariants": [
+            "head points to the oldest unread element and tail to the next write slot.",
+            "Indices are taken modulo capacity.",
+            "A count or reserved slot distinguishes full from empty."
+        ],
+        "correctness": "Writing at tail and advancing modulo capacity overwrites only freed slots, so live FIFO data is preserved. Reading at head and advancing returns elements in insertion order. Distinguishing full from empty by a count or reserved slot guarantees correct state reporting.",
+        "complexityRationale": "Both ends are updated by one index increment and a modulo, O(1) time. The backing array is fixed at capacity slots, O(capacity) space, with no per-element allocation.",
+        "uses": [
+            "Audio and video streaming buffers",
+            "Kernel pipes and serial I/O queues",
+            "Lock-free producer-consumer rings"
+        ],
+        "references": [
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 1.3 queue exercises",
+            "Donald Knuth, The Art of Computer Programming, Vol. 1, Section 2.2"
+        ],
+        "workedExample": "With capacity 5 and writes 1 through 7, slots fill then wrap: after 1,2,3,4,5, writing 6 uses slot 0 and 7 uses slot 1 once those are freed. After dequeuing 1 and 2, head advances to slot 2; tail wraps to the same slot when the ring is empty again, illustrating the modulo arithmetic."
+    },
     id: "cyclic-buffer",
     name: "Cyclic Buffer",
     category: "data-structures",

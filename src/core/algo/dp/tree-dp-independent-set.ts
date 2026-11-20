@@ -177,6 +177,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tree DP Independent Set module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Tree DP for maximum weight independent set chooses non-adjacent vertices with maximum total weight. Each node stores two values: the best total in its subtree when it is included and when it is excluded. Including a node forces all children excluded, while excluding it lets each child be chosen or not.",
+        "invariants": [
+            "include[v] is the best weight in v's subtree when v is taken.",
+            "exclude[v] is the best weight when v is skipped.",
+            "Post-order traversal guarantees children are computed before their parent."
+        ],
+        "correctness": "If v is taken, no child can be, so the total is weight[v] plus the sum of children's exclude values. If v is skipped, each child independently contributes the larger of its two values. These cases cover every independent set in the subtree, so induction over the tree gives the optimum at the root.",
+        "complexityRationale": "Each edge is used a constant number of times in one post-order traversal, giving O(V) time. Storing two values and choice flags per node uses O(V) space.",
+        "uses": [
+            "Selecting non-conflicting tasks in a hierarchy",
+            "Maximum weight independent set on tree-structured data",
+            "Network or dependency selection with conflict constraints"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 15.4",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For the weighted sample tree, at a leaf include equals its weight and exclude is zero. Combining upward, a node with weight 5 under A chooses its children's exclude values when taken, and the root's better of include and exclude gives the selected set and its total weight."
+    },
     id: "tree-dp-independent-set",
     name: "Tree DP (Independent Set)",
     category: "dynamic-programming",

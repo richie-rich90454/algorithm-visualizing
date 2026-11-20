@@ -137,6 +137,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Dots and Boxes is played by drawing edges between dots. Completing the fourth side of a box claims it and earns another move. The strategy splits into an opening of avoiding third sides and an endgame of chain battles where players trade runs of boxes.",
+        "invariants": [
+            "An edge may be drawn only once.",
+            "A player who completes a box claims it and moves again.",
+            "The game ends when every edge is drawn and the higher box count wins."
+        ],
+        "correctness": "Each drawn edge is a legal move and box claims follow the fourth-side rule, so the replay is a valid game. The extra-move rule is implemented faithfully, which means the final score and winner match the rules. The illustrated opening shows the chain of forced moves that gives the first player a box.",
+        "complexityRationale": "Following a drawn line over e edges costs O(e) time and O(e) space for edge and claim state. Solving arbitrary positions is exponential in the number of boxes.",
+        "uses": [
+            "A familiar game for teaching chain rules and zugzwang",
+            "Endgame analysis in combinatorial game theory",
+            "An approachable example of a game with repeated moves"
+        ],
+        "references": [
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays",
+            "Sicherman, The Game of Dots and Boxes (research literature)"
+        ],
+        "workedExample": "On a 2x2 dot lattice there are 12 edges. After five edge draws along the illustrated line, the first player completes the fourth side of box (0,0) and claims it, earning another move. The scoreboard records one box for the first player at that point."
+    },
     id: "dots-and-boxes",
     name: "Dots and Boxes",
     category: "game",

@@ -240,6 +240,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Edmonds-Karp module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Edmonds-Karp is Ford-Fulkerson with a specific rule: always choose the shortest augmenting path, measured in number of edges, found by breadth-first search. That rule removes the dependence on capacity size and guarantees a polynomial number of augmentations.",
+        "invariants": [
+            "Every augmenting path chosen has the fewest edges available in the residual graph.",
+            "Distances in the residual graph never decrease as augmentations proceed.",
+            "The flow stays feasible and grows monotonically."
+        ],
+        "correctness": "Each augmentation saturates at least one edge on the chosen path. Because shortest-path distances only increase, an edge can be saturated and later reappear on a shortest path only O(V) times, bounding augmentations by O(V E). When BFS can no longer reach the sink, no augmenting path exists, so the flow is maximum.",
+        "complexityRationale": "There are at most O(V E) augmentations and each BFS costs O(E), giving O(V E^2) time. The residual graph, queue, and predecessor arrays use O(V + E) space.",
+        "uses": [
+            "Reliable maximum flow with a simple polynomial guarantee",
+            "Computing bipartite matching through flow reduction",
+            "A teaching baseline before faster push-relabel methods"
+        ],
+        "references": [
+            "Edmonds and Karp, Theoretical Improvements in Algorithmic Efficiency for Network Flow Problems (1972)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow chapter"
+        ],
+        "workedExample": "Network S-A 3, S-B 2, A-B 1, A-T 2, B-T 3. BFS first finds length-2 paths S-A-T (2) and S-B-T (3), sending 5. The residual edge A-B allows one more unit S-A-B-T, but the source arcs are already saturated, so no further path exists. Total flow is 5."
+    },
     id: "edmonds-karp",
     name: "Edmonds-Karp",
     category: "flow",

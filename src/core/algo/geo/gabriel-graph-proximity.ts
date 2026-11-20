@@ -122,6 +122,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The Gabriel graph connects two sites only when no other site sits inside the circle whose diameter is the segment between them. Intuitively an edge exists when the direct connection is not blocked by a closer point, which gives a sparse proximity graph.",
+        "invariants": [
+            "An edge (u,v) is present iff the closed disk with diameter uv contains no third site.",
+            "The Gabriel graph is a subgraph of the Delaunay triangulation.",
+            "Every reported edge passes the empty-diametral-disk test."
+        ],
+        "correctness": "A point inside the diametral disk subtends an angle greater than 90 degrees at the segment, which is exactly when it would invalidate a Delaunay edge through the circumcircle criterion. Hence every Gabriel edge is a Delaunay edge, and testing each candidate pair with the disk condition includes precisely those Delaunay edges that satisfy the stricter rule. The resulting set of pairs is the Gabriel graph.",
+        "complexityRationale": "The demo tests every pair of sites and checks every other site against its diametral disk, costing O(n^3) time. Only the pair under test and a few coordinates are kept, giving O(n) space beyond the output edge list.",
+        "uses": [
+            "Building proximity networks from spatial point data",
+            "Ecology studies of plant and animal neighbor interactions",
+            "Constructing sparse graphs for mesh generation"
+        ],
+        "references": [
+            "Gabriel and Sokal, A New Statistical Approach to Geographic Variation Analysis, Systematic Zoology 18 (1969)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 9"
+        ],
+        "workedExample": "For sites (0,0), (2,0), (1,1), the disk on (0,0)-(2,0) is centered at (1,0) with radius 1 and contains (1,1) on its boundary, so under the closed-disk rule that edge is excluded. The disks on the other two pairs contain no third site, so those edges are kept."
+    },
+
     id: "gabriel-graph-proximity",
     name: "Gabriel Graph (Proximity)",
     category: "geometry",

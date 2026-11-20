@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This tiling DP counts ways to cover a 2-by-n board with dominoes and L-shaped trominoes. The recurrence dp[i] = 2*dp[i-1] + dp[i-3] comes from extending a shorter tiling in the possible local configurations at the right edge. The factor two reflects the two orientations of the tromino pair that fills a gap.",
+        "invariants": [
+            "dp[i] counts tilings of the 2-by-i board.",
+            "dp[0] = 1 and dp[1] = 1 are the base tilings.",
+            "Every tiling of width i ends in one of the local patterns accounted for by the recurrence."
+        ],
+        "correctness": "Examining the rightmost column, a tiling either ends with a vertical domino, giving dp[i-1], or with horizontal pieces and trominoes in the two mirrored arrangements, contributing another 2*dp[i-1] component through the profile, plus the tromino-gap case dp[i-3]. The local case analysis is exhaustive and disjoint, so the recurrence counts every tiling once.",
+        "complexityRationale": "Computing each width from three earlier values is constant work, so time is O(n). Storing the dp array uses O(n) space, reducible to O(1) with rolling variables.",
+        "uses": [
+            "Counting tilings of small boards with mixed pieces",
+            "Combinatorial enumeration with local patterns",
+            "Profile and recurrence DP teaching examples"
+        ],
+        "references": [
+            "Graham, Knuth and Patashnik, Concrete Mathematics, Chapter 7",
+            "Stanley, Enumerative Combinatorics, Vol. 1, Chapter 1"
+        ],
+        "workedExample": "With dp[0]=1 and dp[1]=1, dp[2]=2 and dp[3]=2*2+1=5. There are five ways to tile a 2-by-3 board with dominoes and L-trominoes."
+    },
     id: "tiling-dp-domino-tromino",
     name: "Tiling (Domino + Tromino)",
     category: "dynamic-programming",

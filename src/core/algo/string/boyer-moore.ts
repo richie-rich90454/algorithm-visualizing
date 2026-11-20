@@ -247,6 +247,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Boyer-Moore module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Boyer-Moore aligns the pattern with the text and compares from right to left. On a mismatch, the bad-character rule shifts so the mismatching text character aligns with its rightmost occurrence in the pattern, while the good-suffix rule re-aligns a matched suffix with its next occurrence. Large skips make it very fast in practice.",
+        "invariants": [
+            "Every alignment skipped by a shift rule cannot contain an occurrence starting between the old and new shift.",
+            "Comparisons proceed right-to-left within an alignment; a full leftward scan means a match at that shift."
+        ],
+        "correctness": "The bad-character shift is safe because any occurrence starting before the computed shift would need the mismatching character to align with a pattern position other than its rightmost one, which is impossible. The good-suffix shift is safe because it aligns the already-matched suffix only with its possible reappearances. Together they never skip a valid occurrence, so every reported shift is a true match.",
+        "complexityRationale": "Preprocessing the bad-character table costs O(sigma + m) and the period table O(m). Large skips give O(n/m) typical time, while the worst case is O(nm) when shifts are repeatedly one; space is O(sigma + m).",
+        "uses": [
+            "Fast substring search in text editors and grep",
+            "DNA and protein sequence searching",
+            "A standard benchmark for string-search performance"
+        ],
+        "references": [
+            "Boyer and Moore, A Fast String Searching Algorithm, 1977",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "Text \"ababcabababcab\", pattern \"abcab\": at the first alignment a right-to-left scan mismatches quickly, so the bad-character rule shifts the pattern ahead. When the window at index 9 spells \"abcab\" the full scan succeeds and the match is reported."
+    },
     id: "boyer-moore",
     name: "Boyer-Moore",
     category: "string",

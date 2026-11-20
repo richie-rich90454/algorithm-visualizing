@@ -97,6 +97,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Burrows-Wheeler transform rearranges a string's characters to group equal letters together, making it far more compressible. It forms all rotations of the string with a unique end marker, sorts them lexicographically, and records the last column of the sorted matrix plus the row index of the original rotation.",
+        "invariants": [
+            "The sorted rotation matrix contains the circular shifts of the input in lexicographic order.",
+            "The last column holds the character preceding each rotation in the original circular string, so equal characters cluster."
+        ],
+        "correctness": "Sorting rotations groups them by prefix, so characters following the same context tend to be identical, which gives the transform its compression-friendly locality. It is reversible: the primary index together with the last column and the sorted first column allow reconstruction through the LF-mapping.",
+        "complexityRationale": "Forming n rotations uses O(n^2) characters of space and sorting them with a comparison sort costs O(n^2 log n) in the worst case (O(n log n) comparisons). The visualization uses a straightforward sort; production implementations build the same matrix from a suffix array in O(n).",
+        "uses": [
+            "Lossless data compression, notably bzip2",
+            "Full-text indexes and the FM-index",
+            "Bioinformatics read alignment"
+        ],
+        "references": [
+            "Burrows and Wheeler, A Block-Sorting Lossless Data Compression Algorithm, 1994",
+            "Knuth, The Art of Computer Programming, Vol. 3"
+        ],
+        "workedExample": "For \"banana$\" the sorted rotations begin \"$banana\", \"a$banan\", \"ana$ban\", and so on; taking the last column yields \"annb$aa\", and the original rotation \"banana$\" sits at primary index 4."
+    },
     id: "burrows-wheeler-transform",
     name: "Burrows-Wheeler",
     category: "string",

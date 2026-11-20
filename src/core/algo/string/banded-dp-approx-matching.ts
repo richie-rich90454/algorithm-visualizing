@@ -133,6 +133,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Approximate matching finds where a pattern occurs with a few edits. A full edit-distance table is quadratic, but if we only allow k edits the optimal alignment never strays more than k cells from the main diagonal. So we fill only a band of width 2k+1 around the diagonal and treat everything outside as unreachable.",
+        "invariants": [
+            "Every cell inside the band holds the edit distance between a pattern prefix and a text prefix ending there.",
+            "Cells outside the band are effectively infinite because reaching them would already require more than k edits.",
+            "The last row of the band gives the distance for each possible alignment end position."
+        ],
+        "correctness": "Any alignment with at most k edits uses at most k gaps in each direction, so its path stays within distance k of the diagonal and lies inside the band. Running the standard edit-distance recurrence inside the band therefore finds the true minimum for every reachable window. A hit is reported exactly when the last-row value is at most k, so no valid approximate occurrence is missed.",
+        "complexityRationale": "The band has width 2k+1 and there are m+1 rows, so about O(mk) cells are computed in O(1) each; for text length n the work is O(nk). Only the banded table is stored, giving the same order of space.",
+        "uses": [
+            "Approximate search in spell checkers and fuzzy find tools",
+            "Searching DNA or protein sequences with tolerated mutations",
+            "Scoring candidate alignments before a full dynamic-programming pass"
+        ],
+        "references": [
+            "Gusfield, Algorithms on Strings, Trees, and Sequences, Chapter 12",
+            "CLRS, Introduction to Algorithms, Chapter 32"
+        ],
+        "workedExample": "Text \"ababcab\", pattern \"abc\", k=1. The band of width 3 around the diagonal is filled; the window at index 0 (\"aba\") has distance 1 and the window at index 2 (\"abc\") has distance 0, so hits at starts 0 and 2 are reported."
+    },
     id: "banded-dp-approx-matching",
     name: "Banded DP Approx",
     category: "string",

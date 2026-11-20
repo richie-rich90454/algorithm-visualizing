@@ -106,6 +106,16 @@ export interface VisualEdge {
  * is just moving a pointer along the array – no algorithm code runs during
  * playback, which keeps stepping instant and deterministic.
  */
+/** A single free-form statistic emitted on a frame. Scalars cover counters and
+ *  flags; nested arrays and objects cover matrices, tables, and internal state. */
+export type MetaValue =
+    | number
+    | string
+    | boolean
+    | null
+    | MetaValue[]
+    | { [key: string]: MetaValue };
+
 export interface VisualFrame {
     /** Zero-based index of this frame within the full sequence. */
     stepNumber: number;
@@ -119,7 +129,7 @@ export interface VisualFrame {
     codeLineNumber?: number;
     /** Which layout engine should position the entities before drawing. */
     layout: LayoutType;
-    /** Free-form statistics such as comparisons, swaps, visits, distance.
-     *  Values may be numbers, strings, booleans, or small arrays. */
-    meta: Record<string, number | string | boolean | Array<number | string>>;
+    /** Free-form statistics such as comparisons, swaps, visits, distance,
+     *  and structured state such as matrices or tables. */
+    meta: Record<string, MetaValue>;
 }

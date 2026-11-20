@@ -148,6 +148,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A run is a maximal periodic substring such as \"ababab\". This algorithm uses Duval's Lyndon factorization: every maximal run straddles a factor boundary, so those boundaries serve as anchors. Checking a small neighborhood around each anchor for periodic intervals enumerates all runs in linear time.",
+        "invariants": [
+            "Duval factors are Lyndon words in non-increasing order and any run of period p crosses at least one factor boundary.",
+            "A candidate interval is a run only if it repeats with period p and cannot be extended left or right with that same period."
+        ],
+        "correctness": "The runs theorem guarantees every maximal run crosses a Lyndon factor boundary, so examining neighborhoods of all boundaries cannot miss a run. Verifying periodicity and maximality filters the candidates and deduplication removes repeats, yielding exactly all maximal runs.",
+        "complexityRationale": "Duval factorization is O(n) and the number of candidate neighborhoods per anchor is bounded by a constant times the period, leading to O(n) total checks with the standard analysis; space is O(n) for factors and results.",
+        "uses": [
+            "Finding all tandem repeats in DNA sequences",
+            "String periodicity analysis",
+            "Compressing repeated structure in texts"
+        ],
+        "references": [
+            "Bannai et al., The Runs Theorem, 2007",
+            "Crochemore et al., Algorithms on Strings, runs chapter"
+        ],
+        "workedExample": "For \"banana\" the Duval factors \"b\", \"an\", \"an\", \"a\" provide boundaries; checking around them finds the run \"anana\" at indices 1 through 5 with period 2, which is maximal and reported."
+    },
     id: "runs-via-lyndon",
     name: "Runs via Lyndon",
     category: "string",

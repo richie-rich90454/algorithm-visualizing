@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     }
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Trial division factors an integer by testing candidate divisors from 2 upward and splitting off each one that divides evenly. Once the divisor's square exceeds the remaining cofactor, that cofactor must be prime. It is the simplest factoring method and the baseline that more clever algorithms improve upon.",
+        "invariants": [
+            "Every divisor tested with d*d <= remaining is complete before moving on.",
+            "Each found divisor is removed as many times as it divides.",
+            "If no divisor is found up to the square root, the remaining value is prime."
+        ],
+        "correctness": "Any composite cofactor has a divisor at most its square root, so scanning up to that bound cannot miss a factor. Dividing out each factor repeatedly yields the full prime factorization, and the leftover after the loop is prime by the same reasoning. The reported pair therefore multiplies back to n.",
+        "complexityRationale": "Up to sqrt(n) candidate divisors are tested with a modulo operation each, giving O(sqrt(n)) time. Only a few integer variables are used, so space is O(1).",
+        "uses": [
+            "Factoring small integers and teaching factorization",
+            "A subroutine inside more advanced factoring algorithms",
+            "Checking primality of small numbers"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.4",
+            "Crandall and Pomerance, Prime Numbers, Section 5.1"
+        ],
+        "workedExample": "Factor 91: test 2 (no), then 7 divides, giving 91 = 7 * 13. Since 13 is prime and 7^2 <= 91 was the relevant bound step, the factorization stops with the pair 7 and 13."
+    },
     id: "trial-division-factorization",
     name: "Trial Division Factorization",
     category: "math",

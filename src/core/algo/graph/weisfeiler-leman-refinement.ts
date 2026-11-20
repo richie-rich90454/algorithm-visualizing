@@ -136,6 +136,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The one-dimensional Weisfeiler-Leman test colors vertices to distinguish non-isomorphic graphs. Round zero colors by degree, then each round recolors a vertex by its own color together with the sorted multiset of its neighbors' colors, until the coloring stabilizes. Different histograms of colors prove the graphs are not isomorphic.",
+        "invariants": [
+            "Colors refine monotonically and never merge previously distinct classes.",
+            "Two isomorphic graphs have identical color histograms after every round.",
+            "Stabilization occurs after at most V rounds."
+        ],
+        "correctness": "Recoloring by the multiset of neighbor colors preserves isomorphism invariance, so isomorphic graphs always match at every round. Therefore differing histograms certify non-isomorphism. The test is incomplete, meaning matching histograms do not prove isomorphism, but the certificate it gives when colors differ is sound.",
+        "complexityRationale": "Each of k refinement rounds sorts neighbor colors over all edges, O(k(V + E)) time, with O(V + E) space for colors and signatures.",
+        "uses": [
+            "A fast non-isomorphism test in graph libraries",
+            "A preprocessing step for graph kernels and machine learning on graphs",
+            "Canonical color refinement in chemical graph matching"
+        ],
+        "references": [
+            "Weisfeiler and Leman, The Reduction of a Graph to Canonical Form (1968)",
+            "Cai, Furer, and Immerman, An Optimal Lower Bound on the Number of Variables for Graph Identification (1992)"
+        ],
+        "workedExample": "The triangle has all degrees two and stays uniformly colored. The path splits after one round because the middle vertex has two degree-one neighbors while the leaves have one degree-two neighbor. The histograms differ, so the graphs are non-isomorphic."
+    },
     id: "weisfeiler-leman-refinement",
     name: "Weisfeiler–Lehman Refinement",
     category: "graph",

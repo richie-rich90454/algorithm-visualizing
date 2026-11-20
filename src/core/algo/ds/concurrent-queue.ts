@@ -164,6 +164,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Concurrent Queue module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A concurrent queue lets multiple threads enqueue and dequeue without locks. The Michael-Scott design uses a dummy head node, a tail pointer, and atomic compare-and-swap operations to swing pointers. If a thread lags, other threads help it finish, so the queue keeps making progress.",
+        "invariants": [
+            "The head always points to a dummy node before the first real element.",
+            "The tail is never behind the last reachable node.",
+            "The chain of next pointers stays singly linked and acyclic."
+        ],
+        "correctness": "Enqueue CAS-links a new node after tail; if the tail has moved, the loop retries, so no node is lost. Dequeue CAS-advances head past the dummy, returning the value that was behind it. Helping a lagging tail preserves the same linked order, so dequeue returns elements in FIFO order without locks.",
+        "complexityRationale": "Each successful operation is a constant number of CAS steps, O(1) amortized, with retries under contention. One node per queued value plus a dummy gives O(n) space.",
+        "uses": [
+            "Work-stealing and thread pools",
+            "Lock-free producer-consumer pipelines",
+            "Message passing in runtime systems"
+        ],
+        "references": [
+            "Maged M. Michael and Michael L. Scott, \"Simple, Fast, and Practical Non-Blocking and Blocking Concurrent Queue Algorithms\", PODC 1996",
+            "Herlihy and Shavit, The Art of Multiprocessor Programming, Chapter 7"
+        ],
+        "workedExample": "With a dummy head H and tail T, thread A enqueues 1 by CAS-linking node 1 after T and swinging T to node 1. Thread B enqueues 2 similarly. A dequeue CAS-advances H past node 1 and returns 1, leaving node 2 next in FIFO order."
+    },
     id: "concurrent-queue",
     name: "Concurrent Queue",
     category: "data-structures",

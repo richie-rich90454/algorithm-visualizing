@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Network simplex solves min-cost flow by maintaining a spanning tree of basic arcs, analogous to the simplex basis in linear programming. Node potentials make every basic arc have zero reduced cost; when a non-tree arc has negative reduced cost it enters the basis, creating a cycle along which flow is pushed until an arc leaves.",
+        "invariants": [
+            "Basic arcs form a spanning tree and determine the flow and potentials.",
+            "All tree arcs have zero reduced cost under the current potentials.",
+            "The flow stays feasible while cost strictly decreases at each pivot."
+        ],
+        "correctness": "When every non-tree arc has nonnegative reduced cost, the tree flow satisfies the min-cost flow optimality conditions, so it is optimal. A negative reduced-cost arc identifies a profitable cycle; pushing the maximum feasible amount around it and dropping a saturated arc preserves feasibility and lowers cost, so the algorithm converges to an optimum.",
+        "complexityRationale": "The number of pivots is bounded by roughly O(V E) in practical analyses of the method, and each pivot walks a tree path and recomputes potentials. The tree, potentials, and arc data use O(V + E) space.",
+        "uses": [
+            "Large-scale min-cost flow in logistics and energy networks",
+            "Solving transportation and transshipment problems efficiently",
+            "A specialized linear program solver for network models"
+        ],
+        "references": [
+            "Ahuja, Magnanti, and Orlin, Network Flows, network simplex chapter",
+            "Dantzig, Linear Programming and Extensions (1963)"
+        ],
+        "workedExample": "Vertices 0,1,2 with arcs 0-1 cap 2 cost 1, 1-2 cap 2 cost 1, 0-2 cap 2 cost 5 and demand 2. The initial basis uses the direct 0-2 arc at cost 10. Arc 0-1 has negative reduced cost, so it enters; after pivoting, flow goes 0-1-2 for a total cost of 4, which is optimal."
+    },
     id: "network-simplex",
     name: "Network Simplex",
     category: "flow",

@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A tango tree is a BST augmented with preferred-path auxiliary trees. After each search the path just used becomes preferred, so repeatedly accessed keys are found in very few steps, making the structure competitive with the optimal offline BST.",
+        "invariants": [
+            "Each node has at most one preferred child.",
+            "Preferred paths are grouped into auxiliary trees.",
+            "Searches update preferences to reflect recent access."
+        ],
+        "correctness": "Searches follow preferred pointers within auxiliary trees and cross to neighboring paths when leaving the preferred route; marking the used path preferred makes future identical searches cheap. The competitive analysis bounds cost against the offline optimum while BST order keeps all keys findable.",
+        "complexityRationale": "Each search touches O(log n) auxiliary-tree levels with logarithmic-logarithmic factors, O(log n log log n) time. One node per key plus auxiliary links is O(n) space.",
+        "uses": [
+            "Adaptive search trees with locality of reference",
+            "Caches and dictionaries with skewed access patterns",
+            "Approximations of the optimal dynamic BST"
+        ],
+        "references": [
+            "Demaine, Harmon, Iacono, and Patrascu, Dynamic Optimality: Almost, FOCS 2007",
+            "Iacono, Improved Dynamic Optimality for Binary Search Trees"
+        ],
+        "workedExample": "Keys 5, 3, 7, 2, 6 form a BST; searching 6 marks its root-to-node path preferred, so a repeated search follows that path quickly, and subtree sizes support rank queries."
+    },
     id: "tango-tree",
     name: "Tango Tree",
     category: "data-structures",

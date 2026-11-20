@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Stock with cooldown forbids buying on the day immediately after a sale. The DP keeps two states: hold, the best balance while owning a stock, and cash, the best balance while flat and eligible to buy. Buying uses cash from before the cooldown, so a previous-cash variable preserves the one-day delay.",
+        "invariants": [
+            "hold is the best balance after holding a stock through the current day.",
+            "cash is the best flat balance after any required cooldown.",
+            "A purchase on day i draws only on cash from day i-2 or earlier."
+        ],
+        "correctness": "Selling converts hold into cash, and buying sets hold to previous cash minus the price, where previous cash excludes yesterday's sale so the cooldown is respected. Taking maxima at each step keeps the best balance per state. Induction over days yields cash as the maximum profit obeying the rule.",
+        "complexityRationale": "One scan over n prices with constant work gives O(n) time. A few running variables suffice, so space is O(1).",
+        "uses": [
+            "Portfolio decisions with mandatory rest periods",
+            "State-machine DP with timing constraints",
+            "A compact example of modeling cooldowns in DP"
+        ],
+        "references": [
+            "LeetCode problem 309, Best Time to Buy and Sell Stock with Cooldown",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For prices [1,2,3,0,2], buy at 1 and sell at 2, take the cooldown day, then buy at 0 and sell at 2 for a total profit of 3. The DP reports 3 with hold and cash updated day by day."
+    },
     id: "stock-with-cooldown",
     name: "Stock with Cooldown",
     category: "dynamic-programming",

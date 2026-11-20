@@ -157,6 +157,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pancake sort uses only prefix reverses, like flipping a stack with a spatula. It finds the largest unsorted element, flips it to the top, then flips the whole unsorted prefix to seat it at the bottom. Each element lands in at most two flips.",
+        "invariants": [
+            "The suffix beyond the current unsorted prefix is sorted and never flipped again.",
+            "A prefix flip preserves the relative order of the untouched suffix."
+        ],
+        "correctness": "The first flip brings the largest remaining element to the top; the second moves it to the final position of the unsorted prefix. By induction over prefix size, the suffix grows into a fully sorted array.",
+        "complexityRationale": "Finding the maximum costs O(n) and each element needs up to two flips of O(n), so O(n^2) time. The stack is modified in place with O(1) extra storage.",
+        "uses": [
+            "Sorting when only prefix reversals are allowed",
+            "Genome rearrangement models with prefix flips",
+            "Teaching constrained sorting operations"
+        ],
+        "references": [
+            "Gates and Papadimitriou, Bounds for Sorting by Prefix Reversal, Discrete Mathematics, 1979",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "For [5, 1, 4, 2, 3], 5 is already at the top, so flip all four remaining positions to get [3, 2, 4, 1, 5]; find 4, flip its prefix and then the whole prefix to place 4 before 5, continuing until [1, 2, 3, 4, 5]."
+    },
     id: "pancake-sort",
     name: "Pancake Sort",
     category: "sorting",

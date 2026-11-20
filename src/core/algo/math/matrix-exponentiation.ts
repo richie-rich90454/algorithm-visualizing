@@ -187,6 +187,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Matrix Exponentiation module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Matrix exponentiation computes M^k by applying binary exponentiation to matrices. It squares the matrix at every step and folds the current power into a result whenever the exponent's bit is 1. Because matrix multiplication is associative, this gives M^k in O(log k) multiplications, which is the standard trick for fast linear recurrences.",
+        "invariants": [
+            "The factor matrix equals M raised to 2^t after t bits.",
+            "The result equals M raised to the value of the exponent bits processed so far.",
+            "The identity matrix is the neutral starting value for the result."
+        ],
+        "correctness": "Associativity of matrix multiplication lets the binary expansion of k be used exactly as for scalars: the result accumulates M raised to the selected powers of two. Induction over the bits keeps result equal to M to the partial exponent. When the last bit is processed the result is M^k.",
+        "complexityRationale": "There are O(log k) squarings, each a d-by-d matrix multiplication costing O(d^3), so time is O(d^3 log k). Holding the result and factor matrices uses O(d^2) space.",
+        "uses": [
+            "Computing Fibonacci and other linear recurrences in O(log n)",
+            "Graph reachability and path counting via adjacency powers",
+            "Discrete dynamical system simulation"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 31.6",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.4"
+        ],
+        "workedExample": "For the Fibonacci matrix [[1,1],[1,0]] to the 7th power, binary exponentiation squares the matrix three times and multiplies on the set bits of 7 = 111. The top-left entry of the result is F_8 = 21."
+    },
     id: "matrix-exponentiation",
     name: "Matrix Exponentiation",
     category: "math",

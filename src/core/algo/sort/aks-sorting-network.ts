@@ -139,6 +139,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The AKS network sorts a fixed number of inputs with a comparator circuit whose depth grows only as O(n log n). It stacks epsilon-halver layers that repeatedly split a block into a cleaner and a dirtier half, so every wire advances toward its final rank. The construction settled the long-open question of whether sorting networks can match the O(n log n) depth lower bound.",
+        "invariants": [
+            "Once a comparator layer finishes, wires connected within a block are in local sorted order.",
+            "The set of values on the wires never changes; only their positions do."
+        ],
+        "correctness": "Each epsilon-halver layer reduces the number of misplaced elements in a block by a constant fraction. After logarithmically many layers every possible input order is sorted, because a sorting network's correctness depends only on its fixed compare-and-swap pattern, not on the input values.",
+        "complexityRationale": "The recursive halving construction uses O(n log n) comparators arranged in O(n log n) depth, matching the information-theoretic lower bound. The visualization caps the frame budget so classroom playback stays short.",
+        "uses": [
+            "Proving that O(n log n) depth sorting networks exist",
+            "Designing constant-depth parallel sorting circuits",
+            "Studying the theoretical limits of comparison networks"
+        ],
+        "references": [
+            "Ajtai, Komlos, and Szemeredi, An O(n log n) Sorting Network, STOC 1983",
+            "CLRS, Introduction to Algorithms, Chapter 27 (sorting networks)"
+        ],
+        "workedExample": "With four wires [8, 4, 6, 2], a layer compares disjoint pairs and orders each pair locally. Later layers compare across blocks until the wires read [2, 4, 6, 8]; the same fixed wire pattern sorts any other four input values."
+    },
     id: "aks-sorting-network",
     name: "AKS Sorting Network",
     category: "sorting",

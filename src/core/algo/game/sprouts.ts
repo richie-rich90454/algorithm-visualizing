@@ -112,6 +112,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sprouts starts with spots that each have three lives. A move draws a curve joining two live spots or looping one spot, then places a new spot on the curve. The endpoints each lose a life and the new spot starts with one, so lives are consumed and the game must end quickly.",
+        "invariants": [
+            "Each spot has at most three incident curve ends at all times.",
+            "A move spends two endpoint lives and adds one new life.",
+            "With n starting spots the game lasts at most 3n-1 moves."
+        ],
+        "correctness": "Every drawn curve respects the degree limit because it only uses spots with available lives, and the new spot begins with the one remaining life, so the position stays valid. The life count decreases by one per move from an initial 3n, which bounds the number of moves by 3n-1 and guarantees termination.",
+        "complexityRationale": "Following a move line over m curves costs O(m) time and O(spots) space for the live-spot table.",
+        "uses": [
+            "A topological game for teaching lifecycle bounds",
+            "A planar graph construction game",
+            "An example of a finite game bounded by an invariant"
+        ],
+        "references": [
+            "Conway, On Numbers and Games",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "With two starting spots there are six lives and at most five moves. The opening loops spot S1, spending two of its lives and adding a new one-life spot on the curve; S1 is left with one life and the newcomer also has one, so play can continue but lives drain fast."
+    },
     id: "sprouts",
     name: "Sprouts",
     category: "game",

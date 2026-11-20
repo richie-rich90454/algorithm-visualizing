@@ -156,6 +156,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Points on an elliptic curve form a group under a geometric chord-and-tangent rule. To add P and Q, draw the line through them, find its third intersection with the curve, and reflect that point across the x-axis. Algebraically this becomes a slope computation followed by formulas for the resulting coordinates over a finite field.",
+        "invariants": [
+            "Both inputs and the result satisfy the curve equation y^2 = x^3 + 2x + 2 over F_17.",
+            "A vertical line means the result is the point at infinity.",
+            "The slope lambda is computed with a modular inverse when the points differ, or a tangent slope when they coincide."
+        ],
+        "correctness": "The chord through P and Q meets the cubic in exactly three points counting multiplicity, so the third point is well defined. Reflecting it gives the group sum, and the algebraic formulas derive directly from substituting the line into the curve equation. The group law is associative, making repeated addition a valid operation.",
+        "complexityRationale": "Each addition needs a few field operations plus one modular inverse costing O(log p), so the time is O(log p). Only the involved point coordinates are kept, giving O(1) space.",
+        "uses": [
+            "Elliptic-curve cryptography key exchange and signatures",
+            "Point multiplication in curve-based cryptosystems",
+            "Arithmetic in finite-field algebraic geometry"
+        ],
+        "references": [
+            "Koblitz, Elliptic Curve Cryptosystems (1987)",
+            "Silverman, The Arithmetic of Elliptic Curves, Chapter 1"
+        ],
+        "workedExample": "On y^2 = x^3+2x+2 over F_17 add P = (5,1) and Q = (6,3). The slope lambda = (3-1)/(6-5) = 2, so x_R = 4-5-6 = -7 = 10 mod 17 and y_R = 2*(5-10)-1 = -11 = 6 mod 17. The sum is (10,6)."
+    },
     id: "elliptic-curve-point-addition",
     name: "Elliptic Curve Point Addition",
     category: "math",

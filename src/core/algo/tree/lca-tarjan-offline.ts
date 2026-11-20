@@ -214,6 +214,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Tarjan Offline LCA module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Tarjan's offline LCA algorithm answers a whole batch of queries with one depth-first search and a disjoint-set union. As the DFS finishes a subtree, its vertices are unioned into the parent's set; a query (u,v) is answered at the moment the second of the two vertices is finished, by looking up the first one's representative.",
+        "invariants": [
+            "At any point, union-find sets group vertices whose subtrees share the current DFS ancestor.",
+            "A query is answered exactly when both endpoints have been finished.",
+            "The representative of the first finished endpoint is the LCA."
+        ],
+        "correctness": "When the DFS finishes a vertex v, all fully processed descendants of v are unioned under v, so find of a finished vertex u gives the highest ancestor whose subtree has been completed at that moment. For a query (u,v), assume v finishes second; at that instant u is in the set rooted at the LCA of u and v, because that is the deepest ancestor whose subtree completion covers both. Hence find(u) is exactly the LCA, and answering at the second finish makes the result correct for every query.",
+        "complexityRationale": "The DFS visits n vertices, each union and find is nearly constant with path compression and union by rank, and q queries are each answered once, giving O((n + q) alpha(n)) time. Storage for the tree, queries, and union-find is O(n + q).",
+        "uses": [
+            "Answering large batches of LCA queries offline",
+            "Computing distances and path statistics for many pairs",
+            "Competitive programming problems with all queries known up front"
+        ],
+        "references": [
+            "Tarjan, Applications of Path Compression on Balanced Trees, Journal of the ACM 26 (1979)",
+            "CLRS, Introduction to Algorithms, Chapter 21 (disjoint sets)"
+        ],
+        "workedExample": "Tree root A with children B and C and queries (B,C) and (A,B). The DFS finishes B and unites it under A, then finishes C and unites it under A. At that moment find(B) is A, so LCA(B,C) = A; query (A,B) resolves to A as well."
+    },
+
     id: "lca-tarjan-offline",
     name: "LCA (Tarjan Offline)",
     category: "tree",

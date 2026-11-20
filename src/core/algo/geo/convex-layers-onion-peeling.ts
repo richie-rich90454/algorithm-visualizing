@@ -145,6 +145,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Onion peeling repeatedly removes the convex hull of the remaining points. The first hull is the outermost layer, the hull of what is left is the next layer, and so on until no points remain. It turns a flat point set into nested convex rings.",
+        "invariants": [
+            "Each layer is the convex hull of all points not yet peeled.",
+            "Every peeled point belongs to exactly one layer.",
+            "Layers are strictly nested, with each inside the previous one."
+        ],
+        "correctness": "The monotone-chain hull of the current set is by definition its outermost convex boundary, and no remaining point lies outside it. Removing that hull leaves an interior set whose own hull is the next layer. Induction over the layers shows every point is assigned to the layer on which it first appears as an extreme point, giving a unique nested decomposition.",
+        "complexityRationale": "With k layers, each hull computation costs O(m log m) for the m remaining points, which sums to O(k*n log n) and is O(n^2 log n) in the worst case. Storage is O(n) for the current and peeled point sets.",
+        "uses": [
+            "Visualizing nested structure in spatial data",
+            "Computing convex depth layers for outlier detection",
+            "Hierarchical shape description"
+        ],
+        "references": [
+            "Chazelle, On the Convex Layers of a Planar Set, Discrete & Computational Geometry 4 (1989)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 1"
+        ],
+        "workedExample": "An outer square at (0,0), (4,0), (4,4), (0,4) surrounding an inner square at (1,1), (3,1), (3,3), (1,3). The first monotone-chain hull is the outer square and is peeled off. The second hull is the inner square, and a third pass finds nothing, giving two layers."
+    },
+
     id: "convex-layers-onion-peeling",
     name: "Convex Layers (Onion Peeling)",
     category: "geometry",

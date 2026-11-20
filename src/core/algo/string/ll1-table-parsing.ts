@@ -118,6 +118,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LL(1) parses with a stack and one token of lookahead. A parsing table indexed by (nonterminal, lookahead) says which production to apply; the parser expands nonterminals by pushing their right-hand sides and matches terminals by consuming input.",
+        "invariants": [
+            "The stack plus the unconsumed input represents a leftmost derivation in progress.",
+            "The top of the stack is the symbol currently being expanded or matched, and a terminal on top must equal the lookahead to proceed."
+        ],
+        "correctness": "Each table-driven expansion applies a production licensed by the grammar's FIRST and FOLLOW sets for that lookahead, so it follows a valid leftmost derivation. Matching advances the input only when symbols agree; if the stack empties exactly as input ends, the derivation generates the input.",
+        "complexityRationale": "Each token is consumed once and each expansion is an O(1) table lookup, so parsing is O(n) after the table is built; the stack holds at most O(n) symbols, giving O(n) space.",
+        "uses": [
+            "Top-down compilers and interpreters",
+            "Recursive-descent parser generators",
+            "Validating simple expression grammars"
+        ],
+        "references": [
+            "Aho, Lam, Sethi, and Ullman, Compilers: Principles, Techniques, and Tools, Chapter 4",
+            "Sipser, Introduction to the Theory of Computation"
+        ],
+        "workedExample": "Grammar E→aG, G→+E | epsilon on \"a+a$\": expand E via M[E,a], match 'a', use M[G,+] to push \"+E\", match '+', expand E again, then apply M[G,$] as epsilon; the stack empties with input consumed and the input is accepted."
+    },
     id: "ll1-table-parsing",
     name: "LL(1) Parsing",
     category: "string",

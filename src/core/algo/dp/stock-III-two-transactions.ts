@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Best time to buy and sell stock with at most two transactions is solved with four state variables: buy1, sell1, buy2, and sell2. Each day updates them in order, where buying subtracts the price and selling adds it back. Because later states may build on earlier completed trades, updating in sequence prevents using a sell from the same day to fund a buy.",
+        "invariants": [
+            "buy1 is the best balance after one purchase, sell1 after one completed trade.",
+            "buy2 and sell2 are the corresponding balances allowing a second trade.",
+            "sell2 is the maximum profit with at most two trades."
+        ],
+        "correctness": "Each buy state takes the best of holding through or buying today from the prior cash balance; each sell state takes the best of holding or selling today. Processing the four states in dependency order means a second buy can use profit from the first completed sale. Induction over days gives the true maximum profit.",
+        "complexityRationale": "A single pass over n prices updates four variables in constant time, so O(n) time and O(1) space.",
+        "uses": [
+            "Maximizing profit with a limited number of trades",
+            "Dynamic programming over financial state machines",
+            "Extending to k transactions by adding more state pairs"
+        ],
+        "references": [
+            "LeetCode problem 123, Best Time to Buy and Sell Stock III",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For prices [3,3,5,0,0,3,1,4], buy low near 0 and sell near 3, then buy at 1 and sell at 4. The DP reports a total profit of 6 from these two trades."
+    },
     id: "stock-III-two-transactions",
     name: "Stock III (Two Transactions)",
     category: "dynamic-programming",

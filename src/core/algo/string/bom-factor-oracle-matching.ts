@@ -106,6 +106,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "BOM builds a factor oracle of the reversed pattern, an automaton recognizing all reversed factors of the pattern. It scans text windows backward as long as the oracle accepts, using the length of the longest accepted factor to choose a safe shift. A full-length read is then verified as a real match.",
+        "invariants": [
+            "After reading a suffix backward, the oracle is in a state accepting exactly the reversed factors seen so far.",
+            "The number of accepted characters equals the longest suffix that is a pattern factor, which bounds how far the window may shift without missing an occurrence."
+        ],
+        "correctness": "Every substring of a true occurrence is a factor of the pattern, so the oracle accepts the entire window whenever a match is present and verification confirms it. If only s characters are accepted, no occurrence can begin in the positions that would require a longer non-factor, so shifting by the factor length is safe.",
+        "complexityRationale": "Building the factor oracle takes O(m) expected time and space for pattern length m. Backward scanning is O(n) on average over the text, with an O(nm) worst case when factors keep matching.",
+        "uses": [
+            "Exact string search on large corpora",
+            "Pattern matching in indexed or compressed text",
+            "A lighter alternative to BNDM when building bit masks is costly"
+        ],
+        "references": [
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings, Chapter 5",
+            "Allauzen, Crochemore, and Raffinot, Factor Oracle, 1999"
+        ],
+        "workedExample": "Pattern \"abc\" in text \"ababcab\": the oracle recognizes the reversed factors of \"abc\". At the window starting at index 2 the backward scan reads \"cba\" fully through the oracle and verification confirms a match at index 2, while windows ending in a character that is not a pattern factor are skipped earlier."
+    },
     id: "bom-factor-oracle-matching",
     name: "BOM Matching",
     category: "string",

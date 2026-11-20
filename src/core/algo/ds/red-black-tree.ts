@@ -200,6 +200,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Red-Black Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A red-black tree is a BST with one color bit per node. Its rules, no two adjacent red nodes and equal black height on every root-to-leaf path, force logarithmic height; insertion fixes violations with recolorings and a few rotations.",
+        "invariants": [
+            "The root is black.",
+            "Every red node has black children.",
+            "All paths from a node to its leaves have the same number of black nodes."
+        ],
+        "correctness": "Equal black height bounds the longest path to at most twice the shortest, so height is O(log n). Insertion adds a red leaf that can only violate the red-red rule, and recoloring plus rotations restore the invariants without breaking BST order across all uncle cases.",
+        "complexityRationale": "Search follows one path of O(log n) nodes; insert and delete do O(log n) work plus a constant number of rotations. One color bit per node keeps space O(n).",
+        "uses": [
+            "Ordered maps and sets in language libraries such as TreeMap and std::map",
+            "Scheduler and virtual memory structures",
+            "Balanced ordered database indexes"
+        ],
+        "references": [
+            "Guibas and Sedgewick, A Dichromatic Framework for Balanced Trees, FOCS 1978",
+            "CLRS, Introduction to Algorithms, Chapter 13"
+        ],
+        "workedExample": "Insert 7, 3, 18, 10, 22, 8, 11 into an empty tree. Red-red conflicts are fixed by recoloring 3 and 18 black and rotating where needed; the final tree has equal black height on every path and searching 10 is quick."
+    },
     id: "red-black-tree",
     name: "Red-Black Tree",
     category: "data-structures",

@@ -141,6 +141,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Two-pointer pair sum finds two values in a sorted array that add to a target. A left pointer starts low and a right pointer starts high; if the sum is too small only the left pointer can increase it, and if too big only the right can decrease it.",
+        "invariants": [
+            "All candidate pairs with the current left pointer and smaller right indices have been ruled out.",
+            "The pointers never move outward, so each element is considered at most once."
+        ],
+        "correctness": "If the sum is below the target, pairing the left value with any smaller value cannot work, so advancing left is safe; symmetric reasoning applies to a too-large sum. When the pointers meet, no unexamined pair remains.",
+        "complexityRationale": "Each pointer moves inward at most n steps total, so O(n) time with O(1) extra space.",
+        "uses": [
+            "Two-sum in sorted data",
+            "Finding pairs in sorted sensor readings",
+            "Teaching monotonic pointer techniques"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1 (searching)",
+            "LeetCode 167, Two Sum II, problem and editorial"
+        ],
+        "workedExample": "For [1,2,3,4,5,11] and target 15, left at 1 and right at 11 sum to 12, too small, so move left to 2; the sum 13 is still small; left at 4 gives 15, so the indices of 4 and 11 are returned."
+    },
     id: "two-pointer-pair-sum-search",
     name: "Two-Pointer Pair Sum Search",
     category: "searching",

@@ -147,6 +147,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A binary tree can be rebuilt uniquely from its preorder and inorder traversals. Preorder identifies the root first; the root's position in inorder splits the sequence into left and right subtrees, whose preorder segments are then processed recursively.",
+        "invariants": [
+            "The first remaining preorder entry is the root of the current subtree.",
+            "Inorder entries before the root form the left subtree and those after form the right.",
+            "The recursive splits consume exactly the nodes of each subtree."
+        ],
+        "correctness": "Preorder visits a node before its descendants, so the first entry is the root. Inorder visits all left-subtree nodes before the root and all right-subtree nodes after, so the root's index partitions the nodes uniquely. The preorder sequence then gives the corresponding root of each side, allowing the same argument recursively. Because the split is forced at every step, the reconstructed tree is the unique tree with those two traversals, and generating postorder provides a consistency check.",
+        "complexityRationale": "Using index maps, each node is placed once, giving O(n) time and O(n) space for the traversals, maps, and output tree.",
+        "uses": [
+            "Rebuilding syntax trees from serialized traversals",
+            "Tree deserialization in file formats",
+            "Teaching recursion with traversal invariants"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 12 (binary tree traversals)",
+            "Aho, Hopcroft, and Ullman, Data Structures and Algorithms, Chapter 2"
+        ],
+        "workedExample": "Preorder A-B-D-E-C-F and inorder D-B-E-A-C-F: A is root, left inorder is D-B-E with preorder B-D-E, right is C-F with preorder C-F. Recursing reconstructs the full tree, and its postorder is a valid round trip."
+    },
+
     id: "tree-reconstruction",
     name: "Tree Reconstruction",
     category: "tree",

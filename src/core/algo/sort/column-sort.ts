@@ -160,6 +160,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Column sort views the array as a matrix and alternates sorting its columns with a fixed permutation that reshapes rows into columns. After a few rounds the flattened matrix is sorted. The reshape exposes parallelism that a flat array hides.",
+        "invariants": [
+            "After each column-sort step, entries in every column are sorted top to bottom.",
+            "The reshape is a bijection, so the set of stored values never changes."
+        ],
+        "correctness": "The column permutation moves each sorted column into positions where the next sort compares it against neighbors it had not seen before; the round structure forms a sorting network on the matrix. After the fixed number of rounds the network sorts every input.",
+        "complexityRationale": "Each round sorts columns of total length n and there are a constant number of rounds, so O(n log n) comparisons overall. The matrix reshaping needs O(n) auxiliary storage in the visualization.",
+        "uses": [
+            "Parallel sorting on mesh-connected machines",
+            "Teaching data-layout transformations",
+            "Cache-oblivious sorting experiments"
+        ],
+        "references": [
+            "Leighton, Column-Sort Networks, MIT Technical Report, 1985",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3"
+        ],
+        "workedExample": "Lay [6, 2, 7, 1, 5, 3, 8, 4] out as four rows of two; sort each column, reshape so rows become columns, sort again, and the flattened matrix reads [1, 2, 3, 4, 5, 6, 7, 8]."
+    },
     id: "column-sort",
     name: "Column Sort",
     category: "sorting",

@@ -122,6 +122,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Set Horspool extends Horspool to multiple patterns. It builds one shared bad-character shift table using the minimum pattern length, then at each alignment checks every pattern and shifts by the table value for the text character at the window's end.",
+        "invariants": [
+            "The shared shift never exceeds the minimum pattern length, so no occurrence of any pattern can be skipped.",
+            "At each alignment every pattern that fits is checked against the text."
+        ],
+        "correctness": "Since shifts are bounded by the shortest pattern, any occurrence of any pattern, all at least that long, spans alignments that will be visited. Checking all patterns at each visited alignment therefore finds every occurrence and the shift rule is safe for each one.",
+        "complexityRationale": "Building the table is O(total pattern length). Each alignment tests all patterns, costing O(m·p) worst case for p patterns with average O(n) shifting; space is O(sigma + total pattern length).",
+        "uses": [
+            "Scanning network traffic for multiple signatures",
+            "Keyword filtering in content systems",
+            "Searching text for a dictionary of words"
+        ],
+        "references": [
+            "Horspool, Practical Fast Searching in Strings, 1980",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings, multi-pattern chapter"
+        ],
+        "workedExample": "Text \"ababcab\" with patterns \"ab\" and \"bc\": at alignment 0 \"ab\" matches, the shared shift advances the window, and later alignments report \"bc\" at index 3 and \"ab\" at index 5."
+    },
     id: "set-horspool-search",
     name: "Set Horspool",
     category: "string",

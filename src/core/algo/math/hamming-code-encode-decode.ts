@@ -114,6 +114,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Hamming (7,4) code adds three parity bits to four data bits so that any single-bit error can be detected and corrected. Parity bits are placed at positions 1, 2, and 4, each covering a distinct subset of positions. On decoding, the pattern of failed parities forms a syndrome that points directly at the corrupted bit.",
+        "invariants": [
+            "The three parity checks cover disjoint groupings that together identify every position from 1 to 7.",
+            "A zero syndrome means no single-bit error was detected.",
+            "Flipping the bit named by the syndrome restores the original codeword."
+        ],
+        "correctness": "Each bit position contributes a unique combination of parity groups, so the syndrome is the binary index of the erroneous bit. Flipping that bit corrects the word because exactly one bit was assumed wrong. If no parity fails, the received word is already a valid codeword.",
+        "complexityRationale": "Encoding and decoding each examine a fixed seven-bit word, so both time and space are O(1). The method is designed for constant-size blocks.",
+        "uses": [
+            "Single-error correction in memory systems",
+            "Error detection in early telecommunication links",
+            "Teaching the basics of coding theory and syndromes"
+        ],
+        "references": [
+            "Hamming, Error detecting and error correcting codes (1950)",
+            "MacWilliams and Sloane, The Theory of Error-Correcting Codes, Chapter 1"
+        ],
+        "workedExample": "Encode data 1011 into positions 3,5,6,7 and compute parities for groups 1,2,4. If position 6 flips, the failed parity groups form syndrome 110, which is binary 6, so flipping bit 6 restores the original word 1011."
+    },
     id: "hamming-code-encode-decode",
     name: "Hamming Code (7,4)",
     category: "math",

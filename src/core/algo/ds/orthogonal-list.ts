@@ -120,6 +120,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An orthogonal list stores each nonzero of a sparse matrix as a node threaded into two circular lists, one for its row and one for its column. Row-major and column-major walks both follow pointers in index order without ever scanning zero entries.",
+        "invariants": [
+            "Every nonzero belongs to exactly one row ring and one column ring.",
+            "Entries inside a ring are ordered by their index.",
+            "Row and column header rings anchor the two traversals."
+        ],
+        "correctness": "Splicing a node into both rings in sorted order keeps each ring ordered, so walking a row ring yields its nonzeros in column order and a column ring in row order. Every nonzero is reachable from both its row header and its column header, so neither traversal can miss an entry.",
+        "complexityRationale": "Insertion is constant time once the header and splice position are known, and traversals visit one node per nonzero, so both are O(nonzeros). Storage is one node with two links per nonzero, O(nonzeros).",
+        "uses": [
+            "Sparse adjacency representation of graphs",
+            "Finite-element stiffness matrices",
+            "Sparse algebra where both row and column scans are needed"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.6 on doubly linked lists",
+            "Sahni, Data Structures, Algorithms, and Applications in C++, sparse matrix chapter"
+        ],
+        "workedExample": "Entries (0,1,5) and (1,0,3) are threaded into row ring 0 and row ring 1 plus their column rings. A row-major walk visits 5 then 3, while a column-major walk visits 3 then 5, touching only nonzeros."
+    },
     id: "orthogonal-list",
     name: "Orthogonal List",
     category: "data-structures",

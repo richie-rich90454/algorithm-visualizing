@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A concurrent trie is a hash trie whose nodes are replaced atomically. Immutable inode and cnode snapshots hold bitmap-indexed branches, and an insert installs a new node with a compare-and-swap. Threads never lock; they retry their CAS if another update won the race.",
+        "invariants": [
+            "Each cnode's bitmap matches its array of children.",
+            "Published nodes are immutable, so readers see consistent snapshots.",
+            "A failed CAS leaves the previous snapshot intact."
+        ],
+        "correctness": "Because a new cnode is built completely before publication, a reader sees either the old or the new consistent state. CAS ensures only one of two competing inserts becomes visible; the loser rebuilds from the winner's snapshot and retries. Thus no key is lost and lookups see a valid prefix path.",
+        "complexityRationale": "Each key character costs one level of bitmap indexing, O(m) for key length m, plus retries under contention. Space is O(number of keys) times the shallow trie depth.",
+        "uses": [
+            "Concurrent hash maps and sets",
+            "Lock-free indexes in managed runtimes",
+            "Shared symbol tables in parallel compilers"
+        ],
+        "references": [
+            "Steven Prokopec, \"Efficient Lock-Free and Wait-Free Algorithms\", ETH thesis 2015",
+            "Herlihy and Shavit, The Art of Multiprocessor Programming"
+        ],
+        "workedExample": "Insert bit keys 01, 10, 11: the root cnode's bitmap gains branches for 0 and 1; inserting 11 adds a child under the 1 branch. Two threads inserting 01 and 10 race; one CAS wins, the other reloads the root and retries, and all three keys remain."
+    },
     id: "concurrent-trie",
     name: "Concurrent Trie",
     category: "data-structures",

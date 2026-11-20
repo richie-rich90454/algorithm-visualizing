@@ -81,6 +81,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Byte-pair encoding builds a vocabulary by repeatedly merging the most frequent adjacent pair of tokens. Starting from single characters, each merge replaces every occurrence of the winning pair with a new token, shrinking the sequence and capturing common patterns such as \"th\" or \"ing\".",
+        "invariants": [
+            "Tokens are always contiguous substrings of the original text and concatenate back to it.",
+            "Each merge targets the most frequent adjacent pair in the current token sequence.",
+            "Every merge strictly reduces or preserves the token count."
+        ],
+        "correctness": "Merging the most frequent pair everywhere at once keeps the token sequence concatenating to the original text, and the chosen pair is by definition the best local gain at that step. Repeating merges greedily builds a vocabulary in which frequent substrings become single tokens, which is the goal of subword tokenization.",
+        "complexityRationale": "Counting adjacent pairs and applying a merge each scan the current token list once, so one merge costs O(n) for text length n. With M merges the total is O(Mn), reported as O(n) per merge; space is O(n) for the tokens and frequency map.",
+        "uses": [
+            "Subword tokenization in language models and GPT-style tokenizers",
+            "Compressing text with repeated patterns",
+            "Building vocabularies for low-resource languages"
+        ],
+        "references": [
+            "Gage, A New Algorithm for Data Compression, 1994",
+            "Sennrich et al., Neural Machine Translation of Rare Words with Subword Units, 2016"
+        ],
+        "workedExample": "For \"aaabdaaabac\" the most frequent pair is \"aa\"; merging non-overlapping copies gives roughly [aa, a, b, d, aa, a, b, a, c]. The next merge combines \"aa\" with the following \"a\" into \"aaa\", producing [aaa, b, d, aaa, b, a, c] after two merges."
+    },
     id: "byte-pair-encoding-tokenization",
     name: "BPE Tokenization",
     category: "string",

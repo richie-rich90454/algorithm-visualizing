@@ -202,6 +202,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Quickest flow asks for the shortest time horizon in which a required amount can be sent through a network where arcs have transit times. The time-expanded network copies the graph at each time step and adds holdover arcs representing waiting at a vertex. Binary search or incremental growth of the horizon finds the earliest time when a max flow reaches the demand.",
+        "invariants": [
+            "Each vertex-time layer has at most the original capacity leaving it into the next layer.",
+            "Holdover arcs let flow wait at a vertex without consuming transport capacity.",
+            "A flow reaching the sink by time T corresponds to a valid schedule of shipments."
+        ],
+        "correctness": "There is a one-to-one mapping between dynamic flows completing within horizon T and static flows in the time-expanded network ending at the sink layer T. Therefore the max flow in that network determines whether the demand is deliverable by T. Increasing T until feasible yields the quickest horizon, and extracting the flow gives the earliest arrival schedule.",
+        "complexityRationale": "The expanded network has O(T(V+E)) nodes and arcs and one max flow costs roughly O(T V E^2) with a basic method, where T is the horizon. The layered network and flow arrays use O(T(V+E)) space.",
+        "uses": [
+            "Evacuation planning and emergency logistics",
+            "Packet routing with delivery deadlines",
+            "Production and supply chains with transit delays"
+        ],
+        "references": [
+            "Ford and Fulkerson, Flows in Networks (1962), dynamic flows chapter",
+            "Ahuja, Magnanti, and Orlin, Network Flows, quickest flows"
+        ],
+        "workedExample": "Vertices 0,1,2 with arcs 0 to 1 and 1 to 2, each capacity 1 and transit time 1, demand 2. One unit departs at time 0 and arrives at 2 by time 2; the second departs at time 1 and arrives by time 3. No horizon below 3 can deliver both, so the quickest flow time is 3."
+    },
     id: "quickest-flow-time-expanded",
     name: "Quickest Flow (Time-Expanded)",
     category: "flow",

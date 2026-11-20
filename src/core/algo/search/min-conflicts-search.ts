@@ -157,6 +157,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Min-conflicts repair starts with a complete but possibly inconsistent assignment and repeatedly fixes a conflicted variable by giving it the value that violates the fewest constraints. A random walk of a few repairs often reaches a solution quickly.",
+        "invariants": [
+            "Every state is a complete assignment of all variables.",
+            "Each repair never increases the number of conflicts of the chosen variable."
+        ],
+        "correctness": "Min-conflicts is an incomplete local search: it finds a solution if the repair walk happens to reach one, but it offers no guarantee and may require restarts. Each step is a well-defined locally best repair.",
+        "complexityRationale": "A run of a few iterations each scanning n variables costs O(iterations * n) time. Only the current assignment is stored, O(n) space.",
+        "uses": [
+            "N-queens and scheduling repair",
+            "Local search in AI planning",
+            "Quick solutions when completeness is not required"
+        ],
+        "references": [
+            "Minton et al., Minimizing Conflicts: A Heuristic Repair Method for Constraint Satisfaction and Scheduling Problems, Artificial Intelligence, 1992",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, Chapter 6"
+        ],
+        "workedExample": "For the seeded X != Y and Y < Z puzzle, start with X=1,Y=1,Z=1, which has conflicts; pick Y and change it to 2 because that violates fewer constraints, then repair Z until no conflict remains."
+    },
     id: "min-conflicts-search",
     name: "Min-Conflicts Search",
     category: "searching",

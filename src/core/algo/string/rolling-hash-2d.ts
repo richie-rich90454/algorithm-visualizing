@@ -229,6 +229,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The 2D Rolling Hash module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A 2D rolling hash extends Rabin-Karp to grids, enabling constant-time hashing of any rectangular submatrix. A 2D prefix-hash table is built so the hash of a rectangle comes from four corner entries, letting a pattern be found by scanning all windows.",
+        "invariants": [
+            "H[i][j] stores the hash of the rectangle from the origin to (i,j).",
+            "The hash of any sub-rectangle is recovered by inclusion-exclusion of four prefix values, so equal rectangles have equal hashes."
+        ],
+        "correctness": "By the inclusion-exclusion identity, combining the four prefix hashes yields exactly the hash of the target rectangle. Scanning every window and comparing to the pattern's hash finds all locations where hashes agree, and direct cell verification removes collisions.",
+        "complexityRationale": "Building the prefix table visits each of the rows·cols cells once, O(rows·cols), and each of the O(rows·cols) windows is hashed in O(1), giving O(rows·cols) time with the same order of space.",
+        "uses": [
+            "Template matching in images",
+            "Finding repeated blocks in matrices",
+            "2D pattern detection in bioinformatics grids"
+        ],
+        "references": [
+            "Karp and Rabin, Efficient Randomized Pattern-Matching Algorithms, 1987",
+            "The 2D Rabin-Karp extension in the algorithms literature"
+        ],
+        "workedExample": "For the 4x4 grid and 2x2 pattern \"ac / ca\", the four-corner prefix hash at top-left (0,2) equals the pattern hash, confirming a match there."
+    },
     id: "rolling-hash-2d",
     name: "Rolling Hash (2D)",
     category: "string",

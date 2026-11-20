@@ -102,6 +102,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Shamir secret sharing hides a secret by making it the constant term of a random polynomial over a finite field. Each participant receives a point on the polynomial, and any threshold number of points can reconstruct it by Lagrange interpolation. Fewer points leave the secret undetermined, giving information-theoretic security.",
+        "invariants": [
+            "The secret is the value f(0) of a degree t-1 polynomial.",
+            "Every share is a distinct nonzero x with the value f(x).",
+            "Any t shares uniquely determine f and hence the secret."
+        ],
+        "correctness": "A polynomial of degree t-1 is uniquely determined by t points, so Lagrange interpolation from t shares reconstructs f and evaluating at 0 recovers the secret. With fewer than t shares the remaining coefficients are unconstrained, so no information about f(0) is revealed. This is exactly the threshold property.",
+        "complexityRationale": "Interpolating t shares with Lagrange weights costs O(t^2) field operations. Storing the shares uses O(n) space for n participants.",
+        "uses": [
+            "Distributing signing keys across multiple parties",
+            "Threshold decryption and multi-party computation",
+            "Protecting backups so no single holder can reconstruct"
+        ],
+        "references": [
+            "Shamir, How to share a secret (1979)",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 12"
+        ],
+        "workedExample": "Hide secret 7 mod 13 in a line f(x) = 7 + a*x with random a. Any two shares (x1, f(x1)), (x2, f(x2)) determine the line, and Lagrange interpolation at 0 returns f(0) = 7."
+    },
     id: "shamir-secret-sharing",
     name: "Shamir Secret Sharing",
     category: "math",

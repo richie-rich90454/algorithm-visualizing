@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A funnel heap is a cache-oblivious priority queue built from graded buffers called funnels. Small inserts stay in fast memory, and when a buffer fills its contents are merged upward with runs from lower levels. Extracts read from the top output stream, so merging is sequential and I/O efficient.",
+        "invariants": [
+            "Each funnel level merges sorted runs from the level below.",
+            "Buffers stay below their capacity until a merge.",
+            "The top output is the sorted stream of all keys."
+        ],
+        "correctness": "Merging sorted runs preserves global order because each funnel combines already-ordered inputs. Inserting into the smallest buffer and propagating full buffers upward eventually places every key in the output stream. Extracting from the top therefore returns keys in nondecreasing order.",
+        "complexityRationale": "Each key passes through O(log N) funnels, and batched merging makes amortized I/Os logarithmic, matching external-memory bounds without tuning to block size. Space is O(n).",
+        "uses": [
+            "External-memory sorting and priority queues",
+            "Cache-oblivious algorithms",
+            "Large-scale event simulation"
+        ],
+        "references": [
+            "Michael A. Bender, Martin Farach-Colton, and Miguel Mosteiro, \"Cache-Oblivious Priority Queues\", Algorithmica 2006",
+            "Harald Prokop, \"Cache-Oblivious Algorithms\", MIT thesis 1999"
+        ],
+        "workedExample": "Insert 4, 1, 6, 2 into the smallest funnel buffer; when it fills, merge its sorted content 1, 4 into the next level. Extract-min reads 1 from the top output, and later merges bring 2, 4, 6 into order."
+    },
     id: "funnel-heap",
     name: "Funnel Heap",
     category: "data-structures",

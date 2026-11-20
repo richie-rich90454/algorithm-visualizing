@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A wavelet matrix is a wavelet tree stored level by level without pointers: at each bit level it stably partitions values into zeros then ones and records a bitvector plus the zero count. Range queries map an interval down level by level using rank on those bitvectors.",
+        "invariants": [
+            "Each level bitvector records the bit of every value in that level order.",
+            "The zero count is the offset where ones begin.",
+            "Stable partitioning preserves relative order within each bit group."
+        ],
+        "correctness": "Stable partitioning keeps a mapped range contiguous at the next level, and rank on the bitvector gives the exact sub-interval for the desired bit. Repeating this over all bit levels yields the correct multiset of values in the range.",
+        "complexityRationale": "Each level does constant work per query via rank and there are O(log s) levels for alphabet size s, so queries are O(log s). One bitvector per level for n values gives O(n log s) space.",
+        "uses": [
+            "Compressed text indexes",
+            "Range quantile and rank queries",
+            "Succinct representations of sequences"
+        ],
+        "references": [
+            "Claude, Navarro, and Ordonez, The Wavelet Matrix, 2015",
+            "Grossi, Gupta, and Vitter, High-Order Entropy-Compressed Text Indexes, 2003"
+        ],
+        "workedExample": "Array [5,2,8,1,7,3] is stably partitioned by bits into zeros then ones at each level with the zero count recorded; query [1,4] maps its interval down with rank and recovers values 2, 8, 1, 7."
+    },
     id: "wavelet-matrix",
     name: "Wavelet Matrix",
     category: "data-structures",

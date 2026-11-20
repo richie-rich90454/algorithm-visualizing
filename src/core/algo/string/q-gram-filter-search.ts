@@ -106,6 +106,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The q-gram filter quickly discards text windows that cannot match a pattern by comparing the sets of length-q substrings they contain. If a window shares too few q-grams with the pattern, it cannot be a match, so only promising windows need full verification.",
+        "invariants": [
+            "Every q-gram of a true match is a q-gram of the pattern, so a matching window shares all of them.",
+            "A window sharing fewer than the required threshold is guaranteed not to be a match and is skipped."
+        ],
+        "correctness": "An exact match has identical q-grams, so the filter never discards a true occurrence. For approximate matching a bound derived from the allowed edits gives the minimum number of shared grams, so windows below it cannot qualify and verification is restricted to candidates without losing answers.",
+        "complexityRationale": "Extracting q-grams from the text is O(nq) and each window's gram count is O(q), giving O(nq) time; storing grams uses O(n) space.",
+        "uses": [
+            "Blocking and filtering in record linkage",
+            "Accelerating approximate search in large document collections",
+            "A prefilter before edit-distance computation"
+        ],
+        "references": [
+            "Navarro, A Guided Tour to Approximate String Matching, 2001",
+            "Gravano et al., Using q-grams in a DBMS for Approximate String Processing"
+        ],
+        "workedExample": "For pattern \"abc\" with q=2 the grams are \"ab\" and \"bc\". Scanning \"ababcab\", the window \"abc\" at index 2 shares both grams and is verified as a match, while a window like \"bab\" shares fewer grams and is skipped."
+    },
     id: "q-gram-filter-search",
     name: "Q-Gram Filter",
     category: "string",

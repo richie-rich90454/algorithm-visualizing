@@ -161,6 +161,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Suffix Array (Doubling) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Doubling builds a suffix array by sorting suffixes by their first 2^k characters in rounds. Each suffix is ranked by a pair: the rank of its first half and the rank of the second half from the previous round. Sorting these pairs doubles the sorted prefix length each time.",
+        "invariants": [
+            "After round k, each suffix's rank reflects the lexicographic order of its first 2^k characters.",
+            "Tied ranks mean the 2^k-character prefixes are equal."
+        ],
+        "correctness": "A suffix's 2^(k+1) prefix is the concatenation of its two 2^k halves, so ordering by the pair of previous ranks is exactly ordering by the longer prefix. By induction the ranks after log n rounds sort entire suffixes, and distinct ranks mean the order is final.",
+        "complexityRationale": "There are O(log n) rounds each sorting n suffixes, so a comparison sort gives O(n log^2 n) time and radix sorting the pairs gives O(n log n); rank and suffix arrays use O(n) space.",
+        "uses": [
+            "Building suffix arrays for full-text indexes",
+            "A simple robust construction for moderate inputs",
+            "The basis for many string algorithms"
+        ],
+        "references": [
+            "Manber and Myers, Suffix Arrays: A New Method for On-Line String Searches, 1990",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"banana\", round 1 ranks by first character and round 2 refines using pairs; after a few rounds the suffix order becomes [5,3,1,0,4,2], listing \"a\", \"ana\", \"anana\", \"banana\", \"na\", \"nana\"."
+    },
     id: "suffix-array-doubling",
     name: "Suffix Array (Doubling)",
     category: "string",

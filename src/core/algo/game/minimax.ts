@@ -195,6 +195,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Minimax module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Minimax evaluates a deterministic two-player zero-sum game by traversing its game tree. MAX nodes pick the child with the highest score and MIN nodes pick the lowest. The value backed up to the root is the outcome under optimal play by both sides.",
+        "invariants": [
+            "Each leaf contributes its fixed utility score.",
+            "A MAX node's value is the maximum of its children and a MIN node's the minimum.",
+            "Backed-up values are independent of move order."
+        ],
+        "correctness": "By induction on tree depth, the value stored at a leaf is its utility, and at internal nodes the recursive max or min is exactly the best outcome the player to move can force given optimal play below. Therefore the root value is the game value under optimal play.",
+        "complexityRationale": "A full tree of branching factor b and depth d has O(b^d) leaves, each visited once, giving O(b^d) time; recursion uses O(d) stack space.",
+        "uses": [
+            "The foundation for adversarial game engines",
+            "Any two-player zero-sum decision problem",
+            "A baseline that alpha-beta pruning accelerates"
+        ],
+        "references": [
+            "von Neumann and Morgenstern, Theory of Games and Economic Behavior (1944)",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, adversarial search chapter"
+        ],
+        "workedExample": "In a ternary depth-3 tree, each pair of leaves under a MIN node contributes its minimum, then the parent MAX node takes the maximum of those minima. Propagating level by level to the root gives the score the first player can guarantee with perfect play."
+    },
     id: "minimax",
     name: "Minimax",
     category: "game",

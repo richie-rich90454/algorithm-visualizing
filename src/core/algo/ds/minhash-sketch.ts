@@ -88,6 +88,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "MinHash hashes each element with k independent hash functions and keeps the smallest hash seen for each function. Two sets with high overlap agree on many of those k minima, so the fraction of matching signature positions estimates their Jaccard similarity.",
+        "invariants": [
+            "Each signature slot holds the minimum hash over all elements seen so far.",
+            "A set signature is independent of insertion order.",
+            "The expected agreement per slot equals the Jaccard index of two sets."
+        ],
+        "correctness": "For a random hash, the probability that the minimum over set A equals the minimum over set B is |A intersect B| divided by |A union B|, because the overall minimum is equally likely to be any union element. Averaging this indicator over k independent hashes gives an unbiased estimate whose variance falls as 1/k.",
+        "complexityRationale": "Each incoming value is hashed k times and compared with k slots, so an update costs O(k); comparing two signatures also costs O(k). Space is O(k) regardless of the stream length.",
+        "uses": [
+            "Near-duplicate document detection",
+            "Clustering large corpora by set similarity",
+            "Approximate similarity in web search indexes"
+        ],
+        "references": [
+            "Broder, Chierichetti, Kumar, and Ostrowski, Min-Wise Independent Permutations, STOC 1998",
+            "Leskovec, Rajaraman, and Ullman, Mining of Massive Datasets, Chapter 3"
+        ],
+        "workedExample": "Stream 7, 2, 9, 4, 6 through three hash functions, keeping the smallest hash in each slot. Comparing two streams that agree in two of the three slots estimates their Jaccard similarity as 2/3."
+    },
     id: "minhash-sketch",
     name: "MinHash Sketch",
     category: "data-structures",

@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Legendre symbol (a|p) records whether a is a quadratic residue modulo an odd prime p. Euler's criterion says it equals a^((p-1)/2) mod p, which is 1 for a residue and p-1 (that is, -1) for a non-residue. The visualization computes that power and optionally exhibits an explicit square root when one exists.",
+        "invariants": [
+            "Euler's criterion gives a value of plus or minus one for a not divisible by p.",
+            "A result of 1 means a is a square modulo p; p-1 means it is not.",
+            "a divisible by p gives symbol zero."
+        ],
+        "correctness": "In the multiplicative group modulo p, an element is a square iff it is an even power of a generator. Raising to (p-1)/2 maps even powers to 1 and odd powers to -1, giving Euler's criterion. The criterion therefore classifies quadratic residues exactly.",
+        "complexityRationale": "One modular exponentiation by binary powering costs O(log p) time. Only a running residue and a few counters are stored, so space is O(1).",
+        "uses": [
+            "Testing quadratic residuosity in primality algorithms",
+            "Quadratic reciprocity computations in number theory",
+            "Cryptographic protocols relying on square roots modulo primes"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 5",
+            "Cormen et al., Introduction to Algorithms, Section 31.4"
+        ],
+        "workedExample": "For a = 5 and p = 11 compute 5^5 mod 11. Since 5^2 = 3 and 5^4 = 9, 5^5 = 45 = 1 mod 11. The symbol is 1, so 5 is a quadratic residue, and indeed 4^2 = 16 = 5 mod 11."
+    },
     id: "legendre-symbol-euler-criterion",
     name: "Legendre Symbol (Euler)",
     category: "math",

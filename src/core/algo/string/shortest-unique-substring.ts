@@ -96,6 +96,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "This finds the shortest substring that occurs exactly once in a string. It enumerates all substrings with occurrence counts, then tries increasing lengths and returns the first length that has any substring with count one, choosing the lexicographically smallest.",
+        "invariants": [
+            "count[s] is the number of occurrences of substring s.",
+            "For a given length, any substring whose count is one is a valid unique substring, and no shorter length had one when the loop stops."
+        ],
+        "correctness": "Every substring is enumerated, so counts are exact. Trying lengths in increasing order means the first length with a unique substring is minimal, and returning the smallest candidate at that length yields the lexicographically smallest shortest unique substring.",
+        "complexityRationale": "There are O(n^2) substrings and slicing and hashing can cost up to O(n) each, giving O(n^2) to O(n^3) work with O(n^2) space for the map; suffix structures can reduce this to O(n).",
+        "uses": [
+            "Designing unique identifiers or probes for sequences",
+            "Primer design in bioinformatics",
+            "Finding minimal distinguishing tokens in text"
+        ],
+        "references": [
+            "Gusfield, Algorithms on Strings, Trees, and Sequences",
+            "The unique-substring literature in bioinformatics"
+        ],
+        "workedExample": "For \"ababc\", the length-1 counts are a twice, b twice, c once, so \"c\" at index 4 is already unique and is the shortest unique substring."
+    },
     id: "shortest-unique-substring",
     name: "Shortest Unique Substring",
     category: "string",

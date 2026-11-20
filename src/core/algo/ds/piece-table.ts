@@ -100,6 +100,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A piece table never modifies the original text buffer. It describes the document as a list of pieces pointing into the original buffer or an append-only add buffer; inserting appends text and splices a piece, and deleting drops or trims pieces.",
+        "invariants": [
+            "The original buffer is never changed.",
+            "The piece list spells the current text in order.",
+            "Every piece references a valid buffer, start, and length."
+        ],
+        "correctness": "Reading pieces in order concatenates exactly the characters currently present, because each edit only adds or removes pieces describing the intended text. Since the original buffer is immutable, every historical piece remains valid, which enables undo and multiple views.",
+        "complexityRationale": "A splice is O(1) with a linked piece list but O(n) with a flat array that must shift entries; reading the full text is O(n). Space is the original buffer plus appended text and one record per piece, O(n).",
+        "uses": [
+            "Text editors such as Visual Studio Code",
+            "Word processors needing cheap undo",
+            "Applications with frequent edits and versioned buffers"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, piece tables in text editing",
+            "Greenberg and Malendar, A Data Structure for Text Editors, 1987"
+        ],
+        "workedExample": "Start with abc as one original piece; insert XY after b by appending to the add buffer and splitting into pieces ab, XY, c. Deleting X trims that piece, producing abYc without touching the original abc buffer."
+    },
     id: "piece-table",
     name: "Piece Table",
     category: "data-structures",

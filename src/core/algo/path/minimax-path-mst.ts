@@ -192,6 +192,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The minimax path between two vertices minimizes the largest edge along the route, modeling a best bottleneck connection. A minimum spanning tree preserves minimax distances: the minimax edge on the best path equals the maximum edge on the unique tree path. Kruskal builds the MST, and a tree walk answers the query.",
+        "invariants": [
+            "The MST connects all vertices with V-1 edges.",
+            "For any two vertices, the tree path's maximum edge is the minimum possible bottleneck.",
+            "Kruskal adds edges in nondecreasing weight order."
+        ],
+        "correctness": "By the MST minimax property, the maximum edge on the MST path between u and v is the smallest bottleneck over all u-v paths. Adding edges in sorted order connects u and v as soon as possible at the lowest possible threshold, which is exactly when Kruskal's tree path forms, so the tree walk gives the correct answer.",
+        "complexityRationale": "Sorting edges costs O(E log E) and a tree walk costs O(V), with O(V + E) space for the tree and union-find.",
+        "uses": [
+            "Finding the widest reliable route between two points",
+            "Network design focused on worst-link quality",
+            "A fast alternative to repeated bottleneck queries"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, minimum spanning trees",
+            "Harary, Graph Theory"
+        ],
+        "workedExample": "For the sample graph Kruskal adds B-C of 1, C-D of 2, and A-C of 3. The tree path from A to D is A-C-D with edge weights 3 and 2, so the minimax edge is 3, the smallest bottleneck achievable."
+    },
     id: "minimax-path-mst",
     name: "Minimax Path via MST",
     category: "shortest-path",

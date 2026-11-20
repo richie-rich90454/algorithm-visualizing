@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+# Least privilege by default; individual jobs elevate only what they need.
+permissions:
+  contents: read
+
+jobs:
+  # Manual runs refresh the draft release from merged pull requests and the
+  # changelog without publishing it.
+  draft:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Draft release
+        uses: release-drafter/release-drafter@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Pushing a v* tag publishes the release for that tag.
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Publish release
+        uses: release-drafter/release-drafter@v6
+        with:
+          tag: ${{ github.ref_name }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

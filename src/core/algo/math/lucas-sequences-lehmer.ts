@@ -91,6 +91,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A Lucas sequence U_n(P, Q) is defined by the recurrence U_n = P*U_(n-1) - Q*U_(n-2) starting from U_0 = 0 and U_1 = 1. It generalizes familiar sequences such as the Fibonacci numbers and underlies several primality and factorization tests. The visualization builds the terms one at a time from the two previous values.",
+        "invariants": [
+            "Every term satisfies the defining recurrence with fixed P and Q.",
+            "The sequence starts from U_0 = 0 and U_1 = 1.",
+            "Each new term depends only on the two immediately preceding terms."
+        ],
+        "correctness": "The recurrence plus the two seeds uniquely determines the whole sequence by induction, and computing each term directly from its two predecessors follows that definition exactly. Hence the generated list is the Lucas sequence U_n(P, Q) for the chosen parameters.",
+        "complexityRationale": "Computing n terms takes constant work each, so time is O(n). Storing the sequence for display uses O(n) space.",
+        "uses": [
+            "Lucas and Baillie-PSW primality tests",
+            "Generalizing Fibonacci-based identities",
+            "Factoring via Lucas sequence cycles"
+        ],
+        "references": [
+            "Lucas, Theorie des fonctions numeriques simplement periodiques (1878)",
+            "Crandall and Pomerance, Prime Numbers, Section 3.4"
+        ],
+        "workedExample": "For P = 3, Q = 1 the seeds are U_0 = 0, U_1 = 1. Then U_2 = 3, U_3 = 3*3 - 1 = 8, and U_4 = 3*8 - 3 = 21. The first five terms are 0, 1, 3, 8, 21."
+    },
     id: "lucas-sequences-lehmer",
     name: "Lucas Sequences",
     category: "math",

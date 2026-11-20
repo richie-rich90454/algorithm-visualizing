@@ -142,6 +142,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An x-fast trie keeps a hash table for every bit level containing each prefix that occurs, with a pointer to an extreme leaf below it. Predecessor search walks down while the query prefix exists, then follows the deepest prefix to the neighboring leaf.",
+        "invariants": [
+            "For each stored key all of its prefixes are present in the level tables.",
+            "Each prefix records the minimum and maximum key beneath it.",
+            "Hash lookups are expected O(1)."
+        ],
+        "correctness": "If a prefix of the query exists then some stored key shares it, and the deepest such prefix brackets the query neighborhood. Descending from that prefix to its extreme leaf finds the nearest key on the correct side, so predecessor and successor are exact.",
+        "complexityRationale": "The trie has O(log U) levels for universe size U and each level lookup is expected O(1), giving O(log U) expected time; with the standard compressed-level refinement this improves to O(log log U). Storing every prefix costs O(n log U) space.",
+        "uses": [
+            "Predecessor and successor queries on machine words",
+            "IP lookup longest-prefix matching",
+            "Successor-based algorithms in networked systems"
+        ],
+        "references": [
+            "Willard, Log-Logarithmic Search: A Machine Index for Dynamic Sets, 1983",
+            "CLRS, Introduction to Algorithms, Chapter 20 on predecessor structures"
+        ],
+        "workedExample": "Keys 2, 5, 11 have prefixes at each bit level; querying 6 finds the deepest existing prefix and follows its descendant pointer, reporting 5 as predecessor and 11 as successor."
+    },
     id: "x-fast-trie",
     name: "X-Fast Trie",
     category: "data-structures",

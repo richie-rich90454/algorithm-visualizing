@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -8,9 +8,90 @@
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#0f172a" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Algorithmic Visualization Engine</title>
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <script>
+            // Apply the saved or system theme before first paint to avoid a
+            // flash of the wrong colors, and keep the browser chrome in sync.
+            (function () {
+                try {
+                    var saved = localStorage.getItem("algoviz-theme");
+                    var theme =
+                        saved === "light" || saved === "dark"
+                            ? saved
+                            : window.matchMedia("(prefers-color-scheme: dark)").matches
+                              ? "dark"
+                              : "light";
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                    var meta = document.querySelector('meta[name="theme-color"]');
+                    if (meta) meta.content = theme === "dark" ? "#0f172a" : "#ffffff";
+                } catch (e) {
+                    /* storage or matchMedia unavailable: CSS defaults apply */
+                }
+            })();
+        </script>
+
+        <title>Algorithm Visualization Engine - 3000 Interactive Algorithms for Computer Science Education</title>
+        <meta name="description" content="Explore 3000 interactive algorithms across 20 categories with step-by-step algorithm visualization. A free, offline-capable resource for computer science education covering data structures, sorting, graph algorithms, and more." />
+        <link rel="canonical" href="https://richie-rich90454.github.io/algorithm-visualizing/" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Algorithm Visualization Engine" />
+        <meta property="og:title" content="Algorithm Visualization Engine - 3000 Interactive Algorithms" />
+        <meta property="og:description" content="Watch 3000 algorithms work, one step at a time. A free, offline-capable interactive resource for computer science education covering sorting, graph algorithms, data structures, and more." />
+        <meta property="og:url" content="https://richie-rich90454.github.io/algorithm-visualizing/" />
+        <meta property="og:image" content="https://richie-rich90454.github.io/algorithm-visualizing/media/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Algorithm Visualization Engine showing a step-by-step algorithm visualization" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Algorithm Visualization Engine - 3000 Interactive Algorithms" />
+        <meta name="twitter:description" content="Watch 3000 algorithms work, one step at a time. A free, offline-capable interactive resource for computer science education." />
+        <meta name="twitter:image" content="https://richie-rich90454.github.io/algorithm-visualizing/media/og-image.png" />
+        <meta name="twitter:image:alt" content="Algorithm Visualization Engine showing a step-by-step algorithm visualization" />
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "SoftwareApplication",
+                        "name": "Algorithm Visualization Engine",
+                        "description": "An interactive, offline-capable web application for computer science education that visualizes 3000 algorithms across 20 categories with step-by-step replay.",
+                        "url": "https://richie-rich90454.github.io/algorithm-visualizing/",
+                        "applicationCategory": "EducationalApplication",
+                        "operatingSystem": "Any modern web browser",
+                        "softwareRequirements": "A modern browser with Canvas 2D and ES module support",
+                        "author": {
+                            "@type": "Person",
+                            "name": "Richard Jiang"
+                        },
+                        "license": "https://opensource.org/license/mit",
+                        "offers": {
+                            "@type": "Offer",
+                            "price": "0",
+                            "priceCurrency": "USD"
+                        }
+                    },
+                    {
+                        "@type": "LearningResource",
+                        "name": "Algorithm Visualization Engine",
+                        "description": "Step-by-step visualizations of 3000 algorithms across 20 categories for students and self-learners of computer science.",
+                        "url": "https://richie-rich90454.github.io/algorithm-visualizing/",
+                        "learningResourceType": "Interactive visualization",
+                        "educationalLevel": "Introductory to advanced",
+                        "inLanguage": "en",
+                        "isAccessibleForFree": true,
+                        "author": {
+                            "@type": "Person",
+                            "name": "Richard Jiang"
+                        }
+                    }
+                ]
+            }
+        </script>
     </head>
     <body>
         <div id="app"></div>

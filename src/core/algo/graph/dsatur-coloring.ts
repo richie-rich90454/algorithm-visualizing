@@ -121,6 +121,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "DSATUR colors the most constrained vertex first. Saturation is the number of distinct colors already used by a vertex's neighbors, and ties are broken by degree. The chosen vertex takes the smallest color none of its neighbors uses, which tends to keep the total number of colors low.",
+        "invariants": [
+            "No two adjacent vertices ever receive the same color.",
+            "Saturation counts distinct neighbor colors, not the number of colored neighbors.",
+            "At each step the selected uncolored vertex has maximum saturation, breaking ties by degree."
+        ],
+        "correctness": "Assigning the smallest color absent from a vertex's neighbors keeps the coloring proper. Choosing the most constrained vertex first is a heuristic that cannot break correctness, and the process terminates when every vertex is colored, so the result is always a valid proper coloring.",
+        "complexityRationale": "Each of the V selections scans all uncolored vertices and their neighbor colors, O(V^2) time; color and saturation arrays use O(V) space.",
+        "uses": [
+            "Register allocation in compilers",
+            "Scheduling conflicts such as exam timetabling",
+            "A strong heuristic for graph coloring benchmarks"
+        ],
+        "references": [
+            "Brelaz, New Methods to Color the Vertices of a Graph (1979)",
+            "Jensen and Toft, Graph Coloring Problems"
+        ],
+        "workedExample": "On the hub graph with A connected to B, C, D and B-C also joined, A is chosen first by degree and gets color 0. B then has saturation 1 and takes color 1, C sees colors 0 and 1 and takes color 2, and D sees only color 0 so it reuses color 1. Three colors suffice."
+    },
     id: "dsatur-coloring",
     name: "Graph Coloring (DSATUR)",
     category: "graph",

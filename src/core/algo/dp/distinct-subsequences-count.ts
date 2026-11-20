@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Distinct Subsequences counts how many ways the target t can be formed as a subsequence of the source s. When characters match, we may either use the match or skip the source character, giving dp[i][j] = dp[i-1][j-1] plus dp[i-1][j]. On a mismatch only skipping is allowed.",
+        "invariants": [
+            "dp[i][j] counts occurrences of t[:j] as a subsequence of s[:i].",
+            "dp[i][0] is one for the empty target.",
+            "Rows are filled left to right using only earlier source prefixes."
+        ],
+        "correctness": "If the last source character equals the last target character, every subsequence using it corresponds to one of t[:j-1] in s[:i-1], and the rest skip it, giving the sum. If they differ, only subsequences in s[:i-1] remain. Induction over i and j yields the exact count.",
+        "complexityRationale": "Filling an n by m table with constant work per cell costs O(n*m) time. The table occupies O(n*m) space, reducible to O(m) with a rolling row.",
+        "uses": [
+            "Counting matching subsequences in strings",
+            "Bioinformatics sequence comparison variants",
+            "Counting ways to form a pattern from a longer stream"
+        ],
+        "references": [
+            "LeetCode problem 115, Distinct Subsequences",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s = babgbag and t = bag, the DP counts all ways to pick b, then a, then g in order. The final cell dp[7][3] is 5, the number of distinct subsequence matches."
+    },
     id: "distinct-subsequences-count",
     name: "Distinct Subsequences (Count)",
     category: "dynamic-programming",

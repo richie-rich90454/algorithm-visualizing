@@ -144,6 +144,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Odd-even transposition sort is bubble sort arranged for parallel hardware. In even phases all even-indexed pairs compare simultaneously; in odd phases all odd-indexed pairs do. This brick-wall pattern needs at most n phases regardless of input.",
+        "invariants": [
+            "Comparators within a phase act on disjoint pairs, so they can run in parallel.",
+            "After t phases, no element is more than t positions from its final rank."
+        ],
+        "correctness": "Each phase removes inversions on its parity; after n alternating phases every initially inverted pair has been compared at least once, so no inversions remain and the array is sorted.",
+        "complexityRationale": "Each of up to n phases compares n/2 pairs concurrently, so O(n) depth and O(n^2) total comparator work. Sorting is in place with O(1) extra state.",
+        "uses": [
+            "Sorting on SIMD and systolic arrays",
+            "Simplest sorting network to trace by hand",
+            "Hardware implementations with fixed wiring"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3.4",
+            "Leighton, Introduction to Parallel Algorithms and Architectures, Chapter 3"
+        ],
+        "workedExample": "For [5, 1, 4, 2], the even phase compares (5,1) and (4,2), swapping to [1, 5, 2, 4]; the odd phase compares (5,2) to get [1, 2, 5, 4]; another even phase compares (5,4), ending [1, 2, 4, 5]."
+    },
     id: "odd-even-transposition-sort",
     name: "Odd-Even Transposition Sort",
     category: "sorting",

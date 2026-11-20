@@ -123,6 +123,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Longest valid parentheses finds the longest well-formed substring of '(' and ')'. The DP stores dp[i], the length of the valid run ending at i, which can only be positive at a closing parenthesis. When it matches an earlier open, the recurrence adds the inner run, two for the pair, and any valid run immediately before the open.",
+        "invariants": [
+            "dp[i] is the length of the longest valid substring ending at i.",
+            "dp[i] is zero whenever s[i] is an opening parenthesis.",
+            "A matching close has a valid open at index i-dp[i-1]-2."
+        ],
+        "correctness": "If s[i] closes a valid run ending at i-1, its partner is exactly the character before that run; when that character is an open, the new run consists of the inner run, the matching pair, and any valid run just before the open. Otherwise no valid run can end at i. This recurrence captures all cases, so max dp is the answer.",
+        "complexityRationale": "Each index is computed with constant work in one pass, giving O(n) time. The dp array uses O(n) space, reducible to O(1) with careful variable tracking.",
+        "uses": [
+            "Validating and repairing bracketed expressions",
+            "Parsing nested structures in compilers",
+            "A classic one-dimensional string DP"
+        ],
+        "references": [
+            "LeetCode problem 32, Longest Valid Parentheses",
+            "Cormen et al., Introduction to Algorithms, Chapter 15"
+        ],
+        "workedExample": "For s = )()()) the runs ending at indices 2 and 5 both have length 4, from the substring ()(). The maximum dp value is 4."
+    },
     id: "longest-valid-parentheses-dp",
     name: "Longest Valid Parentheses (DP)",
     category: "dynamic-programming",

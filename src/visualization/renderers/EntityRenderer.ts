@@ -10,6 +10,7 @@
  */
 
 import type { EntityState, VisualFrame } from "@/types";
+import { drawFittedCentered, logicalCanvasWidth } from "@/visualization/renderers/LabelRenderer";
 
 /** Standard canvas font string shared by all entity text. */
 const FONT = '500 14px "Noto Sans", sans-serif';
@@ -42,6 +43,8 @@ export const STATE_COLORS: Record<EntityState, { fill: string; stroke: string; t
  * @param frame The frame whose entities should be drawn.
  */
 export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame): void {
+    const canvasWidth = logicalCanvasWidth(ctx);
+
     for (const entity of frame.entities) {
         // Resolve the palette entry for this entity's state.
         const colors = STATE_COLORS[entity.state] ?? STATE_COLORS.idle;
@@ -60,6 +63,7 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
                     entity.height,
                     entity.label,
                     colors.text,
+                    canvasWidth,
                 );
                 break;
             case "node":
@@ -105,6 +109,8 @@ export function renderEntities(ctx: CanvasRenderingContext2D, frame: VisualFrame
 
 /**
  * Draw a bar: filled rectangle with a 1px border, label centered if tall enough.
+ * The label is shortened to the bar width and kept inside the canvas so dense
+ * bars never let labels collide or clip at the edges.
  */
 function drawBar(
     ctx: CanvasRenderingContext2D,
@@ -114,6 +120,7 @@ function drawBar(
     height: number,
     label: string,
     textColor: string,
+    canvasWidth: number,
 ): void {
     ctx.fillRect(x, y, width, height);
     ctx.strokeRect(x, y, width, height);
@@ -122,9 +129,8 @@ function drawBar(
     if (height > 20) {
         ctx.fillStyle = textColor;
         ctx.font = FONT;
-        ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(label, x + width / 2, y + height / 2);
+        drawFittedCentered(ctx, label, x + width / 2, y + height / 2, width, canvasWidth);
     }
 }
 

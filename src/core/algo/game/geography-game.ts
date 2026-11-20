@@ -124,6 +124,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Geography moves a token along unused directed edges, and a vertex may not be revisited. The player with no unused outgoing edge from the current vertex loses. Because the state includes the visited set, positions are solved by recursive game-tree search with memoization.",
+        "invariants": [
+            "A visited vertex can never be entered again.",
+            "Each move consumes exactly one directed edge.",
+            "A position is winning if some move leads to a losing position for the opponent."
+        ],
+        "correctness": "The game is finite because edges are consumed and never restored. The recursive rule labels a position winning exactly when it has a move to a losing position, which is the definition of outcome classes for finite perfect-information games, so the computed winner is correct.",
+        "complexityRationale": "The state is a current vertex plus a subset of visited vertices, giving up to O(2^n) states and O(n) recursion depth for the visited set and stack.",
+        "uses": [
+            "A canonical PSPACE-style game for search demonstrations",
+            "Modeling one-use traversal in routing puzzles",
+            "Testing memoized game solvers"
+        ],
+        "references": [
+            "Fraenkel, Scheinerman, and Ullman, Undirected Geography is PSPACE-complete (1993)",
+            "Berlekamp, Conway, and Guy, Winning Ways for Your Mathematical Plays"
+        ],
+        "workedExample": "From start A with edges to B and C, both replies lead eventually to dead-end D where the mover has no outgoing edge. For example A to B to D strands the next player, so A is a losing start position for the first player."
+    },
     id: "geography-game",
     name: "Geography Game",
     category: "game",

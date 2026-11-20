@@ -146,6 +146,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cube sort arranges values at the vertices of a hypercube and compares neighbors that differ in exactly one coordinate bit. Each dimension pass orders pairs along that dimension, and all edges of a dimension can fire simultaneously. It is a parallel sort built from local swaps.",
+        "invariants": [
+            "After processing a dimension, every edge along that dimension connects an ordered pair.",
+            "The set of values stored at vertices never changes."
+        ],
+        "correctness": "Ordering all edges of one dimension is equivalent to sorting along that bit; processing every bit dimension in sequence gives sorted order under the hypercube's Gray-code ranking. Local swaps never change the value set, so the end state is the sorted permutation.",
+        "complexityRationale": "There are log n dimensions and each pass touches n elements, so O(n log n) work with logarithmic depth when edges run in parallel. The visualization holds the array plus edge metadata, O(n) space.",
+        "uses": [
+            "Parallel sorting on hypercube topologies",
+            "Teaching dimension-by-dimension local sorting",
+            "Network-on-chip sorting demonstrations"
+        ],
+        "references": [
+            "Leighton, Introduction to Parallel Algorithms and Architectures, Chapter 4",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.3"
+        ],
+        "workedExample": "For [6, 3, 7, 1] on four cube vertices, the first dimension compares pairs (6, 7) and (3, 1) and orders them; the second compares across the other bit. The final vertex-by-vertex read gives [1, 3, 6, 7]."
+    },
     id: "cube-sort",
     name: "Cube Sort",
     category: "sorting",

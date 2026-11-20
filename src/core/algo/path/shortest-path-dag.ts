@@ -235,6 +235,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Shortest Path DAG module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "In a directed acyclic graph, shortest paths can be found in linear time by processing vertices in topological order and relaxing each outgoing edge once. A topological order guarantees all predecessors of a vertex are handled before it, so its distance is already final when processed, and this even works with negative weights.",
+        "invariants": [
+            "A vertex is processed only after all its predecessors.",
+            "When a vertex is processed, its distance is final.",
+            "Relaxing each edge once is sufficient because there are no cycles."
+        ],
+        "correctness": "Every path into a vertex comes from a predecessor processed earlier, so by induction its tentative distance after all predecessors are relaxed is the true shortest. No later update can occur because no edge returns from a later vertex, making the final distances correct.",
+        "complexityRationale": "One topological sort plus one edge pass costs O(V + E) time and uses O(V) space for distances and the order.",
+        "uses": [
+            "Shortest paths in dependency and scheduling DAGs",
+            "Finding critical paths with negative weights allowed",
+            "Dynamic programming on acyclic structures"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, DAG shortest paths",
+            "Kahn, Topological sorting of large networks (1962)"
+        ],
+        "workedExample": "With topological order A, B, C, D, E, start dist A 0. Relaxing A sets B 3 and C 6; B improves C to 5 and D to 7; C improves D to 6 and E to 10; D improves E to 8. The final distance to E is 8."
+    },
     id: "shortest-path-dag",
     name: "Shortest Path in a DAG",
     category: "shortest-path",

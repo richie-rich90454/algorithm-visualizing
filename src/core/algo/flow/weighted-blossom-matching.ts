@@ -174,6 +174,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Maximum-weight general-graph matching extends the blossom algorithm from maximizing the number of edges to maximizing their total weight. The search grows alternating trees and contracts odd cycles, but now it also tracks dual variables and reduced costs so that augmentations improve total weight. The demo verifies the result by exhaustive search on a small graph.",
+        "invariants": [
+            "Every matching maintained is valid, with no vertex used twice.",
+            "Dual variables keep reduced costs nonnegative for matched edges.",
+            "The weight of the matching never decreases after an augmentation."
+        ],
+        "correctness": "Blossom contraction preserves the structure of augmenting paths in weighted graphs just as in the unweighted case, and augmenting along a maximum reduced-cost path increases total weight. When no improving augmenting path exists, the primal matching and dual variables satisfy complementary slackness, certifying maximum weight. Exhaustive verification on the tiny demo confirms the certificate.",
+        "complexityRationale": "The weighted blossom algorithm runs in O(V^3) with standard implementations; the demo adds an O(exp(V)) exhaustive check only for small inputs. Edge lists, matching, and dual arrays use O(V + E) space.",
+        "uses": [
+            "Maximum-weight pairing in general graphs",
+            "The exact solution of the Euclidean matching subproblem in TSP heuristics",
+            "Assignment and scheduling with general (non-bipartite) compatibility"
+        ],
+        "references": [
+            "Edmonds, Maximum Matching and a Polyhedron with 0-1 Vertices (1965)",
+            "Galil, Efficient Algorithms for Finding Maximum Matchings (1986)"
+        ],
+        "workedExample": "Vertices 0-3 with edge weights 0-1=5, 1-2=5, 2-3=5, and three low-weight edges of 1. Choosing 0-1 and 2-3 gives two disjoint edges of weight 5 each, total 10. No other disjoint pair exceeds this, so the matching {0-1, 2-3} is optimal."
+    },
     id: "weighted-blossom-matching",
     name: "Weighted Blossom Matching",
     category: "flow",

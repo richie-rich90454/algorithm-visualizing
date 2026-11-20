@@ -152,6 +152,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gnome sort is insertion sort told as a garden gnome moving flower pots. The gnome walks right while neighbors are in order and swaps then steps back when they are not. Reaching the far end means every neighbor is ordered.",
+        "invariants": [
+            "The prefix up to the gnome's position is always sorted.",
+            "A backward step happens only immediately after a swap that fixed a local inversion."
+        ],
+        "correctness": "Whenever the gnome steps back, the swap removes an inversion while preserving the sorted prefix; when it steps forward it extends the prefix by one element. Reaching the end means the whole array is a sorted prefix.",
+        "complexityRationale": "The gnome can step back and forward O(n) times per element, so O(n^2) comparisons and swaps in the worst case; a sorted array completes in one forward walk, O(n). No extra array is used, O(1) space.",
+        "uses": [
+            "Teaching insertion sort with a simple story",
+            "Sorting small lists with minimal code",
+            "Introducing invariants through a physical analogy"
+        ],
+        "references": [
+            "Dickman, Gnome Sort, described in algorithm folklore",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"
+        ],
+        "workedExample": "For [5, 3, 4, 1, 2], swap 5 and 3 to [3, 5, 4, 1, 2] and step back; move 4 left past 5 to [3, 4, 5, 1, 2], then walk 1 and 2 into place, ending [1, 2, 3, 4, 5]."
+    },
     id: "gnome-sort",
     name: "Gnome Sort",
     category: "sorting",

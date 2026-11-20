@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Iterative deepening reruns a depth-limited depth-first search with limits 0, 1, 2, and so on. The first limit that reaches the target gives the shallowest possible path, matching breadth-first optimality, while the search stack never grows beyond the target depth.",
+        "invariants": [
+            "A probe with limit L visits exactly the vertices within L edges of the start.",
+            "If a target is found at limit L, no shallower path exists.",
+            "Increasing the limit explores all previously visited vertices plus one more layer."
+        ],
+        "correctness": "Each probe is a complete depth-limited DFS, so it finds any vertex within its limit. The smallest limit that reaches the target is the minimum number of edges on any path to it, giving a shortest path. Repeating shallow levels costs only a constant-factor overhead because the geometric series of work is dominated by the last probe.",
+        "complexityRationale": "The total work is O(b^d) for a branching factor b and target depth d, the same order as BFS, and the stack uses O(d) space.",
+        "uses": [
+            "Pathfinding when memory is limited but optimal depth matters",
+            "Game-tree search with progressive deepening",
+            "A space-efficient alternative to breadth-first search"
+        ],
+        "references": [
+            "Korf, Iterative-Deepening A*: A Simple and Optimal Admissible Heuristic Search (1985)",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach, uninformed search"
+        ],
+        "workedExample": "From A toward E, probes at limits 0 and 1 find nothing. At limit 2 the DFS explores A-C-E and reaches E, so the shortest path has length 2 and the search stops without deeper exploration."
+    },
     id: "iterative-deepening-dfs",
     name: "Iterative Deepening DFS",
     category: "graph",

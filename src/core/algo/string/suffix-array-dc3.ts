@@ -180,6 +180,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Suffix Array (DC3) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "DC3 builds a suffix array in linear time by splitting suffixes into groups by start index modulo 3. It recursively sorts the mod-1 and mod-2 suffixes, sorts the mod-0 suffixes using those ranks, then merges the two sorted groups.",
+        "invariants": [
+            "The mod-1 and mod-2 suffixes are sorted among themselves before the merge.",
+            "The rank of a mod-0 suffix's continuation is available from the sorted reduced groups, so comparing mod-0 suffixes needs constant work."
+        ],
+        "correctness": "The skew trick reduces the recursive problem to two-thirds of the size, so recursion terminates. Sorting triples and using the recursive ranks orders the nonzero-modulo suffixes, mod-0 suffixes are ordered by first character plus the recursive rank of the remainder, and merging two sorted lists yields the full suffix array.",
+        "complexityRationale": "Each recursion reduces the input to two-thirds and the sorts use counting passes linear in n, giving T(n) = T(2n/3) + O(n) = O(n) time with O(n) space. This educational version uses a comparison sort, raising practical cost to O(n log n).",
+        "uses": [
+            "Linear-time suffix array construction for large texts",
+            "Full-text indexes",
+            "The construction used in bioinformatics libraries such as sa-is"
+        ],
+        "references": [
+            "Karkkainen and Sanders, Simpler Linear-Time Suffix Construction with DC3, 2003",
+            "Gusfield, Algorithms on Strings, Trees, and Sequences"
+        ],
+        "workedExample": "For \"banana\", DC3 groups suffixes by index mod 3, sorts the mod-1/2 and mod-0 groups, then merges them into the suffix array [5,3,1,0,4,2]."
+    },
     id: "suffix-array-dc3",
     name: "Suffix Array (DC3)",
     category: "string",

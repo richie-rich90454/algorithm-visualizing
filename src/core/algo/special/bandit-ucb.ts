@@ -84,6 +84,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The multi-armed bandit models choosing among options whose payouts are unknown. UCB1 balances exploration and exploitation by always pulling the arm with the highest upper confidence bound: its observed average reward plus a bonus that shrinks as that arm is sampled more. Untried arms are pulled first, which makes the strategy optimistic about the unknown.",
+        "invariants": [
+            "Every arm is tried once before any bonus-based choice is made.",
+            "The exploration bonus is nonnegative and decreases as an arm's pull count grows.",
+            "Recorded counts and win totals are consistent with the rewards actually observed."
+        ],
+        "correctness": "UCB1 is a regret-minimizing strategy rather than an exact solver. The bonus comes from a confidence bound under which the true mean lies below the upper bound with high probability, which yields expected regret that grows only logarithmically with the number of rounds. The demo's closing claim that the most-pulled arm matches the best arm is an empirical outcome, not a guarantee for short runs.",
+        "complexityRationale": "Each round scans all k arms to compute their bounds, O(k) work, so t rounds cost O(t·k). Storing pull counts and win totals for the arms uses O(k) space.",
+        "uses": [
+            "A/B testing and online experimentation",
+            "Content and advertisement recommendation",
+            "Adaptive allocation in clinical trials",
+            "Automatic tuning of system parameters and game AI"
+        ],
+        "references": [
+            "Auer, Cesa-Bianchi and Fischer, Finite-time Analysis of the Multiarmed Bandit Problem, Machine Learning, 2002",
+            "Sutton and Barto, Reinforcement Learning: An Introduction, 2nd edition, Chapter 2"
+        ],
+        "workedExample": "Three arms pay out with hidden rates 0.2, 0.8 and 0.5. Rounds 1-3 try each arm once. From round 4 the arm with the largest average plus sqrt(2·ln(t)/count) is pulled. Arm 1, with the 0.8 rate, quickly gains the highest bound and is pulled most often, matching the true best arm."
+    },
     id: "bandit-ucb",
     name: "Bandit UCB1",
     category: "math",

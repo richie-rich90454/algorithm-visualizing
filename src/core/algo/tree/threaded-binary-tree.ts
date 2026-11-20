@@ -163,6 +163,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A threaded binary tree replaces null child pointers with useful links called threads: a null left pointer points to the inorder predecessor and a null right pointer to the successor. This lets an inorder traversal proceed without a stack or recursion, using flag bits to distinguish threads from real children.",
+        "invariants": [
+            "A thread exists only where the corresponding child pointer was null.",
+            "Left threads point to predecessors and right threads to successors.",
+            "Flag bits correctly distinguish real children from threads during traversal."
+        ],
+        "correctness": "In inorder order the predecessor of a node with no left child is the last node visited before it, and the successor of a node with no right child is the next node to visit. Replacing those null pointers gives a direct link along the traversal path, so following right pointers and threads visits nodes in the same sequence as recursive inorder. Keeping flag bits avoids treating a thread as a subtree, so termination at the end of the sequence is correct.",
+        "complexityRationale": "Each node is visited once and each thread followed once, so traversal takes O(n) time. The threads reuse existing null pointers, adding only flag bits, so space is O(1) beyond the tree itself.",
+        "uses": [
+            "Stack-free inorder traversal of binary trees",
+            "Memory-constrained tree iterators",
+            "Teaching explicit threading of data structures"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.3.1",
+            "Aho, Hopcroft, and Ullman, Data Structures and Algorithms, Chapter 2"
+        ],
+        "workedExample": "For tree A with left child B, right child C, and B having left child D, the inorder sequence is D, B, A, C. Threads are set from D to B, from B to A, and from C back to the end marker, letting the walk proceed using right pointers only."
+    },
+
     id: "threaded-binary-tree",
     name: "Threaded Binary Tree",
     category: "tree",

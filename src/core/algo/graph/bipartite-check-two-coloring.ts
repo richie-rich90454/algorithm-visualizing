@@ -126,6 +126,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A graph is bipartite exactly when its vertices can be split into two groups with every edge crossing between them, which is equivalent to having no odd cycle. A breadth-first search colors the start one color and every neighbor the opposite color. If an edge ever joins two equally colored vertices, an odd cycle exists and the graph is not bipartite.",
+        "invariants": [
+            "Every colored vertex's color equals the parity of its distance from the start.",
+            "An edge between equally colored vertices implies an odd cycle.",
+            "All vertices reached so far respect the two-coloring rule unless a conflict was found."
+        ],
+        "correctness": "BFS assigns each vertex its distance parity from the start, and any edge in a bipartite graph must connect vertices of opposite parity. If the search finds an edge whose endpoints share a color, the two BFS paths to them plus that edge form an odd cycle, proving non-bipartiteness. If no conflict appears, the coloring itself is a valid bipartition.",
+        "complexityRationale": "One BFS visits each vertex and edge once for O(V + E) time, and the color array plus queue use O(V) space.",
+        "uses": [
+            "Checking whether a graph can be two-colored for scheduling",
+            "Detecting odd cycles as a graph property",
+            "A prerequisite test for bipartite matching algorithms"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search",
+            "Kleinberg and Tardos, Algorithm Design, bipartite graphs"
+        ],
+        "workedExample": "The even square A-B-C-D colors cleanly: A gets color 0, B and D get color 1, and C gets color 0. The final edge C-D connects different colors, so no conflict arises and the graph is bipartite with classes {A,C} and {B,D}."
+    },
     id: "bipartite-check-two-coloring",
     name: "Bipartite Check (Two-Coloring)",
     category: "graph",

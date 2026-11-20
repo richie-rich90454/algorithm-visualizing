@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "The midpoint circle algorithm draws a circle using only integer arithmetic. It walks the arc in one octant, deciding at each step whether the next pixel is on the circle outline or just inside it by evaluating a decision variable at the midpoint between two candidates, then mirrors the pixel into all eight octants.",
+        "invariants": [
+            "The decision variable is the circle equation evaluated at the midpoint of the two candidate pixels.",
+            "The current pixel is always the closest grid point to the true circle in that octant.",
+            "Mirroring produces pixels symmetric under all eight octant transformations."
+        ],
+        "correctness": "If the midpoint lies inside the circle the outline is farther toward the outside candidate, so choosing it keeps the drawn pixel closer to the true circle; otherwise the inside candidate is closer. Updating the decision variable incrementally preserves this comparison as x increases. Stopping when x reaches y ends the octant exactly at the 45 degree point, and the eight-way symmetry fills the complete circle.",
+        "complexityRationale": "The loop runs about r steps along one octant and writes eight pixels per step, giving O(r) time. Only a few integer accumulators are kept, so space is O(1) besides the output.",
+        "uses": [
+            "Drawing circles in raster graphics and fonts",
+            "Generating circular masks in image processing",
+            "Hardware circle primitives in embedded displays"
+        ],
+        "references": [
+            "Bresenham, A Linear Algorithm for Incremental Digital Display of Circular Arcs, Communications of the ACM 20 (1977)",
+            "Foley et al., Computer Graphics: Principles and Practice, Chapter 3"
+        ],
+        "workedExample": "For radius r = 5, the algorithm starts at (0,5) with decision value 1 - r = -4. It advances x while keeping y = 5 until the midpoint test turns positive, then drops y, continuing until x reaches y. Each chosen pixel is mirrored to the other seven octants."
+    },
+
     id: "midpoint-circle-rasterization",
     name: "Midpoint Circle Rasterization",
     category: "geometry",

@@ -1,0 +1,254 @@
+{
+  "bubble-sort": {
+    "intuition": "Walk through the array from left to right and swap any neighboring pair that is out of order. One complete pass floats the largest remaining value to its final position, so repeat passes over a shrinking unsorted region until a pass makes no swaps.",
+    "invariants": ["After pass k, the last k positions hold the k largest values in sorted order.", "A pass with zero swaps means the array is already sorted."],
+    "correctness": "Each pass moves the maximum of the unsorted prefix to its right end by repeated adjacent swaps; no smaller value can pass it. After n-1 passes every position is fixed. The early exit is safe because a swap-free pass implies every adjacent pair is ordered, which implies the whole array is ordered.",
+    "complexityRationale": "Each pass scans up to n elements and compares neighbors, giving O(n^2) comparisons and swaps in the worst and average cases. No auxiliary storage is needed, so space is O(1). A sorted input finishes in one pass, O(n).",
+    "uses": ["Teaching the idea of local swaps and passes", "Detecting that a small list is already ordered", "A baseline for comparing more efficient sorts"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2"],
+    "workedExample": "Start [5, 1, 4, 2]. Pass 1: swap 5 and 1 -> [1, 5, 4, 2]; swap 5 and 4 -> [1, 4, 5, 2]; swap 5 and 2 -> [1, 4, 2, 5]. Pass 2: swap 4 and 2 -> [1, 2, 4, 5]. Pass 3 makes no swaps, so the array is sorted."
+  },
+  "insertion-sort": {
+    "intuition": "Grow a sorted prefix one element at a time. Take the next value, shift every larger value in the prefix one slot to the right, and drop the new value into the hole. It is how a person sorts a hand of cards.",
+    "invariants": ["The prefix before the current index is always sorted.", "The prefix contains exactly the same values as the original prefix."],
+    "correctness": "Insertion places the new value after all values less than or equal to it and before all larger values, so the sorted-prefix invariant is restored. When the prefix reaches n, the whole array is sorted.",
+    "complexityRationale": "Each insertion shifts up to k elements, so the total is O(n^2) in the average and worst cases. Nearly sorted input needs only a few shifts per element, giving O(n) best case. Space is O(1).",
+    "uses": ["Small arrays where constant factors dominate", "Online algorithms that receive data one item at a time", "The final small-range pass inside timsort and library sorts"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Sedgewick and Wayne, Algorithms, Section 2.1"],
+    "workedExample": "Start [5, 1, 4, 2]. Insert 1 before 5 -> [1, 5, 4, 2]. Insert 4 before 5 -> [1, 4, 5, 2]. Insert 2 between 1 and 4 -> [1, 2, 4, 5]."
+  },
+  "selection-sort": {
+    "intuition": "Repeatedly find the smallest value in the unsorted suffix and swap it into the next position. Each pass fixes exactly one position and performs at most one swap.",
+    "invariants": ["The prefix before the current index contains the k smallest values in sorted order.", "The suffix contains all remaining values."],
+    "correctness": "Selecting the minimum of the suffix and swapping it to the front of that suffix guarantees the next prefix entry is the smallest remaining value. Inductively after n-1 passes every entry is fixed.",
+    "complexityRationale": "Finding a minimum in a suffix of length k costs k-1 comparisons, so total comparisons are n(n-1)/2, which is O(n^2) for every input. Swaps are at most n-1, so it wins over bubble sort on swap-heavy media. Space is O(1).",
+    "uses": ["Situations where writes are expensive relative to reads", "Embedded or flash memory with limited write cycles", "Teaching selection-based thinking"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Knuth, The Art of Computer Programming, Vol. 3"],
+    "workedExample": "Start [5, 1, 4, 2]. Minimum of all four is 1; swap with position 0 -> [1, 5, 4, 2]. Minimum of [5,4,2] is 2; swap into position 1 -> [1, 2, 4, 5]. The rest is already ordered."
+  },
+  "merge-sort-top-down": {
+    "intuition": "Split the array in half, sort each half recursively, then merge the two sorted halves by repeatedly taking the smaller leading element. A single element is already sorted, which ends the recursion.",
+    "invariants": ["Each recursive call returns a sorted array containing exactly its input elements.", "The merge step always takes the smaller available head, so the output prefix is sorted."],
+    "correctness": "By induction, both halves are sorted. At each merge step the smaller head is the smallest element not yet emitted, so the output is sorted; it contains every element from both halves exactly once.",
+    "complexityRationale": "The recurrence T(n) = 2T(n/2) + O(n) solves to O(n log n) on every input. Merging needs an auxiliary array of size n, so space is O(n) for the classic version.",
+    "uses": ["Stable sorting where equal keys must keep their input order", "External sorting of data larger than memory", "The base of timsort for long runs"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4"],
+    "workedExample": "Start [5, 1, 4, 2]. Split into [5, 1] and [4, 2]. Sort each to [1, 5] and [2, 4]. Merge: compare 1 and 2, take 1; compare 5 and 2, take 2; then take 4, then 5. Result [1, 2, 4, 5]."
+  },
+  "quick-sort-lomuto": {
+    "intuition": "Choose the last element as a pivot, then scan with one pointer that moves every value smaller than the pivot into a growing left region. Swap the pivot into the boundary, and recurse on the two sides.",
+    "invariants": ["Everything left of the partition boundary is less than or equal to the pivot.", "Everything right of the boundary and before the pivot is greater than the pivot."],
+    "correctness": "The partition loop maintains the left-region invariant with each swap. Placing the pivot at the boundary puts every smaller value before it and every larger value after it, so the pivot is in its final position. Recursion then sorts both independent sides.",
+    "complexityRationale": "Partitioning a range of size k costs O(k). Balanced pivots give O(n log n); consistently extreme pivots give O(n^2), which happens here on already sorted input because the pivot is the last element. Recursion uses O(log n) stack space on average.",
+    "uses": ["General-purpose in-place sorting", "The partition step of introspective sort", "Selection algorithms such as quickselect"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 7", "Sedgewick and Wayne, Algorithms, Section 2.3"],
+    "workedExample": "Start [3, 7, 2, 6], pivot 6. Scan 3 (small, keep), 7 (large, keep), 2 (small, swap into left region) -> [3, 2, 7, 6]. Swap pivot with 7 -> [3, 2, 6, 7]. Recurse on [3, 2] -> [2, 3]. Result [2, 3, 6, 7]."
+  },
+  "quick-sort-hoare": {
+    "intuition": "Use two pointers that start at both ends and advance toward each other, swapping a large left value with a small right value. Stop when the pointers cross, then recurse on each side of the crossing.",
+    "invariants": ["All values left of the left pointer are less than or equal to the pivot.", "All values right of the right pointer are greater than or equal to the pivot."],
+    "correctness": "Each swap moves an out-of-place pair into the correct half. When the pointers cross, no element remains misplaced, and the two subranges can be sorted independently by induction.",
+    "complexityRationale": "Partition is linear in the range size. Average time is O(n log n), worst case O(n^2). Hoare partitioning swaps roughly three times fewer elements than Lomuto on random data and handles duplicates well; stack space is O(log n) on average.",
+    "uses": ["In-place sorting with fewer swaps than Lomuto", "Inputs with many duplicate keys", "Library introsort implementations"],
+    "references": ["Hoare, Quicksort, Communications of the ACM, 1962", "CLRS, Introduction to Algorithms, Chapter 7"],
+    "workedExample": "Start [5, 1, 4, 2], pivot 4. Left pointer stops at 5, right pointer stops at 2, swap -> [2, 1, 4, 5]. Pointers cross; recurse on [2, 1] -> [1, 2]. Result [1, 2, 4, 5]."
+  },
+  "heap-sort": {
+    "intuition": "Build a max-heap from the array, then repeatedly remove the root, which is the largest remaining value, and place it at the end of the array. Restore the heap property by sifting the displaced root down.",
+    "invariants": ["The heap region satisfies the max-heap property at every node.", "The sorted suffix holds the largest values in final order."],
+    "correctness": "The root of a max-heap is the maximum of the heap region, so swapping it to the end places the correct next value. Sift-down restores the heap property on the smaller region; induction over the shrinking heap completes the sort.",
+    "complexityRationale": "Heap construction is O(n), and each of n removals costs O(log n), giving O(n log n) on every input. Sorting is in place with O(1) extra space, though the recursion-free sift-down is easier to keep constant space.",
+    "uses": ["Sorting with a guaranteed O(n log n) worst case", "Priority queue selection", "The fallback branch of introsort"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 6", "Sedgewick and Wayne, Algorithms, Section 2.4"],
+    "workedExample": "Start [3, 1, 6, 2]. Build max-heap -> [6, 3, 1, 2] conceptually. Remove 6 to the end, restore heap -> [3, 2, 1 | 6]. Remove 3, restore -> [2, 1 | 3, 6]. Remove 2 -> [1 | 2, 3, 6]. Result [1, 2, 3, 6]."
+  },
+  "counting-sort": {
+    "intuition": "When keys are small integers, count how many times each key appears, convert the counts to cumulative positions, then place each input item directly at its position while decrementing the count.",
+    "invariants": ["The count array holds the number of occurrences of each key before prefix sums.", "After prefix sums, each count is the last free position for that key."],
+    "correctness": "The prefix sum of counts gives the exclusive upper bound of each key's block in sorted order. Writing items from right to left with decrementing counters fills exactly that block, preserving stability and producing sorted output.",
+    "complexityRationale": "Counting and prefix sums take O(n + k) where k is the key range; placement takes O(n). Space is O(n + k). When k grows much larger than n, comparison sorts are preferable.",
+    "uses": ["Sorting bytes, digits, or small enumerated keys", "The inner pass of radix sort", "Histogram-based preprocessing"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 8", "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1"],
+    "workedExample": "Start [2, 0, 2, 1] with range 0..2. Counts are [1, 1, 2]. Prefix positions are [1, 2, 4]. Place right to left: 2 -> index 3, 1 -> index 1, 0 -> index 0, 2 -> index 2. Result [0, 1, 2, 2]."
+  },
+  "radix-sort-lsd": {
+    "intuition": "Sort by the least significant digit first, using a stable sort for each digit. Because stability preserves the order established by lower digits, after the most significant digit the whole key is sorted.",
+    "invariants": ["After processing digit d, items are sorted by their d least significant digits.", "Each digit pass is stable, so earlier order is preserved."],
+    "correctness": "Stability is the key: sorting by digit d+1 keeps items with equal digit d+1 in their existing order by lower digits. Inductively after the final digit the array is sorted by the full key.",
+    "complexityRationale": "Each pass is O(n + k) with k the digit base; there are d passes for d digits, so O(d(n + k)) total. Space is O(n + k). It avoids comparisons entirely.",
+    "uses": ["Sorting fixed-width integers and strings", "High-throughput key sorting in databases", "Non-comparison sorting where keys are bounded"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 8", "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.2"],
+    "workedExample": "Start [170, 45, 75, 90]. Ones pass -> [170, 90, 45, 75]. Tens pass -> [170, 45, 75, 90] (45 before 75 preserved). Hundreds pass -> [45, 75, 90, 170]."
+  },
+  "tim-sort": {
+    "intuition": "Scan the input for short already ordered runs, extend descending runs by reversing them, then merge the runs with rules that keep natural order and balance merge sizes. Insertion sort finishes very short runs.",
+    "invariants": ["Every run on the stack is sorted internally.", "Run lengths obey the merge invariants, so merges stay balanced."],
+    "correctness": "Each run is sorted by insertion sort or by reversal of a descending run. Merging two sorted runs yields a sorted run, so when all runs collapse into one the array is sorted.",
+    "complexityRationale": "Runs take O(n) to detect and extend. Balanced merges give O(n log n) worst case; naturally ordered data can finish in O(n). Space is O(n) for merge buffers.",
+    "uses": ["Default sort in Python and Java object arrays", "Real-world data that contains existing ordered runs", "Adaptive sorting where best case matters"],
+    "references": ["Peters, Timsort description, 2002", "Macilotti and Odersky, On the Worst-Case Complexity of TimSort, 2015"],
+    "workedExample": "Input [1, 2, 3, 9, 5, 4] has an ascending run [1, 2, 3, 9] and a descending run [5, 4], which is reversed to [4, 5]. The two sorted runs merge into [1, 2, 3, 4, 5, 9]."
+  },
+  "linear-search": {
+    "intuition": "Check each element in order until the target is found or the array ends. It needs no ordering and works on any collection.",
+    "invariants": ["All positions before the current index have been checked and do not match."],
+    "correctness": "By induction the scan never skips an unchecked element; if a match exists it is eventually examined, and if the loop ends no match exists.",
+    "complexityRationale": "At most n comparisons, O(n) worst and average time; O(1) best case when the first element matches. Space is O(1).",
+    "uses": ["Small or unsorted collections", "Searching linked lists where random access is unavailable", "A baseline for measuring faster search structures"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Sedgewick and Wayne, Algorithms, Section 1.1"],
+    "workedExample": "Search for 7 in [4, 9, 7, 2]. Compare 4, then 9, then 7; return index 2. Searching for 5 exhausts all four elements and returns not found."
+  },
+  "binary-search-iterative": {
+    "intuition": "Keep two bounds around the possible location of a target in a sorted array. Compare the middle element and discard half of the remaining range each time.",
+    "invariants": ["If the target is present, its index lies within the current low and high bounds."],
+    "correctness": "Because the array is sorted, comparing the target with the middle element proves which half cannot contain it. Discarding that half preserves the invariant; when the bounds meet, only one candidate remains.",
+    "complexityRationale": "Each step halves the search range, so at most ceil(log2(n + 1)) comparisons: O(log n) time and O(1) space with the iterative form.",
+    "uses": ["Lookup in sorted arrays and indexes", "Guessing a threshold in a monotone predicate", "The inner step of many divide-and-conquer routines"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 2", "Knuth, The Art of Computer Programming, Vol. 3, Section 6.2.1"],
+    "workedExample": "Search 9 in [1, 3, 5, 7, 9, 11]. Middle index 2 holds 5, so search the upper half [7, 9, 11]. Middle holds 9, return index 4."
+  },
+  "binary-search-lower-bound": {
+    "intuition": "Find the first index whose value is greater than or equal to the target. Move the lower bound up when the middle value is too small, otherwise move the upper bound down. The two bounds converge on the answer.",
+    "invariants": ["Every index below low has a value less than the target.", "Every index at or above high has a value greater than or equal to the target."],
+    "correctness": "The loop shrinks the open interval while preserving both invariants. When low equals high, all indices below it are too small and the index itself satisfies the condition, so it is the first such index; if none exists, the result is n.",
+    "complexityRationale": "Each iteration halves the remaining interval, giving O(log n) comparisons and O(1) space.",
+    "uses": ["Insertion position in a sorted array", "Counting duplicates with upper bound minus lower bound", "Implementing ordered maps and rank queries"],
+    "references": ["C++ standard library lower_bound specification", "CLRS, Introduction to Algorithms, Chapter 2 exercise"],
+    "workedExample": "Lower bound of 4 in [1, 3, 4, 4, 7] is index 2. Lower bound of 5 is index 4. Lower bound of 0 is index 0; of 9 is index 5."
+  },
+  "bfs": {
+    "intuition": "Explore a graph layer by layer. Start at the source, visit all its neighbors, then all their neighbors, using a queue so vertices are processed in the order discovered.",
+    "invariants": ["The queue holds discovered vertices in nondecreasing distance from the source.", "Once dequeued, a vertex has the shortest possible distance."],
+    "correctness": "Because edges have unit weight, any vertex at distance d+1 is reached from a vertex at distance d. Processing in queue order means all distance-d vertices are handled first, so the first time a vertex is discovered its distance is minimal.",
+    "complexityRationale": "Every vertex is enqueued at most once and every edge is examined a constant number of times: O(V + E) time and O(V) space for the queue and distance arrays.",
+    "uses": ["Shortest paths in unweighted graphs", "Web crawlers and social-network friend suggestions", "Flood fill and connected-component labeling"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 22", "Sedgewick and Wayne, Algorithms, Section 4.1"],
+    "workedExample": "From A with edges A-B, A-C, B-D, C-D: visit A, enqueue B and C at distance 1. Visit B, discover D at distance 2. Visit C, D is already discovered. Visit D. Distances are A=0, B=1, C=1, D=2."
+  },
+  "dfs-recursive": {
+    "intuition": "Go as deep as possible along one branch before backtracking. Mark a vertex when first reached, recurse into each unvisited neighbor, and finish the vertex when all neighbors are explored.",
+    "invariants": ["The recursion stack is a path in the graph of currently active vertices.", "A vertex marked visited is either finished or an ancestor on that path."],
+    "correctness": "Recursion explores every reachable neighbor, so all reachable vertices are visited. The discovery and finish times give a valid depth-first forest and support classification of tree, back, forward, and cross edges.",
+    "complexityRationale": "Each vertex is discovered once and each edge examined once or twice, giving O(V + E) time. Space is O(V) for the visited set and recursion stack.",
+    "uses": ["Topological ordering and cycle detection", "Connected and strongly connected components", "Backtracking search and puzzle solving"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 22", "Tarjan, Depth-First Search and Linear Graph Algorithms, 1972"],
+    "workedExample": "Graph A-B, A-C, B-D. Start at A, mark it, recurse into B, mark it, recurse into D, mark and finish D, finish B, then recurse into C and finish C, finally finish A. Discovery order is A, B, D, C."
+  },
+  "topological-sort-kahn": {
+    "intuition": "Repeatedly remove a vertex with no incoming edges, append it to the ordering, and delete its outgoing edges. If vertices remain, a cycle prevents a valid ordering.",
+    "invariants": ["Every removed vertex has no unremoved predecessors, so it can appear next.", "The remaining graph contains exactly the vertices not yet ordered."],
+    "correctness": "A vertex with indegree zero has no dependency left among the remaining vertices, so placing it next cannot violate an edge constraint. Removing its outgoing edges exposes newly available vertices. If the process stops early, every remaining vertex has an incoming edge and therefore a cycle exists.",
+    "complexityRationale": "Each vertex enters the queue once and each edge is processed once: O(V + E) time and O(V) space.",
+    "uses": ["Build systems and dependency resolution", "Course prerequisite scheduling", "Compilation order and pipeline staging"],
+    "references": ["Kahn, Topological sorting of large networks, 1962", "CLRS, Introduction to Algorithms, Chapter 22"],
+    "workedExample": "Edges A->B, A->C, B->D, C->D. Indegrees are A=0, B=1, C=1, D=2. Remove A, then B and C become available. After both are removed, D has indegree zero. One valid order is A, B, C, D."
+  },
+  "dijkstra-heap": {
+    "intuition": "Grow the set of settled vertices one at a time, always taking the unsettled vertex with the smallest tentative distance. Relax its outgoing edges, which may improve neighbors' distances.",
+    "invariants": ["Each tentative distance is the length of the best path found so far.", "When a vertex is settled, its tentative distance equals the true shortest distance."],
+    "correctness": "With nonnegative weights, any alternative path to the minimum-distance unsettled vertex must pass through another unsettled vertex whose distance is at least as large, so it cannot be shorter. Settling in increasing distance order is therefore safe.",
+    "complexityRationale": "With a binary heap and adjacency lists, each edge triggers at most one decrease-key style update and each vertex is extracted once: O((V + E) log V) time and O(V + E) space.",
+    "uses": ["Road navigation and map routing", "Network path selection with positive costs", "A subroutine in Johnson all-pairs shortest paths"],
+    "references": ["Dijkstra, A Note on Two Problems in Connexion with Graphs, 1959", "CLRS, Introduction to Algorithms, Chapter 24"],
+    "workedExample": "A->B cost 4, A->C cost 2, C->B cost 1. Settle A at 0, update B=4 and C=2. Settle C at 2, relax B to 3. Settle B at 3. Shortest distance to B is 3 via C."
+  },
+  "a-star": {
+    "intuition": "Like Dijkstra, but order the frontier by estimated total cost: distance so far plus a heuristic estimate to the goal. A good heuristic focuses the search toward the target.",
+    "invariants": ["The g score is the best known cost from the start to each vertex.", "With an admissible heuristic, f = g + h never overestimates the true cost through a vertex."],
+    "correctness": "If the heuristic never overestimates the remaining cost, the first goal extracted from the frontier has the smallest possible total cost, so the path is optimal. Consistency additionally guarantees that a vertex need not be reopened.",
+    "complexityRationale": "Time is O(E log V) with a priority queue in the typical implementation, but a strong heuristic can dramatically reduce explored vertices. Space is O(V) for scores, predecessors, and the frontier.",
+    "uses": ["Pathfinding in games and robotics", "Route planning with straight-line distance heuristics", "Grid navigation with time or energy costs"],
+    "references": ["Hart, Nilsson, and Raphael, A Formal Basis for the Heuristic Determination of Minimum Cost Paths, 1968", "Russell and Norvig, Artificial Intelligence: A Modern Approach"],
+    "workedExample": "On a grid, start at (0,0), goal (2,2), with Manhattan heuristic. From the frontier, the node with smallest g plus Manhattan distance is expanded first, so the search proceeds diagonally toward the goal instead of scanning uniformly outward."
+  },
+  "bellman-ford": {
+    "intuition": "Relax every edge repeatedly. After k passes, the known distances are at most the best path using k edges. Since a simple shortest path uses at most V-1 edges, V-1 passes suffice, and one more pass detects negative cycles.",
+    "invariants": ["After pass k, each distance is no larger than the true shortest path using at most k edges."],
+    "correctness": "Each pass considers every edge, so any path of length k+1 is formed by extending a path of length k; relaxation captures it. With no negative cycle, an optimal path is simple and has at most V-1 edges, so distances converge. A further improvement implies a negative cycle.",
+    "complexityRationale": "V-1 passes over E edges give O(VE) time and O(V) space, slower than Dijkstra but able to handle negative edge weights.",
+    "uses": ["Graphs with negative edge weights", "Negative-cycle detection in currency arbitrage", "Distributed routing protocols such as distance vector"],
+    "references": ["Bellman, On a Routing Problem, 1958", "Ford and Fulkerson, Flows in Networks, 1962", "CLRS, Introduction to Algorithms, Chapter 24"],
+    "workedExample": "Edges A->B cost 4, A->C cost 5, C->B cost -2. Pass 1 sets B=4, C=5, then relaxes B to 3 via C. Pass 2 makes no change, so distances are final: B=3, C=5."
+  },
+  "floyd-warshall": {
+    "intuition": "Allow intermediate vertices one at a time. For each candidate intermediate k, update every pair distance with the possibility of going through k. After all k, every possible intermediate has been considered.",
+    "invariants": ["After iteration k, d[i][j] is the shortest path from i to j using only intermediates from the first k vertices."],
+    "correctness": "A shortest path whose intermediate set is within the first k vertices either avoids k, giving d[i][j], or passes through k, giving d[i][k] + d[k][j]. Taking the minimum covers both cases, so the induction holds and the final matrix is correct.",
+    "complexityRationale": "Three nested loops over vertices give O(V^3) time. The distance matrix uses O(V^2) space, and a predecessor matrix can be kept in the same order to reconstruct paths.",
+    "uses": ["All-pairs shortest paths in dense graphs", "Transitive closure and reachability", "Computing graph centrality measures"],
+    "references": ["Floyd, Algorithm 97: Shortest Path, 1962", "Warshall, A Theorem on Boolean Matrices, 1962", "CLRS, Introduction to Algorithms, Chapter 25"],
+    "workedExample": "Vertices A, B, C with A->B=4, B->C=1, A->C=10. Direct distance A to C is 10. Considering B as an intermediate gives 4+1=5, so d[A][C] becomes 5."
+  },
+  "kruskal": {
+    "intuition": "Sort all edges by weight and add an edge whenever it connects two different components, using a union-find structure to track components. Skip edges that would create a cycle.",
+    "invariants": ["The chosen edges form a forest with no cycle.", "Union-find correctly reports whether two endpoints are already connected."],
+    "correctness": "The cut property says the lightest edge crossing any cut is safe. When Kruskal accepts an edge, it is the lightest edge crossing the cut between its endpoint components, so it belongs to some minimum spanning tree. Repeating yields an MST.",
+    "complexityRationale": "Sorting dominates at O(E log E); union-find operations are nearly constant time with path compression and union by rank. Space is O(V + E).",
+    "uses": ["Network and cable layout design", "Clustering by single-link similarity", "Approximation algorithms such as Christofides"],
+    "references": ["Kruskal, On the Shortest Spanning Subtree of a Graph, 1956", "CLRS, Introduction to Algorithms, Chapter 23"],
+    "workedExample": "Edges AB=1, BC=2, AC=3. Add AB, add BC, then AC is skipped because A and C are already connected. The tree has weight 3."
+  },
+  "prim-heap": {
+    "intuition": "Grow one connected tree from a seed vertex. At each step add the cheapest edge that connects a vertex in the tree to one outside it, using a heap to find that edge quickly.",
+    "invariants": ["The selected edges form a tree spanning the current grown set.", "The heap key for each outside vertex is the cheapest edge connecting it to the tree."],
+    "correctness": "The cheapest edge crossing the cut between the grown tree and the remaining vertices is safe by the cut property, so adding it keeps the tree optimal. Induction over the V-1 additions gives a minimum spanning tree.",
+    "complexityRationale": "With adjacency lists and a binary heap, each edge causes at most one key decrease, giving O(E log V) time and O(V + E) space. A dense-matrix version is O(V^2).",
+    "uses": ["MST on dense or well-connected graphs", "Approximate Euclidean MST construction", "Prim-Dijkstra style network design"],
+    "references": ["Prim, Shortest Connection Networks and Some Generalizations, 1957", "CLRS, Introduction to Algorithms, Chapter 23"],
+    "workedExample": "Start at A. Cheapest outgoing edge is A-B=1, add B. Now cheapest crossing edge is B-C=2, add C. All vertices are connected with total weight 3."
+  },
+  "tree-traversals": {
+    "intuition": "Visit every node of a binary tree in a fixed order. Preorder visits the root first, inorder visits it between the subtrees, postorder visits it last, and level order works left to right one depth at a time.",
+    "invariants": ["Each node is visited exactly once.", "For inorder on a binary search tree, visits occur in nondecreasing key order."],
+    "correctness": "Each traversal recursively covers the left subtree, the root, and the right subtree, so every node is visited once and the relative order matches the definition. Level order follows the queue discipline, so nodes are emitted by increasing depth.",
+    "complexityRationale": "Every node and edge is handled a constant number of times: O(n) time. Recursive forms use O(h) stack space where h is tree height; level order uses O(w) space for the widest level.",
+    "uses": ["Expression tree evaluation", "Serializing and copying trees", "Inorder iteration of binary search trees"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 12", "Knuth, The Art of Computer Programming, Vol. 1, Section 2.3"],
+    "workedExample": "Tree with root B, left child A, right child C. Inorder gives A, B, C; preorder gives B, A, C; postorder gives A, C, B; level order gives B, A, C."
+  },
+  "lca-binary-lifting": {
+    "intuition": "Precompute for every node its 2^k-th ancestor. To find the lowest common ancestor of two nodes, first lift the deeper node to the same depth, then lift both upward in powers of two until their parents match.",
+    "invariants": ["up[v][k] is the 2^k-th ancestor of v, or a root sentinel if none exists.", "After the depth-alignment step both nodes are at the same depth."],
+    "correctness": "Binary decomposition can represent any depth difference, so alignment is exact. Then for the largest k where the ancestors differ, neither ancestor can be the LCA; skipping them preserves the LCA. When the parents coincide, that parent is the deepest common ancestor.",
+    "complexityRationale": "Preprocessing is O(n log n) time and space; each query is O(log n). It is a good fit for static trees with many queries.",
+    "uses": ["Path queries on static trees", "Distance queries with depth arrays", "Tree algorithms such as virtual trees and HLD helpers"],
+    "references": ["CLRS, Introduction to Algorithms, Chapter 22 exercise", "Halperin and others, Efficient LCA queries, 2004"],
+    "workedExample": "In a chain Root-A-B-C, the LCA of B and C is B. Align depths by lifting C one step to B; the nodes now match, so B is returned."
+  },
+  "knuth-morris-pratt": {
+    "intuition": "When a mismatch occurs, use the pattern's prefix function to skip comparisons that cannot match. The prefix table records, for each position, the length of the longest proper prefix that is also a suffix.",
+    "invariants": ["The matched prefix length before reading text character i is the longest prefix of the pattern ending at i-1.", "The prefix function value gives the next candidate length after a mismatch without moving backward in the text."],
+    "correctness": "Any candidate start skipped by the prefix function cannot produce a match because it would require a border longer than the one recorded. Therefore no possible occurrence is missed, and when the length equals the pattern length an occurrence is found at the computed offset.",
+    "complexityRationale": "The text index never decreases and the matched length increases by at most n total, giving O(n + m) time for text length n and pattern length m. Space is O(m) for the prefix table.",
+    "uses": ["Linear-time substring search", "Streaming pattern detection", "A building block for more complex string indexes"],
+    "references": ["Knuth, Morris, and Pratt, Fast Pattern Matching in Strings, 1977", "CLRS, Introduction to Algorithms, Chapter 32"],
+    "workedExample": "Search pattern ABABC in text ABABABC. The prefix table for ABABC is [0,0,1,2,3]. After matching ABAB, a mismatch at C falls back to length 2 using the border AB, and the search continues without rechecking earlier text."
+  },
+  "aho-corasick": {
+    "intuition": "Build a trie of all patterns, then add failure links that point from each node to the longest proper suffix that is also a trie node. Scanning the text follows transitions and failure links so every pattern ending at each position is reported.",
+    "invariants": ["After reading text prefix ending at i, the current state represents the longest trie string that is a suffix of that prefix.", "Following failure links enumerates all shorter pattern suffixes."],
+    "correctness": "The state invariant holds because a transition extends the current match when possible and failure links move to the next longest candidate suffix. Every pattern ending at a text position is a suffix of the prefix, so it appears on the failure chain and is reported.",
+    "complexityRationale": "Construction takes O(total pattern length) and scanning takes O(text length) with precomputed transitions; space is O(total pattern length times alphabet) for the transition table.",
+    "uses": ["Multi-pattern search and content filtering", "Virus and intrusion signature scanning", "Spell checking and keyword extraction"],
+    "references": ["Aho and Corasick, Efficient String Matching, 1975", "CLRS, Introduction to Algorithms, Chapter 32"],
+    "workedExample": "Patterns he, she, hers in text shexhers. Trie states follow s-h-e and report she; failure from she to he reports he at the same position. Later, the h-e-r-s path reports hers."
+  },
+  "sieve-of-eratosthenes": {
+    "intuition": "Write down all integers up to n, then repeatedly cross out multiples of each prime starting from 2. Whatever survives is prime, because a composite number must have a factor at most its square root.",
+    "invariants": ["After processing prime p, every composite with a prime factor at most p is crossed out.", "Uncrossed numbers have no prime factor up to the current bound."],
+    "correctness": "Every composite n has a prime factor at most sqrt(n), so it is crossed out when that factor is processed. Every prime has no smaller factor and therefore survives. Starting crossings at p squared avoids redundant work on already crossed multiples.",
+    "complexityRationale": "The standard array version runs in O(n log log n) time and O(n) space. A segmented variant reduces working space to O(sqrt(n)) plus the segment size.",
+    "uses": ["Generating primes for cryptography experiments", "Precomputing smallest-prime-factor tables", "Competitive programming and number theory tools"],
+    "references": ["Crandall and Pomerance, Prime Numbers: A Computational Perspective", "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5"],
+    "workedExample": "For n=20, cross out multiples of 2 from 4, of 3 from 9, and of 5 from 25 (beyond the limit). Survivors are 2, 3, 5, 7, 11, 13, 17, 19."
+  },
+  "euclid-gcd": {
+    "intuition": "Replace the larger of two numbers by its remainder modulo the smaller, and repeat. The pair shrinks quickly until the remainder is zero, at which point the other number is the greatest common divisor.",
+    "invariants": ["gcd(a, b) equals gcd(b, a mod b) at every step.", "The second argument strictly decreases, so the loop terminates."],
+    "correctness": "Any common divisor of a and b also divides a mod b, and any divisor of b and a mod b also divides a, so the sets of common divisors are identical. When the remainder is zero, b divides a and is therefore the greatest common divisor.",
+    "complexityRationale": "Lamé's theorem bounds the number of divisions by five times the number of decimal digits of the smaller input, so time is O(log min(a, b)) and space is O(1).",
+    "uses": ["Reducing fractions to lowest terms", "Computing modular inverses with the extended version", "Cryptographic key generation and RSA"],
+    "references": ["Euclid, Elements, Book X", "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.2", "CLRS, Introduction to Algorithms, Chapter 31"],
+    "workedExample": "gcd(48, 18): 48 mod 18 = 12, gcd(18, 12); 18 mod 12 = 6, gcd(12, 6); 12 mod 6 = 0, so the answer is 6."
+  }
+}

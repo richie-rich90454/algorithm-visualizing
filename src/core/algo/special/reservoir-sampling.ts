@@ -106,6 +106,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Reservoir sampling draws a uniform random sample of k items from a stream of unknown length in a single pass. The first k items fill the reservoir. For each later item at position i, keep it with probability k/i, replacing a random slot, and discard it otherwise. This produces a uniformly random k-subset without knowing the stream length in advance.",
+        "invariants": [
+            "After i items with i >= k, every one of them has probability exactly k/i of being in the reservoir.",
+            "The reservoir always holds exactly k items.",
+            "The slot chosen for replacement is uniform."
+        ],
+        "correctness": "An old item survives item i unless it is chosen for replacement, which happens with probability (k/i)·(1/k)=1/i, so its survival probability is (i-1)/i. Combined with its previous k/(i-1), this gives k/i. The new item is included with probability k/i, so all i items are equally likely and the final sample is uniform.",
+        "complexityRationale": "Each stream item draws one random number and does constant work, O(1) per item and O(n) for n items. The reservoir stores k items, O(k) space, independent of stream length.",
+        "uses": [
+            "Sampling log lines or events for monitoring",
+            "Uniform sampling from streaming data and databases",
+            "Randomized testing and quality control",
+            "A/B test assignment and Monte Carlo preprocessing"
+        ],
+        "references": [
+            "Vitter, Random Sampling with a Reservoir, ACM Transactions on Mathematical Software, 1985",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 3.4.2"
+        ],
+        "workedExample": "For stream [5,1,8,3,7,2,6,4] with k=3, the first three values fill the reservoir. Item 3 is kept with probability 3/4 and may replace a random slot. Each later item is kept with probability 3/i; after all eight items, each had probability 3/8 of appearing in the final uniform sample."
+    },
     id: "reservoir-sampling",
     name: "Reservoir Sampling",
     category: "data-structures",

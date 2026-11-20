@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A slab allocator groups objects of the same size into slabs, so allocation simply takes a free slot from a matching slab and free returns it. Because all slots are uniform there is no external fragmentation and hot objects stay cache resident.",
+        "invariants": [
+            "Every slab serves one fixed object size.",
+            "A slot is either free or used exactly once.",
+            "Freed slots return to the free list of their slab."
+        ],
+        "correctness": "Allocating from free slots and returning them on free keeps occupancy accurate; uniform sizes mean any free slot satisfies any request of that class, so the allocator never fails from fragmentation when capacity remains.",
+        "complexityRationale": "Finding a free slot and flipping a used flag is O(1) and adding a slab is occasional. Space is one slot per allocated object plus metadata, O(objects).",
+        "uses": [
+            "Kernel object caches in Linux slab and SLUB allocators",
+            "Memory pools in game engines",
+            "High-frequency allocation of fixed-size records"
+        ],
+        "references": [
+            "Bonwick, The Slab Allocator: An Object-Caching Kernel Memory Allocator, USENIX 1994",
+            "Silberschatz, Galvin, and Gagne, Operating System Concepts, memory management chapter"
+        ],
+        "workedExample": "A slab of four slots; two allocations mark slots 0 and 1 used, freeing slot 0 makes it available again, and the next allocation reuses slot 0 instead of growing the slab."
+    },
     id: "slab-allocator",
     name: "Slab Allocator",
     category: "data-structures",

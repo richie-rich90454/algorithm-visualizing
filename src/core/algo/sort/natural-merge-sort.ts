@@ -156,6 +156,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Natural merge sort exploits runs that already exist in the input instead of splitting down to single elements. It scans once to find maximal increasing runs, then merges adjacent runs pairwise until one remains. Nearly sorted input collapses very quickly.",
+        "invariants": [
+            "Every run identified by the scan is maximal and internally sorted.",
+            "Each merge pass halves the number of runs while preserving the sortedness of each."
+        ],
+        "correctness": "Merging two adjacent sorted runs gives one sorted run; repeating until a single run remains must sort the entire input, since runs partition the array in order.",
+        "complexityRationale": "An input with r runs needs O(log r) merge passes of O(n) work, so O(n log r) time, which is O(n) when r is small. The merge buffer holds O(n) elements.",
+        "uses": [
+            "Sorting nearly sorted logs or time-series data",
+            "Reducing passes in external merge sorts",
+            "Teaching adaptive merging"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.4 (natural runs)",
+            "Sedgewick and Wayne, Algorithms, Section 2.2"
+        ],
+        "workedExample": "Input [1, 3, 2, 4, 6, 5] contains runs [1, 3], [2, 4, 6], and [5]. The first merge pass yields [1, 2, 3, 4, 6] and [5]; the second yields [1, 2, 3, 4, 5, 6]."
+    },
     id: "natural-merge-sort",
     name: "Natural Merge Sort",
     category: "sorting",

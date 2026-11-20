@@ -192,6 +192,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A team is eliminated when even winning all its remaining games cannot catch a rival. Rivals still play each other, so those games must push some rival's win total up. The problem reduces to asking whether the remaining rival games can be distributed without anyone exceeding the query team's maximum possible wins; that is a max-flow feasibility test.",
+        "invariants": [
+            "The query team's ceiling is its current wins plus all its remaining games.",
+            "Games between two rivals cannot be absorbed by the query team and must raise one rival's total.",
+            "A team can absorb at most the gap between its current wins and the query team's ceiling."
+        ],
+        "correctness": "If all rival games can be assigned so no rival passes the ceiling, the query team can still finish tied or ahead, so it is not eliminated. The flow network sends each rival game to one of its two teams, capped by each team's slack. A maximum flow that saturates all game nodes exactly captures a feasible assignment, so failure to saturate proves elimination by the max-flow min-cut theorem.",
+        "complexityRationale": "The network has O(T^2) nodes and arcs for T teams because each pair of rivals contributes a game node and two arcs. Dinic-style max flow on this size costs about O(T^2 G) for G remaining games, with O(T^2) space for the arc table.",
+        "uses": [
+            "Sports standings and playoff-eligibility computations",
+            "Election and tournament qualification analysis",
+            "Any feasibility question reducible to capped resource assignment"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, max-flow chapter",
+            "Ahuja, Magnanti, and Orlin, Network Flows, Section on precapacitated networks"
+        ],
+        "workedExample": "Teams A=10, B=9, C=8; C queries. C can reach 10. C still plays A once and B once, so if C wins both it reaches 10. A and B still play each other twice; one of them must gain at least one win from those games. A can absorb 0 extra wins past 10 and B can absorb 1, but there are 2 rival games. The flow cannot place both games within the slack, so C is eliminated."
+    },
     id: "baseball-elimination",
     name: "Baseball Elimination",
     category: "flow",

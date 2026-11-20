@@ -131,6 +131,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 // Fixed-seed LCG keeps the demo deterministic.
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Ant Colony Optimization mimics foraging ants to solve path problems. Artificial ants build candidate tours by probabilistically choosing the next city with probability proportional to pheromone strength and the inverse square of distance. After all ants finish, pheromone evaporates and is redeposited on the shortest tours, so good edges attract more traffic in later rounds.",
+        "invariants": [
+            "Pheromone on every edge stays positive, so every city remains reachable.",
+            "Each ant's tour visits every city exactly once before returning to its start.",
+            "The best tour length recorded so far never increases across rounds."
+        ],
+        "correctness": "ACO is a metaheuristic, not an exact solver, so the guarantee is structural rather than optimal. Every ant produces a valid Hamiltonian tour, and the recorded best is the minimum over all tours actually constructed. Because pheromone stays positive, every edge has a nonzero chance of being chosen, so all tours remain reachable; evaporation prevents any edge from accumulating pheromone without bound.",
+        "complexityRationale": "Each of m ants builds a tour by scanning up to n candidate cities at each of n steps, O(n^2) per ant, so a round costs O(m·n^2) and t rounds cost O(t·m·n^2). The pheromone matrix holds n^2 entries, O(n^2) space.",
+        "uses": [
+            "Approximating solutions to the traveling-salesman problem",
+            "Vehicle routing and logistics planning",
+            "Network routing and telecommunications",
+            "Job-shop scheduling and combinatorial optimization"
+        ],
+        "references": [
+            "Dorigo and Stutzle, Ant Colony Optimization, MIT Press, 2004",
+            "Dorigo, Maniezzo and Colorni, Ant System: Optimization by a Colony of Cooperating Agents, IEEE Transactions on Systems, Man, and Cybernetics, 1996"
+        ],
+        "workedExample": "On the four cities with the module's distance matrix, pheromones start uniform at 1. Ants pick the next city by pheromone times inverse-square distance; short edges are favored. Each round halves every pheromone and adds 1/tour-length to the edges used. The shortest tour, 0->1->3->2->0, has length 2+1+2+5=10, the optimum, and is reinforced most."
+    },
     id: "ant-colony-optimization",
     name: "Ant Colony Optimization",
     category: "math",

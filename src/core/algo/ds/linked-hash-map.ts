@@ -130,6 +130,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Linked Hash Map module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A linked hash map adds a doubly linked list to a hash table to remember insertion order. Lookups still use the hash table in expected O(1), while iteration follows the list and yields entries in the order they were added. This is the structure behind ordered maps and LRU-style recency tracking.",
+        "invariants": [
+            "Each entry appears in exactly one hash bucket and once in the order list.",
+            "The order list reflects insertion sequence, or recency when configured.",
+            "Removing an entry unlinks it from both structures."
+        ],
+        "correctness": "Insertion appends to the list, so iteration order matches insertion order. Hashing locates an entry for lookup, and the list links let a hit be moved to the tail when access-order mode is used. Deleting from both structures keeps them consistent.",
+        "complexityRationale": "Hash operations are expected O(1), and list splicing at a known node is O(1), so all mutations are O(1). Two links plus a bucket pointer per entry use O(n) space.",
+        "uses": [
+            "Insertion-ordered dictionaries",
+            "LRU and access-order caches",
+            "Configuration maps with deterministic iteration"
+        ],
+        "references": [
+            "Java LinkedHashMap documentation and java.util source",
+            "CLRS, Introduction to Algorithms, Chapters 10 and 11"
+        ],
+        "workedExample": "Insert one, two, three into buckets and append each to the order list. Iterating yields one, two, three even if buckets are visited in a different order. In access-order mode, looking up one moves it to the tail, so iteration becomes two, three, one."
+    },
     id: "linked-hash-map",
     name: "Linked Hash Map",
     category: "data-structures",

@@ -90,6 +90,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Thompson's construction turns a regular expression into an NFA by building small fragments for each subexpression and combining them with epsilon transitions. Literals get a start and accept state; union uses a new split and join, concatenation links accept to start, and star adds a loop.",
+        "invariants": [
+            "Each fragment has exactly one start and one accept state.",
+            "No transition leaves a fragment's accept state or enters its start, so fragments compose cleanly."
+        ],
+        "correctness": "Each constructor preserves the language of the subexpression it builds: union gives the union of languages, concatenation their concatenation, and star the Kleene closure. By structural induction the final NFA accepts exactly the strings described by the regex.",
+        "complexityRationale": "Every operator and literal adds a constant number of states and transitions, so construction time and NFA size are O(|regex|), with O(|regex|) space for the graph.",
+        "uses": [
+            "The front end of regular-expression engines",
+            "Lexer generators",
+            "Implementing regex matching via Thompson simulation"
+        ],
+        "references": [
+            "Thompson, Programming Techniques: Regular Expression Search Algorithm, 1968",
+            "Sipser, Introduction to the Theory of Computation, Chapter 1"
+        ],
+        "workedExample": "For \"a(b|c)\", a literal fragment for 'a' is concatenated with a union fragment whose epsilon branches lead to 'b' and 'c'; the combined NFA has start 0 and accept 7 and reaches accept on \"ab\" or \"ac\"."
+    },
     id: "thompson-nfa-construction",
     name: "Thompson NFA",
     category: "string",

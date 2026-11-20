@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A KDB-tree is a disk-friendly k-d tree: groups of points are stored in pages called regions, and a full region is split along the dimension with the greatest spread. The tree stays shallow because splits happen at page granularity rather than per point.",
+        "invariants": [
+            "Each node covers a rectangular region stored on one page.",
+            "A split partitions a full region into two balanced subregions.",
+            "Points belong to exactly one region."
+        ],
+        "correctness": "Comparing a point with the split line selects the only region that can contain it, so insertion places it correctly. Splitting along the widest spread keeps regions balanced and the tree shallow. Range queries visit only regions whose rectangles intersect the query.",
+        "complexityRationale": "Height is O(log n) for balanced page splits, so point queries are O(log n) I/Os. Points are stored once in pages, O(n) space.",
+        "uses": [
+            "Disk-based spatial indexes",
+            "Geographic information systems",
+            "Multidimensional database indexing"
+        ],
+        "references": [
+            "J. T. Robinson, \"The K-D-B-Tree: A Search Structure for Large Multidimensional Dynamic Indexes\", SIGMOD 1981",
+            "H. Samet, Foundations of Multidimensional and Metric Data Structures"
+        ],
+        "workedExample": "A page holds points (1,1), (2,2), (9,9), (8,8) in one region. On overflow, split on x at 5 into a left page for the first two and a right page for the last two. Querying x in [0,3] visits only the left page."
+    },
     id: "kdb-tree",
     name: "KDB-Tree",
     category: "data-structures",

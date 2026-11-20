@@ -205,6 +205,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Gabow SCC module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Gabow's algorithm is an iterative cousin of Tarjan's strongly connected components method. Instead of a lowlink number it keeps two stacks: one holding the vertices of the current DFS path and a second marking where each new component boundary begins. A back edge trims the path stack, and when a root finishes, everything above its boundary pops as one SCC.",
+        "invariants": [
+            "The vertex stack holds candidates for the current strongly connected component.",
+            "The path stack records boundaries separating finished components.",
+            "A vertex finishing as root pops exactly one strongly connected component."
+        ],
+        "correctness": "Back edges to stacked vertices show that all vertices above the boundary are mutually reachable, so they form one SCC. Popping at the root boundary is safe because no edge from a finished component to an unfinished one can remain unnoticed after the DFS completes, mirroring Tarjan's lowlink argument without recursion.",
+        "complexityRationale": "Each vertex and edge is processed a constant number of times, giving O(V + E) time; the two explicit stacks use O(V) space.",
+        "uses": [
+            "Strongly connected component decomposition without recursion",
+            "Compiling regular expressions and automata minimization",
+            "Preprocessing for condensation graphs"
+        ],
+        "references": [
+            "Gabow, A Linear-Time Algorithm for a Special Case of Disjoint Set Union (1985)",
+            "Tarjan, Depth-First Search and Linear Graph Algorithms (1972)"
+        ],
+        "workedExample": "In the graph with cycle A-B-C-A, tail D to C, chain E to D, and self-loop F, DFS from A finds the back edge C to A and pops {A,B,C} as one SCC. Later roots pop {D,E} and {F}, matching the strongly connected groups."
+    },
     id: "gabow-scc",
     name: "Gabow SCC",
     category: "graph",

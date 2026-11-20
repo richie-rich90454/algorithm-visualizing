@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Hash Map (open addressing) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Open addressing stores keys directly in the bucket array. A key's hash gives a home slot; on collision, linear probing tries the next slot until an empty one is found. Lookups follow the same probe sequence and stop at an empty slot, so no chains are needed. Clustering is the main drawback.",
+        "invariants": [
+            "Each key resides in some slot on its linear probe sequence.",
+            "An empty slot terminates a successful or failed search.",
+            "Deleted slots are marked so probe sequences remain intact."
+        ],
+        "correctness": "Insertion places a key in the first free slot along its probe sequence, so a later lookup following the same sequence reaches it. Stopping at a truly empty slot proves the key is absent because no later slot would have been chosen. Tombstones preserve this reasoning after deletion.",
+        "complexityRationale": "Expected probe count depends on load factor and is O(1) when the table is kept sparse; worst case is O(n) with heavy clustering. The array of slots uses O(m) space with no per-entry pointers.",
+        "uses": [
+            "Cache-friendly dictionaries",
+            "Language runtime hash tables",
+            "Small embedded symbol tables"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 11",
+            "Donald Knuth, The Art of Computer Programming, Vol. 3, Section 6.4"
+        ],
+        "workedExample": "With six buckets, cat hashes to slot 1 and car also to slot 1, so car goes to slot 2. Probing dog hashes to slot 3 and finds it there. When load passes the threshold, the table resizes and all keys are rehashed."
+    },
     id: "hash-map-open",
     name: "Hash Map (Open Addressing)",
     category: "data-structures",

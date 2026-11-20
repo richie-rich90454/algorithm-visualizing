@@ -189,6 +189,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Patience Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Patience sort deals values into piles like the card game: place each card on the leftmost pile whose top is at least as large, or start a new pile. The number of piles equals the longest increasing subsequence length. A final priority-queue merge of pile tops produces sorted output.",
+        "invariants": [
+            "Pile tops are in increasing order from left to right.",
+            "Each pile is decreasing from bottom to top, so its top is its smallest element."
+        ],
+        "correctness": "Greedy placement keeps pile tops increasing, a classic patience-sorting lemma; the number of piles equals the longest increasing subsequence length by Dilworth's theorem. Merging the decreasing piles with a min-priority queue emits values in ascending order.",
+        "complexityRationale": "Placing a card uses binary search over pile tops, O(log n) each, and the final merge emits n values with O(log n) heap operations, so O(n log n) total. Piles and the heap use O(n) space.",
+        "uses": [
+            "Computing the longest increasing subsequence length",
+            "Sorting linked lists and card-like data",
+            "Teaching the link between sorting and Dilworth's theorem"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2 (patience sorting)",
+            "Sedgewick and Wayne, Algorithms, Section 2.1 exercises"
+        ],
+        "workedExample": "Deal [6, 3, 8, 1]: 6 starts pile 1; 3 goes on pile 1 above 6; 8 starts pile 2; 1 goes on pile 1. Pile tops are [1, 8]. Merging the piles yields [1, 3, 6, 8]."
+    },
     id: "patience-sort",
     name: "Patience Sort",
     category: "sorting",

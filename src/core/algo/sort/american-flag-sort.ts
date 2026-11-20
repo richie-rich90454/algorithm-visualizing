@@ -154,6 +154,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "American flag sort is an in-place counting sort that processes one digit position at a time. It counts how many keys hold each digit value, computes bucket boundaries, then repeatedly swaps each key into the next free slot for its digit. The stripes of equal digits resemble the rows of a flag.",
+        "invariants": [
+            "After a digit pass, all keys are grouped into contiguous blocks by that digit, in increasing digit order.",
+            "The permutation applied during a pass preserves the relative order of equal-digit keys."
+        ],
+        "correctness": "Counting gives each digit block its exact slice of the array; swapping keys into the next free slot of their block fills all slices exactly. Processing digit positions from least to most significant then yields fully sorted keys by radix sort induction.",
+        "complexityRationale": "Each digit pass counts n keys and scans k buckets, costing O(n+k), repeated for d digits. Only a count array of size k is stored beyond the input, so extra space is O(k).",
+        "uses": [
+            "Sorting fixed-width integers in place",
+            "String sorting with a small alphabet",
+            "Embedded systems where extra memory is scarce"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1 (distribution sorting)",
+            "Sedgewick and Wayne, Algorithms, Section 5.2"
+        ],
+        "workedExample": "Keys [4, 1, 3, 1, 2] in one digit pass give counts of two 1s and one each of 2, 3, and 4. The bucket starts are [0, 2, 3, 4, 5]; walking left to right swaps each key into its bucket, ending with [1, 1, 2, 3, 4]."
+    },
     id: "american-flag-sort",
     name: "American Flag Sort",
     category: "sorting",

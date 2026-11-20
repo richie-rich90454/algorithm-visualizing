@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Plain union-find cannot delete, so each element is versioned: deleting x retires its node and creates a fresh singleton that future unions adopt. Path compression keeps finds fast while retired nodes preserve history.",
+        "invariants": [
+            "Each live element maps to a current representative node.",
+            "A retired node is never reused.",
+            "Unions attach only live roots."
+        ],
+        "correctness": "A deleted element old node stays retired so stale references cannot rejoin live components. A fresh singleton gives the element a clean identity for future unions, and finds with path compression still return the correct live root, so connectivity reflects only active unions.",
+        "complexityRationale": "Find with path compression and union by rank is O(alpha(n)) amortized; deletion adds one node. Space is O(n plus deletes) for the versioned nodes.",
+        "uses": [
+            "Dynamic connectivity with deletions",
+            "Incremental constraint solvers",
+            "Offline algorithms that undo unions over time"
+        ],
+        "references": [
+            "Tarjan, Efficiency of a Good But Not Linear Set Union Algorithm, JACM 1975",
+            "cp-algorithms, Offline dynamic connectivity"
+        ],
+        "workedExample": "With three elements, union 0 with 1, delete 0 so its node retires and a fresh singleton appears, then union 0 with 2. Live components become 1 alone and 0 with 2; the retired node cannot reconnect 0 to 1."
+    },
     id: "union-find-deletions",
     name: "Union-Find Deletions",
     category: "data-structures",

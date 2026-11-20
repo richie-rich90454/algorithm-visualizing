@@ -132,6 +132,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Skip List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A skip list is a set of linked lanes where the bottom lane holds every element and higher express lanes skip ahead with randomly assigned tower heights. Search starts at the top lane and drops down when the next key would overshoot, visiting O(log n) nodes on average.",
+        "invariants": [
+            "Each higher lane is a subsequence of the lane below it.",
+            "Keys are sorted within every lane.",
+            "Tower heights are chosen by independent coin flips."
+        ],
+        "correctness": "Because lanes are sorted subsequences, moving right never passes the target and dropping a lane only narrows the search; at the bottom lane the target, if present, is the next key. Random heights make expected forward steps per level constant, giving logarithmic expected search.",
+        "complexityRationale": "Search, insert, and delete follow one path down the towers, O(log n) expected. Each node stores a tower of expected constant height, so expected space is O(n) and worst case O(n log n).",
+        "uses": [
+            "Ordered maps and sets in Redis and LevelDB",
+            "Concurrent indexes such as Java ConcurrentSkipListMap",
+            "Simple replacement for balanced trees"
+        ],
+        "references": [
+            "Pugh, Skip List Cookbook, 1989",
+            "Pugh, Concurrent Maintenance of Skip Lists"
+        ],
+        "workedExample": "Values 3, 6, 7, 9, 12, 19, 17 form lanes with random towers; searching 12 moves right while keys stay below 12, drops lanes on overshoot, and reaches 12 on the bottom lane."
+    },
     id: "skip-list",
     name: "Skip List",
     category: "data-structures",

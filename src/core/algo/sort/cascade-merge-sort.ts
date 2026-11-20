@@ -145,6 +145,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Cascade merge sort is a tape-drive external sort that spreads runs across several tapes and merges them down a cascade. Each pass reads runs from the fuller tapes and writes longer runs to the next tape, minimizing rewinds. It was designed when data was too large for memory.",
+        "invariants": [
+            "Each tape holds runs that are individually sorted.",
+            "Run lengths grow by a factor of the number of input tapes after each cascade pass."
+        ],
+        "correctness": "A multiway merge of sorted runs produces one longer sorted run; cascading this across tapes preserves sortedness at every step. After enough passes only one run remains, which is the sorted data.",
+        "complexityRationale": "Each element participates in O(log n) merge passes across the cascade, so time is O(n log n) with a small constant from balanced tape use. Tape buffers hold O(n) elements in the visualization.",
+        "uses": [
+            "Historical tape-based sorting systems",
+            "Teaching external-memory merge patterns",
+            "Understanding run distribution before modern external sorts"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.4.2 (external sorting)",
+            "Ullman, Principles of Database Systems, external sorting chapter"
+        ],
+        "workedExample": "Runs [5, 1] and [6, 2] become [1, 5] and [2, 6] on separate tapes; a cascade merge writes [1, 2, 5, 6] to the next tape. Adding [4, 3] as [3, 4] and merging again yields [1, 2, 3, 4, 5, 6]."
+    },
     id: "cascade-merge-sort",
     name: "Cascade Merge Sort",
     category: "sorting",

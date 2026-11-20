@@ -218,6 +218,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The BST module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A binary search tree keeps every left-subtree key smaller than the node and every right-subtree key larger. A search compares the target with the current node and discards half the remaining tree at each step. Insert and delete are guided by the same comparisons, so cost is proportional to tree height.",
+        "invariants": [
+            "For any node, all left keys are smaller and all right keys are larger.",
+            "Inorder traversal yields keys in sorted order.",
+            "Search follows exactly one root-to-leaf path."
+        ],
+        "correctness": "Because the subtree ranges are disjoint, if the target is smaller than the node it can only be in the left subtree, and similarly for larger. Following that rule reaches the target if it exists. Insertion attaches a new leaf in the gap where the key belongs, preserving the ordering for every ancestor.",
+        "complexityRationale": "Each operation follows a single path of length equal to height h, so time is O(h): O(log n) when balanced, O(n) when degenerate. One node per key gives O(n) space.",
+        "uses": [
+            "In-memory ordered sets and maps",
+            "Symbol tables and language runtime indexes",
+            "Basis for AVL, red-black, and splay trees"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 12",
+            "Robert Sedgewick and Kevin Wayne, Algorithms, Section 3.2"
+        ],
+        "workedExample": "Insert 8, 3, 10, 1, 6, 14: 8 is root, 3 and 10 its children, then 1 and 6 under 3 and 14 under 10. Searching 6 compares with 8, goes left to 3, then right to 6 and succeeds. Searching 7 follows the same path but reaches an empty right child of 6 and fails."
+    },
     id: "bst",
     name: "Binary Search Tree",
     category: "data-structures",

@@ -109,6 +109,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Karatsuba multiplies two large numbers faster than the grade-school method by splitting each into high and low halves. The naive split needs four half-size multiplications, but a clever identity computes the middle term from two of them plus a third, reducing the count to three. This divide-and-conquer saving changes the exponent from 2 to about 1.585.",
+        "invariants": [
+            "The operands are split as a = a1*10^m + a0 and b = b1*10^m + b0.",
+            "z2 = a1*b1 and z0 = a0*b0 are computed directly.",
+            "The middle term equals (a1+a0)*(b1+b0) - z2 - z0."
+        ],
+        "correctness": "Expanding the product gives a*b = z2*10^(2m) + z1*10^m + z0. The identity for z1 follows algebraically from expanding (a1+a0)(b1+b0), which contains z2, z0, and the two cross terms. Using only three recursive products therefore reconstructs the exact full product.",
+        "complexityRationale": "The recurrence T(n) = 3T(n/2) + O(n) solves by the Master Theorem to O(n^log2(3)) = O(n^1.585). Recursion depth is O(log n), giving O(log n) auxiliary space.",
+        "uses": [
+            "Multiplying large integers in arbitrary-precision libraries",
+            "Speeding up polynomial multiplication",
+            "A canonical example of divide-and-conquer algorithm analysis"
+        ],
+        "references": [
+            "Karatsuba and Ofman, Multiplication of many-digit numbers (1962)",
+            "Cormen et al., Introduction to Algorithms, Chapter 28"
+        ],
+        "workedExample": "Multiply 12 and 34 with m = 1: a1=1, a0=2, b1=3, b0=4. Then z2=3, z0=8, and z1=(1+2)(3+4)-3-8=21-11=10. The result is 3*100 + 10*10 + 8 = 408."
+    },
     id: "karatsuba-multiplication",
     name: "Karatsuba Multiplication",
     category: "math",

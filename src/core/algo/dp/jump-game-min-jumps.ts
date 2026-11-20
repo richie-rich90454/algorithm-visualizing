@@ -105,6 +105,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Jump Game min jumps counts the fewest jumps to reach the end of an array where each entry is the maximum jump length. It greedily tracks the farthest index reachable within the current jump and the end of that jump's range. When the scan reaches the current end, a new jump is opened.",
+        "invariants": [
+            "farthest is the maximum index reachable with one more jump from indices scanned so far.",
+            "currentEnd is the boundary of the current jump window.",
+            "jumps equals the number of windows fully traversed."
+        ],
+        "correctness": "All positions up to currentEnd are reachable with the current number of jumps, and extending farthest over them discovers everything reachable with one more. When the scan hits currentEnd, taking another jump is necessary, so incrementing is forced. Therefore the final count is minimal.",
+        "complexityRationale": "A single left-to-right scan visits each index once with constant work, giving O(n) time and O(1) space.",
+        "uses": [
+            "Computing minimum hop counts in network routing",
+            "Game movement and reachability planning",
+            "Greedy interval covering with unit steps counted"
+        ],
+        "references": [
+            "LeetCode problem 45, Jump Game II",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 4"
+        ],
+        "workedExample": "For [2,3,1,1,4], from index 0 the farthest is 2, so the first jump window ends at 2. Scanning 1 and 2 extends farthest to 6, ending the game; two jumps suffice: 0 to 1, then 1 to 4."
+    },
     id: "jump-game-min-jumps",
     name: "Jump Game (Min Jumps)",
     category: "dynamic-programming",

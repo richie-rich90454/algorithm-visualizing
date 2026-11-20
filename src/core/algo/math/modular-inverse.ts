@@ -170,6 +170,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Modular Inverse module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The modular inverse of a modulo m is the number x with a*x = 1 (mod m), analogous to a reciprocal in modular arithmetic. It exists exactly when a and m are coprime. The extended Euclidean algorithm produces Bezout coefficients a*x + m*y = 1, and reducing x modulo m gives the inverse directly.",
+        "invariants": [
+            "An inverse exists only when gcd(a, m) = 1.",
+            "The Bezout coefficient x satisfies a*x = 1 modulo m.",
+            "The reported inverse lies in the range 0 to m-1."
+        ],
+        "correctness": "Extended Euclid yields integers x and y with a*x + m*y = gcd(a, m) = 1. Taking this modulo m drops the m*y term, leaving a*x = 1 (mod m), so x is an inverse. Any negative coefficient is normalized by adding m, which preserves the congruence.",
+        "complexityRationale": "Computing the Bezout coefficients takes O(log min(a, m)) Euclidean steps with constant work each. Only a few integer variables are stored, giving O(1) space.",
+        "uses": [
+            "Implementing division in modular arithmetic",
+            "RSA private key computation",
+            "CRT and ElGamal decryption steps"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 31.2",
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.5.2"
+        ],
+        "workedExample": "For a = 3 and m = 11, extended Euclid gives 3*4 + 11*(-1) = 1. Therefore 3*4 = 12 = 1 mod 11 and the inverse of 3 modulo 11 is 4."
+    },
     id: "modular-inverse",
     name: "Modular Inverse",
     category: "math",

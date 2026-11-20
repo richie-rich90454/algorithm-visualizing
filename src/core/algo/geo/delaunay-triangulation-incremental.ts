@@ -161,6 +161,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A Delaunay triangulation connects points so that no point lies inside any triangle's circumcircle, which tends to avoid skinny triangles. The incremental method inserts points one at a time; when a new point falls inside an existing triangle's circumcircle, that triangle is illegal and the surrounding triangles are retriangulated around the new point.",
+        "invariants": [
+            "Before insertion, every triangle of the current triangulation has an empty circumcircle.",
+            "After insertion, no triangle contains another site in its circumcircle.",
+            "The triangulation covers the convex hull of the inserted points without overlapping triangles."
+        ],
+        "correctness": "Removing every triangle whose circumcircle contains the new point clears exactly the region visible from it, because those are the triangles that violate the empty-circle condition. Connecting the new point around the boundary of that cavity restores a triangulation of the same domain. The retriangulated triangles have empty circumcircles by the Delaunay criterion, and the untouched triangles were already valid, so the invariant is restored.",
+        "complexityRationale": "This educational version tests every triple of sites for an empty circumcircle, costing O(n^4) over all triples and contestants, with O(n) auxiliary space for the site list. The classic Bowyer-Watson incremental method achieves O(n^2) worst case and expected O(n log n) with good point ordering.",
+        "uses": [
+            "Building terrain meshes from sampled elevations",
+            "Interpolating values spatially in geographic information systems",
+            "Generating well-shaped finite element meshes"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 9",
+            "Bowyer, Computing Dirichlet Tessellations, Computer Journal 24 (1981)"
+        ],
+        "workedExample": "Sites (0,0), (2,0), (1,2) form one triangle with circumcenter (1, 0.75). Inserting (1, 0.5) puts it inside that circumcircle, so the original triangle is not Delaunay anymore. The algorithm removes it and connects the new site to all three corners, creating three smaller valid triangles."
+    },
+
     id: "delaunay-triangulation-incremental",
     name: "Delaunay Triangulation (Incremental)",
     category: "geometry",

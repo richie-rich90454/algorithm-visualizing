@@ -100,6 +100,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "An LR(0) parser uses a stack of grammar symbols and states, shifting input symbols onto the stack and reducing when the top of the stack matches a production's right-hand side. It builds a bottom-up derivation from the leaves up to the start symbol.",
+        "invariants": [
+            "The stack always holds a viable prefix of a rightmost derivation in reverse.",
+            "A reduction replaces a production's right-hand side with its left-hand symbol only when the stack top forms a complete production."
+        ],
+        "correctness": "Shift preserves the viable-prefix invariant by consuming the next terminal. Reduce replaces a completed right-hand side with its left-hand side, exactly reversing a rightmost-derivation step. If the parser reduces to the start symbol with all input consumed, the input is in the language.",
+        "complexityRationale": "Each input symbol is shifted once and each reduction pops a constant number of symbols for a fixed grammar, so parsing is O(n); the stack holds O(n) symbols, giving O(n) space.",
+        "uses": [
+            "Bottom-up parsing in compiler front ends",
+            "Parser generators such as Yacc and Bison",
+            "Validating expressions with simple LR grammars"
+        ],
+        "references": [
+            "Knuth, On the Translation of Languages from Left to Right, 1965",
+            "Aho et al., Compilers: Principles, Techniques, and Tools, Chapter 4"
+        ],
+        "workedExample": "Grammar S→aS | a on \"aaa\": shift three 'a' symbols, reduce the innermost 'a' to S, then reduce 'a S' to S, and finally 'a S' to S, reaching the start symbol and accepting."
+    },
     id: "lr0-shift-reduce-parsing",
     name: "LR(0) Parsing",
     category: "string",

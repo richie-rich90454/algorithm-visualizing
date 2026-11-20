@@ -212,6 +212,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The 3-Way Quick Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Three-way quicksort partitions the array into values less than, equal to, and greater than the pivot. All equal values sit together in the middle and are never recursed into. This turns an all-equal input from quadratic into linear.",
+        "invariants": [
+            "The less-than region precedes the equal region, which precedes the greater-than region.",
+            "Only the less and greater regions are unsorted; the equal region is final."
+        ],
+        "correctness": "Partitioning places every element in the correct region relative to the pivot; recursively sorting the two outer regions and leaving the equal block untouched yields a fully sorted array by induction.",
+        "complexityRationale": "Each partition scan is linear and the average recursion depth is O(log n), giving O(n log n); with few distinct values the equal block absorbs most elements and cost approaches O(n). Stack space is O(log n) on average.",
+        "uses": [
+            "Sorting data with many duplicate keys",
+            "The Dutch national flag problem",
+            "Library quicksort variants for real-world inputs"
+        ],
+        "references": [
+            "Dijkstra, A Discipline of Programming, Prentice Hall, 1976 (Dutch national flag)",
+            "Sedgewick and Wayne, Algorithms, Section 2.3"
+        ],
+        "workedExample": "For [5, 3, 5, 1, 5, 2, 5, 4] with pivot 5, the less region collects 3, 1, 2, 4; the equal region holds all four 5s; the greater region is empty. Recursing on the less region gives [1, 2, 3, 4, 5, 5, 5, 5]."
+    },
     id: "quick-sort-3-way",
     name: "Quick Sort (3-Way)",
     category: "sorting",

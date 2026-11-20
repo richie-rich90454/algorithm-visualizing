@@ -103,6 +103,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Legendre's formula gives the exponent of a prime p in n! without computing the huge factorial. It adds floor(n/p), floor(n/p^2), floor(n/p^3), and so on: the first term counts multiples of p, the second counts the extra factor from multiples of p^2, and so forth. The visualization sums the terms and cross-checks by counting factors directly.",
+        "invariants": [
+            "Term k counts integers in 1..n divisible by p^k.",
+            "A number divisible by p^e contributes to exactly e terms.",
+            "The running sum after k terms is the exponent of p in the product of p-free parts removed so far."
+        ],
+        "correctness": "Each multiple of p contributes one factor of p, each multiple of p^2 a second, and so on, so the total number of p factors in n! is exactly the sum of those floor counts. This equals the exponent v_p(n!) by definition, and the direct count confirms it.",
+        "complexityRationale": "The powers p^k grow geometrically, so only O(log_p n) terms are summed. Each term is a single division, and no arrays are needed, giving O(1) space.",
+        "uses": [
+            "Computing exponents in binomial coefficients modulo primes",
+            "Factoring factorials in combinatorial number theory",
+            "Checking divisibility of n! by prime powers"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 4",
+            "Legendre, Theorie des nombres (1830)"
+        ],
+        "workedExample": "For n = 25 and p = 5 the terms are floor(25/5) = 5 and floor(25/25) = 1, giving v_5(25!) = 6. The multiples of 5 contribute six factors of five in total."
+    },
     id: "factorial-prime-exponent-legendre",
     name: "Factorial Prime Exponent",
     category: "math",

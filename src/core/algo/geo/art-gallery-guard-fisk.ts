@@ -129,6 +129,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Fisk's proof of the art gallery theorem is startlingly simple: triangulate the polygon and properly 3-color the vertices of the triangulation. Every triangle then has one vertex of each color, so putting guards on the smallest color class covers every triangle. That class has at most floor(n/3) vertices.",
+        "invariants": [
+            "Under a proper 3-coloring every triangle has three distinct colors.",
+            "The three color classes partition the n polygon vertices.",
+            "Every point of the polygon lies inside some triangle of the triangulation."
+        ],
+        "correctness": "A fan triangulation from one vertex covers the polygon with n-2 triangles, and maximal outerplanar graphs are 3-colorable, so a proper 3-coloring exists. Because each triangle contains a vertex of every color, the least populous color class places a guard in every triangle. A guard at a triangle vertex sees the entire triangle, and floor(n/3) bounds the size of the smallest class, so that many guards suffice.",
+        "complexityRationale": "The fan triangulation is produced in O(n) time and a greedy 3-coloring of the outerplanar graph takes O(n). Counting the color classes and picking the smallest is also linear, giving O(n) total time and O(n) space.",
+        "uses": [
+            "Placing security cameras in a gallery floor plan",
+            "Covering a museum space with the fewest stationary guards",
+            "Serving as the classic proof technique for visibility cover problems"
+        ],
+        "references": [
+            "Fisk, A Short Proof of Chvatal's Watchman Theorem, Journal of Combinatorial Theory 24 (1978)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 3"
+        ],
+        "workedExample": "A convex pentagon triangulated as a fan from vertex A yields triangles ABC, ACD, and ADE. A valid coloring is A=1, B=2, C=3, D=2, E=3, so color 1 contains only A. One guard at A sees all three triangles, matching floor(5/3) = 1."
+    },
+
     id: "art-gallery-guard-fisk",
     name: "Art Gallery Guards (Fisk)",
     category: "geometry",

@@ -195,6 +195,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Flood Fill (BFS) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Flood fill recolors the entire connected region of cells sharing a starting cell's color, like a paint bucket tool. The breadth-first version uses a queue, so cells are recolored in order of their distance from the start and the region fills outward in a visible ripple.",
+        "invariants": [
+            "Only cells matching the original target color are enqueued.",
+            "Each cell is enqueued at most once.",
+            "Cells are processed in nondecreasing distance from the start cell."
+        ],
+        "correctness": "Every queued cell matches the target and is adjacent to a previously processed cell in the region, so by induction all processed cells belong to the connected target region. Conversely every cell in that region is reachable through matching neighbors and will eventually be enqueued, so the entire region is recolored and nothing outside it is touched.",
+        "complexityRationale": "Each of the rows times cols cells is enqueued and recolored once, giving O(rows * cols) time and the same order of queue storage.",
+        "uses": [
+            "Paint bucket tools in image editors",
+            "Connected-region labeling in image analysis",
+            "A teaching contrast to depth-first flood fill"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search",
+            "Gonzalez and Woods, Digital Image Processing"
+        ],
+        "workedExample": "Starting at cell (1,1) with target color 1, the queue first holds its matching neighbors, then their neighbors, and so on. The region of color-1 cells is recolored to 9 level by level, while cells of colors 2, 3, and 4 are left untouched."
+    },
     id: "flood-fill-bfs",
     name: "Flood Fill (BFS)",
     category: "graph",

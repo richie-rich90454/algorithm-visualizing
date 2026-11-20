@@ -26,6 +26,9 @@ export default defineConfig({
         // Tests are plain Node unit tests; no DOM is needed.
         environment: "node",
         include: ["src/**/*.test.ts"],
+        // Heavy algorithm tests (large streams, long simulations) can exceed
+        // the 5s default when thousands of files run in parallel on CI.
+        testTimeout: 30000,
     },
     build: {
         rollupOptions: {
@@ -35,6 +38,13 @@ export default defineConfig({
                 manualChunks(id: string): string | undefined {
                     if (id.includes("node_modules")) {
                         return "vendor";
+                    }
+                    // The generated manifest is large but changes only when the
+                    // catalog grows. Splitting it from the app shell lets the
+                    // frequently-changing UI code stay small in the browser
+                    // cache while the catalog caches independently.
+                    if (id.replace(/\\/g, "/").endsWith("/core/manifest.ts")) {
+                        return "catalog";
                     }
                     return undefined;
                 },

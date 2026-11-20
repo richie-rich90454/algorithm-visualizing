@@ -166,6 +166,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A minimum-area enclosing rectangle must have one side flush with an edge of the convex hull, so only hull edge orientations need testing. Rotating calipers walks those orientations; for each, the points are rotated and the axis-aligned bounding box gives a candidate rectangle, and the smallest area wins.",
+        "invariants": [
+            "At least one side of an optimal rectangle is collinear with a hull edge.",
+            "For a fixed orientation, the axis-aligned bounding box is the smallest rectangle of that orientation.",
+            "Each hull edge is evaluated exactly once."
+        ],
+        "correctness": "Rotating a minimum rectangle until a side first contacts a hull edge leaves the area unchanged, so some optimum has a side along a hull edge. Enumerating all hull edge orientations therefore includes an optimal orientation. For a fixed orientation the tight axis-aligned bounding box is the smallest enclosing rectangle, because any smaller rectangle would cut off an extreme point, so taking the minimum candidate area is exact.",
+        "complexityRationale": "The educational version tests every hull edge and scans all points to build its rotated bounding box, costing O(n^2) time with O(n) space for rotated coordinates. A full rotating-calipers implementation advances antipodal edges monotonically and runs in O(n).",
+        "uses": [
+            "Finding oriented bounding boxes in computer vision",
+            "Collision detection with oriented boxes",
+            "Minimum bounding rectangle in geographic information systems"
+        ],
+        "references": [
+            "Freeman and Shapira, Determining the Minimum-Area Encasing Rectangle, Communications of the ACM 18 (1975)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 4"
+        ],
+        "workedExample": "For points forming a rectangle rotated 30 degrees, the hull has four edge orientations. The bounding box aligned with the true edges has area equal to the rectangle's own area, while other orientations are larger, so the calipers select the flush orientation as optimal."
+    },
+
     id: "min-enclosing-rectangle-rotating",
     name: "Min Enclosing Rectangle (Rotating Calipers)",
     category: "geometry",

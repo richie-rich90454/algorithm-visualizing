@@ -113,6 +113,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     );
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "This DP partitions a tree into connected subtrees whose total weight does not exceed a bound S. A postorder pass accumulates subtree sums and cuts the edge to a child when adding that child's sum would exceed the limit.",
+        "invariants": [
+            "Each kept component has total weight at most S.",
+            "Components are connected subtrees formed by keeping or cutting edges.",
+            "A cut child's entire subtree becomes its own component."
+        ],
+        "correctness": "Processing children first gives each child's accumulated component sum. If a child's sum can be merged into the parent without exceeding S, keeping the edge yields a larger valid component; otherwise cutting is forced because any merge would violate the bound. Greedy postorder merging therefore produces components that all respect S, and cutting exactly when necessary minimizes the number of unnecessary splits for this tree structure.",
+        "complexityRationale": "Each edge is examined once in postorder with constant work, so time is O(n). Stored sums and cut flags use O(n) space.",
+        "uses": [
+            "Splitting a hierarchy into balanced parts",
+            "Dividing workloads under a capacity limit",
+            "Competitive programming tree partition problems"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15 (dynamic programming)",
+            "Competitive Programming 3, Hall and Li, tree DP chapter"
+        ],
+        "workedExample": "A chain of four unit-weight nodes with S = 2 accumulates sums from the leaves and cuts once the bound would be exceeded, producing two connected components of two nodes each."
+    },
+
     id: "tree-partition-dp",
     name: "Tree Partition DP",
     category: "tree",

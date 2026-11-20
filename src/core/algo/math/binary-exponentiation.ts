@@ -144,6 +144,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Binary Exponentiation module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Binary exponentiation computes a^b by reading the bits of the exponent instead of multiplying b times. A running factor is squared at each step, and the result is multiplied by that factor only when the current bit is 1. Because the exponent has O(log b) bits, this replaces a linear number of multiplications with a logarithmic one.",
+        "invariants": [
+            "After processing k bits, the factor equals a raised to 2^k.",
+            "The result always equals a raised to the value of the bits processed so far.",
+            "Squaring the factor preserves the identity a^(2u) = (a^u)^2."
+        ],
+        "correctness": "The binary expansion writes b as a sum of powers of two. By induction, after each bit the accumulated result holds a raised to the partial sum, and the factor holds the next power of two. Multiplying on set bits therefore produces a^b at the end.",
+        "complexityRationale": "The loop runs once per bit of b, that is floor(log2 b) + 1 times, with at most two multiplications each, so time is O(log b). Only a result and a factor variable are kept, giving O(1) space.",
+        "uses": [
+            "Modular exponentiation in public-key cryptography",
+            "Fast computation of matrix powers for recurrences",
+            "Any routine needing high fixed powers of a number"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 2, Section 4.6.4",
+            "Cormen et al., Introduction to Algorithms, Section 31.6"
+        ],
+        "workedExample": "Compute 3^13 with 13 = 1101 in binary. Start result = 1, factor = 3: bit 1 gives result 3, factor 9; bit 0 keeps result 3, factor 81; bit 1 gives result 243, factor 6561; bit 1 gives result 243*6561 = 1594323. So 3^13 = 1594323."
+    },
     id: "binary-exponentiation",
     name: "Binary Exponentiation",
     category: "math",

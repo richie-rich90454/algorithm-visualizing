@@ -150,6 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "When routes trade time against cost, no single path is best on both measures. Each vertex keeps a set of nondominated labels, where a label is a pair of criteria values. A label is pruned when another dominates it by being no worse on both and better on at least one, and the surviving skyline at the target is the Pareto frontier.",
+        "invariants": [
+            "No stored label at a vertex is dominated by another stored label.",
+            "Every label corresponds to a real path from the source.",
+            "Dominated labels can be dropped without losing any Pareto-optimal path."
+        ],
+        "correctness": "If a label is dominated, any continuation of it is also dominated by the corresponding continuation of the better label, so pruning it cannot remove a Pareto-optimal path. Extending all surviving labels and pruning again therefore leaves exactly the nondominated labels, and the target's set is the Pareto frontier.",
+        "complexityRationale": "With frontier size L, each of V vertices and E edges may process L labels, giving O(L(V + E)) time and O(L V) space for label sets.",
+        "uses": [
+            "Route planning balancing travel time and toll cost",
+            "Multi-objective logistics and supply chain optimization",
+            "Trade-off analysis in network design"
+        ],
+        "references": [
+            "Ehrgott, Multicriteria Optimization",
+            "Martins, On a Multicriteria Shortest Path Problem (1984)"
+        ],
+        "workedExample": "From A to D the frontier holds (4,6) via B and (6,1) direct. A label (5,6) is dominated by (4,6) because it is worse in time and equal in cost, so it is pruned and never reaches the target skyline."
+    },
     id: "pareto-bicriteria-shortest-path",
     name: "Pareto Bicriteria Shortest Path",
     category: "shortest-path",

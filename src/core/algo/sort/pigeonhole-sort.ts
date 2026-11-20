@@ -155,6 +155,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Pigeonhole sort assigns each value to a slot labeled with that exact value, then reads the slots in order. It is counting sort without the counting pass, ideal when the key range is small and each key maps to its own hole.",
+        "invariants": [
+            "Every input value is stored in the hole bearing its own key.",
+            "Reading holes from low to high emits values in nondecreasing key order."
+        ],
+        "correctness": "All values in hole k equal k, and holes are visited in increasing k, so the output sequence is sorted; no value is lost because each input is placed exactly once.",
+        "complexityRationale": "Placing n values and scanning k holes costs O(n + k) time; holding k holes uses O(k) space. It is efficient only when the key range k is comparable to n.",
+        "uses": [
+            "Sorting small-range integer keys",
+            "Bucket-style census and histogram tasks",
+            "Teaching the pigeonhole principle constructively"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2.1",
+            "Sedgewick and Wayne, Algorithms, Section 5.2"
+        ],
+        "workedExample": "For [4, 1, 3, 2, 1], holes 1 through 4 receive the values and hole 1 holds two 1s. Reading holes 1, 1, 2, 3, 4 returns [1, 1, 2, 3, 4]."
+    },
     id: "pigeonhole-sort",
     name: "Pigeonhole Sort",
     category: "sorting",

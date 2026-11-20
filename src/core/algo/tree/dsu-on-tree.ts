@@ -117,6 +117,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     });
 }
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "DSU on tree answers subtree aggregation questions by merging child data into the largest child first. Small child sets are added into the big set element by element, and because each element moves only when its containing set at least doubles, every node is moved O(log n) times.",
+        "invariants": [
+            "After processing a node, its set contains exactly the colors in its subtree.",
+            "The heavy child's set is retained while light children's sets are merged into it.",
+            "Each element is moved into a larger set at most O(log n) times."
+        ],
+        "correctness": "Processing children postorder ensures each child's color set is complete before merging. Keeping the largest set and reusing it avoids rebuilding data for the bulk of the subtree, while adding smaller sets one element at a time preserves exactly the union of colors. Since the answer for a node is the distinct color count of that union, the computed value equals the true number of distinct colors in the subtree.",
+        "complexityRationale": "The small-to-large rule bounds each node's moves by O(log n), so total time is O(n log n). Color sets and subtree bookkeeping use O(n) space.",
+        "uses": [
+            "Counting distinct colors or values in subtrees",
+            "Answering offline subtree queries efficiently",
+            "Competitive programming problems on tree frequency counts"
+        ],
+        "references": [
+            "Competitive Programming 3, Hall and Li, tree chapter",
+            "Tarjan, Efficiency of a Good But Not Linear Set Union Algorithm, Journal of the ACM 22 (1975)"
+        ],
+        "workedExample": "Tree A with children B and C, where B has child D and colors A=1, B=2, C=2, D=3. Subtree D has 1 distinct color, subtree B has 2, subtree C has 1, and the whole tree has 3 distinct colors after small-to-large merges."
+    },
+
     id: "dsu-on-tree",
     name: "DSU on Tree",
     category: "tree",

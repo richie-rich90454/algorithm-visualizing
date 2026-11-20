@@ -109,6 +109,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Persistent DSU module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A persistent DSU records the parent mapping for every version so you can ask whether two elements were connected after a past update. Each union writes a fresh parent entry into a new version instead of mutating in place.",
+        "invariants": [
+            "Every version stores a complete parent mapping.",
+            "A union never modifies an earlier version.",
+            "Find in version v follows that version parent pointers."
+        ],
+        "correctness": "A union only changes one root parent, and that change is recorded in a new version while earlier versions keep their original pointers. Find on a version follows exactly the unions applied up to that point, so two elements are reported connected if and only if the necessary unions had occurred by then.",
+        "complexityRationale": "Each union performs finds and one parent write, O(log n) amortized with rollback-friendly heuristics; a query is a find in the chosen version. Retaining a snapshot per operation gives O(ops times log n) space.",
+        "uses": [
+            "Offline dynamic connectivity over time",
+            "Versioned network reachability",
+            "Connectivity questions at historical checkpoints"
+        ],
+        "references": [
+            "Tarjan, Efficiency of a Good But Not Linear Set Union Algorithm, JACM 1975",
+            "cp-algorithms, Offline dynamic connectivity"
+        ],
+        "workedExample": "With five elements, union 0 with 1 creates version 1 and union 1 with 2 creates version 2. Asking connectivity of 0 and 2 returns false at version 1 but true at version 2."
+    },
     id: "persistent-dsu",
     name: "Persistent DSU",
     category: "data-structures",

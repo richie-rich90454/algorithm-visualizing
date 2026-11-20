@@ -121,6 +121,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Diffie-Hellman lets two parties agree on a shared secret over a public channel. Each picks a private exponent, publishes g raised to that exponent modulo p, then combines the other's public value with its own secret. Both arrive at the same number because (g^a)^b equals (g^b)^a modulo p, while an eavesdropper cannot feasibly recover the secret.",
+        "invariants": [
+            "Only A = g^a mod p and B = g^b mod p are transmitted; the private exponents stay local.",
+            "Alice's secret a and Bob's secret b never leave their owners.",
+            "The two derived secrets are equal: B^a and A^b are both g^(ab) mod p."
+        ],
+        "correctness": "By the laws of exponents in the multiplicative group modulo p, B^a = (g^b)^a = g^(ab) = (g^a)^b = A^b, so both parties compute the same s. Security rests on the discrete logarithm problem: recovering a from A is believed infeasible for a large prime p.",
+        "complexityRationale": "Modular exponentiation by repeated squaring needs O(log exponent) multiplications, so computing public values and the shared secret is O(log p) time. Only a handful of integers are stored, O(1) space.",
+        "uses": [
+            "TLS/SSL key agreement in DHE cipher suites",
+            "VPN key exchange in IPsec IKE and SSH",
+            "Secure messaging protocols such as Signal's extended triple Diffie-Hellman",
+            "PGP and many other cryptographic protocols"
+        ],
+        "references": [
+            "Diffie and Hellman, New Directions in Cryptography, IEEE Transactions on Information Theory, 1976",
+            "Menezes, van Oorschot and Vanstone, Handbook of Applied Cryptography, Chapter 8"
+        ],
+        "workedExample": "Public values p=23 and g=5. Alice picks a=6 and sends A=5^6 mod 23=8; Bob picks b=15 and sends B=5^15 mod 23=19. Alice computes s=B^a=19^6 mod 23=2 and Bob computes s=A^b=8^15 mod 23=2. Both share s=2 without ever transmitting it."
+    },
     id: "diffie-hellman-exchange",
     name: "Diffie–Hellman Exchange",
     category: "math",

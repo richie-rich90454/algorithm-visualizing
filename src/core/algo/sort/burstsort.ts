@@ -137,6 +137,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Burstsort sorts strings by growing a compact trie whose buckets hold keys sharing a prefix. When a bucket grows past a threshold it bursts into deeper trie nodes, splitting the keys by the next character. Small buckets are then sorted with a classic in-place sort.",
+        "invariants": [
+            "All strings in a bucket share the prefix labeling its trie node.",
+            "Buckets stay below the burst threshold so inner sorts remain cheap."
+        ],
+        "correctness": "Walking the trie in lexicographic node order visits buckets in prefix order; sorting inside each bucket orders keys that share the prefix. Concatenating these buckets therefore produces fully lexicographically sorted strings.",
+        "complexityRationale": "Following w characters per string through the trie and sorting small buckets costs O(n * w) average time, where w is average string length. The trie and buckets store O(n) nodes and pointers.",
+        "uses": [
+            "Sorting large sets of strings with common prefixes",
+            "Full-text index construction",
+            "Replacing quicksort for string keys in memory-constrained code"
+        ],
+        "references": [
+            "Sinha and Zobel, Efficient Trie-Based Sorting of Large Sets of Strings, ACSC 2004",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 5.2"
+        ],
+        "workedExample": "Strings [car, cat, dog, door] share the c and d prefixes. The c bucket bursts into car and cat, the d bucket into dog and door; sorting inside buckets and reading in trie order yields [car, cat, dog, door]."
+    },
     id: "burstsort",
     name: "Burstsort",
     category: "sorting",

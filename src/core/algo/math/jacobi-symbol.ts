@@ -107,6 +107,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
     };
 }
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The Jacobi symbol generalizes the Legendre symbol to odd composite moduli. It is computed by repeatedly applying quadratic reciprocity: strip factors of two with a sign rule, flip the fraction and reduce modulo n, and accumulate the sign. The result is computed without factoring n, though a value of 1 does not guarantee a square exists when n is composite.",
+        "invariants": [
+            "Each reciprocity step preserves the value of the symbol while shrinking the arguments.",
+            "The sign corrections for factors of two depend only on n modulo 8.",
+            "The algorithm terminates when the numerator reaches 0 or 1."
+        ],
+        "correctness": "The laws of quadratic reciprocity and the supplementary laws for -1 and 2 exactly describe how the Jacobi symbol transforms under reduction. Applying them is equivalent to computing the product of Legendre symbols over the prime factors of n, even without knowing those factors. Termination at 0 or 1 therefore yields the correct symbol.",
+        "complexityRationale": "Each step is a division akin to a Euclidean step, so the number of iterations is O(log a * log n) in the stated bound for these small inputs. Only a few integer variables and a sign are stored, giving O(1) space.",
+        "uses": [
+            "Euler and Solovay-Strassen primality tests",
+            "Quadratic residuosity checks modulo composite numbers",
+            "Foundations of the quadratic sieve factoring method"
+        ],
+        "references": [
+            "Niven and Zuckerman, An Introduction to the Theory of Numbers, Chapter 5",
+            "Cormen et al., Introduction to Algorithms, Section 31.4"
+        ],
+        "workedExample": "Compute (10|21). Strip the factor of two: since 21 mod 8 = 5, (2|21) = -1, leaving -(5|21). Reciprocity gives (5|21) = (21|5) = (1|5) = 1 because 21 mod 5 = 1. The Jacobi symbol is -1."
+    },
     id: "jacobi-symbol",
     name: "Jacobi Symbol",
     category: "math",

@@ -230,6 +230,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The LCA (Euler + Sparse) module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "This method reduces lowest common ancestor to range minimum query. An Euler tour records the vertex at every step along with its depth; the LCA of two nodes is the shallowest vertex visited between their first occurrences in that tour, and a sparse table answers that minimum query in constant time.",
+        "invariants": [
+            "The Euler tour logs a vertex each time the DFS visits or returns to it.",
+            "Between the first visits of u and v, the tour visits their LCA at minimum depth.",
+            "The sparse table stores minimum-depth indices over power-of-two ranges."
+        ],
+        "correctness": "In an Euler tour the first time a vertex is recorded marks its discovery, and the path between two discoveries goes up to their LCA and back down. The minimum-depth vertex in that interval is therefore exactly the LCA. A sparse table built with overlapping power-of-two blocks returns the minimum of any interval in O(1) by combining two blocks that cover it, so the reported vertex is the true LCA.",
+        "complexityRationale": "The Euler tour has 2n-1 entries and the sparse table has O(log n) levels, giving O(n log n) preprocessing time and space. Each query is answered in O(1) with two table lookups.",
+        "uses": [
+            "Answering many LCA queries quickly on a static tree",
+            "Computing tree distances from LCA depths",
+            "Preprocessing for path aggregation problems"
+        ],
+        "references": [
+            "Bender and Farach-Colton, The LCA Problem Revisited, LATIN 2000",
+            "CLRS, Introduction to Algorithms, Chapter 22"
+        ],
+        "workedExample": "For tree root A with children B and C, one Euler tour is A, B, A, C, A with depths 0, 1, 0, 1, 0. The first B is at index 1 and first C at index 3; the minimum depth between them is 0 at A, so LCA(B,C) = A."
+    },
+
     id: "lca-euler-sparse",
     name: "LCA (Euler + Sparse Table)",
     category: "tree",

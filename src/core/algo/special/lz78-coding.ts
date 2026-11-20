@@ -92,6 +92,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "LZ78 builds an explicit dictionary of phrases as it scans text. At each step it finds the longest already-known prefix, emits a pair of that prefix's code and the next character, and adds the new phrase to the dictionary. Decoding replays the same dictionary construction, so the phrases themselves never need to be transmitted.",
+        "invariants": [
+            "Encoder and decoder build identical dictionaries because each new phrase is the prior prefix plus the emitted character.",
+            "Dictionary codes are assigned in increasing order from 1, with 0 denoting the empty prefix.",
+            "Each emitted pair consumes at least one new input character."
+        ],
+        "correctness": "The decoder creates each dictionary entry at the same step the encoder used it, so every code the encoder emits is already defined when read. By induction the decoder's phrase for each code matches the encoder's, and concatenating them reproduces the input, which the demo checks with a round trip.",
+        "complexityRationale": "At each of the n positions the encoder searches the dictionary for the longest prefix; with a naive map lookup over growing phrases this is O(n^2) in the worst case. The dictionary stores at most n phrases, O(n) space.",
+        "uses": [
+            "The foundation of LZW used in GIF and TIFF",
+            "The Unix compress utility and its descendants",
+            "Dictionary-based text compression",
+            "Incremental parsing in string algorithms and data deduplication concepts"
+        ],
+        "references": [
+            "Ziv and Lempel, Compression of Individual Sequences via Variable-Rate Coding, IEEE Transactions on Information Theory, 1978",
+            "Bell, Witten and Cleary, Text Compression, Chapter 4"
+        ],
+        "workedExample": "For \"abababa\", the dictionary starts empty. Step 1 emits (0,'a') and adds \"a\"=1. Step 2 finds prefix \"a\" and emits (1,'b'), adding \"ab\"=2. Step 3 finds prefix \"ab\" and emits (2,'a'), adding \"aba\"=3. Replaying the pairs rebuilds the dictionary and the string \"abababa\"."
+    },
     id: "lz78-coding",
     name: "LZ78 Coding",
     category: "string",

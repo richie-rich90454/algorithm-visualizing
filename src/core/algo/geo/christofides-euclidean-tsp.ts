@@ -213,6 +213,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Christofides' algorithm guarantees a tour within 1.5 times optimal for metric distances. It builds a minimum spanning tree, computes a minimum perfect matching on the odd-degree vertices of that tree, and adds those matching edges to form an Eulerian multigraph. An Euler tour of the multigraph is then shortcut into a Hamiltonian tour.",
+        "invariants": [
+            "The number of odd-degree vertices is even, so a perfect matching exists.",
+            "The spanning tree is a lower bound on any tour, so its weight is at most OPT.",
+            "Shortcutting repeated vertices never increases length under the triangle inequality."
+        ],
+        "correctness": "Adding a perfect matching on the odd-degree vertices makes every degree even, so the multigraph has an Euler circuit. The matching costs at most OPT/2 because shortcutting an optimal tour gives a perfect matching on those same odd vertices. The Euler circuit therefore weighs at most 1.5 OPT, and skipping repeated vertices uses the triangle inequality, leaving a valid tour no longer than that.",
+        "complexityRationale": "Prim's MST takes O(n^2) on the dense Euclidean input and the brute-force minimum matching on k odd vertices costs O(k^3), which is O(n^3) in the worst case. Euler tour and shortcutting are linear, and the structures use O(n^2) space for the distance matrix or O(n) beyond it.",
+        "uses": [
+            "Delivery and logistics route planning",
+            "Circuit board drill path optimization",
+            "Teaching constant-factor approximation for an NP-hard problem"
+        ],
+        "references": [
+            "Christofides, Worst-Case Analysis of a New Heuristic for the Traveling Salesman Problem, CMU report (1976)",
+            "Williamson and Shmoys, The Design of Approximation Algorithms, Chapter 2"
+        ],
+        "workedExample": "For a unit square A(0,0), B(1,0), C(1,1), D(0,1), the MST has edges AB, BC, CD of total weight 3. The odd vertices A and D are matched by edge AD of weight 1, making the square cycle. Its Euler tour A-B-C-D-A is already Hamiltonian with length 4, which equals the optimal tour."
+    },
+
     id: "christofides-euclidean-tsp",
     name: "Christofides Euclidean TSP",
     category: "geometry",

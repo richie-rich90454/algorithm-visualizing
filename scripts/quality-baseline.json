@@ -1,0 +1,125 @@
+{
+  "src/core/algo/ds/stack-array.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/ds/stack-linked.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/game/treblecross.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/closest-pair-of-points.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/convex-hull-graham.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/convex-hull-jarvis.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/convex-hull-monotone.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/min-enclosing-circle-welzl.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/polygon-area-shoelace.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/geo/rotating-calipers.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/mst/kruskal.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/binary-search-iterative.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/binary-search-lower-bound.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/binary-search-recursive.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/binary-search-upper-bound.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/exponential-search.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/interpolation-search.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/jump-search.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/linear-search.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/search/ternary-search.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/bubble-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/bucket-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/cocktail-shaker-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/comb-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/counting-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/heap-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/insertion-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/introsort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/merge-sort-bottom-up.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/merge-sort-top-down.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/monkey-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/patience-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/quick-sort-3-way.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/quick-sort-hoare.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/quick-sort-lomuto.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/radix-sort-lsd.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/radix-sort-msd.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/selection-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/shell-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/smooth-sort.ts": [
+    "todo-marker"
+  ],
+  "src/core/algo/sort/tim-sort.ts": [
+    "todo-marker"
+  ]
+}

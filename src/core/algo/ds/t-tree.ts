@@ -131,6 +131,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A T-tree is a balanced main-memory index where each node holds a sorted array of several keys instead of one. This packs more keys per cache line than a binary tree while keeping search logarithmic by scanning within a node then descending.",
+        "invariants": [
+            "Keys within a node are sorted.",
+            "All keys in a left child are smaller than node keys and all in a right child larger.",
+            "Leaves stay at similar depth."
+        ],
+        "correctness": "Search scans a node key array to decide whether the key is present or which child to descend; because child key ranges are disjoint and ordered, the descent narrows to the only possible location. Splitting a full node keeps the range invariant so all keys remain findable.",
+        "complexityRationale": "Each level scans a small fixed-size array and descends one child, O(log n) levels. Storing several keys per node reduces pointer overhead, O(n) space.",
+        "uses": [
+            "Main-memory databases and indexes",
+            "In-memory key-value stores",
+            "Real-time systems needing cache-friendly ordered access"
+        ],
+        "references": [
+            "Bayer and McCreight, Organization and Maintenance of Large Ordered Indexes, Acta Informatica 1972",
+            "Lehman and Yao, A Study of Balanced Index Structures for Main Memory, 1981"
+        ],
+        "workedExample": "Keys 5, 2, 8, 1, 9, 4 fill nodes with sorted arrays; searching 8 scans the root array, finds it or chooses the correct child, and reports the node and slot where 8 sits."
+    },
     id: "t-tree",
     name: "T-Tree",
     category: "data-structures",

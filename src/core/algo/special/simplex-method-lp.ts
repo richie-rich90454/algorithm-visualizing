@@ -73,6 +73,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The simplex method solves linear programs by walking along the edges of the feasible polytope from one vertex to a better adjacent one. It keeps a tableau of the constraints with slack variables; each pivot selects an entering variable with the most negative reduced cost and a leaving variable by the ratio test, then performs elimination. When no negative costs remain, the current vertex is optimal.",
+        "invariants": [
+            "The tableau always represents a basic feasible solution with nonnegative right-hand sides.",
+            "The objective value never decreases during a pivot.",
+            "The basis holds exactly one basic variable per constraint row."
+        ],
+        "correctness": "The ratio test keeps the pivot feasible, and choosing a negative reduced cost keeps the objective from decreasing. For a bounded, nondegenerate linear program each pivot moves to a strictly better vertex, so the method terminates at a vertex whose reduced costs are all nonnegative, which is optimal by linear-programming duality.",
+        "complexityRationale": "Each pivot updates the tableau in O(m·n) work for m constraints and n variables, and the number of pivots is bounded by the number of vertices, which can be exponential, giving O(2^n) worst-case time despite good practical behavior. The tableau uses O(m·n) space.",
+        "uses": [
+            "Resource allocation and production planning",
+            "Supply-chain and transportation optimization",
+            "Portfolio and blending problems",
+            "LP relaxations inside integer programming"
+        ],
+        "references": [
+            "Dantzig, Linear Programming and Extensions, 1963",
+            "Bertsimas and Tsitsiklis, Introduction to Linear Optimization, 1997"
+        ],
+        "workedExample": "Maximize z=3x+2y subject to x+y<=4 and x+2y<=6. The initial basis is {s1,s2} with costs -3 and -2. Variable x enters because -3 is most negative, and the ratio test 4/1 < 6/1 makes s1 leave. Pivoting gives x=4, s2=2 and z=12, with no negative costs, so the optimum is x=4, y=0, z=12."
+    },
     id: "simplex-method-lp",
     name: "Simplex Method (LP)",
     category: "math",

@@ -180,6 +180,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Selection Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Repeatedly find the smallest value in the unsorted suffix and swap it into the next position. Each pass fixes exactly one position and performs at most one swap.",
+        "invariants": [
+            "The prefix before the current index contains the k smallest values in sorted order.",
+            "The suffix contains all remaining values."
+        ],
+        "correctness": "Selecting the minimum of the suffix and swapping it to the front of that suffix guarantees the next prefix entry is the smallest remaining value. Inductively after n-1 passes every entry is fixed.",
+        "complexityRationale": "Finding a minimum in a suffix of length k costs k-1 comparisons, so total comparisons are n(n-1)/2, which is O(n^2) for every input. Swaps are at most n-1, so it wins over bubble sort on swap-heavy media. Space is O(1).",
+        "uses": [
+            "Situations where writes are expensive relative to reads",
+            "Embedded or flash memory with limited write cycles",
+            "Teaching selection-based thinking"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Knuth, The Art of Computer Programming, Vol. 3"
+        ],
+        "workedExample": "Start [5, 1, 4, 2]. Minimum of all four is 1; swap with position 0 -> [1, 5, 4, 2]. Minimum of [5,4,2] is 2; swap into position 1 -> [1, 2, 4, 5]. The rest is already ordered."
+    },
     id: "selection-sort",
     name: "Selection Sort",
     category: "sorting",

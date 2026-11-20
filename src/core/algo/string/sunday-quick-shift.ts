@@ -108,6 +108,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Sunday's algorithm compares a window left to right, but on a mismatch it chooses the shift from the text character immediately after the window. Because that next character must be matched by some pattern position if an occurrence starts nearby, the precomputed shift safely skips impossible alignments.",
+        "invariants": [
+            "The shift table gives, for each character, m minus its rightmost pattern position plus one, where m is the pattern length.",
+            "Shifting by this value never skips an occurrence that would align that character with a pattern position."
+        ],
+        "correctness": "Any occurrence beginning in the skipped range would force the character just past the current window to align with a pattern position that, by the table's construction, cannot match; hence no occurrence is skipped. Full comparisons therefore find exactly the true matches.",
+        "complexityRationale": "Building the table is O(m + sigma); searches are O(n/m) on average with good shifts and O(nm) worst case; space is O(sigma) for the table.",
+        "uses": [
+            "Fast exact substring search in editors",
+            "Scanning large files for keywords",
+            "A practical alternative to Boyer-Moore with simpler setup"
+        ],
+        "references": [
+            "Sunday, A Very Fast Substring Search Algorithm, 1990",
+            "Navarro and Raffinot, Flexible Pattern Matching in Strings"
+        ],
+        "workedExample": "Pattern \"abc\" in text \"ababcabcab\": the table maps a to 3, b to 2, c to 1, and other characters to 4. A mismatch at the first window looks at the character just past it and advances until the alignment at index 2 spells \"abc\" and is reported."
+    },
     id: "sunday-quick-shift",
     name: "Sunday Quick Search",
     category: "string",

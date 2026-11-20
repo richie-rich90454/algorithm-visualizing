@@ -118,6 +118,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Egg drop finds the minimum number of trials needed to determine the highest safe floor with a given number of eggs. Rather than searching floors directly, the DP tracks how many floors can be tested with e eggs and m moves. Each move either breaks an egg, covering F(e-1, m-1) floors below, or preserves it, covering F(e, m-1) above, plus the tested floor.",
+        "invariants": [
+            "F(e, m) is the maximum number of floors decidable with e eggs and m moves.",
+            "F(e, 0) = 0 because no moves decide nothing.",
+            "Increasing m never decreases the coverage."
+        ],
+        "correctness": "Dropping at a floor splits the problem into the break case with one fewer egg and the survive case with one fewer move, both added plus the tested floor. This yields F(e,m) = F(e-1,m-1) + F(e,m-1) + 1 and captures the optimal substructure. The smallest m reaching the floor count is therefore the minimum number of trials.",
+        "complexityRationale": "Each move updates e egg counts in constant time, and moves continue until coverage reaches the target, giving O(eggs*moves) time. Only one row of coverage values is stored, using O(eggs) space.",
+        "uses": [
+            "Determining failure thresholds with limited test items",
+            "Binary-search generalization with breakable tests",
+            "Reliability and durability testing planning"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Chapter 15",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "With 2 eggs and 10 floors, the coverage after each move grows 1, 3, 6, 10, so four moves suffice. The strategy drops at floors 4, then 7, then 9, then 10 as needed."
+    },
     id: "egg-drop",
     name: "Egg Drop",
     category: "dynamic-programming",

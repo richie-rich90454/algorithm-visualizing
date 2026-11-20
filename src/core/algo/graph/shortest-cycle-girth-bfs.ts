@@ -139,6 +139,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The girth is the length of the shortest cycle in a graph. Running BFS from each source gives distances and a parent tree; any edge joining two vertices already at the same or nearby layers closes a cycle whose length is the sum of their distances plus one. The minimum over all sources and edges is the girth.",
+        "invariants": [
+            "BFS distances from a source are shortest-path distances.",
+            "A non-tree edge between two discovered vertices closes a genuine cycle.",
+            "The smallest closed cycle over all sources is the global girth."
+        ],
+        "correctness": "For a shortest cycle through source s, BFS from s places its two neighbors at known distances and the closing edge gives cycle length dist(u) plus dist(v) plus one. Considering every source ensures some BFS catches the globally shortest cycle, so the recorded minimum is the girth.",
+        "complexityRationale": "One BFS costs O(V + E) and there are V sources, giving O(V(V + E)); distances, parents, and the queue use O(V + E) space.",
+        "uses": [
+            "Analyzing sparse graph structure and expander quality",
+            "Detecting small cycles in networks and codes",
+            "Guessing graph structure in extremal graph theory"
+        ],
+        "references": [
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search",
+            "Bondy and Murty, Graph Theory"
+        ],
+        "workedExample": "In the triangle-plus-tail graph, BFS from A reaches B and C in one hop and the edge B-C closes a cycle of length 1 + 1 + 1 = 3. No cycle can be shorter than three in a simple graph, so the girth is 3."
+    },
     id: "shortest-cycle-girth-bfs",
     name: "Shortest Cycle / Girth (BFS)",
     category: "graph",

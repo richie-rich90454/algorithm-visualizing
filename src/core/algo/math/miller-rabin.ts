@@ -238,6 +238,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Miller-Rabin module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Miller-Rabin is a strong probabilistic primality test built on Fermat's theorem and the fact that a prime has no nontrivial square root of one. It writes n-1 as 2^s times an odd d, then checks witness values by exponentiating to d and squaring repeatedly. A witness that fails proves compositeness; enough passing witnesses make primality overwhelmingly likely.",
+        "invariants": [
+            "For the chosen witnesses, a failure proves n is composite.",
+            "Writing n-1 = 2^s*d with d odd is exact.",
+            "A witness passes if its power chain reaches 1 or n-1 in the required position."
+        ],
+        "correctness": "For an odd prime, the sequence a^d, a^(2d), ..., a^(2^(s-1)d) must start at plus or minus one or eventually hit n-1, because squaring is the only way to reach the square root of one modulo a prime. A witness violating this certifies compositeness. With a known sufficient witness set, no n below the stated bound passes all tests while composite.",
+        "complexityRationale": "Each witness needs one modular exponentiation and up to s squarings, O(log n) operations on O(log n)-bit numbers, so one witness is O(log^3 n). With k fixed witnesses time is O(k log^3 n) and space is O(1).",
+        "uses": [
+            "Primality testing in cryptographic key generation",
+            "Filtering candidates before expensive proving",
+            "Standard library big-integer primality checks"
+        ],
+        "references": [
+            "Miller, Riemann's hypothesis and tests for primality (1976)",
+            "Rabin, Probabilistic algorithm for testing primality (1980)"
+        ],
+        "workedExample": "Test n = 29, prime. Write 28 = 2^2 * 7, so d = 7 and s = 2. For witness 2 compute 2^7 = 128 = 12 mod 29; squaring gives 12^2 = 144 = 28 = n-1. Reaching n-1 means the witness passes, consistent with 29 being prime."
+    },
     id: "miller-rabin",
     name: "Miller-Rabin",
     category: "math",

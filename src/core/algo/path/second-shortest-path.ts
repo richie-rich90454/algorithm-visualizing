@@ -167,6 +167,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The second shortest path is the cheapest route that differs from the shortest one. The detour lemma says it can deviate from the shortest path exactly once: follow the shortest path to some spur node, take a different route, then rejoin. Testing each spur by forbidding one shortest-path edge and rerunning Dijkstra finds the best such detour.",
+        "invariants": [
+            "The first path found is a true shortest path.",
+            "Forbidding each path edge forces a deviation at that spur.",
+            "The best valid detour gives the runner-up path."
+        ],
+        "correctness": "By the detour lemma the second shortest path shares a prefix and suffix with the shortest path and differs over a single segment, so forbidding the corresponding edge and rerunning Dijkstra discovers that segment. Taking the cheapest over all spurs yields the true second shortest path.",
+        "complexityRationale": "A naive run per path edge costs up to O(V E log V), while smart spur reuse reaches O(E log V); distances and predecessors use O(V + E) space.",
+        "uses": [
+            "Providing an alternate route when the best is unavailable",
+            "K shortest path algorithms as their first iteration",
+            "Network resilience and route diversity analysis"
+        ],
+        "references": [
+            "Yen, Finding the K Shortest Loopless Paths in a Network (1971)",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, shortest paths"
+        ],
+        "workedExample": "The shortest path A-B-C-D costs 4. Forbidding each of its edges in turn and rerunning Dijkstra yields a best detour of cost 6, so the second shortest path costs 6."
+    },
     id: "second-shortest-path",
     name: "Second Shortest Path",
     category: "shortest-path",

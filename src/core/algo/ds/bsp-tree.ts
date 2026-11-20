@@ -119,6 +119,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A BSP tree recursively splits space with a plane, putting polygons or points on the front side in one child and those on the back side in the other. Each node stores the splitting plane, so a query point's location is decided by a sequence of side tests. It is the classic structure for visibility ordering and spatial partitioning.",
+        "invariants": [
+            "All geometry in the front child lies in front of the node's plane.",
+            "All geometry in the back child lies behind it.",
+            "Leaves hold geometry that could not be split further."
+        ],
+        "correctness": "Partitioning by the plane guarantees that the side test at each node correctly selects the only child that can contain the query. Recursing until a leaf gives the cell containing the point. Because every split separates the sets exactly, traversing front to back yields a correct painter's-order rendering.",
+        "complexityRationale": "A balanced split gives depth O(log n) for n polygons, so point location is O(log n) on average. Each polygon is stored at one node, using O(n) space, though bad splits can duplicate geometry.",
+        "uses": [
+            "Painter's algorithm visibility ordering in 3D graphics",
+            "Collision detection and spatial partitioning",
+            "Constructive solid geometry"
+        ],
+        "references": [
+            "Henry Fuchs, Zvi M. Kedem, and Bruce F. Naylor, \"On Visible Surface Generation by a Priori Tree Structures\", SIGGRAPH 1980",
+            "Bruce F. Naylor, \"Binary Space Partitioning Trees\", course notes"
+        ],
+        "workedExample": "Take three points A(0,0), B(1,0), C(0,1) and split using A's vertical plane x=0. B goes to the front child and C to the back child. Querying (0.5, 0.2) tests front of the plane, enters B's child, and reports the containing region."
+    },
     id: "bsp-tree",
     name: "BSP Tree",
     category: "data-structures",

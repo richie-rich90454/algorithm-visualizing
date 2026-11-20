@@ -157,6 +157,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "A trapezoidal map breaks the plane into vertical slabs at segment endpoints. Inside a slab the segments do not change order, so a query point's cell can be found by locating its slab and then finding which adjacent segments lie above and below it at the query x.",
+        "invariants": [
+            "Within one slab the vertical order of segments is fixed.",
+            "Every cell in a slab is bounded above and below by consecutive segments in that order.",
+            "The query x lies between the slab's two endpoint boundaries."
+        ],
+        "correctness": "Segment endpoints are the only x values where the set or order of crossing segments changes, so a slab's decomposition is constant. Evaluating each segment's y at the query x and sorting them gives the faces stacked vertically, and locating the point between two consecutive segments identifies its trapezoid. Since slabs partition the domain and every face is captured this way, the point location is exact.",
+        "complexityRationale": "Sorting slabs and, within a slab, sorting segments by y costs O(n log n) preprocessing. A query evaluates O(n) segments in this simple demo, with O(n) space for slabs and segments.",
+        "uses": [
+            "Planar point location in geographic information systems",
+            "Face finding for polygon meshes",
+            "Hit testing against sets of non-crossing segments"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 6",
+            "Preparata and Shamos, Computational Geometry: An Introduction, Chapter 7"
+        ],
+        "workedExample": "Segments y = 0 and y = 2 both span x from 0 to 4, giving one slab. A query at (2,1) finds the segments ordered at heights 0 and 2 and is located between them; a query at (2,3) is located above both."
+    },
+
     id: "trapezoidal-map-point-location",
     name: "Trapezoidal Map Point Location",
     category: "geometry",

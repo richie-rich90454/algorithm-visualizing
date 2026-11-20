@@ -258,6 +258,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The A* module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Like Dijkstra, but order the frontier by estimated total cost: distance so far plus a heuristic estimate to the goal. A good heuristic focuses the search toward the target.",
+        "invariants": [
+            "The g score is the best known cost from the start to each vertex.",
+            "With an admissible heuristic, f = g + h never overestimates the true cost through a vertex."
+        ],
+        "correctness": "If the heuristic never overestimates the remaining cost, the first goal extracted from the frontier has the smallest possible total cost, so the path is optimal. Consistency additionally guarantees that a vertex need not be reopened.",
+        "complexityRationale": "Time is O(E log V) with a priority queue in the typical implementation, but a strong heuristic can dramatically reduce explored vertices. Space is O(V) for scores, predecessors, and the frontier.",
+        "uses": [
+            "Pathfinding in games and robotics",
+            "Route planning with straight-line distance heuristics",
+            "Grid navigation with time or energy costs"
+        ],
+        "references": [
+            "Hart, Nilsson, and Raphael, A Formal Basis for the Heuristic Determination of Minimum Cost Paths, 1968",
+            "Russell and Norvig, Artificial Intelligence: A Modern Approach"
+        ],
+        "workedExample": "On a grid, start at (0,0), goal (2,2), with Manhattan heuristic. From the frontier, the node with smallest g plus Manhattan distance is expanded first, so the search proceeds diagonally toward the goal instead of scanning uniformly outward."
+    },
     id: "a-star",
     name: "A*",
     category: "shortest-path",

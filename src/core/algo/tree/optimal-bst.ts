@@ -172,6 +172,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "An optimal binary search tree chooses which key should be the root so that the total search cost, weighted by access frequencies, is minimized. Dynamic programming over key intervals tries every possible root, combining the best left and right subtrees plus the cost of accessing all keys in the interval.",
+        "invariants": [
+            "cost[i][j] is the minimum weighted search cost for keys i through j.",
+            "The recurrence tries every root k in the interval and adds the interval's total frequency.",
+            "Base cases for empty intervals have zero cost."
+        ],
+        "correctness": "For any optimal tree over keys i through j, some key k is the root and its left and right subtrees must themselves be optimal for their key ranges, otherwise replacing them would lower the total cost. The recurrence enumerates all k and takes the minimum of left cost plus right cost plus the sum of frequencies in the interval, which is the added depth cost for every key under k. By induction on interval length this yields the globally minimum cost.",
+        "complexityRationale": "There are O(n^2) intervals and each tries O(n) roots, giving O(n^3) time with a simple prefix-sum table. The cost and root tables use O(n^2) space; Knuth optimization can reduce the time when applicable.",
+        "uses": [
+            "Building static search tables with known access frequencies",
+            "Compiler symbol table layout",
+            "Teaching interval dynamic programming"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 15",
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.1.2"
+        ],
+        "workedExample": "Keys 10, 12, 20 with frequencies 34, 8, 50 give minimum cost 142 with key 20 as the root. The left subtree covers 10 and 12, and the weighted cost over all keys is minimized by placing the most frequent key at the top."
+    },
+
     id: "optimal-bst",
     name: "Optimal BST",
     category: "tree",

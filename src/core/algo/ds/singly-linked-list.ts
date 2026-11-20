@@ -128,6 +128,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Singly Linked List module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A singly linked list is a chain of nodes, each holding a value and a pointer to the next. Front insertion is a constant-time pointer change when the head is known, but reaching an arbitrary node requires following pointers from the head.",
+        "invariants": [
+            "Each next pointer leads to the following node.",
+            "The last node points to null.",
+            "The chain contains every stored value once in order."
+        ],
+        "correctness": "Traversal from the head visits nodes in stored order because each link points to the immediate successor. Front insertion sets the new node next to the old head and moves the head, so the new chain is the old chain with one extra value at the front.",
+        "complexityRationale": "Front insert and delete are O(1) pointer changes; search and tail operations are O(n) because they walk the chain. One node per value gives O(n) space.",
+        "uses": [
+            "Stacks and queues built from nodes",
+            "Adjacency lists for sparse graphs",
+            "Cons lists in functional languages"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "Knuth, The Art of Computer Programming, Vol. 1, Section 2.2.3 on linear linked lists"
+        ],
+        "workedExample": "Chain 10 to 20 to 30; inserting 15 at the front yields 15 to 10 to 20 to 30; traversal from the head visits 15, 10, 20, 30 in that order."
+    },
     id: "singly-linked-list",
     name: "Singly Linked List",
     category: "data-structures",

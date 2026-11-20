@@ -190,6 +190,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Persistent Segment Tree module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A persistent segment tree keeps every historical version of an array. An update clones only the O(log n) nodes on its root-to-leaf path and shares all other subtrees, so each version has its own root.",
+        "invariants": [
+            "Nodes are immutable once created.",
+            "A version root reaches a complete tree over its array.",
+            "Unchanged subtrees are shared between versions."
+        ],
+        "correctness": "Cloning the update path and recomputing aggregates on it leaves every other node untouched, so the old root still sees old values and the new root sees the update. Shared subtrees have identical aggregates, so a range query from any root reads exactly that version data.",
+        "complexityRationale": "Each update creates O(log n) new nodes and recomputes sums on the path, O(log n) time; queries are ordinary O(log n) walks. Across U updates the space is O(n log n) because each contributes a logarithmic set of nodes.",
+        "uses": [
+            "Querying array state after past point updates",
+            "Persistent range-sum structures in competitive programming",
+            "Functional arrays with efficient range queries"
+        ],
+        "references": [
+            "Driscoll, Sleator, and Tarjan, Making Data Structures Persistent",
+            "cp-algorithms, Persistent Segment Tree"
+        ],
+        "workedExample": "Start with [1,2,3,4] summing 10 in version 0. Apply update index 1 to value 9 to create version 1 summing 17; range query [0,1] returns 3 on version 0 and 10 on version 1."
+    },
     id: "persistent-segment-tree",
     name: "Persistent Segment Tree",
     category: "data-structures",

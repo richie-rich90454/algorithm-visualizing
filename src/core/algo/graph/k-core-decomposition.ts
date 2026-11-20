@@ -107,6 +107,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The k-core is the largest subgraph in which every vertex has degree at least k. Core decomposition assigns each vertex a core number by peeling minimum-degree vertices and stamping each with the degree at which it is removed. Later removal means the vertex belongs to a deeper, denser core.",
+        "invariants": [
+            "Peeling always removes a vertex of current minimum degree.",
+            "Core numbers are nondecreasing in removal order.",
+            "The maximum core number equals the graph degeneracy."
+        ],
+        "correctness": "When a vertex is removed at degree d, the surviving subgraph contains no vertex of degree below the current level, so the vertex cannot belong to a (d+1)-core. Because it survives until all remaining vertices have degree at least d, it does belong to the d-core, making the stamped number exact.",
+        "complexityRationale": "With bucketed degrees each vertex and edge is touched once, O(V + E) time and O(V + E) space for degrees, core numbers, and the survivor set.",
+        "uses": [
+            "Finding dense regions in social and biological networks",
+            "Graph sparsification and visualization",
+            "Studying resilience through degeneracy"
+        ],
+        "references": [
+            "Batagelj and Zaversnik, An O(m) Algorithm for Cores Decomposition of Networks (2003)",
+            "Matula and Beck, Smallest-Last Ordering and Graph Coloring (1983)"
+        ],
+        "workedExample": "In the diamond A-B-C-D with A also joined to D, leaf-like D peels at degree 1 and gets core number 1. A, B, and C survive until each has degree 2, so they receive core number 2 and the degeneracy is 2."
+    },
     id: "k-core-decomposition",
     name: "K-Core Decomposition",
     category: "graph",

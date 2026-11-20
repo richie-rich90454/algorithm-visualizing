@@ -150,6 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Min Stack module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A min stack adds O(1) getMin to a normal stack by keeping a parallel min stack. On every push, record the minimum of the new value and the current minimum; on every pop, pop both stacks. The top of the min stack is then always the current minimum.",
+        "invariants": [
+            "The min stack has the same length as the main stack.",
+            "The min stack top equals the minimum of all main stack values.",
+            "Popping restores the previous minimum in one step."
+        ],
+        "correctness": "By induction, the i-th min stack entry is the minimum of the bottom i main stack values. Pushing extends the recurrence with min(new value, old minimum), which is exactly the new minimum. Popping removes the last entry and reveals the correct minimum for the shortened stack, so getMin is a single read.",
+        "complexityRationale": "Push, pop, and getMin each do a constant number of stack operations, so all are O(1) worst case. The auxiliary min stack stores one number per element, O(n) space.",
+        "uses": [
+            "Undo and redo stacks that need the smallest pending value",
+            "Expression evaluation with a running minimum",
+            "Streaming windows that track the current minimum"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 10",
+            "LeetCode problem 155, Min Stack (canonical formulation)"
+        ],
+        "workedExample": "Push 5, 3, 8, 2. The main stack is [5,3,8,2] and the min stack is [5,3,3,2]. getMin returns 2; after popping 2 the min stack top is 3, so getMin returns 3."
+    },
     id: "min-stack",
     name: "Min Stack",
     category: "data-structures",

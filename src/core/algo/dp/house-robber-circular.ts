@@ -150,6 +150,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "House robber on a circular street forbids robbing both the first and last house because they are adjacent. The trick is to run the linear house robber recurrence twice: once excluding the last house and once excluding the first. Taking the larger of the two results respects the circular constraint.",
+        "invariants": [
+            "Case A considers houses 0 through n-2; case B considers 1 through n-1.",
+            "Within a case, dp[i] = max(dp[i-1], dp[i-2] + nums[i]).",
+            "No valid solution can include both endpoints, so one case covers every optimum."
+        ],
+        "correctness": "Any feasible set of houses omits at least one endpoint; if it omits the last it is covered by case A, otherwise by case B. The linear recurrence solves each case optimally, so the maximum of the two is the circular optimum. Clamping small n is handled by the two singleton cases.",
+        "complexityRationale": "Two linear scans over n houses each take O(n) time. Only a constant number of running values are kept, so space is O(1).",
+        "uses": [
+            "Optimizing selection around a cycle of constrained items",
+            "Circular scheduling with adjacency conflicts",
+            "A standard reduction from circular to linear DP"
+        ],
+        "references": [
+            "LeetCode problem 213, House Robber II",
+            "Kleinberg and Tardos, Algorithm Design, Chapter 6"
+        ],
+        "workedExample": "For houses [2,3,2] on a circle, case A on [2,3] gives 3 and case B on [3,2] gives 3. Robbing all three is illegal, so the answer is 3."
+    },
     id: "house-robber-circular",
     name: "House Robber (Circular)",
     category: "dynamic-programming",

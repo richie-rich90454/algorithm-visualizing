@@ -182,6 +182,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The convex hull trick answers many minimum queries of the form m*x+b over a set of lines. Lines are sorted by slope and a hull of useful candidates is built by discarding any line whose intersection order is wrong. Queries arriving in sorted x order are answered by advancing a pointer along the hull instead of scanning all lines.",
+        "invariants": [
+            "The hull contains only lines that are minimal somewhere on the lower envelope.",
+            "Intersection points of consecutive hull lines are strictly increasing.",
+            "The query pointer never moves backward because x values are sorted."
+        ],
+        "correctness": "A line that is never lowest for any x cannot be part of the answer, so removing it is safe; the intersection ordering test detects exactly those lines. The lower envelope is therefore represented by the hull in order. For sorted queries, once the next line gives a smaller value it stays better for all later x, so the monotone pointer returns the true minimum.",
+        "complexityRationale": "Sorting lines and queries costs O(n log n), building the hull is linear, and the monotone query sweep is O(q), giving O((n+q) log n) overall. The hull array uses O(n) space.",
+        "uses": [
+            "Speeding up DP transitions of the form min(dp[j] + a_j*x_i + b_j)",
+            "Answering many line-evaluation minima",
+            "Optimizing piecewise linear cost queries"
+        ],
+        "references": [
+            "Knuth, The Art of Computer Programming, Vol. 3, Section 6.5",
+            "KACTL handbook, Convex Hull Trick chapter"
+        ],
+        "workedExample": "For lines y=2x+1, y=x+2, y=-x+5 queried at x=0,1,2, the hull keeps the lines that form the lower envelope. At x=0 the value 1 is minimal; at x=2 the line -x+5 gives 3, read by advancing the hull pointer."
+    },
     id: "convex-hull-trick-static",
     name: "Convex Hull Trick (Static)",
     category: "dynamic-programming",

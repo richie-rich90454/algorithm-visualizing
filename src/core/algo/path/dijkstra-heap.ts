@@ -297,6 +297,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Dijkstra (Heap) module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Grow the set of settled vertices one at a time, always taking the unsettled vertex with the smallest tentative distance. Relax its outgoing edges, which may improve neighbors' distances.",
+        "invariants": [
+            "Each tentative distance is the length of the best path found so far.",
+            "When a vertex is settled, its tentative distance equals the true shortest distance."
+        ],
+        "correctness": "With nonnegative weights, any alternative path to the minimum-distance unsettled vertex must pass through another unsettled vertex whose distance is at least as large, so it cannot be shorter. Settling in increasing distance order is therefore safe.",
+        "complexityRationale": "With a binary heap and adjacency lists, each edge triggers at most one decrease-key style update and each vertex is extracted once: O((V + E) log V) time and O(V + E) space.",
+        "uses": [
+            "Road navigation and map routing",
+            "Network path selection with positive costs",
+            "A subroutine in Johnson all-pairs shortest paths"
+        ],
+        "references": [
+            "Dijkstra, A Note on Two Problems in Connexion with Graphs, 1959",
+            "CLRS, Introduction to Algorithms, Chapter 24"
+        ],
+        "workedExample": "A->B cost 4, A->C cost 2, C->B cost 1. Settle A at 0, update B=4 and C=2. Settle C at 2, relax B to 3. Settle B at 3. Shortest distance to B is 3 via C."
+    },
     id: "dijkstra-heap",
     name: "Dijkstra (Heap)",
     category: "shortest-path",

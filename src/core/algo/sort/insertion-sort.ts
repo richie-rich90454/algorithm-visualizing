@@ -193,6 +193,26 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Insertion Sort module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Grow a sorted prefix one element at a time. Take the next value, shift every larger value in the prefix one slot to the right, and drop the new value into the hole. It is how a person sorts a hand of cards.",
+        "invariants": [
+            "The prefix before the current index is always sorted.",
+            "The prefix contains exactly the same values as the original prefix."
+        ],
+        "correctness": "Insertion places the new value after all values less than or equal to it and before all larger values, so the sorted-prefix invariant is restored. When the prefix reaches n, the whole array is sorted.",
+        "complexityRationale": "Each insertion shifts up to k elements, so the total is O(n^2) in the average and worst cases. Nearly sorted input needs only a few shifts per element, giving O(n) best case. Space is O(1).",
+        "uses": [
+            "Small arrays where constant factors dominate",
+            "Online algorithms that receive data one item at a time",
+            "The final small-range pass inside timsort and library sorts"
+        ],
+        "references": [
+            "CLRS, Introduction to Algorithms, Chapter 2",
+            "Sedgewick and Wayne, Algorithms, Section 2.1"
+        ],
+        "workedExample": "Start [5, 1, 4, 2]. Insert 1 before 5 -> [1, 5, 4, 2]. Insert 4 before 5 -> [1, 4, 5, 2]. Insert 2 between 1 and 4 -> [1, 2, 4, 5]."
+    },
     id: "insertion-sort",
     name: "Insertion Sort",
     category: "sorting",

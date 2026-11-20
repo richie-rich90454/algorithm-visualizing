@@ -183,6 +183,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Segment Intersection module, registered with the engine. */
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Two segments intersect precisely when the endpoints of each lie on opposite sides of the other segment's line. The orientation test from the cross product tells which side a point is on, so four sign checks decide intersection, including the touching cases when a point lies exactly on a line.",
+        "invariants": [
+            "orient(a,b,c) is positive, negative, or zero according to the side of line ab containing c.",
+            "Segments ab and cd cross when orient(a,b,c) and orient(a,b,d) have opposite signs and the same holds with roles swapped.",
+            "Collinear overlaps return true rather than being mistaken for separation."
+        ],
+        "correctness": "A line through ab separates the plane into two half-planes, so c and d are on opposite sides exactly when their orientation signs differ. For the segments to meet, c and d must straddle the line ab and a and b must straddle the line cd; both conditions are necessary and sufficient for intersection of closed segments. Checking products of signs with zero included also handles endpoints lying on the other segment and collinear overlap.",
+        "complexityRationale": "Four cross products and sign comparisons are constant work, so time is O(1). No storage beyond the four endpoints is needed, giving O(1) space.",
+        "uses": [
+            "Detecting crossings in road and utility networks",
+            "Collision tests in game physics",
+            "Preprocessing for sweep-line intersection algorithms"
+        ],
+        "references": [
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 2",
+            "O'Rourke, Computational Geometry in C, Section 1.3"
+        ],
+        "workedExample": "Segments (0,0)-(2,2) and (0,2)-(2,0) have opposite orientation signs for both endpoints pairs and cross at (1,1). Segments (0,0)-(1,1) and (2,2)-(3,3) give matching signs, so they are reported as not intersecting."
+    },
+
     id: "segment-intersection",
     name: "Segment Intersection",
     category: "geometry",

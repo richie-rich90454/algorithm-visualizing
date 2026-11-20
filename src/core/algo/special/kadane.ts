@@ -147,6 +147,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Kadane module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Kadane's algorithm finds the largest sum of any contiguous subarray in a single pass. At each position it decides whether to extend the best subarray ending at the previous index or to start fresh at the current element. A running maximum of these ending-here values gives the answer.",
+        "invariants": [
+            "bestEndingHere is the maximum sum of any subarray ending at the current index.",
+            "bestOverall is the largest bestEndingHere seen so far.",
+            "The recorded start and end bracket a subarray whose sum equals bestOverall."
+        ],
+        "correctness": "Any maximum subarray ending at i either extends the best one ending at i-1 by adding a[i], or consists of a[i] alone; taking the larger gives bestEndingHere, which is optimal by induction on i. Tracking the maximum over all indices then yields the global maximum subarray.",
+        "complexityRationale": "The algorithm scans the array once, doing constant work per element, so O(n) time. It stores only a few scalar variables and indices, O(1) space.",
+        "uses": [
+            "Finding maximum profit from a single stock buy and sell",
+            "Locating the brightest or highest-sum region in an image or signal",
+            "Maximum-scoring segments in bioinformatics",
+            "A building block for dynamic-programming solutions"
+        ],
+        "references": [
+            "Bentley, Programming Pearls, Column 7",
+            "Cormen et al., Introduction to Algorithms (CLRS), Chapter 4"
+        ],
+        "workedExample": "For [-2,1,-3,4,-1,2,1,-5,4], walking left to right gives a best ending here of 4 at the value 4, then 3 after -1, 5 after 2 and 6 after 1, which becomes the best overall. The maximum subarray is [4,-1,2,1] with sum 6."
+    },
     id: "kadane",
     name: "Kadane's Algorithm",
     category: "dynamic-programming",

@@ -50,6 +50,28 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "Newton-Raphson finds roots of a differentiable function using tangent lines. At a guess x, evaluate f(x) and its derivative f'(x), then follow the tangent down to where it crosses zero: x becomes x minus f(x)/f'(x). Near a simple root this roughly doubles the number of correct digits each iteration, known as quadratic convergence.",
+        "invariants": [
+            "The iterates are recorded in order and the residual shrinks near the root.",
+            "For f(x)=x^2-2 with a positive start, all iterates stay positive and converge to sqrt(2).",
+            "The update requires f'(x) to be nonzero."
+        ],
+        "correctness": "The tangent at x has equation y=f(x)+f'(x)(x'-x); setting y=0 gives the update x'=x-f(x)/f'(x). A Taylor expansion shows the new error is proportional to the square of the old error, so convergence is quadratic for a simple root with a sufficiently good initial guess.",
+        "complexityRationale": "Each iteration evaluates f and f' and performs one division, constant work, so t iterations cost O(t). Only the current x is needed for the computation; the iterate history is kept for display, O(t) space.",
+        "uses": [
+            "Solving nonlinear equations in engineering and physics",
+            "Computing square roots in hardware and math libraries",
+            "Root-finding in numerical software and optimization",
+            "Power-flow analysis, graphics intersections and iterative solvers"
+        ],
+        "references": [
+            "Burden and Faires, Numerical Analysis, Chapter 2",
+            "Press et al., Numerical Recipes, Chapter 9"
+        ],
+        "workedExample": "Solve x^2-2=0 from x=1. Here f(1)=-1 and f'=2, so x becomes 1-(-1)/2=1.5. Next f(1.5)=0.25 and f'=3, giving 1.5-0.25/3≈1.4167. The next iterate is about 1.4142157, rapidly approaching sqrt(2)≈1.414214."
+    },
     id: "newton-raphson-root",
     name: "Newton–Raphson Root",
     category: "math",

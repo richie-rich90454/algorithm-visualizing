@@ -138,6 +138,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "A fractal tree is a B-tree variant whose nodes carry message buffers. Inserts append to the root buffer instead of descending immediately, and buffers are flushed in batches when they fill. This turns many random writes into fewer sequential ones, which is faster on disk and flash.",
+        "invariants": [
+            "Each node's buffer holds pending messages for its descendants.",
+            "A message is applied to a leaf only after it has been flushed all the way down.",
+            "Buffers are flushed when they exceed a threshold."
+        ],
+        "correctness": "A search checks each buffer along the root-to-leaf path, so a pending message for a key is seen before the leaf's older value. Flushing a full buffer pushes messages to the appropriate children without dropping or reordering them per key. Therefore the combined view of buffers and leaves reflects all inserted keys.",
+        "complexityRationale": "Each message moves down one level per flush, and batching amortizes disk transfers to O(log_B N) per insert. Space is O(n) for keys plus buffered messages.",
+        "uses": [
+            "Write-optimized databases",
+            "Log-structured storage engines",
+            "Bulk-insert workloads on disk and SSD"
+        ],
+        "references": [
+            "Michael A. Bender et al., \"The Buffer Tree: A New Technique for Optimal I/O-Algorithms\", WADS 1995",
+            "J. S. Vitter, \"External Memory Algorithms and Data Structures\", ACM Computing Surveys 2001"
+        ],
+        "workedExample": "Insert 3, 1, 4, 2 into a fractal tree: all four sit in the root buffer, none has reached a leaf. Searching for 4 checks the root buffer first and finds it there. When the buffer fills, its messages flush downward in one batch to the correct child nodes."
+    },
     id: "fractal-tree",
     name: "Fractal Tree",
     category: "data-structures",

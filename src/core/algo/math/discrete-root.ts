@@ -236,6 +236,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 
 /** The Discrete Root module, registered with the engine. */
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The discrete root problem asks for x with x^k = a (mod p) for a prime p. When k is coprime to p-1, raising to the k-th power is a bijection on nonzero residues, so the answer is a raised to the inverse of k modulo p-1. Otherwise the visualization falls back to trying candidate values one by one.",
+        "invariants": [
+            "When gcd(k, p-1) = 1 the inverse k^-1 mod (p-1) exists.",
+            "Raising a to that inverse produces a value whose k-th power returns a.",
+            "In the brute-force case each tested x either solves the equation or is ruled out."
+        ],
+        "correctness": "By Fermat's theorem exponents live modulo p-1, so (a^(k^-1))^k = a^(k*k^-1) = a^1 = a when the inverse exists. The bijection guarantees this is the unique nonzero root. When no inverse exists, testing all residues is exhaustive and therefore finds a root if one exists.",
+        "complexityRationale": "The coprime case is one modular exponentiation after an extended Euclid inverse, O(log p). The general fallback scans up to p candidates with an exponentiation each, giving O(p log p) worst case; O(1) space is used.",
+        "uses": [
+            "Computing modular square and higher roots",
+            "Decryption steps in RSA-like and ElGamal-style schemes",
+            "Solving congruences in number-theoretic algorithms"
+        ],
+        "references": [
+            "Cormen et al., Introduction to Algorithms, Section 31.7",
+            "Menezes et al., Handbook of Applied Cryptography, Chapter 3"
+        ],
+        "workedExample": "Solve x^7 = 3 (mod 31). Since gcd(7, 30) = 1, invert 7 modulo 30 to get 13. Then x = 3^13 mod 31, and checking, x^7 returns 3, so this value is the discrete seventh root."
+    },
     id: "discrete-root",
     name: "Discrete Root",
     category: "math",

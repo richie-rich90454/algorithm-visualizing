@@ -115,6 +115,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+
+    education: {
+        "intuition": "The eccentricity of a vertex is the distance to its farthest neighbor. The smallest eccentricity is the radius and the vertices achieving it form the center; the largest eccentricity is the diameter and the vertices achieving it form the periphery. One breadth-first search per vertex fills the table.",
+        "invariants": [
+            "BFS from a vertex gives exact distances to all others.",
+            "Eccentricity is the maximum of those distances.",
+            "Radius is the minimum eccentricity and diameter is the maximum."
+        ],
+        "correctness": "Because BFS distances are shortest-path distances, the farthest distance is exactly the eccentricity. Taking the minimum over vertices gives the radius by definition, and taking the maximum gives the diameter, so the reported center and periphery are correct.",
+        "complexityRationale": "V breadth-first searches cost O(V(V + E)) time, and distance and eccentricity arrays use O(V) space per search.",
+        "uses": [
+            "Choosing optimal locations for facilities such as hospitals or servers",
+            "Measuring the size and shape of a network",
+            "Summarizing graph topology in network analysis"
+        ],
+        "references": [
+            "Harary, Graph Theory",
+            "Cormen, Leiserson, Rivest, and Stein, Introduction to Algorithms, breadth-first search"
+        ],
+        "workedExample": "On the path A-B-C-D-E, BFS from C reaches the ends in 2 hops so eccentricity is 2, the minimum, making C the center and radius 2. BFS from A or E reaches the far end in 4 hops, the maximum, so A and E form the periphery with diameter 4."
+    },
     id: "graph-center-periphery-eccentricity",
     name: "Center / Periphery (Eccentricity)",
     category: "graph",

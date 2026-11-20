@@ -110,6 +110,27 @@ function* run(input: unknown): Generator<VisualFrame, void, unknown> {
 }
 
 const module: AlgorithmModule = {
+    education: {
+        "intuition": "Seidel's incremental linear program adds constraints one at a time and maintains a current optimum. When the optimum violates a newly added constraint, the true optimum must lie on that constraint's boundary, so the algorithm re-solves a smaller one-dimensional problem along that line instead of restarting from scratch.",
+        "invariants": [
+            "After processing the first k constraints, the current point is optimal for that subproblem.",
+            "A violated new constraint must be active at the optimum of the enlarged problem.",
+            "The one-dimensional re-solve along the violating line stays within the earlier feasible region."
+        ],
+        "correctness": "If the old optimum satisfies the new constraint, it remains feasible and optimal for the larger set because adding a constraint cannot lower the objective optimum. If it violates the constraint, the new optimum must lie where the new constraint is tight, since the feasible set is the old one intersected with a half-plane and the old optimum is cut off. Restricting the objective to that boundary line reduces to a one-dimensional problem whose solution is found in constant time, restoring optimality.",
+        "complexityRationale": "With a random constraint order, the probability that the i-th constraint is violated is O(1/i), so the expected work is a geometric-like sum giving O(n) expected time. The algorithm keeps only a constant-sized candidate and the constraint list, using O(n) space.",
+        "uses": [
+            "Solving small linear programs in computational geometry",
+            "Low-dimensional optimization in robotics planning",
+            "Teaching randomized incremental algorithm design"
+        ],
+        "references": [
+            "Seidel, Small-Dimensional Linear Programming and Convex Hulls Made Easy, Discrete & Computational Geometry 6 (1991)",
+            "de Berg et al., Computational Geometry: Algorithms and Applications, Chapter 4"
+        ],
+        "workedExample": "Maximize y subject to y <= x + 1, y <= -x + 3, and y <= 2. After the first two constraints the candidate is their intersection (1,2). The third constraint y <= 2 passes through that point, so it is not violated and the optimum remains (1,2). Had a constraint y <= 1 been added instead, the violation test would move the candidate onto that new line."
+    },
+
     id: "incremental-2d-linear-programming",
     name: "Incremental 2D Linear Programming",
     category: "geometry",
