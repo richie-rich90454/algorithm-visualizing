@@ -27,7 +27,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Each node is labelled by its level and position; links are butterfly
+ *   - Each node is labeled by its level and position; links are butterfly
  *     and ring edges.
  *   - The current hop is active, visited nodes are yellow, and the target is
  *     green.
