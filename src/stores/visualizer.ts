@@ -126,6 +126,7 @@ export const useVisualizerStore = defineStore("visualizer", () => {
             return;
         }
         const token = ++loadToken;
+        const previousId = algorithmId.value;
         stopPlayback();
         selectedEntity.value = null;
         algorithmId.value = id;
@@ -141,6 +142,12 @@ export const useVisualizerStore = defineStore("visualizer", () => {
             return;
         }
         if (!module) {
+            // A failed chunk must not leave the new id paired with the old
+            // algorithm's frames. Revert to the previous selection and clear
+            // the buffers so the canvas never shows mismatched content.
+            algorithmId.value = previousId;
+            loadedModule.value = null;
+            engine.clear();
             isLoading.value = false;
             return;
         }
