@@ -20,7 +20,7 @@ function checkFrames(frames: VisualFrame[], values: number[]): void {
     });
 }
 
-function final(values: number[]): Record<string, number | string | boolean | Array<number | string>> {
+function final(values: number[]): VisualFrame["meta"] {
     return [...mod.run({ values })].at(-1)?.meta ?? {};
 }
 

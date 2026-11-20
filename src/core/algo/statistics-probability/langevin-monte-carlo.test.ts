@@ -69,7 +69,7 @@ describe("Langevin Monte Carlo", () => {
     });
 
     it("samples near the standard normal target over a long run", () => {
-        let final: Record<string, number | string | boolean | Array<number | string>> | undefined;
+        let final: VisualFrame["meta"] | undefined;
         for (const frame of mod.run({ steps: 1500, step: 0.6, seed: 12345 })) {
             final = frame.meta;
         }
