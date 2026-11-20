@@ -21,7 +21,7 @@
  * ---------------------------------------------------------------------------
  * Visualization mapping
  * ---------------------------------------------------------------------------
- *   - Graph nodes are placed on a circle and labelled with their output value.
+ *   - Graph nodes are placed on a circle and labeled with their output value.
  *   - The highlighted nodes receive the current frequency contribution.
  *   - The final frame shows the summed filtered signal.
  */
