@@ -2,7 +2,7 @@
 
 ## Tagline
 
-Watch 2931 algorithms think, one step at a time
+Watch 3000 algorithms think, one step at a time
 
 ## Description
 
