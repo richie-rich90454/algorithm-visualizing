@@ -1,6 +1,6 @@
-# Show HN: Algorithm Visualization Engine – 2788 algorithms you can watch step by step
+# Show HN: Algorithm Visualization Engine – 2879 algorithms you can watch step by step
 
-I built an open-source algorithms visualizer because most existing tools either show a handful of classic examples or ask you to write the algorithm yourself. This one ships 2788 ready-to-run algorithms across 20 categories, from sorting and graphs to quantum algorithms and production systems, each as a deterministic frame generator you can play, pause, rewind, and step through.
+I built an open-source algorithms visualizer because most existing tools either show a handful of classic examples or ask you to write the algorithm yourself. This one ships 2879 ready-to-run algorithms across 20 categories, from sorting and graphs to quantum algorithms and production systems, each as a deterministic frame generator you can play, pause, rewind, and step through.
 
 What makes it different:
 
